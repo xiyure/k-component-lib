@@ -1,9 +1,13 @@
-# Vue 3 + TypeScript + Vite
+# 项目简介
+该项目是一个基于Elemnt Plus进行二次封装的组件库，在保留Element Plus原有API的同时对一些业务场景进行封装和功能扩展。
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## 仓库地址
+https://github.com/xiyure/k-component-lib.git
 
-## Recommended Setup
+## 运行项目
+1. npm i  ---安装项目依赖
+2. npm run dev  ---运行项目
 
-- [VS Code](https://code.visualstudio.com/) + [Vue - Official](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (previously Volar) and disable Vetur
+## 检查
+代码提交前先执行npm run lint检查代码，如有问题代码，可通过npm run fix修复，无法修复的则需要手动消除错误，请确保提交的代码没有问题，否则无法合入。
 
-- Use [vue-tsc](https://github.com/vuejs/language-tools/tree/master/packages/tsc) for performing the same type checking from the command line, or for generating d.ts files for SFCs.
