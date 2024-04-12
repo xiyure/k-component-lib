@@ -1,0 +1,25 @@
+.bread-crumb {
+  display: flex;
+  justify-content: flex-start;
+}
+.el-tag {
+  padding: 10px !important;
+  border: 1px #EAE8EB solid;
+  background-color: transparent;
+}
+.el-tag:not(:first-of-type) {
+  margin-left: 10px;
+}
+.el-tag:hover {
+  border: 1px #EAE8EB solid;
+  background-color: #eeedee;
+}
+.el-tag a, .el-tag .el-icon {
+  color: #000;
+  text-decoration: none;
+}
+.active {
+  border: 1px #EAE8EB solid;
+  color: #000 !important;
+  background-color: #F5F5F5;
+}
