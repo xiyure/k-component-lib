@@ -23,11 +23,11 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { IInputNumber } from '../../interfacfe/params.type';
+import { IInputNumberProps } from '../../interfacfe/params.type';
 
 type InputValue = number | null;
 
-const props = withDefaults(defineProps<IInputNumber>(), {
+const props = withDefaults(defineProps<IInputNumberProps>(), {
   controls: true,
 });
 

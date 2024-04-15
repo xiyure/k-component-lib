@@ -12,7 +12,7 @@ export interface IButtonProps {
 }
 
 // Tab
-export interface ITabItem {
+export interface ITabItemProps {
   label?: string,
   name: string,
   path?: string,
@@ -22,7 +22,7 @@ export interface ITabItem {
 }
 
 // Input
-export interface IInput {
+export interface IInputProps {
   id?: string,
   name?: string,
   label?: string,
@@ -47,7 +47,7 @@ export interface IInput {
 }
 
 // InputNumber
-export interface IInputNumber {
+export interface IInputNumberProps {
   id?: string,
   name?: string,
   label?: string,
@@ -77,4 +77,17 @@ export interface IPaginationProps {
   layout?: string
 }
 
-export interface ISelectInput {}
+// Switch
+export interface ISwitchProps {
+  modelValue: boolean,
+  switchOnColor?: string,
+  switchOffColor?: string,
+  activeText?: string,
+  inactiveText?: string,
+  disabled?: boolean,
+  width?: string,
+  loading?: boolean,
+  size?: string
+}
+
+export interface ISelectInputProps {}

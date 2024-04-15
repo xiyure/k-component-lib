@@ -43,11 +43,11 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { IInput } from '../../interfacfe/params.type';
+import { IInputProps } from '../../interfacfe/params.type';
 
 type InputValue = string | number;
 
-const props = withDefaults(defineProps<IInput>(), {
+const props = withDefaults(defineProps<IInputProps>(), {
   modelValue: '',
   disabled: false,
   clearable: false,
