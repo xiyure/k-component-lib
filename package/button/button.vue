@@ -48,7 +48,11 @@ const attrs = computed(() => {
 });
 
 const getBtnTypeAttrs = (type: string):object => {
-  const typeAttrs = {};
+  const typeAttrs = {
+    type: '',
+    plain: false,
+    text: false
+  };
   switch (type) {
     case 'main':
       typeAttrs.type = 'primary';

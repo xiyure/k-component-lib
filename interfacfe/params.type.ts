@@ -66,4 +66,15 @@ export interface IInputNumber {
   controlsPosition?: string
 }
 
+// Pagination
+export interface IPaginationProps {
+  total: number,
+  pageSize?: number,
+  pageSizes?: object,
+  disabled?: boolean,
+  size?: string,
+  background?: boolean,
+  layout?: string
+}
+
 export interface ISelectInput {}

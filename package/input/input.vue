@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, nextTick } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { IInput } from '../../interfacfe/params.type';
 
 type InputValue = string | number;
@@ -55,13 +55,6 @@ const props = withDefaults(defineProps<IInput>(), {
   showWordLimit: false,
   autosize: false,
   showPassword: false,
-});
-
-onMounted(() => {
-  nextTick(() => {
-    const prependElem = document.getElementsByClassName('.el-input');
-    console.log(prependElem);
-  });
 });
 
 const slots = defineSlots<{

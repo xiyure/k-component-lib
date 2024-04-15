@@ -1,6 +1,4 @@
 import { createApp } from 'vue';
-import ElementPlus from 'element-plus';
-import 'element-plus/dist/index.css';
 import KUi from '../package/index';
 import App from './App.vue';
 import { createRouter, createWebHistory } from 'vue-router';
@@ -21,6 +19,7 @@ const router = createRouter({
 });
 const app = createApp(App);
 app.use(router);
-app.use(ElementPlus);
-app.use(KUi);
+app.use(KUi, {
+  localeLang: 'zh'
+});
 app.mount('#app');
