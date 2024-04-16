@@ -1,22 +1,21 @@
 <template>
-  <div class="k-radio-group">
-    <el-radio-group
+  <div class="k-checkbox-group">
+    <el-checkbox-group
       v-model="modelValue"
+      class="k-checkbox-group__inner"
       v-bind="attrs"
       @change="handleChange"
     >
       <slot></slot>
-    </el-radio-group>
+    </el-checkbox-group>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { IRadioGroupProps } from '../../interface';
+import { ISelectButtonGroupProps } from '../../interface/index';
 
-const props = withDefaults(defineProps<IRadioGroupProps>(), {
-
-});
+const props = withDefaults(defineProps<ISelectButtonGroupProps>(), {});
 
 const emits = defineEmits(['update:modelValue', 'change']);
 
@@ -47,7 +46,7 @@ const handleChange = (value: boolean) => {
 
 <script lang="ts">
 export default {
-  name: 'KCheckBoxGroup',
+  name: 'KCheckboxGroup',
 };
 </script>
 

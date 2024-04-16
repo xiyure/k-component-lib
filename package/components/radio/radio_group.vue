@@ -12,11 +12,9 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { IRadioGroupProps } from '../../interface';
+import { ISelectButtonGroupProps } from '../../interface/index';
 
-const props = withDefaults(defineProps<IRadioGroupProps>(), {
-
-});
+const props = withDefaults(defineProps<ISelectButtonGroupProps>(), {});
 
 const emits = defineEmits(['update:modelValue', 'change']);
 

@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { IInputNumberProps } from '../../interface';
+import { IInputNumberProps } from '../../interface/index';
 
 type InputValue = number | null;
 

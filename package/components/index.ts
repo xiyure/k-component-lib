@@ -2,7 +2,7 @@ import { KButton } from './button';
 import { KInput } from './input';
 import { KInputNumber } from './input _number';
 import { KRadio, KRadioGroup } from './radio';
-import { KCheckBox, KCheckBoxGroup } from './checkBox';
+import { KCheckbox, KCheckboxGroup } from './checkbox';
 import { KSwitch } from './switch';
 import { KTabs, KTabItem } from './tab';
 import { KPagination } from './pagination';
@@ -14,8 +14,8 @@ export {
   KInputNumber,
   KRadio,
   KRadioGroup,
-  KCheckBox,
-  KCheckBoxGroup,
+  KCheckbox,
+  KCheckboxGroup,
   KSwitch,
   KTabs,
   KTabItem,

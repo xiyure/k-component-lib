@@ -25,7 +25,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { IButtonProps } from '../../interface';
+import { IButtonProps } from '../../interface/index';
 
 const props = withDefaults(defineProps<IButtonProps>(), {
   type: 'normal',

@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { ISwitchProps } from '../../interface';
+import { ISwitchProps } from '../../interface/index';
 
 const props = withDefaults(defineProps<ISwitchProps>(), {
   switchOnColor: '',

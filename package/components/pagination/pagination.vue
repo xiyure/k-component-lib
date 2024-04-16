@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { IPaginationProps } from '../../interface';
+import { IPaginationProps } from '../../interface/index';
 
 const props = withDefaults(defineProps<IPaginationProps>(), {
   pageSize: 10,

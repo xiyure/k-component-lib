@@ -90,8 +90,8 @@ export interface ISwitchProps {
   size?: string
 }
 
-// Radio
-export interface IRadioProps {
+// Radio/Checkbox
+export interface ISelectButtonProps {
   modelValue?: any,
   value: any,
   disabled?: boolean,
@@ -99,15 +99,12 @@ export interface IRadioProps {
   label?: string
 }
 
-// RadioGroup
-export interface IRadioGroupProps {
+// RadioGroup/CheckboxGroup
+export interface ISelectButtonGroupProps {
   modelValue: any,
   disabled?: boolean,
   size?: string
 }
-
-// CheckBox
-export interface ICheckBoxProps {}
 
 // Select
 export interface ISelectInputProps {}

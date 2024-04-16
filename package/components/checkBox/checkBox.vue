@@ -1,24 +1,30 @@
 <template>
-  <div class="k-radio">
-    <el-radio
+  <div class="k-checkbox">
+    <el-checkbox
       v-model="modelValue"
       v-bind="attrs"
       @change="handleChange"
     >
-      <slot></slot>
-    </el-radio>
+      <slot v-if="slots.default"></slot>
+      <span
+        v-else
+        class="checkbox__label"
+      >
+        {{ props.label }}
+      </span>
+    </el-checkbox>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { IRadioProps } from '../../interface';
+import { ISelectButtonProps } from '../../interface/index';
 
-const props = withDefaults(defineProps<IRadioProps>(), {
-
-});
+const props = withDefaults(defineProps<ISelectButtonProps>(), {});
 
 const emits = defineEmits(['update:modelValue', 'change']);
+
+const slots = defineSlots();
 
 const modelValue = ref(props.modelValue);
 
@@ -49,7 +55,7 @@ const handleChange = (value: boolean) => {
 
 <script lang="ts">
 export default {
-  name: 'KCheckBox',
+  name: 'KCheckbox',
 };
 </script>
 

@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { IInputProps } from '../../interface';
+import { IInputProps } from '../../interface/index';
 
 type InputValue = string | number;
 

@@ -1,4 +1,4 @@
-import KCheckBox from './checkBox.vue';
-import KCheckBoxGroup from './checkBox_group.vue';
+import KCheckbox from './checkbox.vue';
+import KCheckboxGroup from './checkbox_group.vue';
 
-export { KCheckBox, KCheckBoxGroup };
+export { KCheckbox, KCheckboxGroup };

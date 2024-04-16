@@ -1,6 +1,10 @@
-.el-radio.is-disabled {
+.k-checkbox {
+  display: inline;
+  margin-right: 30px;
+}
+.el-checkbox.is-disabled {
   border: none !important;
 }
-.el-radio.is-disabled .el-radio__input {
+.el-checkbox.is-disabled .el-checkbox__input {
   border: none !important;
 }
