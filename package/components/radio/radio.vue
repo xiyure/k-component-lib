@@ -1,25 +1,21 @@
 <template>
-  <div>
-    <el-switch
+  <div class="k-radio">
+    <el-radio
       v-model="modelValue"
       v-bind="attrs"
-      :style="{
-        '--el-switch-on-color': props.switchOnColor,
-        '--el-switch-off-color': props.switchOffColor
-      }"
-      inline-prompt
       @change="handleChange"
-    />
+    >
+      <slot></slot>
+    </el-radio>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { ISwitchProps } from '../../interfacfe/params.type';
+import { IRadioProps } from '../../interface';
 
-const props = withDefaults(defineProps<ISwitchProps>(), {
-  switchOnColor: '',
-  switchOffColor: ''
+const props = withDefaults(defineProps<IRadioProps>(), {
+
 });
 
 const emits = defineEmits(['update:modelValue', 'change']);
@@ -39,11 +35,9 @@ const getSwitchSizeAttrs = ():object => ({
   size: props.size === 'sm' ? 'small' : ''
 });
 const getOriginAttrs = () => ({
-  width: props.width,
-  loading: props.loading,
-  disabled: props.disabled,
-  activeText: props.activeText,
-  inactiveText: props.inactiveText
+  value: props.value,
+  label: props.label,
+  disabled: props.disabled
 });
 
 const handleChange = (value: boolean) => {
@@ -55,7 +49,7 @@ const handleChange = (value: boolean) => {
 
 <script lang="ts">
 export default {
-  name: 'KSwitch',
+  name: 'KRadio',
 };
 </script>
 

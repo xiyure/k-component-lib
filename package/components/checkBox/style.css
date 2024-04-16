@@ -1,0 +1,6 @@
+.el-radio.is-disabled {
+  border: none !important;
+}
+.el-radio.is-disabled .el-radio__input {
+  border: none !important;
+}

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="k-pagination">
     <el-pagination
       v-bind="attrs"
       :page-size="pageSize"
@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { IPaginationProps } from '../../interfacfe/params.type';
+import { IPaginationProps } from '../../interface';
 
 const props = withDefaults(defineProps<IPaginationProps>(), {
   pageSize: 10,

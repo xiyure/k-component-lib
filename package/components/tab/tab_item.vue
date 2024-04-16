@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { watch, inject } from 'vue';
 import { useRouter } from 'vue-router';
-import { ITabItemProps } from '../../interfacfe/params.type';
+import { ITabItemProps } from '../../interface';
 
 const props = withDefaults(defineProps<ITabItemProps>(), {
   label: '',

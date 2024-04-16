@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="k-input">
     <el-input
       ref="inputRef"
       v-model="inputValue"
@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { IInputProps } from '../../interfacfe/params.type';
+import { IInputProps } from '../../interface';
 
 type InputValue = string | number;
 

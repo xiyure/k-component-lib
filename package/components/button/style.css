@@ -10,7 +10,7 @@
   --loading-color: #A8DBFF;
 }
 
-.k-button {
+.k-button__inner {
   border-radius: 8px;
 }
 .is-plain {
@@ -20,68 +20,68 @@
 }
 
 /* hover */
-.k-button:hover {
+.k-button__inner:hover {
   border: var(--normal-border) solid !important;
   color: var(--normal-text) !important;
   background-color: var(--normal-bg) !important;
 }
-.k-button:is(.el-button--primary):hover {
+.k-button__inner:is(.el-button--primary):hover {
   border: var(--primary-color) 1px solid !important;
   color: var(--white-color) !important;
   background-color: var(--primary-color) !important;
 }
-.k-button:is(.is-plain):hover {
+.k-button__inner:is(.is-plain):hover {
   border: var(--primary-color) 1px solid !important;
   color: var(--primary-color) !important;
   background-color: var(--white-color) !important;
 }
-.k-button:is(.is-text):hover {
+.k-button__inner:is(.is-text):hover {
   border: none !important;
   color: var(--primary-color) !important;
   background-color: var(--white-color) !important;
 }
 
 /* active */
-.k-button:active {
+.k-button__inner:active {
   border: var(--normal-border) solid !important;
   color: var(--normal-text) !important;
   background-color: var(--normal-border) !important;
 }
-.k-button:is(.el-button--primary):active {
+.k-button__inner:is(.el-button--primary):active {
   color: var(--white-color) !important;
   background-color: var(--active-color) !important;
 }
-.k-button:is(.is-plain):active {
+.k-button__inner:is(.is-plain):active {
   border: 1px var(--active-color) solid !important;
   color: var(--active-color) !important;
   background-color: var(--white-color) !important;
 }
-.k-button:is(.is-text):active {
+.k-button__inner:is(.is-text):active {
   border: none !important;
   color: var(--active-color) !important;
   background-color: transparent !important;
 }
 
 /* disabled */
-.k-button:disabled,
+.k-button__inner:disabled,
 .is-disabled {
   border: 1px var(--disabled-color) solid !important;
   color: var(--disabled-color) !important;
   background-color: var(--normal-bg) !important;
 }
-.k-button:disabled:is(.el-button--primary),
+.k-button__inner:disabled:is(.el-button--primary),
 .is-disabled:is(.el-button--primary) {
   border: 1px var(--normal-text) solid !important;
   color: var(--white-color) !important;
   background-color: var(--normal-text) !important;
 }
-.k-button:disabled:is(.is-plain),
+.k-button__inner:disabled:is(.is-plain),
 .is-disabled:is(.is-plain) {
   border: 1px var(--disabled-color) solid !important;
   color: var(--disabled-color) !important;
   background-color: var(--normal-bg) !important;
 }
-.k-button:disabled:is(.is-text),
+.k-button__inner:disabled:is(.is-text),
 .is-disabled:is(.is-text) {
   border: none !important;
   color: var(--loading-color) !important;
@@ -92,36 +92,36 @@
 .button-loading {
   pointer-events: none;
 }
-.k-button:disabled.is-loading,
+.k-button__inner:disabled.is-loading,
 .is-disabled.is-loading {
   border: 1px var(--normal-border) solid !important;
   color: var(--disabled-color) !important;
   background-color: var(--white-color) !important;
 }
-.k-button:disabled.el-button--primary.is-loading,
+.k-button__inner:disabled.el-button--primary.is-loading,
 .is-disabled.el-button--primary.is-loading {
   border: 1px var(--loading-color) solid !important;
   color: var(--white-color) !important;
   background-color: var(--loading-color) !important;
 }
-.k-button:disabled.is-plain.is-loading,
+.k-button__inner:disabled.is-plain.is-loading,
 .is-disabled.is-plain.is-loading {
   border: 1px var(--loading-color) solid !important;
   color: var(--loading-color) !important;
   background-color: transparent !important;
 }
-.k-button:disabled.is-text.is-loading,
+.k-button__inner:disabled.is-text.is-loading,
 .is-disabled.is-text.is-loading {
   border: none !important;
   color: var(--loading-color) !important;
   background-color: transparent !important;
 }
-.k-button span {
+.k-button__inner span {
   display: flex;
   justify-content: space-around;
   align-items: center;
 }
-.k-button svg {
+.k-button__inner svg {
   width: 15px;
 }
 .icon-left {

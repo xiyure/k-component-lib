@@ -1,8 +1,11 @@
 <template>
-  <div :class="{'button-loading': props.loading}">
+  <div
+    :class="{'button-loading': props.loading}"
+    class="k-button"
+  >
     <el-button
       ref="buttonRef"
-      class="k-button"
+      class="k-button__inner"
       :class="{'loading': props.loading}"
       v-bind="attrs"
       @click="handleClick"
@@ -22,7 +25,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { IButtonProps } from '../../interfacfe/params.type';
+import { IButtonProps } from '../../interface';
 
 const props = withDefaults(defineProps<IButtonProps>(), {
   type: 'normal',
@@ -93,7 +96,7 @@ const getOriginAttrs = () => {
 };
 
 const emits = defineEmits(['click']);
-const handleClick = (e:any) => {
+const handleClick = () => {
   emits('click');
 };
 </script>

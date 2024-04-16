@@ -1,5 +1,5 @@
 <template>
-  <div class="bread-crumb">
+  <div class="k-bread-crumb">
     <el-tag
       v-for="item, index in navTagList"
       :key="item"
