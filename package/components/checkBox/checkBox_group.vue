@@ -12,10 +12,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, provide } from 'vue';
 import { ISelectButtonGroupProps } from '../../interface/index';
 
-const props = withDefaults(defineProps<ISelectButtonGroupProps>(), {});
+const props = withDefaults(defineProps<ISelectButtonGroupProps>(), {
+  color: '#409eff'
+});
 
 const emits = defineEmits(['update:modelValue', 'change']);
 
@@ -42,6 +44,9 @@ const handleChange = (value: boolean) => {
   emits('change', value);
 };
 
+provide('useCheckboxGroup', true);
+provide('selectedData', modelValue);
+provide('fillColor', props.color);
 </script>
 
 <script lang="ts">

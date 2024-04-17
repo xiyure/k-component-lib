@@ -96,14 +96,17 @@ export interface ISelectButtonProps {
   value: any,
   disabled?: boolean,
   size?: string,
-  label?: string
+  label?: string,
+  indeterminate?: boolean,
+  color?: string
 }
 
 // RadioGroup/CheckboxGroup
 export interface ISelectButtonGroupProps {
   modelValue: any,
   disabled?: boolean,
-  size?: string
+  size?: string,
+  color?: string
 }
 
 // Select
