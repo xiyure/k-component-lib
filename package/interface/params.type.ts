@@ -110,4 +110,22 @@ export interface ISelectButtonGroupProps {
 }
 
 // Select
-export interface ISelectInputProps {}
+export interface ISelectInputProps {
+  modelValue: any,
+  multiple?: boolean,
+  disabled?: boolean,
+  clearable?: boolean,
+  placeholder?: string,
+  filterable?: boolean,
+  allowCreate?: boolean,
+  size?: string,
+  width?: string,
+  popperClass?: string
+}
+
+// Option
+export interface IOptionProps {
+  value: any,
+  label: string,
+  disabled?: boolean
+}

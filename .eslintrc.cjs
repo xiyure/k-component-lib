@@ -72,5 +72,9 @@ module.exports = {
   'vue/html-indent': ['error', 2],
   'vue/html-self-closing': 'off',
   'vue/singleline-html-element-content-newline': 'off',
+  "vue/max-attributes-per-line": ['error', {
+    "singleline": 3,
+    "multiline": 10
+  }],
   }
 }

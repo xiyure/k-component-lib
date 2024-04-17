@@ -7,6 +7,7 @@ import { KSwitch } from './switch';
 import { KTabs, KTabItem } from './tab';
 import { KPagination } from './pagination';
 import { KBreadCrumb } from './bread_crumb';
+import { KSelect, KOption, KOptionGroup } from './select';
 
 export {
   KButton,
@@ -20,5 +21,8 @@ export {
   KTabs,
   KTabItem,
   KPagination,
-  KBreadCrumb
+  KBreadCrumb,
+  KSelect,
+  KOption,
+  KOptionGroup
 };
