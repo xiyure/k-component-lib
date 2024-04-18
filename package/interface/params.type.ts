@@ -123,9 +123,42 @@ export interface ISelectInputProps {
   popperClass?: string
 }
 
-// Option
+// Select Option
 export interface IOptionProps {
   value: any,
   label: string,
   disabled?: boolean
+}
+
+// Cascader
+export interface ICascaderProps {
+  modelValue: any,
+  options?: object,
+  props?: object,
+  showAllLevels?: boolean,
+  separator?: string,
+  disabled?: boolean,
+  clearable?: boolean,
+  placeholder?: string,
+  filterable?: boolean,
+  size?: string,
+  width?: string,
+  popperClass?: string,
+  collapseTags?: boolean,
+  beforeFilter?: any
+}
+
+// Cascader Config
+export interface ICascaderConfig {
+  expandTrigger?: 'click' | 'hover',
+  multiple?: boolean,
+  emitPath?: boolean,
+  value?: string,
+  label?: string,
+  children?: string,
+  disabled?: string,
+  leaf?: string,
+  lazy?: boolean,
+  lazyLoad?: any,
+  checkStrictly?: boolean
 }

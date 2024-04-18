@@ -8,6 +8,7 @@ import { KTabs, KTabItem } from './tab';
 import { KPagination } from './pagination';
 import { KBreadCrumb } from './bread_crumb';
 import { KSelect, KOption, KOptionGroup } from './select';
+import { KCascader } from './cascader';
 
 export {
   KButton,
@@ -24,5 +25,6 @@ export {
   KBreadCrumb,
   KSelect,
   KOption,
-  KOptionGroup
+  KOptionGroup,
+  KCascader
 };

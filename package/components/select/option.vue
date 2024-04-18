@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { IOptionProps } from 'package/interface';
+import { IOptionProps } from '../../interface';
 
 const props = withDefaults(defineProps<IOptionProps>(), {});
 

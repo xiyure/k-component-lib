@@ -13,7 +13,7 @@
 .k-button__inner {
   border-radius: 8px;
 }
-.is-plain {
+.k-button__inner.is-plain {
   border: 1px var(--plain) solid;
   color: var(--plain);
   background-color: var(--white-color);
@@ -63,26 +63,22 @@
 }
 
 /* disabled */
-.k-button__inner:disabled,
-.is-disabled {
+.k-button__inner:disabled {
   border: 1px var(--disabled-color) solid !important;
   color: var(--disabled-color) !important;
   background-color: var(--normal-bg) !important;
 }
-.k-button__inner:disabled:is(.el-button--primary),
-.is-disabled:is(.el-button--primary) {
+.k-button__inner:disabled:is(.el-button--primary) {
   border: 1px var(--normal-text) solid !important;
   color: var(--white-color) !important;
   background-color: var(--normal-text) !important;
 }
-.k-button__inner:disabled:is(.is-plain),
-.is-disabled:is(.is-plain) {
+.k-button__inner:disabled:is(.is-plain) {
   border: 1px var(--disabled-color) solid !important;
   color: var(--disabled-color) !important;
   background-color: var(--normal-bg) !important;
 }
-.k-button__inner:disabled:is(.is-text),
-.is-disabled:is(.is-text) {
+.k-button__inner:disabled:is(.is-text) {
   border: none !important;
   color: var(--loading-color) !important;
   background-color: transparent !important;
@@ -92,26 +88,22 @@
 .button-loading {
   pointer-events: none;
 }
-.k-button__inner:disabled.is-loading,
-.is-disabled.is-loading {
+.k-button__inner:disabled.is-loading {
   border: 1px var(--normal-border) solid !important;
   color: var(--disabled-color) !important;
   background-color: var(--white-color) !important;
 }
-.k-button__inner:disabled.el-button--primary.is-loading,
-.is-disabled.el-button--primary.is-loading {
+.k-button__inner:disabled.el-button--primary.is-loading {
   border: 1px var(--loading-color) solid !important;
   color: var(--white-color) !important;
   background-color: var(--loading-color) !important;
 }
-.k-button__inner:disabled.is-plain.is-loading,
-.is-disabled.is-plain.is-loading {
+.k-button__inner:disabled.is-plain.is-loading {
   border: 1px var(--loading-color) solid !important;
   color: var(--loading-color) !important;
   background-color: transparent !important;
 }
-.k-button__inner:disabled.is-text.is-loading,
-.is-disabled.is-text.is-loading {
+.k-button__inner:disabled.is-text.is-loading {
   border: none !important;
   color: var(--loading-color) !important;
   background-color: transparent !important;

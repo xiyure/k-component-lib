@@ -5,11 +5,11 @@
 .el-checkbox.is-disabled {
   border: none !important;
 }
-.el-checkbox.is-checked .el-checkbox__inner {
+.k-checkbox .el-checkbox.is-checked .el-checkbox__inner {
   border-color: #CDCACF;
   background-color: transparent;
 }
-.el-checkbox.is-checked .el-checkbox__label {
+.k-checkbox .el-checkbox.is-checked .el-checkbox__label {
   color: #000;
 }
 .el-checkbox.is-disabled .el-checkbox__input {
