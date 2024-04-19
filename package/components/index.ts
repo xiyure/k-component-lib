@@ -9,6 +9,7 @@ import { KPagination } from './pagination';
 import { KBreadCrumb } from './bread_crumb';
 import { KSelect, KOption, KOptionGroup } from './select';
 import { KCascader } from './cascader';
+import { KDatePicker } from './date_picker';
 
 export {
   KButton,
@@ -26,5 +27,6 @@ export {
   KSelect,
   KOption,
   KOptionGroup,
-  KCascader
+  KCascader,
+  KDatePicker
 };
