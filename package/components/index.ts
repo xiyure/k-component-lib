@@ -10,6 +10,7 @@ import { KBreadCrumb } from './bread_crumb';
 import { KSelect, KOption, KOptionGroup } from './select';
 import { KCascader } from './cascader';
 import { KDatePicker } from './date_picker';
+import { KUpload } from './upload';
 
 export {
   KButton,
@@ -28,5 +29,6 @@ export {
   KOption,
   KOptionGroup,
   KCascader,
-  KDatePicker
+  KDatePicker,
+  KUpload
 };

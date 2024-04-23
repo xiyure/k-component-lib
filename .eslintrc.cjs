@@ -33,7 +33,7 @@ module.exports = {
   'import/extensions': 'off',
   'eol-last': 'off',
   'no-shadow': 'off',
-  'no-unused-vars': 'warn',
+  'no-unused-vars': ['warn', {"args": "none"}],
   'import/no-cycle': 'off',
   'arrow-parens': 'off',
   semi: ['error', 'always'],

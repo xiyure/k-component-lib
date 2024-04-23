@@ -11,13 +11,13 @@
       @click="handleClick"
     >
       <span>
-        <props.iconLeft class="icon-left" />
+        <span v-if="props.iconLeft"><props.iconLeft class="icon-left" /></span>
         <span v-if="props.value">{{ props.value }}</span>
         <slot
           v-else
           class="slot-content"
         ></slot>
-        <props.iconRight class="icon-right" />
+        <span v-if="props.iconRight"><props.iconRight class="icon-right" /></span>
       </span>
     </el-button>
   </div>
@@ -96,8 +96,8 @@ const getOriginAttrs = () => {
 };
 
 const emits = defineEmits(['click']);
-const handleClick = () => {
-  emits('click');
+const handleClick = (e:Event) => {
+  emits('click', e);
 };
 </script>
 

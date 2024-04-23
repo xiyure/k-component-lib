@@ -8,13 +8,11 @@
       v-bind="attrs"
       @change="handleChange"
     >
-      <slot v-if="slots.default"></slot>
-      <span
-        v-else
-        class="checkbox__label"
-      >
-        {{ props.label }}
-      </span>
+      <slot>
+        <span class="checkbox__label">
+          {{ props.label }}
+        </span>
+      </slot>
     </el-checkbox>
   </div>
 </template>
@@ -31,8 +29,6 @@ const fillColor = inject('fillColor', null);
 const props = withDefaults(defineProps<ISelectButtonProps>(), {});
 
 const emits = defineEmits(['update:modelValue', 'change']);
-
-const slots = defineSlots();
 
 const modelValue = ref(props.modelValue);
 let checkboxDom:HTMLElement | null = null;
