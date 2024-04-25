@@ -7,7 +7,7 @@
       :on-change="handleChange"
     >
       <template #trigger>
-        <slot name="trigger">
+        <slot name="default">
           <div v-if="props.drag" class="default-sign">
             <UploadFilled />
             单击或拖拽文件到此处上传

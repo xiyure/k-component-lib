@@ -11,6 +11,7 @@ import { KSelect, KOption, KOptionGroup } from './select';
 import { KCascader } from './cascader';
 import { KDatePicker } from './date_picker';
 import { KUpload } from './upload';
+import { KTransfer } from './transfer';
 
 export {
   KButton,
@@ -30,5 +31,6 @@ export {
   KOptionGroup,
   KCascader,
   KDatePicker,
-  KUpload
+  KUpload,
+  KTransfer
 };
