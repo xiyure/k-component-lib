@@ -17,6 +17,11 @@
     .default-upload-btn {
       display: flex;
       width: 100%;
+      svg {
+        width: 20px;
+        height: 20px;
+        margin-right: 3px;
+      }
     }
     .main-btn {
       margin-left: 20px;
@@ -44,32 +49,43 @@
   display: flex;
   justify-content: flex-start;
   vertical-align: middle;
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .header-icon {
+      display: flex;
+      align-items: center;
+      margin-right: 5px;
+    }
+  }
+  .status-icon-box {
+    display: flex;
+    align-items: center;
+    .status-icon {
+      display: flex;
+      margin-left: 10px;
+      .default-success-icon {
+        color: #089b08;
+      }
+      .default-fail-icon {
+        color: #f11414;
+      }
+    }
+    .remove-file {
+      display: none;
+    }
+  }
   svg {
     width: 14px;
     height: 14px;
     vertical-align: middle;
   }
-  .header-icon {
-    margin-right: 5px;
-  }
-  .status-icon {
-    display: block;
-    margin-left: 10px;
-    .default-success-icon {
-      color: rgb(8, 155, 8);
-    }
-    .default-fail-icon {
-      color: rgb(241, 20, 20);
-    }
-  }
-  .remove-file {
-    display: none;
-  }
 }
 
 .file-list:hover {
   .remove-file {
-    display: block;
+    display: flex;
     margin-left: 10px;
   }
   .remove-file:hover {

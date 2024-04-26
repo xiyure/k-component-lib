@@ -21,5 +21,9 @@ export default defineConfig({
     alias: {
       '@': pathsystem.resolve(__dirname, './package'),
     },
+  },
+  server: {
+    host: '0.0.0.0',
+    port: 12580
   }
 });

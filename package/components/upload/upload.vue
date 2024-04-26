@@ -9,13 +9,15 @@
       <template #trigger>
         <slot name="default">
           <div v-if="props.drag" class="default-sign">
-            <UploadFilled />
+            <IconEmptyBox color="#2882ff" />
             单击或拖拽文件到此处上传
           </div>
-          <div v-else class="default-upload-btn">
+          <div v-else class="default-upload-btn" @click.stop>
             <k-button
               type="secondary"
+              @click="selectFile"
             >
+              <IconUpload v-if="props.autoUpload" />
               {{ props.autoUpload ? '上传文件' : '选择文件' }}
             </k-button>
             <k-button
@@ -25,17 +27,17 @@
               :disabled="props.disabled"
               @click="submit"
             >
+              <IconUpload />
               上传文件
             </k-button>
           </div>
         </slot>
       </template>
-      
       <template #file="{ file }">
         <div v-if="!slots.file" class="file-list">
           <div>
             <a @click="handlePreview">
-              <span class="header-icon"><Document /></span>
+              <span class="header-icon"><IconFile /></span>
               <span
                 :title="file.name"
               >
@@ -50,18 +52,16 @@
               :style="'margin-top: 0.5rem'"
             />
           </div>
-          <div>
-            <label>
-              <span class="status-icon">
-                <circle-check v-if="!props.successIcon && file.status === 'success'" class="default-success-icon" />
-                <circle-check v-else-if="!props.failIcon && file.status === 'fail'" class="default-fail-icon" />
-                <props.successIcon v-else-if="props.successIcon && file.status === 'success'" />
-                <props.failIcon v-else-if="props.failIcon && file.status === 'fail'" />
-              </span>
-            </label>
+          <div class="status-icon-box">
+            <span class="status-icon">
+              <IconCheck v-if="!props.successIcon && file.status === 'success'" class="default-success-icon" />
+              <IconWarning v-else-if="!props.failIcon && file.status === 'fail'" class="default-fail-icon" />
+              <props.successIcon v-else-if="props.successIcon && file.status === 'success'" />
+              <props.failIcon v-else-if="props.failIcon && file.status === 'fail'" />
+            </span>
             <span class="remove-file">
               <props.removeIcon v-if="props.removeIcon" @click="handleRemove(file)" />
-              <Close v-else @click="handleRemove(file)" />
+              <IconDelete v-else color="#f97316" @click="handleRemove(file)" />
             </span>
           </div>
         </div>
@@ -77,7 +77,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { UploadFile, UploadRawFile, UploadStatus } from 'element-plus';
-import { UploadFilled, Document, Close, CircleCheck } from '@element-plus/icons-vue';
+import { IconEmptyBox, IconWarning, IconCheck, IconDelete, IconFile, IconUpload } from 'ksw-vue-icon';
 import { IUpload } from '../../interface/index';
 
 const props = withDefaults(defineProps<IUpload>(), {
@@ -164,11 +164,15 @@ function handleChange(uploadFile:UploadFile, uploadFiles:UploadFile[]) {
     targetFileItem.status = status;
   }
 }
+function selectFile() {
+  KUploadRef.value.$el.querySelector('input').click();
+}
 
 defineExpose({ 
   abort,
   submit,
   clearFiles,
+  selectFile,
   handleStart,
   handleRemove
 });
