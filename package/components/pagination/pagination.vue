@@ -33,11 +33,11 @@ const emits = defineEmits([
 const pageSize = ref(props.pageSize);
 
 const attrs = computed(() => ({
-  ...getSwitchSizeAttrs(),
+  ...getSizeAttrs(),
   ...getOriginAttrs(),
 }));
 
-const getSwitchSizeAttrs = ():object => ({
+const getSizeAttrs = ():object => ({
   small: props.size === 'sm',
 });
 const getOriginAttrs = () => ({

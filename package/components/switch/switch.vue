@@ -27,7 +27,7 @@ const emits = defineEmits(['update:modelValue', 'change']);
 const modelValue = ref(props.modelValue);
 
 const attrs = computed(() => ({
-  ...getSwitchSizeAttrs(),
+  ...getSizeAttrs(),
   ...getOriginAttrs(),
 }));
 
@@ -35,7 +35,7 @@ watch(() => props.modelValue, (newValue) => {
   modelValue.value = newValue;
 });
 
-const getSwitchSizeAttrs = ():object => ({
+const getSizeAttrs = ():object => ({
   size: props.size === 'sm' ? 'small' : ''
 });
 const getOriginAttrs = () => ({

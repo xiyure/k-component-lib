@@ -45,7 +45,7 @@ onMounted(() => {
 });
 
 const attrs = computed(() => ({
-  ...getSwitchSizeAttrs(),
+  ...getSizeAttrs(),
   ...getOriginAttrs(),
 }));
 
@@ -60,7 +60,7 @@ watch(() => [modelValue.value, selectedData.value, props.indeterminate], () => {
   });
 }, { immediate: true });
 
-const getSwitchSizeAttrs = ():object => ({
+const getSizeAttrs = ():object => ({
   size: props.size === 'sm' ? 'small' : ''
 });
 const getOriginAttrs = () => ({

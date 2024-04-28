@@ -37,7 +37,7 @@ const modelValue = ref(props.modelValue);
 const datePickerRef = ref<any>(null);
 
 const attrs = computed(() => ({
-  ...getSwitchSizeAttrs(),
+  ...getSizeAttrs(),
   ...getOriginAttrs(),
 }));
 
@@ -49,7 +49,7 @@ watch(() => props.modelValue, (newValue) => {
   modelValue.value = '';
 });
 
-const getSwitchSizeAttrs = ():object => ({
+const getSizeAttrs = ():object => ({
   size: props.size === 'sm' ? 'small' : ''
 });
 const getOriginAttrs = () => ({

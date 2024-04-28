@@ -71,7 +71,7 @@ const inputValue = ref<InputValue>('');
 const inputRef = ref<any>(null);
 
 const attrs = computed(() => ({
-  ...getInputSizeAttrs(),
+  ...getSizeAttrs(),
   ...getOriginAttrs(),
 }));
 
@@ -79,7 +79,7 @@ watch(() => props.modelValue, (newValue) => {
   inputValue.value = newValue;
 }, { immediate: true });
 
-const getInputSizeAttrs = ():object => ({
+const getSizeAttrs = ():object => ({
   size: props.size === 'sm' ? 'small' : '',
 });
 

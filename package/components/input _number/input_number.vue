@@ -36,7 +36,7 @@ const emit = defineEmits(['update:modelValue', 'blur', 'change', 'focus']);
 const inputNumberRef = ref<HTMLElement | null>(null);
 const inputValue = ref<InputValue>(0);
 const attrs = computed(() => ({
-  ...getInputSizeAttrs(),
+  ...getSizeAttrs(),
   ...getOriginAttrs(),
 }));
 
@@ -44,7 +44,7 @@ watch(() => props.modelValue, (newValue) => {
   inputValue.value = newValue;
 }, { immediate: true });
 
-const getInputSizeAttrs = ():object => ({
+const getSizeAttrs = ():object => ({
   size: props.size === 'sm' ? 'small' : '',
 });
 const getOriginAttrs = () => ({

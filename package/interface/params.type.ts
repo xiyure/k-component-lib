@@ -247,3 +247,13 @@ export interface ITransferProps {
   matchKey?: string,
   defaultKeys?: Array<string>
 }
+
+// Tag
+export interface ITagProps {
+  type?: string,
+  color?: string,
+  closable?: boolean,
+  size?: string,
+  round?: boolean,
+  textColor?: string
+}

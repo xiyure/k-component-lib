@@ -40,13 +40,10 @@ const props = withDefaults(defineProps<IButtonProps>(), {
 
 const attrs = computed(() => {
   const { type, size } = props;
-  const typeAtrrs = getBtnTypeAttrs(type);
-  const sizeAttrs = getBtnSizeAttrs(size);
-  const originAttrs = getOriginAttrs();
   return {
-    ...typeAtrrs,
-    ...sizeAttrs,
-    ...originAttrs,
+    ...getBtnTypeAttrs(type),
+    ...getSizeAttrs(size),
+    ...getOriginAttrs()
   };
 });
 
@@ -75,7 +72,7 @@ const getBtnTypeAttrs = (type: string):object => {
   return typeAttrs;
 };
 
-const getBtnSizeAttrs = (size:string):object => {
+const getSizeAttrs = (size:string):object => {
   const sizeAttrs = {
     size: 'default',
   };

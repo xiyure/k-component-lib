@@ -13,6 +13,7 @@ import { KDatePicker } from './date_picker';
 import { KUpload } from './upload';
 import { KTransfer } from './transfer';
 import { KOperate } from './operate';
+import { KTag } from './tag';
 
 export {
   KButton,
@@ -34,5 +35,6 @@ export {
   KDatePicker,
   KUpload,
   KTransfer,
-  KOperate
+  KOperate,
+  KTag
 };
