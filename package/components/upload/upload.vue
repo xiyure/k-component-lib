@@ -80,6 +80,10 @@ import { UploadFile, UploadRawFile, UploadStatus } from 'element-plus';
 import { IconEmptyBox, IconWarning, IconCheck, IconDelete, IconFile, IconUpload } from 'ksw-vue-icon';
 import { IUpload } from '../../interface/index';
 
+defineOptions({
+  name: 'KUpload'
+});
+
 const props = withDefaults(defineProps<IUpload>(), {
   method: 'post',
   showFileList: true,
@@ -176,12 +180,6 @@ defineExpose({
   handleStart,
   handleRemove
 });
-</script>
-
-<script lang="ts">
-export default {
-  name: 'KUpload',
-};
 </script>
 
 <style lang="less">

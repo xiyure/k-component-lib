@@ -24,6 +24,10 @@
 import { ref, computed, watch } from 'vue';
 import { ICascaderProps, ICascaderConfig } from '../../interface/index';
 
+defineOptions({
+  name: 'KCascader'
+});
+
 type InputValue = string | number;
 
 const props = withDefaults(defineProps<ICascaderProps>(), {
@@ -131,12 +135,6 @@ defineExpose({
   getCheckedNodes,
   togglePopperVisible
 });
-</script>
-
-<script lang="ts">
-export default {
-  name: 'KCascader'
-};
 </script>
 
 <style lang="less">

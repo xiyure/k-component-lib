@@ -44,6 +44,10 @@
 import { ref, watch } from 'vue';
 import { IconClose, IconMore } from 'ksw-vue-icon';
 
+defineOptions({
+  name: 'KOperate'
+});
+
 type ActionDataType = {
   label: string,
   action: () => any,
@@ -96,12 +100,6 @@ function handleClose() {
   emits('close');
 }
 
-</script>
-
-<script lang="ts">
-export default {
-  name: 'KOperate',
-};
 </script>
 
 <style lang="less">

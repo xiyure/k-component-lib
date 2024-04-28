@@ -39,6 +39,10 @@ import { watch, inject } from 'vue';
 import { useRouter } from 'vue-router';
 import { ITabItemProps } from '../../interface/index';
 
+defineOptions({
+  name: 'KTabItem'
+});
+
 const props = withDefaults(defineProps<ITabItemProps>(), {
   label: '',
   name: '',
@@ -69,12 +73,6 @@ watch(() => activeName.value, () => {
   }
 }, { immediate: true });
 
-</script>
-
-<script lang="ts">
-export default {
-  name: 'KTabItem',
-};
 </script>
 
 <style lang="less">

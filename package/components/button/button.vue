@@ -27,6 +27,10 @@
 import { computed } from 'vue';
 import { IButtonProps } from '../../interface/index';
 
+defineOptions({
+  name: 'KButton'
+});
+
 const props = withDefaults(defineProps<IButtonProps>(), {
   type: 'normal',
   size: 'base',
@@ -95,12 +99,6 @@ const getOriginAttrs = () => {
 const emits = defineEmits(['click']);
 const handleClick = (e:Event) => {
   emits('click', e);
-};
-</script>
-
-<script lang="ts">
-export default {
-  name: 'KButton',
 };
 </script>
 

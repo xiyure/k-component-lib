@@ -14,6 +14,10 @@
 import { ref, computed, watch } from 'vue';
 import { ISelectButtonProps } from '../../interface/index';
 
+defineOptions({
+  name: 'KRadio'
+});
+
 const props = withDefaults(defineProps<ISelectButtonProps>(), {});
 
 const emits = defineEmits(['update:modelValue', 'change']);
@@ -43,12 +47,6 @@ const handleChange = (value: boolean) => {
   emits('change', value);
 };
 
-</script>
-
-<script lang="ts">
-export default {
-  name: 'KRadio',
-};
 </script>
 
 <style lang="less">

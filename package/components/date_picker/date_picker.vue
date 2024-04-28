@@ -18,6 +18,10 @@
 import { ref, computed, watch } from 'vue';
 import { IDatePicker } from '../../interface/index';
 
+defineOptions({
+  name: 'KDatePicker'
+});
+
 const props = withDefaults(defineProps<IDatePicker>(), {
   clearable: true,
   editable: true,
@@ -94,12 +98,6 @@ function focus() {
 
 defineExpose({ focus });
 
-</script>
-
-<script lang="ts">
-export default {
-  name: 'KDatePicker',
-};
 </script>
 
 <style lang="less">

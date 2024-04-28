@@ -15,6 +15,10 @@
 <script setup lang="ts">
 import { ref, watch, provide } from 'vue';
 
+defineOptions({
+  name: 'KTabs'
+});
+
 const props = defineProps({
   modelValue: {
     type: String,
@@ -58,12 +62,6 @@ const handleRemove = (paneName:string) => {
   emits('tab-remove', paneName);
 };
 
-</script>
-
-<script lang="ts">
-export default {
-  name: 'KTabs',
-};
 </script>
 
 <style lang="less">

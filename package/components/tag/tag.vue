@@ -41,6 +41,10 @@
 import { computed } from 'vue';
 import { ITagProps } from '../../interface/index';
 
+defineOptions({
+  name: 'KTag'
+});
+
 const props = withDefaults(defineProps<ITagProps>(), {
   type: 'block',
   color: '#4091FF'
@@ -67,12 +71,6 @@ const tagAttrs = computed(() => {
   }
   return sizeAttr;
 });
-</script>
-
-<script lang="ts">
-export default {
-  name: 'KTag',
-};
 </script>
 
 <style lang="less">

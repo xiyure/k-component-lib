@@ -25,6 +25,10 @@
 import { ref, computed, watch } from 'vue';
 import { IInputNumberProps } from '../../interface/index';
 
+defineOptions({
+  name: 'KInputNumber'
+});
+
 type InputValue = number | null;
 
 const props = withDefaults(defineProps<IInputNumberProps>(), {
@@ -82,12 +86,6 @@ const blur = () => {
 };
 defineExpose({ focus, blur });
 
-</script>
-
-<script lang="ts">
-export default {
-  name: 'KInputNumber',
-};
 </script>
 
 <style lang="less">

@@ -36,6 +36,10 @@
 import { ref, computed, watch } from 'vue';
 import { ISelectInputProps } from '../../interface/index';
 
+defineOptions({
+  name: 'KSelect'
+});
+
 type InputValue = string | number;
 
 const props = withDefaults(defineProps<ISelectInputProps>(), {});
@@ -110,12 +114,6 @@ defineExpose({
   focus,
   blur
 });
-</script>
-
-<script lang="ts">
-export default {
-  name: 'KSelect'
-};
 </script>
 
 <style lang="less">

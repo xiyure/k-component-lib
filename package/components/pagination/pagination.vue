@@ -16,6 +16,10 @@
 import { ref, computed } from 'vue';
 import { IPaginationProps } from '../../interface/index';
 
+defineOptions({
+  name: 'KPagination'
+});
+
 const props = withDefaults(defineProps<IPaginationProps>(), {
   pageSize: 10,
   background: true,
@@ -65,12 +69,6 @@ const handlenNextClick = (pageNum: number) => {
   emits('next-click', pageNum);
 };
 
-</script>
-
-<script lang="ts">
-export default {
-  name: 'KPagination',
-};
 </script>
 
 <style lang="less">

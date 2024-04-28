@@ -43,6 +43,10 @@ import { genRandomStr } from '../../utils/index';
 import ArrowToLeft from '../../assets/svg/arrow-to-left.svg';
 import ArrowToRight from '../../assets/svg/arrow-to-right.svg';
 
+defineOptions({
+  name: 'KTransfer'
+});
+
 const props = withDefaults(defineProps<ITransferProps>(), {
   matchKey: 'label',
   defautKey: []
@@ -165,12 +169,6 @@ function getNewModelValue(value:Array<any>) {
   }
   return newModelValue;
 }
-</script>
-
-<script lang="ts">
-export default {
-  name: 'KTransfer',
-};
 </script>
 
 <style lang="less">

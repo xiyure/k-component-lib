@@ -7,6 +7,9 @@
 </template>
 
 <script setup lang="ts">
+defineOptions({
+  name: 'KOptionGroup'
+});
 
 const props = defineProps({
   label: {
@@ -14,12 +17,6 @@ const props = defineProps({
     default: ''
   }
 });
-</script>
-
-<script lang="ts">
-export default {
-  name: 'KOptionGroup',
-};
 </script>
 
 <style lang="less">

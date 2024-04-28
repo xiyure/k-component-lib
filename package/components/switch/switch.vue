@@ -17,6 +17,10 @@
 import { ref, computed, watch } from 'vue';
 import { ISwitchProps } from '../../interface/index';
 
+defineOptions({
+  name: 'KSwitch'
+});
+
 const props = withDefaults(defineProps<ISwitchProps>(), {
   switchOnColor: '',
   switchOffColor: ''
@@ -51,12 +55,6 @@ const handleChange = (value: boolean) => {
   emits('change', value);
 };
 
-</script>
-
-<script lang="ts">
-export default {
-  name: 'KSwitch',
-};
 </script>
 
 <style lang="less">

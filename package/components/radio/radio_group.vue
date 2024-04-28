@@ -14,6 +14,10 @@
 import { ref, computed, watch } from 'vue';
 import { ISelectButtonGroupProps } from '../../interface/index';
 
+defineOptions({
+  name: 'KRadioGroup'
+});
+
 const props = withDefaults(defineProps<ISelectButtonGroupProps>(), {});
 
 const emits = defineEmits(['update:modelValue', 'change']);
@@ -41,12 +45,6 @@ const handleChange = (value: boolean) => {
   emits('change', value);
 };
 
-</script>
-
-<script lang="ts">
-export default {
-  name: 'KRadioGroup',
-};
 </script>
 
 <style lang="less">

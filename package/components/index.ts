@@ -6,7 +6,6 @@ import { KCheckbox, KCheckboxGroup } from './checkbox';
 import { KSwitch } from './switch';
 import { KTabs, KTabItem } from './tab';
 import { KPagination } from './pagination';
-import { KBreadCrumb } from './bread_crumb';
 import { KSelect, KOption, KOptionGroup } from './select';
 import { KCascader } from './cascader';
 import { KDatePicker } from './date_picker';
@@ -14,6 +13,7 @@ import { KUpload } from './upload';
 import { KTransfer } from './transfer';
 import { KOperate } from './operate';
 import { KTag } from './tag';
+import { KPopover } from './popover';
 
 export {
   KButton,
@@ -27,7 +27,6 @@ export {
   KTabs,
   KTabItem,
   KPagination,
-  KBreadCrumb,
   KSelect,
   KOption,
   KOptionGroup,
@@ -36,5 +35,6 @@ export {
   KUpload,
   KTransfer,
   KOperate,
-  KTag
+  KTag,
+  KPopover
 };

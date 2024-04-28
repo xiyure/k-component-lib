@@ -12,6 +12,10 @@
 import { computed } from 'vue';
 import { IOptionProps } from '../../interface';
 
+defineOptions({
+  name: 'KOption'
+});
+
 const props = withDefaults(defineProps<IOptionProps>(), {});
 
 const attrs = computed(() => ({
@@ -19,12 +23,6 @@ const attrs = computed(() => ({
   label: props.label,
   disabled: props.disabled
 }));
-</script>
-
-<script lang="ts">
-export default {
-  name: 'KOption',
-};
 </script>
 
 <style lang="less">

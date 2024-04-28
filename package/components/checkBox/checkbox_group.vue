@@ -15,6 +15,10 @@
 import { ref, computed, watch, provide } from 'vue';
 import { ISelectButtonGroupProps } from '../../interface/index';
 
+defineOptions({
+  name: 'KCheckboxGroup'
+});
+
 const props = withDefaults(defineProps<ISelectButtonGroupProps>(), {
   color: '#409eff'
 });
@@ -47,12 +51,6 @@ const handleChange = (value: boolean) => {
 provide('useCheckboxGroup', true);
 provide('selectedData', modelValue);
 provide('fillColor', props.color);
-</script>
-
-<script lang="ts">
-export default {
-  name: 'KCheckboxGroup',
-};
 </script>
 
 <style lang="less">

@@ -22,6 +22,10 @@ import { ref, computed, watch, onMounted, nextTick, inject } from 'vue';
 import { ISelectButtonProps } from '../../interface/index';
 import { genRandomStr } from '../../utils/index';
 
+defineOptions({
+  name: 'KCheckbox'
+});
+
 const isWarpped = inject('useCheckboxGroup', false);
 const selectedData:any = inject('selectedData', []);
 const fillColor = inject('fillColor', null);
@@ -97,12 +101,6 @@ const handleChange = (value: boolean) => {
   emits('change', value);
 };
 
-</script>
-
-<script lang="ts">
-export default {
-  name: 'KCheckbox',
-};
 </script>
 
 <style lang="less">

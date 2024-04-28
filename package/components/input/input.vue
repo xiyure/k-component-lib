@@ -45,6 +45,10 @@
 import { ref, computed, watch } from 'vue';
 import { IInputProps } from '../../interface/index';
 
+defineOptions({
+  name: 'KInput'
+});
+
 type InputValue = string | number;
 
 const props = withDefaults(defineProps<IInputProps>(), {
@@ -142,12 +146,6 @@ defineExpose({
   clear,
   resizeTextarea,
 });
-</script>
-
-<script lang="ts">
-export default {
-  name: 'KInput',
-};
 </script>
 
 <style lang="less">
