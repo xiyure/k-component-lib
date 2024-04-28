@@ -244,5 +244,6 @@ export interface ITransferProps {
   leftDefaultChecked?: Array<string | number>,
   rightDefaultChecked?: Array<string | number>,
   filterMethod?: any,
-  matchKey?: string
+  matchKey?: string,
+  defaultKeys?: Array<string>
 }

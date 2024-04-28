@@ -40,9 +40,12 @@ import { Search } from '@element-plus/icons-vue';
 import { ITransferProps } from '../../interface/index';
 import { KInput } from '../input';
 import { genRandomStr } from '../../utils/index';
+import ArrowToLeft from '../../assets/svg/arrow-to-left.svg';
+import ArrowToRight from '../../assets/svg/arrow-to-right.svg';
 
 const props = withDefaults(defineProps<ITransferProps>(), {
-  matchKey: 'label'
+  matchKey: 'label',
+  defautKey: []
 });
 
 const emits = defineEmits([
@@ -58,13 +61,11 @@ const searchStr = ref('');
 const sourceData = ref<any>(props.data || []);
 let transferBox:HTMLElement | null = null;
 let filterInput:any = [];
-let transButton:any = [];
 const id = genRandomStr(8);
-let isInit = true;
-let defaultTransferData:(number|string)[] = [];
 
 onMounted(() => {
-  genTransferIcon();
+  // 根据需求扩展页面内容
+  extendContent();
 });
 
 const attrs = computed(() => ({
@@ -75,7 +76,7 @@ const attrs = computed(() => ({
   buttonTexts: props.buttonTexts,
   renderContent: props.renderContent,
   filterablePlaceholder: props.filterablePlaceholder,
-  props: defaultPropsConfig.value,
+  props: props.props,
   leftDefaultChecked: props.leftDefaultChecked,
   rightDefaultChecked: props.rightDefaultChecked,
   filterMethod: props.filterMethod
@@ -100,10 +101,6 @@ watch(() => [props.modelValue, props.matchKey], () => {
       modelValue.value.push(targetData[key]);
     }
   });
-  if (isInit) {
-    isInit = false;
-    defaultTransferData = [...modelValue.value];
-  }
 }, { immediate: true });
 watch(() => props.data, (newValue) => {
   if (newValue) {
@@ -131,20 +128,32 @@ function handleLeftCheckChange(value: TransferKey[], movedKeys?: TransferKey[]) 
 function handleRightCheckChange(value: TransferKey[], movedKeys?: TransferKey[]) {
   emits('right-check-change', value, movedKeys);
 }
-function genTransferIcon() {
+function extendContent() {
   transferBox = document.getElementById(id);
   if (transferBox === null) {
     return;
   }
+  // 获取第三方组件内部输入框节点，方便组件内直接操作
   filterInput = transferBox.querySelectorAll('.el-transfer-panel__filter input');
-  transButton = transferBox.querySelectorAll('.el-transfer__button');
-  // const [toLeftContent, toRightContent]:any = Array.from(transButton);
+  // 在第三方组件中添加自定义文本
+  const transferHeader = transferBox.querySelectorAll('.el-transfer-panel__header')[1];
+  const label = document.createElement('label');
+  label.innerHTML = '恢复默认';
+  label.classList.add('transfer-restore__text');
+  label.addEventListener('click', () => {
+    resetTransferData();
+  });
+  transferHeader.appendChild(label);
+  // 替换第三方组件内部图标
+  const transButton = transferBox.querySelectorAll('.el-transfer__button');
+  transButton[0].innerHTML = `<img class="k-transfer__left-arrow" src="${ ArrowToLeft }" />`;
+  transButton[1].innerHTML = `<img class="k-transfer__right-arrow" src="${ ArrowToRight }" />`;
 }
-// function resetTransferData() {
-//   modelValue.value = [...defaultTransferData];
-//   const newModelValue = getNewModelValue(modelValue.value);
-//   emits('update:modelValue', newModelValue);
-// }
+function resetTransferData() {
+  const { key } = defaultPropsConfig.value;
+  const newModelValue = props.data.filter(item => props.defaultKeys?.includes(item[key]));
+  emits('update:modelValue', newModelValue);
+}
 function getNewModelValue(value:Array<any>) {
   const newModelValue:number[] = [];
   const { key } = defaultPropsConfig.value;

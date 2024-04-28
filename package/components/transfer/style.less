@@ -1,5 +1,5 @@
 .k-transfer {
-  width: 400px;
+  width: auto;
   .k-transfer_seacher {
     margin-bottom: 10px;
   }
@@ -14,7 +14,17 @@
         padding: 0 !important;
       }
       .el-transfer-panel__header {
+        height: 32px;
         background-color: #FAFAFA;
+        .transfer-restore__text {
+          width: 120px;
+          padding-right: 5px;
+          color: #2882FF;
+          cursor: pointer;
+          &:active {
+            color: #2f19db;
+          }
+        }
       }
       .el-transfer-panel__item {
         width: 100%;
@@ -42,12 +52,17 @@
       padding: 0 20px;
       .el-transfer__button {
         width: auto;
+        padding: 8px 10px;
         border: 1px #AFABB3 solid;
         overflow: hidden;
         color: #000;
         background-color: #EAE8EB;
         &:nth-child(2) {
           margin: 10px 0 0 0;
+        }
+        .k-transfer__left-arrow, .k-transfer__right-arrow {
+          width: 16px;
+          height: 16px;
         }
       }
     }
