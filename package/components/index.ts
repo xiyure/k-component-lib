@@ -15,6 +15,7 @@ import { KOperate } from './operate';
 import { KTag } from './tag';
 import { KPopover } from './popover';
 import { KPopconfirm } from './popconfirm';
+import { KStatus } from './status';
 
 export {
   KButton,
@@ -38,5 +39,6 @@ export {
   KOperate,
   KTag,
   KPopover,
-  KPopconfirm
+  KPopconfirm,
+  KStatus
 };

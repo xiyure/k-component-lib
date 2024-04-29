@@ -291,3 +291,14 @@ export interface IPopconfirmProps extends IPopoverProps {
   confirmButtonType?: 'main' | 'secondary' | 'normal' | 'text',
   cancelButtonType?: 'main' | 'secondary' | 'normal' | 'text'
 }
+
+// Status
+export interface IStatusProps {
+  type?: 'empty' | 'success' | 'danger' | 'warning',
+  content?: string,
+  icon?: any,
+  iconColor?: string,
+  width?: string,
+  height?: string,
+  iconSize?: string
+}
