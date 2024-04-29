@@ -1,0 +1,18 @@
+@import '../../style/variable.less';
+
+.k-pagination {
+  .el-pager li,
+  .btn-prev,
+  .btn-next {
+    border: 1px @k-gray-200 solid !important;
+    color: #000;
+    background-color: transparent !important;
+  }
+  .el-pager {
+    li.is-active {
+      border: 1px @k-status-primary solid !important;
+      color: @k-status-primary !important;
+      background-color: transparent !important;
+    }
+  }
+}

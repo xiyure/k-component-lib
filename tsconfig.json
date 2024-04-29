@@ -22,8 +22,12 @@
 
     "suppressImplicitAnyIndexErrors": true,
     "ignoreDeprecations": "5.0",
-    "types": ["node"]
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*":["./package"]
+    },
   },
-  "include": ["example/**/*.ts", "example/**/*.tsx", "example/**/*.vue", "icons/*.ts", "icons/*.vue"],
+  "include": ["example/**/*.ts", "example/**/*.tsx", "example/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

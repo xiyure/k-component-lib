@@ -1,0 +1,20 @@
+@import '../../style/variable.less';
+
+.k-checkbox {
+  display: inline;
+  margin-right: 30px;
+  .el-checkbox.is-checked {
+    .el-checkbox__inner {
+      border-color: @k-gray-200;
+      background-color: transparent;
+    }
+  }
+  .el-checkbox.is-checked {
+    .el-checkbox__label {
+      color: #000;
+    }
+  }
+}
+.k-checkbox-group {
+  width: fit-content;
+}

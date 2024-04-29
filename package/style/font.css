@@ -1,0 +1,68 @@
+@font-face {
+  font-family: "MyCustomFont-Light";
+  src: url("../assets/font/AlibabaPuHuiTi-3-45-Light.otf") format("opentype");
+}
+@font-face {
+  font-family: "MyCustomFont";
+  src: url("../assets/font/AlibabaPuHuiTi-3-55-Regular.otf") format("opentype");
+}
+@font-face {
+  font-family: "MyCustomFont-SemiBold";
+  src: url("../assets/font/AlibabaPuHuiTi-3-75-SemiBold.otf") format("opentype");
+}
+@font-face {
+  font-family: "MyCustomFont-Bold";
+  src: url("../assets/font/AlibabaPuHuiTi-3-85-Bold.otf") format("opentype");
+}
+
+body {
+  font-family: "MyCustomFont", sans-serif;
+}
+
+.font-light {
+  font-family: "MyCustomFont-Light";
+  font-weight: 450;
+}
+
+.font-semibold {
+  font-family: "MyCustomFont-SemiBold";
+  font-weight: 750;
+}
+
+.font-bold {
+  font-family: "MyCustomFont-Bold";
+  font-weight: 850;
+}
+
+.text-xs {
+  font-size: 0.625rem;
+  line-height: 0.875rem;
+}
+.text-sm {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+.text-base {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.text-lg {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+.text-xl {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+.text-2xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+.text-3xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+.text-4xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}

@@ -1,0 +1,54 @@
+@import '../../style/variable.less';
+
+.k-tabs {
+  .el-tabs__item {
+    border: none !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    a {
+      color: #000;
+      text-decoration: none;
+    }
+    svg {
+      width: 15px;
+      height: 15px;
+      margin-right: 3px;
+      vertical-align: middle;
+    }
+  }
+  .el-tabs--card {
+    .el-tabs__item:not(.el-tabs__item:last-child) {
+      border-right: 1px #e4e7ed solid !important;
+    }
+  }
+  .el-tabs__item a:hover,
+  .is-active a {
+    color: @k-status-primary;
+    text-decoration: none;
+  }
+  .is-disabled {
+    a {
+      color: @k-gray-200;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+  .is-icon-close {
+    &:hover {
+      color: @k-status-primary;
+      background-color: transparent;
+    }
+    &:active {
+      color:  #0037DB;
+      background-color: transparent;
+    }
+    svg {
+      margin-right: 0;
+      width: 12px;
+      height: 12px;
+    }
+  }
+}
+.k-tab-item .is-disabled {
+  background-color: transparent !important;
+}

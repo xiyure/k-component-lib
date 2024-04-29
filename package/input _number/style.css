@@ -1,7 +1,0 @@
-.el-input-number__increase svg, .el-input-number__decrease svg {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 50%;
-  height: auto;
-}

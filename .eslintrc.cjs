@@ -33,7 +33,7 @@ module.exports = {
   'import/extensions': 'off',
   'eol-last': 'off',
   'no-shadow': 'off',
-  'no-unused-vars': 'warn',
+  'no-unused-vars': ['warn', {"args": "none"}],
   'import/no-cycle': 'off',
   'arrow-parens': 'off',
   semi: ['error', 'always'],
@@ -72,5 +72,9 @@ module.exports = {
   'vue/html-indent': ['error', 2],
   'vue/html-self-closing': 'off',
   'vue/singleline-html-element-content-newline': 'off',
+  "vue/max-attributes-per-line": ['error', {
+    "singleline": 3,
+    "multiline": 10
+  }],
   }
 }
