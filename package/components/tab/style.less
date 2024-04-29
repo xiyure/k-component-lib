@@ -1,3 +1,5 @@
+@import '../../style/variable.less';
+
 .k-tabs {
   .el-tabs__item {
     border: none !important;
@@ -15,25 +17,25 @@
     }
   }
   .el-tabs--card {
-    .el-tabs__item {
+    .el-tabs__item:not(.el-tabs__item:last-child) {
       border-right: 1px #e4e7ed solid !important;
     }
   }
   .el-tabs__item a:hover,
   .is-active a {
-    color: #4091FF;
+    color: @k-status-primary;
     text-decoration: none;
   }
   .is-disabled {
     a {
-      color: #9f9da2;
+      color: @k-gray-200;
       cursor: not-allowed;
       pointer-events: none;
     }
   }
   .is-icon-close {
     &:hover {
-      color: #4091FF;
+      color: @k-status-primary;
       background-color: transparent;
     }
     &:active {

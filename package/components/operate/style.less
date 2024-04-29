@@ -1,3 +1,5 @@
+@import '../../style/variable.less';
+
 .k-operate {
   display: flex;
   justify-content: flex-start;
@@ -7,9 +9,9 @@
     justify-content: center;
     align-items: center;
     width: 91px;
-    border: 1px #2882FF solid;
+    border: 1px @k-status-primary solid;
     color: #FFF;
-    background-color: #2882FF;
+    background-color: @k-status-primary;
   }
   .k-operate__content {
     display: flex;
@@ -27,13 +29,14 @@
       padding-right: 10px;
       li {
         list-style: none;
+        color: @k-normal;
         &:not(.list-header) {
-          color: #2882FF;
+          color: @k-status-primary;
           cursor: pointer;
         }
         &:not(.list-header, .k-operate-rest) {
           padding: 0 10px;
-          border-right: 1px #EAE8EB solid;
+          border-right: 1px @k-gray-100 solid;
         }
       }
       .k-operate-list__item {
@@ -56,10 +59,10 @@
     align-items: center;
     width: 50px;
     height: 100%;
-    border-left: 1px #EAE8EB solid;
+    border-left: 1px @k-gray-100 solid;
     cursor: pointer;
     &:hover {
-      color: #2882FF
+      color: @k-status-primary
     }
   }
 }

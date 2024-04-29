@@ -1,9 +1,11 @@
+@import '../../style/variable.less';
+
 .k-checkbox {
   display: inline;
   margin-right: 30px;
   .el-checkbox.is-checked {
     .el-checkbox__inner {
-      border-color: #CDCACF;
+      border-color: @k-gray-200;
       background-color: transparent;
     }
   }
@@ -12,4 +14,7 @@
       color: #000;
     }
   }
+}
+.k-checkbox-group {
+  width: fit-content;
 }

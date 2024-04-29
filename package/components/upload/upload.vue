@@ -61,7 +61,7 @@
             </span>
             <span class="remove-file">
               <props.removeIcon v-if="props.removeIcon" @click="handleRemove(file)" />
-              <IconDelete v-else color="#f97316" @click="handleRemove(file)" />
+              <IconDelete v-else class="default-remove-icon" @click="handleRemove(file)" />
             </span>
           </div>
         </div>
