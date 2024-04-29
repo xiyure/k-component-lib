@@ -280,3 +280,14 @@ export interface IPopoverProps {
   teleported?: boolean,
   persistent?: boolean
 }
+
+// Popconfirm
+export interface IPopconfirmProps extends IPopoverProps {
+  icon?: any,
+  hideIcon?: boolean,
+  iconColor?: string,
+  confirmButtonText?: string,
+  cancelButtonText?: string,
+  confirmButtonType?: 'main' | 'secondary' | 'normal' | 'text',
+  cancelButtonType?: 'main' | 'secondary' | 'normal' | 'text'
+}

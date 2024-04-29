@@ -1,7 +1,10 @@
 <template>
-  <div class="k-popover">
-    <el-popover
+  <div class="k-popconfirm">
+    <el-popconfirm
       v-bind="attrs"
+      cancel-button-type="default"
+      @confirm="handleConfirm"
+      @cancel="handleCancel"
       @show="handleShow"
       @hide="handleHide"
     >
@@ -9,30 +12,33 @@
       <template #reference> 
         <slot name="reference"></slot>
       </template>
-    </el-popover>
+    </el-popconfirm>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { IPopoverProps } from '../../interface/index';
+import { IconClear } from 'ksw-vue-icon';
+import { IPopconfirmProps } from '../../interface/index';
 
 defineOptions({
-  name: 'KPopover'
+  name: 'KPopconfirm'
 });
 
-const props = withDefaults(defineProps<IPopoverProps>(), {
-  trigger: 'hover',
+const props = withDefaults(defineProps<IPopconfirmProps>(), {
+  trigger: 'click',
   width: 150,
   placement: 'bottom',
   showArrow: true,
   hideAfter: 200,
   teleported: true,
   persistent: true,
-  visible: undefined
+  visible: undefined,
+  icon: IconClear,
+  iconColor: 'red'
 });
 
-const emits = defineEmits(['show', 'hide']);
+const emits = defineEmits(['confirm', 'cancel', 'show', 'hide']);
 
 const attrs = computed(() => {
   const tempObj = {} as any;
@@ -45,7 +51,13 @@ const attrs = computed(() => {
 const getOriginAttrs = () => ({
   trigger: props.trigger,
   title: props.title,
-  content: props.content,
+  icon: props.icon,
+  iconColor: props.iconColor,
+  hideIcon: props.hideIcon,
+  confirmButtonText: props.confirmButtonText,
+  cancelButtonText: props.cancelButtonText,
+  confirmButtonType: props.confirmButtonType,
+  cancelButtonType: props.cancelButtonType,
   width: props.width,
   placement: props.placement,
   disabled: props.disabled,
@@ -61,6 +73,12 @@ const getOriginAttrs = () => ({
   teleported: props.teleported,
   persistent: props.persistent
 });
+function handleConfirm() {
+  emits('confirm');
+}
+function handleCancel() {
+  emits('cancel');
+}
 function handleShow() {
   emits('show');
 }

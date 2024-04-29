@@ -14,6 +14,7 @@ import { KTransfer } from './transfer';
 import { KOperate } from './operate';
 import { KTag } from './tag';
 import { KPopover } from './popover';
+import { KPopconfirm } from './popconfirm';
 
 export {
   KButton,
@@ -36,5 +37,6 @@ export {
   KTransfer,
   KOperate,
   KTag,
-  KPopover
+  KPopover,
+  KPopconfirm
 };
