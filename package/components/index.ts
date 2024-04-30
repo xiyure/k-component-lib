@@ -16,6 +16,8 @@ import { KTag } from './tag';
 import { KPopover } from './popover';
 import { KPopconfirm } from './popconfirm';
 import { KStatus } from './status';
+import { KMessage } from './message';
+import { KDialog } from './dialog';
 
 export {
   KButton,
@@ -40,5 +42,7 @@ export {
   KTag,
   KPopover,
   KPopconfirm,
-  KStatus
+  KStatus,
+  KMessage,
+  KDialog
 };
