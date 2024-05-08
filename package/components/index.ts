@@ -18,6 +18,7 @@ import { KPopconfirm } from './popconfirm';
 import { KStatus } from './status';
 import { KMessage } from './message';
 import { KDialog } from './dialog';
+import { KTooltip } from './tooltip';
 
 export {
   KButton,
@@ -44,5 +45,6 @@ export {
   KPopconfirm,
   KStatus,
   KMessage,
-  KDialog
+  KDialog,
+  KTooltip
 };

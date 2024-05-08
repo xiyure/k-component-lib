@@ -348,3 +348,12 @@ export interface IDialogProps {
   closeIcon?: Component,
   zIndex?: number
 }
+
+// ITooltip
+export interface ITooltipProps extends IPopoverProps {
+  type?: 'normal' | 'primary' | 'danger' | 'warning',
+  color?: string,
+  textColor?: string,
+  icon?: Component,
+  iconSize?: string
+}
