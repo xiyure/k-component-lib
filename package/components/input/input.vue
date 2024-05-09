@@ -59,6 +59,7 @@ const props = withDefaults(defineProps<IInputProps>(), {
   showWordLimit: false,
   autosize: false,
   showPassword: false,
+  placeholder: '请输入'
 });
 
 const slots = defineSlots<{

@@ -33,6 +33,7 @@ type InputValue = number | null;
 
 const props = withDefaults(defineProps<IInputNumberProps>(), {
   controls: true,
+  placeholder: '请输入'
 });
 
 const emit = defineEmits(['update:modelValue', 'blur', 'change', 'focus']);

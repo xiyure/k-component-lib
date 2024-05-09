@@ -25,7 +25,8 @@ defineOptions({
 const props = withDefaults(defineProps<IDatePicker>(), {
   clearable: true,
   editable: true,
-  rangeSeparator: '-'
+  rangeSeparator: '-',
+  teleported: true
 });
 
 const emits = defineEmits([
@@ -72,7 +73,8 @@ const getOriginAttrs = () => ({
   disabledDate: props.disabledDate,
   defaultValue: props.defaultValue,
   defaultTime: props.defaultTime,
-  prefixIcon: props.prefixIcon
+  prefixIcon: props.prefixIcon,
+  teleported: props.teleported
 });
 
 function handleChange(value: any) {

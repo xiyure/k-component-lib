@@ -10,7 +10,7 @@ import { Component } from 'vue';
 
 // Button
 export interface IButtonProps {
-  type?: string,
+  type?: 'main' | 'secondary' | 'text' | 'normal',
   size?: string,
   status?: string,
   iconRight?: any,
@@ -130,7 +130,8 @@ export interface ISelectInputProps {
   allowCreate?: boolean,
   size?: string,
   width?: string,
-  popperClass?: string
+  popperClass?: string,
+  teleported?: boolean
 }
 
 // Select Option
@@ -173,7 +174,7 @@ export interface ICascaderConfig {
   checkStrictly?: boolean
 }
 
-// IDatePicker
+// DatePicker
 export interface IDatePicker {
   modelValue: Date | string | Array<any>,
   type?: string,
@@ -193,10 +194,11 @@ export interface IDatePicker {
   disabledDate?: any,
   defaultValue?: Date | Array<Date>,
   defaultTime?: Date | Array<Date>,
-  prefixIcon?: any
+  prefixIcon?: any,
+  teleported?: boolean
 }
 
-// IUpload
+// Upload
 type Awaitable<T> = Promise<T> | T
 export interface IUpload {
   action: string,
@@ -304,7 +306,7 @@ export interface IStatusProps {
   iconSize?: string
 }
 
-// IMessageProps
+// MessageProps
 export interface IMessageProps {
   message?: string | (() => string),
   type?: 'success' | 'info' | 'warning' | 'error',
@@ -322,7 +324,7 @@ export interface IMessageProps {
   repeatNum?: number
 }
 
-// IDialogProps
+// DialogProps
 export interface IDialogProps {
   modelValue: boolean,
   title?: string,
@@ -349,11 +351,17 @@ export interface IDialogProps {
   zIndex?: number
 }
 
-// ITooltip
+// Tooltip
 export interface ITooltipProps extends IPopoverProps {
   type?: 'normal' | 'primary' | 'danger' | 'warning',
   color?: string,
   textColor?: string,
   icon?: Component,
   iconSize?: string
+}
+
+// Filter
+export interface IFilter {
+  modelValue?: any,
+  data?: any
 }

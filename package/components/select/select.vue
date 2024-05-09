@@ -42,7 +42,9 @@ defineOptions({
 
 type InputValue = string | number;
 
-const props = withDefaults(defineProps<ISelectInputProps>(), {});
+const props = withDefaults(defineProps<ISelectInputProps>(), {
+  teleported: true
+});
 
 const emits = defineEmits([
   'update:modelValue',
@@ -79,7 +81,8 @@ const getOriginAttrs = () => ({
   multiple: props.multiple,
   filterable: props.filterable,
   allowCreate: props.allowCreate,
-  popperClass: props.popperClass
+  popperClass: props.popperClass,
+  teleported: props.teleported
 });
 
 function handleBlurEvent() {

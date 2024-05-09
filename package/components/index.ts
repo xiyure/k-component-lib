@@ -19,6 +19,7 @@ import { KStatus } from './status';
 import { KMessage } from './message';
 import { KDialog } from './dialog';
 import { KTooltip } from './tooltip';
+import { KFilter } from './filter';
 
 export {
   KButton,
@@ -46,5 +47,6 @@ export {
   KStatus,
   KMessage,
   KDialog,
-  KTooltip
+  KTooltip,
+  KFilter
 };
