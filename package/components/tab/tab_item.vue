@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import { watch, inject } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, RouterLink, RouterView } from 'vue-router';
 import { ITabItemProps } from '../../interface/index';
 
 defineOptions({

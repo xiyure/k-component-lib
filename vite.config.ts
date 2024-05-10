@@ -16,6 +16,22 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()],
     }),
   ],
+  build: {
+		outDir: "dist/kingsware-ui",
+		lib: {
+			entry: pathsystem.resolve(__dirname, "./package/index.ts"),
+			name: "kingsware-ui",
+			fileName: "kingsware-ui",
+		},
+		rollupOptions: {
+			external: ["vue"],
+			output: {
+				globals: {
+					vue: "Vue",
+				},
+			},
+		},
+	},
   resolve: {
     // 配置路径别名
     alias: {

@@ -21,7 +21,7 @@
         <div v-for="item, index in filterData" :key="index" class="k-filter__item">
           <div class="k-filter__condition">
             <k-select
-              v-model="item.condition"
+              v-model="item.title"
               :teleported="false"
               clearable
               @change="changeCondition(index)"
@@ -39,11 +39,11 @@
               v-model="item.logic"
               :teleported="false"
               clearable
-              @change="changeDateLogic(instance(item.condition), item)"
+              @change="changeDateLogic(instance(item.title), item)"
             >
               <k-option
-                v-for="logicItem in (instance(item.condition)?.uiType === 'date' 
-                  ? dateLogicOptions : instance(item.condition)?.logicList) || []"
+                v-for="logicItem in (instance(item.title)?.uiType === 'date' 
+                  ? dateLogicOptions : instance(item.title)?.logicList) || []"
                 :key="logicItem"
                 :label="logicItem"
                 :value="logicItem"
@@ -52,19 +52,19 @@
           </div>
           <div class="k-filter__value">
             <k-select
-              v-if="instance(item.condition)?.uiType === 'select'"
+              v-if="instance(item.title)?.uiType === 'select'"
               v-model="item.value"
               :teleported="false"
               clearable
             >
               <k-option
-                v-for="valueItem in instance(item.condition)?.valueList || []"
+                v-for="valueItem in instance(item.title)?.valueList || []"
                 :key="valueItem"
                 :label="valueItem"
                 :value="valueItem"
               />
             </k-select>
-            <div v-else-if="instance(item.condition)?.uiType === 'date'" class="k-filter__date-box">
+            <div v-else-if="instance(item.title)?.uiType === 'date'" class="k-filter__date-box">
               <k-select
                 v-model="dateRange"
                 :teleported="false"
@@ -126,7 +126,7 @@ defineOptions({
 
 const props = withDefaults(defineProps<IFilter>(), {});
 type IFilterDataType = {
-  condition: string,
+  title: string,
   logic: string,
   value: any
 };
@@ -139,13 +139,13 @@ const dateRange = ref('date');
 const dateLogic = ref('');
 const dateType = ref('datetime');
 
-const instance = computed(() => function (condition:string) {
-  return props.data.find((item:IFilterDataType) => item.condition === condition);
+const instance = computed(() => function (title:string) {
+  return props.data.find((item:IFilterDataType) => item.title === title);
 });
 
 const conditionList = computed(() => {
-  const allConditions = props.data.map((item:any) => item.condition);
-  const checkedConditions = filterData.value.map((dataItem:IFilterDataType) => dataItem.condition);
+  const allConditions = props.data.map((item:any) => item.title);
+  const checkedConditions = filterData.value.map((dataItem:IFilterDataType) => dataItem.title);
   return allConditions.filter((item:string) => !checkedConditions.includes(item));
 });
 
@@ -181,7 +181,7 @@ watch(() => filterData.value, (newValue) => {
 
 function addCondition() {
   const addItem = {
-    condition: '',
+    title: '',
     logic: '',
     value: ''
   };

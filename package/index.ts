@@ -6,13 +6,9 @@ import './style/font.css';
 import './style/variable.less';
 import * as components from './components';
 
-type OptionsType = {
-  localeLang: string
-};
-const install = (Vue:any, options?:OptionsType) => {
-  const { localeLang } = options || {};
+const install = (Vue:any) => {
   Vue.use(ElementPlus, {
-    locale: localeLang === 'zh' ? zhLocal : ''
+    locale: zhLocal
   });
   for (const name in components) {
     Vue.component(name, components[name]);
