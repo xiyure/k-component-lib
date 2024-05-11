@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import pathsystem from 'path';
 import vue from '@vitejs/plugin-vue';
+import dts from 'vite-plugin-dts'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver  } from 'unplugin-vue-components/resolvers';
@@ -9,6 +10,10 @@ import { ElementPlusResolver  } from 'unplugin-vue-components/resolvers';
 export default defineConfig({
   plugins: [
     vue(),
+    dts({
+      include: ['./package'],
+      tsconfigPath: 'tsconfig.json'
+    }),
     AutoImport({
       resolvers: [ElementPlusResolver()],
     }),
@@ -17,9 +22,8 @@ export default defineConfig({
     }),
   ],
   build: {
-		outDir: "dist/kingsware-ui",
 		lib: {
-			entry: pathsystem.resolve(__dirname, "./package/index.ts"),
+			entry: pathsystem.resolve(__dirname, "package/index.ts"),
 			name: "kingsware-ui",
 			fileName: "kingsware-ui",
 		},
