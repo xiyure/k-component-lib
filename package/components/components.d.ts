@@ -21,6 +21,7 @@ import { KDialog } from './dialog';
 import { KTooltip } from './tooltip';
 import { KFilter } from './filter';
 import { KTable, KTableColumn, KColumnGroup } from './table';
+import { KDrawer } from './drawer';
 
 declare module 'vue' {
   export interface GlobalComponents {
@@ -54,5 +55,6 @@ declare module 'vue' {
     KTable: typeof KTable,
     KTableColumn: typeof KTableColumn,
     KColumnGroup: typeof KColumnGroup
+    KDrawer: typeof KDrawer
   }
 }

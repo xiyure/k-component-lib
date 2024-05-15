@@ -21,6 +21,7 @@ import { KDialog } from './dialog';
 import { KTooltip } from './tooltip';
 import { KFilter } from './filter';
 import { KTable, KTableColumn, KColumnGroup } from './table';
+import { KDrawer } from './drawer';
 
 export {
   KButton,
@@ -52,5 +53,6 @@ export {
   KFilter,
   KTable,
   KTableColumn,
-  KColumnGroup
+  KColumnGroup,
+  KDrawer
 };

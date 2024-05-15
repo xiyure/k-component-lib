@@ -112,7 +112,7 @@
 <script setup lang="ts">
 import { watch, ref, computed } from 'vue';
 import { IconClose, IconDelete, IconAdd, IconEmptyBox, IconFilterFill } from 'ksw-vue-icon';
-import { IFilter } from '../../interface/index';
+import { IFilterProps } from '../../interface/index';
 import { KInput } from '../input';
 import { KSelect, KOption } from '../select';
 import { KButton } from '../button';
@@ -124,7 +124,7 @@ defineOptions({
   name: 'KFilter'
 });
 
-const props = withDefaults(defineProps<IFilter>(), {});
+const props = withDefaults(defineProps<IFilterProps>(), {});
 type IFilterDataType = {
   title: string,
   logic: string,

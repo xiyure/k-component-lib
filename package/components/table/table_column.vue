@@ -153,7 +153,7 @@
                         降序
                       </li>
                       <li class="sort-menu-item" @click="clearSort(headrSlotProps.column)">
-                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <IconClearDate />
                         清除排序
                       </li>
                     </ul>
@@ -232,7 +232,8 @@ import {
   IconTableSortNormalColor,
   IconTableSortDownColor,
   IconTableSortUpColor,
-  IconEdit
+  IconEdit,
+  IconClearDate
 } from 'ksw-vue-icon';
 import { KPopover } from '../popover';
 import { KDialog } from '../dialog';
