@@ -104,16 +104,17 @@ export interface ISwitchProps {
 export interface ISelectButtonProps {
   modelValue?: any,
   value: any,
+  checked?: boolean,
   disabled?: boolean,
   size?: string,
-  label?: string,
+  label?: string | number,
   indeterminate?: boolean,
   color?: string
 }
 
 // RadioGroup/CheckboxGroup
 export interface ISelectButtonGroupProps {
-  modelValue: any,
+  modelValue?: any,
   disabled?: boolean,
   size?: string,
   color?: string

@@ -20,6 +20,7 @@ import { KMessage } from './message';
 import { KDialog } from './dialog';
 import { KTooltip } from './tooltip';
 import { KFilter } from './filter';
+import { KTable, KTableColumn, KColumnGroup } from './table';
 
 declare module 'vue' {
   export interface GlobalComponents {
@@ -49,6 +50,9 @@ declare module 'vue' {
     KMessage: typeof KMessage
     KDialog: typeof KDialog
     KTooltip: typeof KTooltip
-    KFilter: typeof KFilter
+    KFilter: typeof KFilter,
+    KTable: typeof KTable,
+    KTableColumn: typeof KTableColumn,
+    KColumnGroup: typeof KColumnGroup
   }
 }

@@ -20,6 +20,7 @@ import { KMessage } from './message';
 import { KDialog } from './dialog';
 import { KTooltip } from './tooltip';
 import { KFilter } from './filter';
+import { KTable, KTableColumn, KColumnGroup } from './table';
 
 export {
   KButton,
@@ -48,5 +49,8 @@ export {
   KMessage,
   KDialog,
   KTooltip,
-  KFilter
+  KFilter,
+  KTable,
+  KTableColumn,
+  KColumnGroup
 };

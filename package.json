@@ -8,7 +8,9 @@
   "style": "kingsware-ui/style.css",
   "type": "module",
   "types": "kingsware-ui/index.d.ts",
-  "files": ["kingsware-ui/*"],
+  "files": [
+    "kingsware-ui/*"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -23,7 +25,8 @@
     "less": "^4.2.0",
     "less-loader": "^12.2.0",
     "vue": "^3.4.21",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.0",
+    "vxe-table": "^4.6.12"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^7.6.0",

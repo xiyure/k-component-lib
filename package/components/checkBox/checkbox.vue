@@ -71,7 +71,8 @@ const getOriginAttrs = () => ({
   value: props.value,
   label: props.label,
   disabled: props.disabled,
-  indeterminate: props.indeterminate
+  indeterminate: props.indeterminate,
+  checked: props.checked
 });
 function changeCheckboxStyle(color:string) {
   let isChecked = false;

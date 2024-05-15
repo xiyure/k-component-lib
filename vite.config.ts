@@ -59,7 +59,7 @@ type copyFilePluginType = {
   src: string,
   dest: string
 }
-// 将某些文件直接复制到打包后的目录下
+// 将文件直接复制到打包后的目录下
 function copyFilePlugin({src, dest}:copyFilePluginType) {
   return {
     name: 'copy-file-plugin',

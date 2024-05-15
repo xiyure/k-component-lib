@@ -1,0 +1,52 @@
+@import '../../style/variable.less';
+
+.k-table-column__header {
+  display: flex;
+  justify-content: space-between;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.k-table-column__operate {
+  display: flex;
+  justify-content: flex-start;
+  .k-table-column__tooltip, .k-table-column__sort {
+    margin-right: 5px;
+  }
+  .k-table-column__tooltip, .k-table-column__more {
+    cursor: pointer;
+    &:hover {
+      color: @k-status-primary
+    }
+  }
+  .k-table-column__sort {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+  }
+}
+.vxe-cell--sort, .vxe-cell--filter {
+  display: none !important;
+}
+.expand-icon {
+  &:hover {
+    color: @k-status-primary;
+  }
+}
+.k-column__header-dialog {
+  .header-dialog__buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+    .k-button:nth-child(1) {
+      margin-right: 10px;
+    }
+  }
+}
+.vxe-table--filter-wrapper {
+  display: none !important;
+}
+.disabled {
+  color: @k-gray-200;
+  cursor: no-drop !important;
+}
