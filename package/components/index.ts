@@ -22,6 +22,7 @@ import { KTooltip } from './tooltip';
 import { KFilter } from './filter';
 import { KTable, KTableColumn, KColumnGroup } from './table';
 import { KDrawer } from './drawer';
+import { KForm, KFormItem } from './form';
 
 export {
   KButton,
@@ -54,5 +55,7 @@ export {
   KTable,
   KTableColumn,
   KColumnGroup,
-  KDrawer
+  KDrawer,
+  KForm,
+  KFormItem
 };

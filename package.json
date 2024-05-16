@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@types/vue-router": "^2.0.0",
-    "element-plus": "^2.6.3",
+    "element-plus": "^2.7.3",
     "ksw-vue-icon": "latest",
     "less": "^4.2.0",
     "less-loader": "^12.2.0",

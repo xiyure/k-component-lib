@@ -9,6 +9,15 @@ export function genRandomStr(bit:number) {
   return result;
 }
 
+export function getCompSize(size:string | undefined) {
+  switch (size) {
+    case 'sm': return 'small';
+    case 'lg': return 'large';
+    case 'default': return 'default';
+    default: return '';
+  }
+}
+
 type emitterType = {
   name: string,
   callback: () => any

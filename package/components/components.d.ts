@@ -22,6 +22,7 @@ import { KTooltip } from './tooltip';
 import { KFilter } from './filter';
 import { KTable, KTableColumn, KColumnGroup } from './table';
 import { KDrawer } from './drawer';
+import { KForm, KFormItem } from './form';
 
 declare module 'vue' {
   export interface GlobalComponents {
@@ -51,10 +52,12 @@ declare module 'vue' {
     KMessage: typeof KMessage
     KDialog: typeof KDialog
     KTooltip: typeof KTooltip
-    KFilter: typeof KFilter,
-    KTable: typeof KTable,
-    KTableColumn: typeof KTableColumn,
+    KFilter: typeof KFilter
+    KTable: typeof KTable
+    KTableColumn: typeof KTableColumn
     KColumnGroup: typeof KColumnGroup
     KDrawer: typeof KDrawer
+    KForm: typeof KForm
+    KFormItem: typeof KFormItem
   }
 }

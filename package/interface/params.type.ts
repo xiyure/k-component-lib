@@ -4,7 +4,8 @@ import {
   UploadFiles,
   UploadRawFile,
   UploadUserFile,
-  UploadProgressEvent
+  UploadProgressEvent,
+  FormItemRule
 } from 'element-plus';
 import { Component } from 'vue';
 
@@ -386,4 +387,38 @@ export interface IDrawerProps {
   modalClass?: string
   zIndex?: number
   beforeClose?: () => boolean
+}
+
+// Form
+export interface IForm {
+  model: Record<string, any>
+  rules?: Record<string, any>
+  inline?: boolean
+  labelPosition?: 'left' | 'right' | 'top'
+  labelWidth?: string | number
+  labelSuffix?: string
+  hideRequiredAsterisk?: boolean
+  requireAsteriskPosition?: 'left' | 'right'
+  showMessage?: boolean
+  inlineMessage?: boolean
+  statusIcon?: boolean
+  validateOnRuleChange?: boolean
+  size?: '' | 'large' | 'default' | 'small'
+  disabled?: boolean
+  scrollToError?: boolean
+  scrollIntoViewOptions?: boolean | Record<string, any>
+}
+type Arrayable<T> = T | T[];
+export interface IFormItem {
+  props?: string | string[]
+  label?: string
+  labelWidth?: string | number
+  required?: boolean
+  rules?: Arrayable<FormItemRule>
+  error?: string
+  showMessage?: boolean
+  inlineMessage?: string | boolean
+  size?: '' | 'large' | 'default' | 'small'
+  for?: string
+  validateStatus?: '' | 'error' | 'validating' | 'success'
 }
