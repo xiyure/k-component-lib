@@ -422,3 +422,23 @@ export interface IFormItem {
   for?: string
   validateStatus?: '' | 'error' | 'validating' | 'success'
 }
+
+// step
+export interface IStepsProps {
+  space?: number | string
+  direction?: 'vertical' | 'horizontal'
+  active?: number
+  processStatus?: 'wait' | 'process' | 'finish' | 'error' | 'success'
+  finishStatus?: 'wait' | 'process' | 'finish' | 'error' | 'success'
+  alignCenter?: boolean
+  capsule?: boolean
+  height?: string | number
+}
+export interface IStepProps {
+  title?: string,
+  description?: string,
+  icon?: string | Component
+  status?: '' | 'wait' | 'process' | 'finish' | 'error' | 'success'
+  width?: string | number
+  color?: string
+}

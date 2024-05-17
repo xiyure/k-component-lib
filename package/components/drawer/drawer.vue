@@ -4,7 +4,6 @@
       ref="KDrawerRef"
       v-model="modelValue"
       v-bind="attrs"
-      :before-close="updateModelValue"
       @open="handleOpen"
       @opened="handleOpened"
       @close="handleCloseEvent"
@@ -77,17 +76,6 @@ watch(() => props.modelValue, (newValue) => {
   modelValue.value = newValue;
 });
 
-function updateModelValue(done:any) {
-  const { beforeClose } = props;
-  if (typeof beforeClose === 'function') {
-    const res = beforeClose();
-    if (!res) {
-      return false;
-    }
-  }
-  emits('update:modelValue', false);
-  done();
-}
 function handleOpen() {
   emits('open');
 }
@@ -95,6 +83,7 @@ function handleOpened() {
   emits('opened');
 }
 function handleCloseEvent() {
+  emits('update:modelValue', false);
   emits('close');
 }
 function handleClosed() {

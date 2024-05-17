@@ -23,6 +23,7 @@ import { KFilter } from './filter';
 import { KTable, KTableColumn, KColumnGroup } from './table';
 import { KDrawer } from './drawer';
 import { KForm, KFormItem } from './form';
+import { KSteps, KStep } from './step';
 
 export {
   KButton,
@@ -57,5 +58,7 @@ export {
   KColumnGroup,
   KDrawer,
   KForm,
-  KFormItem
+  KFormItem,
+  KSteps,
+  KStep
 };

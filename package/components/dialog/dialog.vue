@@ -3,7 +3,6 @@
     <el-dialog
       v-model="modelValue"
       v-bind="attrs"
-      :before-close="updateModelValue"
       @open="handleOpen"
       @opened="handleOpened"
       @close="handleClose"
@@ -89,17 +88,6 @@ const getOriginAttrs = () => ({
   zIndex: props.zIndex
 });
 
-function updateModelValue(done:any) {
-  const { beforeClose } = props;
-  if (typeof beforeClose === 'function') {
-    const res = beforeClose();
-    if (!res) {
-      return false;
-    }
-  }
-  emits('update:modelValue', false);
-  done();
-}
 function handleOpen() {
   emits('open');
 }
@@ -107,6 +95,7 @@ function handleOpened() {
   emits('opened');
 }
 function handleClose() {
+  emits('update:modelValue', false);
   emits('close');
 }
 function handleClosed() {

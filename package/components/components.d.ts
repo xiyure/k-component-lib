@@ -23,6 +23,7 @@ import { KFilter } from './filter';
 import { KTable, KTableColumn, KColumnGroup } from './table';
 import { KDrawer } from './drawer';
 import { KForm, KFormItem } from './form';
+import { KSteps, KStep } from './step';
 
 declare module 'vue' {
   export interface GlobalComponents {
@@ -58,6 +59,8 @@ declare module 'vue' {
     KColumnGroup: typeof KColumnGroup
     KDrawer: typeof KDrawer
     KForm: typeof KForm
-    KFormItem: typeof KFormItem
+    KFormItem: typeof KFormItem,
+    KSteps: typeof KSteps,
+    KStep: typeof KStep
   }
 }
