@@ -127,7 +127,8 @@ const attrs = computed(() => ({
   httpRequest: props.httpRequest,
   removeIcon: props.removeIcon,
   successIcon: props.successIcon,
-  failIcon: props.failIcon
+  failIcon: props.failIcon,
+  drag: props.drag
 }));
 
 watch(() => props.modelValue, (newValue) => {

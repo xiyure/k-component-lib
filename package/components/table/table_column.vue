@@ -257,7 +257,16 @@ const tableInstance:any = inject('tableInstance');
 const props = withDefaults(defineProps<KTableColumnProps>(), {
   visible: true,
   filterMultiple: true,
-  desc: ''
+  desc: '',
+  width: undefined,
+  minWidth: undefined,
+  resizable: undefined,
+  align: undefined,
+  headerAlign: undefined,
+  footerAlign: undefined,
+  showOverflow: undefined,
+  showHeaderOverflow: undefined,
+  showFooterOverflow: undefined
 });
 const slots = defineSlots();
 

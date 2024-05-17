@@ -17,7 +17,14 @@ defineOptions({
 });
 
 const props = withDefaults(defineProps<VxeColgroupProps>(), {
-  visible: true
+  visible: true,
+  width: undefined,
+  minWidth: undefined,
+  resizable: undefined,
+  align: undefined,
+  headerAlign: undefined,
+  showOverflow: undefined,
+  showHeaderOverflow: undefined
 });
 const slots = defineSlots();
 </script>
