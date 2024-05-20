@@ -24,6 +24,7 @@ import { KTable, KTableColumn, KColumnGroup } from './table';
 import { KDrawer } from './drawer';
 import { KForm, KFormItem } from './form';
 import { KSteps, KStep } from './step';
+import { KCollapse, KCollapseItem } from './collapse';
 
 declare module 'vue' {
   export interface GlobalComponents {
@@ -61,6 +62,8 @@ declare module 'vue' {
     KForm: typeof KForm
     KFormItem: typeof KFormItem,
     KSteps: typeof KSteps,
-    KStep: typeof KStep
+    KStep: typeof KStep,
+    KCollapse: typeof KCollapse,
+    KCollapseItem: typeof KCollapseItem
   }
 }

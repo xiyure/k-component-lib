@@ -442,3 +442,9 @@ export interface IStepProps {
   width?: string | number
   color?: string
 }
+
+// Collapse
+export interface ICollapse {
+  modelValue: string | string[]
+  accordion?: boolean
+}

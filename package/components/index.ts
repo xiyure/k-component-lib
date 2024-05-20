@@ -24,6 +24,7 @@ import { KTable, KTableColumn, KColumnGroup } from './table';
 import { KDrawer } from './drawer';
 import { KForm, KFormItem } from './form';
 import { KSteps, KStep } from './step';
+import { KCollapse, KCollapseItem } from './collapse';
 
 export {
   KButton,
@@ -60,5 +61,7 @@ export {
   KForm,
   KFormItem,
   KSteps,
-  KStep
+  KStep,
+  KCollapse,
+  KCollapseItem
 };
