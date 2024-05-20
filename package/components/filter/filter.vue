@@ -98,9 +98,14 @@
         <div class="k-filter__operate">
           <div class="k-filer__operate-left text-base">
             <span @click="addCondition"><IconAdd />添加条件</span>
-            <span><IconEmptyBox />保存为新视图</span>
+            <span @click="handleSave"><IconSave />保存为新视图</span>
           </div>
           <div class="k-filer__operate-right">
+            <span class="select-label">以上条件：</span>
+            <k-select v-model="filterRule" :teleported="false">
+              <k-option label="任意一条" :value="0"></k-option>
+              <k-option label="全部" :value="1"></k-option>
+            </k-select>
             <k-button type="main" @click="updateFilterData">查询</k-button>
           </div>
         </div>
@@ -111,7 +116,7 @@
 
 <script setup lang="ts">
 import { watch, ref, computed } from 'vue';
-import { IconClose, IconDelete, IconAdd, IconEmptyBox, IconFilterFill } from 'ksw-vue-icon';
+import { IconClose, IconDelete, IconAdd, IconSave, IconFilterFill } from 'ksw-vue-icon';
 import { IFilterProps } from '../../interface/index';
 import { KInput } from '../input';
 import { KSelect, KOption } from '../select';
@@ -131,13 +136,14 @@ type IFilterDataType = {
   value: any
 };
 
-const emits = defineEmits(['update:modelValue', 'confirm']);
+const emits = defineEmits(['update:modelValue', 'confirm', 'save']);
 
 const filterData = ref<IFilterDataType[]>([]);
 const popoverShow = ref(false);
 const dateRange = ref('date');
 const dateLogic = ref('');
 const dateType = ref('datetime');
+const filterRule = ref(0);
 
 const instance = computed(() => function (title:string) {
   return props.data.find((item:IFilterDataType) => item.title === title);
@@ -198,7 +204,7 @@ function clearFilterData() {
 }
 
 function updateFilterData() {
-  emits('confirm', filterData);
+  emits('confirm', filterData.value);
 }
 function changeCondition(index:number) {
   const targetItem = filterData.value[index];
@@ -278,6 +284,9 @@ function setDatePickerType() {
     const dateArray = ['range'];
     dateType.value = !dateArray.includes(dateRange.value) ? 'datetime' : 'datetimerange';
   } 
+}
+function handleSave() {
+  emits('save', filterData.value);
 }
 </script>
 

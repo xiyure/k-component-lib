@@ -25,7 +25,6 @@
     "less": "^4.2.0",
     "less-loader": "^12.2.0",
     "vue": "^3.4.21",
-    "vue-router": "^4.3.0",
     "vxe-table": "^4.6.12"
   },
   "devDependencies": {

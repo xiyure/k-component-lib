@@ -64,8 +64,18 @@
       color: @k-status-primary;
       cursor: pointer;
       span:nth-child(2) {
-        display: none;
         margin-left: 20px;
+      }
+    }
+    .k-filer__operate-right {
+      display: flex;
+      justify-content: space-around;
+      .select-label {
+        line-height: 32px;
+      }
+      .k-select {
+        width: 15vh;
+        margin-right: 10px;
       }
     }
   }

@@ -6,19 +6,7 @@
       :disabled="props.disabled"
     >
       <template #label>
-        <RouterLink
-          v-if="isUseRouter"
-          :to="props.path"
-          class="link"
-        >
-          <component :is="props.icon"></component>
-          <span v-if="!slots.label">{{ props.label }}</span>
-          <slot
-            v-else
-            name="label"
-          ></slot>
-        </RouterLink>
-        <div v-else>
+        <div class="k-tab__label">
           <component :is="props.icon"></component>
           <span v-if="!slots.label">{{ props.label }}</span>
           <slot
@@ -27,16 +15,17 @@
           ></slot>
         </div>
       </template>
-      <slot v-if="!isUseRouter"></slot>
-      <!-- 路由显示 -->
-      <RouterView v-else />
+      <slot>
+        <keep-alive v-if="isUseRouter && router">
+          <component :is="currentRouteComp"></component>
+        </keep-alive>
+      </slot>
     </el-tab-pane>
   </div>
 </template>
 
 <script setup lang="ts">
-import { watch, inject } from 'vue';
-import { useRouter, RouterLink, RouterView } from 'vue-router';
+import { shallowRef, watch, inject, getCurrentInstance } from 'vue';
 import { ITabItemProps } from '../../interface/index';
 
 defineOptions({
@@ -52,24 +41,28 @@ const props = withDefaults(defineProps<ITabItemProps>(), {
   icon: null,
 });
 
-const slots = defineSlots<
-{
-  default?: any
-  label?: any
-}>();
+const slots = defineSlots();
 
-const router = useRouter();
+const appConfig = getCurrentInstance()?.appContext.app.config;
+const router = appConfig?.globalProperties.$router;
 const isUseRouter = inject('isUseRouter');
 const activeName:any = inject('activeName');
+const routes = router?.getRoutes() || [];
+const currentRouteComp = shallowRef<any>(null);
 
 // 解决路由模式页面刷新时当前页面与tab页面展示不一致的问题
 watch(() => activeName.value, () => {
-  if (!isUseRouter || activeName.value !== props.name) {
+  if (!isUseRouter || !router || activeName.value !== props.name) {
+    return;
+  }
+  const targetRoute = routes.find(route => route.path === props.path);
+  if (!targetRoute) {
     return;
   }
   const currentRoutePath = router.currentRoute.value.path;
   if (currentRoutePath !== props.path) {
     router.push(props.path);
+    currentRouteComp.value = targetRoute.components?.default;
   }
 }, { immediate: true });
 
