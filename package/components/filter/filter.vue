@@ -15,7 +15,7 @@
       </template>
       <div class="k-filter__content">
         <div class="k-filter__header">
-          <span class="text-lg font-bold">全局操作</span>
+          <span class="text-lg font-bold">高级筛选</span>
           <span class="text-base" @click="clearFilterData"><IconDelete />清除所有条件</span>
         </div>
         <div v-for="item, index in filterData" :key="index" class="k-filter__item">
@@ -98,7 +98,6 @@
         <div class="k-filter__operate">
           <div class="k-filer__operate-left text-base">
             <span @click="addCondition"><IconAdd />添加条件</span>
-            <span @click="handleSave"><IconSave />保存为新视图</span>
           </div>
           <div class="k-filer__operate-right">
             <span class="select-label">以上条件：</span>
@@ -116,7 +115,7 @@
 
 <script setup lang="ts">
 import { watch, ref, computed } from 'vue';
-import { IconClose, IconDelete, IconAdd, IconSave, IconFilterFill } from 'ksw-vue-icon';
+import { IconClose, IconDelete, IconAdd, IconFilterFill } from 'ksw-vue-icon';
 import { IFilterProps } from '../../interface/index';
 import { KInput } from '../input';
 import { KSelect, KOption } from '../select';
@@ -136,7 +135,7 @@ type IFilterDataType = {
   value: any
 };
 
-const emits = defineEmits(['update:modelValue', 'confirm', 'save']);
+const emits = defineEmits(['update:modelValue', 'confirm']);
 
 const filterData = ref<IFilterDataType[]>([]);
 const popoverShow = ref(false);
@@ -284,9 +283,6 @@ function setDatePickerType() {
     const dateArray = ['range'];
     dateType.value = !dateArray.includes(dateRange.value) ? 'datetime' : 'datetimerange';
   } 
-}
-function handleSave() {
-  emits('save', filterData.value);
 }
 </script>
 

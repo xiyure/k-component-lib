@@ -448,3 +448,15 @@ export interface ICollapse {
   modelValue: string | string[]
   accordion?: boolean
 }
+
+// View
+export interface IViewProps {
+  modelValue: string
+  width?: number | string
+}
+export interface IViewItemProps {
+  value: any,
+  label?: string
+  count?: number | string
+  disabled?: boolean
+}

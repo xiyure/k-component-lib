@@ -17,6 +17,7 @@ import { KPopover } from './popover';
 import { KPopconfirm } from './popconfirm';
 import { KStatus } from './status';
 import { KMessage } from './message';
+import { KLoading } from './loading';
 import { KDialog } from './dialog';
 import { KTooltip } from './tooltip';
 import { KFilter } from './filter';
@@ -25,6 +26,7 @@ import { KDrawer } from './drawer';
 import { KForm, KFormItem } from './form';
 import { KSteps, KStep } from './step';
 import { KCollapse, KCollapseItem } from './collapse';
+import { KView, KViewItem } from './view';
 
 export {
   KButton,
@@ -51,6 +53,7 @@ export {
   KPopconfirm,
   KStatus,
   KMessage,
+  KLoading,
   KDialog,
   KTooltip,
   KFilter,
@@ -63,5 +66,7 @@ export {
   KSteps,
   KStep,
   KCollapse,
-  KCollapseItem
+  KCollapseItem,
+  KView,
+  KViewItem
 };

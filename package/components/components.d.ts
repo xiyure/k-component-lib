@@ -17,6 +17,7 @@ import { KPopover } from './popover';
 import { KPopconfirm } from './popconfirm';
 import { KStatus } from './status';
 import { KMessage } from './message';
+import { KLoading } from './loading';
 import { KDialog } from './dialog';
 import { KTooltip } from './tooltip';
 import { KFilter } from './filter';
@@ -25,6 +26,7 @@ import { KDrawer } from './drawer';
 import { KForm, KFormItem } from './form';
 import { KSteps, KStep } from './step';
 import { KCollapse, KCollapseItem } from './collapse';
+import { KView, KViewItem } from './view';
 
 declare module 'vue' {
   export interface GlobalComponents {
@@ -52,6 +54,7 @@ declare module 'vue' {
     KPopconfirm: typeof KPopconfirm
     KStatus: typeof KStatus
     KMessage: typeof KMessage
+    KLoading: typeof KLoading
     KDialog: typeof KDialog
     KTooltip: typeof KTooltip
     KFilter: typeof KFilter
@@ -65,5 +68,7 @@ declare module 'vue' {
     KStep: typeof KStep,
     KCollapse: typeof KCollapse,
     KCollapseItem: typeof KCollapseItem
+    KView: typeof KView
+    KViewItem: typeof KViewItem
   }
 }
