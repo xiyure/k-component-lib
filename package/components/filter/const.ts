@@ -1,47 +1,47 @@
 export const dateTypeOptions = [
   {
-    label: '具体日期',
+    label: 'exactDate',
     value: 'date'
   },
   {
-    label: '区间',
+    label: 'dateRange',
     value: 'range'
   },
   {
-    label: '今天',
+    label: 'today',
     value: 'today'
   },
   {
-    label: '明天',
+    label: 'tomorrow',
     value: 'tomorrow'
   },
   {
-    label: '昨天',
+    label: 'yesterday',
     value: 'yesterday'
   },
   {
-    label: '本周',
+    label: 'thisWeek',
     value: 'current-week'
   },
   {
-    label: '上周',
+    label: 'lastWeek',
     value: 'last-week'
   },
   {
-    label: '本月',
+    label: 'thisMonth',
     value: 'current-month'
   },
   {
-    label: '上月',
+    label: 'lastMonth',
     value: 'last-month'
   },
   {
-    label: '过去7天内',
+    label: 'withinThePastSevenDays',
     value: 'past-seven-days'
   },
   {
-    label: '过去30天内',
+    label: 'withinThePastThirtyDays',
     value: 'past-thirty-days'
   }
 ];
-export const dateLogicOptions = ['等于', '早于', '晚于', '为空', '不为空'];
+export const dateLogicOptions = ['equal', 'before', 'after', 'empty', 'nonEmpty'];

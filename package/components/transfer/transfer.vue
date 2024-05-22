@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, watch, onMounted, getCurrentInstance } from 'vue';
 import { TransferKey, TransferDirection } from 'element-plus';
 import { Search } from '@element-plus/icons-vue';
 import { ITransferProps } from '../../interface/index';
@@ -60,6 +60,7 @@ const emits = defineEmits([
   'input',
 ]);
 
+const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
 const modelValue:any = ref([]);
 const searchStr = ref('');
 const sourceData = ref<any>(props.data || []);
@@ -76,7 +77,7 @@ const attrs = computed(() => ({
   data: props.data,
   format: props.format,
   targetOrder: props.targetOrder,
-  titles: props.titles ?? ['待选字段', '已选字段'],
+  titles: props.titles ?? [_global?.$t('unselectedFields'), _global?.$t('selectedFields')],
   buttonTexts: props.buttonTexts,
   renderContent: props.renderContent,
   filterablePlaceholder: props.filterablePlaceholder,
@@ -91,7 +92,8 @@ const defaultPropsConfig = computed(() => ({ label: 'label',
   disabled: 'disabled',
   ...props.props }));
 
-const filterablePlaceholder = computed(() => props.filterablePlaceholder ?? '搜索表头名称');
+const filterablePlaceholder = computed(() => props.filterablePlaceholder
+  ?? _global?.$t('searchHeaderName'));
 
 watch(() => [props.modelValue, props.matchKey], () => {
   if (!Array.isArray(props.modelValue)) {
@@ -142,7 +144,7 @@ function extendContent() {
   // 在第三方组件中添加自定义文本
   const transferHeader = transferBox.querySelectorAll('.el-transfer-panel__header')[1];
   const label = document.createElement('label');
-  label.innerHTML = '恢复默认';
+  label.innerHTML = _global?.$t('restoreDefault') as string;
   label.classList.add('transfer-restore__text');
   label.addEventListener('click', () => {
     resetTransferData();

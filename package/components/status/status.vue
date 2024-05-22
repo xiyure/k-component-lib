@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch, ref, shallowRef } from 'vue';
+import { watch, ref, shallowRef, getCurrentInstance } from 'vue';
 import { IconStatusSuccess, IconClear, IconWarning, IconEmptyBox } from 'ksw-vue-icon';
 import { IStatusProps } from '../../interface/index';
 
@@ -40,11 +40,12 @@ defineOptions({
   name: 'KStatus'
 });
 
+const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
 const INNER_STATUS_CONTENT = {
-  success: '成功',
-  danger: '错误',
-  warning: '警告',
-  empty: '暂无数据'
+  success: _global?.$t('success'),
+  danger: _global?.$t('error'),
+  warning: _global?.$t('warning'),
+  empty: _global?.$t('noData')
 };
 const INNER_STATUS_ICON = {
   success: IconStatusSuccess,

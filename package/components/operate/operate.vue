@@ -3,7 +3,7 @@
     <div class="k-operate__header">{{ props.dataSize ? props.dataSize : '--' }}</div>
     <div class="k-operate__content">
       <ul class="k-operate__list">
-        <li class="list-header">批量操作:</li>
+        <li class="list-header">{{ $t('batchOperation') }}:</li>
         <li
           v-for="item, index in modelValue"
           :key="index"

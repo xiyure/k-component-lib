@@ -10,7 +10,7 @@
         <slot name="default">
           <div v-if="props.drag" class="default-sign">
             <IconEmptyBox color="#2882ff" />
-            单击或拖拽文件到此处上传
+            {{ $t('uploadDragSign') }}
           </div>
           <div v-else class="default-upload-btn" @click.stop>
             <k-button
@@ -18,7 +18,7 @@
               @click="selectFile"
             >
               <IconUpload v-if="props.autoUpload" />
-              {{ props.autoUpload ? '上传文件' : '选择文件' }}
+              {{ props.autoUpload ? $t('uploadFile') : $t('selectFile') }}
             </k-button>
             <k-button
               v-if="!props.autoUpload"
@@ -28,7 +28,7 @@
               @click="submit"
             >
               <IconUpload />
-              上传文件
+              {{ $t('uploadFile') }}
             </k-button>
           </div>
         </slot>

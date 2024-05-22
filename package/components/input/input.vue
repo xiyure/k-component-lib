@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, getCurrentInstance } from 'vue';
 import { IInputProps } from '../../interface/index';
 
 defineOptions({
@@ -58,8 +58,7 @@ const props = withDefaults(defineProps<IInputProps>(), {
   readonly: false,
   showWordLimit: false,
   autosize: false,
-  showPassword: false,
-  placeholder: '请输入'
+  showPassword: false
 });
 
 const slots = defineSlots<{
@@ -72,6 +71,7 @@ const slots = defineSlots<{
 
 const emit = defineEmits(['update:modelValue', 'input', 'blur', 'change', 'clear', 'focus']);
 
+const _gloab = getCurrentInstance()?.appContext.app.config.globalProperties;
 const inputValue = ref<InputValue>('');
 const inputRef = ref<any>(null);
 
@@ -94,7 +94,7 @@ const getOriginAttrs = () => ({
   label: props.label,
   type: props.type,
   disabled: props.disabled,
-  placeholder: props.placeholder,
+  placeholder: props.placeholder || _gloab?.$t('input'),
   readonly: props.readonly,
   clearable: props.clearable,
   prefixIcon: props.prefixIcon,

@@ -12,14 +12,14 @@
         </slot>
         <k-dialog
           v-model="dialogVisible"
-          title="自定义说明"
+          :title="$t('customDescription')"
           @open="openDialog"
         >
           <div class="k-column__header-dialog">
             <k-input v-model="textareaConetnt" type="textarea"></k-input>
             <div class="header-dialog__buttons">
-              <k-button @click="() => dialogVisible = false">取消</k-button>
-              <k-button type="main" @click="addDescription(headrSlotProps.column)">确定</k-button>
+              <k-button @click="() => dialogVisible = false">{{ $t('cancel') }}</k-button>
+              <k-button type="main" @click="addDescription(headrSlotProps.column)">{{ $t('confirm') }}</k-button>
             </div>
           </div>
         </k-dialog>
@@ -68,6 +68,7 @@
               placement="bottom-start"
               popper-class="more-box"
               :offset="2"
+              width="160px"
             >
               <template #reference>
                 <i><IconMore /></i>
@@ -87,7 +88,7 @@
                     <template #reference>
                       <div class="filter-select-item" :class="{'disabled': !props.filters}">
                         <IconFilter class="menu-item-icon" />
-                        筛选
+                        {{ $t('filter') }}
                       </div>
                     </template>
                     <slot name="filter">
@@ -95,7 +96,7 @@
                         <li class="filter-menu-item">
                           <k-checkbox
                             v-model="isSelectAll"
-                            label="全部"
+                            :label="$t('all')"
                             value="all"
                             :indeterminate="isIndeterminate"
                             @change="selectAll"
@@ -116,13 +117,13 @@
                       </ul>
                     </slot>
                     <div class="filter-buttons">
-                      <k-button size="sm" @click="clearFilter(headrSlotProps.column)">重置</k-button>
+                      <k-button size="sm" @click="clearFilter(headrSlotProps.column)">{{ $t('reset') }}</k-button>
                       <k-button
                         class="filter-btn-item"
                         size="sm"
                         type="secondary"
                         @click="setFilter(headrSlotProps.column.field, props.filters)"
-                      >筛选</k-button>
+                      >{{ $t('filter') }}</k-button>
                     </div>
                   </k-popover>
                 </li>
@@ -139,37 +140,37 @@
                     <template #reference>
                       <div class="sort-select-item" :class="{'disabled': !props.sortable}">
                         <IconTableSortNormalColor class="menu-item-icon" />
-                        排序
+                        {{ $t('sort') }}
                         <IconArrowRight class="sort-arrow-right" />
                       </div>
                     </template>
                     <ul class="sort-menu">
                       <li class="sort-menu-item" @click="tableSort(headrSlotProps.column, 'asc')">
                         <IconTableSortUpColor />
-                        升序
+                        {{ $t('ascendingOrder') }}
                       </li>
                       <li class="sort-menu-item" @click="tableSort(headrSlotProps.column, 'desc')">
                         <IconTableSortDownColor />
-                        降序
+                        {{ $t('descendingOrder') }}
                       </li>
                       <li class="sort-menu-item" @click="clearSort(headrSlotProps.column)">
                         <IconClearDate />
-                        清除排序
+                        {{ $t('clearSorting') }}
                       </li>
                     </ul>
                   </k-popover>
                 </li>
                 <li class="more-menu-item" @click="expandColumn(true)">
                   <IconFold class="menu-item-icon" />
-                  收起
+                  {{ $t('retract') }}
                 </li>
                 <li class="more-menu-item" @click="() => isRenderColumn = false">
                   <IconHide class="menu-item-icon" />
-                  隐藏
+                  {{ $t('hide') }}
                 </li>
                 <li class="more-menu-item" @click="() => dialogVisible = true">
                   <IconEdit class="menu-item-icon" />
-                  自定义说明
+                  {{ $t('customDescription') }}
                 </li>
               </ul>
             </k-popover>

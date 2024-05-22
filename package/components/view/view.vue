@@ -7,7 +7,7 @@
   >
     <div class="k-view__header">
       <div class="view-title text-base font-bold">
-        <slot name="header">视图</slot>
+        <slot name="header">{{ $t('view') }}</slot>
       </div>
       <span class="view-fresh" @click="handleFresh">
         <IconRefresh />
@@ -17,7 +17,7 @@
       <slot></slot>
     </div>
     <div class="k-view__custom-data text-base">
-      <span class="custom-table-box">自定义视图</span>
+      <span class="custom-table-box">{{ $t('customView') }}</span>
       <slot name="custom"></slot>
     </div>
   </div>

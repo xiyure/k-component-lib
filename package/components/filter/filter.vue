@@ -15,8 +15,8 @@
       </template>
       <div class="k-filter__content">
         <div class="k-filter__header">
-          <span class="text-lg font-bold">高级筛选</span>
-          <span class="text-base" @click="clearFilterData"><IconDelete />清除所有条件</span>
+          <span class="text-lg font-bold">{{ $t('seniorFilter') }}</span>
+          <span class="text-base" @click="clearFilterData"><IconDelete />{{ $t('clearAll') }}</span>
         </div>
         <div v-for="item, index in filterData" :key="index" class="k-filter__item">
           <div class="k-filter__condition">
@@ -41,13 +41,22 @@
               clearable
               @change="changeDateLogic(instance(item.title), item)"
             >
-              <k-option
-                v-for="logicItem in (instance(item.title)?.uiType === 'date' 
-                  ? dateLogicOptions : instance(item.title)?.logicList) || []"
-                :key="logicItem"
-                :label="logicItem"
-                :value="logicItem"
-              />
+              <template v-if="instance(item.title)?.uiType === 'date'">
+                <k-option
+                  v-for="logicItem in dateLogicOptions || []"
+                  :key="$t(logicItem)"
+                  :label="$t(logicItem)"
+                  :value="$t(logicItem)"
+                />
+              </template>
+              <template v-else>
+                <k-option
+                  v-for="logicItem in instance(item.title)?.logicList || []"
+                  :key="logicItem"
+                  :label="logicItem"
+                  :value="logicItem"
+                />
+              </template>
             </k-select>
           </div>
           <div class="k-filter__value">
@@ -75,7 +84,7 @@
                 <k-option
                   v-for="logicItem in dateLogicList"
                   :key="logicItem.value"
-                  :label="logicItem.label"
+                  :label="$t(logicItem.label)"
                   :value="logicItem.value"
                 />
               </k-select>
@@ -97,15 +106,15 @@
         </div>
         <div class="k-filter__operate">
           <div class="k-filer__operate-left text-base">
-            <span @click="addCondition"><IconAdd />添加条件</span>
+            <span @click="addCondition"><IconAdd />{{ $t('addCondition') }}</span>
           </div>
           <div class="k-filer__operate-right">
-            <span class="select-label">以上条件：</span>
+            <span class="select-label">{{ $t('aboveCondition') }}：</span>
             <k-select v-model="filterRule" :teleported="false">
-              <k-option label="任意一条" :value="0"></k-option>
-              <k-option label="全部" :value="1"></k-option>
+              <k-option :label="$t('anyOne')" :value="0"></k-option>
+              <k-option :label="$t('all')" :value="1"></k-option>
             </k-select>
-            <k-button type="main" @click="updateFilterData">查询</k-button>
+            <k-button type="main" @click="updateFilterData">{{ $t('query') }}</k-button>
           </div>
         </div>
       </div>
@@ -114,7 +123,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch, ref, computed } from 'vue';
+import { watch, ref, computed, getCurrentInstance } from 'vue';
 import { IconClose, IconDelete, IconAdd, IconFilterFill } from 'ksw-vue-icon';
 import { IFilterProps } from '../../interface/index';
 import { KInput } from '../input';
@@ -137,6 +146,8 @@ type IFilterDataType = {
 
 const emits = defineEmits(['update:modelValue', 'confirm']);
 
+const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
+const t = _global?.$t;
 const filterData = ref<IFilterDataType[]>([]);
 const popoverShow = ref(false);
 const dateRange = ref('date');
@@ -155,7 +166,7 @@ const conditionList = computed(() => {
 });
 
 const dateLogicList = computed(() => {
-  if (dateLogic.value === '等于') {
+  if (dateLogic.value === t?.('equal')) {
     return dateTypeOptions;
   } 
   const hideLogicList = ['past-seven-days', 'past-thirty-days'];
@@ -163,7 +174,7 @@ const dateLogicList = computed(() => {
 });
 
 const disabledSelect = computed(() => {
-  const disabledLogicTypes = ['为空', '不为空'];
+  const disabledLogicTypes = [t?.('empty'), t?.('nonEmpty')];
   return disabledLogicTypes.includes(dateLogic.value);
 });
 
@@ -240,7 +251,10 @@ function changeDateRange(item:IFilterDataType) {
     case 'past-thirty-days': item.value = [getTargetDay(-30), getTargetDay(0)]; break;
   }
   const targetRanges = ['current-week', 'last-week', 'current-month', 'last-month'];
-  if ((dateLogic.value === '晚于' || dateLogic.value === '早于') && targetRanges.includes(dateRange.value)) {
+  if ((dateLogic.value === t?.('after')
+    || dateLogic.value === t?.('before'))
+    && targetRanges.includes(dateRange.value)
+  ) {
     item.value = item.value[0];
   }
 }
@@ -276,10 +290,10 @@ function getCurMonthDayCount() {
 }
 // 设置日期选择器的类型（日期 or 时间段）
 function setDatePickerType() {
-  if (dateLogic.value === '等于') {
+  if (dateLogic.value === t?.('equal')) {
     const dateArray = ['date', 'today', 'tomorrow', 'yesterday'];
     dateType.value = dateArray.includes(dateRange.value) ? 'datetime' : 'datetimerange';
-  } else if (dateLogic.value === '晚于' || dateLogic.value === '早于') {
+  } else if (dateLogic.value === t?.('after') || dateLogic.value === t?.('before')) {
     const dateArray = ['range'];
     dateType.value = !dateArray.includes(dateRange.value) ? 'datetime' : 'datetimerange';
   } 

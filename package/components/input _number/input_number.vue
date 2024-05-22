@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, getCurrentInstance } from 'vue';
 import { IInputNumberProps } from '../../interface/index';
 
 defineOptions({
@@ -32,12 +32,12 @@ defineOptions({
 type InputValue = number | null;
 
 const props = withDefaults(defineProps<IInputNumberProps>(), {
-  controls: true,
-  placeholder: '请输入'
+  controls: true
 });
 
 const emit = defineEmits(['update:modelValue', 'blur', 'change', 'focus']);
 
+const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
 const inputNumberRef = ref<HTMLElement | null>(null);
 const inputValue = ref<InputValue>(0);
 const attrs = computed(() => ({
@@ -57,7 +57,7 @@ const getOriginAttrs = () => ({
   name: props.name,
   label: props.label,
   disabled: props.disabled,
-  placeholder: props.placeholder,
+  placeholder: props.placeholder || _global?.$t('input'),
   readonly: props.readonly,
   max: props.max,
   min: props.min,
