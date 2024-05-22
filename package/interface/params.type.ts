@@ -126,14 +126,33 @@ export interface ISelectInputProps {
   modelValue: any
   multiple?: boolean
   disabled?: boolean
+  valueKey?: string
   clearable?: boolean
+  collapseTags?: boolean
+  collapseTagsTooltip?: boolean
+  multipleLimit?: number
+  autocomplete?: string
   placeholder?: string
   filterable?: boolean
+  filterMethod?: () => void
+  remote?: boolean
+  remoteMethod?: () => void
+  remoteShowSuffix?: boolean
+  loading?: boolean
+  loadingText?: string
+  noMatchText?: string
+  noDataText?: string
   allowCreate?: boolean
   size?: string
   width?: string
   popperClass?: string
   teleported?: boolean
+  defaultFirstOption?: boolean
+  fitInputWidth?: boolean
+  suffixIcon?: string | Component
+  name?: string
+  automaticDropdown?: boolean
+  persistent?: boolean
 }
 
 // Select Option
@@ -459,4 +478,17 @@ export interface IViewItemProps {
   label?: string
   count?: number | string
   disabled?: boolean
+}
+
+// Badge
+export interface IBadgeProps {
+  value?: string | number
+  max?: number,
+  isDot?: boolean
+  hidden?: boolean
+  color?: string
+  showZero?: boolean
+  offset?: [number, number]
+  badgeStyle?: object
+  badgeClass?: string
 }

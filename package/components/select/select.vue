@@ -43,7 +43,12 @@ defineOptions({
 type InputValue = string | number;
 
 const props = withDefaults(defineProps<ISelectInputProps>(), {
-  teleported: true
+  teleported: true,
+  valueKey: 'value',
+  multipleLimit: 0,
+  autocomplete: 'off',
+  persistent: true
+
 });
 
 const emits = defineEmits([
@@ -82,7 +87,26 @@ const getOriginAttrs = () => ({
   filterable: props.filterable,
   allowCreate: props.allowCreate,
   popperClass: props.popperClass,
-  teleported: props.teleported
+  teleported: props.teleported,
+  valueKey: props.valueKey,
+  collapseTags: props.collapseTags,
+  collapseTagsTooltip: props.collapseTagsTooltip,
+  multipleLimit: props.multipleLimit,
+  autocomplete: props.autocomplete,
+  filterMethod: props.filterMethod,
+  remote: props.remote,
+  remoteMethod: props.remoteMethod,
+  remoteShowSuffix: props.remoteShowSuffix,
+  loading: props.loading,
+  loadingText: props.loadingText,
+  noMatchText: props.noMatchText,
+  noDataText: props.noDataText,
+  defaultFirstOption: props.defaultFirstOption,
+  fitInputWidth: props.fitInputWidth,
+  suffixIcon: props.suffixIcon,
+  name: props.name,
+  automaticDropdown: props.automaticDropdown,
+  persistent: props.persistent
 });
 
 function handleBlurEvent() {

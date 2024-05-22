@@ -27,6 +27,7 @@ import { KForm, KFormItem } from './form';
 import { KSteps, KStep } from './step';
 import { KCollapse, KCollapseItem } from './collapse';
 import { KView, KViewItem } from './view';
+import { KBadge } from './badge';
 
 export {
   KButton,
@@ -68,5 +69,6 @@ export {
   KCollapse,
   KCollapseItem,
   KView,
-  KViewItem
+  KViewItem,
+  KBadge
 };

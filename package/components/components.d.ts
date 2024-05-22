@@ -27,6 +27,7 @@ import { KForm, KFormItem } from './form';
 import { KSteps, KStep } from './step';
 import { KCollapse, KCollapseItem } from './collapse';
 import { KView, KViewItem } from './view';
+import { KBadge } from './badge';
 
 declare module 'vue' {
   export interface GlobalComponents {
@@ -70,5 +71,6 @@ declare module 'vue' {
     KCollapseItem: typeof KCollapseItem
     KView: typeof KView
     KViewItem: typeof KViewItem
+    KBadge: typeof KBadge
   }
 }

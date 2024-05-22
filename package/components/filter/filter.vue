@@ -75,14 +75,14 @@
             </k-select>
             <div v-else-if="instance(item.title)?.uiType === 'date'" class="k-filter__date-box">
               <k-select
-                v-model="dateRange"
+                v-model="item.dateRange"
                 :teleported="false"
                 clearable
-                :disabled="disabledSelect"
+                :disabled="disabledSelect(item)"
                 @change="changeDateRange(item)"
               >
                 <k-option
-                  v-for="logicItem in dateLogicList"
+                  v-for="logicItem in dateLogicList(item)"
                   :key="logicItem.value"
                   :label="$t(logicItem.label)"
                   :value="logicItem.value"
@@ -90,10 +90,10 @@
               </k-select>
               <k-date-picker
                 v-model="item.value"
-                :type="dateType"
+                :type="item.dateType"
                 :teleported="false"
                 clearable
-                :disabled="disabledDatePicker"
+                :disabled="disabledDatePicker(item)"
               />
             </div>
             <k-input
@@ -141,7 +141,10 @@ const props = withDefaults(defineProps<IFilterProps>(), {});
 type IFilterDataType = {
   title: string,
   logic: string,
-  value: any
+  value: any,
+  dateRange?: string,
+  dateType?: string,
+  dateLogic?: string
 };
 
 const emits = defineEmits(['update:modelValue', 'confirm']);
@@ -150,9 +153,6 @@ const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
 const t = _global?.$t;
 const filterData = ref<IFilterDataType[]>([]);
 const popoverShow = ref(false);
-const dateRange = ref('date');
-const dateLogic = ref('');
-const dateType = ref('datetime');
 const filterRule = ref(0);
 
 const instance = computed(() => function (title:string) {
@@ -165,22 +165,23 @@ const conditionList = computed(() => {
   return allConditions.filter((item:string) => !checkedConditions.includes(item));
 });
 
-const dateLogicList = computed(() => {
-  if (dateLogic.value === t?.('equal')) {
+const dateLogicList = computed(() => function (item:IFilterDataType) {
+  if (item.dateLogic === t?.('equal')) {
     return dateTypeOptions;
   } 
   const hideLogicList = ['past-seven-days', 'past-thirty-days'];
   return dateTypeOptions.filter((item) => !hideLogicList.includes(item.value));
 });
 
-const disabledSelect = computed(() => {
+// 日期禁用
+const disabledSelect = computed(() => function (item:IFilterDataType) {
   const disabledLogicTypes = [t?.('empty'), t?.('nonEmpty')];
-  return disabledLogicTypes.includes(dateLogic.value);
-});
+  return !item.dateLogic || disabledLogicTypes.includes(item.dateLogic);
+}); 
 
-const disabledDatePicker = computed(() => {
+const disabledDatePicker = computed(() => function (item:IFilterDataType) {
   const notDisabledDateRanges = ['date', 'range'];
-  return disabledSelect.value || !notDisabledDateRanges.includes(dateRange.value);
+  return disabledSelect.value(item) || !notDisabledDateRanges.includes(item.dateRange as string);
 });
 
 watch(() => props.modelValue, (newValue) => {
@@ -195,11 +196,15 @@ watch(() => filterData.value, (newValue) => {
   emits('update:modelValue', newValue);
 }, { immediate: true, deep: true });
 
+// 添加条件
 function addCondition() {
   const addItem = {
     title: '',
     logic: '',
-    value: ''
+    value: '',
+    dateRange: 'date',
+    dateType: 'datetime',
+    dateLogic: ''
   };
   filterData.value.push(addItem);
 }
@@ -223,8 +228,8 @@ function changeCondition(index:number) {
 }
 function changeDateLogic(instance:any, item:IFilterDataType) {
   if (instance.uiType === 'date') {
-    dateLogic.value = item.logic;
-    if (disabledSelect.value) {
+    item.dateLogic = item.logic;
+    if (disabledSelect.value(item)) {
       item.value = '';
       return;
     }
@@ -232,8 +237,8 @@ function changeDateLogic(instance:any, item:IFilterDataType) {
   }
 }
 function changeDateRange(item:IFilterDataType) {
-  setDatePickerType();
-  switch (dateRange.value) {
+  setDatePickerType(item);
+  switch (item.dateRange) {
     case 'date': item.value = ''; break;
     case 'range': item.value = ['', '']; break;
     case 'today': item.value = getTargetDay(0); break;
@@ -251,9 +256,9 @@ function changeDateRange(item:IFilterDataType) {
     case 'past-thirty-days': item.value = [getTargetDay(-30), getTargetDay(0)]; break;
   }
   const targetRanges = ['current-week', 'last-week', 'current-month', 'last-month'];
-  if ((dateLogic.value === t?.('after')
-    || dateLogic.value === t?.('before'))
-    && targetRanges.includes(dateRange.value)
+  if ((item.dateLogic === t?.('after')
+    || item.dateLogic === t?.('before'))
+    && targetRanges.includes(item.dateRange as string)
   ) {
     item.value = item.value[0];
   }
@@ -289,13 +294,13 @@ function getCurMonthDayCount() {
   return 28;
 }
 // 设置日期选择器的类型（日期 or 时间段）
-function setDatePickerType() {
-  if (dateLogic.value === t?.('equal')) {
+function setDatePickerType(item:IFilterDataType) {
+  if (item.dateLogic === t?.('equal')) {
     const dateArray = ['date', 'today', 'tomorrow', 'yesterday'];
-    dateType.value = dateArray.includes(dateRange.value) ? 'datetime' : 'datetimerange';
-  } else if (dateLogic.value === t?.('after') || dateLogic.value === t?.('before')) {
+    item.dateType = dateArray.includes(item.dateRange as string) ? 'datetime' : 'datetimerange';
+  } else if (item.dateLogic === t?.('after') || item.dateLogic === t?.('before')) {
     const dateArray = ['range'];
-    dateType.value = !dateArray.includes(dateRange.value) ? 'datetime' : 'datetimerange';
+    item.dateType = !dateArray.includes(item.dateRange as string) ? 'datetime' : 'datetimerange';
   } 
 }
 </script>
