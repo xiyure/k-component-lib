@@ -19,7 +19,7 @@
       <div
         class="k-tag__sign"
         :style="{
-          backgroundColor: props.color,
+          backgroundColor: props.color || '#2882FF',
           width: tagAttrs?.width,
           height: tagAttrs?.height
         }"

@@ -477,7 +477,8 @@ export interface IViewItemProps {
   value: any,
   label?: string
   count?: number | string
-  disabled?: boolean
+  disabled?: boolean,
+  isCustom?: boolean
 }
 
 // Badge

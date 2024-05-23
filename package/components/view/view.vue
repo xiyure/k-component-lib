@@ -13,12 +13,12 @@
         <IconRefresh />
       </span>
     </div>
-    <div class="k-view__spcial-data">
+    <div :id="specialViewId" class="k-view__spcial-data">
       <slot></slot>
     </div>
-    <div class="k-view__custom-data text-base">
+    <div :id="customViewId" class="k-view__custom-data text-base">
       <span class="custom-table-box">{{ $t('customView') }}</span>
-      <slot name="custom"></slot>
+      <slot></slot>
     </div>
   </div>
 </template>
@@ -27,6 +27,7 @@
 import { ref, onMounted, watch, provide, getCurrentInstance } from 'vue';
 import { IconRefresh } from 'ksw-vue-icon';
 import { IViewProps } from '../../interface/index';
+import { genRandomStr } from '../../utils';
 
 defineOptions({
   name: 'KView'
@@ -40,9 +41,13 @@ onMounted(() => {
   const emitter = getCurrentInstance()?.appContext.app.config.globalProperties.__emitter__;
   emitter.on('change-active-view', handleChange.bind(this));
   emitter.on('remove', handleRemove.bind(this));
+  emitter.on('drag-start', onDragStart.bind(this));
+  emitter.on('drag-drop', onDrop.bind(this));
 });
 const emits = defineEmits(['refresh', 'change', 'remove', 'update:modelValue']);
 const activeView = ref(props.modelValue);
+const specialViewId = genRandomStr(8);
+const customViewId = genRandomStr(8);
 
 watch(() => props.modelValue, (newValue) => {
   activeView.value = newValue;
@@ -57,6 +62,35 @@ function handleChange(value:any) {
 }
 function handleRemove(value:any) {
   emits('remove', value);
+}
+let dragElement:any = null;
+let isCustom:boolean = false;
+function onDragStart(elem:HTMLElement, isCustomItem:boolean) {
+  dragElement = elem;
+  isCustom = isCustomItem;
+}
+function onDrop(elem:HTMLElement) {
+  if (!dragElement && dragElement === elem) {
+    return;
+  }
+  const targetParentId = isCustom ? customViewId : specialViewId;
+  const parentElem = document.getElementById(targetParentId);
+  if (!isChildElement(parentElem, elem)) {
+    return;
+  }
+  const temp = document.createElement('div');
+  parentElem?.appendChild(temp);
+  parentElem?.replaceChild(temp, elem);
+  parentElem?.replaceChild(elem, dragElement);
+  parentElem?.replaceChild(dragElement, temp);
+  dragElement = null;
+  isCustom = false;
+}
+function isChildElement(parentElem:HTMLElement | null, element:HTMLElement) {
+  if (!parentElem || !element) {
+    return false;
+  }
+  return parentElem.contains(element);
 }
 
 provide('activeView', activeView);

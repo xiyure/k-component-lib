@@ -5,6 +5,11 @@
       'k-view-active' : activeView === props.value,
       'k-view-disabled': props.disabled
     }"
+    :data-custom="Boolean(props.isCustom)"
+    draggable="true"
+    @dragstart="handleDragStart"
+    @dragover="handleDragOver"
+    @drop="handleDrop"
     @click="handleChange"
   >
     <div class="k-view-item__label">
@@ -40,7 +45,7 @@ const props = withDefaults(defineProps<IViewItemProps>(), {
   count: 0
 });
 
-const activeView = inject('activeView');
+const activeView:any = inject('activeView');
 const emitter = getCurrentInstance()?.appContext.app.config.globalProperties.__emitter__;
 
 function handleCommand(command:string) {
@@ -49,13 +54,23 @@ function handleCommand(command:string) {
   }
 }
 function handleChange() {
-  if (props.disabled) {
+  if (props.disabled || activeView.value === props.value) {
     return;
   }
   emitter.emit('change-active-view', props.value);
 }
 function handleRemove(value:any) {
   emitter.emit('remove', value);
+}
+// 拖拽
+function handleDragStart(e:Event) {
+  emitter.emit('drag-start', e.currentTarget, props.isCustom);
+}
+function handleDragOver(e:Event) {
+  e.preventDefault();
+}
+function handleDrop(e:Event) {
+  emitter.emit('drag-drop', e.currentTarget);
 }
 
 </script>
