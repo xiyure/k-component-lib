@@ -28,6 +28,7 @@ import { KSteps, KStep } from './step';
 import { KCollapse, KCollapseItem } from './collapse';
 import { KView, KViewItem } from './view';
 import { KBadge } from './badge';
+import { KTimeline, KTimelineItem } from './timeline';
 
 declare module 'vue' {
   export interface GlobalComponents {
@@ -72,5 +73,7 @@ declare module 'vue' {
     KView: typeof KView
     KViewItem: typeof KViewItem
     KBadge: typeof KBadge
+    KTimeline: typeof KTimeline
+    KTimelineItem: typeof KTimelineItem
   }
 }

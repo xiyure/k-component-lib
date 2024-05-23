@@ -493,3 +493,19 @@ export interface IBadgeProps {
   badgeStyle?: object
   badgeClass?: string
 }
+
+// Timeline
+export interface ITimelineProps {
+  showLine?: boolean
+}
+export interface ITimelineItemProps {
+  timestamp?: string
+  hideTimestamp?: boolean
+  center?: boolean
+  placement?: 'top' | 'bottom' | 'right'
+  type?: 'primary' | 'success' | 'error' | 'wait'
+  color?: string
+  icon?: string | Component
+  hollow?: boolean
+  size?: 'large' | 'normal'
+}

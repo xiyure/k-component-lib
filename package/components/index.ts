@@ -28,6 +28,7 @@ import { KSteps, KStep } from './step';
 import { KCollapse, KCollapseItem } from './collapse';
 import { KView, KViewItem } from './view';
 import { KBadge } from './badge';
+import { KTimeline, KTimelineItem } from './timeline';
 
 export {
   KButton,
@@ -70,5 +71,7 @@ export {
   KCollapseItem,
   KView,
   KViewItem,
-  KBadge
+  KBadge,
+  KTimeline,
+  KTimelineItem
 };
