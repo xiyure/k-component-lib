@@ -29,6 +29,7 @@ import { KCollapse, KCollapseItem } from './collapse';
 import { KView, KViewItem } from './view';
 import { KBadge } from './badge';
 import { KTimeline, KTimelineItem } from './timeline';
+import { KCalendar } from './calendar';
 
 export {
   KButton,
@@ -73,5 +74,6 @@ export {
   KViewItem,
   KBadge,
   KTimeline,
-  KTimelineItem
+  KTimelineItem,
+  KCalendar
 };

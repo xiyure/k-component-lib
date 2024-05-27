@@ -3,7 +3,10 @@
     v-bind="attrs"
     :id="id"
     class="k-timeline__item"
-    :class="{'show-right': showRight}"
+    :class="{
+      'is-show-right': showRight,
+      'is-hollow': props.hollow
+    }"
   >
     <slot></slot>
     <template v-if="slots.dot">
@@ -13,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted, watch, nextTick } from 'vue';
 import { ITimelineItemProps } from '../../interface/index';
 import { genRandomStr } from '../../utils';
 
@@ -30,6 +33,13 @@ const props = withDefaults(defineProps<ITimelineItemProps>(), {
 const slots = defineSlots();
 
 const id = genRandomStr(8);
+let rootNode:HTMLElement | null;
+let timelineNode:HTMLElement | null;
+
+onMounted(() => {
+  rootNode = document.getElementById(id);
+  timelineNode = rootNode?.querySelector('.el-timeline-item__node') || null;
+});
 
 const attrs = computed(() => ({
   timestamp: props.timestamp,
@@ -42,6 +52,15 @@ const attrs = computed(() => ({
   hollow: props.hollow,
   size: props.size
 }));
+
+watch(() => props.color, (newValue) => {
+  nextTick(() => {
+    if (!timelineNode || !newValue || !props.hollow) {
+      return;
+    }
+    timelineNode.style.borderColor = props.color || '';
+  });
+}, { immediate: true });
 
 const showRight = computed(() => props.placement === 'right');
 

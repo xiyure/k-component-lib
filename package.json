@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@types/vue-router": "^2.0.0",
+    "chinese-lunar-calendar": "^1.0.1",
     "element-plus": "^2.7.3",
     "ksw-vue-icon": "latest",
     "less": "^4.2.0",

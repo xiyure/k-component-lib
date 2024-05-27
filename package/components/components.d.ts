@@ -29,6 +29,7 @@ import { KCollapse, KCollapseItem } from './collapse';
 import { KView, KViewItem } from './view';
 import { KBadge } from './badge';
 import { KTimeline, KTimelineItem } from './timeline';
+import { KCalendar } from './calendar';
 
 declare module 'vue' {
   export interface GlobalComponents {
@@ -75,5 +76,6 @@ declare module 'vue' {
     KBadge: typeof KBadge
     KTimeline: typeof KTimeline
     KTimelineItem: typeof KTimelineItem
+    KCalendar: typeof KCalendar
   }
 }

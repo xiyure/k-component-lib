@@ -48,5 +48,6 @@ export default {
   selectedFields: '已选字段',
   unselectedFields: '待选字段',
   restoreDefault: '恢复默认',
-  searchHeaderName: '搜索表头名称'
+  searchHeaderName: '搜索表头名称',
+  showLunar: '显示农历'
 };

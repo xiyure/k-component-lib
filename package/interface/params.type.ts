@@ -104,7 +104,7 @@ export interface ISwitchProps {
 // Radio/Checkbox
 export interface ISelectButtonProps {
   modelValue?: any
-  value: any
+  value?: string | number | boolean
   checked?: boolean
   disabled?: boolean
   size?: string
@@ -508,4 +508,12 @@ export interface ITimelineItemProps {
   icon?: string | Component
   hollow?: boolean
   size?: 'large' | 'normal'
+}
+
+// Calendar
+export interface ICalendarProps {
+  modelValue: Date
+  schedule?: any
+  showLunar?: boolean
+  max?: number
 }
