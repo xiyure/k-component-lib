@@ -30,6 +30,7 @@ import { KView, KViewItem } from './view';
 import { KBadge } from './badge';
 import { KTimeline, KTimelineItem } from './timeline';
 import { KCalendar } from './calendar';
+import { KTree } from './tree';
 
 export {
   KButton,
@@ -75,5 +76,6 @@ export {
   KBadge,
   KTimeline,
   KTimelineItem,
-  KCalendar
+  KCalendar,
+  KTree
 };

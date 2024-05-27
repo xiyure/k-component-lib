@@ -30,6 +30,7 @@ import { KView, KViewItem } from './view';
 import { KBadge } from './badge';
 import { KTimeline, KTimelineItem } from './timeline';
 import { KCalendar } from './calendar';
+import { KTree } from './tree';
 
 declare module 'vue' {
   export interface GlobalComponents {
@@ -77,5 +78,6 @@ declare module 'vue' {
     KTimeline: typeof KTimeline
     KTimelineItem: typeof KTimelineItem
     KCalendar: typeof KCalendar
+    KTree: typeof KTree
   }
 }
