@@ -35,6 +35,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { ISelectInputProps } from '../../interface/index';
+import { getCompSize } from '../../utils';
 
 defineOptions({
   name: 'KSelect'
@@ -67,19 +68,6 @@ const inputValue = ref<InputValue>('');
 const inputRef = ref<any>(null);
 
 const attrs = computed(() => ({
-  ...getSizeAttrs(),
-  ...getOriginAttrs(),
-}));
-
-watch(() => props.modelValue, (newValue) => {
-  inputValue.value = newValue;
-}, { immediate: true });
-
-const getSizeAttrs = ():object => ({
-  size: props.size === 'sm' ? 'small' : '',
-});
-
-const getOriginAttrs = () => ({
   disabled: props.disabled,
   placeholder: props.placeholder,
   clearable: props.clearable,
@@ -106,8 +94,13 @@ const getOriginAttrs = () => ({
   suffixIcon: props.suffixIcon,
   name: props.name,
   automaticDropdown: props.automaticDropdown,
-  persistent: props.persistent
-});
+  persistent: props.persistent,
+  size: getCompSize(props.size)
+}));
+
+watch(() => props.modelValue, (newValue) => {
+  inputValue.value = newValue;
+}, { immediate: true });
 
 function handleBlurEvent() {
   emits('blur');

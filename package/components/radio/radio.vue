@@ -13,6 +13,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { ISelectButtonProps } from '../../interface/index';
+import { getCompSize } from '../../utils';
 
 defineOptions({
   name: 'KRadio'
@@ -25,21 +26,14 @@ const emits = defineEmits(['update:modelValue', 'change']);
 const modelValue = ref(props.modelValue);
 
 const attrs = computed(() => ({
-  ...getSizeAttrs(),
-  ...getOriginAttrs(),
+  value: props.value,
+  label: props.label,
+  disabled: props.disabled,
+  size: getCompSize(props.size)
 }));
 
 watch(() => props.modelValue, (newValue) => {
   modelValue.value = newValue;
-});
-
-const getSizeAttrs = ():object => ({
-  size: props.size === 'sm' ? 'small' : ''
-});
-const getOriginAttrs = () => ({
-  value: props.value,
-  label: props.label,
-  disabled: props.disabled
 });
 
 const handleChange = (value: boolean) => {

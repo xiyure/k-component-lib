@@ -26,6 +26,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { IButtonProps } from '../../interface/index';
+import { getCompSize } from '../../utils';
 
 defineOptions({
   name: 'KButton'
@@ -46,7 +47,6 @@ const attrs = computed(() => {
   const { type, size } = props;
   return {
     ...getBtnTypeAttrs(type),
-    ...getSizeAttrs(size),
     ...getOriginAttrs()
   };
 });
@@ -76,20 +76,10 @@ const getBtnTypeAttrs = (type: string):object => {
   return typeAttrs;
 };
 
-const getSizeAttrs = (size:string):object => {
-  const sizeAttrs = {
-    size: 'default',
-  };
-  switch (size) {
-    case 'base': sizeAttrs.size = 'default'; break;
-    case 'sm': sizeAttrs.size = 'small'; break;
-  }
-  return sizeAttrs;
-};
-
 const getOriginAttrs = () => {
-  const { disabled, loading, loadingIcon } = props;
+  const { size, disabled, loading, loadingIcon } = props;
   return {
+    size: getCompSize(size),
     disabled,
     loading,
     loadingIcon,

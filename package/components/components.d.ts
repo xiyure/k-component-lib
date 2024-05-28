@@ -31,6 +31,7 @@ import { KBadge } from './badge';
 import { KTimeline, KTimelineItem } from './timeline';
 import { KCalendar } from './calendar';
 import { KTree } from './tree';
+import { KTour, KTourItem } from './tour';
 
 declare module 'vue' {
   export interface GlobalComponents {
@@ -79,5 +80,7 @@ declare module 'vue' {
     KTimelineItem: typeof KTimelineItem
     KCalendar: typeof KCalendar
     KTree: typeof KTree
+    KTour: typeof KTour
+    KTourItem: typeof KTourItem
   }
 }

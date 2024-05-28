@@ -8,19 +8,19 @@ import {
   FormItemRule
 } from 'element-plus';
 import type { TreeNode, TreeKey, TreeData } from 'element-plus/es/components/tree-v2/src/types';
-import { Component } from 'vue';
+import { CSSProperties, Component } from 'vue';
 
 // Button
 export interface IButtonProps {
   type?: 'main' | 'secondary' | 'text' | 'normal'
-  size?: string
+  size?: 'lg' | 'base' | 'sm' | ''
   status?: string
   iconRight?: any
   iconLeft?: any
   value?: string
   disabled?: boolean
   loading?: boolean
-  loadingIcon?: object
+  loadingIcon?: Component
 }
 
 // Tab
@@ -45,7 +45,7 @@ export interface IInputProps {
   suffixIcon?: any
   disabled?: boolean
   placeholder?: string
-  size?: string
+  size?: 'lg' | 'base' | 'sm' | ''
   clearable?: boolean
   readonly?: boolean
   showWordLimit?: boolean
@@ -67,7 +67,7 @@ export interface IInputNumberProps {
   width?: string
   disabled?: boolean
   placeholder?: string
-  size?: string
+  size?: 'lg' | 'base' | 'sm' | ''
   readonly?: boolean
   min?: number
   max?: number
@@ -99,27 +99,31 @@ export interface ISwitchProps {
   disabled?: boolean
   width?: string
   loading?: boolean
-  size?: string
+  size?:'lg' | 'base' | 'sm' | ''
 }
 
 // Radio/Checkbox
 export interface ISelectButtonProps {
-  modelValue?: any
+  modelValue?: string | number | boolean
   value?: string | number | boolean
   checked?: boolean
   disabled?: boolean
-  size?: string
+  size?: 'lg' | 'base' | 'sm' | ''
   label?: string | number
   indeterminate?: boolean
   color?: string
+  name?: string
+  id?: string | number
 }
 
 // RadioGroup/CheckboxGroup
 export interface ISelectButtonGroupProps {
   modelValue?: any
   disabled?: boolean
-  size?: string
+  size?: 'lg' | 'base' | 'sm' | ''
   color?: string
+  name?: string,
+  id?: string | number
 }
 
 // Select
@@ -144,7 +148,7 @@ export interface ISelectInputProps {
   noMatchText?: string
   noDataText?: string
   allowCreate?: boolean
-  size?: string
+  size?: 'lg' | 'base' | 'sm' | ''
   width?: string
   popperClass?: string
   teleported?: boolean
@@ -174,7 +178,7 @@ export interface ICascaderProps {
   clearable?: boolean
   placeholder?: string
   filterable?: boolean
-  size?: string
+  size?: 'lg' | 'base' | 'sm' | ''
   width?: string
   popperClass?: string
   collapseTags?: boolean
@@ -208,7 +212,7 @@ export interface IDatePicker {
   placeholder?: string
   startPlaceholder?: string
   endPlaceholder?: string
-  size?: string
+  size?: 'lg' | 'base' | 'sm' | ''
   width?: string
   popperClass?: string
   readonly?: boolean
@@ -278,7 +282,7 @@ export interface ITagProps {
   type?: string
   color?: string
   closable?: boolean
-  size?: string
+  size?: 'lg' | 'base' | 'sm' | ''
   round?: boolean
   textColor?: string
 }
@@ -545,3 +549,38 @@ export interface ITreeProps {
   showFilter?: boolean
   lazy?: boolean
 }
+
+// Tour
+export interface TourProps {
+  modelValue: boolean
+  showArrow?: boolean
+  placement?: 'top' | 'top-start' | 'top-end' | 'bottom'
+    | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' 
+    | 'left-end' | 'right' | 'right-start' | 'right-end'
+  contentStyle?: CSSProperties
+  mask?: boolean | { color?: string, style?: CSSProperties }
+  type?: 'default' | 'primary'
+  current?: number
+  scrollIntoViewOptions?: boolean | ScrollIntoViewOptions
+  zIndex?: number
+  showClose?: boolean
+  closeIcon?: Component
+  closeOnPressEscape?: boolean
+  targetAreaClickable?: boolean
+}
+export interface TourItemProps {
+  target: HTMLElement | string | (() => HTMLElement)
+  showArrow?: boolean
+  title?: string
+  description?: string
+  placement?: 'top' | 'top-start' | 'top-end' | 'bottom'
+    | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' 
+    | 'left-end' | 'right' | 'right-start' | 'right-end'
+  mask?: boolean | { color?: string, style?: CSSProperties }
+  type?: 'default' | 'primary'
+  nextButtonProps?: { children: Node | string; onClick: Function }
+  scrollIntoViewOptions?: boolean | ScrollIntoViewOptions
+  showClose?: boolean
+  closeIcon?: Component
+}
+

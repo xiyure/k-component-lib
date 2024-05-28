@@ -17,6 +17,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { IDatePicker } from '../../interface/index';
+import { getCompSize } from '../../utils';
 
 defineOptions({
   name: 'KDatePicker'
@@ -42,22 +43,6 @@ const modelValue = ref(props.modelValue);
 const datePickerRef = ref<any>(null);
 
 const attrs = computed(() => ({
-  ...getSizeAttrs(),
-  ...getOriginAttrs(),
-}));
-
-watch(() => props.modelValue, (newValue) => {
-  if (newValue) {
-    modelValue.value = newValue;
-    return;
-  }
-  modelValue.value = '';
-});
-
-const getSizeAttrs = ():object => ({
-  size: props.size === 'sm' ? 'small' : ''
-});
-const getOriginAttrs = () => ({
   type: props.type,
   format: props.format,
   disabled: props.disabled,
@@ -74,7 +59,16 @@ const getOriginAttrs = () => ({
   defaultValue: props.defaultValue,
   defaultTime: props.defaultTime,
   prefixIcon: props.prefixIcon,
-  teleported: props.teleported
+  teleported: props.teleported,
+  size: getCompSize(props.size)
+}));
+
+watch(() => props.modelValue, (newValue) => {
+  if (newValue) {
+    modelValue.value = newValue;
+    return;
+  }
+  modelValue.value = '';
 });
 
 function handleChange(value: any) {

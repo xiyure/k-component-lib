@@ -14,6 +14,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, provide } from 'vue';
 import { ISelectButtonGroupProps } from '../../interface/index';
+import { getCompSize } from '../../utils/index';
 
 defineOptions({
   name: 'KCheckboxGroup'
@@ -28,19 +29,14 @@ const emits = defineEmits(['update:modelValue', 'change']);
 const modelValue = ref(props.modelValue);
 
 const attrs = computed(() => ({
-  ...getSizeAttrs(),
-  ...getOriginAttrs(),
+  disabled: props.disabled,
+  name: props.name,
+  id: props.id,
+  size: getCompSize(props.size)
 }));
 
 watch(() => props.modelValue, (newValue) => {
   modelValue.value = newValue;
-});
-
-const getSizeAttrs = ():object => ({
-  size: props.size === 'sm' ? 'small' : ''
-});
-const getOriginAttrs = () => ({
-  disabled: props.disabled
 });
 
 const handleChange = (value: boolean) => {

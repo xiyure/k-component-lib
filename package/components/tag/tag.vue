@@ -40,6 +40,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { ITagProps } from '../../interface/index';
+import { getCompSize } from '../../utils';
 
 defineOptions({
   name: 'KTag'
@@ -53,7 +54,7 @@ const props = withDefaults(defineProps<ITagProps>(), {
 const attrs = computed(() => ({
   color: props.color,
   round: props.round,
-  size: props.size === 'sm' ? 'small' : 'default'
+  size: getCompSize(props.size)
 }));
 
 const tagAttrs = computed(() => {
