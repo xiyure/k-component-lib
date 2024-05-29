@@ -71,7 +71,7 @@ import { ref, computed, watch, nextTick } from 'vue';
 import { getLunar } from 'chinese-lunar-calendar';
 import { IconArrowLeft, IconArrowRight } from 'ksw-vue-icon';
 import type { CalendarDateType, CalendarInstance } from 'element-plus';
-import { ICalendarProps } from '../../interface/index';
+import { CalendarProps } from './type';
 import { lunarMonth, lunarDay } from './const';
 import { KCheckbox } from '../checkbox';
 import { KPopover } from '../popover';
@@ -81,7 +81,7 @@ defineOptions({
   name: 'KCalendar'
 });
 
-const props = withDefaults(defineProps<ICalendarProps>(), {
+const props = withDefaults(defineProps<CalendarProps>(), {
   schedule: {},
   max: 4
 });

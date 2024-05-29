@@ -23,13 +23,13 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { IDialogProps } from '../../interface/index';
+import { DialogProps } from './type';
 
 defineOptions({
   name: 'KDialog'
 });
 
-const props = withDefaults(defineProps<IDialogProps>(), {
+const props = withDefaults(defineProps<DialogProps>(), {
   modal: true,
   width: '',
   title: '',

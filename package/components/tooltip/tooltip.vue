@@ -41,7 +41,7 @@
 <script setup lang="ts">
 import { watch, ref, computed } from 'vue';
 import { IconTips } from 'ksw-vue-icon';
-import { ITooltipProps } from '../../interface/index';
+import { TooltipProps } from './type';
 import { KPopover } from '../popover';
 import { isValidColor } from '../../utils';
 
@@ -55,7 +55,7 @@ const INNER_TYPE_COLOR = {
   warning: '#f97316',
   primary: '#2882ff'
 };
-const props = withDefaults(defineProps<ITooltipProps>(), {
+const props = withDefaults(defineProps<TooltipProps>(), {
   type: undefined,
   color: '',
   textColor: '#FFF',

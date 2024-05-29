@@ -24,13 +24,13 @@
 
 <script setup lang="ts">
 import { computed, watch, ref } from 'vue';
-import { IDrawerProps } from '../../interface/index';
+import { DrawerProps } from './type';
 
 defineOptions({
   name: 'KDrawer'
 });
 
-const props = withDefaults(defineProps<IDrawerProps>(), {
+const props = withDefaults(defineProps<DrawerProps>(), {
   modal: true,
   lockScroll: true,
   showClose: true,

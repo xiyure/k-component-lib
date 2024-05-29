@@ -15,14 +15,14 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, provide, nextTick } from 'vue';
-import { IStepsProps } from '../../interface/index';
+import { StepsProps } from './type';
 import { genRandomStr } from '../../utils';
 
 defineOptions({
   name: 'KSteps'
 });
 
-const props = withDefaults(defineProps<IStepsProps>(), {
+const props = withDefaults(defineProps<StepsProps>(), {
   space: '',
   direction: 'horizontal',
   active: 0,

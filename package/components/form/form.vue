@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { FormItemProp, FormValidateCallback } from 'element-plus';
-import { IForm } from '../../interface/index';
+import { FormProps } from './type';
 import { getCompSize } from '../../utils';
 
 defineOptions({
@@ -22,7 +22,7 @@ defineOptions({
 
 type Arrayable<T> = T | T[];
 
-const props = withDefaults(defineProps<IForm>(), {
+const props = withDefaults(defineProps<FormProps>(), {
   labelPosition: 'right',
   requireAsteriskPosition: 'left',
   showMessage: true,

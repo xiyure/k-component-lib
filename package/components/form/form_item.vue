@@ -17,14 +17,14 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { FormValidateCallback } from 'element-plus';
-import { IFormItem } from '../../interface/index';
+import { FormItemProps } from './type';
 import { getCompSize } from '../../utils';
 
 defineOptions({
   name: 'KFormItem'
 });
 
-const props = withDefaults(defineProps<IFormItem>(), {
+const props = withDefaults(defineProps<FormItemProps>(), {
   labelWidth: '',
   showMessage: true,
   inlineMessage: '',

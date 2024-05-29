@@ -16,14 +16,14 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { IDatePicker } from '../../interface/index';
+import { DatePicker } from './type';
 import { getCompSize } from '../../utils';
 
 defineOptions({
   name: 'KDatePicker'
 });
 
-const props = withDefaults(defineProps<IDatePicker>(), {
+const props = withDefaults(defineProps<DatePicker>(), {
   clearable: true,
   editable: true,
   rangeSeparator: '-',

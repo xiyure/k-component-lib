@@ -11,7 +11,7 @@ import type { TreeNode, TreeKey, TreeData } from 'element-plus/es/components/tre
 import { CSSProperties, Component } from 'vue';
 
 // Button
-export interface IButtonProps {
+export interface ButtonProps {
   type?: 'main' | 'secondary' | 'text' | 'normal'
   size?: 'lg' | 'base' | 'sm' | ''
   status?: string
@@ -24,7 +24,7 @@ export interface IButtonProps {
 }
 
 // Tab
-export interface ITabItemProps {
+export interface TabItemProps {
   label?: string
   name: string
   path?: string
@@ -34,7 +34,7 @@ export interface ITabItemProps {
 }
 
 // Input
-export interface IInputProps {
+export interface InputProps {
   id?: string
   name?: string
   label?: string
@@ -59,7 +59,7 @@ export interface IInputProps {
 }
 
 // InputNumber
-export interface IInputNumberProps {
+export interface InputNumberProps {
   id?: string
   name?: string
   label?: string
@@ -79,7 +79,7 @@ export interface IInputNumberProps {
 }
 
 // Pagination
-export interface IPaginationProps {
+export interface PaginationProps {
   total: number
   pageSize?: number
   pageSizes?: object
@@ -90,7 +90,7 @@ export interface IPaginationProps {
 }
 
 // Switch
-export interface ISwitchProps {
+export interface SwitchProps {
   modelValue: boolean
   switchOnColor?: string
   switchOffColor?: string
@@ -103,7 +103,7 @@ export interface ISwitchProps {
 }
 
 // Radio/Checkbox
-export interface ISelectButtonProps {
+export interface SelectButtonProps {
   modelValue?: string | number | boolean
   value?: string | number | boolean
   checked?: boolean
@@ -117,7 +117,7 @@ export interface ISelectButtonProps {
 }
 
 // RadioGroup/CheckboxGroup
-export interface ISelectButtonGroupProps {
+export interface SelectButtonGroupProps {
   modelValue?: any
   disabled?: boolean
   size?: 'lg' | 'base' | 'sm' | ''
@@ -127,7 +127,7 @@ export interface ISelectButtonGroupProps {
 }
 
 // Select
-export interface ISelectInputProps {
+export interface SelectInputProps {
   modelValue: any
   multiple?: boolean
   disabled?: boolean
@@ -161,14 +161,14 @@ export interface ISelectInputProps {
 }
 
 // Select Option
-export interface IOptionProps {
+export interface OptionProps {
   value: any
   label: string
   disabled?: boolean
 }
 
 // Cascader
-export interface ICascaderProps {
+export interface CascaderProps {
   modelValue: any
   options?: object
   props?: object
@@ -186,7 +186,7 @@ export interface ICascaderProps {
 }
 
 // Cascader Config
-export interface ICascaderConfig {
+export interface CascaderConfig {
   expandTrigger?: 'click' | 'hover'
   multiple?: boolean
   emitPath?: boolean
@@ -201,7 +201,7 @@ export interface ICascaderConfig {
 }
 
 // DatePicker
-export interface IDatePicker {
+export interface DatePicker {
   modelValue: Date | string | Array<any>
   type?: string
   format?: string
@@ -226,7 +226,7 @@ export interface IDatePicker {
 
 // Upload
 type Awaitable<T> = Promise<T> | T
-export interface IUpload {
+export interface UploadProps {
   action: string
   headers?: Headers | Record<string, any>
   method?: string
@@ -259,7 +259,7 @@ export interface IUpload {
 }
 
 // Transfer
-export interface ITransferProps {
+export interface TransferProps {
   modelValue: Array<object>
   data: Array<object>
   filterable?: boolean
@@ -278,7 +278,7 @@ export interface ITransferProps {
 }
 
 // Tag
-export interface ITagProps {
+export interface TagProps {
   type?: string
   color?: string
   closable?: boolean
@@ -288,7 +288,7 @@ export interface ITagProps {
 }
 
 // Popover
-export interface IPopoverProps {
+export interface PopoverProps {
   trigger?: 'click' | 'hover'
   title?: string
   content?: string
@@ -311,7 +311,7 @@ export interface IPopoverProps {
 }
 
 // Popconfirm
-export interface IPopconfirmProps extends IPopoverProps {
+export interface PopconfirmProps extends PopoverProps {
   icon?: any
   hideIcon?: boolean
   iconColor?: string
@@ -322,7 +322,7 @@ export interface IPopconfirmProps extends IPopoverProps {
 }
 
 // Status
-export interface IStatusProps {
+export interface StatusProps {
   type?: 'empty' | 'success' | 'danger' | 'warning'
   content?: string
   icon?: any
@@ -333,7 +333,7 @@ export interface IStatusProps {
 }
 
 // MessageProps
-export interface IMessageProps {
+export interface MessageProps {
   message?: string | (() => string)
   type?: 'success' | 'info' | 'warning' | 'error'
   plain?: boolean
@@ -351,7 +351,7 @@ export interface IMessageProps {
 }
 
 // DialogProps
-export interface IDialogProps {
+export interface DialogProps {
   modelValue: boolean
   title?: string
   width?: string
@@ -378,7 +378,7 @@ export interface IDialogProps {
 }
 
 // Tooltip
-export interface ITooltipProps extends IPopoverProps {
+export interface TooltipProps extends PopoverProps {
   type?: 'normal' | 'primary' | 'danger' | 'warning'
   color?: string
   textColor?: string
@@ -387,13 +387,13 @@ export interface ITooltipProps extends IPopoverProps {
 }
 
 // Filter
-export interface IFilterProps {
+export interface FilterProps {
   modelValue?: any
   data?: any
 }
 
 // Drawer
-export interface IDrawerProps {
+export interface DrawerProps {
   modelValue: boolean
   appendToBody?: boolean
   lockScroll?: boolean
@@ -414,7 +414,7 @@ export interface IDrawerProps {
 }
 
 // Form
-export interface IForm {
+export interface Form {
   model: Record<string, any>
   rules?: Record<string, any>
   inline?: boolean
@@ -433,7 +433,7 @@ export interface IForm {
   scrollIntoViewOptions?: boolean | Record<string, any>
 }
 type Arrayable<T> = T | T[];
-export interface IFormItem {
+export interface FormItem {
   props?: string | string[]
   label?: string
   labelWidth?: string | number
@@ -448,7 +448,7 @@ export interface IFormItem {
 }
 
 // step
-export interface IStepsProps {
+export interface StepsProps {
   space?: number | string
   direction?: 'vertical' | 'horizontal'
   active?: number
@@ -458,7 +458,7 @@ export interface IStepsProps {
   capsule?: boolean
   height?: string | number
 }
-export interface IStepProps {
+export interface StepProps {
   title?: string,
   description?: string,
   icon?: string | Component
@@ -468,17 +468,17 @@ export interface IStepProps {
 }
 
 // Collapse
-export interface ICollapse {
+export interface Collapse {
   modelValue: string | string[]
   accordion?: boolean
 }
 
 // View
-export interface IViewProps {
+export interface ViewProps {
   modelValue: string
   width?: number | string
 }
-export interface IViewItemProps {
+export interface ViewItemProps {
   value: any,
   label?: string
   count?: number | string
@@ -487,7 +487,7 @@ export interface IViewItemProps {
 }
 
 // Badge
-export interface IBadgeProps {
+export interface BadgeProps {
   value?: string | number
   max?: number,
   isDot?: boolean
@@ -500,10 +500,10 @@ export interface IBadgeProps {
 }
 
 // Timeline
-export interface ITimelineProps {
+export interface TimelineProps {
   showLine?: boolean
 }
-export interface ITimelineItemProps {
+export interface TimelineItemProps {
   timestamp?: string
   hideTimestamp?: boolean
   center?: boolean
@@ -516,7 +516,7 @@ export interface ITimelineItemProps {
 }
 
 // Calendar
-export interface ICalendarProps {
+export interface CalendarProps {
   modelValue: Date
   schedule?: any
   showLunar?: boolean
@@ -530,7 +530,7 @@ interface PropsType {
   children?: string
   disabled?: string
 }
-export interface ITreeProps {
+export interface TreeProps {
   data: TreeData[]
   emptyText?: string
   props?: PropsType

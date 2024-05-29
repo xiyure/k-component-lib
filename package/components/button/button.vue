@@ -25,14 +25,14 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { IButtonProps } from '../../interface/index';
+import { ButtonProps } from './type';
 import { getCompSize } from '../../utils';
 
 defineOptions({
   name: 'KButton'
 });
 
-const props = withDefaults(defineProps<IButtonProps>(), {
+const props = withDefaults(defineProps<ButtonProps>(), {
   type: 'normal',
   size: 'base',
   iconLeft: null,

@@ -37,7 +37,7 @@
 import { ref, computed, watch, onMounted, getCurrentInstance } from 'vue';
 import { TransferKey, TransferDirection } from 'element-plus';
 import { Search } from '@element-plus/icons-vue';
-import { ITransferProps } from '../../interface/index';
+import { TransferProps } from './type';
 import { KInput } from '../input';
 import { genRandomStr } from '../../utils/index';
 import ArrowToLeft from '../../assets/svg/arrow-to-left.svg';
@@ -47,7 +47,7 @@ defineOptions({
   name: 'KTransfer'
 });
 
-const props = withDefaults(defineProps<ITransferProps>(), {
+const props = withDefaults(defineProps<TransferProps>(), {
   matchKey: 'label',
   defautKey: []
 });

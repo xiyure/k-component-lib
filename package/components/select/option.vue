@@ -10,13 +10,13 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { IOptionProps } from '../../interface';
+import { OptionProps } from './type';
 
 defineOptions({
   name: 'KOption'
 });
 
-const props = withDefaults(defineProps<IOptionProps>(), {});
+const props = withDefaults(defineProps<OptionProps>(), {});
 
 const attrs = computed(() => ({
   value: props.value,

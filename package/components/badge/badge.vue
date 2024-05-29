@@ -8,13 +8,13 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { IBadgeProps } from '../../interface/index';
+import { BadgeProps } from './type';
 
 defineOptions({
   name: 'KBadge'
 });
 
-const props = withDefaults(defineProps<IBadgeProps>(), {
+const props = withDefaults(defineProps<BadgeProps>(), {
   value: '',
   max: 99,
   showZero: true

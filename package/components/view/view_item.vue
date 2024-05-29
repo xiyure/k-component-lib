@@ -34,13 +34,13 @@
 <script setup lang="ts">
 import { inject, getCurrentInstance } from 'vue';
 import { IconMore } from 'ksw-vue-icon';
-import { IViewItemProps } from '../../interface/index';
+import { ViewItemProps } from './type';
 
 defineOptions({
   name: 'KView'
 });
 
-const props = withDefaults(defineProps<IViewItemProps>(), {
+const props = withDefaults(defineProps<ViewItemProps>(), {
   label: '',
   count: 0
 });

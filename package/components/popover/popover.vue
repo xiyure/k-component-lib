@@ -15,13 +15,13 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { IPopoverProps } from '../../interface/index';
+import { PopoverProps } from './type';
 
 defineOptions({
   name: 'KPopover'
 });
 
-const props = withDefaults(defineProps<IPopoverProps>(), {
+const props = withDefaults(defineProps<PopoverProps>(), {
   trigger: 'hover',
   width: 150,
   placement: 'bottom',

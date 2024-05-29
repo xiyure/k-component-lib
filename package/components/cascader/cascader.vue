@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { ICascaderProps, ICascaderConfig } from '../../interface/index';
+import { CascaderProps, CascaderConfig } from './type';
 import { getCompSize } from '../../utils';
 
 defineOptions({
@@ -31,7 +31,7 @@ defineOptions({
 
 type InputValue = string | number;
 
-const props = withDefaults(defineProps<ICascaderProps>(), {
+const props = withDefaults(defineProps<CascaderProps>(), {
   showAllLevels: true,
   separator: '/'
 });
@@ -67,7 +67,7 @@ const propsConfig:object = computed(() => {
   if (!props.props) {
     return {};
   }
-  const cascaderConfig = props.props as ICascaderConfig;
+  const cascaderConfig = props.props as CascaderConfig;
   return {
     expandTrigger: cascaderConfig?.expandTrigger ?? 'click',
     multiple: Boolean(cascaderConfig?.multiple),
@@ -90,7 +90,7 @@ function getOptions() {
   if (!props.props) {
     return {};
   }
-  const cascaderConfig = props.props as ICascaderConfig;
+  const cascaderConfig = props.props as CascaderConfig;
   const { lazy, lazyLoad } = cascaderConfig;
   if (lazy && lazyLoad) {
     return [];

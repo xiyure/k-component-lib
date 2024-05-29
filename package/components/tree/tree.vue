@@ -29,14 +29,14 @@
 import { ref, computed } from 'vue';
 import type { TreeNode, TreeNodeData, TreeKey, TreeData } from 'element-plus/es/components/tree-v2/src/types';
 import { IconSearch } from 'ksw-vue-icon';
-import { ITreeProps } from '../../interface/index';
+import { TreeProps } from './type';
 import { KInput } from '../input';
 
 defineOptions({
   name: 'KTree'
 });
 
-const props = withDefaults(defineProps<ITreeProps>(), {
+const props = withDefaults(defineProps<TreeProps>(), {
   highlightCurrent: true,
   expandOnClickNode: true,
   indent: 16,

@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, getCurrentInstance } from 'vue';
-import { IInputNumberProps } from '../../interface/index';
+import { InputNumberProps } from './type';
 import { getCompSize } from '../../utils';
 
 defineOptions({
@@ -32,7 +32,7 @@ defineOptions({
 
 type InputValue = number | null;
 
-const props = withDefaults(defineProps<IInputNumberProps>(), {
+const props = withDefaults(defineProps<InputNumberProps>(), {
   controls: true
 });
 

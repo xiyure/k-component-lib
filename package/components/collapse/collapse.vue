@@ -12,13 +12,13 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { ICollapse } from '../../interface';
+import { Collapse } from './type';
 
 defineOptions({
   name: 'KCollapse'
 });
 
-const props = defineProps<ICollapse>();
+const props = defineProps<Collapse>();
 
 const emits = defineEmits(['update:modelValue', 'change']);
 

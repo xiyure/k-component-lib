@@ -26,13 +26,13 @@
 
 <script setup lang="ts">
 import { shallowRef, watch, inject, getCurrentInstance } from 'vue';
-import { ITabItemProps } from '../../interface/index';
+import { TabItemProps } from './type';
 
 defineOptions({
   name: 'KTabItem'
 });
 
-const props = withDefaults(defineProps<ITabItemProps>(), {
+const props = withDefaults(defineProps<TabItemProps>(), {
   label: '',
   name: '',
   path: '#',

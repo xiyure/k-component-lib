@@ -1,9 +1,9 @@
 import { ElMessage, MessageParams, MessageHandler } from 'element-plus';
 import { IconWarning } from 'ksw-vue-icon';
-import { IMessageProps } from '../../interface';
+import { MessageProps } from './type';
 import './style.less';
 
-type MeassgeOptionType = IMessageProps | string;
+type MeassgeOptionType = MessageProps | string;
 type MeassgeType = 'success' | 'warning' | 'info' | 'error';
 interface IMessageFunction<T, V> {
   (options:T): V,

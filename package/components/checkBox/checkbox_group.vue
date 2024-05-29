@@ -13,14 +13,14 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, provide } from 'vue';
-import { ISelectButtonGroupProps } from '../../interface/index';
+import { SelectButtonGroupProps } from './type';
 import { getCompSize } from '../../utils/index';
 
 defineOptions({
   name: 'KCheckboxGroup'
 });
 
-const props = withDefaults(defineProps<ISelectButtonGroupProps>(), {
+const props = withDefaults(defineProps<SelectButtonGroupProps>(), {
   color: '#409eff'
 });
 

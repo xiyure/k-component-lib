@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
 import { computed, watch, inject, nextTick } from 'vue';
-import { IStepProps } from '../../interface/index';
+import { StepProps } from './type';
 import { KPopover } from '../popover';
 import { genRandomStr } from '../../utils';
 
@@ -36,7 +36,7 @@ defineOptions({
   name: 'KStep'
 });
 
-const props = withDefaults(defineProps<IStepProps>(), {
+const props = withDefaults(defineProps<StepProps>(), {
   title: '',
   description: '',
   status: ''

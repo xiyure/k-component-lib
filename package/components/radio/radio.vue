@@ -12,14 +12,14 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { ISelectButtonProps } from '../../interface/index';
+import { SelectButtonProps } from './type';
 import { getCompSize } from '../../utils';
 
 defineOptions({
   name: 'KRadio'
 });
 
-const props = withDefaults(defineProps<ISelectButtonProps>(), {});
+const props = withDefaults(defineProps<SelectButtonProps>(), {});
 
 const emits = defineEmits(['update:modelValue', 'change']);
 

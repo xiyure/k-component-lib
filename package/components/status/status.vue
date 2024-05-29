@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { watch, ref, shallowRef, getCurrentInstance } from 'vue';
 import { IconStatusSuccess, IconClear, IconWarning, IconEmptyBox } from 'ksw-vue-icon';
-import { IStatusProps } from '../../interface/index';
+import { StatusProps } from './type';
 
 defineOptions({
   name: 'KStatus'
@@ -53,7 +53,7 @@ const INNER_STATUS_ICON = {
   warning: IconWarning,
   empty: IconEmptyBox
 };
-const props = withDefaults(defineProps<IStatusProps>(), {
+const props = withDefaults(defineProps<StatusProps>(), {
   type: 'empty',
   width: '200px',
   height: '200px'

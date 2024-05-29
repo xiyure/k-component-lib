@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, nextTick, inject } from 'vue';
-import { ISelectButtonProps } from '../../interface/index';
+import { SelectButtonProps } from './type';
 import { genRandomStr, getCompSize } from '../../utils/index';
 
 defineOptions({
@@ -30,7 +30,7 @@ const isWarpped = inject('useCheckboxGroup', false);
 const selectedData:any = inject('selectedData', []);
 const fillColor = inject('fillColor', null);
 
-const props = withDefaults(defineProps<ISelectButtonProps>(), {});
+const props = withDefaults(defineProps<SelectButtonProps>(), {});
 
 const emits = defineEmits(['update:modelValue', 'change']);
 

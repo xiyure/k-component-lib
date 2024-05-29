@@ -78,13 +78,13 @@
 import { ref, computed, watch } from 'vue';
 import { UploadFile, UploadRawFile, UploadStatus } from 'element-plus';
 import { IconEmptyBox, IconWarning, IconCheck, IconDelete, IconFile, IconUpload } from 'ksw-vue-icon';
-import { IUpload } from '../../interface/index';
+import { UploadProps } from './type';
 
 defineOptions({
   name: 'KUpload'
 });
 
-const props = withDefaults(defineProps<IUpload>(), {
+const props = withDefaults(defineProps<UploadProps>(), {
   method: 'post',
   showFileList: true,
   name: 'file',

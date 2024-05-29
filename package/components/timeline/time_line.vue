@@ -11,13 +11,13 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { ITimelineProps } from '../../interface/index';
+import { TimelineProps } from './type';
 
 defineOptions({
   name: 'KTimeline'
 });
 
-const props = withDefaults(defineProps<ITimelineProps>(), {
+const props = withDefaults(defineProps<TimelineProps>(), {
   showLine: true
 });
 

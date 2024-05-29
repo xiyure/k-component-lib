@@ -39,14 +39,14 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { ITagProps } from '../../interface/index';
+import { TagProps } from './type';
 import { getCompSize } from '../../utils';
 
 defineOptions({
   name: 'KTag'
 });
 
-const props = withDefaults(defineProps<ITagProps>(), {
+const props = withDefaults(defineProps<TagProps>(), {
   type: 'block',
   color: '#4091FF'
 });

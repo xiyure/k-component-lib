@@ -34,7 +34,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { ISelectInputProps } from '../../interface/index';
+import { SelectInputProps } from './type';
 import { getCompSize } from '../../utils';
 
 defineOptions({
@@ -43,7 +43,7 @@ defineOptions({
 
 type InputValue = string | number;
 
-const props = withDefaults(defineProps<ISelectInputProps>(), {
+const props = withDefaults(defineProps<SelectInputProps>(), {
   teleported: true,
   valueKey: 'value',
   multipleLimit: 0,

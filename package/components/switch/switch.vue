@@ -15,14 +15,14 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { ISwitchProps } from '../../interface/index';
+import { SwitchProps } from './type';
 import { getCompSize } from '../../utils';
 
 defineOptions({
   name: 'KSwitch'
 });
 
-const props = withDefaults(defineProps<ISwitchProps>(), {
+const props = withDefaults(defineProps<SwitchProps>(), {
   switchOnColor: '',
   switchOffColor: ''
 });

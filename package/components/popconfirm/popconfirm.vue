@@ -19,13 +19,13 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { IconClear } from 'ksw-vue-icon';
-import { IPopconfirmProps } from '../../interface/index';
+import { PopconfirmProps } from './type';
 
 defineOptions({
   name: 'KPopconfirm'
 });
 
-const props = withDefaults(defineProps<IPopconfirmProps>(), {
+const props = withDefaults(defineProps<PopconfirmProps>(), {
   trigger: 'click',
   width: 150,
   placement: 'bottom',

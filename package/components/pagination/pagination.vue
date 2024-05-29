@@ -14,13 +14,13 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { IPaginationProps } from '../../interface/index';
+import { PaginationProps } from './type';
 
 defineOptions({
   name: 'KPagination'
 });
 
-const props = withDefaults(defineProps<IPaginationProps>(), {
+const props = withDefaults(defineProps<PaginationProps>(), {
   pageSize: 10,
   background: true,
   layout: 'total, prev, pager, next, sizes, jumper'

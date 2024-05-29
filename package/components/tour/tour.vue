@@ -9,11 +9,9 @@
 <script setup lang="ts">
 import { watch, getCurrentInstance } from 'vue';
 import { driver, Driver, DriveStep, State, Config, DriverHook, PopoverDOM } from 'driver.js';
+import { TourProps } from './type';
 
-import { useSlots, defineComponent, type Slots } from 'vue';
-import { TourProps } from '../../interface/index';
-
-const slots = useSlots();
+const slots = defineSlots();
 defineOptions({
   name: 'KTour'
 });

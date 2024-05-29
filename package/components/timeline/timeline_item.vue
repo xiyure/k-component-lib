@@ -17,14 +17,14 @@
 
 <script setup lang="ts">
 import { computed, onMounted, watch, nextTick } from 'vue';
-import { ITimelineItemProps } from '../../interface/index';
+import { TimelineItemProps } from './type';
 import { genRandomStr } from '../../utils';
 
 defineOptions({
   name: 'KTimelineItem'
 });
 
-const props = withDefaults(defineProps<ITimelineItemProps>(), {
+const props = withDefaults(defineProps<TimelineItemProps>(), {
   timestamp: '',
   placement: 'top',
   type: 'wait',

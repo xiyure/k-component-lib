@@ -26,14 +26,14 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, provide, getCurrentInstance } from 'vue';
 import { IconRefresh } from 'ksw-vue-icon';
-import { IViewProps } from '../../interface/index';
+import { ViewProps } from './type';
 import { genRandomStr } from '../../utils';
 
 defineOptions({
   name: 'KView'
 });
 
-const props = withDefaults(defineProps<IViewProps>(), {
+const props = withDefaults(defineProps<ViewProps>(), {
   width: '200px'
 });
 
