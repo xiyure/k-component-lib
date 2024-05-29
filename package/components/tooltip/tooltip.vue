@@ -43,6 +43,7 @@ import { watch, ref, computed } from 'vue';
 import { IconTips } from 'ksw-vue-icon';
 import { ITooltipProps } from '../../interface/index';
 import { KPopover } from '../popover';
+import { isValidColor } from '../../utils';
 
 defineOptions({
   name: 'KTooltip'
@@ -101,14 +102,6 @@ watch(() => [props.type, props.color], () => {
     toolTipColor.value = '#000';
   }
 }, { immediate: true });
-
-function isValidColor(strColor:string) {
-  const s = new Option().style;
-  s.color = strColor;
-  console.log(s.color);
-  
-  return s.color === strColor.toLowerCase();
-}
 
 </script>
 

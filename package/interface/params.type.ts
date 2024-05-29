@@ -551,36 +551,25 @@ export interface ITreeProps {
 }
 
 // Tour
+type AllowedButtons = 'previous' | 'next' | 'close'
 export interface TourProps {
   modelValue: boolean
-  showArrow?: boolean
-  placement?: 'top' | 'top-start' | 'top-end' | 'bottom'
-    | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' 
-    | 'left-end' | 'right' | 'right-start' | 'right-end'
-  contentStyle?: CSSProperties
-  mask?: boolean | { color?: string, style?: CSSProperties }
-  type?: 'default' | 'primary'
-  current?: number
-  scrollIntoViewOptions?: boolean | ScrollIntoViewOptions
-  zIndex?: number
-  showClose?: boolean
-  closeIcon?: Component
-  closeOnPressEscape?: boolean
-  targetAreaClickable?: boolean
+  steps?: any[]
+  allowClose?: boolean
+  allowKeyboardControl?: boolean
+  animate?: boolean
+  overlayOpacity?: number
+  overlayColor?: string
+  stagePadding?: number
+  stageRadius?: number
+  disableActiveInteraction?: boolean
+  popoverClass?: string
+  offset?: number
+  showButtons?: AllowedButtons[]
+  disableButtons?: AllowedButtons[]
+  showProgress?: boolean
+  progressText?: string
+  nextBtnText?: string
+  prevBtnText?: string
+  doneBtnText?: string
 }
-export interface TourItemProps {
-  target: HTMLElement | string | (() => HTMLElement)
-  showArrow?: boolean
-  title?: string
-  description?: string
-  placement?: 'top' | 'top-start' | 'top-end' | 'bottom'
-    | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' 
-    | 'left-end' | 'right' | 'right-start' | 'right-end'
-  mask?: boolean | { color?: string, style?: CSSProperties }
-  type?: 'default' | 'primary'
-  nextButtonProps?: { children: Node | string; onClick: Function }
-  scrollIntoViewOptions?: boolean | ScrollIntoViewOptions
-  showClose?: boolean
-  closeIcon?: Component
-}
-

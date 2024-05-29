@@ -49,5 +49,8 @@ export default {
   unselectedFields: 'Unselected',
   restoreDefault: 'Restore',
   searchHeaderName: 'Search Header Name',
-  showLunar: 'show lunar'
+  showLunar: 'show lunar',
+  next: 'next',
+  previous: 'previous',
+  finish: 'finish'
 };

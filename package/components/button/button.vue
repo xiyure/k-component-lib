@@ -43,13 +43,10 @@ const props = withDefaults(defineProps<IButtonProps>(), {
   loadingIcon: undefined,
 });
 
-const attrs = computed(() => {
-  const { type, size } = props;
-  return {
-    ...getBtnTypeAttrs(type),
-    ...getOriginAttrs()
-  };
-});
+const attrs = computed(() => ({
+  ...getBtnTypeAttrs(props.type),
+  ...getOriginAttrs()
+}));
 
 const getBtnTypeAttrs = (type: string):object => {
   const typeAttrs = {

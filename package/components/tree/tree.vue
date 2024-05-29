@@ -156,7 +156,6 @@ function getNode(data: TreeKey | TreeNodeData) {
   return KTreeRef.value?.getNode(data);
 }
 function expandNode(node: TreeNode) {
-  console.log(node);
   return KTreeRef.value?.expandNode(node);
 }
 function collapseNode(node: TreeNode) {

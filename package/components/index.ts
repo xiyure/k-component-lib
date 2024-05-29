@@ -31,7 +31,7 @@ import { KBadge } from './badge';
 import { KTimeline, KTimelineItem } from './timeline';
 import { KCalendar } from './calendar';
 import { KTree } from './tree';
-import { KTour, KTourItem } from './tour';
+import { KTour } from './tour';
 
 export {
   KButton,
@@ -79,6 +79,5 @@ export {
   KTimelineItem,
   KCalendar,
   KTree,
-  KTour,
-  KTourItem
+  KTour
 };

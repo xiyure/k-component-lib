@@ -18,6 +18,12 @@ export function getCompSize(size:string | undefined) {
   }
 }
 
+export function isValidColor(strColor:string) {
+  const s = new Option().style;
+  s.color = strColor;
+  return Boolean(s.color);
+}
+
 type emitterType = {
   name: string,
   callback: () => any
