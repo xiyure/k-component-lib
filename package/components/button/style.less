@@ -2,112 +2,240 @@
 
 .k-button {
   width: fit-content;
-  .k-button__inner {
-    border-radius: 8px;
-    // hover
-    &:hover {
-      border: @k-gray-200 solid !important;
-      color: @k-gray-400 !important;
-      background-color: @k-gray-100 !important;
-    }
-    &:is(.el-button--primary):hover {
-      border: @k-blue-400 1px solid !important;
-      color: #FFF !important;
-      background-color: @k-blue-400 !important;
-    }
-    &:is(.is-plain):hover {
-      border: @k-blue-400 1px solid !important;
-      color: @k-blue-400 !important;
-      background-color: #FFF !important;
-    }
-    &:is(.is-text):hover {
-      border: none !important;
-      color: @k-blue-400 !important;
-      background-color: transparent !important;
-    }
-    &.is-plain {
-      border: 1px @k-status-primary solid;
-      color: @k-status-primary;
-      background-color: #FFF;
-    }
-    // active
-    &:active {
-      border: @k-gray-200 solid !important;
-      color: @k-gray-400 !important;
-      background-color: @k-gray-200 !important;
-    }
-    &:is(.el-button--primary):active {
-      color: @k-theme-light !important;
-      background-color: @k-blue-600 !important;
-    }
-    &:is(.is-plain):active {
-      border: 1px @k-blue-600 solid !important;
-      color: @k-blue-600 !important;
-      background-color: @k-theme-light !important;
-    }
-    &:is(.is-text):active {
-      border: none !important;
-      color: @k-blue-600 !important;
-      background-color: transparent !important;
-    }
-    // disabled
-    &:disabled {
-      border: 1px @k-gray-300 solid !important;
-      color: @k-gray-300 !important;
-      background-color: @k-gray-100 !important;
-    }
-    &:disabled:is(.el-button--primary) {
-      border: 1px @k-gray-300 solid !important;
-      color: @k-theme-light !important;
-      background-color: @k-gray-300 !important;
-    }
-    &:disabled:is(.is-plain) {
-      border: 1px @k-gray-300 solid !important;
-      color: @k-gray-300 !important;
-      background-color: @k-gray-100 !important;
-    }
-    &:disabled:is(.is-text) {
-      border: none !important;
-      color: @k-gray-300 !important;
-      background-color: transparent !important;
-    }
-    // loading
-    &:disabled.is-loading {
-      border: 1px @k-gray-200 solid !important;
-      color: @k-gray-300 !important;
-      background-color: @k-theme-light !important;
-    }
-    &:disabled.el-button--primary.is-loading {
-      border: 1px @k-blue-300 solid !important;
-      color: @k-theme-light !important;
-      background-color: @k-blue-300 !important;
-    }
-    &:disabled.is-plain.is-loading {
-      border: 1px @k-blue-300 solid !important;
-      color: @k-blue-300 !important;
-      background-color: transparent !important;
-    }
-    &:disabled.is-text.is-loading {
-      border: none !important;
-      color: @k-blue-300 !important;
-      background-color: transparent !important;
-    }
+  box-sizing: border-box;
+  .el-button {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    border: 1px solid @k-gray-200;
+    padding: 0 1rem;
+    height: 2rem;
+    border-radius: @k-rounded-base;
+    color: @k-gray-400;
+    font-size: @font-base;
+
     span {
       display: flex;
-      justify-content: space-around;
       align-items: center;
+      gap: 0.25rem;
     }
-    svg {
-      width: 15px;
+    i {
+      transform: translate(50%, 0);
+      svg {
+        width: 1rem;
+        height: 1rem;
+      }
+    }
+    > span {
+      > span:nth-child(1) {
+        // left icon
+        width: 0.5rem;
+        > svg {
+          transform: translate(-50%) scale(2);
+        }
+      }
+      > span:nth-last-child(1) {
+        // right icon
+        width: 0.5rem;
+        > svg {
+          transform: translate(50%) scale(2);
+        }
+      }
+      > span:nth-child(1) {
+        > span {
+          width: 0.5rem;
+          height: 1rem;
+          > svg {
+            transform: translate(-50%) scale(2);
+          }
+        }
+      }
+      > span:nth-last-child(1) {
+        > span {
+          width: 0.5rem;
+          height: 1rem;
+          > svg {
+            transform: translate(50%) scale(2);
+          }
+        }
+      }
+    }
+    &.el-button--sm {
+      font-size: @font-sm;
+      padding: 0 0.75rem;
+      height: 1.5rem;
+      gap: 0.125rem;
+      border-radius: @k-rounded-sm;
+      > span {
+        display: flex;
+        align-items: center;
+        gap: 0.125rem;
+      }
+      > i {
+        > svg {
+          width: 0.75rem;
+          height: 0.75rem;
+          transform: scale(1);
+        }
+      }
+      > span {
+        > span:nth-last-child(1) {
+          width: 0.5rem;
+          > svg {
+            transform: translate(50%) scale(1.25);
+          }
+        }
+        > span:nth-child(1) {
+          width: 0.5rem;
+          > svg {
+            transform: translate(-50%) scale(1.25);
+          }
+        }
+      }
+    }
+    &:hover {
+      background: @k-gray-100;
+    }
+    &:active {
+      background: @k-gray-200;
+    }
+    &.is-loading {
+      gap: 0.125rem;
+      color: @k-gray-400;
+      background: #fff;
+      cursor: wait;
+    }
+    &.is-disabled {
+      background: @k-gray-100;
+      color: @k-gray-300;
+      cursor: not-allowed;
+      label {
+        cursor: not-allowed;
+      }
+    }
+    &.is-disabled {
+      label {
+        cursor: not-allowed;
+      }
+    }
+
+    // main style
+    &.el-button--main {
+      background: @k-blue-500;
+      color: #fff;
+      border-color: @k-blue-500;
+    }
+    &.el-button--main:hover {
+      background: @k-blue-400;
+      border-color: @k-blue-400;
+    }
+    &.el-button--main:active {
+      background: @k-blue-600;
+      border-color: @k-blue-600;
+    }
+    &.el-button--main.is-disabled {
+      background: @k-gray-300;
+      border-color: @k-gray-300;
+      color: #fff;
+    }
+    &.el-button--main.is-loading {
+      background: @k-blue-300;
+      border-color: @k-blue-300;
+      color: #fff;
+    }
+
+    // secondary style
+    &.el-button--secondary {
+      background: #fff;
+      color: @k-blue-500;
+      border: 1px solid @k-blue-500;
+    }
+    &.el-button--secondary:hover {
+      color: @k-blue-400;
+      border: 1px solid @k-blue-400;
+    }
+    &.el-button--secondary:active {
+      color: @k-blue-600;
+      border: 1px solid @k-blue-600;
+    }
+    &.el-button--secondary.is-disabled {
+      background: @k-gray-100;
+      color: @k-gray-300;
+      border: 1px solid @k-gray-300;
+    }
+    &.el-button--secondary.is-loading {
+      background: #fff;
+      color: @k-blue-300;
+      border: 1px solid @k-blue-300;
+    }
+
+    // text style
+    &.el-button--text {
+      background: #fff;
+      color: @k-blue-500;
+      padding: 0 0.5rem;
+      border-width: 0;
+    }
+    &.el-button--text:hover {
+      color: @k-blue-400;
+    }
+    &.el-button--text:active {
+      color: @k-blue-600;
+    }
+    &.el-button--text.is-loading {
+      background: #fff;
+      color: @k-blue-300;
+      label {
+        cursor: wait;
+      }
+    }
+    &.el-button--text.is-disabled {
+      background: #fff;
+      color: @k-gray-300;
+      label {
+        cursor: not-allowed;
+      }
+    }
+
+    // icon style
+    &.el-button--icon {
+      width: 2rem;
+      padding: 0;
+      justify-content: center;
+      > span > label > span > svg {
+        width: 1rem;
+        height: 1rem;
+      }
+      label {
+        opacity: 1;
+      }
+    }
+    &.el-button--icon.el-button--sm {
+      height: 1.5rem;
+      width: 1.5rem;
+      > span > label > span > svg {
+        width: 0.75rem;
+        height: 0.75rem;
+      }
+      > i,
+      > i > span {
+        width: 0.75rem;
+        height: 0.75rem;
+      }
+    }
+    &.el-button--icon.is-disabled {
+      cursor: not-allowed;
+    }
+    &.el-button--icon.is-loading {
+      i {
+        width: 1rem;
+        height: 1rem;
+        transform: translate(0, 0);
+      }
+      > span {
+        display: none;
+      }
     }
   }
-  .icon-left {
-    margin-right: 5px;
-  }
-  .icon-right {
-    margin-left: 5px;
-  }
-}
-.button-loading {
-  pointer-events: none;
 }
