@@ -37,20 +37,23 @@ const emits = defineEmits([
 const pageSize = ref(props.pageSize);
 
 const attrs = computed(() => ({
-  ...getSizeAttrs(),
-  ...getOriginAttrs(),
-}));
-
-const getSizeAttrs = ():object => ({
-  small: props.size === 'sm',
-});
-const getOriginAttrs = () => ({
   total: props.total,
   pageSizes: props.pageSizes,
   disabled: props.disabled,
   background: props.background,
-  layout: props.layout
-});
+  layout: props.layout,
+  small: props.small,
+  pagerCount: props.pagerCount,
+  currentPage: props.currentPage,
+  defaultCurrentPage: props.defaultCurrentPage,
+  popperClass: props.popperClass,
+  prevText: props.prevText,
+  prevIcon: props.prevIcon,
+  nextText: props.nextText,
+  nextIcon: props.nextIcon,
+  teleported: props.teleported,
+  hideOnSinglePage: props.hideOnSinglePage
+}));
 
 const handleChange = (pageNum: number) => {
   emits('change', pageNum);
