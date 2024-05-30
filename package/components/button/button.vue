@@ -36,8 +36,8 @@ defineOptions({
   name: "KButton",
 });
 
-const props = withDefaults(defineProps<IButtonProps>(), {
-  type: "",
+const props = withDefaults(defineProps<ButtonProps>(), {
+  type: "normal",
   size: "base",
   value: "",
   disabled: false,
@@ -47,22 +47,9 @@ const props = withDefaults(defineProps<IButtonProps>(), {
   iconRight: null,
 });
 
-console.log(props.loadingIcon.props.size);
-
-props.loadingIcon.props.spin = {
-  type: Boolean,
-  default: true,
-};
-props.loadingIcon.props.color = {
-  type: String,
-  default: "#2882ff", //currentColor
-};
-
 const attrs = computed(() => {
-  const { type, size } = props;
   return {
-    ...getBtnTypeAttrs(type),
-    ...getSizeAttrs(size),
+    ...getBtnTypeAttrs(props.type),
     ...getOriginAttrs(),
   };
 });
@@ -111,11 +98,12 @@ const getSizeAttrs = (size: string): object => {
 };
 
 const getOriginAttrs = () => {
-  const { disabled, loading, loadingIcon } = props;
+  const { disabled, loading, loadingIcon, size } = props;
   return {
     disabled,
     loading,
     loadingIcon,
+    size: getCompSize(size)
   };
 };
 

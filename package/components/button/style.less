@@ -1,4 +1,4 @@
-@import '../../style/variable.less';
+@import "../../style/variable.less";
 
 .k-button {
   width: fit-content;
@@ -27,37 +27,17 @@
         height: 1rem;
       }
     }
-    > span {
-      > span:nth-child(1) {
-        // left icon
+    >span {
+      >span:nth-last-child(1) {
         width: 0.5rem;
-        > svg {
-          transform: translate(-50%) scale(2);
-        }
-      }
-      > span:nth-last-child(1) {
-        // right icon
-        width: 0.5rem;
-        > svg {
+        >svg {
           transform: translate(50%) scale(2);
         }
       }
-      > span:nth-child(1) {
-        > span {
-          width: 0.5rem;
-          height: 1rem;
-          > svg {
-            transform: translate(-50%) scale(2);
-          }
-        }
-      }
-      > span:nth-last-child(1) {
-        > span {
-          width: 0.5rem;
-          height: 1rem;
-          > svg {
-            transform: translate(50%) scale(2);
-          }
+      >span:nth-child(1) {
+        width: 0.5rem;
+        >svg {
+          transform: translate(-50%) scale(2);
         }
       }
     }
@@ -67,28 +47,28 @@
       height: 1.5rem;
       gap: 0.125rem;
       border-radius: @k-rounded-sm;
-      > span {
+      >span {
         display: flex;
         align-items: center;
         gap: 0.125rem;
       }
-      > i {
-        > svg {
+      >i {
+        >svg {
           width: 0.75rem;
           height: 0.75rem;
           transform: scale(1);
         }
       }
-      > span {
-        > span:nth-last-child(1) {
+      >span {
+        >span:nth-last-child(1) {
           width: 0.5rem;
-          > svg {
+          >svg {
             transform: translate(50%) scale(1.25);
           }
         }
-        > span:nth-child(1) {
+        >span:nth-child(1) {
           width: 0.5rem;
-          > svg {
+          >svg {
             transform: translate(-50%) scale(1.25);
           }
         }
@@ -100,12 +80,6 @@
     &:active {
       background: @k-gray-200;
     }
-    &.is-loading {
-      gap: 0.125rem;
-      color: @k-gray-400;
-      background: #fff;
-      cursor: wait;
-    }
     &.is-disabled {
       background: @k-gray-100;
       color: @k-gray-300;
@@ -114,10 +88,11 @@
         cursor: not-allowed;
       }
     }
-    &.is-disabled {
-      label {
-        cursor: not-allowed;
-      }
+    &.is-loading {
+      gap: 0.125rem;
+      color: @k-gray-400;
+      background: #fff;
+      cursor: not-allowed;
     }
 
     // main style
@@ -183,19 +158,13 @@
     &.el-button--text:active {
       color: @k-blue-600;
     }
-    &.el-button--text.is-loading {
-      background: #fff;
-      color: @k-blue-300;
-      label {
-        cursor: wait;
-      }
-    }
     &.el-button--text.is-disabled {
       background: #fff;
       color: @k-gray-300;
-      label {
-        cursor: not-allowed;
-      }
+    }
+    &.el-button--text.is-loading {
+      background: #fff;
+      color: @k-blue-300;
     }
 
     // icon style
@@ -203,7 +172,7 @@
       width: 2rem;
       padding: 0;
       justify-content: center;
-      > span > label > span > svg {
+      >span>label>span>svg {
         width: 1rem;
         height: 1rem;
       }
@@ -214,12 +183,11 @@
     &.el-button--icon.el-button--sm {
       height: 1.5rem;
       width: 1.5rem;
-      > span > label > span > svg {
+      >span>label>span>svg {
         width: 0.75rem;
         height: 0.75rem;
       }
-      > i,
-      > i > span {
+      >i,>i>span{
         width: 0.75rem;
         height: 0.75rem;
       }
@@ -228,12 +196,12 @@
       cursor: not-allowed;
     }
     &.el-button--icon.is-loading {
-      i {
+      i{
         width: 1rem;
         height: 1rem;
         transform: translate(0, 0);
       }
-      > span {
+      >span {
         display: none;
       }
     }
