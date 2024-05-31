@@ -3,7 +3,18 @@
     <el-button
       ref="buttonRef"
       class="k-button__inner"
-      :class="{ loading: props.loading }"
+      :class="[
+        'el-button',
+        {
+          'el-button--main': props.type === 'main',
+          'el-button--secondary': props.type === 'secondary',
+          'el-button--text': props.type === 'text',
+          'el-button--icon': props.type === 'icon',
+          'is-loading': props.loading,
+          'is-disabled': props.disabled,
+        },
+        getSizeClass,
+      ]"
       v-bind="attrs"
       @click="handleClick"
     >
@@ -12,7 +23,6 @@
           <props.iconLeft class="icon-left" />
         </span>
       </slot>
-
       <span v-if="props.value">{{ props.value }}</span>
       <label v-else><slot class="slot-content"></slot></label>
       <slot name="iconRight" class="icon-right">
@@ -25,12 +35,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { ButtonProps } from './type';
-import { getCompSize } from '../../utils'; // 获取组件大小
+import { computed } from "vue";
+import { ButtonProps } from "./type";
 import { IconLoading } from "ksw-vue-icon";
 import "ksw-vue-icon/styles/icon.css";
-
 
 defineOptions({
   name: "KButton",
@@ -49,63 +57,22 @@ const props = withDefaults(defineProps<ButtonProps>(), {
 
 const attrs = computed(() => {
   return {
-    ...getBtnTypeAttrs(props.type),
     ...getOriginAttrs(),
   };
 });
 
-const getBtnTypeAttrs = (type: string): object => {
-  const typeAttrs = {
-    type: "",
-    plain: false,
-    text: false,
-    iconLeft: null,
-    iconRight: null,
-  };
-  switch (type) {
-    case "":
-      typeAttrs.type = "";
-      break;
-    case "main":
-      typeAttrs.type = "main";
-      break;
-    case "secondary":
-      typeAttrs.type = "secondary";
-      break;
-    case "text":
-      typeAttrs.type = "text";
-      break;
-    case "icon":
-      typeAttrs.type = "icon";
-      break;
-  }
-  return typeAttrs;
-};
-
-const getSizeAttrs = (size: string): object => {
-  const sizeAttrs = {
-    size: "default",
-  };
-  switch (size) {
-    case "base":
-      sizeAttrs.size = "";
-      break;
-    case "sm":
-      sizeAttrs.size = "sm";
-      break;
-  }
-  return sizeAttrs;
-};
-
 const getOriginAttrs = () => {
-  const { disabled, loading, loadingIcon, size } = props;
+  const { loading, loadingIcon } = props;
   return {
-    disabled,
     loading,
     loadingIcon,
-    size: getCompSize(size)
   };
 };
+
+const getSizeClass = computed(() => {
+  return props.size !== "" ? `el-button--${props.size}` : "";
+});
+
 
 const emits = defineEmits(["click"]);
 const handleClick = (e: Event) => {
@@ -114,5 +81,5 @@ const handleClick = (e: Event) => {
 </script>
 
 <style lang="less">
-@import './style.less';
+@import "./style.less";
 </style>
