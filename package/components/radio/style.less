@@ -76,6 +76,19 @@
         }
       }
     }
+    &.el-radio--sm {
+      .text-sm();
+      .el-radio__input {
+        .el-radio__original {
+          width: 0.75rem;
+          height: 0.75rem;
+        }
+        .el-radio__original::after {
+          width: 0.325rem;
+          height: 0.325rem;
+        }
+      }
+    }
     // hover
     &:hover {
       .el-radio__input {
@@ -87,7 +100,7 @@
         }
       }
     }
-    &:active{
+    &:active {
       .el-radio__input {
         .el-radio__original {
           border-color: @k-blue-500; // 点击时的颜色
