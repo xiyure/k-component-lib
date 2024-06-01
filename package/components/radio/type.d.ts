@@ -5,6 +5,7 @@ export interface SelectButtonGroupProps {
   color?: string
   name?: string,
   id?: string | number
+  direction?: 'row' | 'column'
 }
 
 export interface SelectButtonProps {

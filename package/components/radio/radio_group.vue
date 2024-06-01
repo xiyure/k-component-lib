@@ -4,6 +4,7 @@
       v-model="modelValue"
       v-bind="attrs"
       @change="handleChange"
+      :class="directionClass"
     >
       <slot></slot>
     </el-radio-group>
@@ -19,7 +20,14 @@ defineOptions({
   name: 'KRadioGroup'
 });
 
-const props = withDefaults(defineProps<SelectButtonGroupProps>(), {});
+const props = withDefaults(defineProps<SelectButtonGroupProps>(), {
+  direction: 'row',
+});
+
+// computed props.direction , 返回一个 class
+const directionClass = computed(() => {
+  return props.direction === 'row' ? 'el-radio-group--row' : 'el-radio-group--column';
+});
 
 const emits = defineEmits(['update:modelValue', 'change']);
 
