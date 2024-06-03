@@ -6,10 +6,10 @@
         v-bind="props"
       >
         <slot></slot>
-        <template #loading>
+        <template v-if="slots.loading" #loading>
           <slot name="loading"></slot>
         </template>
-        <template #empty>
+        <template v-if="slots.empty" #empty>
           <slot name="empty"></slot>
         </template>
       </vxe-table>
@@ -38,6 +38,7 @@ onMounted(() => {
   emitter.on(DESC_EVENT_NAME, updateDescrition.bind(this));
 });
 const emits = defineEmits(['desc-change']);
+const slots = defineSlots();
 
 const vxeTableRef = ref(null);
 

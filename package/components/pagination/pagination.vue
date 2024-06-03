@@ -23,6 +23,7 @@ defineOptions({
 const props = withDefaults(defineProps<PaginationProps>(), {
   pageSize: 10,
   background: true,
+  currentPage: 1,
   layout: 'total, prev, pager, next, sizes, jumper'
 });
 
@@ -59,11 +60,11 @@ const handleChange = (pageNum: number) => {
   emits('change', pageNum);
 };
 const handleCurrentChange = (pageNum: number) => {
-  emits('size-change', pageNum);
+  emits('current-change', pageNum);
 };
 const handleSizeChange = (pageNum: number) => {
   pageSize.value = pageNum;
-  emits('current-change', pageNum);
+  emits('size-change', pageNum);
 };
 const handlePrevClick = (pageNum: number) => {
   emits('prev-click', pageNum);

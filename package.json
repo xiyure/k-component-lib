@@ -1,7 +1,7 @@
 {
-  "name": "ksw-ui",
+  "name": "ksw-ux",
   "private": false,
-  "version": "0.0.7",
+  "version": "0.0.1",
   "description": "Kignsware Component Library",
   "main": "kingsware-ui/index.umd.js",
   "module": "kingsware-ui/index.js",
@@ -19,7 +19,6 @@
     "fix": "eslint --fix"
   },
   "dependencies": {
-    "@types/vue-router": "^2.0.0",
     "chinese-lunar-calendar": "^1.0.1",
     "driver.js": "^1.3.1",
     "element-plus": "^2.7.3",
