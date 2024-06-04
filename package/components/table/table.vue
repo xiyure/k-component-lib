@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { ref, provide, onMounted, getCurrentInstance } from 'vue';
-import { VxeTableProps, VxeColumnProps } from 'vxe-table';
+import { VxeTableProps, VxeColumnProps, VxeTableInstance } from 'vxe-table';
 
 const DESC_EVENT_NAME = 'desc-change';
 
@@ -40,7 +40,7 @@ onMounted(() => {
 const emits = defineEmits(['desc-change']);
 const slots = defineSlots();
 
-const vxeTableRef = ref(null);
+const vxeTableRef = ref<VxeTableInstance>();
 
 function updateDescrition(column:VxeColumnProps, desc:string) {
   emits(DESC_EVENT_NAME, column, desc);
@@ -50,8 +50,8 @@ provide('tableInstance', vxeTableRef);
 provide('tableConfig', { ...props });
 
 defineExpose({
-  tableInstance: vxeTableRef
-});
+  getVxeInstance: () => vxeTableRef.value,
+})
 </script>
 
 <style lang="less">

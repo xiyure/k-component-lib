@@ -25,7 +25,7 @@
     >
        <template v-for="item in column">
           <k-table-column
-            v-if="item.visible"
+            v-if="item.visible !== false"
             :key="item.key"
             :type="item.type"
             :field="item.field"
@@ -72,12 +72,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeMount } from 'vue';
+import { ref, computed, watch, onMounted, nextTick } from 'vue';
+import VXETable, { VxeTableInstance, VxeTableDataRow, VxeTable} from 'vxe-table';
 import { IconSearch } from 'ksw-vue-icon';
 import { KInput } from '../input';
 import { TreeTableProps } from './type';
 import { KTable, KTableColumn } from '../table';
 import { KPagination } from '../pagination';
+import { genRandomStr } from '../../utils';
 
 defineOptions({
   name: 'KTreeTable'
@@ -110,7 +112,7 @@ const defaultTreeConfig = {
   transform: true,
   rowField: 'id',
   parentField: 'pid',
-  childrenField: 'nodes',
+  childrenField: 'children',
   trigger: 'cell',
   hasChild: 'hasChild'
 }
@@ -132,11 +134,10 @@ const defaultScrollY = { enabled: true }
 const defaultColumnConfig = { resizable: true }
 
 const emits = defineEmits([]);
+const xTree = ref();
 const slots = defineSlots();
 const query = ref('');
 const paginationConfig = ref(Object.assign(defaultPaginationConfig, props.paginationConfig || {}));
-const tableData = ref<any>(props.data);
-const showTableData = ref<any>([]);
 
 onMounted(() => {
   getShowTableData()
@@ -146,8 +147,6 @@ onMounted(() => {
 const treeConfig = computed(() => {
   if (props.useTree) {
     return Object.assign(defaultTreeConfig, props.treeConfig || {});
-  } else {
-    return undefined;
   }
 });
 const sortConfig = computed(() => {
@@ -168,45 +167,104 @@ const columnConfig = computed(() => {
 const checkboxConfig = computed(() => {
   return Object.assign(defaultCheckboxConfig, props.checkboxConfig || {});
 });
+
+const fullTableData = ref<Array<any>>((treeToArray(props.data || [])))
+const tableData = ref<Array<any>>(fullTableData.value);
+const showTableData = ref<Array<any>>([]);
+
+watch(() => props.column, () => {
+  handleCustomRender()
+}, { immediate: true, deep: true })
+
 // 表格内容搜索
-let groupId = 0;
-const count = 1000;
-let handler:any = null;
+const treeData = ref<any>([]);
+const nodeSet = new Set();
 function filterTableData() {
-  if (props.remote || !query.value) {
-    tableData.value = props.data;
+  const VxeInstance:VxeTableInstance = xTree.value.getVxeInstance();
+  const searchKey = query.value.trim();
+  if (props.remote || !searchKey) {
+    tableData.value = fullTableData.value;
     getShowTableData();
+    VxeInstance.clearTreeExpand()
     return;
   }
-  groupId = 0;
-  tableData.value = [];
   const fieldList = props.column.map(col => col.field || '')
-  const total = props.data?.length || 0;
-  getFilterData(props.data, fieldList, total);
-}
-function getFilterData(data: any, fieldList: string[], total: number) {
-  const startIndex = groupId * count;
-  const newData = data?.filter((dataItem:any) => {
+  tableData.value = fullTableData.value?.filter((dataItem:any) => {
     return fieldList.some(field => {
       if (props.exactMatch) {
-        return dataItem[field] === query.value;
+        return dataItem[field] === searchKey;
       } else {
-        return String(dataItem[field]).search(query.value) !== -1;
+        return (String(dataItem[field])).toLowerCase().search((searchKey).toLowerCase()) !== -1;
       }
     })
   })
-  tableData.value = [...tableData.value, ...newData];
-  // if ((groupId + 1) * count > total) {
-  //   cancelAnimationFrame(handler)
-  // } else {
-  //   groupId++;
-  //   handler = requestAnimationFrame(getFilterData.bind(null, data, fieldList, total))
-  // }
+  // 当表格数据为树时，筛选后的数据应展示完整的子树
+  if (props.useTree) {
+    handleTreeData([...tableData.value]);
+    const rowField = treeConfig.value?.rowField || 'id';
+    tableData.value = sortFunc(treeData.value, fullTableData.value, rowField);
+    VxeInstance.setAllTreeExpand(true)
+  }
   getShowTableData();
   if (props.showPage) {
     paginationConfig.value.currentPage = 1;
   }
 }
+// 处理树形数据
+function handleTreeData(leafData:any[]) {
+  nodeSet.clear()
+  treeData.value = [];
+  const parentField = treeConfig.value?.parentField || 'pid';
+  const rowField = treeConfig.value?.rowField || 'id';
+  for (let index = 0; index <  leafData.length; index++) {
+    const dataItem = leafData[index];
+    treeData.value.push(dataItem);
+    nodeSet.add(dataItem[rowField])
+    getParentNode(dataItem, parentField, rowField);
+  }
+}
+// 根据叶子节点递归遍历获取祖先节点
+function getParentNode(dataItem: any, parentField: string, rowField: string) {
+  const parentKey = dataItem[parentField];
+  const parentItem = fullTableData.value?.find(item => item[rowField] === parentKey);
+  if (!parentItem) {
+    return;
+  }
+  if (!nodeSet.has(parentKey)) {
+    treeData.value.push(parentItem);
+    nodeSet.add(parentKey);
+  }
+  if (parentItem[parentField] !== null) {
+    getParentNode(parentItem, parentField, rowField);
+  }
+}
+// 筛选后的数据与用户输入数据的顺序保持一致
+function sortFunc(targetData:any[], sortData: any, key: string | number){
+  const sortKeyList = sortData.map((item:any) => item[key])
+  return targetData.sort((a, b) => {
+    return sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1;
+  });
+}
+// 树形数据->一维数组
+function treeToArray(data: VxeTableDataRow[], resultData:any[] = [], pid: any = null) {
+  const childrenField = treeConfig.value?.childrenField || 'children';
+  const rowField = treeConfig.value?.rowField || 'id';
+  for (let i = 0; i < data.length; i++) {
+    const node = data[i];
+    const parentField = treeConfig.value?.parentField || 'pid';
+    if (!node[parentField]) {
+      node[parentField] = pid;
+    }
+    resultData.push(node);
+    if (node[childrenField] &&node[childrenField].length) {
+      treeToArray(node.children, resultData, node[rowField]);
+      delete node[childrenField];
+    }
+  }
+  return resultData;
+}
+// 分页相关
+let topNodeMap = {};
 function changePageSize(pageSize: number) {
   paginationConfig.value.pageSize = pageSize
   getShowTableData()
@@ -222,8 +280,57 @@ function getShowTableData() {
   }
   const { currentPage, pageSize } = paginationConfig.value;
   const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
-  showTableData.value = tableData.value.slice(startIndex, endIndex);
+    const endIndex = startIndex + pageSize;
+  if (!props.useTree) {
+    showTableData.value = tableData.value.slice(startIndex, endIndex);
+  } else {
+    handleShowTreeData(startIndex, endIndex)
+  }
+}
+// 处理树形结构数据的分页
+function handleShowTreeData(startIndex: number, endIndex: number) {
+  const parentField = treeConfig.value?.parentField || 'pid';
+    const rowField = treeConfig.value?.rowField || 'id';
+    const currentParentNodes = tableData.value
+      .filter((item: any) => !item[parentField])
+      .slice(startIndex, endIndex);
+    topNodeMap = {};
+    for (let index = 0; index < tableData.value.length; index++) {
+      const dataItem = tableData.value[index];
+      if (!dataItem[parentField]) {
+        continue;
+      }
+      const topId = getTopNodeId(dataItem[parentField]);
+      if (!topId) {
+        continue;
+      }
+      if (topNodeMap[topId]) {
+        topNodeMap[topId].push(dataItem);
+      } else {
+        topNodeMap[topId] = [dataItem];
+      }
+    }
+    let currentPageData = [];
+    while (currentParentNodes.length) {
+      const nodeItem = currentParentNodes.shift();
+      const children = topNodeMap[nodeItem[rowField]] || []
+      currentPageData = currentPageData.concat(nodeItem, ...children);
+    }
+    showTableData.value = sortFunc(currentPageData, fullTableData.value, rowField);
+}
+// 获取目标节点的祖先节点id
+function getTopNodeId(pid: string | number) {
+  const parentField = treeConfig.value?.parentField || 'pid';
+    const rowField = treeConfig.value?.rowField || 'id';
+  const targetNode = fullTableData.value.find(node => node[rowField] === pid);
+  if (!targetNode) {
+    return;
+  }
+  if (!targetNode[parentField]) {
+    return targetNode[rowField];
+  } else {
+    return getTopNodeId(targetNode[parentField]);
+  }
 }
 function getRowStyle(rowInfo:any) {
   if (!props.rowStyle) {
@@ -235,6 +342,23 @@ function getRowStyle(rowInfo:any) {
   }
   return props.rowStyle;
 }
+// 自定义单元格渲染
+function handleCustomRender() {
+  for (const col of props.column) {
+    if (col.render) {
+      col.cellRender = { name: genRandomStr(16) }
+      VXETable.renderer.add(col.cellRender.name, {
+        renderDefault(_renderOpts, { row, column}) {
+          return col.render({ row, column })
+        }
+      })
+    }
+  }
+}
+
+defineExpose({
+  getVxeInstance: () => xTree?.value
+});
 </script>
 
 <style lang="less">

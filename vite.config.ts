@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import pathsystem from 'path';
 import vue from '@vitejs/plugin-vue';
+import vueJsx from '@vitejs/plugin-vue-jsx';
 import dts from 'vite-plugin-dts'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite';
@@ -12,6 +13,7 @@ const name = 'kingsware-ui';
 export default defineConfig({
   plugins: [
     vue(),
+    vueJsx(),
     dts({
       include: ['./package'],
       tsconfigPath: 'tsconfig.json'
