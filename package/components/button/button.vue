@@ -1,37 +1,36 @@
 <template>
-  <div :class="{ 'button-loading': props.loading }" class="k-button">
-    <el-button
-      ref="buttonRef"
-      class="k-button__inner"
-      :class="[
-        'el-button',
-        {
-          'el-button--main': props.type === 'main',
-          'el-button--secondary': props.type === 'secondary',
-          'el-button--text': props.type === 'text',
-          'el-button--icon': props.type === 'icon',
-          'is-loading': props.loading,
-          'is-disabled': props.disabled,
-        },
-        getSizeClass,
-      ]"
-      v-bind="attrs"
-      @click="handleClick"
-    >
-      <slot name="iconLeft" class="icon-left">
-        <span v-if="props.iconLeft">
-          <props.iconLeft class="icon-left" />
-        </span>
-      </slot>
-      <span v-if="props.value">{{ props.value }}</span>
-      <label v-else><slot class="slot-content"></slot></label>
-      <slot name="iconRight" class="icon-right">
-        <span v-if="props.iconRight">
-          <props.iconRight class="icon-right" />
-        </span>
-      </slot>
-    </el-button>
-  </div>
+  <el-button
+    ref="buttonRef"
+    class="k-button"
+    :class="[
+      'el-button',
+      {
+        'el-button--main': props.type === 'main',
+        'el-button--secondary': props.type === 'secondary',
+        'el-button--text': props.type === 'text',
+        'el-button--icon': props.type === 'icon',
+        'is-loading': props.loading,
+        'is-disabled': props.disabled,
+        'button-loading': props.loading
+      },
+      getSizeClass,
+    ]"
+    v-bind="attrs"
+    @click="handleClick"
+  >
+    <slot name="iconLeft" class="icon-left">
+      <span v-if="props.iconLeft">
+        <props.iconLeft class="icon-left" />
+      </span>
+    </slot>
+    <span v-if="props.value">{{ props.value }}</span>
+    <label v-else><slot class="slot-content"></slot></label>
+    <slot name="iconRight" class="icon-right">
+      <span v-if="props.iconRight">
+        <props.iconRight class="icon-right" />
+      </span>
+    </slot>
+  </el-button>
 </template>
 
 <script setup lang="ts">

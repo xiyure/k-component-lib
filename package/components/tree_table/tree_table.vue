@@ -10,7 +10,7 @@
     </div>
     <div class="table-box">
       <k-table
-        v-bind="props"
+        v-bind="tableProps"
         :data="showTableData"
         ref="xTree"
         :row-config="rowConfig"
@@ -72,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, nextTick } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import VXETable, { VxeTableInstance, VxeTableDataRow, VxeTable} from 'vxe-table';
 import { IconSearch } from 'ksw-vue-icon';
 import { KInput } from '../input';
@@ -86,12 +86,8 @@ defineOptions({
 });
 
 const props = withDefaults(defineProps<TreeTableProps>(), {
-  remote: false,
-  useTree: false,
-  exactMatch: false,
   showPage: true,
   border: true,
-  stripe: false,
   size: 'mini',
   height: '100%',
   showOverflow: true,
@@ -133,7 +129,7 @@ const defaultEditConfig = {
 const defaultScrollY = { enabled: true }
 const defaultColumnConfig = { resizable: true }
 
-const emits = defineEmits([]);
+const emits = defineEmits(['remote-query', 'server-paging']);
 const xTree = ref();
 const slots = defineSlots();
 const query = ref('');
@@ -143,6 +139,25 @@ onMounted(() => {
   getShowTableData()
 })
 
+// 抽取props中的table相关参数
+const tableProps = computed(() => {
+  const notTableAttrs = [
+    'useTree',
+    'exactMatch',
+    'showPage',
+    'column',
+    'isRemoteQuery',
+    'isServerPaging',
+    'paginationConfig'
+  ];
+  const tableConfig = {};
+  for (const key in props) {
+    if (!notTableAttrs.includes(key)) {
+      tableConfig[key] = props[key];
+    }
+  }
+  return tableConfig;
+})
 // 合并用户与表格默认配置
 const treeConfig = computed(() => {
   if (props.useTree) {
@@ -175,6 +190,22 @@ const showTableData = ref<Array<any>>([]);
 watch(() => props.column, () => {
   handleCustomRender()
 }, { immediate: true, deep: true })
+// watch(() => props.data, (newValue) => {
+//   fullTableData.value = treeToArray(newValue || []);
+//   // 使用服务端分页/查询时，展示数据即传入数据，无需额外处理
+//   if (props.isRemoteQuery || props.isServerPaging) {
+//     showTableData.value = fullTableData.value;
+//     return;
+//   }
+//   let { currentPage, pageSize } = paginationConfig.value;
+//   const dataLen = newValue?.length || 0;
+//   // 数据最大页码小于当前页码时，需要修改当前页码
+//   while ((currentPage - 1) * pageSize + 1 > dataLen) {
+//     currentPage--;
+//   }
+//   paginationConfig.value.currentPage = currentPage;
+//   filterTableData();
+// }, { deep: true })
 
 // 表格内容搜索
 const treeData = ref<any>([]);
@@ -182,10 +213,14 @@ const nodeSet = new Set();
 function filterTableData() {
   const VxeInstance:VxeTableInstance = xTree.value.getVxeInstance();
   const searchKey = query.value.trim();
-  if (props.remote || !searchKey) {
+  if (!searchKey) {
     tableData.value = fullTableData.value;
     getShowTableData();
     VxeInstance.clearTreeExpand()
+    return;
+  }
+  if (props.isRemoteQuery) {
+    emits('remote-query', query.value);
     return;
   }
   const fieldList = props.column.map(col => col.field || '')
@@ -214,8 +249,7 @@ function filterTableData() {
 function handleTreeData(leafData:any[]) {
   nodeSet.clear()
   treeData.value = [];
-  const parentField = treeConfig.value?.parentField || 'pid';
-  const rowField = treeConfig.value?.rowField || 'id';
+  const { parentField, rowField } = getTreeConfigField();
   for (let index = 0; index <  leafData.length; index++) {
     const dataItem = leafData[index];
     treeData.value.push(dataItem);
@@ -251,7 +285,7 @@ function treeToArray(data: VxeTableDataRow[], resultData:any[] = [], pid: any = 
   const rowField = treeConfig.value?.rowField || 'id';
   for (let i = 0; i < data.length; i++) {
     const node = data[i];
-    const parentField = treeConfig.value?.parentField || 'pid';
+    const { parentField } = getTreeConfigField();
     if (!node[parentField]) {
       node[parentField] = pid;
     }
@@ -278,6 +312,10 @@ function getShowTableData() {
     showTableData.value = tableData.value;
     return;
   }
+  if (props.isServerPaging) {
+    emits('server-paging', paginationConfig.value);
+    return;
+  }
   const { currentPage, pageSize } = paginationConfig.value;
   const startIndex = (currentPage - 1) * pageSize;
     const endIndex = startIndex + pageSize;
@@ -289,39 +327,37 @@ function getShowTableData() {
 }
 // 处理树形结构数据的分页
 function handleShowTreeData(startIndex: number, endIndex: number) {
-  const parentField = treeConfig.value?.parentField || 'pid';
-    const rowField = treeConfig.value?.rowField || 'id';
-    const currentParentNodes = tableData.value
-      .filter((item: any) => !item[parentField])
-      .slice(startIndex, endIndex);
-    topNodeMap = {};
-    for (let index = 0; index < tableData.value.length; index++) {
-      const dataItem = tableData.value[index];
-      if (!dataItem[parentField]) {
-        continue;
-      }
-      const topId = getTopNodeId(dataItem[parentField]);
-      if (!topId) {
-        continue;
-      }
-      if (topNodeMap[topId]) {
-        topNodeMap[topId].push(dataItem);
-      } else {
-        topNodeMap[topId] = [dataItem];
-      }
+  const { parentField, rowField } = getTreeConfigField();
+  const currentParentNodes = tableData.value
+    .filter((item: any) => !item[parentField])
+    .slice(startIndex, endIndex);
+  topNodeMap = {};
+  for (let index = 0; index < tableData.value.length; index++) {
+    const dataItem = tableData.value[index];
+    if (!dataItem[parentField]) {
+      continue;
     }
-    let currentPageData = [];
-    while (currentParentNodes.length) {
-      const nodeItem = currentParentNodes.shift();
-      const children = topNodeMap[nodeItem[rowField]] || []
-      currentPageData = currentPageData.concat(nodeItem, ...children);
+    const topId = getTopNodeId(dataItem[parentField]);
+    if (!topId) {
+      continue;
     }
-    showTableData.value = sortFunc(currentPageData, fullTableData.value, rowField);
+    if (topNodeMap[topId]) {
+      topNodeMap[topId].push(dataItem);
+    } else {
+      topNodeMap[topId] = [dataItem];
+    }
+  }
+  let currentPageData = [];
+  while (currentParentNodes.length) {
+    const nodeItem = currentParentNodes.shift();
+    const children = topNodeMap[nodeItem[rowField]] || []
+    currentPageData = currentPageData.concat(nodeItem, ...children);
+  }
+  showTableData.value = sortFunc(currentPageData, fullTableData.value, rowField);
 }
 // 获取目标节点的祖先节点id
 function getTopNodeId(pid: string | number) {
-  const parentField = treeConfig.value?.parentField || 'pid';
-    const rowField = treeConfig.value?.rowField || 'id';
+  const { parentField, rowField } = getTreeConfigField();
   const targetNode = fullTableData.value.find(node => node[rowField] === pid);
   if (!targetNode) {
     return;
@@ -354,6 +390,12 @@ function handleCustomRender() {
       })
     }
   }
+}
+
+function getTreeConfigField() {
+  const parentField = treeConfig.value?.parentField || 'pid';
+  const rowField = treeConfig.value?.rowField || 'id';
+  return { parentField, rowField }
 }
 
 defineExpose({
