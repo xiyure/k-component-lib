@@ -1,9 +1,7 @@
 <template>
-  <div class="k-option">
-    <el-option-group :label="props.label">
-      <slot></slot>
-    </el-option-group>
-  </div>
+  <el-option-group class="k-option-group" :label="props.label">
+    <slot></slot>
+  </el-option-group>
 </template>
 
 <script setup lang="ts">

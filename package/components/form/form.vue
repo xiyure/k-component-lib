@@ -1,13 +1,12 @@
 <template>
-  <div class="k-form">
-    <el-form
-      ref="KFormRef"
-      v-bind="attrs"
-      @validate="handleValidate"
-    >
-      <slot></slot>
-    </el-form>
-  </div>
+  <el-form
+    ref="KFormRef"
+    class="k-form"
+    v-bind="attrs"
+    @validate="handleValidate"
+  >
+    <slot></slot>
+  </el-form>
 </template>
 
 <script setup lang="ts">

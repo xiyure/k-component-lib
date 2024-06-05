@@ -1,25 +1,24 @@
 <template>
-  <div class="k-drawer">
-    <el-drawer
-      ref="KDrawerRef"
-      v-model="modelValue"
-      v-bind="attrs"
-      @open="handleOpen"
-      @opened="handleOpened"
-      @close="handleCloseEvent"
-      @closed="handleClosed"
-      @open-auto-focus="handleOpenFocus"
-      @close-auto-focus="handleCloseFocus"
-    >
-      <slot></slot>
-      <template v-if="slots.header" #header="headerSlotProps">
-        <slot name="header" v-bind="headerSlotProps"></slot>
-      </template>
-      <template v-if="slots.footer" #footer>
-        <slot name="footer"></slot>
-      </template>
-    </el-drawer>
-  </div>
+  <el-drawer
+    ref="KDrawerRef"
+    class="k-drawer"
+    v-model="modelValue"
+    v-bind="attrs"
+    @open="handleOpen"
+    @opened="handleOpened"
+    @close="handleCloseEvent"
+    @closed="handleClosed"
+    @open-auto-focus="handleOpenFocus"
+    @close-auto-focus="handleCloseFocus"
+  >
+    <slot></slot>
+    <template v-if="slots.header" #header="headerSlotProps">
+      <slot name="header" v-bind="headerSlotProps"></slot>
+    </template>
+    <template v-if="slots.footer" #footer>
+      <slot name="footer"></slot>
+    </template>
+  </el-drawer>
 </template>
 
 <script setup lang="ts">

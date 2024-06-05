@@ -1,35 +1,34 @@
 <template>
-  <div class="k-select">
-    <el-select
-      ref="inputRef"
-      v-model="inputValue"
-      v-bind="attrs"
-      default-first-option
-      :style="{
-        width: props.width
-      }"
-      @change="handleChangeEvent"
-      @focus="handleFocusEvent"
-      @blur="handleBlurEvent"
-      @clear="handleClearEvent"
-      @visible-change="handleVisibleChangeEvent"
-      @remove-tag="handleRemoveTagEvent"
-    >
-      <slot></slot>
-      <template v-if="slots.tag" #tag>
-        <slot v-if="slots.tag" name="tag"></slot>
-      </template>
-      <template v-if="slots.empty" #empty>
-        <slot name="empty"></slot>
-      </template>
-      <template v-if="slots.header" #header>
-        <slot name="header"></slot>
-      </template>
-      <template v-if="slots.footer" #footer>
-        <slot name="footer"></slot>
-      </template>
-    </el-select>
-  </div>
+  <el-select
+    ref="inputRef"
+    class="k-select"
+    v-model="inputValue"
+    v-bind="attrs"
+    default-first-option
+    :style="{
+      width: props.width
+    }"
+    @change="handleChangeEvent"
+    @focus="handleFocusEvent"
+    @blur="handleBlurEvent"
+    @clear="handleClearEvent"
+    @visible-change="handleVisibleChangeEvent"
+    @remove-tag="handleRemoveTagEvent"
+  >
+    <slot></slot>
+    <template v-if="slots.tag" #tag>
+      <slot v-if="slots.tag" name="tag"></slot>
+    </template>
+    <template v-if="slots.empty" #empty>
+      <slot name="empty"></slot>
+    </template>
+    <template v-if="slots.header" #header>
+      <slot name="header"></slot>
+    </template>
+    <template v-if="slots.footer" #footer>
+      <slot name="footer"></slot>
+    </template>
+  </el-select>
 </template>
 
 <script setup lang="ts">

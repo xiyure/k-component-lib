@@ -1,27 +1,26 @@
 <template>
-  <div class="k-tab-item">
-    <el-tab-pane
-      :name="props.name"
-      :closable="closable"
-      :disabled="props.disabled"
-    >
-      <template #label>
-        <div class="k-tab__label">
-          <component :is="props.icon"></component>
-          <span v-if="!slots.label">{{ props.label }}</span>
-          <slot
-            v-else
-            name="label"
-          ></slot>
-        </div>
-      </template>
-      <slot>
-        <keep-alive v-if="isUseRouter && router">
-          <component :is="currentRouteComp"></component>
-        </keep-alive>
-      </slot>
-    </el-tab-pane>
-  </div>
+  <el-tab-pane
+    class="k-tab-item"
+    :name="props.name"
+    :closable="closable"
+    :disabled="props.disabled"
+  >
+    <template #label>
+      <div class="k-tab__label">
+        <component :is="props.icon"></component>
+        <span v-if="!slots.label">{{ props.label }}</span>
+        <slot
+          v-else
+          name="label"
+        ></slot>
+      </div>
+    </template>
+    <slot>
+      <keep-alive v-if="isUseRouter && router">
+        <component :is="currentRouteComp"></component>
+      </keep-alive>
+    </slot>
+  </el-tab-pane>
 </template>
 
 <script setup lang="ts">

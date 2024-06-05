@@ -1,16 +1,15 @@
 <template>
-  <div class="k-collapse-item">
-    <el-collapse-item
-      :name="props.name"
-      :title="props.title"
-      :disabled="props.disabled"
-    >
-      <template v-if="slots.title" #title>
-        <slot name="title"></slot>
-      </template>
-      <slot></slot>
-    </el-collapse-item>
-  </div>
+  <el-collapse-item
+    class="k-collapse-item"
+    :name="props.name"
+    :title="props.title"
+    :disabled="props.disabled"
+  >
+    <template v-if="slots.title" #title>
+      <slot name="title"></slot>
+    </template>
+    <slot></slot>
+  </el-collapse-item>
 </template>
 
 <script setup lang="ts">

@@ -1,16 +1,15 @@
 <template>
-  <div class="k-switch">
-    <el-switch
-      v-model="modelValue"
-      v-bind="attrs"
-      :style="{
-        '--el-switch-on-color': props.switchOnColor,
-        '--el-switch-off-color': props.switchOffColor
-      }"
-      inline-prompt
-      @change="handleChange"
-    />
-  </div>
+  <el-switch
+    class="k-switch"
+    v-model="modelValue"
+    v-bind="attrs"
+    :style="{
+      '--el-switch-on-color': props.switchOnColor,
+      '--el-switch-off-color': props.switchOffColor
+    }"
+    inline-prompt
+    @change="handleChange"
+  />
 </template>
 
 <script setup lang="ts">

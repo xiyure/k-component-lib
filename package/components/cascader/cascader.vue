@@ -1,23 +1,22 @@
 <template>
-  <div class="k-cascader">
-    <el-cascader
-      ref="cascaderRef"
-      v-model="inputValue"
-      v-bind="attrs"
-      :props="propsConfig"
-      collapse-tags-tooltip
-      @change="handleChangeEvent"
-      @focus="handleFocusEvent"
-      @blur="handleBlurEvent"
-      @expand-change="handleExpandEvent"
-      @visible-change="handleVisibleChangeEvent"
-      @remove-tag="handleRemoveTagEvent"
-    >
-      <template #empty>
-        <slot name="empty"></slot>
-      </template>
-    </el-cascader>
-  </div>
+  <el-cascader
+    ref="cascaderRef"
+    class="k-cascader"
+    v-model="inputValue"
+    v-bind="attrs"
+    :props="propsConfig"
+    collapse-tags-tooltip
+    @change="handleChangeEvent"
+    @focus="handleFocusEvent"
+    @blur="handleBlurEvent"
+    @expand-change="handleExpandEvent"
+    @visible-change="handleVisibleChangeEvent"
+    @remove-tag="handleRemoveTagEvent"
+  >
+    <template #empty>
+      <slot name="empty"></slot>
+    </template>
+  </el-cascader>
 </template>
 
 <script setup lang="ts">

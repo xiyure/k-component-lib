@@ -1,11 +1,10 @@
 <template>
-  <div class="k-option">
-    <el-option
-      v-bind="attrs"
-    >
-      <slot></slot>
-    </el-option>
-  </div>
+  <el-option
+    class="k-option"
+    v-bind="attrs"
+  >
+    <slot></slot>
+  </el-option>
 </template>
 
 <script setup lang="ts">

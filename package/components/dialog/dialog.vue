@@ -1,24 +1,23 @@
 <template>
-  <div class="k-dialog">
-    <el-dialog
-      v-model="modelValue"
-      v-bind="attrs"
-      @open="handleOpen"
-      @opened="handleOpened"
-      @close="handleClose"
-      @closed="handleClosed"
-      @open-auto-focus="handleOpenFocus"
-      @close-auto-focus="handleCloseFocus"
-    >
-      <slot></slot>
-      <template #header>
-        <slot name="header"></slot>
-      </template>
-      <template #footer>
-        <slot name="footer"></slot>
-      </template>
-    </el-dialog>
-  </div>
+  <el-dialog
+    class="k-dialog"
+    v-model="modelValue"
+    v-bind="attrs"
+    @open="handleOpen"
+    @opened="handleOpened"
+    @close="handleClose"
+    @closed="handleClosed"
+    @open-auto-focus="handleOpenFocus"
+    @close-auto-focus="handleCloseFocus"
+  >
+    <slot></slot>
+    <template #header>
+      <slot name="header"></slot>
+    </template>
+    <template #footer>
+      <slot name="footer"></slot>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">

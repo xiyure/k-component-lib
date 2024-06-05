@@ -2,7 +2,7 @@ export interface InputNumberProps {
   id?: string
   name?: string
   label?: string
-  modelValue: number | null
+  modelValue?: number | null
   width?: string
   disabled?: boolean
   placeholder?: string

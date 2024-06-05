@@ -1,15 +1,14 @@
 <template>
-  <div class="k-tabs">
-    <el-tabs
-      v-model="activeName"
-      v-bind="originAttrs"
-      :tab-position="props.position"
-      @tab-click="handleClick"
-      @tab-remove="handleRemove"
-    >
-      <slot></slot>
-    </el-tabs>
-  </div>
+  <el-tabs
+    class="k-tabs"
+    v-model="activeName"
+    v-bind="originAttrs"
+    :tab-position="props.position"
+    @tab-click="handleClick"
+    @tab-remove="handleRemove"
+  >
+    <slot></slot>
+  </el-tabs>
 </template>
 
 <script setup lang="ts">

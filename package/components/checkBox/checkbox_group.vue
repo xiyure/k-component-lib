@@ -1,14 +1,12 @@
 <template>
-  <div class="k-checkbox-group">
-    <el-checkbox-group
-      v-model="modelValue"
-      class="k-checkbox-group__inner"
-      v-bind="attrs"
-      @change="handleChange"
-    >
-      <slot></slot>
-    </el-checkbox-group>
-  </div>
+  <el-checkbox-group
+    v-model="modelValue"
+    class="k-checkbox-group"
+    v-bind="attrs"
+    @change="handleChange"
+  >
+    <slot></slot>
+  </el-checkbox-group>
 </template>
 
 <script setup lang="ts">
@@ -49,6 +47,6 @@ provide('selectedData', modelValue);
 provide('fillColor', props.color);
 </script>
 
-<style lang="less">
-@import './style.less';
+<style lang="css">
+@import './style.css';
 </style>

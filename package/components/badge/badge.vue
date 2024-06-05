@@ -1,9 +1,7 @@
 <template>
-  <div class="k-badge">
-    <el-badge v-bind="attrs">
-      <slot></slot>
-    </el-badge>
-  </div>
+  <el-badge class="k-badge" v-bind="attrs">
+    <slot></slot>
+  </el-badge>
 </template>
 
 <script setup lang="ts">

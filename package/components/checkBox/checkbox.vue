@@ -1,20 +1,17 @@
 <template>
-  <div
-    :id="id"
+  <el-checkbox
     class="k-checkbox"
+    v-model="modelValue"
+    v-bind="attrs"
+    :id="id"
+    @change="handleChange"
   >
-    <el-checkbox
-      v-model="modelValue"
-      v-bind="attrs"
-      @change="handleChange"
-    >
-      <slot>
-        <span class="checkbox__label">
-          {{ props.label }}
-        </span>
-      </slot>
-    </el-checkbox>
-  </div>
+    <slot>
+      <span class="checkbox__label">
+        {{ props.label }}
+      </span>
+    </slot>
+  </el-checkbox>
 </template>
 
 <script setup lang="ts">
@@ -63,33 +60,15 @@ watch(() => props.modelValue, (newValue) => {
   modelValue.value = newValue;
 }, { immediate: true });
 
-watch(() => [modelValue.value, selectedData.value, props.indeterminate], () => {
-  nextTick(() => {
-    const color = (props.color || fillColor || '#409eff') as string;
-    changeCheckboxStyle(color);
-  });
-}, { immediate: true });
+// watch(() => [modelValue.value, selectedData.value, props.indeterminate], () => {
+//   nextTick(() => {
+//     const color = (props.color || fillColor || '#409eff') as string;
+//     const element = document.getElementById(id);
+//     console.log(color)
+//     element?.style?.setProperty('--default-bgColor', color);
+//   });
+// }, { immediate: true });
 
-function changeCheckboxStyle(color:string) {
-  let isChecked = false;
-  if (isWarpped) {
-    isChecked = selectedData.value.includes(props.value);
-  } else {
-    isChecked = modelValue.value === true;
-  }
-  if (labelDom !== null && isChecked) {
-    labelDom.style.color = color;
-  } else if (labelDom !== null && !isChecked) {
-    labelDom.style.color = '#000';
-  }
-  if (selectDom !== null && (isChecked || props.indeterminate)) {
-    selectDom.style.backgroundColor = color;
-    selectDom.style.borderColor = color;
-  } else if (selectDom !== null && !isChecked && !props.indeterminate) {
-    selectDom.style.backgroundColor = '#FFF';
-    selectDom.style.borderColor = '#CDCACF';
-  }
-}
 const handleChange = (value: boolean) => {
   if (isWarpped) {
     return;
@@ -100,6 +79,6 @@ const handleChange = (value: boolean) => {
 
 </script>
 
-<style lang="less">
-@import './style.less';
+<style lang="css">
+@import './style.css';
 </style>

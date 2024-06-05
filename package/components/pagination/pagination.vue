@@ -1,15 +1,14 @@
 <template>
-  <div class="k-pagination">
-    <el-pagination
-      v-bind="attrs"
-      :page-size="pageSize"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      @change="handleChange"
-      @prev-click="handlePrevClick"
-      @next-click="handlenNextClick"
-    />
-  </div>
+  <el-pagination
+    class="k-pagination"
+    v-bind="attrs"
+    :page-size="pageSize"
+    @size-change="handleSizeChange"
+    @current-change="handleCurrentChange"
+    @change="handleChange"
+    @prev-click="handlePrevClick"
+    @next-click="handlenNextClick"
+  />
 </template>
 
 <script setup lang="ts">

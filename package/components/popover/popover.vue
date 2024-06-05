@@ -1,16 +1,15 @@
 <template>
-  <div class="k-popover">
-    <el-popover
-      v-bind="attrs"
-      @show="handleShow"
-      @hide="handleHide"
-    >
-      <slot></slot>
-      <template #reference> 
-        <slot name="reference"></slot>
-      </template>
-    </el-popover>
-  </div>
+  <el-popover
+    class="k-popover"
+    v-bind="attrs"
+    @show="handleShow"
+    @hide="handleHide"
+  >
+    <slot></slot>
+    <template #reference> 
+      <slot name="reference"></slot>
+    </template>
+  </el-popover>
 </template>
 
 <script setup lang="ts">

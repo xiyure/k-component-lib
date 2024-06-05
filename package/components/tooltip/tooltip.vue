@@ -1,41 +1,39 @@
 <template>
-  <div class="k-tooltip">
-    <k-popover
-      v-bind="attrs"
-      :popper-style="{
-        color: props.textColor,
-        backgroundColor: toolTipColor
-      }"
-    >
-      <slot></slot>
-      <template #reference>
-        <i
-          v-if="props.icon"
-          class="k-tooltip-icon"
-        >
-          <props.icon
-            :style="{
-              color: toolTipColor,
-              width: iconSize,
-              height: iconSize
-            }"
-          />
-        </i>
-        <i
-          v-else
-          class="k-tooltip-icon"
-        >
-          <IconTips
-            :style="{
-              color: toolTipColor,
-              width: iconSize,
-              height: iconSize
-            }"
-          />
-        </i>
-      </template>
-    </k-popover>
-  </div>
+  <k-popover
+    v-bind="attrs"
+    :popper-style="{
+      color: props.textColor,
+      backgroundColor: toolTipColor
+    }"
+  >
+    <slot></slot>
+    <template #reference>
+      <i
+        v-if="props.icon"
+        class="k-tooltip-icon"
+      >
+        <props.icon
+          :style="{
+            color: toolTipColor,
+            width: iconSize,
+            height: iconSize
+          }"
+        />
+      </i>
+      <i
+        v-else
+        class="k-tooltip-icon"
+      >
+        <IconTips
+          :style="{
+            color: toolTipColor,
+            width: iconSize,
+            height: iconSize
+          }"
+        />
+      </i>
+    </template>
+  </k-popover>
 </template>
 
 <script setup lang="ts">

@@ -1,44 +1,43 @@
 <template>
-  <div class="k-input">
-    <el-input
-      ref="inputRef"
-      v-model="inputValue"
-      v-bind="attrs"
-      :style="{
-        width: props.width
-      }"
-      @input="handleInputEvent"
-      @change="handleChangeEvent"
-      @focus="handleFocusEvent"
-      @blur="handleBlurEvent"
-      @clear="handleClearEvent"
+  <el-input
+    ref="inputRef"
+    class="k-input"
+    v-model="inputValue"
+    v-bind="attrs"
+    :style="{
+      width: props.width
+    }"
+    @input="handleInputEvent"
+    @change="handleChangeEvent"
+    @focus="handleFocusEvent"
+    @blur="handleBlurEvent"
+    @clear="handleClearEvent"
+  >
+    <template
+      v-if="slots.prepend"
+      #prepend
     >
-      <template
-        v-if="slots.prepend"
-        #prepend
-      >
-        <slot name="prepend"></slot>
-      </template>
-      <template
-        v-if="slots.append"
-        #append
-      >
-        <slot name="append"></slot>
-      </template>
-      <template
-        v-if="slots.prefix"
-        #prefix
-      >
-        <slot name="prefix"></slot>
-      </template>
-      <template
-        v-if="slots.suffix"
-        #suffix
-      >
-        <slot name="suffix"></slot>
-      </template>
-    </el-input>
-  </div>
+      <slot name="prepend"></slot>
+    </template>
+    <template
+      v-if="slots.append"
+      #append
+    >
+      <slot name="append"></slot>
+    </template>
+    <template
+      v-if="slots.prefix"
+      #prefix
+    >
+      <slot name="prefix"></slot>
+    </template>
+    <template
+      v-if="slots.suffix"
+      #suffix
+    >
+      <slot name="suffix"></slot>
+    </template>
+  </el-input>
 </template>
 
 <script setup lang="ts">

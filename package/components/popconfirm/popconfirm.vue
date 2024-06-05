@@ -1,19 +1,18 @@
 <template>
-  <div class="k-popconfirm">
-    <el-popconfirm
-      v-bind="attrs"
-      cancel-button-type="default"
-      @confirm="handleConfirm"
-      @cancel="handleCancel"
-      @show="handleShow"
-      @hide="handleHide"
-    >
-      <slot></slot>
-      <template #reference> 
-        <slot name="reference"></slot>
-      </template>
-    </el-popconfirm>
-  </div>
+  <el-popconfirm
+    class="k-popconfirm"
+    v-bind="attrs"
+    cancel-button-type="default"
+    @confirm="handleConfirm"
+    @cancel="handleCancel"
+    @show="handleShow"
+    @hide="handleHide"
+  >
+    <slot></slot>
+    <template #reference> 
+      <slot name="reference"></slot>
+    </template>
+  </el-popconfirm>
 </template>
 
 <script setup lang="ts">
