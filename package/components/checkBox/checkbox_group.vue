@@ -25,6 +25,7 @@ const props = withDefaults(defineProps<SelectButtonGroupProps>(), {
 const emits = defineEmits(['update:modelValue', 'change']);
 
 const modelValue = ref(props.modelValue);
+const fillColor = ref(props.color);
 
 const attrs = computed(() => ({
   disabled: props.disabled,
@@ -36,15 +37,17 @@ const attrs = computed(() => ({
 watch(() => props.modelValue, (newValue) => {
   modelValue.value = newValue;
 });
+watch(() => props.color, (newValue) => {
+  fillColor.value = newValue;
+});
 
-const handleChange = (value: boolean) => {
+function handleChange(value: boolean){
   emits('update:modelValue', value);
   emits('change', value);
 };
 
 provide('useCheckboxGroup', true);
-provide('selectedData', modelValue);
-provide('fillColor', props.color);
+provide('fillColor', fillColor);
 </script>
 
 <style lang="css">

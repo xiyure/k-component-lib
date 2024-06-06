@@ -1,11 +1,15 @@
 :root {
-  --checkbox-bgColor: 'red'
+  --checkbox-bgColor: transparent;
 }
 
-.el-checkbox.is-checked .el-checkbox__input {
+.el-checkbox.is-checked .el-checkbox__inner {
   background-color: var(--checkbox-bgColor);
   border-color: var(--checkbox-bgColor);
 }
 .el-checkbox.is-checked .el-checkbox__label {
   color: var(--checkbox-bgColor);
+}
+.el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background-color: var(--checkbox-bgColor);
+  border-color: var(--checkbox-bgColor);
 }

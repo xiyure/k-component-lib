@@ -25,6 +25,7 @@
     "ksw-vue-icon": "latest",
     "less": "^4.2.0",
     "less-loader": "^12.2.0",
+    "lodash": "^4.17.21",
     "vue": "^3.4.21",
     "vue-i18n": "^9.13.1",
     "vxe-table": "^4.6.12"

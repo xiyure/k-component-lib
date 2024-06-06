@@ -58,7 +58,7 @@
     <div class="pagination-box">
       <k-pagination
         v-if="showPage"
-        :total="tableData.length"
+        :total="dataLength"
         :page-size="paginationConfig.pageSize"
         :pager-count="paginationConfig.pagerCount"
         :page-sizes="paginationConfig.pageSizes"
@@ -72,8 +72,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue';
-import VXETable, { VxeTableInstance, VxeTableDataRow, VxeTable} from 'vxe-table';
+import { ref, computed, watch, nextTick } from 'vue';
+import VXETable, { VxeTableInstance, VxeTableDataRow} from 'vxe-table';
+import { cloneDeep} from 'lodash'
 import { IconSearch } from 'ksw-vue-icon';
 import { KInput } from '../input';
 import { TreeTableProps } from './type';
@@ -135,10 +136,6 @@ const slots = defineSlots();
 const query = ref('');
 const paginationConfig = ref(Object.assign(defaultPaginationConfig, props.paginationConfig || {}));
 
-onMounted(() => {
-  getShowTableData()
-})
-
 // 抽取props中的table相关参数
 const tableProps = computed(() => {
   const notTableAttrs = [
@@ -187,25 +184,31 @@ const fullTableData = ref<Array<any>>((treeToArray(props.data || [])))
 const tableData = ref<Array<any>>(fullTableData.value);
 const showTableData = ref<Array<any>>([]);
 
+const dataLength = computed(() => {
+  if (props.useTree) {
+    const { parentField } = getTreeConfigField();
+    return fullTableData.value.filter((item: any) => !item[parentField]).length;
+  } else {
+    return tableData.value.length;
+  }
+})
+
 watch(() => props.column, () => {
   handleCustomRender()
 }, { immediate: true, deep: true })
-// watch(() => props.data, (newValue) => {
-//   fullTableData.value = treeToArray(newValue || []);
-//   // 使用服务端分页/查询时，展示数据即传入数据，无需额外处理
-//   if (props.isRemoteQuery || props.isServerPaging) {
-//     showTableData.value = fullTableData.value;
-//     return;
-//   }
-//   let { currentPage, pageSize } = paginationConfig.value;
-//   const dataLen = newValue?.length || 0;
-//   // 数据最大页码小于当前页码时，需要修改当前页码
-//   while ((currentPage - 1) * pageSize + 1 > dataLen) {
-//     currentPage--;
-//   }
-//   paginationConfig.value.currentPage = currentPage;
-//   filterTableData();
-// }, { deep: true })
+watch(() => props.data, (newValue) => {
+  fullTableData.value = treeToArray(newValue || []);
+  // 使用服务端分页/查询时，展示数据即传入数据，无需额外处理
+  if (props.isRemoteQuery || props.isServerPaging) {
+    showTableData.value = fullTableData.value;
+    return;
+  }
+  // 检查并更新页码
+  updatePageNum(fullTableData.value);
+  nextTick(() => {
+    filterTableData();
+  });
+}, { deep: true, immediate: true })
 
 // 表格内容搜索
 const treeData = ref<any>([]);
@@ -281,10 +284,12 @@ function sortFunc(targetData:any[], sortData: any, key: string | number){
 }
 // 树形数据->一维数组
 function treeToArray(data: VxeTableDataRow[], resultData:any[] = [], pid: any = null) {
+  // 防止源数据污染
+  const cloneData = cloneDeep(data);
   const childrenField = treeConfig.value?.childrenField || 'children';
   const rowField = treeConfig.value?.rowField || 'id';
-  for (let i = 0; i < data.length; i++) {
-    const node = data[i];
+  for (let i = 0; i < cloneData.length; i++) {
+    const node = cloneData[i];
     const { parentField } = getTreeConfigField();
     if (!node[parentField]) {
       node[parentField] = pid;
@@ -377,6 +382,21 @@ function getRowStyle(rowInfo:any) {
     return props.rowStyle(rowInfo);
   }
   return props.rowStyle;
+}
+// 数据最大页码小于当前页码时，需要修改当前页码
+function updatePageNum(data:any[]) {
+  let { currentPage, pageSize } = paginationConfig.value;
+  let dataLen = 0;
+  if (props.useTree) {
+    const { parentField } = getTreeConfigField();
+    dataLen = data.filter((item: any) => !item[parentField]).length;
+  } else {
+    dataLen = data.length;
+  }
+  while ((currentPage - 1) * pageSize + 1 > dataLen) {
+    currentPage--;
+  }
+  paginationConfig.value.currentPage = currentPage;
 }
 // 自定义单元格渲染
 function handleCustomRender() {

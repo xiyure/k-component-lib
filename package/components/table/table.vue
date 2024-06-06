@@ -47,7 +47,6 @@ function updateDescrition(column:VxeColumnProps, desc:string) {
 }
 
 provide('tableInstance', vxeTableRef);
-provide('tableConfig', { ...props });
 
 defineExpose({
   getVxeInstance: () => vxeTableRef.value,
