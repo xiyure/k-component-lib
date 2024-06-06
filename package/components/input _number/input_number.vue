@@ -29,7 +29,7 @@ defineOptions({
   name: 'KInputNumber'
 });
 
-type InputValue = number | null;
+type InputValue = number | null | undefined;
 
 const props = withDefaults(defineProps<InputNumberProps>(), {
   controls: true

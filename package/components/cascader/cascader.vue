@@ -117,7 +117,7 @@ function handleRemoveTagEvent(tag:any) {
   emits('remove-tag', tag);
 }
 function getCheckedNodes(isOnlyLeaf:boolean) {
-  cascaderRef.value?.getCheckedNodes(isOnlyLeaf);
+  return cascaderRef.value?.getCheckedNodes(isOnlyLeaf);
 }
 function togglePopperVisible(isExpand:boolean) {
   cascaderRef.value?.togglePopperVisible(isExpand);

@@ -88,11 +88,17 @@ function handleCalendarChange(date: Array<Date>) {
 function handleVisibleChange(value: boolean) {
   emits('visible-change', value);
 }
-function focus() {
-  datePickerRef.value?.foucus();
+function focus(focusStartInput?: boolean, isIgnoreFocusEvent?: boolean) {
+  datePickerRef.value?.foucus(focusStartInput, isIgnoreFocusEvent);
+}
+function handleOpen() {
+  datePickerRef.value?.handleOpen();
+}
+function handleClose () {
+  datePickerRef.value?.handleClose ();
 }
 
-defineExpose({ focus });
+defineExpose({ focus, handleOpen, handleClose });
 
 </script>
 

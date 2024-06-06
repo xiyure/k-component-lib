@@ -49,7 +49,7 @@ const attrs = computed(() => ({
 }));
 
 const validate = (trigger: string, callback?: FormValidateCallback) => {
-  KFormItemRef.value?.validate(trigger, callback);
+  return KFormItemRef.value?.validate(trigger, callback);
 };
 const resetField = () => {
   KFormItemRef.value?.resetField();
