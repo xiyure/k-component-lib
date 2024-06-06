@@ -4,6 +4,7 @@
       <vxe-table
         ref="vxeTableRef"
         v-bind="props"
+        v-on="listeners"
       >
         <slot></slot>
         <template v-if="slots.loading" #loading>
@@ -20,6 +21,7 @@
 <script setup lang="ts">
 import { ref, provide, onMounted, computed, getCurrentInstance } from 'vue';
 import { VxeTableProps, VxeColumnProps, VxeTableInstance } from 'vxe-table';
+import { getListeners } from '../../utils';
 
 const DESC_EVENT_NAME = 'desc-change';
 
@@ -32,14 +34,13 @@ const props = withDefaults(defineProps<VxeTableProps>(), {
   showHeader: true,
   fit: true
 });
-
 onMounted(() => {
   const emitter = getCurrentInstance()?.appContext.app.config.globalProperties.__emitter__;
   emitter.on(DESC_EVENT_NAME, updateDescrition.bind(this));
 });
 const emits = defineEmits(['desc-change']);
 const slots = defineSlots();
-
+const listeners = getListeners(getCurrentInstance()?.attrs);
 const vxeTableRef = ref<VxeTableInstance>();
 
 function updateDescrition(column:VxeColumnProps, desc:string) {

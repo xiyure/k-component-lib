@@ -1,3 +1,4 @@
+// 获取随机字符串
 export function genRandomStr(bit:number) {
   let result = '';
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -9,6 +10,7 @@ export function genRandomStr(bit:number) {
   return result;
 }
 
+// 组件size参数转换
 export function getCompSize(size:string | undefined) {
   switch (size) {
     case 'sm': return 'small';
@@ -18,12 +20,28 @@ export function getCompSize(size:string | undefined) {
   }
 }
 
+// 判断css颜色值是否合法
 export function isValidColor(strColor:string) {
   const s = new Option().style;
   s.color = strColor;
   return Boolean(s.color);
 }
 
+// 获取$attrs对象中的事件
+export function getListeners(attrs: any) {
+  const listeners = {};
+  if (typeof attrs !== 'object' || attrs === null) {
+    return listeners;
+  }
+  for (const key in attrs) {
+    if (key.startsWith('on')) {
+      const eventName = key.substring(2);
+      listeners[eventName] = attrs[key];
+    }
+  }
+  return listeners;
+}
+// 自定义事件总线调度
 type emitterType = {
   name: string,
   callback: () => any

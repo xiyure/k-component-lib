@@ -1,36 +1,15 @@
-@font-face {
-  font-family: "MyCustomFont-Light";
-  src: url("../assets/font/AlibabaPuHuiTi-3-45-Light.otf") format("opentype");
-}
-@font-face {
-  font-family: "MyCustomFont";
-  src: url("../assets/font/AlibabaPuHuiTi-3-55-Regular.otf") format("opentype");
-}
-@font-face {
-  font-family: "MyCustomFont-SemiBold";
-  src: url("../assets/font/AlibabaPuHuiTi-3-75-SemiBold.otf") format("opentype");
-}
-@font-face {
-  font-family: "MyCustomFont-Bold";
-  src: url("../assets/font/AlibabaPuHuiTi-3-85-Bold.otf") format("opentype");
-}
 
-body {
-  font-family: "MyCustomFont", sans-serif;
-}
+
 
 .font-light {
-  font-family: "MyCustomFont-Light";
   font-weight: 450;
 }
 
 .font-semibold {
-  font-family: "MyCustomFont-SemiBold";
   font-weight: 750;
 }
 
 .font-bold {
-  font-family: "MyCustomFont-Bold";
   font-weight: 850;
 }
 

@@ -22,6 +22,7 @@
         :empty-text="emptyText || $t('noData')"
         :scroll-y="scrollY"
         :row-style="getRowStyle"
+        v-on="listeners"
     >
        <template v-for="item in column">
           <k-table-column
@@ -72,7 +73,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick } from 'vue';
+import { ref, computed, watch, nextTick, getCurrentInstance } from 'vue';
 import VXETable, { VxeTableInstance, VxeTableDataRow} from 'vxe-table';
 import { cloneDeep} from 'lodash'
 import { IconSearch } from 'ksw-vue-icon';
@@ -80,7 +81,7 @@ import { KInput } from '../input';
 import { TreeTableProps } from './type';
 import { KTable, KTableColumn } from '../table';
 import { KPagination } from '../pagination';
-import { genRandomStr } from '../../utils';
+import { genRandomStr, getListeners } from '../../utils';
 
 defineOptions({
   name: 'KTreeTable'
@@ -127,6 +128,8 @@ const defaultEditConfig = {
   trigger: 'click',
   mode: 'cell'
 }
+
+const listeners = getListeners(getCurrentInstance()?.attrs);
 const defaultScrollY = { enabled: true }
 const defaultColumnConfig = { resizable: true }
 
@@ -134,7 +137,9 @@ const emits = defineEmits(['remote-query', 'server-paging']);
 const xTree = ref();
 const slots = defineSlots();
 const query = ref('');
+// 分页相关变量
 const paginationConfig = ref(Object.assign(defaultPaginationConfig, props.paginationConfig || {}));
+let topNodeMap = {};
 
 // 抽取props中的table相关参数
 const tableProps = computed(() => {
@@ -187,7 +192,7 @@ const showTableData = ref<Array<any>>([]);
 const dataLength = computed(() => {
   if (props.useTree) {
     const { parentField } = getTreeConfigField();
-    return fullTableData.value.filter((item: any) => !item[parentField]).length;
+    return tableData.value.filter((item: any) => !item[parentField]).length;
   } else {
     return tableData.value.length;
   }
@@ -204,11 +209,17 @@ watch(() => props.data, (newValue) => {
     return;
   }
   // 检查并更新页码
-  updatePageNum(fullTableData.value);
   nextTick(() => {
     filterTableData();
   });
 }, { deep: true, immediate: true })
+watch(() => tableData.value.length, () => {
+  if (!props.showPage) {
+    return;
+  }
+  updatePageNum(tableData.value);
+  getShowTableData();
+}, { immediate: true })
 
 // 表格内容搜索
 const treeData = ref<any>([]);
@@ -218,7 +229,6 @@ function filterTableData() {
   const searchKey = query.value.trim();
   if (!searchKey) {
     tableData.value = fullTableData.value;
-    getShowTableData();
     VxeInstance.clearTreeExpand()
     return;
   }
@@ -242,10 +252,6 @@ function filterTableData() {
     const rowField = treeConfig.value?.rowField || 'id';
     tableData.value = sortFunc(treeData.value, fullTableData.value, rowField);
     VxeInstance.setAllTreeExpand(true)
-  }
-  getShowTableData();
-  if (props.showPage) {
-    paginationConfig.value.currentPage = 1;
   }
 }
 // 处理树形数据
@@ -303,7 +309,6 @@ function treeToArray(data: VxeTableDataRow[], resultData:any[] = [], pid: any = 
   return resultData;
 }
 // 分页相关
-let topNodeMap = {};
 function changePageSize(pageSize: number) {
   paginationConfig.value.pageSize = pageSize
   getShowTableData()
