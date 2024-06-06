@@ -58,7 +58,9 @@ const props = withDefaults(defineProps<InputProps>(), {
   readonly: false,
   showWordLimit: false,
   autosize: false,
-  showPassword: false
+  showPassword: false,
+  autocomplete: 'off',
+  validateEvent: true
 });
 
 const slots = defineSlots<{
@@ -93,6 +95,12 @@ const attrs = computed(() => ({
   showPassword: props.showPassword,
   maxLength: props.maxlength,
   minLength: props.minlength,
+  autocomplete: props.autocomplete,
+  inputStyle: props.inputStyle,
+  validateEvent: props.validateEvent,
+  max: props.max,
+  min: props.min,
+  step: props.step
 }));
 
 watch(() => props.modelValue, (newValue) => {
