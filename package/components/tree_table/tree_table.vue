@@ -214,7 +214,7 @@ watch(() => props.data, (newValue) => {
 const treeData = ref<any>([]);
 const nodeSet = new Set();
 function filterTableData() {
-  const VxeInstance:VxeTableInstance = xTree.value.getVxeInstance();
+  const VxeInstance:VxeTableInstance = xTree.value.tableInstance;
   const searchKey = query.value.trim();
   if (!searchKey) {
     tableData.value = fullTableData.value;
@@ -418,8 +418,11 @@ function getTreeConfigField() {
   return { parentField, rowField }
 }
 
+const tableInstance = computed(() => {
+  return xTree?.value.tableInstance;
+})
 defineExpose({
-  getVxeInstance: () => xTree?.value
+  tableInstance
 });
 </script>
 

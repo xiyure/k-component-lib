@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, provide, onMounted, getCurrentInstance } from 'vue';
+import { ref, provide, onMounted, computed, getCurrentInstance } from 'vue';
 import { VxeTableProps, VxeColumnProps, VxeTableInstance } from 'vxe-table';
 
 const DESC_EVENT_NAME = 'desc-change';
@@ -48,8 +48,11 @@ function updateDescrition(column:VxeColumnProps, desc:string) {
 
 provide('tableInstance', vxeTableRef);
 
+const tableInstance = computed(() => {
+  return vxeTableRef.value
+})
 defineExpose({
-  getVxeInstance: () => vxeTableRef.value,
+  tableInstance
 })
 </script>
 

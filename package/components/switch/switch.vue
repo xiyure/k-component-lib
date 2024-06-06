@@ -1,5 +1,6 @@
 <template>
   <el-switch
+    ref="kSwitchRef"
     class="k-switch"
     v-model="modelValue"
     v-bind="attrs"
@@ -28,6 +29,7 @@ const props = withDefaults(defineProps<SwitchProps>(), {
 
 const emits = defineEmits(['update:modelValue', 'change']);
 
+const kSwitchRef = ref();
 const modelValue = ref(props.modelValue);
 
 const attrs = computed(() => ({
@@ -43,10 +45,15 @@ watch(() => props.modelValue, (newValue) => {
   modelValue.value = newValue;
 });
 
-const handleChange = (value: boolean) => {
+function handleChange(value: boolean) {
   emits('update:modelValue', value);
   emits('change', value);
 };
+function focus() {
+  kSwitchRef.value?.focus()
+}
+
+defineExpose({ focus })
 
 </script>
 

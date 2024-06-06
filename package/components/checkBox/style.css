@@ -2,14 +2,14 @@
   --checkbox-bgColor: transparent;
 }
 
-.el-checkbox.is-checked .el-checkbox__inner {
+.k-checkbox.is-checked .el-checkbox__inner {
   background-color: var(--checkbox-bgColor);
   border-color: var(--checkbox-bgColor);
 }
-.el-checkbox.is-checked .el-checkbox__label {
+.k-checkbox.is-checked .el-checkbox__label {
   color: var(--checkbox-bgColor);
 }
-.el-checkbox__input.is-indeterminate .el-checkbox__inner {
+.k-checkbox .el-checkbox__input.is-indeterminate .el-checkbox__inner {
   background-color: var(--checkbox-bgColor);
   border-color: var(--checkbox-bgColor);
 }

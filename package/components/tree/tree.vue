@@ -21,6 +21,9 @@
       <template v-if="slots.default" #default="{ node, data }">
         <slot :node="node" :data="data"></slot>
       </template>
+      <template v-if="slots.empty" #empty>
+        <slot></slot>
+      </template>
     </el-tree-v2>
   </div>
 </template>
