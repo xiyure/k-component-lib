@@ -193,7 +193,6 @@ watch(() => props.data, (newValue) => {
     showTableData.value = fullTableData.value;
     return;
   }
-  // 检查并更新页码
   nextTick(() => {
     filterTableData();
   });
@@ -242,10 +241,33 @@ function handleTreeData(leafData:any[]) {
   const { parentField, rowField } = getTreeConfigField();
   for (let index = 0; index < leafData.length; index++) {
     const dataItem = leafData[index];
+    // 如果tableData中已存在该数据，则不再重复添加
+    const targetItem = treeData.value.find((item: any) => item[rowField] === dataItem[rowField]
+        && item[parentField] === dataItem[parentField]);
+    if (targetItem) {
+      continue;
+    }
     treeData.value.push(dataItem);
+    addChildNodes(dataItem);
     nodeSet.add(dataItem[rowField]);
     getParentNode(dataItem, parentField, rowField);
   }
+}
+function addChildNodes(currentNode: any) {
+  const { parentField, rowField } = getTreeConfigField();
+  const childNodes = fullTableData.value.filter(
+    (node: any) => node[parentField] === currentNode[rowField]
+  );
+  childNodes.forEach((node: any) => {
+    const targetItem = treeData.value.find(
+      (treeDataItem: any) => treeDataItem[rowField] === node[rowField]
+        && treeDataItem[parentField] === node[parentField]
+    );
+    if (!targetItem) {
+      treeData.value.push(node);
+    }
+    addChildNodes(node);
+  });
 }
 // 根据叶子节点递归遍历获取祖先节点
 function getParentNode(dataItem: any, parentField: string, rowField: string) {
@@ -369,7 +391,7 @@ function getRowStyle(rowInfo:any) {
 // 数据最大页码小于当前页码时，需要修改当前页码
 function updatePageNum(data:any[]) {
   let { currentPage } = paginationConfig.value;
-  const pageSize = paginationConfig.value;
+  const pageSize = paginationConfig.value.pageSize;
   let dataLen = 0;
   if (props.useTree) {
     const { parentField } = getTreeConfigField();

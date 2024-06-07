@@ -48,9 +48,7 @@ watch(() => [props.color, fillColor.value], () => {
   });
 }, { immediate: true });
 
-const getSizeClass = computed(() => {
-  return props.size ? `el-radio--${ props.size }` : '';
-});
+const getSizeClass = computed(() => (props.size ? `el-radio--${ props.size }` : ''));
 
 watch(() => props.modelValue, (newValue) => {
   modelValue.value = newValue;
