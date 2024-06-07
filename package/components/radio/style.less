@@ -1,163 +1,178 @@
 @import "../../style/variable.less";
-.k-radio {
-  width: fit-content;
+@import "../../style/font.less";
+
+:root {
+  --radio-color: @k-status-primary;
+}
+
+.el-radio {
   .text-base();
-  .el-radio {
+  display: flex;
+  gap: 0.25rem;
+  cursor: pointer;
+  .el-radio__input {
+    // 球
     display: flex;
-    gap: 0.25rem;
-    cursor: pointer;
-    .el-radio__input {
+    align-items: center;
+    // 输入框 size 隐藏
+    .el-radio__original{
+      width: 0;
+      height: 0;
+    }
+    .el-radio__inner {
       // 球
-      display: flex;
-      align-items: center;
-      .el-radio__original {
-        // 球
-        width: 1rem;
-        height: 1rem;
-        appearance: none; // 去掉默认样式
-        cursor: pointer;
-        border: 1px solid @k-gray-200;
-        border-radius: 100px;
-        position: relative;
+      width: 1rem;
+      height: 1rem;
+      appearance: none; // 去掉默认样式
+      cursor: pointer;
+      border: 1px solid @k-gray-200;
+      border-radius: 100px;
+      position: relative;
+      background-color: #FFF;
+    }
+    .el-radio__inner::after {
+      // 球内部
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 0.5rem;
+      height: 0.5rem;
+      transform: translate(-50%, -50%) scale(0);
+      transition: all 0.15s;
+    }
+  }
+  &.is-checked {
+    .el-radio__input {
+      // 球选中样式
+      .el-radio__inner {
+        border-color: var(--radio-color);
       }
-      .el-radio__original::after {
-        // 球内部
+      .el-radio__inner::after {
         content: "";
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
         width: 0.5rem;
         height: 0.5rem;
-        transform: translate(-50%, -50%) scale(0);
-        transition: all 0.15s;
+        border-radius: 100px;
+        background-color: var(--radio-color);
+        transform: translate(-50%, -50%) scale(1);
       }
     }
-    &.is-checked {
-      .el-radio__input {
-        // 球选中样式
-        .el-radio__original {
-          border-color: @k-status-primary;
-        }
-        .el-radio__original::after {
-          content: "";
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 0.5rem;
-          height: 0.5rem;
-          border-radius: 100px;
-          background-color: @k-status-primary;
-          transform: translate(-50%, -50%) scale(1);
-        }
+    .el-radio__label {
+      color: var(--radio-color);
+    }
+  }
+  &.is-disabled {
+    color: @k-gray-300;
+    cursor: not-allowed;
+    .el-radio__input {
+      // 球禁用样式
+      .el-radio__inner {
+        cursor: not-allowed;
+        border-color: @k-gray-200;
+        background-color: @k-gray-100;
       }
     }
-    &.is-disabled {
-      color: @k-gray-300;
-      cursor: not-allowed;
-      .el-radio__input {
-        // 球禁用样式
-        .el-radio__original {
-          cursor: not-allowed;
-          border-color: @k-gray-200;
-          background-color: @k-gray-100;
-        }
+  }
+  &.is-checked.is-disabled {
+    .el-radio__input {
+      // 球选中禁用样式
+      .el-radio__inner {
+        border-color: @k-gray-300;
+        background-color: @k-gray-100;
+      }
+      .el-radio__inner::after {
+        background-color: @k-gray-300;
       }
     }
-    &.is-checked.is-disabled {
-      .el-radio__input {
-        // 球选中禁用样式
-        .el-radio__original {
-          border-color: @k-gray-300;
-          background-color: @k-gray-100;
-        }
-        .el-radio__original::after {
-          background-color: @k-gray-300;
-        }
+  }
+  &.el-radio--sm {
+    .text-sm();
+    .el-radio__input {
+      .el-radio__inner {
+        width: 0.75rem;
+        height: 0.75rem;
+      }
+      .el-radio__inner::after {
+        width: 0.325rem;
+        height: 0.325rem;
       }
     }
-    &.el-radio--sm {
-      .text-sm();
-      .el-radio__input {
-        .el-radio__original {
-          width: 0.75rem;
-          height: 0.75rem;
-        }
-        .el-radio__original::after {
-          width: 0.325rem;
-          height: 0.325rem;
-        }
+  }
+  // hover
+  &:hover {
+    .el-radio__input {
+      .el-radio__inner {
+        border-color: var(--radio-color);
+      }
+      .el-radio__inner::after {
+        background-color: var(--radio-color);
       }
     }
-    // hover
-    &:hover {
-      .el-radio__input {
-        .el-radio__original {
-          border-color: @k-blue-400;
-        }
-        .el-radio__original::after {
-          background-color: @k-blue-400;
-        }
+    .el-radio__label {
+      color: var(--radio-color)
+    }
+  }
+  &:active {
+    .el-radio__input {
+      .el-radio__inner {
+        border-color: var(--radio-color); // 点击时的颜色
+      }
+      .el-radio__inner::after {
+        background-color: var(--radio-color);
       }
     }
-    &:active {
-      .el-radio__input {
-        .el-radio__original {
-          border-color: @k-blue-500; // 点击时的颜色
-        }
-        .el-radio__original::after {
-          background-color: @k-blue-500;
-        }
+  }
+  &.is-checked:active {
+    .el-radio__input {
+      .el-radio__inner {
+        border-color: var(--radio-color);
+      }
+      .el-radio__inner::after {
+        background-color: var(--radio-color);
       }
     }
-    &.is-checked:active {
-      .el-radio__input {
-        .el-radio__original {
-          border-color: @k-blue-500;
-        }
-        .el-radio__original::after {
-          background-color: @k-blue-500;
-        }
+  }
+  &.is-checked:hover {
+    .el-radio__input {
+      .el-radio__inner {
+        border-color: var(--radio-color);
+      }
+      .el-radio__inner::after {
+        background-color: var(--radio-color);
       }
     }
-    &.is-checked:hover {
-      .el-radio__input {
-        .el-radio__original {
-          border-color: @k-blue-500;
-        }
-        .el-radio__original::after {
-          background-color: @k-blue-500;
-        }
+  }
+  &.is-disabled:hover {
+    .el-radio__input {
+      .el-radio__inner {
+        border-color: @k-gray-200;
+        background-color: @k-gray-100;
       }
     }
-    &.is-disabled:hover {
-      .el-radio__input {
-        .el-radio__original {
-          border-color: @k-gray-200;
-          background-color: @k-gray-100;
-        }
+  }
+  &.is-disabled:active {
+    .el-radio__input {
+      .el-radio__inner {
+        border-color: @k-gray-200;
+        background-color: @k-gray-100;
+      }
+      .el-radio__inner::after {
+        background-color: @k-gray-300;
       }
     }
-    &.is-disabled:active {
-      .el-radio__input {
-        .el-radio__original {
-          border-color: @k-gray-200;
-          background-color: @k-gray-100;
-        }
-        .el-radio__original::after {
-          background-color: @k-gray-300;
-        }
+  }
+  &.is-checked.is-disabled:hover {
+    .el-radio__input {
+      .el-radio__inner {
+        border-color: @k-gray-300;
+        background-color: @k-gray-100;
       }
-    }
-    &.is-checked.is-disabled:hover {
-      .el-radio__input {
-        .el-radio__original {
-          border-color: @k-gray-300;
-          background-color: @k-gray-100;
-        }
-        .el-radio__original::after {
-          background-color: @k-gray-300;
-        }
+      .el-radio__inner::after {
+        background-color: @k-gray-300;
       }
     }
   }

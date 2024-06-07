@@ -41,13 +41,13 @@ watch(() => props.color, (newValue) => {
   fillColor.value = newValue;
 });
 
-function handleChange(value: boolean){
+function handleChange(value: boolean) {
   emits('update:modelValue', value);
   emits('change', value);
-};
+}
 
 provide('useCheckboxGroup', true);
-provide('fillColor', fillColor);
+provide('_fillColor', fillColor);
 </script>
 
 <style lang="css">

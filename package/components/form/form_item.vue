@@ -48,9 +48,7 @@ const attrs = computed(() => ({
   validateStatus: props.validateStatus
 }));
 
-const validate = (trigger: string, callback?: FormValidateCallback) => {
-  return KFormItemRef.value?.validate(trigger, callback);
-};
+const validate = (trigger: string, callback?: FormValidateCallback) => KFormItemRef.value?.validate(trigger, callback);
 const resetField = () => {
   KFormItemRef.value?.resetField();
 };

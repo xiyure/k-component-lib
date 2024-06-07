@@ -1,8 +1,8 @@
 <template>
   <el-drawer
     ref="KDrawerRef"
-    class="k-drawer"
     v-model="modelValue"
+    class="k-drawer"
     v-bind="attrs"
     @open="handleOpen"
     @opened="handleOpened"

@@ -1,8 +1,8 @@
 <template>
   <el-input-number
     ref="inputNumberRef"
-    class="k-input-number"
     v-model="inputValue"
+    class="k-input-number"
     v-bind="attrs"
     :style="{
       width: props.width

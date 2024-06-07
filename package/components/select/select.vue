@@ -1,8 +1,8 @@
 <template>
   <el-select
     ref="inputRef"
-    class="k-select"
     v-model="inputValue"
+    class="k-select"
     v-bind="attrs"
     default-first-option
     :style="{

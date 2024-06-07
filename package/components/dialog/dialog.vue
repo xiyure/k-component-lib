@@ -1,7 +1,7 @@
 <template>
   <el-dialog
-    class="k-dialog"
     v-model="modelValue"
+    class="k-dialog"
     v-bind="attrs"
     @open="handleOpen"
     @opened="handleOpened"
@@ -11,10 +11,10 @@
     @close-auto-focus="handleCloseFocus"
   >
     <slot></slot>
-    <template #header>
+    <template v-if="slots.title" #header>
       <slot name="header"></slot>
     </template>
-    <template #footer>
+    <template v-if="slots.footer" #footer>
       <slot name="footer"></slot>
     </template>
   </el-dialog>
@@ -49,6 +49,7 @@ const emits = defineEmits([
   'close-auto-focus'
 ]);
 
+const slots = defineSlots();
 const modelValue = ref(props.modelValue);
 
 const attrs = computed(() => ({

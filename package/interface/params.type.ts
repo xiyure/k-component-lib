@@ -8,7 +8,7 @@ import {
   FormItemRule
 } from 'element-plus';
 import type { TreeNode, TreeKey, TreeData } from 'element-plus/es/components/tree-v2/src/types';
-import { CSSProperties, Component } from 'vue';
+import { Component } from 'vue';
 
 // Button
 export interface ButtonProps {

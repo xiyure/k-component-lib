@@ -3,8 +3,8 @@
     <el-radio-group
       v-model="modelValue"
       v-bind="attrs"
-      @change="handleChange"
       :class="directionClass"
+      @change="handleChange"
     >
       <slot></slot>
     </el-radio-group>
@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, provide } from 'vue';
 import { SelectButtonGroupProps } from './type';
 import { getCompSize } from '../../utils';
 
@@ -25,13 +25,12 @@ const props = withDefaults(defineProps<SelectButtonGroupProps>(), {
 });
 
 // computed props.direction , 返回一个 class
-const directionClass = computed(() => {
-  return props.direction === 'row' ? 'el-radio-group--row' : 'el-radio-group--column';
-});
+const directionClass = computed(() => (props.direction === 'row' ? 'el-radio-group--row' : 'el-radio-group--column'));
 
 const emits = defineEmits(['update:modelValue', 'change']);
 
 const modelValue = ref(props.modelValue);
+const fillColor = ref(props.color);
 
 const attrs = computed(() => ({
   disabled: props.disabled,
@@ -43,11 +42,16 @@ const attrs = computed(() => ({
 watch(() => props.modelValue, (newValue) => {
   modelValue.value = newValue;
 });
+watch(() => props.color, (newValue) => {
+  fillColor.value = newValue;
+});
 
 const handleChange = (value: boolean) => {
   emits('update:modelValue', value);
   emits('change', value);
 };
+
+provide('_fillColor', fillColor);
 
 </script>
 

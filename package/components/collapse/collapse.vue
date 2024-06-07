@@ -1,7 +1,7 @@
 <template>
   <el-collapse
-    class="k-collapse"
     v-model="activeName"
+    class="k-collapse"
     v-bind="attrs"
     @change="handleChange"
   >

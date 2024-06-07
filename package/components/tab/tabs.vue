@@ -1,7 +1,7 @@
 <template>
   <el-tabs
-    class="k-tabs"
     v-model="activeName"
+    class="k-tabs"
     v-bind="originAttrs"
     :tab-position="props.position"
     @tab-click="handleClick"

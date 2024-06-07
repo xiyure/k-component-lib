@@ -21,7 +21,10 @@ export function getCompSize(size:string | undefined) {
 }
 
 // 判断css颜色值是否合法
-export function isValidColor(strColor:string) {
+export function isValidColor(strColor:string | undefined) {
+  if (!strColor) {
+    return false;
+  }
   const s = new Option().style;
   s.color = strColor;
   return Boolean(s.color);

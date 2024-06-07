@@ -1,4 +1,4 @@
-import { Component } from "vue"
+import { Component } from 'vue';
 
 export interface MessageProps {
   message?: string | (() => string)

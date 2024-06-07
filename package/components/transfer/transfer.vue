@@ -40,7 +40,9 @@ import { Search } from '@element-plus/icons-vue';
 import { TransferProps } from './type';
 import { KInput } from '../input';
 import { genRandomStr } from '../../utils/index';
+// @ts-ignore
 import ArrowToLeft from '../../assets/svg/arrow-to-left.svg';
+// @ts-ignore
 import ArrowToRight from '../../assets/svg/arrow-to-right.svg';
 
 defineOptions({

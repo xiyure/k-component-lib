@@ -94,8 +94,8 @@ function focus(focusStartInput?: boolean, isIgnoreFocusEvent?: boolean) {
 function handleOpen() {
   datePickerRef.value?.handleOpen();
 }
-function handleClose () {
-  datePickerRef.value?.handleClose ();
+function handleClose() {
+  datePickerRef.value?.handleClose();
 }
 
 defineExpose({ focus, handleOpen, handleClose });

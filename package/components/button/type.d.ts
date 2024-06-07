@@ -1,8 +1,8 @@
-import { Component } from "vue";
+import { Component } from 'vue';
 
 export interface ButtonProps {
-  type?: "normal" | "main" | "secondary" | "text" | "icon";
-  size?: "lg" | "base" | "sm" | "";
+  type?: 'normal' | 'main' | 'secondary' | 'text' | 'icon';
+  size?: 'lg' | 'base' | 'sm' | '';
   status?: string;
   iconRight?: any;
   iconLeft?: any;

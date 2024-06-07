@@ -49,12 +49,10 @@ function updateDescrition(column:VxeColumnProps, desc:string) {
 
 provide('tableInstance', vxeTableRef);
 
-const tableInstance = computed(() => {
-  return vxeTableRef.value
-})
+const tableInstance = computed(() => vxeTableRef.value);
 defineExpose({
   tableInstance
-})
+});
 </script>
 
 <style lang="less">

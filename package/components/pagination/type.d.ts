@@ -1,4 +1,5 @@
-import { Component } from "vue"
+import { Component } from 'vue';
+
 export interface PaginationProps {
   total: number
   pageSize?: number

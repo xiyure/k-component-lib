@@ -1,8 +1,8 @@
 <template>
   <el-switch
     ref="kSwitchRef"
-    class="k-switch"
     v-model="modelValue"
+    class="k-switch"
     v-bind="attrs"
     :style="{
       '--el-switch-on-color': props.switchOnColor,
@@ -48,12 +48,12 @@ watch(() => props.modelValue, (newValue) => {
 function handleChange(value: boolean) {
   emits('update:modelValue', value);
   emits('change', value);
-};
+}
 function focus() {
-  kSwitchRef.value?.focus()
+  kSwitchRef.value?.focus();
 }
 
-defineExpose({ focus })
+defineExpose({ focus });
 
 </script>
 

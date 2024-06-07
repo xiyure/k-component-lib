@@ -1,4 +1,4 @@
-import { FormItemRule } from "element-plus"
+import { FormItemRule } from 'element-plus';
 
 export interface FormProps {
   model: Record<string, any>

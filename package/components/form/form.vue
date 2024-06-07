@@ -53,15 +53,11 @@ const attrs = computed(() => ({
 const handleValidate = (prop: FormItemProp, isValid: boolean, message: string) => {
   emits('validate', prop, isValid, message);
 };
-const validate = (callback?: FormValidateCallback) => {
-  return KFormRef.value?.validate(callback);
-};
+const validate = (callback?: FormValidateCallback) => KFormRef.value?.validate(callback);
 const validateField = (
   props?: Arrayable<FormItemProp> | undefined,
   callback?: FormValidateCallback | undefined
-) => {
-  return KFormRef.value?.validateField(props, callback);
-};
+) => KFormRef.value?.validateField(props, callback);
 const resetFields = (props?: Arrayable<FormItemProp> | undefined) => {
   KFormRef.value?.resetFields(props);
 };

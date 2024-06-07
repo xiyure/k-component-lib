@@ -34,19 +34,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import { ButtonProps } from "./type";
-import { IconLoading } from "ksw-vue-icon";
-import "ksw-vue-icon/styles/icon.css";
+import { computed } from 'vue';
+import { IconLoading } from 'ksw-vue-icon';
+import { ButtonProps } from './type';
+import 'ksw-vue-icon/styles/icon.css';
 
 defineOptions({
-  name: "KButton",
+  name: 'KButton',
 });
 
 const props = withDefaults(defineProps<ButtonProps>(), {
-  type: "normal",
-  size: "base",
-  value: "",
+  type: 'normal',
+  size: 'base',
+  value: '',
   disabled: false,
   loading: false,
   loadingIcon: IconLoading,
@@ -54,11 +54,9 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   iconRight: null,
 });
 
-const attrs = computed(() => {
-  return {
-    ...getOriginAttrs(),
-  };
-});
+const attrs = computed(() => ({
+  ...getOriginAttrs(),
+}));
 
 const getOriginAttrs = () => {
   const { loading, loadingIcon } = props;
@@ -68,14 +66,11 @@ const getOriginAttrs = () => {
   };
 };
 
-const getSizeClass = computed(() => {
-  return props.size !== "" ? `el-button--${props.size}` : "";
-});
+const getSizeClass = computed(() => (props.size !== '' ? `el-button--${ props.size }` : ''));
 
-
-const emits = defineEmits(["click"]);
+const emits = defineEmits(['click']);
 const handleClick = (e: Event) => {
-  emits("click", e);
+  emits('click', e);
 };
 </script>
 

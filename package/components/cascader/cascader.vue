@@ -1,8 +1,8 @@
 <template>
   <el-cascader
     ref="cascaderRef"
-    class="k-cascader"
     v-model="inputValue"
+    class="k-cascader"
     v-bind="attrs"
     :props="propsConfig"
     collapse-tags-tooltip
