@@ -241,9 +241,13 @@ import { KDialog } from '../dialog';
 import { KInput } from '../input';
 import { KButton } from '../button';
 import { KCheckbox } from '../checkbox';
+// @ts-ignore
 import transangleUp from '@/assets/svg/transangle_up.svg';
+// @ts-ignore
 import transangleDown from '@/assets/svg/transangle_down.svg';
+// @ts-ignore
 import transangleUpLight from '@/assets/svg/transangle_up_active.svg';
+// @ts-ignore
 import transangleDownLight from '@/assets/svg/transangle_down_active.svg';
 
 defineOptions({

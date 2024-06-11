@@ -136,6 +136,7 @@ const xTree = ref();
 const query = ref('');
 // 分页相关变量
 const paginationConfig = ref(Object.assign(defaultPaginationConfig, props.paginationConfig || {}));
+// 树形数据根节点集合
 let topNodeMap = {};
 
 // 抽取props中的table相关参数
@@ -212,7 +213,7 @@ function filterTableData() {
   const searchKey = query.value.trim();
   if (!searchKey) {
     tableData.value = fullTableData.value;
-    VxeInstance.clearTreeExpand();
+    VxeInstance.setAllTreeExpand(false);
     return;
   }
   if (props.isRemoteQuery) {
@@ -229,7 +230,7 @@ function filterTableData() {
   // 当表格数据为树时，筛选后的数据应展示完整的子树
   if (props.useTree) {
     handleTreeData([...tableData.value]);
-    const rowField = treeConfig.value?.rowField || 'id';
+    const { rowField } = getTreeConfigField();
     tableData.value = sortFunc(treeData.value, fullTableData.value, rowField);
     VxeInstance.setAllTreeExpand(true);
   }
@@ -408,10 +409,24 @@ function updatePageNum(data:any[]) {
 function handleCustomRender() {
   for (const col of props.column) {
     if (col.render) {
-      col.cellRender = { name: genRandomStr(16) };
+      col.cellRender = {
+        name: genRandomStr(16),
+        ...col.cellRender || {}
+      };
       VXETable.renderer.add(col.cellRender.name, {
         renderDefault(_renderOpts, { row, column }) {
           return col.render({ row, column });
+        }
+      });
+    }
+    if (col.renderEdit) {
+      col.editRender = {
+        name: genRandomStr(16),
+        ...col.editRender || {}
+      };
+      VXETable.renderer.add(col.editRender.name, {
+        renderEdit(_renderOpts, { row, column }) {
+          return col.renderEdit({ row, column });
         }
       });
     }

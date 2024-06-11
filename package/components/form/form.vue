@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { FormItemProp, FormValidateCallback } from 'element-plus';
 import { FormProps } from './type';
 import { getCompSize } from '../../utils';
@@ -30,6 +30,19 @@ const props = withDefaults(defineProps<FormProps>(), {
 const emits = defineEmits(['update:modelValue', 'validate']);
 
 const KFormRef = ref<any>(null);
+let inputDoms:HTMLElement[];
+
+onMounted(() => {
+  inputDoms = KFormRef.value?.$el.querySelectorAll('input');
+  inputDoms.forEach((item, index) => {
+    item.setAttribute('data-index', index.toString());
+  });
+  KFormRef.value?.$el.addEventListener('keypress', onKeyPress);
+});
+
+onUnmounted(() => {
+  KFormRef.value?.$el.removeEventListener('keypress', onKeyPress);
+});
 
 const attrs = computed(() => ({
   model: props.model,
@@ -50,6 +63,15 @@ const attrs = computed(() => ({
   scrollIntoViewOptions: props.scrollIntoViewOptions
 }));
 
+function onKeyPress(event:any) {
+  const index = event.target.getAttribute('data-index');
+  const nextIndex = parseInt(index) + 1;
+  if (nextIndex < inputDoms.length) {
+    inputDoms[nextIndex].focus();
+  } else {
+    inputDoms[0].focus();
+  }
+}
 const handleValidate = (prop: FormItemProp, isValid: boolean, message: string) => {
   emits('validate', prop, isValid, message);
 };
