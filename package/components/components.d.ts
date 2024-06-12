@@ -31,7 +31,6 @@ import { KBadge } from './badge';
 import { KTimeline, KTimelineItem } from './timeline';
 import { KCalendar } from './calendar';
 import { KTree } from './tree';
-import { KTour } from './tour';
 import { KTreeTable } from './tree_table';
 import { KDropdown, KDropdownItem } from './dropdown';
 
@@ -82,7 +81,6 @@ declare module 'vue' {
     KTimelineItem: typeof KTimelineItem
     KCalendar: typeof KCalendar
     KTree: typeof KTree
-    KTour: typeof KTour
     KTreeTable: typeof KTreeTable
     KDropdown: typeof KDropdown
     KDropdownItem: typeof KDropdownItem

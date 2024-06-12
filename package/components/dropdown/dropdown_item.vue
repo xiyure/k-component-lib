@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 import { DropDownItemProps } from './type';
 
 defineOptions({
@@ -25,8 +25,6 @@ const attrs = computed(() => ({
 function handleClick(event: Event) {
   emits('click', event);
 }
-
-defineExpose({ focus });
 
 </script>
 

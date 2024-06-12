@@ -31,7 +31,6 @@ import { KBadge } from './badge';
 import { KTimeline, KTimelineItem } from './timeline';
 import { KCalendar } from './calendar';
 import { KTree } from './tree';
-import { KTour } from './tour';
 import { KTreeTable } from './tree_table';
 import { KDropdown, KDropdownItem } from './dropdown';
 

@@ -10,7 +10,7 @@
     <slot name="title">
       <span class="k-dropdown-link">{{ props.title }}</span>
     </slot>
-    <template #dropdown>
+    <template v-if="slots.dropdown" #dropdown>
       <slot></slot>
     </template>
   </el-dropdown>

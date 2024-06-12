@@ -15,7 +15,7 @@ export interface DropDownProps {
   role?: string
   teleported?: boolean
   popperClass?: string
-  popperOptions?: Object
+  popperOptions?: object
 }
 
 export interface DropDownItemProps {

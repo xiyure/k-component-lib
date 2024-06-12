@@ -1,143 +1,89 @@
 <template>
-  <div :style="{ display: 'none' }">
-    <div id="title">
-      <slot name="title"></slot>
-    </div>
-  </div>
+  <el-tour
+    v-model="modelValue"
+    class="k-tour"
+    v-bind="attrs"
+    :current="current"
+    @close="handleClose"
+    @finish="handleFinish"
+    @change="handleChange"
+  >
+    <!-- <el-tour-step
+      class="k-tour-item"
+      v-for="item in slotsContent"
+      :key="item"
+      v-bind="item.props"
+    ></el-tour-step> -->
+    <template v-if="slots.indicators" #indicators="slotData">
+      <slot name="indicators" v-bind="slotData"></slot>
+    </template>
+  </el-tour>
 </template>
 
 <script setup lang="ts">
-import { watch, getCurrentInstance } from 'vue';
-import { driver, Driver, DriveStep, State, Config, DriverHook, PopoverDOM } from 'driver.js';
+import { ref, watch, computed, useSlots } from 'vue';
+import { isNumber } from 'lodash';
 import { TourProps } from './type';
 
-const slots = defineSlots();
 defineOptions({
   name: 'KTour'
 });
 
 const props = withDefaults(defineProps<TourProps>(), {
-  allowClose: true,
-  animate: true,
-  allowKeyboardControl: true,
-  overlayOpacity: 0.5,
-  stagePadding: 10,
-  stageRadius: 5,
-  offset: 10,
-  showProgress: true
+  showArrow: true,
+  showClose: true,
+  placement: 'bottom',
+  type: 'default',
+  mask: true,
+  closeOnPressEscape: true,
+  targetAreaClickable: true,
+  zIndex: 2001
 });
 
-const emits = defineEmits(['update:modelValue', 'close', 'next', 'previous']);
+const emits = defineEmits(['update:modelValue', 'close', 'finish', 'change', 'update:current']);
+const slots = useSlots();
+const modelValue = ref(props.modelValue);
+const current = ref(props.current);
 
-const _gloab = getCurrentInstance()?.appContext.app.config.globalProperties;
-
-const progressText = '{{current}}/{{total}}';
-const tourInstance:Driver = driver({
-  steps: props.steps || [],
-  allowClose: props.allowClose,
-  allowKeyboardControl: props.allowKeyboardControl,
-  animate: props.animate,
-  overlayOpacity: props.overlayOpacity,
-  overlayColor: props.overlayColor,
-  stagePadding: props.stagePadding,
-  stageRadius: props.stageRadius,
-  disableActiveInteraction: props.disableActiveInteraction,
-  popoverClass: props.popoverClass,
-  popoverOffset: props.offset,
-  showButtons: props.showButtons,
-  disableButtons: props.disableButtons,
-  showProgress: props.showProgress,
-  progressText: props.progressText || progressText,
-  nextBtnText: props.nextBtnText || _gloab?.$t('next'),
-  prevBtnText: props.prevBtnText || _gloab?.$t('previous'),
-  doneBtnText: props.doneBtnText || _gloab?.$t('finish'),
-  onNextClick: handleNextClick as DriverHook,
-  onPrevClick: handlePrevClick as DriverHook,
-  onCloseClick: handleClose as DriverHook,
-  onPopoverRender: render
-});
+const attrs = computed(() => ({
+  showArrow: props.showArrow,
+  showClose: props.showClose,
+  placement: props.placement,
+  contentStyle: props.contentStyle,
+  mask: props.mask,
+  type: props.type,
+  scrollIntoViewOptions: props.scrollIntoViewOptions,
+  zIndex: props.zIndex,
+  closeIcon: props.closeIcon,
+  closeOnPressEscape: props.closeOnPressEscape,
+  targetAreaClickable: props.targetAreaClickable
+}));
 
 watch(() => props.modelValue, (newValue) => {
-  handleTour(newValue);
+  modelValue.value = newValue;
+}, { immediate: true });
+watch(() => modelValue.value, (newValue) => {
+  emits('update:modelValue', Boolean(newValue));
 }, { immediate: true });
 
-function handleTour(isShow: boolean) {
-  if (!tourInstance) {
+watch(() => props.current, (newValue) => {
+  current.value = newValue || 0;
+}, { immediate: true });
+watch(() => current.value, (newValue) => {
+  if (!isNumber(props.current)) {
     return;
   }
-  if (isShow) {
-    tourInstance.drive();
-    return;
-  }
-  tourInstance.destroy();
+  emits('update:current', Number(newValue));
+}, { immediate: true });
+function handleChange(current: number) {
+  emits('change', current);
 }
-
-function render(popover: PopoverDOM, options: { state: State, config: Config}) {
-  const titleElem = document.getElementById('title');
-  if (!titleElem) {
-    return;
-  }
-  const currentStepIndex = tourInstance.getActiveIndex();
-  const newTitleElem = titleElem.cloneNode(true);
-  popover.title.innerHTML = '';
-  popover.title.appendChild(newTitleElem);
+function handleClose(current: number) {
+  emits('close', current);
 }
-function handleNextClick(
-  element: Element,
-  steps: DriveStep,
-  options:{config: Config, state: State}
-) {
-  tourInstance.moveNext();
-  const activeIndex = tourInstance.getActiveIndex();
-  emits('next', element, steps, options);
-  if (activeIndex === undefined) {
-    emits('update:modelValue', false);
-  }
+function handleFinish() {
+  emits('finish');
 }
-function handlePrevClick(
-  element: Element,
-  steps: DriveStep,
-  options:{config: Config, state: State}
-):void {
-  tourInstance.movePrevious();
-  emits('previous', element, steps, options);
-}
-function handleClose(
-  element: Element,
-  steps: DriveStep,
-  options:{config: Config, state: State}
-) {
-  close();
-  emits('close', element, steps, options);
-  emits('update:modelValue', false);
-}
-
-function setSteps(steps: DriveStep[]) {
-  tourInstance.setSteps(steps);
-}
-function setConfig(config?: Config) {
-  tourInstance.setConfig(config);
-}
-function close() {
-  tourInstance.destroy();
-}
-function moveNext() {
-  tourInstance.moveNext();
-}
-function movePrevious() {
-  tourInstance.movePrevious();
-}
-function getActiveIndex() {
-  return tourInstance.getActiveIndex?.() || 0;
-}
-
-defineExpose({
-  setSteps,
-  setConfig,
-  moveNext,
-  movePrevious,
-  getActiveIndex
-});
 </script>
 
 <style lang="less">
