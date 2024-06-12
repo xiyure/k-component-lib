@@ -2,10 +2,9 @@
   <div class="k-tree-table">
     <div class="search-input">
       <k-input
-        v-model="query"
         :suffix-icon="IconSearch"
         clearable
-        @change="filterTableData"
+        @change="(value: string) => query = value"
       />
     </div>
     <div class="table-box">
@@ -57,7 +56,7 @@
     </div>
     <div class="pagination-box">
       <k-pagination
-        v-if="showPage"
+        v-if="isPaging"
         :total="dataLength"
         :page-size="paginationConfig.pageSize"
         :pager-count="paginationConfig.pagerCount"
@@ -72,8 +71,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, nextTick, getCurrentInstance } from 'vue';
-import VXETable, { VxeTableInstance, VxeTableDataRow } from 'vxe-table';
-import { cloneDeep } from 'lodash';
+import VXETable, { VxeTableInstance } from 'vxe-table';
 import { IconSearch } from 'ksw-vue-icon';
 import { KInput } from '../input';
 import { TreeTableProps } from './type';
@@ -136,8 +134,6 @@ const xTree = ref();
 const query = ref('');
 // 分页相关变量
 const paginationConfig = ref(Object.assign(defaultPaginationConfig, props.paginationConfig || {}));
-// 树形数据根节点集合
-let topNodeMap = {};
 
 // 抽取props中的table相关参数
 const tableProps = computed(() => {
@@ -172,68 +168,62 @@ const scrollY = computed(() => Object.assign(defaultScrollY, props.scrollY || {}
 const columnConfig = computed(() => Object.assign(defaultColumnConfig, props.columnConfig || {}));
 const checkboxConfig = computed(() => Object.assign(defaultCheckboxConfig, props.checkboxConfig || {}));
 
-const fullTableData = ref<Array<any>>((treeToArray(props.data || [])));
-const tableData = ref<Array<any>>(fullTableData.value);
-const showTableData = ref<Array<any>>([]);
-
-const dataLength = computed(() => {
-  if (props.useTree) {
-    const { parentField } = getTreeConfigField();
-    return tableData.value.filter((item: any) => !item[parentField]).length;
-  } 
-  return tableData.value.length;
+const dataLength = computed(() => tableData.value.length);
+const isPaging = computed(() => props.showPage && !props.useTree);
+const tableData = computed(() => filterTableData());
+const showTableData = computed(() => {
+  if (!isPaging.value || props.isServerPaging) {
+    return tableData.value;
+  }
+  return getShowTableData(tableData.value);
 });
 
+watch(() => props.data?.length, (newValue) => {
+  const length = newValue || 0;
+  updatePageNum(length);
+}, { immediate: true });
 watch(() => props.column, () => {
   handleCustomRender();
 }, { immediate: true, deep: true });
-watch(() => props.data, (newValue) => {
-  fullTableData.value = treeToArray(newValue || []);
-  // 使用服务端分页/查询时，展示数据即传入数据，无需额外处理
-  if (props.isRemoteQuery || props.isServerPaging) {
-    showTableData.value = fullTableData.value;
-    return;
-  }
-  nextTick(() => {
-    filterTableData();
-  });
-}, { deep: true, immediate: true });
-watch(() => tableData.value.length, () => {
-  if (props.showPage) {
-    updatePageNum(tableData.value);
-  }
-  getShowTableData();
-}, { immediate: true });
 
 // 表格内容搜索
 const treeData = ref<any>([]);
 const nodeSet = new Set();
 function filterTableData() {
-  const VxeInstance:VxeTableInstance = xTree.value.tableInstance;
   const searchKey = query.value.trim();
   if (!searchKey) {
-    tableData.value = fullTableData.value;
-    VxeInstance.setAllTreeExpand(false);
-    return;
+    if (props.useTree) {
+      nextTick(() => {
+        const VxeInstance:VxeTableInstance = xTree.value.tableInstance;
+        VxeInstance.setAllTreeExpand(false);
+      });
+    }
+    return props.data;
   }
   if (props.isRemoteQuery) {
-    emits('remote-query', query.value);
+    emits('remote-query', searchKey);
     return;
   }
   const fieldList = props.column.map(col => col.field || '');
-  tableData.value = fullTableData.value?.filter((dataItem:any) => fieldList.some(field => {
+  let tableData = props.data?.filter((dataItem:any) => fieldList.some(field => {
     if (props.exactMatch) {
       return dataItem[field] === searchKey;
     } 
     return (String(dataItem[field])).toLowerCase().search((searchKey).toLowerCase()) !== -1;
-  }));
+  })) as any;
   // 当表格数据为树时，筛选后的数据应展示完整的子树
   if (props.useTree) {
-    handleTreeData([...tableData.value]);
+    handleTreeData(tableData);
     const { rowField } = getTreeConfigField();
-    tableData.value = sortFunc(treeData.value, fullTableData.value, rowField);
-    VxeInstance.setAllTreeExpand(true);
+    tableData = sortFunc(treeData.value, props.data, rowField);
+    if (tableData.length < 500) {
+      nextTick(() => {
+        const VxeInstance:VxeTableInstance = xTree.value.tableInstance;
+        VxeInstance.setAllTreeExpand(true);
+      });
+    }
   }
+  return tableData;
 }
 // 处理树形数据
 function handleTreeData(leafData:any[]) {
@@ -256,9 +246,12 @@ function handleTreeData(leafData:any[]) {
 }
 function addChildNodes(currentNode: any) {
   const { parentField, rowField } = getTreeConfigField();
-  const childNodes = fullTableData.value.filter(
+  const childNodes = props.data?.filter(
     (node: any) => node[parentField] === currentNode[rowField]
   );
+  if (!childNodes) {
+    return;
+  }
   childNodes.forEach((node: any) => {
     const targetItem = treeData.value.find(
       (treeDataItem: any) => treeDataItem[rowField] === node[rowField]
@@ -273,7 +266,7 @@ function addChildNodes(currentNode: any) {
 // 根据叶子节点递归遍历获取祖先节点
 function getParentNode(dataItem: any, parentField: string, rowField: string) {
   const parentKey = dataItem[parentField];
-  const parentItem = fullTableData.value?.find(item => item[rowField] === parentKey);
+  const parentItem = props.data?.find(item => item[rowField] === parentKey);
   if (!parentItem) {
     return;
   }
@@ -290,40 +283,14 @@ function sortFunc(targetData:any[], sortData: any, key: string | number) {
   const sortKeyList = sortData.map((item:any) => item[key]);
   return targetData.sort((a, b) => (sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1));
 }
-// 树形数据->一维数组
-function treeToArray(data: VxeTableDataRow[], resultData:any[] = [], pid: any = null) {
-  // 防止源数据污染
-  const cloneData = cloneDeep(data);
-  const childrenField = treeConfig.value?.childrenField || 'children';
-  const rowField = treeConfig.value?.rowField || 'id';
-  for (let i = 0; i < cloneData.length; i++) {
-    const node = cloneData[i];
-    const { parentField } = getTreeConfigField();
-    if (!node[parentField]) {
-      node[parentField] = pid;
-    }
-    resultData.push(node);
-    if (node[childrenField] && node[childrenField].length) {
-      treeToArray(node.children, resultData, node[rowField]);
-      delete node[childrenField];
-    }
-  }
-  return resultData;
-}
 // 分页相关
 function changePageSize(pageSize: number) {
   paginationConfig.value.pageSize = pageSize;
-  getShowTableData();
 }
 function changeCurrentPage(pageNum: number) {
   paginationConfig.value.currentPage = pageNum;
-  getShowTableData();
 }
-function getShowTableData() {
-  if (!props.showPage) {
-    showTableData.value = tableData.value;
-    return;
-  }
+function getShowTableData(data) {
   if (props.isServerPaging) {
     emits('server-paging', paginationConfig.value);
     return;
@@ -331,53 +298,16 @@ function getShowTableData() {
   const { currentPage, pageSize } = paginationConfig.value;
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  if (!props.useTree) {
-    showTableData.value = tableData.value.slice(startIndex, endIndex);
-  } else {
-    handleShowTreeData(startIndex, endIndex);
-  }
+  return data.slice(startIndex, endIndex);
 }
-// 处理树形结构数据的分页
-function handleShowTreeData(startIndex: number, endIndex: number) {
-  const { parentField, rowField } = getTreeConfigField();
-  const currentParentNodes = tableData.value
-  .filter((item: any) => !item[parentField])
-  .slice(startIndex, endIndex);
-  topNodeMap = {};
-  for (let index = 0; index < tableData.value.length; index++) {
-    const dataItem = tableData.value[index];
-    if (!dataItem[parentField]) {
-      continue;
-    }
-    const topId = getTopNodeId(dataItem[parentField]);
-    if (!topId) {
-      continue;
-    }
-    if (topNodeMap[topId]) {
-      topNodeMap[topId].push(dataItem);
-    } else {
-      topNodeMap[topId] = [dataItem];
-    }
+// 数据最大页码小于当前页码时，需要修改当前页码
+function updatePageNum(length: number) {
+  let { currentPage } = paginationConfig.value;
+  const pageSize = paginationConfig.value.pageSize;
+  while ((currentPage - 1) * pageSize + 1 > length) {
+    currentPage--;
   }
-  let currentPageData = [];
-  while (currentParentNodes.length) {
-    const nodeItem = currentParentNodes.shift();
-    const children = topNodeMap[nodeItem[rowField]] || [];
-    currentPageData = currentPageData.concat(nodeItem, ...children);
-  }
-  showTableData.value = sortFunc(currentPageData, fullTableData.value, rowField);
-}
-// 获取目标节点的祖先节点id
-function getTopNodeId(pid: string | number) {
-  const { parentField, rowField } = getTreeConfigField();
-  const targetNode = fullTableData.value.find(node => node[rowField] === pid);
-  if (!targetNode) {
-    return;
-  }
-  if (!targetNode[parentField]) {
-    return targetNode[rowField];
-  } 
-  return getTopNodeId(targetNode[parentField]);
+  paginationConfig.value.currentPage = currentPage;
 }
 function getRowStyle(rowInfo:any) {
   if (!props.rowStyle) {
@@ -388,22 +318,6 @@ function getRowStyle(rowInfo:any) {
     return props.rowStyle(rowInfo);
   }
   return props.rowStyle;
-}
-// 数据最大页码小于当前页码时，需要修改当前页码
-function updatePageNum(data:any[]) {
-  let { currentPage } = paginationConfig.value;
-  const pageSize = paginationConfig.value.pageSize;
-  let dataLen = 0;
-  if (props.useTree) {
-    const { parentField } = getTreeConfigField();
-    dataLen = data.filter((item: any) => !item[parentField]).length;
-  } else {
-    dataLen = data.length;
-  }
-  while ((currentPage - 1) * pageSize + 1 > dataLen) {
-    currentPage--;
-  }
-  paginationConfig.value.currentPage = currentPage;
 }
 // 自定义单元格渲染
 function handleCustomRender() {
