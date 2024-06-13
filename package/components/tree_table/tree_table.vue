@@ -1,11 +1,45 @@
 <template>
   <div class="k-tree-table">
-    <div class="search-input">
-      <k-input
-        :suffix-icon="IconSearch"
-        clearable
-        @change="(value: string) => query = value"
-      />
+    <div class="k-tree-table__header">
+      <div class="k-table-info">1111</div>
+      <div class="k-table-func">
+        <k-input
+          :suffix-icon="IconSearch"
+          placeholder="搜索此列表"
+          clearable
+          @change="(value: string) => query = value"
+        />
+        <k-button @click="() => {
+          emits('refresh')
+          }"
+        ><IconRefresh /></k-button>
+        <!-- 高级筛选 -->
+        <k-popover
+          trigger="click"
+          width="auto"
+        >
+        <template #reference>
+          <k-button><IconFilter /></k-button>
+        </template>
+        <k-filter v-model="filterData" :data="[]"></k-filter>
+        </k-popover>
+        <!-- 穿梭框 -->
+        <k-popover
+          trigger="click"
+          width="auto"
+        >
+        <template #reference>
+          <k-button><IconSetting /></k-button>
+        </template>
+        <k-transfer
+            v-model="selectData"
+            :data="originData"
+            :default-keys="defaultKeys"
+            @change="updateColumn"
+            @reset="updateColumn"
+            ></k-transfer>
+        </k-popover>
+      </div>
     </div>
     <div class="table-box">
       <k-table
@@ -23,7 +57,7 @@
         :row-style="getRowStyle"
         v-on="listeners"
       >
-        <template v-for="item in column">
+        <template v-for="item in columns">
           <k-table-column
             v-if="item.visible !== false"
             :key="item.key"
@@ -74,6 +108,11 @@ import { ref, computed, watch, nextTick, getCurrentInstance } from 'vue';
 import VXETable, { VxeTableInstance } from 'vxe-table';
 import { IconSearch } from 'ksw-vue-icon';
 import { KInput } from '../input';
+import { KButton } from '../button';
+import { KFilter } from '../filter';
+import { KTransfer } from '../transfer';
+import { KPopover } from '../popover';
+import { IconSetting, IconFilter, IconRefresh } from 'ksw-vue-icon';
 import { TreeTableProps } from './type';
 import { KTable, KTableColumn } from '../table';
 import { KPagination } from '../pagination';
@@ -129,9 +168,16 @@ const listeners = getListeners(getCurrentInstance()?.attrs);
 const defaultScrollY = { enabled: true };
 const defaultColumnConfig = { resizable: true };
 
-const emits = defineEmits(['remote-query', 'server-paging']);
+const emits = defineEmits(['remote-query', 'server-paging', 'refresh']);
 const xTree = ref();
+const columns = ref<any>([]);
 const query = ref('');
+// 穿梭框
+const selectData = ref<any>([]);
+const originData = ref<any>([]);
+const defaultKeys = ref<any>([]);
+// 高级筛选
+const filterData = ref([]);
 // 分页相关变量
 const paginationConfig = ref(Object.assign(defaultPaginationConfig, props.paginationConfig || {}));
 
@@ -168,22 +214,41 @@ const scrollY = computed(() => Object.assign(defaultScrollY, props.scrollY || {}
 const columnConfig = computed(() => Object.assign(defaultColumnConfig, props.columnConfig || {}));
 const checkboxConfig = computed(() => Object.assign(defaultCheckboxConfig, props.checkboxConfig || {}));
 
-const dataLength = computed(() => tableData.value.length);
+// 表格数据量
+const dataLength = computed(() => filterTableData().length);
+// 是否分页
 const isPaging = computed(() => props.showPage && !props.useTree);
-const tableData = computed(() => filterTableData());
-const showTableData = computed(() => {
-  if (!isPaging.value || props.isServerPaging) {
-    return tableData.value;
-  }
-  return getShowTableData(tableData.value);
-});
 
+// 页面展示的表格数据
+const showTableData = computed(() => {
+  const tableData = filterTableData();
+  if (!isPaging.value || props.isServerPaging) {
+    return tableData;
+  }
+  return getShowTableData(tableData);
+});
 watch(() => props.data?.length, (newValue) => {
   const length = newValue || 0;
   updatePageNum(length);
 }, { immediate: true });
 watch(() => props.column, () => {
+  columns.value = props.column.map(col => {
+    const visible = col.visible === false ? false : true;
+    return { ...col, visible };
+  })
   handleCustomRender();
+}, { immediate: true, deep: true });
+watch(() => props.column.length, () => {
+  originData.value = props.column.map((item) => ({
+    label: item.title,
+    key: item.field
+  }));
+  selectData.value = props.column.filter(col => col.visible !== false)
+    .map((item) => ({
+    label: item.title,
+    key: item.field
+  }));
+  defaultKeys.value = selectData.value.map(item => item.key);
 }, { immediate: true, deep: true });
 
 // 表格内容搜索
@@ -204,7 +269,8 @@ function filterTableData() {
     emits('remote-query', searchKey);
     return;
   }
-  const fieldList = props.column.map(col => col.field || '');
+  const visibleColums = columns.value.filter(col => col.visible);
+  const fieldList = visibleColums.map(col => col.field || '');
   let tableData = props.data?.filter((dataItem:any) => fieldList.some(field => {
     if (props.exactMatch) {
       return dataItem[field] === searchKey;
@@ -346,11 +412,19 @@ function handleCustomRender() {
     }
   }
 }
-
 function getTreeConfigField() {
   const parentField = treeConfig.value?.parentField || 'pid';
   const rowField = treeConfig.value?.rowField || 'id';
   return { parentField, rowField };
+}
+function updateColumn(ids: string[]) {
+  columns.value.forEach(col => {
+    if (ids.includes(col.field)) {
+      col.visible = true;
+    } else {
+      col.visible = false;
+    }
+  })
 }
 
 const tableInstance = computed(() => xTree?.value.tableInstance);

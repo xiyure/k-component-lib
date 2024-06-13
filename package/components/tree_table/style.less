@@ -1,11 +1,22 @@
 @import '../../style/variable.less';
 
 .k-tree-table {
-  .search-input {
+  .k-tree-table__header {
     display: flex;
-    justify-content: flex-end;
-    .k-input {
-      width: 200px;
+    justify-content: space-between;
+    .k-table-func {
+      display: flex;
+      .k-input {
+        width: 200px;
+        .el-input__wrapper {
+          border-radius: 8px;
+        }
+      }
+      .k-button {
+        margin-left: 8px;
+        padding-left: 8px;
+        padding-right: 8px;
+      }
     }
   }
   .table-box, .pagination-box {

@@ -60,6 +60,7 @@ const emits = defineEmits([
   'left-check-change',
   'right-check-change',
   'input',
+  'reset'
 ]);
 
 const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
@@ -158,9 +159,13 @@ function extendContent() {
   transButton[1].innerHTML = `<img class="k-transfer__right-arrow" src="${ ArrowToRight }" />`;
 }
 function resetTransferData() {
+  if (!Array.isArray(props.defaultKeys)) {
+    return;
+  }
   const { key } = defaultPropsConfig.value;
   const newModelValue = props.data.filter(item => props.defaultKeys?.includes(item[key]));
   emits('update:modelValue', newModelValue);
+  emits('reset', [...props.defaultKeys]);
 }
 function getNewModelValue(value:Array<any>) {
   const newModelValue:number[] = [];

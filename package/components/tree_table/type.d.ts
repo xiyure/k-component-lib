@@ -31,5 +31,5 @@ export interface TreeTableProps extends VxeTableProps {
   useTree?: boolean
   isRemoteQuery?: boolean,
   isServerPaging?: boolean
-  paginationConfig?: PaginationConfigType,
+  paginationConfig?: PaginationConfigType
 }

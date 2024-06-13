@@ -1,18 +1,5 @@
 <template>
   <div class="k-filter">
-    <k-popover
-      trigger="click"
-      popper-class="k-filter-custom"
-      @show="popoverShow = true"
-      @hide="popoverShow = false"
-    >
-      <template #reference>
-        <IconFilterFill
-          class="k-filter__trigger-icon" :style="{
-            color: popoverShow ? '#2882FF' : '#000'
-          }"
-        />
-      </template>
       <div class="k-filter__content">
         <div class="k-filter__header">
           <span class="text-lg font-bold">{{ $t('seniorFilter') }}</span>
@@ -118,7 +105,6 @@
           </div>
         </div>
       </div>
-    </k-popover>
   </div>
 </template>
 
@@ -129,8 +115,6 @@ import { FilterProps } from './type';
 import { KInput } from '../input';
 import { KSelect, KOption } from '../select';
 import { KButton } from '../button';
-import { KDatePicker } from '../date_picker';
-import { KPopover } from '../popover';
 import { dateTypeOptions, dateLogicOptions } from './const';
 
 defineOptions({
@@ -152,7 +136,6 @@ const emits = defineEmits(['update:modelValue', 'confirm']);
 const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
 const t = _global?.$t;
 const filterData = ref<IFilterDataType[]>([]);
-const popoverShow = ref(false);
 const filterRule = ref(0);
 
 const instance = computed(() => function (title:string) {
