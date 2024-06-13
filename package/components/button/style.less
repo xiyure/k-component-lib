@@ -3,32 +3,82 @@
 .k-button {
   width: fit-content;
   box-sizing: border-box;
-  .el-button {
-    box-sizing: border-box;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  border: 1px solid @k-gray-200;
+  padding: 0 1rem;
+  height: 2rem;
+  gap: 0.25rem;
+  border-radius: @k-rounded-base;
+  color: @k-gray-400;
+  font-size: @font-base;
+  label {
+    pointer-events: none;
+  }
+  span {
     display: flex;
-    flex-direction: row-reverse;
     align-items: center;
-    border: 1px solid @k-gray-200;
-    padding: 0 1rem;
-    height: 2rem;
     gap: 0.25rem;
-    border-radius: @k-rounded-base;
-    color: @k-gray-400;
-    font-size: @font-base;
-    label {
-      pointer-events: none;
+  }
+  i {
+    color: @k-blue-500;
+    transform: translate(50%, 0);
+    svg {
+      width: 1rem;
+      height: 1rem;
     }
-    span {
+  }
+  > span {
+    // 具名icon
+    > span:first-child {
+      width: 0.5rem;
+      > svg {
+        transform: translate(-50%) scale(2);
+      }
+    }
+    > span:last-child {
+      width: 0.5rem;
+      > svg {
+        transform: translate(50%) scale(2);
+      }
+    }
+    // 传值 icon
+    > span:first-child {
+      > span {
+        width: 0.5rem;
+        > svg {
+          transform: translate(-50%) scale(2);
+        }
+      }
+    }
+    > span:last-child {
+      > span {
+        width: 0.5rem;
+        > svg {
+          transform: translate(50%) scale(2);
+        }
+      }
+    }
+  }
+  &.el-button--sm {
+    font-size: @font-sm;
+    padding: 0 0.75rem;
+    height: 1.5rem;
+    gap: 0.125rem;
+    border-radius: @k-rounded-sm;
+    > span {
       display: flex;
       align-items: center;
-      gap: 0.25rem;
+      gap: 0.125rem;
     }
-    i {
-      color: @k-blue-500;
-      transform: translate(50%, 0);
-      svg {
-        width: 1rem;
-        height: 1rem;
+    > i {
+      span {
+        width: 0.75rem;
+        height: 0.75rem;
+        > svg {
+        }
       }
     }
     > span {
@@ -36,13 +86,13 @@
       > span:first-child {
         width: 0.5rem;
         > svg {
-          transform: translate(-50%) scale(2);
+          transform: translate(-50%) scale(1.25);
         }
       }
       > span:last-child {
         width: 0.5rem;
         > svg {
-          transform: translate(50%) scale(2);
+          transform: translate(50%) scale(1.25);
         }
       }
       // 传值 icon
@@ -50,7 +100,7 @@
         > span {
           width: 0.5rem;
           > svg {
-            transform: translate(-50%) scale(2);
+            transform: translate(-50%) scale(1.25);
           }
         }
       }
@@ -58,205 +108,153 @@
         > span {
           width: 0.5rem;
           > svg {
-            transform: translate(50%) scale(2);
-          }
-        }
-      }
-    }
-    &.el-button--sm {
-      font-size: @font-sm;
-      padding: 0 0.75rem;
-      height: 1.5rem;
-      gap: 0.125rem;
-      border-radius: @k-rounded-sm;
-      > span {
-        display: flex;
-        align-items: center;
-        gap: 0.125rem;
-      }
-      > i {
-        span {
-          width: 0.75rem;
-          height: 0.75rem;
-          > svg {
-          }
-        }
-      }
-      > span {
-        // 具名icon
-        > span:first-child {
-          width: 0.5rem;
-          > svg {
-            transform: translate(-50%) scale(1.25);
-          }
-        }
-        > span:last-child {
-          width: 0.5rem;
-          > svg {
             transform: translate(50%) scale(1.25);
           }
         }
-        // 传值 icon
-        > span:first-child {
-          > span {
-            width: 0.5rem;
-            > svg {
-              transform: translate(-50%) scale(1.25);
-            }
-          }
-        }
-        > span:last-child {
-          > span {
-            width: 0.5rem;
-            > svg {
-              transform: translate(50%) scale(1.25);
-            }
-          }
-        }
       }
     }
-    &:hover {
-      background: @k-gray-100;
-    }
-    &:active {
-      background: @k-gray-200;
-    }
-    &.is-disabled {
-      background: @k-gray-100;
-      color: @k-gray-300;
+  }
+  &:hover {
+    background: @k-gray-100;
+  }
+  &:active {
+    background: @k-gray-200;
+  }
+  &.is-disabled {
+    background: @k-gray-100;
+    color: @k-gray-300;
+    cursor: not-allowed;
+    label {
       cursor: not-allowed;
-      label {
-        cursor: not-allowed;
-      }
     }
-    &.is-loading {
-      color: @k-gray-300;
-      background: #fff;
+  }
+  &.is-loading {
+    color: @k-gray-300;
+    background: #fff;
+    cursor: wait;
+    label {
       cursor: wait;
-      label {
-        cursor: wait;
+    }
+  }
+
+  // main style
+  &.el-button--main {
+    background: @k-blue-500;
+    color: #fff;
+    border-color: @k-blue-500;
+  }
+  &.el-button--main:hover {
+    background: @k-blue-400;
+    border-color: @k-blue-400;
+  }
+  &.el-button--main:active {
+    background: @k-blue-600;
+    border-color: @k-blue-600;
+  }
+  &.el-button--main.is-disabled {
+    background: @k-gray-300;
+    border-color: @k-gray-300;
+    color: #fff;
+  }
+  &.el-button--main.is-loading {
+    background: @k-blue-300;
+    border-color: @k-blue-300;
+    color: #fff;
+  }
+
+  // secondary style
+  &.el-button--secondary {
+    background: #fff;
+    color: @k-blue-500;
+    border: 1px solid @k-blue-500;
+  }
+  &.el-button--secondary:hover {
+    color: @k-blue-400;
+    border: 1px solid @k-blue-400;
+  }
+  &.el-button--secondary:active {
+    color: @k-blue-600;
+    border: 1px solid @k-blue-600;
+  }
+  &.el-button--secondary.is-disabled {
+    background: @k-gray-100;
+    color: @k-gray-300;
+    border: 1px solid @k-gray-300;
+  }
+  &.el-button--secondary.is-loading {
+    background: #fff;
+    color: @k-blue-300;
+    border: 1px solid @k-blue-300;
+  }
+
+  // text style
+  &.el-button--text {
+    background: #fff;
+    color: @k-blue-500;
+    padding: 0 0.5rem;
+    border-width: 0;
+  }
+  &.el-button--text:hover {
+    color: @k-blue-400;
+  }
+  &.el-button--text:active {
+    color: @k-blue-600;
+  }
+  &.el-button--text.is-disabled {
+    background: #fff;
+    color: @k-gray-300;
+  }
+  &.el-button--text.is-loading {
+    background: #fff;
+    color: @k-blue-300;
+  }
+
+  // icon style
+  &.el-button--icon {
+    width: 2rem;
+    padding: 0;
+    justify-content: center;
+    > span > span > .ksw-icon > svg {
+      transform: translate(25%) scale(2);
+    }
+    > span > label > span > svg {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+  &.el-button--icon.el-button--sm {
+    height: 1.5rem;
+    width: 1.5rem;
+    > span > label > span {
+      > svg {
+        width: 0.75rem;
+        height: 0.75rem;
       }
     }
-
-    // main style
-    &.el-button--main {
-      background: @k-blue-500;
-      color: #fff;
-      border-color: @k-blue-500;
+    > span > span > .ksw-icon > svg {
+      transform: translate(12.5%) scale(1.5);
     }
-    &.el-button--main:hover {
-      background: @k-blue-400;
-      border-color: @k-blue-400;
-    }
-    &.el-button--main:active {
-      background: @k-blue-600;
-      border-color: @k-blue-600;
-    }
-    &.el-button--main.is-disabled {
-      background: @k-gray-300;
-      border-color: @k-gray-300;
-      color: #fff;
-    }
-    &.el-button--main.is-loading {
-      background: @k-blue-300;
-      border-color: @k-blue-300;
-      color: #fff;
-    }
-
-    // secondary style
-    &.el-button--secondary {
-      background: #fff;
-      color: @k-blue-500;
-      border: 1px solid @k-blue-500;
-    }
-    &.el-button--secondary:hover {
-      color: @k-blue-400;
-      border: 1px solid @k-blue-400;
-    }
-    &.el-button--secondary:active {
-      color: @k-blue-600;
-      border: 1px solid @k-blue-600;
-    }
-    &.el-button--secondary.is-disabled {
-      background: @k-gray-100;
-      color: @k-gray-300;
-      border: 1px solid @k-gray-300;
-    }
-    &.el-button--secondary.is-loading {
-      background: #fff;
-      color: @k-blue-300;
-      border: 1px solid @k-blue-300;
-    }
-
-    // text style
-    &.el-button--text {
-      background: #fff;
-      color: @k-blue-500;
-      padding: 0 0.5rem;
-      border-width: 0;
-    }
-    &.el-button--text:hover {
-      color: @k-blue-400;
-    }
-    &.el-button--text:active {
-      color: @k-blue-600;
-    }
-    &.el-button--text.is-disabled {
-      background: #fff;
-      color: @k-gray-300;
-    }
-    &.el-button--text.is-loading {
-      background: #fff;
-      color: @k-blue-300;
-    }
-
-    // icon style
-    &.el-button--icon {
-      width: 2rem;
-      padding: 0;
+    > i {
+      display: flex;
       justify-content: center;
-      > span > span > .ksw-icon > svg{
-        transform: translate(25%) scale(2);
-      }
-      > span > label > span > svg {
-        width: 1rem;
-        height: 1rem;
-      }
-    }
-    &.el-button--icon.el-button--sm {
-      height: 1.5rem;
-      width: 1.5rem;
-      > span > label > span {
-        > svg {
-          width: 0.75rem;
-          height: 0.75rem;
-        }
-      }
-      > span > span > .ksw-icon > svg{
-        transform: translate(12.5%) scale(1.5);
-      }
-      > i {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        > span {
-          width: 0.75rem;
-          height: 0.75rem;
-        }
-      }
-    }
-    &.el-button--icon.is-disabled {
-      cursor: not-allowed;
-    }
-    &.el-button--icon.is-loading {
-      i {
-        width: 1rem;
-        height: 1rem;
-        transform: translate(0, 0);
-      }
+      align-items: center;
       > span {
-        display: none;
+        width: 0.75rem;
+        height: 0.75rem;
       }
+    }
+  }
+  &.el-button--icon.is-disabled {
+    cursor: not-allowed;
+  }
+  &.el-button--icon.is-loading {
+    i {
+      width: 1rem;
+      height: 1rem;
+      transform: translate(0, 0);
+    }
+    > span {
+      display: none;
     }
   }
 }
