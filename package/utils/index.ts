@@ -45,8 +45,8 @@ export function GetColorLevel(hex, v=1) {
   // 2. 将RGB颜色值转换为16进制
   function rgbToHex(r, g, b) {
     return (
-      "#" +
-      ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()
+      `#${ 
+      ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase() }`
     );
   }
   // 3. 调整亮度
@@ -59,9 +59,9 @@ export function GetColorLevel(hex, v=1) {
   }
 
 
-  const rgb = hexToRgb(hex, );
+  const rgb = hexToRgb(hex);
   const lightFactor = 1.2; // 调浅亮度因子
-  const darkFactor = 0.9; // 调暗亮度因子
+  const darkFactor = 0.8; // 调暗亮度因子
   const lightColor = rgbToHex(...adjustBrightness(rgb, lightFactor));
   const darkColor = rgbToHex(...adjustBrightness(rgb, darkFactor));
 
