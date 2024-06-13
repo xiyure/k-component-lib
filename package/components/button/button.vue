@@ -69,8 +69,8 @@ onMounted(() => {
     console.log(`深色: ${darkColor}`); // 深色
     // 原型链中添加一个 css 颜色变量
     buttonRef.value.style.setProperty("--k-button-color", hexColor);
-    buttonRef.value.style.setProperty("--k-button-light-color", lightColor);
-    buttonRef.value.style.setProperty("--k-button-dark-color", darkColor);
+    buttonRef.value.style.setProperty("--k-button-hover-color", lightColor);
+    buttonRef.value.style.setProperty("--k-button-active-color", darkColor);
     buttonRef.value.style.setProperty("--k-button-icon-color", hexColor);
   } else {
     console.log("color 格式不正确");
