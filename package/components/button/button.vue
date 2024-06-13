@@ -11,7 +11,7 @@
         'el-button--icon': props.type === 'icon',
         'is-loading': props.loading,
         'is-disabled': props.disabled,
-        'button-loading': props.loading
+        'button-loading': props.loading,
       },
       getSizeClass,
     ]"
@@ -34,24 +34,47 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { IconLoading } from 'ksw-vue-icon';
-import { ButtonProps } from './type';
-import 'ksw-vue-icon/styles/icon.css';
+import { computed, ref, onMounted } from "vue";
+import { IconLoading } from "ksw-vue-icon";
+import { ButtonProps } from "./type";
+import { isValidColor, GetColorLevel } from "../../utils";
+import "ksw-vue-icon/styles/icon.css";
 
 defineOptions({
-  name: 'KButton',
+  name: "KButton",
 });
 
+const buttonRef = ref();
+
 const props = withDefaults(defineProps<ButtonProps>(), {
-  type: 'normal',
-  size: 'base',
-  value: '',
+  type: "normal",
+  size: "base",
+  value: "",
   disabled: false,
   loading: false,
   loadingIcon: IconLoading,
   iconLeft: null,
   iconRight: null,
+  color: "",
+});
+
+onMounted(() => {
+  console.log("mounted", buttonRef.value);
+  // 校验 color 是否为 16 进制颜色
+  if (props.color && isValidColor(props.color)) {
+    console.log("color 格式正确");
+    const hexColor = props.color;
+    const { lightColor, darkColor } = GetColorLevel(hexColor, 0.1);
+    console.log(`浅色: ${lightColor}`); // 浅色
+    console.log(`深色: ${darkColor}`); // 深色
+    // 原型链中添加一个 css 颜色变量
+    buttonRef.value.style.setProperty("--k-button-color", hexColor);
+    buttonRef.value.style.setProperty("--k-button-light-color", lightColor);
+    buttonRef.value.style.setProperty("--k-button-dark-color", darkColor);
+    buttonRef.value.style.setProperty("--k-button-icon-color", hexColor);
+  } else {
+    console.log("color 格式不正确");
+  }
 });
 
 const attrs = computed(() => ({
@@ -66,11 +89,13 @@ const getOriginAttrs = () => {
   };
 };
 
-const getSizeClass = computed(() => (props.size !== '' ? `el-button--${ props.size }` : ''));
+const getSizeClass = computed(() =>
+  props.size !== "" ? `el-button--${props.size}` : ""
+);
 
-const emits = defineEmits(['click']);
+const emits = defineEmits(["click"]);
 const handleClick = (e: Event) => {
-  emits('click', e);
+  emits("click", e);
 };
 </script>
 
