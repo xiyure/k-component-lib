@@ -59,21 +59,17 @@ const props = withDefaults(defineProps<ButtonProps>(), {
 });
 
 onMounted(() => {
-  console.log("mounted", buttonRef.value);
   // 校验 color 是否为 16 进制颜色
   if (props.color && isValidColor(props.color)) {
-    console.log("color 格式正确");
     const hexColor = props.color;
     const { lightColor, darkColor } = GetColorLevel(hexColor, 0.1);
-    console.log(`浅色: ${lightColor}`); // 浅色
-    console.log(`深色: ${darkColor}`); // 深色
-    // 原型链中添加一个 css 颜色变量
+    // 添加一个 css 颜色变量
     buttonRef.value.style.setProperty("--k-button-color", hexColor);
     buttonRef.value.style.setProperty("--k-button-hover-color", lightColor);
     buttonRef.value.style.setProperty("--k-button-active-color", darkColor);
     buttonRef.value.style.setProperty("--k-button-icon-color", hexColor);
   } else {
-    console.log("color 格式不正确");
+    return;
   }
 });
 
