@@ -30,10 +30,12 @@ const props = withDefaults(defineProps<FormProps>(), {
 const emits = defineEmits(['update:modelValue', 'validate']);
 
 const KFormRef = ref<any>(null);
-let inputDoms:HTMLElement[];
+let inputDoms:HTMLInputElement[];
 
 onMounted(() => {
   inputDoms = KFormRef.value?.$el.querySelectorAll('input');
+  const targetType = ['text', 'password', 'number'];
+  inputDoms = Array.from(inputDoms).filter(item => targetType.includes(item.type));
   inputDoms.forEach((item, index) => {
     item.setAttribute('data-index', index.toString());
   });
