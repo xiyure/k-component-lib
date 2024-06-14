@@ -3,7 +3,6 @@
     v-model="activeName"
     class="k-tabs"
     v-bind="originAttrs"
-    :tab-position="props.position"
     @tab-click="handleClick"
     @tab-remove="handleRemove"
   >
@@ -27,7 +26,7 @@ const props = defineProps({
     type: String,
     default: '',
   },
-  position: {
+  tabPosition: {
     type: String,
     default: 'top',
   },
@@ -35,9 +34,21 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  closable: {
+    type: Boolean,
+    default: false
+  },
+  stretch: {
+    type: Boolean,
+    default: false
+  },
+  beforeLeave: {
+    type: Function,
+    default: () => true
+  }
 });
 
-const emits = defineEmits(['tab-click', 'tab-remove']);
+const emits = defineEmits(['tab-click', 'tab-remove', 'update:modelValue']);
 
 const activeName = ref('');
 
@@ -47,10 +58,13 @@ provide('activeName', activeName);
 watch(() => props.modelValue, () => {
   activeName.value = props.modelValue as string;
 }, { immediate: true });
+watch(() => activeName.value, (newValue) => {
+  emits('update:modelValue', newValue);
+});
 
 const getOriginAttrs = () => {
-  const { type } = props;
-  return { type };
+  const { type, closable, stretch, beforeLeave, tabPosition  } = props;
+  return { type, tabPosition, closable, stretch, beforeLeave };
 };
 const originAttrs = getOriginAttrs();
 

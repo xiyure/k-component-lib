@@ -202,7 +202,10 @@ function clearFilterData() {
 }
 
 function updateFilterData() {
-  emits('confirm', filterData.value);
+  emits('confirm', {
+    conditionList: filterData.value,
+    filterRule: filterRule.value
+  });
 }
 function changeCondition(index:number) {
   const targetItem = filterData.value[index];

@@ -70,6 +70,9 @@ function onKeyDown(event:any) {
     return;
   }
   // 判断当前是否按压上下方向键以及回车键
+  if (event.keyCode === 13 && nextIndex === inputDoms.length - 1) {
+    return;
+  }
   if (event.keyCode === 13 || event.keyCode === 40) {
     nextIndex += 1;
   } else if (event.keyCode === 38) {
