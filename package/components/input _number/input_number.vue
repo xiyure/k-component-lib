@@ -3,25 +3,20 @@
     ref="inputNumberRef"
     v-model="inputValue"
     class="k-input-number"
-    v-bind="attrs"
-    :style="{
-      width: props.width
-    }"
+    v-bind="$attrs"
+    :size="getCompSize(props.size)"
     @change="handleChangeEvent"
     @focus="handleFocusEvent"
     @blur="handleBlurEvent"
   >
-    <template #increase-icon>
-      <slot name="increase-icon"></slot>
-    </template>
-    <template #decrease-icon>
-      <slot name="decrease-icon"></slot>
+    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+      <slot :name="name" v-bind="data"></slot>
     </template>
   </el-input-number>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, getCurrentInstance } from 'vue';
+import { ref, watch } from 'vue';
 import { InputNumberProps } from './type';
 import { getCompSize } from '../../utils';
 
@@ -31,31 +26,12 @@ defineOptions({
 
 type InputValue = number | null | undefined;
 
-const props = withDefaults(defineProps<InputNumberProps>(), {
-  controls: true
-});
+const props = withDefaults(defineProps<InputNumberProps>(), {});
 
 const emit = defineEmits(['update:modelValue', 'blur', 'change', 'focus']);
 
-const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
 const inputNumberRef = ref<HTMLElement | null>(null);
 const inputValue = ref<InputValue>(0);
-const attrs = computed(() => ({
-  id: props.id,
-  name: props.name,
-  size: getCompSize(props.size),
-  label: props.label,
-  disabled: props.disabled,
-  placeholder: props.placeholder || _global?.$t('input'),
-  readonly: props.readonly,
-  max: props.max,
-  min: props.min,
-  step: props.step,
-  stepStrictly: props.stepStrictly,
-  precision: props.precision,
-  controls: props.controls,
-  controlsPosition: props.controlsPosition,
-}));
 
 watch(() => props.modelValue, (newValue) => {
   inputValue.value = newValue;

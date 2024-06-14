@@ -1,14 +1,16 @@
 <template>
-  <div class="k-radio-group">
-    <el-radio-group
-      v-model="modelValue"
-      v-bind="attrs"
-      :class="directionClass"
-      @change="handleChange"
-    >
-      <slot></slot>
-    </el-radio-group>
-  </div>
+  <el-radio-group
+    v-model="modelValue"
+    class="k-radio-group"
+    v-bind="$attrs"
+    :size="getCompSize(size)"
+    :class="directionClass"
+    @change="handleChange"
+  >
+    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+      <slot :name="name" v-bind="data"></slot>
+    </template>
+  </el-radio-group>
 </template>
 
 <script setup lang="ts">
@@ -31,13 +33,6 @@ const emits = defineEmits(['update:modelValue', 'change']);
 
 const modelValue = ref(props.modelValue);
 const fillColor = ref(props.color);
-
-const attrs = computed(() => ({
-  disabled: props.disabled,
-  size: getCompSize(props.size),
-  id: props.id,
-  name: props.name
-}));
 
 watch(() => props.modelValue, (newValue) => {
   modelValue.value = newValue;

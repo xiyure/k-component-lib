@@ -3,45 +3,22 @@
     ref="inputRef"
     v-model="inputValue"
     class="k-input"
-    v-bind="attrs"
-    :style="{
-      width: props.width
-    }"
+    v-bind="$attrs"
+    :size="getCompSize(props.size)"
     @input="handleInputEvent"
     @change="handleChangeEvent"
     @focus="handleFocusEvent"
     @blur="handleBlurEvent"
     @clear="handleClearEvent"
   >
-    <template
-      v-if="slots.prepend"
-      #prepend
-    >
-      <slot name="prepend"></slot>
-    </template>
-    <template
-      v-if="slots.append"
-      #append
-    >
-      <slot name="append"></slot>
-    </template>
-    <template
-      v-if="slots.prefix"
-      #prefix
-    >
-      <slot name="prefix"></slot>
-    </template>
-    <template
-      v-if="slots.suffix"
-      #suffix
-    >
-      <slot name="suffix"></slot>
+    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+      <slot :name="name" v-bind="data"></slot>
     </template>
   </el-input>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, getCurrentInstance } from 'vue';
+import { ref, watch } from 'vue';
 import { InputProps } from './type';
 import { getCompSize } from '../../utils';
 
@@ -53,55 +30,13 @@ type InputValue = string | number;
 
 const props = withDefaults(defineProps<InputProps>(), {
   modelValue: '',
-  disabled: false,
-  clearable: false,
-  readonly: false,
-  showWordLimit: false,
-  autosize: false,
-  showPassword: false,
-  autocomplete: 'off',
-  validateEvent: true
+  size: 'base'
 });
-
-const slots = defineSlots<{
-  default?: any,
-  prepend?: any,
-  append?: any,
-  prefix?: any,
-  suffix?: any
-}>();
 
 const emit = defineEmits(['update:modelValue', 'input', 'blur', 'change', 'clear', 'focus']);
 
-const _gloab = getCurrentInstance()?.appContext.app.config.globalProperties;
 const inputValue = ref<InputValue>('');
 const inputRef = ref<any>(null);
-
-const attrs = computed(() => ({
-  id: props.id,
-  name: props.name,
-  size: getCompSize(props.size),
-  label: props.label,
-  type: props.type,
-  disabled: props.disabled,
-  placeholder: props.placeholder || _gloab?.$t('input'),
-  readonly: props.readonly,
-  clearable: props.clearable,
-  prefixIcon: props.prefixIcon,
-  suffixIcon: props.suffixIcon,
-  showWordLimit: props.showWordLimit,
-  autosize: props.autosize,
-  rows: props.rows,
-  showPassword: props.showPassword,
-  maxLength: props.maxlength,
-  minLength: props.minlength,
-  autocomplete: props.autocomplete,
-  inputStyle: props.inputStyle,
-  validateEvent: props.validateEvent,
-  max: props.max,
-  min: props.min,
-  step: props.step
-}));
 
 watch(() => props.modelValue, (newValue) => {
   inputValue.value = newValue;

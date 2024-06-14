@@ -1,16 +1,19 @@
 <template>
   <el-timeline-item
-    v-bind="attrs"
+    v-bind="$attrs"
     :id="id"
+    :type="getTimelineType(type)"
+    :placement="placement === 'right' ? 'top' : placement"
+    :hollow="hollow"
+    :color="color"
     class="k-timeline__item"
     :class="{
       'is-show-right': showRight,
       'is-hollow': props.hollow
     }"
   >
-    <slot></slot>
-    <template v-if="slots.dot">
-      <slot name="dot"></slot>
+    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+      <slot :name="name" v-bind="data"></slot>
     </template>
   </el-timeline-item>
 </template>
@@ -30,7 +33,6 @@ const props = withDefaults(defineProps<TimelineItemProps>(), {
   type: 'wait',
   size: 'normal'
 });
-const slots = defineSlots();
 
 const id = genRandomStr(8);
 let rootNode:HTMLElement | null;
@@ -40,18 +42,6 @@ onMounted(() => {
   rootNode = document.getElementById(id);
   timelineNode = rootNode?.querySelector('.el-timeline-item__node') || null;
 });
-
-const attrs = computed(() => ({
-  timestamp: props.timestamp,
-  placement: props.placement === 'right' ? 'top' : props.placement,
-  hideTimestamp: props.hideTimestamp,
-  center: props.center,
-  type: getTimelineType(props.type),
-  color: props.color,
-  icon: props.icon,
-  hollow: props.hollow,
-  size: props.size
-}));
 
 watch(() => props.color, (newValue) => {
   nextTick(() => {

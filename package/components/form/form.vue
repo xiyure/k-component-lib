@@ -2,10 +2,13 @@
   <el-form
     ref="KFormRef"
     class="k-form"
-    v-bind="attrs"
+    v-bind="$attrs"
+    :size="getCompSize(props.size)"
     @validate="handleValidate"
   >
-    <slot></slot>
+    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+      <slot :name="name" v-bind="data"></slot>
+    </template>
   </el-form>
 </template>
 
@@ -22,10 +25,7 @@ defineOptions({
 type Arrayable<T> = T | T[];
 
 const props = withDefaults(defineProps<FormProps>(), {
-  labelPosition: 'right',
-  requireAsteriskPosition: 'left',
-  showMessage: true,
-  validateOnRuleChange: true
+  size: 'base'
 });
 const emits = defineEmits(['update:modelValue', 'validate']);
 
@@ -45,25 +45,6 @@ onMounted(() => {
 onUnmounted(() => {
   KFormRef.value?.$el.removeEventListener('keydown', onKeyDown);
 });
-
-const attrs = computed(() => ({
-  model: props.model,
-  rules: props.rules,
-  inline: props.inline,
-  labelPosition: props.labelPosition,
-  labelWidth: props.labelWidth,
-  labelSuffix: props.labelSuffix,
-  hideRequiredAsterisk: props.hideRequiredAsterisk,
-  requireAsteriskPosition: props.requireAsteriskPosition,
-  showMessage: props.showMessage,
-  inlineMessage: props.inlineMessage,
-  statusIcon: props.statusIcon,
-  validateOnRuleChange: props.validateOnRuleChange,
-  size: getCompSize(props.size),
-  disabled: props.disabled,
-  scrollToError: props.scrollToError,
-  scrollIntoViewOptions: props.scrollIntoViewOptions
-}));
 
 function onKeyDown(event:any) {
   const index = event.target.getAttribute('data-index');

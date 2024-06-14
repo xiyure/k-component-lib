@@ -2,7 +2,7 @@
   <el-tabs
     v-model="activeName"
     class="k-tabs"
-    v-bind="originAttrs"
+    v-bind="$attrs"
     @tab-click="handleClick"
     @tab-remove="handleRemove"
     @tab-change="handleChange"
@@ -25,37 +25,9 @@ const props = defineProps({
     type: String,
     default: '',
   },
-  type: {
-    type: String,
-    default: '',
-  },
-  tabPosition: {
-    type: String,
-    default: 'top',
-  },
   router: {
     type: Boolean,
     default: false,
-  },
-  closable: {
-    type: Boolean,
-    default: false
-  },
-  editable: {
-    type: Boolean,
-    default: false
-  },
-  addable: {
-    type: Boolean,
-    default: false
-  },
-  stretch: {
-    type: Boolean,
-    default: false
-  },
-  beforeLeave: {
-    type: Function,
-    default: () => true
   }
 });
 
@@ -70,12 +42,6 @@ watch(() => props.modelValue, () => {
   activeName.value = props.modelValue as string;
 }, { immediate: true });
 
-const getOriginAttrs = () => {
-  const { type, closable, stretch, beforeLeave, tabPosition, addable, editable  } = props;
-  return { type, tabPosition, closable,  addable, editable, stretch, beforeLeave };
-};
-const originAttrs = getOriginAttrs();
-
 const handleClick = (pane: any, e: Event) => {
   emits('tab-click', pane, e);
 };
@@ -89,7 +55,7 @@ const handleEdit = (paneName:string, action: string) => {
   emits('edit', paneName, action);
 };
 const handleChange = (paneName:string) => {
-  emits('update:modelValue', paneName)
+  emits('update:modelValue', paneName);
   emits('tab-change', paneName);
 };
 

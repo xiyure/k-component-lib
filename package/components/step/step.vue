@@ -1,13 +1,15 @@
 <template>
-  <el-step v-if="!isCapsule" v-bind="attrs" class="k-step">
-    <template v-if="slots.title" #title>
-      <slot name="title"></slot>
-    </template>
-    <template v-if="slots.description" #description>
-      <slot name="description"></slot>
-    </template>
-    <template v-if="slots.icon" #icon>
-      <slot name="icon"></slot>
+  <el-step
+    v-if="!isCapsule"
+    class="k-step"
+    v-bind="$attrs"
+    :title="title"
+    :description="description"
+    :icon="icon"
+    :status="getProcessStatus(status)"
+  >
+    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+      <slot :name="name" v-bind="data"></slot>
     </template>
   </el-step>
   <div v-else :id="id" class="k-step__capsule-box">
@@ -27,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch, inject, nextTick } from 'vue';
+import { watch, inject, nextTick } from 'vue';
 import { StepProps } from './type';
 import { KPopover } from '../popover';
 import { genRandomStr } from '../../utils';
@@ -42,7 +44,6 @@ const props = withDefaults(defineProps<StepProps>(), {
   status: ''
 });
 const isCapsule = inject('isCapsule');
-const slots = defineSlots();
 
 const id = genRandomStr(8);
 const DEFAULT_STATUS_COLOR = {
@@ -51,13 +52,6 @@ const DEFAULT_STATUS_COLOR = {
   error: '#EF4444',
   wait: '#EAE8EB'
 };
-
-const attrs = computed(() => ({
-  title: props.title,
-  description: props.description,
-  icon: props.icon,
-  status: getProcessStatus(props.status)
-}));
 
 watch(() => [props.color, props.status], (newValue) => {
   if (!newValue[0] && !newValue[1]) {

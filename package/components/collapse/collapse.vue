@@ -2,15 +2,17 @@
   <el-collapse
     v-model="activeName"
     class="k-collapse"
-    v-bind="attrs"
+    v-bind="$attrs"
     @change="handleChange"
   >
-    <slot></slot>
+    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+      <slot :name="name" v-bind="data"></slot>
+    </template>
   </el-collapse>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { Collapse } from './type';
 
 defineOptions({
@@ -22,10 +24,6 @@ const props = defineProps<Collapse>();
 const emits = defineEmits(['update:modelValue', 'change']);
 
 const activeName = ref(props.modelValue);
-
-const attrs = computed(() => ({
-  accordion: props.accordion
-}));
 
 const handleChange = (activeName:string | any[]) => {
   emits('update:modelValue', activeName);

@@ -1,34 +1,16 @@
 <template>
-  <el-badge class="k-badge" v-bind="attrs">
-    <slot></slot>
+  <el-badge class="k-badge" v-bind="$attrs">
+    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+      <slot :name="name" v-bind="data"></slot>
+    </template>
   </el-badge>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { BadgeProps } from './type';
-
 defineOptions({
   name: 'KBadge'
 });
 
-const props = withDefaults(defineProps<BadgeProps>(), {
-  value: '',
-  max: 99,
-  showZero: true
-});
-
-const attrs = computed(() => ({
-  value: props.value,
-  max: props.max,
-  isDot: props.isDot,
-  hidden: props.hidden,
-  color: props.color,
-  showZero: props.showZero,
-  offset: props.offset,
-  badgeStyle: props.badgeStyle,
-  badgeClass: props.badgeClass
-}));
 </script>
 
 <style lang="less">

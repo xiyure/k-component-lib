@@ -1,14 +1,11 @@
 <template>
   <el-collapse-item
     class="k-collapse-item"
-    :name="props.name"
-    :title="props.title"
-    :disabled="props.disabled"
+    v-bind="$attrs"
   >
-    <template v-if="slots.title" #title>
-      <slot name="title"></slot>
+    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+      <slot :name="name" v-bind="data"></slot>
     </template>
-    <slot></slot>
   </el-collapse-item>
 </template>
 
@@ -16,24 +13,6 @@
 defineOptions({
   name: 'KCollapseItem'
 });
-
-const props = defineProps({
-  name: {
-    type: String || Number,
-    default: ''
-  },
-  title: {
-    type: String,
-    default: '',
-  },
-  disabled: {
-    type: Boolean,
-    default: false,
-  }
-});
-
-const slots = defineSlots();
-
 </script>
 
 <style lang="less">

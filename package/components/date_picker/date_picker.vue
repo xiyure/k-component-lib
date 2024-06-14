@@ -1,21 +1,24 @@
 <template>
-  <div class="k-date-picker">
-    <el-date-picker
-      ref="datePickerRef"
-      v-model="modelValue"
-      v-bind="attrs"
-      unlink-panels
-      @change="handleChange"
-      @focus="handleFocus"
-      @blur="handleBlur"
-      @calendar-change="handleCalendarChange"
-      @visible-change="handleVisibleChange"
-    ></el-date-picker>
-  </div>
+  <el-date-picker
+    ref="datePickerRef"
+    v-model="modelValue"
+    class="k-date-picker"
+    v-bind="$attrs"
+    :size="getCompSize(props.size)"
+    @change="handleChange"
+    @focus="handleFocus"
+    @blur="handleBlur"
+    @calendar-change="handleCalendarChange"
+    @visible-change="handleVisibleChange"
+  >
+    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+      <slot :name="name" v-bind="data"></slot>
+    </template>
+  </el-date-picker>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { DatePicker } from './type';
 import { getCompSize } from '../../utils';
 
@@ -24,10 +27,7 @@ defineOptions({
 });
 
 const props = withDefaults(defineProps<DatePicker>(), {
-  clearable: true,
-  editable: true,
-  rangeSeparator: '-',
-  teleported: true
+  size: 'base'
 });
 
 const emits = defineEmits([
@@ -41,27 +41,6 @@ const emits = defineEmits([
 
 const modelValue = ref(props.modelValue);
 const datePickerRef = ref<any>(null);
-
-const attrs = computed(() => ({
-  type: props.type,
-  format: props.format,
-  disabled: props.disabled,
-  valueFormat: props.valueFormat,
-  rangeSeparator: props.rangeSeparator,
-  clearable: props.clearable,
-  placeholder: props.placeholder,
-  startPlaceholder: props.startPlaceholder,
-  endPlaceholder: props.endPlaceholder,
-  popperClass: props.popperClass,
-  readonly: props.readonly,
-  editable: props.editable,
-  disabledDate: props.disabledDate,
-  defaultValue: props.defaultValue,
-  defaultTime: props.defaultTime,
-  prefixIcon: props.prefixIcon,
-  teleported: props.teleported,
-  size: getCompSize(props.size)
-}));
 
 watch(() => props.modelValue, (newValue) => {
   if (newValue) {

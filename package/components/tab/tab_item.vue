@@ -1,9 +1,8 @@
 <template>
   <el-tab-pane
     class="k-tab-item"
+    v-bind="$attrs"
     :name="props.name"
-    :closable="closable"
-    :disabled="props.disabled"
   >
     <template #label>
       <div class="k-tab__label">
@@ -34,10 +33,7 @@ defineOptions({
 const props = withDefaults(defineProps<TabItemProps>(), {
   label: '',
   name: '',
-  path: '#',
-  closable: false,
-  disabled: false,
-  icon: null,
+  path: '#'
 });
 
 const slots = defineSlots();

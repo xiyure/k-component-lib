@@ -2,14 +2,11 @@
   <el-form-item
     ref="KFormItemRef"
     class="k-form-item"
-    v-bind="attrs"
+    v-bind="$attrs"
+    :size="getCompSize(props.size)"
   >
-    <slot></slot>
-    <template v-if="slots.label" #label>
-      <slot name="label"></slot>
-    </template>
-    <template v-if="slots.error" #error>
-      <slot name="error"></slot>
+    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+      <slot :name="name" v-bind="data"></slot>
     </template>
   </el-form-item>
 </template>
@@ -25,28 +22,10 @@ defineOptions({
 });
 
 const props = withDefaults(defineProps<FormItemProps>(), {
-  labelWidth: '',
-  showMessage: true,
-  inlineMessage: '',
-  required: undefined
+  size: 'base'
 });
-const slots = defineSlots();
 
 const KFormItemRef = ref<any>(null);
-
-const attrs = computed(() => ({
-  props: props.props,
-  label: props.label,
-  labelWidth: props.labelWidth,
-  required: props.required,
-  rules: props.rules,
-  error: props.error,
-  showMessage: props.showMessage,
-  inlineMessage: props.inlineMessage,
-  size: getCompSize(props.size),
-  for: props.for,
-  validateStatus: props.validateStatus
-}));
 
 const validate = (trigger: string, callback?: FormValidateCallback) => KFormItemRef.value?.validate(trigger, callback);
 const resetField = () => {

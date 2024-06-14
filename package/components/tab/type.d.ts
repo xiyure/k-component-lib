@@ -1,8 +1,8 @@
+import { Component } from 'vue';
+
 export interface TabItemProps {
-  label?: string
-  name: string
   path?: string
-  closable?: boolean
-  disabled?: boolean
-  icon?: any
+  icon?: Component
+  label?: string
+  name?: string
 }

@@ -1,7 +1,12 @@
 <template>
   <div class="k-tree">
     <div class="k-tree__filter">
-      <k-input v-show="props.showFilter" v-model="query" @input="filterTreeNode">
+      <k-input
+        v-if="props.showFilter"
+        v-model="query"
+        @input="filterTreeNode"
+        @keydown.enter="filterTreeNode"
+      >
         <template #append>
           <span class="k-tree__filter-append" @click="filter(query)"><IconSearch /></span>
         </template>
@@ -9,7 +14,8 @@
     </div>
     <el-tree-v2
       ref="KTreeRef"
-      v-bind="attrs"
+      v-bind="$attrs"
+      :filter-method="filterMethod"
       @node-click="handleNodeClick"
       @node-contextmenu="handleNodeContextmenu"
       @check-change="handleCheckChange"
@@ -18,18 +24,15 @@
       @node-expand="handleNodeExpand"
       @node-collapse="handleNodeCollapse"
     >
-      <template v-if="slots.default" #default="{ node, data }">
-        <slot :node="node" :data="data"></slot>
-      </template>
-      <template v-if="slots.empty" #empty>
-        <slot></slot>
+      <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+        <slot :name="name" v-bind="data"></slot>
       </template>
     </el-tree-v2>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import type { TreeNode, TreeNodeData, TreeKey, TreeData } from 'element-plus/es/components/tree-v2/src/types';
 import { IconSearch } from 'ksw-vue-icon';
 import { TreeProps } from './type';
@@ -40,19 +43,8 @@ defineOptions({
 });
 
 const props = withDefaults(defineProps<TreeProps>(), {
-  highlightCurrent: true,
-  expandOnClickNode: true,
-  indent: 16,
-  itemSize: 26,
-  showCheckbox: true,
   showFilter: true,
   lazy: true,
-  props: () => ({
-    label: 'label',
-    value: 'value',
-    disabled: 'disabled',
-    children: 'children'
-  }),
   filterMethod: (query:string, node:TreeNode) => node.label?.includes(query)
 });
 
@@ -66,27 +58,8 @@ const emits = defineEmits([
   'node-collapse'
 ]);
 
-const slots = defineSlots();
 const KTreeRef = ref();
 const query = ref('');
-
-const attrs = computed(() => ({
-  data: props.data,
-  emptyText: props.emptyText,
-  props: props.props,
-  highlightCurrent: props.highlightCurrent,
-  expandOnClickNode: props.expandOnClickNode,
-  checkOnClickNode: props.checkOnClickNode,
-  defaultExpandedKeys: props.defaultExpandedKeys,
-  showCheckbox: props.showCheckbox,
-  checkStrictly: props.checkStrictly,
-  defaultCheckedKeys: props.defaultCheckedKeys,
-  currentNodeKey: props.currentNodeKey,
-  filterMethod: props.filterMethod,
-  indent: props.indent,
-  icon: props.icon,
-  itemSize: props.itemSize
-}));
 
 function handleNodeClick(data: TreeNodeData, node: TreeNode, e: MouseEvent) {
   emits('node-click', data, node, e);
@@ -123,6 +96,7 @@ function filterTreeNode(value:string) {
   filter(value);
 }
 function filter(query: string) {
+  console.log(query);
   return KTreeRef.value?.filter(query);
 }
 function getCheckedNodes(leafOnly: boolean) {

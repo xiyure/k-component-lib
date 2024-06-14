@@ -3,7 +3,7 @@
     ref="KDrawerRef"
     v-model="modelValue"
     class="k-drawer"
-    v-bind="attrs"
+    v-bind="$attrs"
     @open="handleOpen"
     @opened="handleOpened"
     @close="handleCloseEvent"
@@ -11,31 +11,21 @@
     @open-auto-focus="handleOpenFocus"
     @close-auto-focus="handleCloseFocus"
   >
-    <slot></slot>
-    <template v-if="slots.header" #header="headerSlotProps">
-      <slot name="header" v-bind="headerSlotProps"></slot>
-    </template>
-    <template v-if="slots.footer" #footer>
-      <slot name="footer"></slot>
+    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+      <slot :name="name" v-bind="data"></slot>
     </template>
   </el-drawer>
 </template>
 
 <script setup lang="ts">
-import { computed, watch, ref } from 'vue';
+import { watch, ref } from 'vue';
 import { DrawerProps } from './type';
 
 defineOptions({
   name: 'KDrawer'
 });
 
-const props = withDefaults(defineProps<DrawerProps>(), {
-  modal: true,
-  lockScroll: true,
-  showClose: true,
-  withHeader: true
-});
-const slots = defineSlots();
+const props = withDefaults(defineProps<DrawerProps>(), {});
 const emits = defineEmits([
   'update:modelValue',
   'open',
@@ -48,25 +38,6 @@ const emits = defineEmits([
 
 const modelValue = ref(props.modelValue);
 const KDrawerRef = ref<any>(null);
-
-const attrs = computed(() => ({
-  appendToBody: props.appendToBody,
-  lockScroll: props.lockScroll,
-  openDelay: props.openDelay,
-  closeDelay: props.closeDelay,
-  closeOnClickModal: props.closeOnClickModal,
-  closeOnPressEscape: props.closeOnPressEscape,
-  showClose: props.showClose,
-  destroyOnClose: props.destroyOnClose,
-  modal: props.modal,
-  direction: props.direction,
-  size: props.size,
-  title: props.title,
-  withHeader: props.withHeader,
-  modalClass: props.modalClass,
-  zIndex: props.zIndex,
-  beforeClose: props.beforeClose
-}));
 
 watch(() => props.modelValue, (newValue) => {
   if (newValue === modelValue.value) {

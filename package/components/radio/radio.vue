@@ -4,10 +4,12 @@
     v-model="modelValue"
     class="k-radio"
     :class="[getSizeClass]"
-    v-bind="attrs"
+    v-bind="$attrs"
     @change="handleChange"
   >
-    <slot></slot>
+    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+      <slot :name="name" v-bind="data"></slot>
+    </template>
   </el-radio>
 </template>
 
@@ -28,12 +30,6 @@ const emits = defineEmits(['update:modelValue', 'change']);
 const fillColor = inject('_fillColor', ref(''));
 const modelValue = ref(props.modelValue);
 const kRadioRef = ref();
-
-const attrs = computed(() => ({
-  value: props.value,
-  label: props.label,
-  disabled: props.disabled
-}));
 
 watch(() => [props.color, fillColor.value], () => {
   let color = '#2882FF';

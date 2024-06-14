@@ -2,6 +2,7 @@
   <div :id="id" class="k-transfer">
     <div class="k-transfer_seacher">
       <k-input
+        v-if="filterable"
         v-model="searchStr"
         :placeholder="filterablePlaceholder"
         :prefix-icon="Search"
@@ -10,8 +11,9 @@
     <el-transfer
       ref="kTransferRef"
       v-model="modelValue"
-      v-bind="attrs"
+      v-bind="$attrs"
       :data="sourceData"
+      :props="props.props"
       :format="{
         noChecked: ' ',
         hasChecked: ' ',
@@ -21,13 +23,8 @@
       @left-check-change="handleLeftCheckChange"
       @right-check-change="handleRightCheckChange"
     >
-      <template #left-footer>
-        <slot name="left-footer">
-        </slot>
-      </template>
-      <template #right-footer>
-        <slot name="right-footer">
-        </slot>
+      <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+        <slot :name="name" v-bind="data"></slot>
       </template>
     </el-transfer>
   </div>
@@ -51,7 +48,8 @@ defineOptions({
 
 const props = withDefaults(defineProps<TransferProps>(), {
   matchKey: 'label',
-  defautKey: []
+  defautKey: [],
+  filterable: true
 });
 
 const emits = defineEmits([
@@ -75,20 +73,6 @@ onMounted(() => {
   // 根据需求扩展页面内容
   extendContent();
 });
-
-const attrs = computed(() => ({
-  data: props.data,
-  format: props.format,
-  targetOrder: props.targetOrder,
-  titles: props.titles ?? [_global?.$t('unselectedFields'), _global?.$t('selectedFields')],
-  buttonTexts: props.buttonTexts,
-  renderContent: props.renderContent,
-  filterablePlaceholder: props.filterablePlaceholder,
-  props: props.props,
-  leftDefaultChecked: props.leftDefaultChecked,
-  rightDefaultChecked: props.rightDefaultChecked,
-  filterMethod: props.filterMethod
-}));
 
 const defaultPropsConfig = computed(() => ({ label: 'label',
   key: 'key',

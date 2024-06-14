@@ -3,8 +3,14 @@
     <el-upload
       ref="KUploadRef"
       v-model:file-list="fileList"
-      v-bind="attrs"
+      v-bind="$attrs"
       :on-change="handleChange"
+      :disabled="disabled"
+      :auto-upload="autoUpload"
+      :drag="drag"
+      :success-icon="successIcon"
+      :fail-icon="failIcon"
+      :remove-icon="removeIcon"
     >
       <template #trigger>
         <slot name="default">
@@ -75,7 +81,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { UploadFile, UploadRawFile, UploadStatus } from 'element-plus';
 import { IconEmptyBox, IconWarning, IconCheck, IconDelete, IconFile, IconUpload } from 'ksw-vue-icon';
 import { UploadProps } from './type';
@@ -84,14 +90,7 @@ defineOptions({
   name: 'KUpload'
 });
 
-const props = withDefaults(defineProps<UploadProps>(), {
-  method: 'post',
-  showFileList: true,
-  name: 'file',
-  listType: 'text',
-  autoUpload: true,
-  disabled: false
-});
+const props = withDefaults(defineProps<UploadProps>(), {});
 
 const emits = defineEmits(['update:modelValue']);
 
@@ -99,37 +98,6 @@ const slots = defineSlots();
 
 const KUploadRef = ref<any>(null);
 const fileList = ref(props.modelValue || []);
-
-const attrs = computed(() => ({
-  action: props.action,
-  headers: props.headers,
-  method: props.method,
-  multiple: props.multiple,
-  data: props.data,
-  showFileList: props.showFileList,
-  withCredentials: props.withCredentials,
-  accept: props.accept,
-  name: props.name,
-  crossorigin: props.crossorigin,
-  onPreview: props.onPreview,
-  onRemove: props.onRemove,
-  onSuccess: props.onSuccess,
-  onError: props.onError,
-  onProgress: props.onProgress,
-  onChange: props.onChange,
-  onExceed: props.onExceed,
-  beforeUpload: props.beforeUpload,
-  beforeRemove: props.beforeRemove,
-  autoUpload: props.autoUpload,
-  listType: props.listType,
-  disabled: props.disabled,
-  limit: props.limit,
-  httpRequest: props.httpRequest,
-  removeIcon: props.removeIcon,
-  successIcon: props.successIcon,
-  failIcon: props.failIcon,
-  drag: props.drag
-}));
 
 watch(() => props.modelValue, (newValue) => {
   fileList.value = newValue as UploadFile[];

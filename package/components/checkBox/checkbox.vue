@@ -3,7 +3,9 @@
     ref="kCheckboxRef"
     v-model="modelValue"
     class="k-checkbox"
-    v-bind="attrs"
+    v-bind="$attrs"
+    :label="label"
+    :size="getCompSize(size)"
     @change="handleChange"
   >
     <slot>
@@ -15,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, inject } from 'vue';
+import { ref, watch, nextTick, inject } from 'vue';
 import { SelectButtonProps } from './type';
 import { getCompSize, isValidColor } from '../../utils/index';
 
@@ -32,17 +34,6 @@ const emits = defineEmits(['update:modelValue', 'change']);
 
 const modelValue = ref(props.modelValue);
 const kCheckboxRef = ref();
-
-const attrs = computed(() => ({
-  value: props.value,
-  label: props.label,
-  disabled: props.disabled,
-  indeterminate: props.indeterminate,
-  checked: props.checked,
-  name: props.name,
-  id: props.id,
-  size: getCompSize(props.size)
-}));
 
 watch(() => props.modelValue, (newValue) => {
   modelValue.value = newValue;

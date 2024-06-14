@@ -1,21 +1,22 @@
 <template>
   <div class="k-tag">
     <el-tag
-      v-if="props.type === 'block'"
+      v-if="type === 'block'"
       class="k-tag__block"
-      v-bind="attrs"
-      disable-transitions
+      v-bind="$attrs"
+      :color="color"
+      :size="getCompSize(size)"
     >
       <span
         :style="{
           width: '100%',
-          color: props.textColor || '#FFF'
+          color: props.textColor || '#FFF',
         }"
       >
         <slot></slot>
       </span>
     </el-tag>
-    <div v-else-if="props.type === 'point'" class="k-tag__point">
+    <div v-else-if="type === 'point'" class="k-tag__point">
       <div
         class="k-tag__sign"
         :style="{
@@ -50,12 +51,6 @@ const props = withDefaults(defineProps<TagProps>(), {
   type: 'block',
   color: '#4091FF'
 });
-
-const attrs = computed(() => ({
-  color: props.color,
-  round: props.round,
-  size: getCompSize(props.size)
-}));
 
 const tagAttrs = computed(() => {
   let sizeAttr = {

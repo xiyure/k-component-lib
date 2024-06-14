@@ -1,22 +1,21 @@
 <template>
   <el-popconfirm
     class="k-popconfirm"
-    v-bind="attrs"
+    v-bind="$attrs"
+    :icon="props.icon"
     cancel-button-type="default"
     @confirm="handleConfirm"
     @cancel="handleCancel"
     @show="handleShow"
     @hide="handleHide"
   >
-    <slot></slot>
-    <template #reference> 
-      <slot name="reference"></slot>
+    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+      <slot :name="name" v-bind="data"></slot>
     </template>
   </el-popconfirm>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { IconClear } from 'ksw-vue-icon';
 import { PopconfirmProps } from './type';
 
@@ -25,53 +24,11 @@ defineOptions({
 });
 
 const props = withDefaults(defineProps<PopconfirmProps>(), {
-  trigger: 'click',
-  width: 150,
-  placement: 'bottom',
-  showArrow: true,
-  hideAfter: 200,
-  teleported: true,
-  persistent: true,
-  visible: undefined,
-  icon: IconClear,
-  iconColor: 'red'
+  icon: IconClear
 });
 
 const emits = defineEmits(['confirm', 'cancel', 'show', 'hide']);
 
-const attrs = computed(() => {
-  const tempObj = {} as any;
-  if (props.visible !== undefined) {
-    tempObj.visible = props.visible;
-  }
-  return Object.assign(getOriginAttrs(), tempObj);
-});
-
-const getOriginAttrs = () => ({
-  trigger: props.trigger,
-  title: props.title,
-  icon: props.icon,
-  iconColor: props.iconColor,
-  hideIcon: props.hideIcon,
-  confirmButtonText: props.confirmButtonText,
-  cancelButtonText: props.cancelButtonText,
-  confirmButtonType: props.confirmButtonType,
-  cancelButtonType: props.cancelButtonType,
-  width: props.width,
-  placement: props.placement,
-  disabled: props.disabled,
-  offset: props.offset,
-  transition: props.transition,
-  popperOptions: props.popperOptions,
-  showArrow: props.showArrow,
-  popperClass: props.popperClass,
-  popperStyle: props.popperStyle,
-  showAfter: props.showAfter,
-  hideAfter: props.hideAfter,
-  autoClose: props.autoClose,
-  teleported: props.teleported,
-  persistent: props.persistent
-});
 function handleConfirm() {
   emits('confirm');
 }

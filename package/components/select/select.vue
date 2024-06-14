@@ -3,11 +3,9 @@
     ref="inputRef"
     v-model="inputValue"
     class="k-select"
-    v-bind="attrs"
+    v-bind="$attrs"
+    :size="getCompSize(props.size)"
     default-first-option
-    :style="{
-      width: props.width
-    }"
     @change="handleChangeEvent"
     @focus="handleFocusEvent"
     @blur="handleBlurEvent"
@@ -15,24 +13,14 @@
     @visible-change="handleVisibleChangeEvent"
     @remove-tag="handleRemoveTagEvent"
   >
-    <slot></slot>
-    <template v-if="slots.tag" #tag>
-      <slot v-if="slots.tag" name="tag"></slot>
-    </template>
-    <template v-if="slots.empty" #empty>
-      <slot name="empty"></slot>
-    </template>
-    <template v-if="slots.header" #header>
-      <slot name="header"></slot>
-    </template>
-    <template v-if="slots.footer" #footer>
-      <slot name="footer"></slot>
+    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+      <slot :name="name" v-bind="data"></slot>
     </template>
   </el-select>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { SelectInputProps } from './type';
 import { getCompSize } from '../../utils';
 
@@ -40,15 +28,8 @@ defineOptions({
   name: 'KSelect'
 });
 
-type InputValue = string | number;
-
 const props = withDefaults(defineProps<SelectInputProps>(), {
-  teleported: true,
-  valueKey: 'value',
-  multipleLimit: 0,
-  autocomplete: 'off',
-  persistent: true
-
+  size: 'base'
 });
 
 const emits = defineEmits([
@@ -61,41 +42,8 @@ const emits = defineEmits([
   'remove-tag'
 ]);
 
-const slots = defineSlots();
-
-const inputValue = ref<InputValue>('');
+const inputValue = ref('');
 const inputRef = ref<any>(null);
-
-const attrs = computed(() => ({
-  disabled: props.disabled,
-  placeholder: props.placeholder,
-  clearable: props.clearable,
-  multiple: props.multiple,
-  filterable: props.filterable,
-  allowCreate: props.allowCreate,
-  popperClass: props.popperClass,
-  teleported: props.teleported,
-  valueKey: props.valueKey,
-  collapseTags: props.collapseTags,
-  collapseTagsTooltip: props.collapseTagsTooltip,
-  multipleLimit: props.multipleLimit,
-  autocomplete: props.autocomplete,
-  filterMethod: props.filterMethod,
-  remote: props.remote,
-  remoteMethod: props.remoteMethod,
-  remoteShowSuffix: props.remoteShowSuffix,
-  loading: props.loading,
-  loadingText: props.loadingText,
-  noMatchText: props.noMatchText,
-  noDataText: props.noDataText,
-  defaultFirstOption: props.defaultFirstOption,
-  fitInputWidth: props.fitInputWidth,
-  suffixIcon: props.suffixIcon,
-  name: props.name,
-  automaticDropdown: props.automaticDropdown,
-  persistent: props.persistent,
-  size: getCompSize(props.size)
-}));
 
 watch(() => props.modelValue, (newValue) => {
   inputValue.value = newValue;
@@ -107,7 +55,7 @@ function handleBlurEvent() {
 function handleFocusEvent() {
   emits('focus');
 }
-function handleChangeEvent(value:InputValue) {
+function handleChangeEvent(value: any) {
   emits('update:modelValue', value);
   emits('change', value);
 }

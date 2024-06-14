@@ -1,6 +1,8 @@
 <template>
   <el-option-group class="k-option-group" :label="props.label">
-    <slot></slot>
+    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+      <slot :name="name" v-bind="data"></slot>
+    </template>
   </el-option-group>
 </template>
 

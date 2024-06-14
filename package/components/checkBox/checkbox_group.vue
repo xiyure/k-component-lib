@@ -2,7 +2,8 @@
   <el-checkbox-group
     v-model="modelValue"
     class="k-checkbox-group"
-    v-bind="attrs"
+    v-bind="$attrs"
+    :size="getCompSize(size)"
     @change="handleChange"
   >
     <slot></slot>
@@ -10,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, provide } from 'vue';
+import { ref, watch, provide } from 'vue';
 import { SelectButtonGroupProps } from './type';
 import { getCompSize } from '../../utils/index';
 
@@ -26,13 +27,6 @@ const emits = defineEmits(['update:modelValue', 'change']);
 
 const modelValue = ref(props.modelValue);
 const fillColor = ref(props.color);
-
-const attrs = computed(() => ({
-  disabled: props.disabled,
-  name: props.name,
-  id: props.id,
-  size: getCompSize(props.size)
-}));
 
 watch(() => props.modelValue, (newValue) => {
   modelValue.value = newValue;

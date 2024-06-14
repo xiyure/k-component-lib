@@ -1,8 +1,8 @@
 <template>
   <k-popover
-    v-bind="attrs"
+    v-bind="$attrs"
     :popper-style="{
-      color: props.textColor,
+      color: textColor,
       backgroundColor: toolTipColor
     }"
   >
@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch, ref, computed } from 'vue';
+import { watch, ref } from 'vue';
 import { IconTips } from 'ksw-vue-icon';
 import { TooltipProps } from './type';
 import { KPopover } from '../popover';
@@ -57,39 +57,10 @@ const props = withDefaults(defineProps<TooltipProps>(), {
   type: undefined,
   color: '',
   textColor: '#FFF',
-  trigger: 'click',
-  width: 150,
-  placement: 'bottom',
-  showArrow: true,
-  hideAfter: 200,
-  teleported: true,
-  persistent: true,
-  visible: undefined,
-  offset: 5,
   iconSize: '15px'
 });
 
 const toolTipColor = ref('#000');
-
-const attrs = computed(() => ({
-  trigger: props.trigger,
-  title: props.title,
-  content: props.content,
-  width: props.width,
-  placement: props.placement,
-  disabled: props.disabled,
-  offset: props.offset,
-  transition: props.transition,
-  popperOptions: props.popperOptions,
-  showArrow: props.showArrow,
-  popperClass: props.popperClass,
-  popperStyle: props.popperStyle,
-  showAfter: props.showAfter,
-  hideAfter: props.hideAfter,
-  autoClose: props.autoClose,
-  teleported: props.teleported,
-  persistent: props.persistent
-}));
 
 watch(() => [props.type, props.color], () => {
   if (props.color && isValidColor(props.color)) {

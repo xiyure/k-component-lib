@@ -1,6 +1,6 @@
 <template>
   <div :id="id" class="k-calendar">
-    <el-calendar ref="kCalendarRef" v-model="modelValue">
+    <el-calendar ref="kCalendarRef" v-model="modelValue" v-bind="$attrs">
       <template #header="{ date }">
         <slot name="header" :date="date">
           <div class="k-calendar__header">

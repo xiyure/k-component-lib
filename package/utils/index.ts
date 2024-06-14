@@ -1,5 +1,3 @@
-import { customColor } from "../../stories/KUI/KSwitch.stories";
-
 // 获取随机字符串
 export function genRandomStr(bit:number) {
   let result = '';
@@ -18,6 +16,7 @@ export function getCompSize(size:string | undefined) {
     case 'sm': return 'small';
     case 'lg': return 'large';
     case 'default': return 'default';
+    case 'base': return 'default';
     default: return '';
   }
 }
@@ -33,13 +32,13 @@ export function isValidColor(strColor:string | undefined) {
 }
 
 // 获取色阶
-export function GetColorLevel(hex, v=1) {
+export function GetColorLevel(hex, v = 1) {
   // 1. 将16进制颜色代码转换为RGB
   function hexToRgb(h) {
-    let bigint = parseInt(h.slice(1), 16);
-    let r = (bigint >> 16) & 255;
-    let g = (bigint >> 8) & 255;
-    let b = bigint & 255;
+    const bigint = parseInt(h.slice(1), 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
     return [r, g, b];
   }
   // 2. 将RGB颜色值转换为16进制
@@ -58,7 +57,6 @@ export function GetColorLevel(hex, v=1) {
     ];
   }
 
-
   const rgb = hexToRgb(hex);
   const lightFactor = 1.2; // 调浅亮度因子
   const darkFactor = 0.8; // 调暗亮度因子
@@ -67,9 +65,9 @@ export function GetColorLevel(hex, v=1) {
 
   let hsl = 0.5;
   if (v >= 0.5 && v <= 1.5) {
-     hsl = v;
+    hsl = v;
   } else if (v > 1.5) {
-    hsl = 1.5
+    hsl = 1.5;
   }
 
   return {
@@ -78,7 +76,6 @@ export function GetColorLevel(hex, v=1) {
     colorCustom: rgbToHex(...adjustBrightness(rgb, hsl)),
   };
 }
-
 
 // 获取$attrs对象中的事件
 export function getListeners(attrs: any) {
@@ -125,4 +122,3 @@ export class Emitter {
     }
   }
 }
-

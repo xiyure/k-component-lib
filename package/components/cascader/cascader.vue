@@ -3,9 +3,8 @@
     ref="cascaderRef"
     v-model="inputValue"
     class="k-cascader"
-    v-bind="attrs"
-    :props="propsConfig"
-    collapse-tags-tooltip
+    v-bind="$attrs"
+    :size="getCompSize(size)"
     @change="handleChangeEvent"
     @focus="handleFocusEvent"
     @blur="handleBlurEvent"
@@ -13,15 +12,15 @@
     @visible-change="handleVisibleChangeEvent"
     @remove-tag="handleRemoveTagEvent"
   >
-    <template #empty>
-      <slot name="empty"></slot>
+    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+      <slot :name="name" v-bind="data"></slot>
     </template>
   </el-cascader>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
-import { CascaderProps, CascaderConfig } from './type';
+import { ref, watch } from 'vue';
+import { CascaderProps } from './type';
 import { getCompSize } from '../../utils';
 
 defineOptions({
@@ -31,8 +30,7 @@ defineOptions({
 type InputValue = string | number;
 
 const props = withDefaults(defineProps<CascaderProps>(), {
-  showAllLevels: true,
-  separator: '/'
+  size: 'base'
 });
 
 const emits = defineEmits([
@@ -48,54 +46,9 @@ const emits = defineEmits([
 const inputValue = ref<InputValue>('');
 const cascaderRef = ref<any>(null);
 
-const attrs = computed(() => ({
-  disabled: props.disabled,
-  placeholder: props.placeholder,
-  clearable: props.clearable,
-  filterable: props.filterable,
-  popperClass: props.popperClass,
-  separator: props.separator,
-  options: getOptions(),
-  showAllLevels: props.showAllLevels,
-  collapseTags: props.collapseTags,
-  beforeFilter: props.beforeFilter,
-  size: getCompSize(props.size)
-}));
-
-const propsConfig:object = computed(() => {
-  if (!props.props) {
-    return {};
-  }
-  const cascaderConfig = props.props as CascaderConfig;
-  return {
-    expandTrigger: cascaderConfig?.expandTrigger ?? 'click',
-    multiple: Boolean(cascaderConfig?.multiple),
-    emitPath: Boolean(cascaderConfig?.emitPath),
-    value: cascaderConfig?.value ?? 'value',
-    label: cascaderConfig?.label ?? 'label',
-    children: cascaderConfig?.children ?? 'children',
-    leaf: cascaderConfig?.leaf ?? 'leaf',
-    lazy: Boolean(cascaderConfig?.lazy),
-    lazyLoad: cascaderConfig.lazyLoad ?? null,
-    checkStrictly: Boolean(cascaderConfig?.checkStrictly),
-  };
-});
-
 watch(() => props.modelValue, (newValue) => {
   inputValue.value = newValue;
 }, { immediate: true });
-
-function getOptions() {
-  if (!props.props) {
-    return {};
-  }
-  const cascaderConfig = props.props as CascaderConfig;
-  const { lazy, lazyLoad } = cascaderConfig;
-  if (lazy && lazyLoad) {
-    return [];
-  }
-  return props.options;
-}
 
 function handleBlurEvent() {
   emits('blur');

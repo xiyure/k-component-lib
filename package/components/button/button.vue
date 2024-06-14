@@ -34,28 +34,28 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from "vue";
-import { IconLoading } from "ksw-vue-icon";
-import { ButtonProps } from "./type";
-import { isValidColor, GetColorLevel } from "../../utils";
-import "ksw-vue-icon/styles/icon.css";
+import { computed, ref, onMounted } from 'vue';
+import { IconLoading } from 'ksw-vue-icon';
+import { ButtonProps } from './type';
+import { isValidColor, GetColorLevel } from '../../utils';
+import 'ksw-vue-icon/styles/icon.css';
 
 defineOptions({
-  name: "KButton",
+  name: 'KButton',
 });
 
 const buttonRef = ref();
 
 const props = withDefaults(defineProps<ButtonProps>(), {
-  type: "normal",
-  size: "base",
-  value: "",
+  type: 'normal',
+  size: 'base',
+  value: '',
   disabled: false,
   loading: false,
   loadingIcon: IconLoading,
   iconLeft: null,
   iconRight: null,
-  color: "",
+  color: '',
 });
 
 onMounted(() => {
@@ -64,12 +64,10 @@ onMounted(() => {
     const hexColor = props.color;
     const { lightColor, darkColor } = GetColorLevel(hexColor, 0.1);
     // 添加一个 css 颜色变量
-    buttonRef.value.style.setProperty("--k-button-color", hexColor);
-    buttonRef.value.style.setProperty("--k-button-hover-color", lightColor);
-    buttonRef.value.style.setProperty("--k-button-active-color", darkColor);
-    buttonRef.value.style.setProperty("--k-button-icon-color", hexColor);
-  } else {
-    return;
+    buttonRef.value.style.setProperty('--k-button-color', hexColor);
+    buttonRef.value.style.setProperty('--k-button-hover-color', lightColor);
+    buttonRef.value.style.setProperty('--k-button-active-color', darkColor);
+    buttonRef.value.style.setProperty('--k-button-icon-color', hexColor);
   }
 });
 
@@ -85,13 +83,11 @@ const getOriginAttrs = () => {
   };
 };
 
-const getSizeClass = computed(() =>
-  props.size !== "" ? `el-button--${props.size}` : ""
-);
+const getSizeClass = computed(() => (props.size !== '' ? `el-button--${ props.size }` : ''));
 
-const emits = defineEmits(["click"]);
+const emits = defineEmits(['click']);
 const handleClick = (e: Event) => {
-  emits("click", e);
+  emits('click', e);
 };
 </script>
 

@@ -1,11 +1,14 @@
 <template>
   <div class="k-steps">
     <el-steps
-      v-if="!props.capsule"
-      :active="active"
-      v-bind="attrs"
+      v-if="!capsule"
+      v-bind="$attrs"
+      :process-status="getProcessStatus(processStatus)"
+      :finish-status="getProcessStatus(finishStatus)"
     >
-      <slot></slot>
+      <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+        <slot :name="name" v-bind="data"></slot>
+      </template>
     </el-steps>
     <div v-else :id="id" class="k-step__capsule">
       <slot></slot>
@@ -14,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, provide, nextTick } from 'vue';
+import { watch, provide, nextTick } from 'vue';
 import { StepsProps } from './type';
 import { genRandomStr } from '../../utils';
 
@@ -23,27 +26,11 @@ defineOptions({
 });
 
 const props = withDefaults(defineProps<StepsProps>(), {
-  space: '',
-  direction: 'horizontal',
-  active: 0,
   processStatus: 'wait',
   finishStatus: 'finish'
 });
 
-const active = ref(props.active);
 const id = genRandomStr(8);
-
-const attrs = computed(() => ({
-  space: props.space,
-  direction: props.direction,
-  processStatus: getProcessStatus(props.processStatus),
-  finishStatus: getProcessStatus(props.finishStatus),
-  alignCenter: props.alignCenter
-}));
-
-watch(() => props.active, (newValue) => {
-  active.value = newValue;
-});
 
 // 高度监听
 watch(() => props.height, (newValue) => {
