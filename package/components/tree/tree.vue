@@ -5,7 +5,7 @@
         v-if="props.showFilter"
         v-model="query"
         @input="filterTreeNode"
-        @keydown.enter="filterTreeNode"
+        @keyup.enter="filter(query)"
       >
         <template #append>
           <span class="k-tree__filter-append" @click="filter(query)"><IconSearch /></span>
@@ -96,7 +96,6 @@ function filterTreeNode(value:string) {
   filter(value);
 }
 function filter(query: string) {
-  console.log(query);
   return KTreeRef.value?.filter(query);
 }
 function getCheckedNodes(leafOnly: boolean) {

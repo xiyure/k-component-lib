@@ -1,5 +1,5 @@
 <template>
-  <el-dropdown-item v-bind="$attrs" @click.native="handleClick">
+  <el-dropdown-item v-bind="$attrs" @click="handleClick">
     <slot></slot>
   </el-dropdown-item>
 </template>

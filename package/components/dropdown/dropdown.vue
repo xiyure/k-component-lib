@@ -5,14 +5,16 @@
     v-bind="$attrs"
     :size="getCompSize(size)"
     @command="handleComand"
-    @click.native="handleClick"
+    @click="handleClick"
     @visible-change="handleVisibleChange"
   >
     <slot name="title">
       <span class="k-dropdown-link">{{ props.title }}</span>
     </slot>
-    <template v-if="slots.dropdown" #dropdown>
-      <slot></slot>
+    <template #dropdown>
+      <el-dropdown-menu>
+        <slot></slot>
+      </el-dropdown-menu>
     </template>
   </el-dropdown>
 </template>
@@ -29,7 +31,6 @@ defineOptions({
 const props = withDefaults(defineProps<DropDownProps>(), {});
 
 const emits = defineEmits(['command', 'click', 'visible-change']);
-const slots = defineSlots();
 
 const kDropDownRef = ref();
 
