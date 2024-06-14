@@ -5,6 +5,9 @@
     v-bind="originAttrs"
     @tab-click="handleClick"
     @tab-remove="handleRemove"
+    @tab-change="handleChange"
+    @tab-add="handleAdd"
+    @edit="handleEdit"
   >
     <slot></slot>
   </el-tabs>
@@ -38,6 +41,14 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
+  editable: {
+    type: Boolean,
+    default: false
+  },
+  addable: {
+    type: Boolean,
+    default: false
+  },
   stretch: {
     type: Boolean,
     default: false
@@ -48,7 +59,7 @@ const props = defineProps({
   }
 });
 
-const emits = defineEmits(['tab-click', 'tab-remove', 'update:modelValue']);
+const emits = defineEmits(['tab-click', 'tab-remove', 'update:modelValue', 'tab-add', 'edit', 'tab-change']);
 
 const activeName = ref('');
 
@@ -58,21 +69,28 @@ provide('activeName', activeName);
 watch(() => props.modelValue, () => {
   activeName.value = props.modelValue as string;
 }, { immediate: true });
-watch(() => activeName.value, (newValue) => {
-  emits('update:modelValue', newValue);
-});
 
 const getOriginAttrs = () => {
-  const { type, closable, stretch, beforeLeave, tabPosition  } = props;
-  return { type, tabPosition, closable, stretch, beforeLeave };
+  const { type, closable, stretch, beforeLeave, tabPosition, addable, editable  } = props;
+  return { type, tabPosition, closable,  addable, editable, stretch, beforeLeave };
 };
 const originAttrs = getOriginAttrs();
 
-const handleClick = (e:any) => {
-  emits('tab-click', e);
+const handleClick = (pane: any, e: Event) => {
+  emits('tab-click', pane, e);
 };
 const handleRemove = (paneName:string) => {
   emits('tab-remove', paneName);
+};
+const handleAdd = () => {
+  emits('tab-add');
+};
+const handleEdit = (paneName:string, action: string) => {
+  emits('edit', paneName, action);
+};
+const handleChange = (paneName:string) => {
+  emits('update:modelValue', paneName)
+  emits('tab-change', paneName);
 };
 
 </script>
