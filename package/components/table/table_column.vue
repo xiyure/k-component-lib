@@ -61,7 +61,7 @@
               name="transangleDownLight"
             >
           </span>
-          <span class="k-table-column__more">
+          <span v-if="showColumn" class="k-table-column__more">
             <k-popover
               trigger="click"
               :show-arrow="false"
@@ -255,7 +255,8 @@ defineOptions({
 });
 
 interface KTableColumnProps extends VxeColumnProps {
-  desc?: string
+  desc?: string,
+  showColumn?: boolean
 }
 
 const tableInstance:any = inject('tableInstance');
@@ -271,7 +272,8 @@ const props = withDefaults(defineProps<KTableColumnProps>(), {
   footerAlign: undefined,
   showOverflow: undefined,
   showHeaderOverflow: undefined,
-  showFooterOverflow: undefined
+  showFooterOverflow: undefined,
+  showColumn: true
 });
 const slots = defineSlots();
 

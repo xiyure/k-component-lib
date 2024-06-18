@@ -3,7 +3,7 @@
     <div class="k-filter__content">
       <div class="k-filter__header">
         <span class="text-lg font-bold">{{ $t('seniorFilter') }}</span>
-        <span class="text-base" @click="clearFilterData"><IconDelete />{{ $t('clearAll') }}</span>
+        <span class="text-base" @click="clearFilter"><IconClearDate />{{ $t('clearAll') }}</span>
       </div>
       <div v-for="item, index in filterData" :key="index" class="k-filter__item">
         <div class="k-filter__condition">
@@ -14,10 +14,10 @@
             @change="changeCondition(index)"
           >
             <k-option
-              v-for="conditionItem in conditionList"
-              :key="conditionItem"
-              :label="conditionItem"
-              :value="conditionItem"
+              v-for="dataItem in column"
+              :key="dataItem.title"
+              :label="dataItem.title"
+              :value="dataItem.title"
             />
           </k-select>
         </div>
@@ -26,46 +26,23 @@
             v-model="item.logic"
             :teleported="false"
             clearable
-            @change="changeDateLogic(instance(item.title), item)"
+            @change="changeLogic(item)"
           >
-            <template v-if="instance(item.title)?.uiType === 'date'">
-              <k-option
-                v-for="logicItem in dateLogicOptions || []"
-                :key="$t(logicItem)"
-                :label="$t(logicItem)"
-                :value="$t(logicItem)"
-              />
-            </template>
-            <template v-else>
-              <k-option
-                v-for="logicItem in instance(item.title)?.logicList || []"
-                :key="logicItem"
-                :label="logicItem"
-                :value="logicItem"
-              />
-            </template>
+            <k-option
+              v-for="conditionItem in conditionList(item)?.logicList"
+              :key="conditionItem.logic"
+              :label="$t(conditionItem.logic)"
+              :value="conditionItem.logic"
+            />
           </k-select>
         </div>
         <div class="k-filter__value">
-          <k-select
-            v-if="instance(item.title)?.uiType === 'select'"
-            v-model="item.value"
-            :teleported="false"
-            clearable
-          >
-            <k-option
-              v-for="valueItem in instance(item.title)?.valueList || []"
-              :key="valueItem"
-              :label="valueItem"
-              :value="valueItem"
-            />
-          </k-select>
-          <div v-else-if="instance(item.title)?.uiType === 'date'" class="k-filter__date-box">
+          <div v-if="instance(item.title)?.dataType === 'date'" class="k-filter__date-box">
             <k-select
               v-model="item.dateRange"
               :teleported="false"
               clearable
-              :disabled="disabledSelect(item)"
+              :disabled="disabledInput(item)"
               @change="changeDateRange(item)"
             >
               <k-option
@@ -73,6 +50,7 @@
                 :key="logicItem.value"
                 :label="$t(logicItem.label)"
                 :value="logicItem.value"
+                :disabled="(item.logic === $t('after') || item.logic === $t('before')) && logicItem.value === 'range'"
               />
             </k-select>
             <k-date-picker
@@ -101,7 +79,7 @@
             <k-option :label="$t('anyOne')" :value="0"></k-option>
             <k-option :label="$t('all')" :value="1"></k-option>
           </k-select>
-          <k-button type="main" @click="updateFilterData">{{ $t('query') }}</k-button>
+          <k-button type="main" @click="filter">{{ $t('query') }}</k-button>
         </div>
       </div>
     </div>
@@ -109,13 +87,13 @@
 </template>
 
 <script setup lang="ts">
-import { watch, ref, computed, getCurrentInstance } from 'vue';
-import { IconClose, IconDelete, IconAdd } from 'ksw-vue-icon';
+import { ref, computed, getCurrentInstance, onMounted } from 'vue';
+import { IconClose, IconClearDate, IconAdd } from 'ksw-vue-icon';
 import { FilterProps } from './type';
 import { KInput } from '../input';
 import { KSelect, KOption } from '../select';
 import { KButton } from '../button';
-import { dateTypeOptions, dateLogicOptions } from './const';
+import { dateTypeOptions, logicOptions } from './const';
 
 defineOptions({
   name: 'KFilter'
@@ -128,10 +106,14 @@ type IFilterDataType = {
   value: any,
   dateRange?: string,
   dateType?: string,
-  dateLogic?: string
+  handler: ((a: any, b: any) => boolean) | null
 };
 
-const emits = defineEmits(['update:modelValue', 'confirm']);
+const emits = defineEmits(['confirm']);
+
+onMounted(() => {
+  addCondition();
+});
 
 const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
 const t = _global?.$t;
@@ -139,17 +121,17 @@ const filterData = ref<IFilterDataType[]>([]);
 const filterRule = ref(0);
 
 const instance = computed(() => function (title:string) {
-  return props.data.find((item:IFilterDataType) => item.title === title);
+  const matchInstance:any = props.column?.find(item => item.title === title);
+  return matchInstance || [];
 });
-
-const conditionList = computed(() => {
-  const allConditions = props.data.map((item:any) => item.title);
-  const checkedConditions = filterData.value.map((dataItem:IFilterDataType) => dataItem.title);
-  return allConditions.filter((item:string) => !checkedConditions.includes(item));
+const conditionList = computed(() => function (item: any) {
+  const columnItem = props.column?.find(col => col.title === item.title);
+  const type = columnItem?.dataType || 'string';
+  return logicOptions.find(item => item.type === type);
 });
 
 const dateLogicList = computed(() => function (item:IFilterDataType) {
-  if (item.dateLogic === t?.('equal')) {
+  if (item.logic === t?.('equal')) {
     return dateTypeOptions;
   } 
   const hideLogicList = ['past-seven-days', 'past-thirty-days'];
@@ -157,27 +139,14 @@ const dateLogicList = computed(() => function (item:IFilterDataType) {
 });
 
 // 日期禁用
-const disabledSelect = computed(() => function (item:IFilterDataType) {
+const disabledInput = computed(() => function (item:IFilterDataType) {
   const disabledLogicTypes = [t?.('empty'), t?.('nonEmpty')];
-  return !item.dateLogic || disabledLogicTypes.includes(item.dateLogic);
+  return !item.logic || disabledLogicTypes.includes(item.logic);
 }); 
-
 const disabledDatePicker = computed(() => function (item:IFilterDataType) {
   const notDisabledDateRanges = ['date', 'range'];
-  return disabledSelect.value(item) || !notDisabledDateRanges.includes(item.dateRange as string);
+  return disabledInput.value(item) || !notDisabledDateRanges.includes(item.dateRange as string);
 });
-
-watch(() => props.modelValue, (newValue) => {
-  if (!newValue || newValue.length === 0) {
-    addCondition();
-    return;
-  }
-  filterData.value = newValue;
-}, { immediate: true, deep: true });
-
-watch(() => filterData.value, (newValue) => {
-  emits('update:modelValue', newValue);
-}, { immediate: true, deep: true });
 
 // 添加条件
 function addCondition() {
@@ -185,9 +154,9 @@ function addCondition() {
     title: '',
     logic: '',
     value: '',
+    handler: null,
     dateRange: 'date',
     dateType: 'datetime',
-    dateLogic: ''
   };
   filterData.value.push(addItem);
 }
@@ -196,31 +165,79 @@ function addCondition() {
 function removeConditionItem(index:number) {
   filterData.value.splice(index, 1);
 }
-function clearFilterData() {
+function clearFilter() {
   filterData.value.length = 0;
   addCondition();
+  filter();
 }
 
-function updateFilterData() {
-  emits('confirm', {
-    conditionList: filterData.value,
+function filter() {
+  const conditionList = filterData.value
+  .filter(item => item.title && item.logic && item.value)
+  .map(item => ({
+    title: item.title,
+    logic: t?.(item.logic),
+    value: item.value,
+    handler: item.handler
+  }));
+  const conditionInfo = {
+    conditionList,
     filterRule: filterRule.value
+  };
+  if (conditionList.length === 0) {
+    emits('confirm', conditionInfo, props.data);
+    return; 
+  }
+  const newData = props.data.filter(dataItem => {
+    if (filterRule.value === 0) {
+      return filterData.value.some(item => {
+        const targetColumn = props.column?.find(col => col.title === item.title);
+        if (!targetColumn || !targetColumn.field) {
+          return false;
+        }
+        return item.handler?.(dataItem[targetColumn.field], item.value);
+      });
+    } 
+    return filterData.value.every(item => {
+      const targetColumn = props.column?.find(col => col.title === item.title);
+      if (!targetColumn && !targetColumn.field) {
+        return false;
+      }
+      return item.handler?.(dataItem[targetColumn.field], item.value);
+    });
   });
+  emits('confirm', conditionInfo, newData);
 }
 function changeCondition(index:number) {
   const targetItem = filterData.value[index];
   targetItem.logic = '';
   targetItem.value = '';
 }
-function changeDateLogic(instance:any, item:IFilterDataType) {
-  if (instance.uiType === 'date') {
-    item.dateLogic = item.logic;
-    if (disabledSelect.value(item)) {
-      item.value = '';
-      return;
-    }
-    changeDateRange(item);
+function changeLogic(dataItem) {
+  if ((dataItem.logic === t?.('after')
+    || dataItem.logic === t?.('before'))
+    && dataItem.dateType === 'datetimerange'
+  ) {
+    dataItem.dateType = 'datetime';
+    dataItem.dateRange = 'date';
   }
+  const type = instance.value(dataItem.title)?.dataType;
+  const logicOptionItem = logicOptions.find(item => item.type === type);
+  if (!logicOptionItem) {
+    return;
+  }
+  const logicItem = logicOptionItem.logicList.find(item => item.logic === dataItem.logic);
+  dataItem.handler = logicItem?.handler;
+  if (type === 'date') {
+    changeDateLogic(dataItem);
+  }
+}
+function changeDateLogic(item:IFilterDataType) {
+  if (disabledInput.value(item)) {
+    item.value = '';
+    return;
+  }
+  changeDateRange(item);
 }
 function changeDateRange(item:IFilterDataType) {
   setDatePickerType(item);
@@ -242,8 +259,8 @@ function changeDateRange(item:IFilterDataType) {
     case 'past-thirty-days': item.value = [getTargetDay(-30), getTargetDay(0)]; break;
   }
   const targetRanges = ['current-week', 'last-week', 'current-month', 'last-month'];
-  if ((item.dateLogic === t?.('after')
-    || item.dateLogic === t?.('before'))
+  if ((item.logic === t?.('after')
+    || item.logic === t?.('before'))
     && targetRanges.includes(item.dateRange as string)
   ) {
     item.value = item.value[0];
@@ -281,14 +298,16 @@ function getCurMonthDayCount() {
 }
 // 设置日期选择器的类型（日期 or 时间段）
 function setDatePickerType(item:IFilterDataType) {
-  if (item.dateLogic === t?.('equal')) {
+  if (item.logic === t?.('equal')) {
     const dateArray = ['date', 'today', 'tomorrow', 'yesterday'];
     item.dateType = dateArray.includes(item.dateRange as string) ? 'datetime' : 'datetimerange';
-  } else if (item.dateLogic === t?.('after') || item.dateLogic === t?.('before')) {
+  } else if (item.logic === t?.('after') || item.logic === t?.('before')) {
     const dateArray = ['range'];
     item.dateType = !dateArray.includes(item.dateRange as string) ? 'datetime' : 'datetimerange';
   } 
 }
+
+defineExpose({ filter, clearFilter });
 </script>
 
 <style>

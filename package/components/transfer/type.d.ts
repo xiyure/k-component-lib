@@ -4,6 +4,6 @@ export interface TransferProps {
   filterablePlaceholder?: string
   props?: object
   matchKey?: string
-  defaultKeys?: Array<string>
+  defaultKeys?: string[]
   filterable?: boolean
 }

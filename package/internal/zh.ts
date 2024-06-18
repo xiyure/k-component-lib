@@ -52,5 +52,15 @@ export default {
   showLunar: '显示农历',
   next: '下一步',
   previous: '上一步',
-  finish: '完成'
+  finish: '完成',
+  searchTable: '搜索此列表',
+  data: '数据',
+  showAll: '显示全部',
+  total: '共',
+  gt: '大于',
+  lt: '小于',
+  gte: '大于等于',
+  lte: '小于等于',
+  contain: '包含',
+  notEqual: '不等于'
 };

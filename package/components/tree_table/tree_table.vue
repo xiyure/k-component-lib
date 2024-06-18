@@ -1,43 +1,59 @@
 <template>
   <div class="k-tree-table">
     <div class="k-tree-table__header">
-      <div class="k-table-info">1111</div>
+      <div class="k-table-info">
+        <slot name="description" :total="dataLength" :condition-info="filterConditionInfo">
+          <div class="k-table-header-text">
+            <span>{{ $t('total') }} {{ dataLength }} {{ $t('data') }}</span>
+            <span :title="headerText" class="condition-info">{{ headerText }}</span>
+            <span class="filter-reset" @click="() => tableFilterRef?.clearFilter?.()">{{ $t('reset') }}</span>
+          </div>
+        </slot>
+      </div>
       <div class="k-table-func">
         <k-input
           :suffix-icon="IconSearch"
-          placeholder="搜索此列表"
+          :placeholder="$t('searchTable')"
           clearable
           @change="(value: string) => query = value"
         />
-        <k-button @click="() => {
-          emits('refresh')
+        <k-button
+          @click="() => {
+            emits('refresh')
           }"
-        ><IconRefresh /></k-button>
+        >
+          <IconRefresh />
+        </k-button>
         <!-- 高级筛选 -->
         <k-popover
           trigger="click"
           width="auto"
         >
-        <template #reference>
-          <k-button><IconFilter /></k-button>
-        </template>
-        <k-filter v-model="filterData" :data="[]"></k-filter>
+          <template #reference>
+            <k-button><IconFilter /></k-button>
+          </template>
+          <k-filter
+            ref="tableFilterRef"
+            :data="data"
+            :column="filterColumn"
+            @confirm="jonirFilter"
+          ></k-filter>
         </k-popover>
         <!-- 穿梭框 -->
         <k-popover
           trigger="click"
           width="auto"
         >
-        <template #reference>
-          <k-button><IconSetting /></k-button>
-        </template>
-        <k-transfer
+          <template #reference>
+            <k-button><IconSetting /></k-button>
+          </template>
+          <k-transfer
             v-model="selectData"
             :data="originData"
             :default-keys="defaultKeys"
             @change="updateColumn"
             @reset="updateColumn"
-            ></k-transfer>
+          ></k-transfer>
         </k-popover>
       </div>
     </div>
@@ -106,16 +122,15 @@
 <script setup lang="ts">
 import { ref, computed, watch, nextTick, getCurrentInstance } from 'vue';
 import VXETable, { VxeTableInstance } from 'vxe-table';
-import { IconSearch } from 'ksw-vue-icon';
+import { IconSearch, IconSetting, IconFilter, IconRefresh } from 'ksw-vue-icon';
 import { KInput } from '../input';
 import { KButton } from '../button';
-import { KFilter } from '../filter';
 import { KTransfer } from '../transfer';
 import { KPopover } from '../popover';
-import { IconSetting, IconFilter, IconRefresh } from 'ksw-vue-icon';
 import { TreeTableProps } from './type';
 import { KTable, KTableColumn } from '../table';
 import { KPagination } from '../pagination';
+import { KFilter } from '../filter';
 import { genRandomStr, getListeners } from '../../utils';
 
 defineOptions({
@@ -133,6 +148,8 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
   fit: true
 });
 
+const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
+const t = _global?.$t;
 const DEFAULT_PAGES = [25, 50, 80, 100, 150];
 // 表格默认配置
 const defaultRowConfig = {
@@ -177,7 +194,20 @@ const selectData = ref<any>([]);
 const originData = ref<any>([]);
 const defaultKeys = ref<any>([]);
 // 高级筛选
-const filterData = ref([]);
+const tableFilterRef = ref();
+const filterData = ref(props.data || []);
+let filterConditionInfo:any = null;
+const headerText = computed(() => {
+  let str = '';
+  if (filterConditionInfo?.conditionList?.length) {
+    filterConditionInfo.conditionList.forEach(item => {
+      str += ` . ${ item.title } ${ item.logic } ${ item.value }`;
+    });
+  } else {
+    str += ` . ${ t?.('showAll') }`;
+  }
+  return str;
+});
 // 分页相关变量
 const paginationConfig = ref(Object.assign(defaultPaginationConfig, props.paginationConfig || {}));
 
@@ -227,15 +257,25 @@ const showTableData = computed(() => {
   }
   return getShowTableData(tableData);
 });
-watch(() => props.data?.length, (newValue) => {
+const filterColumn = computed(() => props.column.filter(item => item.dataType).map(item => ({
+  title: item.title,
+  field: item.field,
+  dataType: item.dataType
+})));
+watch(() => props.data, () => {
+  nextTick(() => {
+    tableFilterRef.value.filter();
+  });
+}, { deep: true, immediate: true });
+watch(() => filterData.value.length, (newValue) => {
   const length = newValue || 0;
   updatePageNum(length);
 }, { immediate: true });
 watch(() => props.column, () => {
   columns.value = props.column.map(col => {
-    const visible = col.visible === false ? false : true;
+    const visible = col.visible !== false;
     return { ...col, visible };
-  })
+  });
   handleCustomRender();
 }, { immediate: true, deep: true });
 watch(() => props.column.length, () => {
@@ -244,7 +284,7 @@ watch(() => props.column.length, () => {
     key: item.field
   }));
   selectData.value = props.column.filter(col => col.visible !== false)
-    .map((item) => ({
+  .map((item) => ({
     label: item.title,
     key: item.field
   }));
@@ -263,7 +303,7 @@ function filterTableData() {
         VxeInstance.setAllTreeExpand(false);
       });
     }
-    return props.data;
+    return filterData.value;
   }
   if (props.isRemoteQuery) {
     emits('remote-query', searchKey);
@@ -271,7 +311,7 @@ function filterTableData() {
   }
   const visibleColums = columns.value.filter(col => col.visible);
   const fieldList = visibleColums.map(col => col.field || '');
-  let tableData = props.data?.filter((dataItem:any) => fieldList.some(field => {
+  let tableData = filterData.value.filter((dataItem:any) => fieldList.some(field => {
     if (props.exactMatch) {
       return dataItem[field] === searchKey;
     } 
@@ -370,7 +410,7 @@ function getShowTableData(data) {
 function updatePageNum(length: number) {
   let { currentPage } = paginationConfig.value;
   const pageSize = paginationConfig.value.pageSize;
-  while ((currentPage - 1) * pageSize + 1 > length) {
+  while ((currentPage - 1) * pageSize + 1 > length && currentPage > 1) {
     currentPage--;
   }
   paginationConfig.value.currentPage = currentPage;
@@ -424,7 +464,12 @@ function updateColumn(ids: string[]) {
     } else {
       col.visible = false;
     }
-  })
+  });
+}
+
+function jonirFilter(conditionInfo, newTableData) {
+  filterConditionInfo = conditionInfo;
+  filterData.value = newTableData;
 }
 
 const tableInstance = computed(() => xTree?.value.tableInstance);

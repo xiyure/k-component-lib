@@ -52,5 +52,15 @@ export default {
   showLunar: 'show lunar',
   next: 'next',
   previous: 'previous',
-  finish: 'finish'
+  finish: 'finish',
+  searchTable: 'search table data',
+  total: 'total',
+  data: 'data',
+  showAll: 'show all',
+  gt: 'gt',
+  lt: 'lt',
+  gte: 'gte',
+  lte: 'lte',
+  contain: 'contain',
+  notEqual: 'not eaual'
 };

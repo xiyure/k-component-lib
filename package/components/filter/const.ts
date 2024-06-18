@@ -44,4 +44,132 @@ export const dateTypeOptions = [
     value: 'past-thirty-days'
   }
 ];
-export const dateLogicOptions = ['equal', 'before', 'after', 'empty', 'nonEmpty'];
+export const logicOptions = [
+  {
+    type: 'number',
+    logicList: [
+      {
+        logic: 'equal',
+        handler(a: number, b: number) {
+          return Number(a) === Number(b);
+        }
+      },
+      {
+        logic: 'gt',
+        handler(a: number, b: number) {
+          return Number(a) > Number(b);
+        }
+      },
+      {
+        logic: 'lt',
+        handler(a: number, b: number) {
+          return Number(a) < Number(b);
+        }
+      },
+      {
+        logic: 'gte',
+        handler(a: number, b: number) {
+          return Number(a) >= Number(b);
+        }
+      },
+      {
+        logic: 'lte',
+        handler(a: number, b: number) {
+          return Number(a) <= Number(b);
+        }
+      },
+      {
+        logic: 'notEqual',
+        handler(a: number, b: number) {
+          return Number(a) !== Number(b);
+        }
+      },
+    ]
+  },
+  {
+    type: 'string',
+    logicList: [
+      {
+        logic: 'equal',
+        handler(a: string, b: string) {
+          return a === b;
+        }
+      },
+      {
+        logic: 'gt',
+        handler(a: string, b: string) {
+          return a > b;
+        }
+      },
+      {
+        logic: 'lt',
+        handler(a: string, b: string) {
+          return a < b;
+        }
+      },
+      {
+        logic: 'notEqual',
+        handler(a: string, b: string) {
+          return a !== b;
+        }
+      },
+      {
+        logic: 'contain',
+        handler(a: string, b: string) {
+          return a.includes(b);
+        }
+      },
+      {
+        logic: 'empty',
+        handler(a: string) {
+          return a;
+        }
+      },
+      {
+        logic: 'nonEmpty',
+        handler(a: string) {
+          return !a;
+        }
+      }
+    ]
+  },
+  {
+    type: 'date',
+    logicList: [
+      {
+        logic: 'equal',
+        handler(a: string, b: string | any[]) {
+          if (Array.isArray(b)) {
+            return a > b[0] 
+              && a < b[1];
+          }
+          return a === b;
+        }
+      },
+      {
+        logic: 'before',
+        handler(a: string, b: string) {
+          return a > b;
+        }
+      },
+      {
+        logic: 'after',
+        handler(a: string, b: string) {
+          return a < b;
+        }
+      },
+      {
+        logic: 'empty',
+        handler(a: string) {
+          return a;
+        }
+      },
+      {
+        logic: 'nonEmpty',
+        handler(a: string) {
+          return !a;
+        }
+      }
+    ]
+  }
+];

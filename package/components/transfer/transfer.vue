@@ -48,7 +48,6 @@ defineOptions({
 
 const props = withDefaults(defineProps<TransferProps>(), {
   matchKey: 'label',
-  defautKey: [],
   filterable: true
 });
 

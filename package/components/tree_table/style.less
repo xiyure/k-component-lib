@@ -4,6 +4,22 @@
   .k-tree-table__header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    .k-table-header-text {
+      font-size: 13px;
+      color: #736F78;
+      .condition-info {
+        width: 200px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .filter-reset {
+        margin-left: 10px;
+        color: @k-status-primary;
+        cursor: pointer;
+      }
+    }
     .k-table-func {
       display: flex;
       .k-input {

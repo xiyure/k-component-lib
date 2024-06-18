@@ -1,4 +1,5 @@
 export interface FilterProps {
   modelValue?: any
-  data?: any
+  data?: any,
+  column?: any[]
 }
