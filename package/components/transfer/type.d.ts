@@ -1,8 +1,12 @@
 export interface TransferProps {
-  modelValue: Array<object>
-  data: Array<object>
+  modelValue: Array<any>
+  data: any[]
   filterablePlaceholder?: string
-  props?: object
+  props?: {
+    label?: string
+    key?: string
+    disabled?: string
+  }
   matchKey?: string
   defaultKeys?: string[]
   filterable?: boolean

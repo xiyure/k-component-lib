@@ -53,6 +53,7 @@
             :default-keys="defaultKeys"
             @change="updateColumn"
             @reset="updateColumn"
+            @sort="sortTableHeader"
           ></k-transfer>
         </k-popover>
       </div>
@@ -196,17 +197,17 @@ const defaultKeys = ref<any>([]);
 // 高级筛选
 const tableFilterRef = ref();
 const filterData = ref(props.data || []);
-let filterConditionInfo:any = null;
+const filterConditionInfo:any = ref(null);
 const headerText = computed(() => {
-  let str = '';
-  if (filterConditionInfo?.conditionList?.length) {
-    filterConditionInfo.conditionList.forEach(item => {
-      str += ` . ${ item.title } ${ item.logic } ${ item.value }`;
+  let text = '';
+  if (filterConditionInfo.value?.conditionList?.length) {
+    filterConditionInfo.value.conditionList.forEach(item => {
+      text += ` . ${ item.title } ${ item.logic } ${ item.value }`;
     });
   } else {
-    str += ` . ${ t?.('showAll') }`;
+    text += ` . ${ t?.('showAll') }`;
   }
-  return str;
+  return text;
 });
 // 分页相关变量
 const paginationConfig = ref(Object.assign(defaultPaginationConfig, props.paginationConfig || {}));
@@ -466,9 +467,12 @@ function updateColumn(ids: string[]) {
     }
   });
 }
-
+function sortTableHeader(ids: string[]) {
+  const tempSortData = ids.map((id: string) => ({ field: id }));
+  columns.value = sortFunc(columns.value, tempSortData, 'field');
+}
 function jonirFilter(conditionInfo, newTableData) {
-  filterConditionInfo = conditionInfo;
+  filterConditionInfo.value = conditionInfo;
   filterData.value = newTableData;
 }
 
