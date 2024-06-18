@@ -6,7 +6,6 @@ import 'element-plus/dist/index.css';
 import 'vxe-table/lib/style.css';
 import 'ksw-vue-icon/styles/icon.css';
 import './style/font.less';
-import 'driver.js/dist/driver.css';
 import { createI18n } from 'vue-i18n';
 import * as components from './components';
 import zh from './internal/zh';
