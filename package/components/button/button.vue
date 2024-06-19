@@ -36,7 +36,7 @@
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue';
 import { IconLoading } from 'ksw-vue-icon';
-import { ButtonProps } from './type';
+import { ButtonProps } from './type.d';
 import { isValidColor, GetColorLevel } from '../../utils';
 import 'ksw-vue-icon/styles/icon.css';
 
