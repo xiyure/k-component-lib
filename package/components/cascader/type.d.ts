@@ -1,5 +1,4 @@
 export interface CascaderProps {
-  modelValue: any
   size?: 'lg' | 'base' | 'sm' | ''
 }
 

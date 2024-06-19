@@ -4,7 +4,6 @@
     class="k-form"
     v-bind="$attrs"
     :size="getCompSize(props.size)"
-    @validate="handleValidate"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
       <slot :name="name" v-bind="data"></slot>
@@ -27,7 +26,6 @@ type Arrayable<T> = T | T[];
 const props = withDefaults(defineProps<FormProps>(), {
   size: 'base'
 });
-const emits = defineEmits(['update:modelValue', 'validate']);
 
 const KFormRef = ref<any>(null);
 let inputDoms:HTMLInputElement[];
@@ -71,9 +69,6 @@ function onKeyDown(event:any) {
     inputDoms[nextIndex].focus();
   }
 }
-const handleValidate = (prop: FormItemProp, isValid: boolean, message: string) => {
-  emits('validate', prop, isValid, message);
-};
 const validate = (callback?: FormValidateCallback) => KFormRef.value?.validate(callback);
 const validateField = (
   props?: Arrayable<FormItemProp> | undefined,

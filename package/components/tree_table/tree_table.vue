@@ -12,6 +12,7 @@
       </div>
       <div class="k-table-func">
         <k-input
+          v-model="serachStr"
           :suffix-icon="IconSearch"
           :placeholder="$t('searchTable')"
           clearable
@@ -190,6 +191,7 @@ const emits = defineEmits(['remote-query', 'server-paging', 'refresh']);
 const xTree = ref();
 const columns = ref<any>([]);
 const query = ref('');
+const serachStr = ref('');
 // 穿梭框
 const selectData = ref<any>([]);
 const originData = ref<any>([]);

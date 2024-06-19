@@ -1,11 +1,9 @@
 <template>
   <el-radio-group
-    v-model="modelValue"
     class="k-radio-group"
     v-bind="$attrs"
     :size="getCompSize(size)"
     :class="directionClass"
-    @change="handleChange"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
       <slot :name="name" v-bind="data"></slot>
@@ -28,23 +26,11 @@ const props = withDefaults(defineProps<SelectButtonGroupProps>(), {
 
 // computed props.direction , 返回一个 class
 const directionClass = computed(() => (props.direction === 'row' ? 'el-radio-group--row' : 'el-radio-group--column'));
-
-const emits = defineEmits(['update:modelValue', 'change']);
-
-const modelValue = ref(props.modelValue);
 const fillColor = ref(props.color);
 
-watch(() => props.modelValue, (newValue) => {
-  modelValue.value = newValue;
-});
 watch(() => props.color, (newValue) => {
   fillColor.value = newValue;
 });
-
-const handleChange = (value: boolean) => {
-  emits('update:modelValue', value);
-  emits('change', value);
-};
 
 provide('_fillColor', fillColor);
 

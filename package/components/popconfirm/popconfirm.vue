@@ -4,10 +4,6 @@
     v-bind="$attrs"
     :icon="props.icon"
     cancel-button-type="default"
-    @confirm="handleConfirm"
-    @cancel="handleCancel"
-    @show="handleShow"
-    @hide="handleHide"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
       <slot :name="name" v-bind="data"></slot>
@@ -26,21 +22,6 @@ defineOptions({
 const props = withDefaults(defineProps<PopconfirmProps>(), {
   icon: IconClear
 });
-
-const emits = defineEmits(['confirm', 'cancel', 'show', 'hide']);
-
-function handleConfirm() {
-  emits('confirm');
-}
-function handleCancel() {
-  emits('cancel');
-}
-function handleShow() {
-  emits('show');
-}
-function handleHide() {
-  emits('hide');
-}
 </script>
 
 <style lang="less">

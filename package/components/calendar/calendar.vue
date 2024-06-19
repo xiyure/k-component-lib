@@ -1,6 +1,6 @@
 <template>
   <div :id="id" class="k-calendar">
-    <el-calendar ref="kCalendarRef" v-model="modelValue" v-bind="$attrs">
+    <el-calendar ref="kCalendarRef" v-bind="$attrs">
       <template #header="{ date }">
         <slot name="header" :date="date">
           <div class="k-calendar__header">
@@ -67,7 +67,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick } from 'vue';
+import { ref, computed, nextTick } from 'vue';
 import { getLunar } from 'chinese-lunar-calendar';
 import { IconArrowLeft, IconArrowRight } from 'ksw-vue-icon';
 import type { CalendarDateType, CalendarInstance } from 'element-plus';
@@ -85,10 +85,9 @@ const props = withDefaults(defineProps<CalendarProps>(), {
   schedule: {},
   max: 4
 });
-const emits = defineEmits(['update:modelValue', 'show-all']);
+const emits = defineEmits(['show-all']);
 
 const kCalendarRef = ref<CalendarInstance>();
-const modelValue = ref(props.modelValue);
 const isShowLunar = ref(false);
 const id = genRandomStr(8);
 
@@ -107,13 +106,6 @@ const lunarDate = computed(() => function (date:Date) {
 const scheduleContent = computed(() => function (date:Date) {
   const content = props.schedule[formatDate(date)] || [];
   return content.slice(0, props.max);
-});
-
-watch(() => props.modelValue, (newValue) => {
-  modelValue.value = newValue;
-});
-watch(() => modelValue.value, (newValue) => {
-  emits('update:modelValue', newValue);
 });
 
 function jumpDate(command:CalendarDateType) {

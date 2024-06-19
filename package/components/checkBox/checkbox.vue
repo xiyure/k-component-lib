@@ -1,12 +1,10 @@
 <template>
   <el-checkbox
     ref="kCheckboxRef"
-    v-model="modelValue"
     class="k-checkbox"
     v-bind="$attrs"
     :label="label"
     :size="getCompSize(size)"
-    @change="handleChange"
   >
     <slot>
       <span class="checkbox__label">
@@ -25,19 +23,10 @@ defineOptions({
   name: 'KCheckbox'
 });
 
-const isWarpped = inject('useCheckboxGroup', false);
 const fillColor = inject('_fillColor', ref(''));
 
 const props = withDefaults(defineProps<SelectButtonProps>(), {});
-
-const emits = defineEmits(['update:modelValue', 'change']);
-
-const modelValue = ref(props.modelValue);
 const kCheckboxRef = ref();
-
-watch(() => props.modelValue, (newValue) => {
-  modelValue.value = newValue;
-}, { immediate: true });
 
 watch(() => [props.color, fillColor.value], () => {
   let color = '#2882FF';
@@ -51,14 +40,6 @@ watch(() => [props.color, fillColor.value], () => {
     element.style.setProperty('--checkbox-bgColor', color);
   });
 }, { immediate: true });
-
-const handleChange = (value: boolean) => {
-  if (isWarpped) {
-    return;
-  }
-  emits('update:modelValue', value);
-  emits('change', value);
-};
 
 </script>
 

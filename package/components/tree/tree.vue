@@ -16,13 +16,6 @@
       ref="KTreeRef"
       v-bind="$attrs"
       :filter-method="filterMethod"
-      @node-click="handleNodeClick"
-      @node-contextmenu="handleNodeContextmenu"
-      @check-change="handleCheckChange"
-      @check="handleCheck"
-      @current-change="handleCurrentChange"
-      @node-expand="handleNodeExpand"
-      @node-collapse="handleNodeCollapse"
     >
       <template v-for="(_, name) in $slots" :key="name" #[name]="data">
         <slot :name="name" v-bind="data"></slot>
@@ -48,47 +41,9 @@ const props = withDefaults(defineProps<TreeProps>(), {
   filterMethod: (query:string, node:TreeNode) => node.label?.includes(query)
 });
 
-const emits = defineEmits([
-  'node-click',
-  'node-contextmenu',
-  'check-change',
-  'check',
-  'current-change',
-  'node-expand',
-  'node-collapse'
-]);
-
 const KTreeRef = ref();
 const query = ref('');
 
-function handleNodeClick(data: TreeNodeData, node: TreeNode, e: MouseEvent) {
-  emits('node-click', data, node, e);
-}
-function handleNodeContextmenu(e: Event, data: TreeNodeData, node: TreeNode) {
-  emits('node-contextmenu', e, data, node);
-}
-function handleCheckChange(data: TreeNodeData, checked: boolean) {
-  emits('check-change', data, checked);
-}
-function handleCheck(
-  data: TreeNodeData,
-  info: { checkedKeys: TreeKey[],
-    checkedNodes: TreeData,
-    halfCheckedKeys: TreeKey[],
-    halfCheckedNodes: TreeData
-  }
-) {
-  emits('check', data, info);
-}
-function handleCurrentChange(data: TreeNodeData, node: TreeNode) {
-  emits('current-change', data, node);
-}
-function handleNodeExpand(data: TreeNodeData, node: TreeNode) {
-  emits('node-expand', data, node);
-}
-function handleNodeCollapse(data: TreeNodeData, node: TreeNode) {
-  emits('node-collapse', data, node);
-}
 function filterTreeNode(value:string) {
   if (props.lazy) {
     return;

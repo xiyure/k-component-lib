@@ -1,11 +1,9 @@
 <template>
   <el-radio
     ref="kRadioRef"
-    v-model="modelValue"
     class="k-radio"
     :class="[getSizeClass]"
     v-bind="$attrs"
-    @change="handleChange"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
       <slot :name="name" v-bind="data"></slot>
@@ -26,9 +24,7 @@ const props = withDefaults(defineProps<SelectButtonProps>(), {
   size: 'base',
 });
 
-const emits = defineEmits(['update:modelValue', 'change']);
 const fillColor = inject('_fillColor', ref(''));
-const modelValue = ref(props.modelValue);
 const kRadioRef = ref();
 
 watch(() => [props.color, fillColor.value], () => {
@@ -45,15 +41,6 @@ watch(() => [props.color, fillColor.value], () => {
 }, { immediate: true });
 
 const getSizeClass = computed(() => (props.size ? `el-radio--${ props.size }` : ''));
-
-watch(() => props.modelValue, (newValue) => {
-  modelValue.value = newValue;
-});
-
-const handleChange = (value: boolean) => {
-  emits('update:modelValue', value);
-  emits('change', value);
-};
 
 </script>
 

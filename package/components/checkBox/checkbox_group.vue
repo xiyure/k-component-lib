@@ -1,10 +1,8 @@
 <template>
   <el-checkbox-group
-    v-model="modelValue"
     class="k-checkbox-group"
     v-bind="$attrs"
     :size="getCompSize(size)"
-    @change="handleChange"
   >
     <slot></slot>
   </el-checkbox-group>
@@ -23,22 +21,11 @@ const props = withDefaults(defineProps<SelectButtonGroupProps>(), {
   color: '#409eff'
 });
 
-const emits = defineEmits(['update:modelValue', 'change']);
-
-const modelValue = ref(props.modelValue);
 const fillColor = ref(props.color);
 
-watch(() => props.modelValue, (newValue) => {
-  modelValue.value = newValue;
-});
 watch(() => props.color, (newValue) => {
   fillColor.value = newValue;
 });
-
-function handleChange(value: boolean) {
-  emits('update:modelValue', value);
-  emits('change', value);
-}
 
 provide('useCheckboxGroup', true);
 provide('_fillColor', fillColor);
