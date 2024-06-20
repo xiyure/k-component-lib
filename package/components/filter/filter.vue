@@ -5,7 +5,10 @@
       width="auto"
     >
       <template #reference>
-        <slot name="icon"><IconFilter /></slot>
+        <slot name="icon">
+          <k-button v-if="border"><IconFilter /></k-button>
+          <span v-else><IconFilter /></span>
+        </slot>
       </template>
       <div class="k-filter__content">
         <div class="k-filter__header">
@@ -108,7 +111,9 @@ defineOptions({
   name: 'KFilter'
 });
 
-const props = withDefaults(defineProps<FilterProps>(), {});
+const props = withDefaults(defineProps<FilterProps>(), {
+  border: true
+});
 type IFilterDataType = {
   title: string,
   logic: string,

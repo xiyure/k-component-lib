@@ -12,7 +12,7 @@
       </div>
       <div class="k-table-func">
         <k-input
-          v-if="showSerachInput"
+          v-if="showSearchInput"
           v-model="serachStr"
           :suffix-icon="IconSearch"
           :placeholder="$t('searchTable')"
@@ -28,7 +28,7 @@
           <IconRefresh />
         </k-button>
         <!-- 高级筛选 -->
-        <span class="filter-box"  v-if="showFilter">
+        <span v-if="showFilter">
           <k-filter
             ref="tableFilterRef"
             :data="data"
@@ -149,7 +149,7 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
   showDescription: true,
   showFilter: true,
   showRefresh: false,
-  showSerachInput: true,
+  showSearchInput: true,
   showTransfer: false
 });
 
