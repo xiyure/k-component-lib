@@ -3,6 +3,7 @@
     v-if="isRenderColumn"
     v-bind="props"
     :width="columnWidth"
+    class="k-table-column"
   >
     <template #header="headrSlotProps">
       <div v-if="!isExpandColumn" class="k-table-column__header">
@@ -61,7 +62,7 @@
               name="transangleDownLight"
             >
           </span>
-          <span v-if="showColumn" class="k-table-column__more">
+          <span v-if="showColumnMenu" class="k-table-column__more">
             <k-popover
               trigger="click"
               :show-arrow="false"
@@ -256,7 +257,7 @@ defineOptions({
 
 interface KTableColumnProps extends VxeColumnProps {
   desc?: string,
-  showColumn?: boolean
+  showColumnMenu?: boolean
 }
 
 const tableInstance:any = inject('tableInstance');
@@ -273,7 +274,7 @@ const props = withDefaults(defineProps<KTableColumnProps>(), {
   showOverflow: undefined,
   showHeaderOverflow: undefined,
   showFooterOverflow: undefined,
-  showColumn: true
+  showColumnMenu: true
 });
 const slots = defineSlots();
 

@@ -1,98 +1,107 @@
 <template>
   <div class="k-filter">
-    <div class="k-filter__content">
-      <div class="k-filter__header">
-        <span class="text-lg font-bold">{{ $t('seniorFilter') }}</span>
-        <span class="text-base" @click="clearFilter"><IconClearDate />{{ $t('clearAll') }}</span>
-      </div>
-      <div v-for="item, index in filterData" :key="index" class="k-filter__item">
-        <div class="k-filter__condition">
-          <k-select
-            v-model="item.title"
-            :teleported="false"
-            clearable
-            @change="changeCondition(index)"
-          >
-            <k-option
-              v-for="dataItem in column"
-              :key="dataItem.title"
-              :label="dataItem.title"
-              :value="dataItem.title"
-            />
-          </k-select>
+    <k-popover
+      trigger="click"
+      width="auto"
+    >
+      <template #reference>
+        <slot name="icon"><IconFilter /></slot>
+      </template>
+      <div class="k-filter__content">
+        <div class="k-filter__header">
+          <span class="text-lg font-bold">{{ $t('seniorFilter') }}</span>
+          <span class="text-base" @click="clearFilter"><IconClearDate />{{ $t('clearAll') }}</span>
         </div>
-        <div class="k-filter__logic">
-          <k-select
-            v-model="item.logic"
-            :teleported="false"
-            clearable
-            @change="changeLogic(item)"
-          >
-            <k-option
-              v-for="conditionItem in conditionList(item)?.logicList"
-              :key="conditionItem.logic"
-              :label="$t(conditionItem.logic)"
-              :value="conditionItem.logic"
-            />
-          </k-select>
-        </div>
-        <div class="k-filter__value">
-          <div v-if="instance(item.title)?.dataType === 'date'" class="k-filter__date-box">
+        <div v-for="item, index in filterData" :key="index" class="k-filter__item">
+          <div class="k-filter__condition">
             <k-select
-              v-model="item.dateRange"
+              v-model="item.title"
               :teleported="false"
               clearable
-              :disabled="disabledInput(item)"
-              @change="changeDateRange(item)"
+              @change="changeCondition(index)"
             >
               <k-option
-                v-for="logicItem in dateLogicList(item)"
-                :key="logicItem.value"
-                :label="$t(logicItem.label)"
-                :value="logicItem.value"
-                :disabled="(item.logic === $t('after') || item.logic === $t('before')) && logicItem.value === 'range'"
+                v-for="dataItem in column"
+                :key="dataItem.title"
+                :label="dataItem.title"
+                :value="dataItem.title"
               />
             </k-select>
-            <k-date-picker
-              v-model="item.value"
-              :type="item.dateType"
+          </div>
+          <div class="k-filter__logic">
+            <k-select
+              v-model="item.logic"
               :teleported="false"
               clearable
-              :disabled="disabledDatePicker(item)"
+              @change="changeLogic(item)"
+            >
+              <k-option
+                v-for="conditionItem in conditionList(item)?.logicList"
+                :key="conditionItem.logic"
+                :label="$t(conditionItem.logic)"
+                :value="conditionItem.logic"
+              />
+            </k-select>
+          </div>
+          <div class="k-filter__value">
+            <div v-if="instance(item.title)?.dataType === 'date'" class="k-filter__date-box">
+              <k-select
+                v-model="item.dateRange"
+                :teleported="false"
+                clearable
+                :disabled="disabledInput(item)"
+                @change="changeDateRange(item)"
+              >
+                <k-option
+                  v-for="logicItem in dateLogicList(item)"
+                  :key="logicItem.value"
+                  :label="$t(logicItem.label)"
+                  :value="logicItem.value"
+                  :disabled="(item.logic === $t('after') || item.logic === $t('before')) && logicItem.value === 'range'"
+                />
+              </k-select>
+              <k-date-picker
+                v-model="item.value"
+                :type="item.dateType"
+                :teleported="false"
+                clearable
+                :disabled="disabledDatePicker(item)"
+              />
+            </div>
+            <k-input
+              v-else
+              v-model="item.value"
+              clearable
             />
           </div>
-          <k-input
-            v-else
-            v-model="item.value"
-            clearable
-          />
+          <i class="close-icon" @click="removeConditionItem(index)"><IconClose /></i>
         </div>
-        <i class="close-icon" @click="removeConditionItem(index)"><IconClose /></i>
-      </div>
-      <div class="k-filter__operate">
-        <div class="k-filer__operate-left text-base">
-          <span @click="addCondition"><IconAdd />{{ $t('addCondition') }}</span>
-        </div>
-        <div class="k-filer__operate-right">
-          <span class="select-label">{{ $t('aboveCondition') }}：</span>
-          <k-select v-model="filterRule" :teleported="false">
-            <k-option :label="$t('anyOne')" :value="0"></k-option>
-            <k-option :label="$t('all')" :value="1"></k-option>
-          </k-select>
-          <k-button type="main" @click="filter">{{ $t('query') }}</k-button>
+        <div class="k-filter__operate">
+          <div class="k-filer__operate-left text-base">
+            <span @click="addCondition"><IconAdd />{{ $t('addCondition') }}</span>
+          </div>
+          <div class="k-filer__operate-right">
+            <span class="select-label">{{ $t('aboveCondition') }}：</span>
+            <k-select v-model="filterRule" :teleported="false">
+              <k-option :label="$t('anyOne')" :value="0"></k-option>
+              <k-option :label="$t('all')" :value="1"></k-option>
+            </k-select>
+            <k-button type="main" @click="filter">{{ $t('query') }}</k-button>
+          </div>
         </div>
       </div>
-    </div>
+    </k-popover>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, getCurrentInstance, onMounted } from 'vue';
-import { IconClose, IconClearDate, IconAdd } from 'ksw-vue-icon';
+import { IconClose, IconClearDate, IconAdd, IconFilter } from 'ksw-vue-icon';
 import { FilterProps } from './type';
 import { KInput } from '../input';
 import { KSelect, KOption } from '../select';
 import { KButton } from '../button';
+import { KPopover } from '../popover';
 import { dateTypeOptions, logicOptions } from './const';
 
 defineOptions({
@@ -163,6 +172,9 @@ function addCondition() {
 
 // 移除条件
 function removeConditionItem(index:number) {
+  if (index === 0 && filterData.value.length === 1) {
+    return;
+  }
   filterData.value.splice(index, 1);
 }
 function clearFilter() {

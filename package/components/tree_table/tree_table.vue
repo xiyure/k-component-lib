@@ -1,7 +1,7 @@
 <template>
   <div class="k-tree-table">
     <div class="k-tree-table__header">
-      <div class="k-table-info">
+      <div class="k-table-info" v-if="showDescription">
         <slot name="description" :total="dataLength" :condition-info="filterConditionInfo">
           <div class="k-table-header-text">
             <span>{{ $t('total') }} {{ dataLength }} {{ $t('data') }}</span>
@@ -12,6 +12,7 @@
       </div>
       <div class="k-table-func">
         <k-input
+          v-if="showSerachInput"
           v-model="serachStr"
           :suffix-icon="IconSearch"
           :placeholder="$t('searchTable')"
@@ -19,6 +20,7 @@
           @change="(value: string) => query = value"
         />
         <k-button
+          v-if="showRefresh"
           @click="() => {
             emits('refresh')
           }"
@@ -26,22 +28,17 @@
           <IconRefresh />
         </k-button>
         <!-- 高级筛选 -->
-        <k-popover
-          trigger="click"
-          width="auto"
-        >
-          <template #reference>
-            <k-button><IconFilter /></k-button>
-          </template>
+        <span class="filter-box"  v-if="showFilter">
           <k-filter
             ref="tableFilterRef"
             :data="data"
             :column="filterColumn"
             @confirm="jonirFilter"
-          ></k-filter>
-        </k-popover>
+          ><IconRefresh /></k-filter>
+        </span>
         <!-- 穿梭框 -->
         <k-popover
+          v-if="showTransfer"
           trigger="click"
           width="auto"
         >
@@ -91,6 +88,7 @@
             :sortable="item.sortable"
             :min-width="item.minWidth"
             :edit-render="item.editRender"
+            :show-column-menu="item.showColumnMenu !== false"
           >
             <template
               v-if="
@@ -124,7 +122,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, nextTick, getCurrentInstance } from 'vue';
 import VXETable, { VxeTableInstance } from 'vxe-table';
-import { IconSearch, IconSetting, IconFilter, IconRefresh } from 'ksw-vue-icon';
+import { IconSearch, IconSetting, IconRefresh } from 'ksw-vue-icon';
 import { KInput } from '../input';
 import { KButton } from '../button';
 import { KTransfer } from '../transfer';
@@ -147,7 +145,12 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
   showOverflow: true,
   showHeader: true,
   autoResize: true,
-  fit: true
+  fit: true,
+  showDescription: true,
+  showFilter: true,
+  showRefresh: false,
+  showSerachInput: true,
+  showTransfer: false
 });
 
 const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
@@ -267,7 +270,7 @@ const filterColumn = computed(() => props.column.filter(item => item.dataType).m
 })));
 watch(() => props.data, () => {
   nextTick(() => {
-    tableFilterRef.value.filter();
+    tableFilterRef.value?.filter();
   });
 }, { deep: true, immediate: true });
 watch(() => filterData.value.length, (newValue) => {
@@ -430,7 +433,7 @@ function getRowStyle(rowInfo:any) {
 }
 // 自定义单元格渲染
 function handleCustomRender() {
-  for (const col of props.column) {
+  for (const col of columns.value) {
     if (col.render) {
       col.cellRender = {
         name: genRandomStr(16),
@@ -480,7 +483,8 @@ function jonirFilter(conditionInfo, newTableData) {
 
 const tableInstance = computed(() => xTree?.value.tableInstance);
 defineExpose({
-  tableInstance
+  tableInstance,
+  filterTableData
 });
 </script>
 

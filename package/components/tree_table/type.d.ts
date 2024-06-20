@@ -32,4 +32,9 @@ export interface TreeTableProps extends VxeTableProps {
   isRemoteQuery?: boolean,
   isServerPaging?: boolean
   paginationConfig?: PaginationConfigType
+  showSerachInput?: boolean
+  showFilter?: boolean
+  showRefresh?: boolean
+  showDescription?: boolean,
+  showTransfer?: boolean
 }
