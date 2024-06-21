@@ -60,7 +60,7 @@
                   :key="logicItem.value"
                   :label="$t(logicItem.label)"
                   :value="logicItem.value"
-                  :disabled="(item.logic === $t('after') || item.logic === $t('before')) && logicItem.value === 'range'"
+                  :disabled="(item.logic === 'after' || item.logic === 'before') && logicItem.value === 'range'"
                 />
               </k-select>
               <k-date-picker
@@ -106,6 +106,7 @@ import { KSelect, KOption } from '../select';
 import { KButton } from '../button';
 import { KPopover } from '../popover';
 import { dateTypeOptions, logicOptions } from './const';
+import { dataType } from 'element-plus/es/components/table-v2/src/common';
 
 defineOptions({
   name: 'KFilter'
@@ -145,7 +146,7 @@ const conditionList = computed(() => function (item: any) {
 });
 
 const dateLogicList = computed(() => function (item:IFilterDataType) {
-  if (item.logic === t?.('equal')) {
+  if (item.logic === 'equal') {
     return dateTypeOptions;
   } 
   const hideLogicList = ['past-seven-days', 'past-thirty-days'];
@@ -154,7 +155,7 @@ const dateLogicList = computed(() => function (item:IFilterDataType) {
 
 // 日期禁用
 const disabledInput = computed(() => function (item:IFilterDataType) {
-  const disabledLogicTypes = [t?.('empty'), t?.('nonEmpty')];
+  const disabledLogicTypes = ['empty', 'nonEmpty'];
   return !item.logic || disabledLogicTypes.includes(item.logic);
 }); 
 const disabledDatePicker = computed(() => function (item:IFilterDataType) {
@@ -231,8 +232,8 @@ function changeCondition(index:number) {
   targetItem.value = '';
 }
 function changeLogic(dataItem) {
-  if ((dataItem.logic === t?.('after')
-    || dataItem.logic === t?.('before'))
+  if ((dataItem.logic === 'after'
+    || dataItem.logic === 'before')
     && dataItem.dateType === 'datetimerange'
   ) {
     dataItem.dateType = 'datetime';
@@ -258,29 +259,29 @@ function changeDateLogic(item:IFilterDataType) {
 }
 function changeDateRange(item:IFilterDataType) {
   setDatePickerType(item);
+  let dateValue:any = '';
   switch (item.dateRange) {
-    case 'date': item.value = ''; break;
-    case 'range': item.value = ['', '']; break;
-    case 'today': item.value = getTargetDay(0); break;
-    case 'tomorrow': item.value = getTargetDay(1); break;
-    case 'yesterday': item.value = getTargetDay(-1); break;
+    case 'date': dateValue = ''; break;
+    case 'range': dateValue = ['', '']; break;
+    case 'today': dateValue = getTargetDay(0); break;
+    case 'tomorrow': dateValue = getTargetDay(1); break;
+    case 'yesterday': dateValue = getTargetDay(-1); break;
     case 'current-week':
-      item.value = [getTargetDay(-getWeekDay() + 1), getTargetDay(7 - getWeekDay())]; break;
+      dateValue = [getTargetDay(-getWeekDay() + 1), getTargetDay(7 - getWeekDay())]; break;
     case 'last-week':
-      item.value = [getTargetDay(-getWeekDay() - 6), getTargetDay(-getWeekDay())]; break;
+      dateValue = [getTargetDay(-getWeekDay() - 6), getTargetDay(-getWeekDay())]; break;
     case 'current-month':
-      item.value = [getTargetDay(-getDateDay() + 1), getTargetDay(getCurMonthDayCount() - getDateDay())]; break;
+      dateValue = [getTargetDay(-getDateDay() + 1), getTargetDay(getCurMonthDayCount() - getDateDay())]; break;
     case 'last-month':
-      item.value = [getTargetDay(-getDateDay() - getCurMonthDayCount() + 1), getTargetDay(-getDateDay())]; break;
-    case 'past-seven-days': item.value = [getTargetDay(-7), getTargetDay(0)]; break;
-    case 'past-thirty-days': item.value = [getTargetDay(-30), getTargetDay(0)]; break;
+      dateValue = [getTargetDay(-getDateDay() - getCurMonthDayCount() + 1), getTargetDay(-getDateDay())]; break;
+    case 'past-seven-days': dateValue = [getTargetDay(-7), getTargetDay(0)]; break;
+    case 'past-thirty-days': dateValue = [getTargetDay(-30), getTargetDay(0)]; break;
   }
   const targetRanges = ['current-week', 'last-week', 'current-month', 'last-month'];
-  if ((item.logic === t?.('after')
-    || item.logic === t?.('before'))
-    && targetRanges.includes(item.dateRange as string)
-  ) {
-    item.value = item.value[0];
+  if (item.dateType === 'datetime' && targetRanges.includes(item.dateRange as string)) {
+    item.value = dateValue[0];
+  } else {
+    item.value = dateValue;
   }
 }
 // 日期推导
@@ -315,13 +316,13 @@ function getCurMonthDayCount() {
 }
 // 设置日期选择器的类型（日期 or 时间段）
 function setDatePickerType(item:IFilterDataType) {
-  if (item.logic === t?.('equal')) {
+  if (item.logic ==='equal') {
     const dateArray = ['date', 'today', 'tomorrow', 'yesterday'];
     item.dateType = dateArray.includes(item.dateRange as string) ? 'datetime' : 'datetimerange';
-  } else if (item.logic === t?.('after') || item.logic === t?.('before')) {
+  } else if (item.logic === 'after' || item.logic === 'before') {
     const dateArray = ['range'];
     item.dateType = !dateArray.includes(item.dateRange as string) ? 'datetime' : 'datetimerange';
-  } 
+  }
 }
 
 defineExpose({ filter, clearFilter });

@@ -15,6 +15,7 @@
           <k-tree-table
             ref="treeLeftRef"
             size="mini"
+            height="300px"
             :column="column"
             :data="leftData"
             :tree-config="{ parentField: 'pid' }"
@@ -31,6 +32,7 @@
           <k-table
             ref="treeRightRef"
             size="mini"
+            height="300px"
             :data="showRightData"
           >
             <k-table-column
@@ -75,6 +77,7 @@ const props = withDefaults(defineProps<TreeTransferProps>(), {
 });
 
 // 定义emit
+const emits = defineEmits(['change', 'sort'])
 const column = ref([{
   type: 'checkbox',
   title: props.leftTitle,
@@ -104,12 +107,12 @@ function initData() {
         const targetRow = selectLeafData.find(item => item.id === row.id);
         treeLeftRef.value.tableInstance.setCheckboxRow(targetRow, true);
       }
-      updateSelectData();
+      updateSelectData(false);
     }
   });
 }
 
-function updateSelectData() {
+function updateSelectData(isEmit: boolean = true) {
   const checkNodes = treeLeftRef.value.tableInstance.getCheckboxRecords(true);
   const obj = {};
   selectData.value = checkNodes.reduce((cur, next) => {
@@ -124,6 +127,9 @@ function updateSelectData() {
   const selectLeafData = getLeafNodes(rightTree);
   rightData.value = selectLeafData.filter(item => !item.children || !item.children.length);
   filterRightData();
+  if (isEmit) {
+    emits('change', rightData.value);
+  }
 }
 
 function getLeafNodes(treeData: any[]) {
@@ -235,6 +241,7 @@ const handleDrop = () => {
   const [removedIndex] = rightData.value.splice(dragIndex, 1);
   rightData.value.splice(newIndex, 0, removedIndex);
   treeRightRef.value.tableInstance.reloadData(rightData.value);
+  emits('sort', rightData.value)
   dragTarget = null;
   targetOption = null;
   dragIndex = -1;

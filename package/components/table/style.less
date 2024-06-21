@@ -27,8 +27,10 @@
     }
   }
 }
-.vxe-cell--sort, .vxe-cell--filter {
-  display: none !important;
+.k-table__content {
+  .vxe-cell--sort, .vxe-cell--filter, .vxe-table--filter-wrapper {
+    display: none !important;
+  }
 }
 .expand-icon {
   &:hover {
@@ -44,9 +46,6 @@
       margin-right: 10px;
     }
   }
-}
-.vxe-table--filter-wrapper {
-  display: none !important;
 }
 .disabled {
   color: @k-gray-200;
