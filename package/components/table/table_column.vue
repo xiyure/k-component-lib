@@ -7,10 +7,11 @@
   >
     <template #header="headrSlotProps">
       <div v-if="!isExpandColumn" class="k-table-column__header">
-        <slot name="header" v-bind="headrSlotProps">
-          <span class="k-table-column__title">{{ headrSlotProps.column.title || '-' }}
-          </span>
-        </slot>
+        <div class="k-table-column__title" :style="{ width: '100%' }">
+          <slot name="header" v-bind="headrSlotProps">
+            {{ headrSlotProps.column.title || '-' }}
+          </slot>
+        </div>
         <k-dialog
           v-model="dialogVisible"
           :title="$t('customDescription')"

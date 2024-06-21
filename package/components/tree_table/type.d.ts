@@ -17,11 +17,12 @@ export interface columnConfigType {
 }
 
 export interface PaginationConfigType {
-  total?: number,
-  pagerCount?: number,
-  currentPage?: number,
-  pageSizes?: number[],
+  total?: number
+  pagerCount?: number
+  currentPage?: number
+  pageSizes?: number[]
   pageSize?: number
+  layout?: string
 }
 
 export interface TreeTableProps extends VxeTableProps {
@@ -29,7 +30,7 @@ export interface TreeTableProps extends VxeTableProps {
   exactMatch?: boolean
   showPage?: boolean
   useTree?: boolean
-  isRemoteQuery?: boolean,
+  isRemoteQuery?: boolean
   isServerPaging?: boolean
   paginationConfig?: PaginationConfigType
   showSearchInput?: boolean

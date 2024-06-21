@@ -4,7 +4,10 @@
       <div class="k-table-info" v-if="showDescription">
         <slot name="description" :total="dataLength" :condition-info="filterConditionInfo">
           <div class="k-table-header-text">
-            <span>{{ $t('total') }} {{ dataLength }} {{ $t('data') }}</span>
+            <span>{{ $t('total') }}
+              {{ isNumber(paginationConfig.total) ? paginationConfig.total : dataLength }} 
+              {{ $t('data') }}
+            </span>
             <span :title="headerText" class="condition-info">{{ headerText }}</span>
             <span class="filter-reset" @click="() => tableFilterRef?.clearFilter?.()">{{ $t('reset') }}</span>
           </div>
@@ -104,16 +107,16 @@
         </template>
       </k-table>
     </div>
-    <div class="pagination-box">
+    <div class="pagination-box" v-if="isPaging">
       <k-pagination
-        v-if="isPaging"
-        :total="dataLength"
+        :total="isNumber(paginationConfig.total) ? paginationConfig.total : dataLength"
         :page-size="paginationConfig.pageSize"
         :pager-count="paginationConfig.pagerCount"
         :page-sizes="paginationConfig.pageSizes"
         :current-page="paginationConfig.currentPage"
         @current-change="changeCurrentPage"
         @size-change="changePageSize"
+        :layout="paginationConfig.layout"
       />
     </div>
   </div>
@@ -132,6 +135,7 @@ import { KTable, KTableColumn } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
 import { genRandomStr, getListeners } from '../../utils';
+import { isNumber } from 'lodash';
 
 defineOptions({
   name: 'KTreeTable'
@@ -175,8 +179,7 @@ const defaultPaginationConfig = {
   pagerCount: 7,
   currentPage: 1,
   pageSizes: DEFAULT_PAGES,
-  pageSize: DEFAULT_PAGES[0],
-  total: 0
+  pageSize: DEFAULT_PAGES[0]
 };
 const defaultSortConfig = {};
 const defaultCheckboxConfig = {};
@@ -398,9 +401,17 @@ function sortFunc(targetData:any[], sortData: any, key: string | number) {
 // 分页相关
 function changePageSize(pageSize: number) {
   paginationConfig.value.pageSize = pageSize;
+  if (props.isServerPaging) {
+    emits('server-paging', paginationConfig.value);
+    return;
+  }
 }
 function changeCurrentPage(pageNum: number) {
   paginationConfig.value.currentPage = pageNum;
+  if (props.isServerPaging) {
+    emits('server-paging', paginationConfig.value);
+    return;
+  }
 }
 function getShowTableData(data) {
   if (props.isServerPaging) {
