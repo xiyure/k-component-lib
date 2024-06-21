@@ -33,6 +33,7 @@ import { KCalendar } from './calendar';
 import { KTree } from './tree';
 import { KTreeTable } from './tree_table';
 import { KDropdown, KDropdownItem } from './dropdown';
+import { KTreeTransfer } from './tree_transfer';
 
 export {
   KButton,
@@ -82,5 +83,6 @@ export {
   KTree,
   KTreeTable,
   KDropdown,
-  KDropdownItem
+  KDropdownItem,
+  KTreeTransfer
 };

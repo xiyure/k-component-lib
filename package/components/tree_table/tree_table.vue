@@ -1,7 +1,7 @@
 <template>
   <div class="k-tree-table">
-    <div class="k-tree-table__header">
-      <div class="k-table-info" v-if="showDescription">
+    <div v-if="showHeaderTools" class="k-tree-table__header">
+      <div v-if="showDescription" class="k-table-info">
         <slot name="description" :total="dataLength" :condition-info="filterConditionInfo">
           <div class="k-table-header-text">
             <span>{{ $t('total') }}
@@ -107,16 +107,16 @@
         </template>
       </k-table>
     </div>
-    <div class="pagination-box" v-if="isPaging">
+    <div v-if="isPaging" class="pagination-box">
       <k-pagination
         :total="isNumber(paginationConfig.total) ? paginationConfig.total : dataLength"
         :page-size="paginationConfig.pageSize"
         :pager-count="paginationConfig.pagerCount"
         :page-sizes="paginationConfig.pageSizes"
         :current-page="paginationConfig.currentPage"
+        :layout="paginationConfig.layout"
         @current-change="changeCurrentPage"
         @size-change="changePageSize"
-        :layout="paginationConfig.layout"
       />
     </div>
   </div>
@@ -126,6 +126,7 @@
 import { ref, computed, watch, nextTick, getCurrentInstance } from 'vue';
 import VXETable, { VxeTableInstance } from 'vxe-table';
 import { IconSearch, IconSetting, IconRefresh } from 'ksw-vue-icon';
+import { isNumber } from 'lodash';
 import { KInput } from '../input';
 import { KButton } from '../button';
 import { KTransfer } from '../transfer';
@@ -135,7 +136,6 @@ import { KTable, KTableColumn } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
 import { genRandomStr, getListeners } from '../../utils';
-import { isNumber } from 'lodash';
 
 defineOptions({
   name: 'KTreeTable'
@@ -154,7 +154,8 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
   showFilter: true,
   showRefresh: false,
   showSearchInput: true,
-  showTransfer: false
+  showTransfer: false,
+  showHeaderTools: true
 });
 
 const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
@@ -301,7 +302,7 @@ watch(() => props.column.length, () => {
 }, { immediate: true, deep: true });
 
 // 表格内容搜索
-const treeData = ref<any>([]);
+let treeData:any[] = [];
 const nodeSet = new Set();
 function filterTableData() {
   const searchKey = query.value.trim();
@@ -330,7 +331,7 @@ function filterTableData() {
   if (props.useTree) {
     handleTreeData(tableData);
     const { rowField } = getTreeConfigField();
-    tableData = sortFunc(treeData.value, props.data, rowField);
+    tableData = sortFunc(treeData, props.data, rowField);
     if (tableData.length < 500) {
       nextTick(() => {
         const VxeInstance:VxeTableInstance = xTree.value.tableInstance;
@@ -343,17 +344,17 @@ function filterTableData() {
 // 处理树形数据
 function handleTreeData(leafData:any[]) {
   nodeSet.clear();
-  treeData.value = [];
+  treeData = [];
   const { parentField, rowField } = getTreeConfigField();
   for (let index = 0; index < leafData.length; index++) {
     const dataItem = leafData[index];
     // 如果tableData中已存在该数据，则不再重复添加
-    const targetItem = treeData.value.find((item: any) => item[rowField] === dataItem[rowField]
+    const targetItem = treeData.find((item: any) => item[rowField] === dataItem[rowField]
         && item[parentField] === dataItem[parentField]);
     if (targetItem) {
       continue;
     }
-    treeData.value.push(dataItem);
+    treeData.push(dataItem);
     addChildNodes(dataItem);
     nodeSet.add(dataItem[rowField]);
     getParentNode(dataItem, parentField, rowField);
@@ -368,12 +369,12 @@ function addChildNodes(currentNode: any) {
     return;
   }
   childNodes.forEach((node: any) => {
-    const targetItem = treeData.value.find(
+    const targetItem = treeData.find(
       (treeDataItem: any) => treeDataItem[rowField] === node[rowField]
         && treeDataItem[parentField] === node[parentField]
     );
     if (!targetItem) {
-      treeData.value.push(node);
+      treeData.push(node);
     }
     addChildNodes(node);
   });
@@ -386,7 +387,7 @@ function getParentNode(dataItem: any, parentField: string, rowField: string) {
     return;
   }
   if (!nodeSet.has(parentKey)) {
-    treeData.value.push(parentItem);
+    treeData.push(parentItem);
     nodeSet.add(parentKey);
   }
   if (parentItem[parentField] !== null) {
@@ -403,14 +404,12 @@ function changePageSize(pageSize: number) {
   paginationConfig.value.pageSize = pageSize;
   if (props.isServerPaging) {
     emits('server-paging', paginationConfig.value);
-    return;
   }
 }
 function changeCurrentPage(pageNum: number) {
   paginationConfig.value.currentPage = pageNum;
   if (props.isServerPaging) {
     emits('server-paging', paginationConfig.value);
-    return;
   }
 }
 function getShowTableData(data) {
@@ -491,11 +490,16 @@ function jonirFilter(conditionInfo, newTableData) {
   filterConditionInfo.value = conditionInfo;
   filterData.value = newTableData;
 }
+function filter(serachStr: string) {
+  if (serachStr) {
+    query.value = serachStr;
+  }
+}
 
 const tableInstance = computed(() => xTree?.value.tableInstance);
 defineExpose({
   tableInstance,
-  filterTableData
+  filter
 });
 </script>
 

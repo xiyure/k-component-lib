@@ -38,4 +38,5 @@ export interface TreeTableProps extends VxeTableProps {
   showRefresh?: boolean
   showDescription?: boolean,
   showTransfer?: boolean
+  showHeaderTools?: boolean
 }

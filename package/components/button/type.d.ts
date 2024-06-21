@@ -1,15 +1,15 @@
-import { Component } from "vue";
+import { Component } from 'vue';
 
 export interface ButtonProps {
   /**
    *   按钮状态: 普通按钮, 主要按钮, 次级按钮, 文字按钮, 图标按钮.
    *   可选值为:
    */
-  type?: "normal" | "main" | "secondary" | "text" | "icon";
+  type?: 'normal' | 'main' | 'secondary' | 'text' | 'icon';
   /**
    * 按钮尺寸，可选值为:
    */
-  size?: "base" | "sm";
+  size?: 'base' | 'sm';
   /**
    * 文字左边图标
    */

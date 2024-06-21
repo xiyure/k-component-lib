@@ -59,7 +59,6 @@ const props = withDefaults(defineProps<ButtonProps>(), {
 });
 
 onMounted(() => {
-  
   // 校验 color 是否为 16 进制颜色
   if (props.color && isValidColor(props.color)) {
     const hexColor = props.color;
