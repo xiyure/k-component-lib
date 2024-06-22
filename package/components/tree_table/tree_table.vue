@@ -491,9 +491,7 @@ function jonirFilter(conditionInfo, newTableData) {
   filterData.value = newTableData;
 }
 function filter(serachStr: string) {
-  if (serachStr) {
-    query.value = serachStr;
-  }
+  query.value = serachStr;
 }
 
 const tableInstance = computed(() => xTree?.value.tableInstance);

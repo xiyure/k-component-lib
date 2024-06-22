@@ -6,8 +6,14 @@
     >
       <template #reference>
         <slot name="icon">
-          <k-button v-if="border"><IconFilter /></k-button>
-          <span v-else><IconFilter /></span>
+          <k-button v-if="border">
+            <IconFilter v-if="!isConfigCondition" />
+            <IconFilterFill v-else color="#2882FF" />
+          </k-button>
+          <span v-else>
+            <IconFilter v-if="!isConfigCondition" />
+            <IconFilterFill v-else color="#2882FF" />
+          </span>
         </slot>
       </template>
       <div class="k-filter__content">
@@ -99,14 +105,13 @@
 
 <script setup lang="ts">
 import { ref, computed, getCurrentInstance, onMounted } from 'vue';
-import { IconClose, IconClearDate, IconAdd, IconFilter } from 'ksw-vue-icon';
+import { IconClose, IconClearDate, IconAdd, IconFilter, IconFilterFill } from 'ksw-vue-icon';
 import { FilterProps } from './type';
 import { KInput } from '../input';
 import { KSelect, KOption } from '../select';
 import { KButton } from '../button';
 import { KPopover } from '../popover';
 import { dateTypeOptions, logicOptions } from './const';
-import { dataType } from 'element-plus/es/components/table-v2/src/common';
 
 defineOptions({
   name: 'KFilter'
@@ -152,6 +157,8 @@ const dateLogicList = computed(() => function (item:IFilterDataType) {
   const hideLogicList = ['past-seven-days', 'past-thirty-days'];
   return dateTypeOptions.filter((item) => !hideLogicList.includes(item.value));
 });
+
+const isConfigCondition = computed(() => filterData.value.some(item => item.title && item.logic && item.value));
 
 // 日期禁用
 const disabledInput = computed(() => function (item:IFilterDataType) {
@@ -316,7 +323,7 @@ function getCurMonthDayCount() {
 }
 // 设置日期选择器的类型（日期 or 时间段）
 function setDatePickerType(item:IFilterDataType) {
-  if (item.logic ==='equal') {
+  if (item.logic === 'equal') {
     const dateArray = ['date', 'today', 'tomorrow', 'yesterday'];
     item.dateType = dateArray.includes(item.dateRange as string) ? 'datetime' : 'datetimerange';
   } else if (item.logic === 'after' || item.logic === 'before') {

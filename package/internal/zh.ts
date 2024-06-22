@@ -62,5 +62,7 @@ export default {
   gte: '大于等于',
   lte: '小于等于',
   contain: '包含',
-  notEqual: '不等于'
+  notEqual: '不等于',
+  clearData: '清除数据',
+  enterInputSearch: '按下回车键搜索'
 };

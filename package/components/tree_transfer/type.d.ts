@@ -1,3 +1,5 @@
+import { Component } from 'vue';
+
 export interface TreeTransferProps {
   modelValue: any[]
   data: any[]
@@ -7,4 +9,9 @@ export interface TreeTransferProps {
   rightTitle?: string
   usetree?: boolean
   showFilter?: boolean
+  useTree?: boolean
+  expandIcon?: Component
+  collapseIcon?: Component
+  icon?: Component
+  treeConfig?: any
 }

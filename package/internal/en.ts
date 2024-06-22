@@ -62,5 +62,7 @@ export default {
   gte: 'gte',
   lte: 'lte',
   contain: 'contain',
-  notEqual: 'not eaual'
+  notEqual: 'not eaual',
+  clearData: 'Clear Data',
+  enterInputSearch: 'Press Enter to search'
 };
