@@ -15,27 +15,30 @@
           <k-table
             ref="treeLeftRef"
             size="mini"
+            :border="false"
             height="300px"
             :data="leftData"
             :tree-config="treeConfig"
             :row-config="{ keyField: 'id' }"
-            :checkbox-config="{ reserve: true, trigger: null }"
-            @checkbox-change="updateSelectData"
+            show-overflow
+            :scroll-y="scrollY"
+            :checkbox-config="{ reserve: true, checkRowKeys: selectData }"
+            @checkbox-change="checkboxChange"
           >
             <k-table-column
               type="checkbox"
-              field="name"
+              :field="label"
               width="auto"
               :title="leftTitle"
               :show-column-menu="false"
-              :tree-node="true"
+              :tree-node="props.useTree"
             >
               <template #default="{ row }">
                 <span class="tree-transfer__cell">
                   <props.icon v-if="isExpand(row) === 0" />
                   <props.expandIcon v-if="isExpand(row) === 1" />
                   <props.collapseIcon v-if="isExpand(row) === 2" />
-                  {{ row.name }}
+                  {{ row[props.label] }}
                 </span>
               </template>
             </k-table-column>
@@ -47,11 +50,14 @@
           <k-table
             ref="treeRightRef"
             size="mini"
+            :border="false"
             height="300px"
             :data="showRightData"
+            show-overflow
+            :scroll-y="scrollY"
           >
             <k-table-column
-              field="name"
+              :field="label"
               :title="props.rightTitle"
               :show-column-menu="false"
             >
@@ -69,7 +75,7 @@
                   @dragenter="handleDragenter($event, row)"
                   @dragend="handleDrop()"
                 >
-                  <span class="column-content">{{ row['name'] }}</span>
+                  <span class="column-content"><props.icon v-if="props.icon" />{{ row[props.label] }}</span>
                   <div class="column-operate">
                     <IconDrag />
                     <IconClose @click="removeRightData(row)" />
@@ -85,7 +91,7 @@
 </template>
 
 <script setup lang="tsx">
-import { ref, onMounted, computed, nextTick } from 'vue';
+import { ref, onMounted, computed, watch, nextTick } from 'vue';
 import { IconSearch, IconDrag, IconClose } from 'ksw-vue-icon';
 import { TreeTransferProps } from './type.d';
 import { KTable, KTableColumn } from '../table';
@@ -93,7 +99,8 @@ import { KInput } from '../input';
 
 const props = withDefaults(defineProps<TreeTransferProps>(), {
   showFilter: true,
-  usetree: true
+  usetree: true,
+  label: 'label'
 });
 
 // 定义emit
@@ -107,14 +114,20 @@ const defaultTreeConfig = {
   hasChild: 'hasChild',
   indent: 0
 };
-const leftData = ref<any>(props.data || []);
+const leftData = ref<any>([]);
 const query = ref('');
 const treeLeftRef = ref();
 const treeRightRef = ref();
 const rightData = ref<any>([]);
 const showRightData = ref<any>([]);
- 
-onMounted(() => initData());
+const fullData = ref<any>([]);
+const selectData = ref<any>([]);
+
+onMounted(() => {
+  setTimeout(() => { 
+    updateSelectData();
+  });
+});
 
 const isExpand = computed(() => function (row) {
   const expand = treeLeftRef.value?.tableInstance.isTreeExpandByRow(row);
@@ -133,65 +146,90 @@ const treeConfig = computed(() => {
   }
   return undefined;
 });
-function initData() {
-  if (!props.data || !props.modelValue) {
-    return;
-  }
-  nextTick(() => {
-    if (Array.isArray(props.defaultData)) {
-      for (const id of props.defaultData) {
-        const targetRow = leftData.value.find(item => item.id === id);
-        if (!targetRow) {
-          continue;
-        }
-        targetRow.checked = true;
-        treeLeftRef.value.tableInstance.setCheckboxRow(targetRow, true);
-      }
-      updateSelectData(false);
-    }
-  });
-}
+const scrollY = computed(() => ({ enabled: true, ...props.scrollY || {} }));
 
-function updateSelectData(isEmit: boolean = true) {
+watch(() => props.data, (newValue) => {
+  fullData.value = newValue?.slice() || [];
+  leftData.value = fullData.value;
+}, { immediate: true, deep: true });
+watch(() => props.defaultData, (newValue) => {
+  selectData.value = selectData.value.concat(...(newValue || []));
+}, { immediate: true, deep: true });
+
+function checkboxChange() {
+  handleSelectData();
+  updateSelectData();
+  emits('change', getSelectedData());
+}
+function updateSelectData() {
   const checkNodes = treeLeftRef.value.tableInstance.getCheckboxRecords(true);
   const newData = checkNodes.filter(item => !item.children?.length);
-  rightData.value = sortFunc(newData, leftData.value);
+  rightData.value = sortFunc(newData, fullData.value);
   filterRightData();
-  if (isEmit) {
-    emits('change', rightData.value);
+}
+function handleSelectData() {
+  const checkNodes = treeLeftRef.value.tableInstance.getCheckboxRecords(true);
+  const data = checkNodes.filter(item => !item.children?.length);
+  // 处理新增的数据
+  const addList:any[] = [];
+  for (const dataItem of data) {
+    const targetItem = selectData.value.find(item => item.id === dataItem.id);
+    if (!targetItem) {
+      addList.push(dataItem.id);
+    }
   }
+  const ids = leftData.value.map(item => item.id);
+  for (let i = 0; i < selectData.value.length; i++) {
+    const isSelected = data.find(item => item.id === selectData.value[i]);
+    const isLeftData = ids.includes(selectData.value[i]);
+    if (!isSelected && isLeftData) {
+      selectData.value.splice(i, 1);
+      i--;
+    }
+  }
+  selectData.value = selectData.value.concat(...selectData.value, ...addList);
+  selectData.value = Array.from(new Set(selectData.value));
 }
 function removeRightData(row) {
+  const targetIndex = selectData.value.findIndex(id => id === row.id);
+  if (targetIndex >= 0) {
+    selectData.value.splice(targetIndex, 1);
+  }
   const targetRow = leftData.value.find(item => item.id === row.id);
   treeLeftRef.value.tableInstance.setCheckboxRow(targetRow, false);
-  const removeIndex = rightData.value.findIndex(item => item.id === row.id);
+  const removeIndex = showRightData.value.findIndex(item => item.id === row.id);
   if (removeIndex >= 0) {
-    rightData.value.splice(removeIndex, 1);
+    showRightData.value.splice(removeIndex, 1);
   }
+  emits('change', getSelectedData());
 }
 function clearData() {
-  for (const dataItem of rightData.value) {
+  for (const dataItem of showRightData.value) {
+    const targetIndex = selectData.value.findIndex(id => id === dataItem.id);
+    if (targetIndex >= 0) {
+      selectData.value.splice(targetIndex, 1);
+    }
     const targetRow = leftData.value.find(item => item.id === dataItem.id);
     treeLeftRef.value.tableInstance.setCheckboxRow(targetRow, false);
   }
-  rightData.value = [];
   showRightData.value = [];
+  emits('change', getSelectedData());
 }
 // 筛选
 let treeData:any[] = [];
 const nodeSet = new Set();
-function filterData() {
-  filterLeftData();
+async function filterData() {
+  await filterLeftData();
   updateSelectData();
 }
-function filterLeftData() {
+async function filterLeftData() {
   const searchKey = query.value.trim();
-  let tableData = props.data.filter((dataItem:any) => dataItem.name.indexOf(searchKey) !== -1) as any;
+  let tableData = fullData.value.filter((dataItem:any) => dataItem[props.label].toString().indexOf(searchKey) !== -1);
   // 当表格数据为树时，筛选后的数据应展示完整的子树
   if (props.useTree) {
     handleTreeData(tableData);
     const { rowField } = getTreeConfigField();
-    tableData = sortTreeData(treeData, props.data, rowField);
+    tableData = sortTreeData(treeData, fullData.value, rowField);
     if (tableData.length < 500 && searchKey) {
       nextTick(() => {
         const VxeInstance = treeLeftRef.value.tableInstance;
@@ -206,6 +244,7 @@ function filterLeftData() {
     }
   }
   leftData.value = tableData;
+  await treeLeftRef.value.tableInstance.reloadData(leftData.value);
 }
 // 处理树形数据
 function handleTreeData(leafData:any[]) {
@@ -228,7 +267,7 @@ function handleTreeData(leafData:any[]) {
 }
 function addChildNodes(currentNode: any) {
   const { parentField, rowField } = getTreeConfigField();
-  const childNodes = props.data?.filter(
+  const childNodes = fullData.value?.filter(
     (node: any) => node[parentField] === currentNode[rowField]
   );
   if (!childNodes) {
@@ -248,7 +287,7 @@ function addChildNodes(currentNode: any) {
 // 根据叶子节点递归遍历获取祖先节点
 function getParentNode(dataItem: any, parentField: string, rowField: string) {
   const parentKey = dataItem[parentField];
-  const parentItem = props.data?.find(item => item[rowField] === parentKey);
+  const parentItem = fullData.value?.find(item => item[rowField] === parentKey);
   if (!parentItem) {
     return;
   }
@@ -271,7 +310,7 @@ function filterRightData() {
     showRightData.value = rightData.value;
     return;
   }
-  showRightData.value = rightData.value.filter(item => item.name.includes(searchKey));
+  showRightData.value = rightData.value.filter(item => item[props.label].toString().includes(searchKey));
 }
 function getTreeConfigField() {
   const parentField = treeConfig.value?.parentField || 'pid';
@@ -284,7 +323,8 @@ let dragIndex = -1; // 拖拽项在源数据中的索引
 let targetOption: any = null;// 拖动过程中停放目标
 const handleDragStart = (row) => {
   dragTarget = row;
-  dragIndex = leftData.value.findIndex(item => item.name === row.name);
+  const label = props.label;
+  dragIndex = fullData.value.findIndex(item => item[label] === row[label]);
 };
 
 const handleDragenter = (event, row) => {
@@ -294,18 +334,25 @@ const handleDragenter = (event, row) => {
 };
 
 const handleDrop = () => {
-  const targetIndex = leftData.value.findIndex(item => item.name === targetOption.name);
+  const label = props.label;
+  const targetIndex = fullData.value.findIndex(item => item[label] === targetOption[label]);
   const newIndex = targetIndex;
-  const [removedIndex] = leftData.value.splice(dragIndex, 1);
-  leftData.value.splice(newIndex, 0, removedIndex);
+  const [removedIndex] = fullData.value.splice(dragIndex, 1);
+  fullData.value.splice(newIndex, 0, removedIndex);
   updateSelectData();
   dragTarget = null;
   targetOption = null;
   dragIndex = -1;
+  const selectedData = getSelectedData();
+  emits('change', selectedData);
+  emits('sort', selectedData);
 };
 function sortFunc(targetData:any[], sortData: any) {
   const sortKeyList = sortData.map((item:any) => item.id);
   return targetData.sort((a, b) => (sortKeyList.indexOf(a.id) < sortKeyList.indexOf(b.id) ? -1 : 1));
+}
+function getSelectedData() {
+  return fullData.value.filter(item => selectData.value.includes(item.id));
 }
 
 defineExpose({
@@ -315,7 +362,7 @@ defineExpose({
 
 <style lang="less">
 @import './style.less';
-.tree-transfer__cell {
+.tree-transfer__cell, .column-content {
   display: inline-flex;
   align-items: center;
   svg {
