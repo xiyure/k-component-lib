@@ -64,5 +64,10 @@ export default {
   contain: '包含',
   notEqual: '不等于',
   clearData: '清除数据',
-  enterInputSearch: '按下回车键搜索'
+  enterInputSearch: '按下回车键搜索',
+  within7days: '7天内',
+  within15days: '15天内',
+  curMonth: '本月',
+  curQuarter: '本季度',
+  curYear: '本年度'
 };

@@ -84,6 +84,18 @@ export const logicOptions = [
           return Number(a) !== Number(b);
         }
       },
+      {
+        logic: 'empty',
+        handler(a: number) {
+          return a === undefined || a === null || !a.toString();
+        }
+      },
+      {
+        logic: 'nonEmpty',
+        handler(a: number) {
+          return !(a === undefined || a === null || !a.toString());
+        }
+      }
     ]
   },
   {
@@ -93,18 +105,6 @@ export const logicOptions = [
         logic: 'equal',
         handler(a: string, b: string) {
           return a === b;
-        }
-      },
-      {
-        logic: 'gt',
-        handler(a: string, b: string) {
-          return a > b;
-        }
-      },
-      {
-        logic: 'lt',
-        handler(a: string, b: string) {
-          return a < b;
         }
       },
       {
@@ -122,13 +122,13 @@ export const logicOptions = [
       {
         logic: 'empty',
         handler(a: string) {
-          return a;
+          return !a;
         }
       },
       {
         logic: 'nonEmpty',
         handler(a: string) {
-          return !a;
+          return a;
         }
       }
     ]
@@ -161,13 +161,13 @@ export const logicOptions = [
       {
         logic: 'empty',
         handler(a: string) {
-          return a;
+          return !a;
         }
       },
       {
         logic: 'nonEmpty',
         handler(a: string) {
-          return !a;
+          return a;
         }
       }
     ]

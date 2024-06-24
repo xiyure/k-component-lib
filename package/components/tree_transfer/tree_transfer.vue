@@ -16,7 +16,7 @@
             ref="treeLeftRef"
             size="mini"
             :border="false"
-            height="300px"
+            height="100%"
             :data="leftData"
             :tree-config="treeConfig"
             :row-config="{ keyField: 'id' }"
@@ -51,7 +51,7 @@
             ref="treeRightRef"
             size="mini"
             :border="false"
-            height="300px"
+            height="100%"
             :data="showRightData"
             show-overflow
             :scroll-y="scrollY"
@@ -99,7 +99,7 @@ import { KInput } from '../input';
 
 const props = withDefaults(defineProps<TreeTransferProps>(), {
   showFilter: true,
-  usetree: true,
+  useTree: false,
   label: 'label'
 });
 

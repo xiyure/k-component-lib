@@ -16,7 +16,7 @@
       <div class="k-table-func">
         <k-input
           v-if="showSearchInput"
-          v-model="serachStr"
+          v-model="searchStr"
           :suffix-icon="IconSearch"
           :placeholder="$t('searchTable')"
           clearable
@@ -36,7 +36,7 @@
             ref="tableFilterRef"
             :data="data"
             :column="filterColumn"
-            @confirm="jonirFilter"
+            @confirm="advancedFilter"
           ><IconRefresh /></k-filter>
         </span>
         <!-- 穿梭框 -->
@@ -198,7 +198,7 @@ const emits = defineEmits(['remote-query', 'server-paging', 'refresh']);
 const xTree = ref();
 const columns = ref<any>([]);
 const query = ref('');
-const serachStr = ref('');
+const searchStr = ref('');
 // 穿梭框
 const selectData = ref<any>([]);
 const originData = ref<any>([]);
@@ -319,8 +319,8 @@ function filterTableData() {
     emits('remote-query', searchKey);
     return;
   }
-  const visibleColums = columns.value.filter(col => col.visible);
-  const fieldList = visibleColums.map(col => col.field || '');
+  const visibleColumns = columns.value.filter(col => col.visible);
+  const fieldList = visibleColumns.map(col => col.field || '');
   let tableData = filterData.value.filter((dataItem:any) => fieldList.some(field => {
     if (props.exactMatch) {
       return dataItem[field] === searchKey;
@@ -486,12 +486,12 @@ function sortTableHeader(ids: string[]) {
   const tempSortData = ids.map((id: string) => ({ field: id }));
   columns.value = sortFunc(columns.value, tempSortData, 'field');
 }
-function jonirFilter(conditionInfo, newTableData) {
+function advancedFilter(conditionInfo, newTableData) {
   filterConditionInfo.value = conditionInfo;
   filterData.value = newTableData;
 }
-function filter(serachStr: string) {
-  query.value = serachStr;
+function filter(searchStr: string) {
+  query.value = searchStr;
 }
 
 const tableInstance = computed(() => xTree?.value.tableInstance);

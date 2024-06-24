@@ -80,6 +80,7 @@
             <k-input
               v-else
               v-model="item.value"
+              :disabled="disabledInput(item)"
               clearable
             />
           </div>
@@ -158,7 +159,7 @@ const dateLogicList = computed(() => function (item:IFilterDataType) {
   return dateTypeOptions.filter((item) => !hideLogicList.includes(item.value));
 });
 
-const isConfigCondition = computed(() => filterData.value.some(item => item.title && item.logic && item.value));
+const isConfigCondition = computed(() => filterData.value.some(item => item.title && item.logic && (item.value || ['empty', 'nonEmpty'].includes(item.logic))));
 
 // 日期禁用
 const disabledInput = computed(() => function (item:IFilterDataType) {
@@ -197,8 +198,9 @@ function clearFilter() {
 }
 
 function filter() {
+  const disabledLogicTypes = ['empty', 'nonEmpty'];
   const conditionList = filterData.value
-  .filter(item => item.title && item.logic && item.value)
+  .filter(item => item.title && item.logic && (item.value || disabledLogicTypes.includes(item.logic)))
   .map(item => ({
     title: item.title,
     logic: t?.(item.logic),

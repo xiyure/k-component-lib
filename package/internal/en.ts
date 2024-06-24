@@ -64,5 +64,10 @@ export default {
   contain: 'contain',
   notEqual: 'not eaual',
   clearData: 'Clear Data',
-  enterInputSearch: 'Press Enter to search'
+  enterInputSearch: 'Press Enter to search',
+  within7days: 'within 7 days',
+  within15days: 'within 15 days',
+  curMonth: 'current month',
+  curQuarter: 'current quarter',
+  curYear: 'current year'
 };
