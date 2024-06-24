@@ -5,11 +5,11 @@
     :width="columnWidth"
     class="k-table-column"
   >
-    <template #header="headrSlotProps">
+    <template #header="headerSlotProps">
       <div v-if="!isExpandColumn" class="k-table-column__header">
         <div class="k-table-column__title" :style="{ width: '100%' }">
-          <slot name="header" v-bind="headrSlotProps">
-            {{ headrSlotProps.column.title || '-' }}
+          <slot name="header" v-bind="headerSlotProps">
+            {{ headerSlotProps.column.title || '-' }}
           </slot>
         </div>
         <k-dialog
@@ -18,10 +18,10 @@
           @open="openDialog"
         >
           <div class="k-column__header-dialog">
-            <k-input v-model="textareaConetnt" type="textarea"></k-input>
+            <k-input v-model="textareaContent" type="textarea"></k-input>
             <div class="header-dialog__buttons">
               <k-button @click="() => dialogVisible = false">{{ $t('cancel') }}</k-button>
-              <k-button type="main" @click="addDescription(headrSlotProps.column)">{{ $t('confirm') }}</k-button>
+              <k-button type="main" @click="addDescription(headerSlotProps.column)">{{ $t('confirm') }}</k-button>
             </div>
           </div>
         </k-dialog>
@@ -40,27 +40,27 @@
           <span
             v-if="props.sortable"
             class="k-table-column__sort"
-            @click="changeSortStatus($event,headrSlotProps.column)"
+            @click="changeSortStatus($event,headerSlotProps.column)"
           >
             <img
-              v-show="headrSlotProps.column.order !== 'asc'"
-              :src="transangleUp"
-              name="transangleUp"
+              v-show="headerSlotProps.column.order !== 'asc'"
+              :src="triangleUp"
+              name="triangleUp"
             >
             <img
-              v-show="headrSlotProps.column.order === 'asc'"
-              :src="transangleUpLight"
-              name="transangleUpLight"
+              v-show="headerSlotProps.column.order === 'asc'"
+              :src="triangleUpLight"
+              name="triangleUpLight"
             >
             <img
-              v-show="headrSlotProps.column.order !== 'desc'"
-              :src="transangleDown"
-              name="transangleDown"
+              v-show="headerSlotProps.column.order !== 'desc'"
+              :src="triangleDown"
+              name="triangleDown"
             >
             <img
-              v-show="headrSlotProps.column.order === 'desc'"
-              :src="transangleDownLight"
-              name="transangleDownLight"
+              v-show="headerSlotProps.column.order === 'desc'"
+              :src="triangleDownLight"
+              name="triangleDownLight"
             >
           </span>
           <span v-if="showColumnMenu" class="k-table-column__more">
@@ -119,12 +119,12 @@
                       </ul>
                     </slot>
                     <div class="filter-buttons">
-                      <k-button size="sm" @click="clearFilter(headrSlotProps.column)">{{ $t('reset') }}</k-button>
+                      <k-button size="sm" @click="clearFilter(headerSlotProps.column)">{{ $t('reset') }}</k-button>
                       <k-button
                         class="filter-btn-item"
                         size="sm"
                         type="secondary"
-                        @click="setFilter(headrSlotProps.column.field, props.filters)"
+                        @click="setFilter(headerSlotProps.column.field, props.filters)"
                       >{{ $t('filter') }}</k-button>
                     </div>
                   </k-popover>
@@ -147,15 +147,15 @@
                       </div>
                     </template>
                     <ul class="sort-menu">
-                      <li class="sort-menu-item" @click="tableSort(headrSlotProps.column, 'asc')">
+                      <li class="sort-menu-item" @click="tableSort(headerSlotProps.column, 'asc')">
                         <IconTableSortUpColor />
                         {{ $t('ascendingOrder') }}
                       </li>
-                      <li class="sort-menu-item" @click="tableSort(headrSlotProps.column, 'desc')">
+                      <li class="sort-menu-item" @click="tableSort(headerSlotProps.column, 'desc')">
                         <IconTableSortDownColor />
                         {{ $t('descendingOrder') }}
                       </li>
-                      <li class="sort-menu-item" @click="clearSort(headrSlotProps.column)">
+                      <li class="sort-menu-item" @click="clearSort(headerSlotProps.column)">
                         <IconClearDate />
                         {{ $t('clearSorting') }}
                       </li>
@@ -244,13 +244,13 @@ import { KInput } from '../input';
 import { KButton } from '../button';
 import { KCheckbox } from '../checkbox';
 // @ts-ignore
-import transangleUp from '@/assets/svg/transangle_up.svg';
+import triangleUp from '@/assets/svg/triangle_up.svg';
 // @ts-ignore
-import transangleDown from '@/assets/svg/transangle_down.svg';
+import triangleDown from '@/assets/svg/triangle_down.svg';
 // @ts-ignore
-import transangleUpLight from '@/assets/svg/transangle_up_active.svg';
+import triangleUpLight from '@/assets/svg/triangle_up_active.svg';
 // @ts-ignore
-import transangleDownLight from '@/assets/svg/transangle_down_active.svg';
+import triangleDownLight from '@/assets/svg/triangle_down_active.svg';
 
 defineOptions({
   name: 'KTableColumn'
@@ -283,7 +283,7 @@ const isExpandColumn = ref(false);
 const columnWidth = ref(props.width);
 const colDesc = ref('');
 const dialogVisible = ref(false);
-const textareaConetnt = ref('');
+const textareaContent = ref('');
 const isSelectAll = ref(false);
 const isIndeterminate = ref(false);
 const isRenderColumn = ref(true);
@@ -302,10 +302,10 @@ watch(() => props.desc, (newValue) => {
 function changeSortStatus(e:any, column:VxeColumnProps) {
   const name = e.target?.name;
   switch (name) {
-    case 'transangleUp': tableSort(column, 'asc'); break;
-    case 'transangleDown': tableSort(column, 'desc'); break;
-    case 'transangleUpLight': clearSort(column); break;
-    case 'transangleDownLight': clearSort(column); break;
+    case 'triangleUp': tableSort(column, 'asc'); break;
+    case 'triangleDown': tableSort(column, 'desc'); break;
+    case 'triangleUpLight': clearSort(column); break;
+    case 'triangleDownLight': clearSort(column); break;
   }
 }
 function tableSort(column:VxeColumnProps, order:string) {
@@ -328,10 +328,10 @@ function expandColumn(isExpand:boolean) {
 }
 // 自定义说明
 function openDialog() {
-  textareaConetnt.value = colDesc.value || '';
+  textareaContent.value = colDesc.value || '';
 }
 function addDescription(column:VxeColumnProps) {
-  colDesc.value = textareaConetnt.value;
+  colDesc.value = textareaContent.value;
   dialogVisible.value = false;
   (emitter as any)?.emit('desc-change', column, colDesc.value);
 }
