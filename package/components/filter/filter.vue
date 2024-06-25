@@ -6,7 +6,7 @@
     >
       <template #reference>
         <slot name="icon">
-          <k-button v-if="border">
+          <k-button v-if="border" :size="props.size">
             <IconFilter v-if="!isConfigCondition" />
             <IconFilterFill v-else color="#2882FF" />
           </k-button>
@@ -18,14 +18,25 @@
       </template>
       <div class="k-filter__content">
         <div class="k-filter__header">
-          <span class="text-lg font-bold">{{ $t('seniorFilter') }}</span>
-          <span class="text-base" @click="clearFilter"><IconClearDate />{{ $t('clearAll') }}</span>
+          <span
+            :class="props.size === 'sm' ? 'text-base' : 'text-lg'"
+            class="font-bold"
+          >
+            {{ $t('seniorFilter') }}
+          </span>
+          <span
+            :class="props.size === 'sm' ? 'text-sm' : 'text-base'"
+            @click="clearFilter"
+          >
+            <IconClearDate />{{ $t('clearAll') }}
+          </span>
         </div>
         <div v-for="item, index in filterData" :key="index" class="k-filter__item">
           <div class="k-filter__condition">
             <k-select
               v-model="item.title"
               :teleported="false"
+              :size="props.size"
               clearable
               @change="changeCondition(index)"
             >
@@ -40,6 +51,7 @@
           <div class="k-filter__logic">
             <k-select
               v-model="item.logic"
+              :size="props.size"
               :teleported="false"
               clearable
               @change="changeLogic(item)"
@@ -56,6 +68,7 @@
             <div v-if="instance(item.title)?.dataType === 'date'" class="k-filter__date-box">
               <k-select
                 v-model="item.dateRange"
+                :size="props.size"
                 :teleported="false"
                 clearable
                 :disabled="disabledInput(item)"
@@ -73,6 +86,7 @@
                 v-model="item.value"
                 :type="item.dateType"
                 :teleported="false"
+                :size="props.size"
                 clearable
                 :disabled="disabledDatePicker(item)"
               />
@@ -80,6 +94,7 @@
             <k-input
               v-else
               v-model="item.value"
+              :size="props.size"
               :disabled="disabledInput(item)"
               clearable
             />
@@ -92,11 +107,11 @@
           </div>
           <div class="k-filer__operate-right">
             <span class="select-label">{{ $t('aboveCondition') }}：</span>
-            <k-select v-model="filterRule" :teleported="false">
+            <k-select v-model="filterRule" :size="props.size" :teleported="false">
               <k-option :label="$t('anyOne')" :value="0"></k-option>
               <k-option :label="$t('all')" :value="1"></k-option>
             </k-select>
-            <k-button type="main" @click="filter">{{ $t('query') }}</k-button>
+            <k-button :size="props.size" type="main" @click="filter">{{ $t('query') }}</k-button>
           </div>
         </div>
       </div>
@@ -119,7 +134,8 @@ defineOptions({
 });
 
 const props = withDefaults(defineProps<FilterProps>(), {
-  border: true
+  border: true,
+  size: 'base'
 });
 type IFilterDataType = {
   title: string,

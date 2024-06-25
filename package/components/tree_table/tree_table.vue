@@ -20,10 +20,12 @@
           :suffix-icon="IconSearch"
           :placeholder="$t('searchTable')"
           clearable
+          size="sm"
           @change="(value: string) => query = value"
         />
         <k-button
           v-if="showRefresh"
+          :size="compSize"
           @click="() => {
             emits('refresh')
           }"
@@ -36,6 +38,7 @@
             ref="tableFilterRef"
             :data="data"
             :column="filterColumn"
+            :size="compSize"
             @confirm="advancedFilter"
           ><IconRefresh /></k-filter>
         </span>
@@ -46,7 +49,7 @@
           width="auto"
         >
           <template #reference>
-            <k-button><IconSetting /></k-button>
+            <k-button :size="compSize"><IconSetting /></k-button>
           </template>
           <k-transfer
             v-model="selectData"
@@ -115,6 +118,7 @@
         :page-sizes="paginationConfig.pageSizes"
         :current-page="paginationConfig.currentPage"
         :layout="paginationConfig.layout"
+        :size="compSize"
         @current-change="changeCurrentPage"
         @size-change="changePageSize"
       />
@@ -144,7 +148,6 @@ defineOptions({
 const props = withDefaults(defineProps<TreeTableProps>(), {
   showPage: true,
   border: true,
-  size: 'mini',
   height: '100%',
   showOverflow: true,
   showHeader: true,
@@ -272,6 +275,7 @@ const filterColumn = computed(() => props.column.filter(item => item.dataType).m
   field: item.field,
   dataType: item.dataType
 })));
+const compSize = computed(() => (props.size === 'mini' ? 'sm' : undefined));
 watch(() => props.data, () => {
   nextTick(() => {
     tableFilterRef.value?.filter();

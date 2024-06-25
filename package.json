@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "chinese-lunar-calendar": "^1.0.1",
-    "element-plus": "^2.7.3",
+    "element-plus": "^2.7.6",
     "ksw-vue-icon": "latest",
     "less": "^4.2.0",
     "less-loader": "^12.2.0",

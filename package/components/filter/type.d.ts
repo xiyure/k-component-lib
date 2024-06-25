@@ -3,4 +3,5 @@ export interface FilterProps {
   data?: any,
   column?: any[]
   border?: boolean
+  size?: 'base' | 'sm'
 }

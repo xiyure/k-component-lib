@@ -4,13 +4,15 @@
       v-if="!point"
       class="k-tag__block"
       v-bind="$attrs"
-      :color="color"
-      :type="type"
+      :color="fillColor"
       :size="getCompSize(size)"
+      :style="{
+        borderColor: fillColor
+      }"
     >
       <span
         :style="{
-          color: props.textColor
+          color: tagTextColor
         }"
       >
         <slot></slot>
@@ -20,7 +22,7 @@
       <div
         class="k-tag__sign"
         :style="{
-          backgroundColor: isValidColor(props.color) ? props.color : defaultColor[props.type],
+          backgroundColor: fillColor,
           width: tagAttrs?.width,
           height: tagAttrs?.height
         }"
@@ -28,7 +30,7 @@
       <div
         class="k-tag__content"
         :style="{
-          color: props.textColor || '#000',
+          color: tagTextColor,
           fontSize: tagAttrs?.fontSize
         }"
       >
@@ -53,12 +55,18 @@ const props = withDefaults(defineProps<TagProps>(), {
 });
 
 const defaultColor = {
-  primary: '#4091FF',
-  success: '#67C23A',
-  danger: '#F56C6C',
-  waring: '#E6A23C',
-  info: '#909399'
+  primary: '#2882FF',
+  success: '#22C55E',
+  danger: '#EF4444',
+  warning: '#F97316',
+  info: '#6B7280'
 };
+
+const fillColor = computed(() => (isValidColor(props.color) ? props.color : defaultColor[props.type]));
+const tagTextColor = computed(() => {
+  const color = props.point ? fillColor.value : '#FFF';
+  return isValidColor(props.textColor) ? props.textColor : color;
+});
 const tagAttrs = computed(() => {
   let sizeAttr = {
     width: '12px',
