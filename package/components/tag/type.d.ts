@@ -3,4 +3,5 @@ export interface TagProps {
   color?: string
   size?: 'lg' | 'base' | 'sm' | ''
   textColor?: string
+  point?: boolean
 }

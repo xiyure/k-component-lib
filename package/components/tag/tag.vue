@@ -1,26 +1,26 @@
 <template>
   <div class="k-tag">
     <el-tag
-      v-if="type === 'block'"
+      v-if="!point"
       class="k-tag__block"
       v-bind="$attrs"
       :color="color"
+      :type="type"
       :size="getCompSize(size)"
     >
       <span
         :style="{
-          width: '100%',
-          color: props.textColor || '#FFF',
+          color: props.textColor
         }"
       >
         <slot></slot>
       </span>
     </el-tag>
-    <div v-else-if="type === 'point'" class="k-tag__point">
+    <div v-else class="k-tag__point">
       <div
         class="k-tag__sign"
         :style="{
-          backgroundColor: props.color || '#2882FF',
+          backgroundColor: isValidColor(props.color) ? props.color : defaultColor[props.type],
           width: tagAttrs?.width,
           height: tagAttrs?.height
         }"
@@ -28,7 +28,7 @@
       <div
         class="k-tag__content"
         :style="{
-          color: props.textColor || props.color,
+          color: props.textColor || '#000',
           fontSize: tagAttrs?.fontSize
         }"
       >
@@ -41,22 +41,29 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { TagProps } from './type';
-import { getCompSize } from '../../utils';
+import { getCompSize, isValidColor } from '../../utils';
 
 defineOptions({
   name: 'KTag'
 });
 
 const props = withDefaults(defineProps<TagProps>(), {
-  type: 'block',
-  color: '#4091FF'
+  point: false,
+  type: 'primary'
 });
 
+const defaultColor = {
+  primary: '#4091FF',
+  success: '#67C23A',
+  danger: '#F56C6C',
+  waring: '#E6A23C',
+  info: '#909399'
+};
 const tagAttrs = computed(() => {
   let sizeAttr = {
     width: '12px',
     height: '12px',
-    fontSize: '16px'
+    fontSize: '15px'
   };
   if (props.size === 'sm') {
     sizeAttr = {
