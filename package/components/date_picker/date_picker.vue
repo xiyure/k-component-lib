@@ -33,11 +33,11 @@ const datePickerRef = ref<any>(null);
 const defaultDateRange = [
   {
     text: t?.('within7days'),
-    value: getTargetDay(-7)
+    value: () => getTargetDay(-7)
   },
   {
     text: t?.('within15days'),
-    value: getTargetDay(-15)
+    value: () => getTargetDay(-15)
   },
   {
     text: t?.('curMonth'),
@@ -45,7 +45,7 @@ const defaultDateRange = [
   },
   {
     text: t?.('curQuarter'),
-    value: getCurQuaterRange()
+    value: getCurQuarterRange()
   },
   {
     text: t?.('curYear'),
@@ -78,7 +78,7 @@ function getCurMonthRange() {
   const monthCount = getCurMonthDayCount();
   const endDate = new Date();
   endDate.setDate(monthCount);
-  endDate.setHours(0, 0, 0, 0);
+  endDate.setHours(23, 59, 59, 59);
   return [startDate, endDate];
 }
 function getCurMonthDayCount() {
@@ -98,7 +98,7 @@ function getCurMonthDayCount() {
   return 28;
 }
 // 获取本季度日期范围
-function getCurQuaterRange() {
+function getCurQuarterRange() {
   const startDate = new Date();
   const endDate = new Date();
   const month = startDate.getMonth();
@@ -107,7 +107,7 @@ function getCurQuaterRange() {
   startDate.setDate(1);
   startDate.setHours(0, 0, 0, 0);
   endDate.setMonth(curQuarter * 3 + 2);
-  endDate.setHours(0, 0, 0, 0);
+  endDate.setHours(23, 59, 59, 59);
   if (curQuarter === 0 || curQuarter === 3) {
     endDate.setDate(31);
   } else {
@@ -124,7 +124,7 @@ function getCurYearRange() {
   startDate.setHours(0, 0, 0, 0);
   endDate.setMonth(11);
   endDate.setDate(31);
-  endDate.setHours(0, 0, 0, 0);
+  endDate.setHours(23, 59, 59, 59);
   return [startDate, endDate];
 }
 
