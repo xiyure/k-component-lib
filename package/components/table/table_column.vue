@@ -7,8 +7,15 @@
   >
     <template #header="headerSlotProps">
       <div v-if="!isExpandColumn" class="k-table-column__header">
-        <div class="k-table-column__title" :style="{ width: '100%' }">
+        <div class="k-table-column__title">
           <slot name="header" v-bind="headerSlotProps">
+            <i
+              v-if="tableInstance.editConfig
+                && tableInstance.editConfig.showIcon !== false
+                && editRender
+              "
+              class="k-table-column__edit vxe-icon-edit"
+            ></i>
             {{ headerSlotProps.column.title || '-' }}
           </slot>
         </div>
@@ -42,26 +49,16 @@
             class="k-table-column__sort"
             @click="changeSortStatus($event,headerSlotProps.column)"
           >
-            <img
-              v-show="headerSlotProps.column.order !== 'asc'"
-              :src="triangleUp"
-              name="triangleUp"
-            >
-            <img
-              v-show="headerSlotProps.column.order === 'asc'"
-              :src="triangleUpLight"
-              name="triangleUpLight"
-            >
-            <img
-              v-show="headerSlotProps.column.order !== 'desc'"
-              :src="triangleDown"
-              name="triangleDown"
-            >
-            <img
-              v-show="headerSlotProps.column.order === 'desc'"
-              :src="triangleDownLight"
-              name="triangleDownLight"
-            >
+            <i
+              id="_asc-icon"
+              class="vxe-icon-caret-up"
+              :style="{ color: headerSlotProps.column.order == 'asc' ? '#2882FF' : '' }"
+            ></i>
+            <i
+              id="_desc-icon"
+              class="vxe-icon-caret-down"
+              :style="{ color: headerSlotProps.column.order == 'desc' ? '#2882FF' : '' }"
+            ></i>
           </span>
           <span v-if="showColumnMenu" class="k-table-column__more">
             <k-popover
@@ -243,14 +240,6 @@ import { KDialog } from '../dialog';
 import { KInput } from '../input';
 import { KButton } from '../button';
 import { KCheckbox } from '../checkbox';
-// @ts-ignore
-import triangleUp from '@/assets/svg/triangle_up.svg';
-// @ts-ignore
-import triangleDown from '@/assets/svg/triangle_down.svg';
-// @ts-ignore
-import triangleUpLight from '@/assets/svg/triangle_up_active.svg';
-// @ts-ignore
-import triangleDownLight from '@/assets/svg/triangle_down_active.svg';
 
 defineOptions({
   name: 'KTableColumn'
@@ -299,14 +288,16 @@ watch(() => props.desc, (newValue) => {
   colDesc.value = newValue;
 }, { immediate: true });
 // 排序
-function changeSortStatus(e:any, column:VxeColumnProps) {
-  const name = e.target?.name;
-  switch (name) {
-    case 'triangleUp': tableSort(column, 'asc'); break;
-    case 'triangleDown': tableSort(column, 'desc'); break;
-    case 'triangleUpLight': clearSort(column); break;
-    case 'triangleDownLight': clearSort(column); break;
+function changeSortStatus(e:any, column:any) {
+  const id = e.target?.id;
+  const order = column.order;
+  let op:any = null;
+  if (id === '_asc-icon' && order !== 'asc') {
+    op = 'asc';
+  } else if (id === '_desc-icon' && order !== 'desc') {
+    op = 'desc';
   }
+  tableSort(column, op);
 }
 function tableSort(column:VxeColumnProps, order:string) {
   tableInstance.value?.sort({

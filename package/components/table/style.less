@@ -5,6 +5,10 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  .k-table-column__title {
+    width: 100%;
+    margin-right: 5px;
+  }
   .k-table-column__operate {
     display: flex;
     justify-content: flex-start;
@@ -21,6 +25,9 @@
       display: flex;
       flex-direction: column;
       cursor: pointer;
+      #_desc-icon {
+        margin-top: -5px;
+      }
     }
     .more-menu-item {
       width: 100%;
@@ -28,7 +35,10 @@
   }
 }
 .k-table {
-  .vxe-cell--sort, .vxe-cell--filter, .vxe-table--filter-wrapper {
+  .vxe-cell--sort,
+  .vxe-cell--filter,
+  .vxe-table--filter-wrapper,
+  .vxe-cell--edit-icon {
     display: none !important;
   }
 }
