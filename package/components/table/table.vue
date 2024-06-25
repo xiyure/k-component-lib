@@ -5,12 +5,8 @@
     v-bind="props"
     v-on="listeners"
   >
-    <slot></slot>
-    <template v-if="slots.loading" #loading>
-      <slot name="loading"></slot>
-    </template>
-    <template v-if="slots.empty" #empty>
-      <slot name="empty"></slot>
+    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+      <slot :name="name" v-bind="data"></slot>
     </template>
   </vxe-table>
 </template>
@@ -36,7 +32,6 @@ onMounted(() => {
   emitter.on(DESC_EVENT_NAME, updateDescription.bind(this));
 });
 const emits = defineEmits(['desc-change']);
-const slots = defineSlots();
 const listeners = getListeners(getCurrentInstance()?.attrs);
 const vxeTableRef = ref<VxeTableInstance>();
 

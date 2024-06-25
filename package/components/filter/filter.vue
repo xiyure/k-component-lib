@@ -1,5 +1,5 @@
 <template>
-  <div class="k-filter">
+  <div class="k-filter" :class="props.size === 'sm' ? 'text-sm' : 'text-base'">
     <k-popover
       trigger="click"
       width="auto"
@@ -101,12 +101,16 @@
           </div>
           <i class="close-icon" @click="removeConditionItem(index)"><IconClose /></i>
         </div>
-        <div class="k-filter__operate">
-          <div class="k-filer__operate-left text-base">
-            <span @click="addCondition"><IconAdd />{{ $t('addCondition') }}</span>
+        <div class="k-filter__operate" :class="props.size === 'sm' ? 'text-sm' : 'text-base'">
+          <div class="k-filer__operate-left">
+            <span
+              @click="addCondition"
+            ><IconAdd />{{ $t('addCondition') }}</span>
           </div>
           <div class="k-filer__operate-right">
-            <span class="select-label">{{ $t('aboveCondition') }}：</span>
+            <span
+              class="select-label"
+            >{{ $t('aboveCondition') }}：</span>
             <k-select v-model="filterRule" :size="props.size" :teleported="false">
               <k-option :label="$t('anyOne')" :value="0"></k-option>
               <k-option :label="$t('all')" :value="1"></k-option>

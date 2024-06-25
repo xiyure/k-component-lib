@@ -1,5 +1,5 @@
 <template>
-  <div class="k-tree-table">
+  <div class="k-tree-table" :style="{ height: height}">
     <div v-if="showHeaderTools" class="k-tree-table__header">
       <div v-if="showDescription" class="k-table-info">
         <slot name="description" :total="dataLength" :condition-info="filterConditionInfo">
@@ -62,10 +62,11 @@
         </k-popover>
       </div>
     </div>
-    <div class="table-box">
+    <div class="table-box" :style="{ height: tableHeight}">
       <k-table
         v-bind="tableProps"
         ref="xTree"
+        height="100%"
         :data="showTableData"
         :row-config="rowConfig"
         :sort-config="sortConfig"
@@ -224,6 +225,13 @@ const headerText = computed(() => {
 // 分页相关变量
 const paginationConfig = ref(Object.assign(defaultPaginationConfig, props.paginationConfig || {}));
 
+// 表格高度计算
+const tableHeight = computed(() => {
+  const headerHeight = props.showHeaderTools ? props.size === 'mini' ? 34 : 42 : 0;
+  const pageHeight = props.showPage ? props.size === 'mini' ? 34 : 42 : 0;
+  console.log(`calc(100%-${ headerHeight }px-${ pageHeight }px)`);
+  return `calc(100% - ${ headerHeight }px - ${ pageHeight }px)`;
+});
 // 抽取props中的table相关参数
 const tableProps = computed(() => {
   const notTableAttrs = [
@@ -233,7 +241,8 @@ const tableProps = computed(() => {
     'column',
     'isRemoteQuery',
     'isServerPaging',
-    'paginationConfig'
+    'paginationConfig',
+    'height'
   ];
   const tableConfig = {};
   for (const key in props) {
