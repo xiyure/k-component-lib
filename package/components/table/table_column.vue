@@ -1,11 +1,14 @@
 <template>
   <vxe-column
-    v-if="isRenderColumn"
-    v-bind="props"
+    v-bind="$attrs"
     :width="columnWidth"
+    :edit-render="editRender"
+    :filters="filters"
+    :sortable="sortable"
+    :type="type"
     class="k-table-column"
   >
-    <template #header="headerSlotProps">
+    <template v-if="!type" #header="headerSlotProps">
       <div v-if="!isExpandColumn" class="k-table-column__header">
         <div class="k-table-column__title">
           <slot name="header" v-bind="headerSlotProps">
@@ -16,7 +19,7 @@
               "
               class="k-table-column__edit vxe-icon-edit"
             ></i>
-            {{ headerSlotProps.column.title || '-' }}
+            {{ headerSlotProps.column.title ?? '-' }}
           </slot>
         </div>
         <k-dialog
@@ -163,7 +166,7 @@
                   <IconFold class="menu-item-icon" />
                   {{ $t('retract') }}
                 </li>
-                <li class="more-menu-item" @click="() => isRenderColumn = false">
+                <li class="more-menu-item" @click="hideColumn(headerSlotProps.column)">
                   <IconHide class="menu-item-icon" />
                   {{ $t('hide') }}
                 </li>
@@ -240,30 +243,14 @@ import { KDialog } from '../dialog';
 import { KInput } from '../input';
 import { KButton } from '../button';
 import { KCheckbox } from '../checkbox';
+import { TableColumnProps } from './type.d';
 
 defineOptions({
   name: 'KTableColumn'
 });
 
-interface KTableColumnProps extends VxeColumnProps {
-  desc?: string,
-  showColumnMenu?: boolean
-}
-
 const tableInstance:any = inject('tableInstance');
-const props = withDefaults(defineProps<KTableColumnProps>(), {
-  visible: true,
-  filterMultiple: true,
-  desc: '',
-  width: undefined,
-  minWidth: undefined,
-  resizable: undefined,
-  align: undefined,
-  headerAlign: undefined,
-  footerAlign: undefined,
-  showOverflow: undefined,
-  showHeaderOverflow: undefined,
-  showFooterOverflow: undefined,
+const props = withDefaults(defineProps<TableColumnProps>(), {
   showColumnMenu: true
 });
 const slots = defineSlots();
@@ -275,7 +262,6 @@ const dialogVisible = ref(false);
 const textareaContent = ref('');
 const isSelectAll = ref(false);
 const isIndeterminate = ref(false);
-const isRenderColumn = ref(true);
 let emitter:any;
 
 onMounted(() => {
@@ -319,12 +305,16 @@ function expandColumn(isExpand:boolean) {
 }
 // 自定义说明
 function openDialog() {
-  textareaContent.value = colDesc.value || '';
+  textareaContent.value = colDesc.value ?? '';
 }
 function addDescription(column:VxeColumnProps) {
   colDesc.value = textareaContent.value;
   dialogVisible.value = false;
   (emitter as any)?.emit('desc-change', column, colDesc.value);
+}
+// 列隐藏
+function hideColumn(column) {
+  emitter?.emit('hide-column', column);
 }
 // 筛选表格数据
 function selectAll() {

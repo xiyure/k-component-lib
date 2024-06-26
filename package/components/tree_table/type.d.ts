@@ -1,5 +1,3 @@
-import type { VxeTableProps } from 'vxe-table';
-
 export interface columnConfigType {
   visible?: boolean
   key?: string | number
@@ -25,7 +23,23 @@ export interface PaginationConfigType {
   layout?: string
 }
 
-export interface TreeTableProps extends VxeTableProps {
+export interface TreeTableProps {
+  data: any[]
+  size: string
+  sortConfig?: object
+  rowConfig?: object
+  editConfig?: object
+  scrollY?: object
+  columnConfig?: object
+  checkboxConfig?: any
+  treeConfig?: object
+  showOverflow?: string | boolean
+  autoResize?: boolean
+  height?: string
+  fit?: boolean
+  border?: boolean
+  emptyText?: string
+  rowStyle?: object | ((rowInfo: any) => object)
   column: any[]
   exactMatch?: boolean
   showPage?: boolean
@@ -36,7 +50,7 @@ export interface TreeTableProps extends VxeTableProps {
   showSearchInput?: boolean
   showFilter?: boolean
   showRefresh?: boolean
-  showDescription?: boolean,
+  showDescription?: boolean
   showTransfer?: boolean
   showHeaderTools?: boolean
 }

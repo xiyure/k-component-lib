@@ -1,6 +1,6 @@
 <template>
   <vxe-colgroup
-    v-bind="props"
+    v-bind="$attrs"
   >
     <slot></slot>
     <template v-if="slots.header" #header="colgroupSlotProps">
@@ -10,21 +10,9 @@
 </template>
 
 <script setup lang="ts">
-import { VxeColgroupProps } from 'vxe-table';
 
 defineOptions({
   name: 'KColumnGroup'
-});
-
-const props = withDefaults(defineProps<VxeColgroupProps>(), {
-  visible: true,
-  width: undefined,
-  minWidth: undefined,
-  resizable: undefined,
-  align: undefined,
-  headerAlign: undefined,
-  showOverflow: undefined,
-  showHeaderOverflow: undefined
 });
 const slots = defineSlots();
 </script>

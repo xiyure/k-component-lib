@@ -64,8 +64,10 @@
     </div>
     <div class="table-box" :style="{ height: tableHeight}">
       <k-table
-        v-bind="tableProps"
         ref="xTree"
+        :border="border"
+        :fit="fit"
+        :size="size"
         height="100%"
         :data="showTableData"
         :row-config="rowConfig"
@@ -77,7 +79,9 @@
         :empty-text="emptyText || $t('noData')"
         :scroll-y="scrollY"
         :row-style="getRowStyle"
-        v-on="listeners"
+        :show-overflow="showOverflow"
+        :auto-resize="autoResize"
+        v-bind="$attrs"
       >
         <template v-for="item in columns">
           <k-table-column
@@ -105,7 +109,10 @@
               "
               #default="{ row }"
             >
-              {{ checkboxConfig.labelField || row[item.field] }}
+              {{ checkboxConfig.labelField ?? row[item.field] }}
+            </template>
+            <template v-else-if="!item.render" #default="{ row, column }">
+              {{ row[column['field']] === '' ? '-' : row[column['field']] ?? '-' }}
             </template>
           </k-table-column>
         </template>
@@ -140,7 +147,7 @@ import { TreeTableProps } from './type';
 import { KTable, KTableColumn } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
-import { genRandomStr, getListeners } from '../../utils';
+import { genRandomStr } from '../../utils';
 
 defineOptions({
   name: 'KTreeTable'
@@ -152,14 +159,14 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
   height: '100%',
   showOverflow: true,
   showHeader: true,
-  autoResize: true,
   fit: true,
   showDescription: true,
   showFilter: true,
   showRefresh: false,
   showSearchInput: true,
   showTransfer: false,
-  showHeaderTools: true
+  showHeaderTools: true,
+  autoResize: true
 });
 
 const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
@@ -194,7 +201,6 @@ const defaultEditConfig = {
   mode: 'cell'
 };
 
-const listeners = getListeners(getCurrentInstance()?.attrs);
 const defaultScrollY = { enabled: true };
 const defaultColumnConfig = { resizable: true };
 
@@ -229,28 +235,7 @@ const paginationConfig = ref(Object.assign(defaultPaginationConfig, props.pagina
 const tableHeight = computed(() => {
   const headerHeight = props.showHeaderTools ? props.size === 'mini' ? 34 : 42 : 0;
   const pageHeight = props.showPage ? props.size === 'mini' ? 34 : 42 : 0;
-  console.log(`calc(100%-${ headerHeight }px-${ pageHeight }px)`);
   return `calc(100% - ${ headerHeight }px - ${ pageHeight }px)`;
-});
-// 抽取props中的table相关参数
-const tableProps = computed(() => {
-  const notTableAttrs = [
-    'useTree',
-    'exactMatch',
-    'showPage',
-    'column',
-    'isRemoteQuery',
-    'isServerPaging',
-    'paginationConfig',
-    'height'
-  ];
-  const tableConfig = {};
-  for (const key in props) {
-    if (!notTableAttrs.includes(key)) {
-      tableConfig[key] = props[key];
-    }
-  }
-  return tableConfig;
 });
 // 合并用户与表格默认配置
 const treeConfig = computed(() => {
@@ -285,7 +270,8 @@ const filterColumn = computed(() => props.column.filter(item => item.dataType).m
   dataType: item.dataType
 })));
 const compSize = computed(() => (props.size === 'mini' ? 'sm' : undefined));
-watch(() => props.data, () => {
+watch(() => props.data, (newValue) => {
+  filterData.value = newValue || [];
   nextTick(() => {
     tableFilterRef.value?.filter();
   });
