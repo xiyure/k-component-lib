@@ -11,7 +11,7 @@
     </div>
     <div class="k-transfer__body">
       <div class="k-transfer-content k-transfer-content__left">
-        <div class="k-transfer__list">
+        <div class="k-transfer__list" :class="useTree ? 'transfer-tree-table' : ''">
           <k-table
             ref="treeLeftRef"
             size="mini"
@@ -20,9 +20,8 @@
             :data="leftData"
             :tree-config="treeConfig"
             :row-config="{ keyField: 'id' }"
-            show-overflow
             :scroll-y="scrollY"
-            :checkbox-config="{ reserve: true, checkRowKeys: selectData }"
+            :checkbox-config="{ reserve: true, checkRowKeys: selectData, trigger: 'null' }"
             @checkbox-change="checkboxChange"
           >
             <k-table-column
@@ -34,10 +33,16 @@
               :tree-node="props.useTree"
             >
               <template #default="{ row }">
-                <span class="tree-transfer__cell">
-                  <props.icon v-if="isExpand(row) === 0" />
-                  <props.expandIcon v-if="isExpand(row) === 1" />
-                  <props.collapseIcon v-if="isExpand(row) === 2" />
+                <span
+                  class="tree-transfer__cell"
+                  :style="{
+                    marginLeft: `${ rowLevel(row) * 10 }px`
+                  }"
+                  @click="toggleTreeExpand(row, $event)"
+                >
+                  <props.icon v-if="isExpand(row) === 0" :color="iconColor" />
+                  <props.expandIcon v-if="isExpand(row) === 1" :color="expandIconColor" />
+                  <props.collapseIcon v-if="isExpand(row) === 2" :color="collapseIconColor" />
                   {{ row[props.label] }}
                 </span>
               </template>
@@ -112,7 +117,8 @@ const defaultTreeConfig = {
   childrenField: 'children',
   trigger: 'cell',
   hasChild: 'hasChild',
-  indent: 0
+  indent: 0,
+  showIcon: false
 };
 const leftData = ref<any>([]);
 const query = ref('');
@@ -132,7 +138,9 @@ onMounted(() => {
 const isExpand = computed(() => function (row) {
   const expand = treeLeftRef.value?.tableInstance.isTreeExpandByRow(row);
   const isLeafNode = !(row.children && row.children.length);
-  if (props.icon && isLeafNode) {
+  if (props.icon && isLeafNode && row.nodeType === 1) {
+    return 2;
+  } if (props.icon && isLeafNode) {
     return 0;
   } if (props.expandIcon && expand && !isLeafNode) {
     return 1;
@@ -147,6 +155,9 @@ const treeConfig = computed(() => {
   return undefined;
 });
 const scrollY = computed(() => ({ enabled: true, ...props.scrollY || {} }));
+const rowLevel = computed(() => (row) => getTreeNodeLevel(row));
+
+getParentNode;
 
 watch(() => props.data, (newValue) => {
   fullData.value = newValue?.slice() || [];
@@ -299,6 +310,17 @@ function getParentNode(dataItem: any, parentField: string, rowField: string) {
     getParentNode(parentItem, parentField, rowField);
   }
 }
+function getTreeNodeLevel(row) {
+  const { parentField, rowField } = getTreeConfigField();
+  if (!row[parentField]) {
+    return 1;
+  }
+  const targetItem = props.data.find(item => item[rowField] === row[parentField]);
+  if (targetItem) {
+    return 1 + getTreeNodeLevel(targetItem);
+  } 
+  return 1;
+}
 // 筛选后的数据与用户输入数据的顺序保持一致
 function sortTreeData(targetData:any[], sortData: any, key: string | number) {
   const sortKeyList = sortData.map((item:any) => item[key]);
@@ -316,6 +338,10 @@ function getTreeConfigField() {
   const parentField = treeConfig.value?.parentField || 'pid';
   const rowField = treeConfig.value?.rowField || 'id';
   return { parentField, rowField };
+}
+function toggleTreeExpand(row, e) {
+  e.stopPropagation();
+  treeLeftRef.value.tableInstance.toggleTreeExpand(row);
 }
 // 拖拽排序
 let dragTarget = null; // 拖拽项

@@ -8,8 +8,11 @@ export interface TreeTransferProps {
   showFilter?: boolean
   useTree?: boolean
   expandIcon?: Component
+  expandIconColor?: string
   collapseIcon?: Component
+  collapseIconColor?: string
   icon?: Component
+  iconColor?: string
   treeConfig?: any
   label?: string
   scrollY?: any

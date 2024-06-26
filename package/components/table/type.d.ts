@@ -1,3 +1,6 @@
+export interface KTableProps {
+  showOverflow?: any
+}
 export interface TableColumnProps {
   sortable?: boolean
   width?: number | string

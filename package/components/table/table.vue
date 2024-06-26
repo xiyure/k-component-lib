@@ -2,6 +2,7 @@
   <vxe-table
     ref="vxeTableRef"
     class="k-table"
+    :show-overflow="props.showOverflow"
     v-bind="$attrs"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
@@ -13,6 +14,7 @@
 <script setup lang="ts">
 import { ref, provide, onMounted, computed, getCurrentInstance } from 'vue';
 import { VxeColumnProps, VxeTableInstance } from 'vxe-table';
+import { KTableProps } from './type.d';
 
 const DESC_EVENT_NAME = 'desc-change';
 const HIDE_COLUMN = 'hide-column';
@@ -21,6 +23,9 @@ defineOptions({
   name: 'KTable'
 });
 
+const props = withDefaults(defineProps<KTableProps>(), {
+  showOverflow: true
+});
 onMounted(() => {
   const emitter = getCurrentInstance()?.appContext.app.config.globalProperties.__emitter__;
   emitter.on(DESC_EVENT_NAME, updateDescription.bind(this));
