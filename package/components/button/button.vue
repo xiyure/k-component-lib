@@ -90,7 +90,6 @@ const getCustomColor = computed(() => {
       el.value?.style.setProperty("--k-button-active-color", darkColor);
       el.value?.style.setProperty("--k-button-icon-color", hexColor);
       el.value?.style.setProperty("--k-button-loading-color", loadingColor);
-      console.log(lightColor, darkColor, loadingColor);
     }
   }
 });
