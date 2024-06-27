@@ -163,7 +163,10 @@ const rowLevel = computed(() => (row) => getTreeNodeLevel(row));
 getParentNode;
 
 watch(() => props.data, (newValue) => {
-  fullData.value = newValue?.slice() || [];
+  if (!newValue) {
+    return;
+  }
+  fullData.value = JSON.parse(JSON.stringify(newValue));
   leftData.value = fullData.value;
 }, { immediate: true, deep: true });
 watch(() => props.defaultData, (newValue) => {
