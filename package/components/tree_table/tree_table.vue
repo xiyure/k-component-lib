@@ -105,11 +105,30 @@
               v-if="
                 !item.render &&
                   !item.editRender &&
-                  item.type === 'checkbox'
+                  ((item.type && checkboxConfig.labelField) || !item.type)
               "
               #default="{ row }"
             >
-              {{ checkboxConfig.labelField ?? row[item.field] }}
+              <span>
+                <component 
+                  :is="row.icon"
+                  v-if="item.showIcon && row.icon" 
+                  :style="{
+                    marginRight: '3px'
+                  }"
+                  :color="row.iconStyle?.color"
+                  :size="row.iconStyle?.size ?? 13"
+                />
+              </span>
+              <span>
+                {{
+                  row[
+                    item.type && checkboxConfig.labelField
+                      ? checkboxConfig.labelField
+                      : item.field
+                  ]
+                }}
+              </span>
             </template>
             <template v-else-if="!item.render" #default="{ row, column }">
               {{ row[column['field']] === '' ? '-' : row[column['field']] ?? '-' }}

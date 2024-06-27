@@ -12,6 +12,7 @@ export interface columnConfigType {
   editRender?: any
   minWidth?: string | number
   sortable?: boolean
+  showIcon?: boolean
 }
 
 export interface PaginationConfigType {
