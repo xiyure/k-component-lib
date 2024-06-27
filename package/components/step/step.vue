@@ -1,6 +1,6 @@
 <template>
   <el-step
-    v-if="!isCapsule"
+    v-if="!stepsProps.capsule"
     class="k-step"
     v-bind="$attrs"
     :title="title"
@@ -43,9 +43,10 @@ const props = withDefaults(defineProps<StepProps>(), {
   description: '',
   status: ''
 });
-const isCapsule = inject('isCapsule');
-
+const stepsProps:any = inject('stepProps');
+const stepsInfo:any = inject('stepsInfo');
 const id = genRandomStr(8);
+const key = stepsInfo.value.find(item => item.name === props.title)?.key ?? '';
 const DEFAULT_STATUS_COLOR = {
   primary: '#2882FF',
   success: '#22C55E',
@@ -53,23 +54,51 @@ const DEFAULT_STATUS_COLOR = {
   wait: '#EAE8EB'
 };
 
+watch(() => stepsProps.active, (newValue) => {
+  if (props.status || props.color) {
+    return;
+  }
+  const typeKeys = Object.keys(DEFAULT_STATUS_COLOR);
+  let color:string = '';
+  if (newValue === key) {
+    const processStatus = getProcessStatus(stepsProps.processStatus);
+    color = typeKeys.includes(processStatus)
+      ? DEFAULT_STATUS_COLOR[processStatus]
+      : DEFAULT_STATUS_COLOR.primary;
+  } else if (newValue > key) {
+    const finishStatus = getProcessStatus(stepsProps.finishStatus);
+    color = typeKeys.includes(finishStatus)
+      ? DEFAULT_STATUS_COLOR[finishStatus]
+      : DEFAULT_STATUS_COLOR.success;
+  } else {
+    color = DEFAULT_STATUS_COLOR.wait;
+  }
+  if (!color) {
+    return;
+  }
+  setStepColor(color);
+}, { immediate: true });
 watch(() => [props.color, props.status], (newValue) => {
   if (!newValue[0] && !newValue[1]) {
     return;
   }
   let newColor:string;
-  if (props.status && DEFAULT_STATUS_COLOR[props.status]) {
+  if (props.status && [props.status]) {
     newColor = DEFAULT_STATUS_COLOR[props.status];
   } else if (props.color) {
     newColor = props.color;
   } else {
     newColor = DEFAULT_STATUS_COLOR.primary;
   }
+  setStepColor(newColor);
+}, { immediate: true, deep: true });
+
+function setStepColor(color: string) {
   nextTick(() => {
     const element = document.getElementById(id);
-    element?.style?.setProperty('--default-bgColor', newColor);
+    element?.style?.setProperty('--default-bgColor', color);
   });
-}, { immediate: true, deep: true });
+}
 
 function getProcessStatus(type:string) {
   switch (type) {

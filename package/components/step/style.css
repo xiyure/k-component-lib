@@ -1,6 +1,6 @@
 :root {
   --height: 30px;
-  --default-bgColor: #2882FF
+  --default-bgColor: #EAE8EB
 }
 .k-step__capsule {
   display: flex;

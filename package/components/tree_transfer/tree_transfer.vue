@@ -23,6 +23,7 @@
             :scroll-y="scrollY"
             :checkbox-config="{ reserve: true, checkRowKeys: selectData, trigger: 'null' }"
             @checkbox-change="checkboxChange"
+            @checkbox-all="checkboxChange"
           >
             <k-table-column
               type="checkbox"
@@ -36,7 +37,7 @@
                 <span
                   class="tree-transfer__cell"
                   :style="{
-                    marginLeft: `${ rowLevel(row) * 10 }px`
+                    marginLeft: `${ rowLevel(row) * (props.treeConfig?.indent ?? 12) }px`
                   }"
                   @click="toggleTreeExpand(row, $event)"
                 >
@@ -150,7 +151,9 @@ const isExpand = computed(() => function (row) {
 });
 const treeConfig = computed(() => {
   if (props.useTree) {
-    return Object.assign(defaultTreeConfig, props.treeConfig || {});
+    const newTreeConfig = Object.assign(defaultTreeConfig, props.treeConfig || {});
+    newTreeConfig.indent = 0;
+    return newTreeConfig;
   }
   return undefined;
 });
@@ -311,15 +314,18 @@ function getParentNode(dataItem: any, parentField: string, rowField: string) {
   }
 }
 function getTreeNodeLevel(row) {
+  if (!props.useTree) {
+    return 0;
+  }
   const { parentField, rowField } = getTreeConfigField();
   if (!row[parentField]) {
-    return 1;
+    return 0;
   }
   const targetItem = props.data.find(item => item[rowField] === row[parentField]);
   if (targetItem) {
     return 1 + getTreeNodeLevel(targetItem);
   } 
-  return 1;
+  return 0;
 }
 // 筛选后的数据与用户输入数据的顺序保持一致
 function sortTreeData(targetData:any[], sortData: any, key: string | number) {

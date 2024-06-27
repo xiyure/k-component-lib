@@ -1,6 +1,10 @@
 <template>
   <div class="k-tree-table" :style="{ height: height}">
-    <div v-if="showHeaderTools" class="k-tree-table__header">
+    <div
+      v-if="showHeaderTools"
+      class="k-tree-table__header"
+      :style="{ justifyContent: showDescription ? 'space-between' : 'flex-end'}"
+    >
       <div v-if="showDescription" class="k-table-info">
         <slot name="description" :total="dataLength" :condition-info="filterConditionInfo">
           <div class="k-table-header-text">

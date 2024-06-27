@@ -5,6 +5,7 @@
       v-bind="$attrs"
       :process-status="getProcessStatus(processStatus)"
       :finish-status="getProcessStatus(finishStatus)"
+      :active="active"
     >
       <template v-for="(_, name) in $slots" :key="name" #[name]="data">
         <slot :name="name" v-bind="data"></slot>
@@ -17,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch, provide, nextTick } from 'vue';
+import { ref, watch, provide, nextTick, useSlots } from 'vue';
 import { StepsProps } from './type';
 import { genRandomStr } from '../../utils';
 
@@ -26,9 +27,23 @@ defineOptions({
 });
 
 const props = withDefaults(defineProps<StepsProps>(), {
-  processStatus: 'wait',
-  finishStatus: 'finish'
+  processStatus: 'finish',
+  finishStatus: 'success'
 });
+const steps = ref<any>([]);
+const slots = useSlots();
+
+if (props.capsule) {
+  const children = slots.default?.()[0].children ?? [];
+  steps.value = (children as any[]).map(item => {
+    if (item.type && item.type.name === 'KStep') {
+      return {
+        key: item.key,
+        name: item.props?.title
+      };
+    }
+  }).filter(item => item);
+}
 
 const id = genRandomStr(8);
 
@@ -56,7 +71,8 @@ function getProcessStatus(type:string) {
   }
 }
 
-provide('isCapsule', props.capsule);
+provide('stepProps', props);
+provide('stepsInfo', steps);
 </script>
 
 <style lang="css">

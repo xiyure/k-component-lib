@@ -5,6 +5,7 @@ export interface StepsProps {
   finishStatus?: 'wait' | 'process' | 'finish' | 'error' | 'success'
   capsule?: boolean
   height?: string | number
+  active?: number
 }
 export interface StepProps {
   title?: string,
