@@ -32,9 +32,9 @@ export function isValidColor(strColor:string | undefined) {
 }
 
 // 获取色阶
-export function GetColorLevel(hex, v = 1) {
+export function GetColorLevel(hex:any, v:number = 1) {
   // 1. 将16进制颜色代码转换为RGB
-  function hexToRgb(h) {
+  function hexToRgb(h:any) {
     const bigint = parseInt(h.slice(1), 16);
     const r = (bigint >> 16) & 255;
     const g = (bigint >> 8) & 255;
@@ -42,18 +42,26 @@ export function GetColorLevel(hex, v = 1) {
     return [r, g, b];
   }
   // 2. 将RGB颜色值转换为16进制
-  function rgbToHex(r, g, b) {
+  function rgbToHex(r:number, g:number, b:number) {
     return (
       `#${ 
       ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase() }`
     );
   }
   // 3. 调整亮度
-  function adjustBrightness([r, g, b], factor) {
+  function adjustBrightness([r, g, b], factor:number) {
     return [
       Math.min(255, Math.max(0, Math.round(r * factor))),
       Math.min(255, Math.max(0, Math.round(g * factor))),
       Math.min(255, Math.max(0, Math.round(b * factor))),
+    ];
+  }
+
+  function adjustBrightnessLoading([r, g, b], factor:number) {
+    return [
+      Math.min(255, Math.max(0, Math.round(r * factor) + 25)),
+      Math.min(255, Math.max(0, Math.round(g * factor) + 25)),
+      Math.min(255, Math.max(0, Math.round(b * factor) + 25)),
     ];
   }
 
@@ -62,8 +70,10 @@ export function GetColorLevel(hex, v = 1) {
   const darkFactor = 0.8; // 调暗亮度因子
   const lightColor = rgbToHex(...adjustBrightness(rgb, lightFactor));
   const darkColor = rgbToHex(...adjustBrightness(rgb, darkFactor));
+  const loadingColor = rgbToHex(...adjustBrightnessLoading(rgb, 1.4));
 
-  let hsl = 0.5;
+
+  const hsl:number = 0.5;
   if (v >= 0.5 && v <= 1.5) {
     hsl = v;
   } else if (v > 1.5) {
@@ -73,7 +83,7 @@ export function GetColorLevel(hex, v = 1) {
   return {
     lightColor,
     darkColor,
-    colorCustom: rgbToHex(...adjustBrightness(rgb, hsl)),
+    loadingColor
   };
 }
 

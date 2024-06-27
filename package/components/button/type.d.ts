@@ -5,7 +5,8 @@ export interface ButtonProps {
    *   按钮状态: 普通按钮, 主要按钮, 次级按钮, 文字按钮, 图标按钮.
    *   可选值为:
    */
-  type?: 'normal' | 'main' | 'secondary' | 'text' | 'icon';
+  
+  type?: 'primary'|'success' | 'info' | 'warning' | 'danger' | string ;
   /**
    * 按钮尺寸，可选值为:
    */
@@ -13,11 +14,11 @@ export interface ButtonProps {
   /**
    * 文字左边图标
    */
-  iconLeft?: Component;
+  iconLeft?: Component | null;
   /**
    * 文字右边图标
    */
-  iconRight?: Component;
+  iconRight?: Component | null;
   /**
    * 按钮内容
    */
@@ -38,4 +39,8 @@ export interface ButtonProps {
    *  十六进制颜色: 例如 #ff5500
    */
   color?: string;
+  main?: boolean,
+  secondary?: boolean,
+  text?: boolean,
+  icon?: boolean,
 }

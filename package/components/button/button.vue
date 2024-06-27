@@ -1,53 +1,59 @@
 <template>
+  <!-- getSizeClass, -->
   <el-button
-    ref="buttonRef"
+    ref="btn"
     class="k-button"
+    :id="id"
     :class="[
       'el-button',
       {
-        'el-button--main': props.type === 'main',
-        'el-button--secondary': props.type === 'secondary',
-        'el-button--text': props.type === 'text',
-        'el-button--icon': props.type === 'icon',
+        'el-button--main': props.main === true,
+        'el-button--secondary': props.secondary === true,
+        'el-button--text': props.text === true,
+        'el-button--icon': props.icon === true,
         'is-loading': props.loading,
         'is-disabled': props.disabled,
         'button-loading': props.loading,
+        'el-button--sm': props.size === 'sm',
       },
-      getSizeClass,
+      getColor,
+      getCustomColor,
     ]"
     v-bind="attrs"
     @click="handleClick"
   >
     <slot name="iconLeft" class="icon-left">
-      <span v-if="props.iconLeft">
-        <props.iconLeft class="icon-left" />
-      </span>
+      <component :is="props.iconLeft" />
     </slot>
     <label v-if="props.value">{{ props.value }}</label>
     <label v-else><slot class="slot-content"></slot></label>
     <slot name="iconRight" class="icon-right">
-      <span v-if="props.iconRight">
-        <props.iconRight class="icon-right" />
-      </span>
+      <component :is="props.iconRight" />
     </slot>
+    <component
+      v-if="props.loading"
+      :is="props.loadingIcon"
+      class="loading-icon"
+    />
   </el-button>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from "vue";
+import { computed, ref, onMounted, nextTick } from "vue";
 import { IconLoading } from "ksw-vue-icon";
 import { ButtonProps } from "./type.d";
-import { isValidColor, GetColorLevel } from "../../utils";
+import { isValidColor, GetColorLevel, genRandomStr } from "../../utils";
 import "ksw-vue-icon/styles/icon.css";
 
 defineOptions({
   name: "KButton",
 });
 
-const buttonRef = ref();
+const id = genRandomStr(8);
+const btn = ref();
 
 const props = withDefaults(defineProps<ButtonProps>(), {
-  type: "normal",
+  type: "",
   size: "base",
   value: "",
   disabled: false,
@@ -56,32 +62,45 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   iconLeft: null,
   iconRight: null,
   color: "",
+  main: false,
+  secondary: false,
+  text: false,
+  icon: false,
 });
 
 onMounted(() => {
-  // 校验 color 是否为 16 进制颜色
+});
+
+let el = ref();
+nextTick(() => {  // 等待 dom 更新
+  el.value = document.getElementById(id);
+});
+
+const getCustomColor = computed(() => {
   if (props.color && isValidColor(props.color)) {
     const hexColor = props.color;
-    const { lightColor, darkColor } = GetColorLevel(hexColor, 0.1);
-    // TODO: 这里为了 storybook 而添加的，后续需要删除
-    if (buttonRef.value.style) {
+    const { lightColor, darkColor, loadingColor } = GetColorLevel(
+      hexColor,
+      0.1
+    );
+    if (el.value?.style) {
       // 添加一个 css 颜色变量
-      buttonRef.value.style.setProperty("--k-button-color", hexColor);
-      buttonRef.value.style.setProperty("--k-button-hover-color", lightColor);
-      buttonRef.value.style.setProperty("--k-button-active-color", darkColor);
-      buttonRef.value.style.setProperty("--k-button-icon-color", hexColor);
-    } else if (buttonRef.value.ref.style) {
-      buttonRef.value.ref.style.setProperty("--k-button-color", hexColor);
-      buttonRef.value.ref.style.setProperty(
-        "--k-button-hover-color",
-        lightColor
-      );
-      buttonRef.value.ref.style.setProperty(
-        "--k-button-active-color",
-        darkColor
-      );
-      buttonRef.value.ref.style.setProperty("--k-button-icon-color", hexColor);
+      el.value?.style.setProperty("--k-button-color", hexColor);
+      el.value?.style.setProperty("--k-button-hover-color", lightColor);
+      el.value?.style.setProperty("--k-button-active-color", darkColor);
+      el.value?.style.setProperty("--k-button-icon-color", hexColor);
+      el.value?.style.setProperty("--k-button-loading-color", loadingColor);
+      console.log(lightColor, darkColor, loadingColor);
     }
+  }
+});
+
+const getColor = computed(() => {
+  // 判断 props.type 是否为 primary 等类型 或者 16 进制颜色
+  const args = ["primary", "success", "warning", "danger", "info"];
+  // 判断 props.type === args 中的任意一项
+  if (props.type && args.includes(props.type)) {
+    return `el-button--${props.type}`;
   }
 });
 

@@ -1,3 +1,4 @@
+@import "../../style/variable.less";
 @import "../../style/variable2.css";
 
 .k-button {
@@ -5,6 +6,7 @@
   --k-button-hover-color: var(--k-blue-400);
   --k-button-active-color: var(--k-blue-600);
   --k-button-icon-color: var(--k-gray-400);
+  --k-button-loading-color: var(--k-blue-300);
   width: fit-content;
   box-sizing: border-box;
   box-sizing: border-box;
@@ -17,131 +19,110 @@
   gap: 0.25rem;
   border-radius: var(--k-rounded-base);
   color: var(--k-gray-400);
-  font-size: var(--font-base);
+  font-size: var(--font-base) !important;
   cursor: pointer;
+
   label {
     pointer-events: none;
     cursor: pointer;
     user-select: none;
   }
+
   span {
     display: flex;
     align-items: center;
     gap: 0.25rem;
   }
-  i {
-    color: var(--k-button-color);
-    transform: translate(50%, 0);
-    svg {
-      width: 1rem;
-      height: 1rem;
-    }
-  }
-  > span {
-    // 具名icon
-    > span:first-child {
-      width: 0.5rem;
-      > svg {
-        transform: translate(-50%) scale(2);
-      }
-    }
-    > span:last-child {
-      width: 0.5rem;
-      > svg {
-        transform: translate(50%) scale(2);
-      }
-    }
-    // 传值 icon
-    > span:first-child {
-      > span {
-        width: 0.5rem;
-        > svg {
-          transform: translate(-50%) scale(2);
-        }
-      }
-    }
-    > span:last-child {
-      > span {
-        width: 0.5rem;
-        > svg {
-          transform: translate(50%) scale(2);
-        }
-      }
-    }
-  }
+
   &.el-button--sm {
     font-size: var(--font-sm);
     padding: 0 0.75rem;
     height: 1.5rem;
     gap: 0.125rem;
     border-radius: var(--k-rounded-sm);
-    > span {
+
+    >span {
       display: flex;
       align-items: center;
       gap: 0.125rem;
     }
-    > i {
-      span {
-        width: 0.75rem;
-        height: 0.75rem;
-        > svg {
-        }
-      }
-    }
-    > span {
-      // 具名icon
-      > span:first-child {
-        width: 0.5rem;
-        > svg {
-          transform: translate(-50%) scale(1.25);
-        }
-      }
-      > span:last-child {
-        width: 0.5rem;
-        > svg {
-          transform: translate(50%) scale(1.25);
-        }
-      }
-      // 传值 icon
-      > span:first-child {
-        > span {
-          width: 0.5rem;
-          > svg {
-            transform: translate(-50%) scale(1.25);
-          }
-        }
-      }
-      > span:last-child {
-        > span {
-          width: 0.5rem;
-          > svg {
-            transform: translate(50%) scale(1.25);
-          }
-        }
-      }
-    }
   }
+
   &:hover {
     background: var(--k-gray-100);
   }
+
   &:active {
     background: var(--k-gray-200);
   }
+
   &.is-disabled {
     background: var(--k-gray-100);
     color: var(--k-gray-300);
     cursor: not-allowed;
+
     label {
       cursor: not-allowed;
     }
   }
-  &.is-loading {
+
+  &.is-loading,
+  &.is-loading:hover,
+  &.is-loading:active {
     color: var(--k-gray-300);
+    pointer-events: auto !important;
     background: #fff;
+    border-color: var(--k-gray-200);
     cursor: wait;
+
     label {
       cursor: wait;
     }
+
+    .el-icon.is-loading {
+      display: none;
+    }
+
+    .loading-icon {
+      color: var(--k-button-color);
+    }
+  }
+
+  // 内置颜色
+  &.el-button--primary {
+    --k-button-color: var(--k-blue-500);
+    --k-button-hover-color: var(--k-blue-400);
+    --k-button-active-color: var(--k-blue-600);
+    --k-button-loading-color: var(--k-blue-300);
+    --k-button-icon-color: var(--k-blue-500);
+  }
+  &.el-button--success {
+    --k-button-color: var(--k-green-500);
+    --k-button-hover-color: var(--k-green-400);
+    --k-button-active-color: var(--k-green-600);
+    --k-button-loading-color: var(--k-green-300);
+    --k-button-icon-color: var(--k-green-500);
+  }
+  &.el-button--info {
+    --k-button-color: var(--k-gray-300);
+    --k-button-hover-color: var(--k-gray-300);
+    --k-button-active-color: var(--k-gray-400);
+    --k-button-loading-color: var(--k-gray-100);
+    --k-button-icon-color: var(--k-gray-300);
+  }
+  &.el-button--warning {
+    --k-button-color: var(--k-orange-500);
+    --k-button-hover-color: var(--k-orange-400);
+    --k-button-active-color: var(--k-orange-600);
+    --k-button-loading-color: var(--k-orange-300);
+    --k-button-icon-color: var(--k-orange-500);
+  }
+  &.el-button--danger {
+    --k-button-color: var(--k-red-500);
+    --k-button-hover-color: var(--k-red-400);
+    --k-button-active-color: var(--k-red-600);
+    --k-button-loading-color: var(--k-red-300);
+    --k-button-icon-color: var(--k-red-500);
   }
 
   // main style
@@ -150,22 +131,29 @@
     color: #fff;
     border-color: var(--k-button-color);
   }
+
   &.el-button--main:hover {
+    color: #fff;
     background: var(--k-button-hover-color);
     border-color: var(--k-button-hover-color);
   }
+
   &.el-button--main:active {
     background: var(--k-button-active-color);
     border-color: var(--k-button-active-color);
   }
-  &.el-button--main.is-disabled {
+
+  &.el-button--main.is-disabled,
+  &.el-button--main.is-disabled:hover {
     background: var(--k-gray-300);
     border-color: var(--k-gray-300);
     color: #fff;
   }
-  &.el-button--main.is-loading {
-    background: var(--k-blue-300);
-    border-color: var(--k-blue-300);
+
+  &.el-button--main.is-loading,
+  &.el-button--main.is-loading:hover {
+    background: var(--k-button-loading-color);
+    border-color: var(--k-button-loading-color);
     color: #fff;
   }
 
@@ -175,23 +163,34 @@
     color: var(--k-button-color);
     border: 1px solid var(--k-button-color);
   }
+
   &.el-button--secondary:hover {
     color: var(--k-button-hover-color);
     border: 1px solid var(--k-button-hover-color);
+    background: #fff;
   }
+
   &.el-button--secondary:active {
     color: var(--k-button-active-color);
     border: 1px solid var(--k-button-active-color);
   }
-  &.el-button--secondary.is-disabled {
+
+  &.el-button--secondary.is-disabled,
+  &.el-button--secondary.is-disabled:hover {
     background: var(--k-gray-100);
     color: var(--k-gray-300);
     border: 1px solid var(--k-gray-300);
   }
-  &.el-button--secondary.is-loading {
+
+  &.el-button--secondary.is-loading,
+  &.el-button--secondary.is-loading:hover {
     background: #fff;
-    color: var(--k-blue-300);
-    border: 1px solid var(--k-blue-300);
+    color: var(--k-button-loading-color);
+    border: 1px solid var(--k-button-loading-color);
+
+    .loading-icon {
+      color: var(--k-button-color);
+    }
   }
 
   // text style
@@ -201,68 +200,91 @@
     padding: 0 0.5rem;
     border-width: 0;
   }
+
   &.el-button--text:hover {
     color: var(--k-button-hover-color);
+
+    span {
+      color: var(--k-button-hover-color);
+    }
   }
+
   &.el-button--text:active {
     color: var(--k-button-active-color);
+
+    span {
+      color: var(--k-button-active-color);
+    }
   }
-  &.el-button--text.is-disabled {
+
+  &.el-button--text.is-disabled,
+  &.el-button--text.is-disabled:hover {
     background: #fff;
     color: var(--k-gray-300);
+
+    span {
+      color: var(--k-gray-300);
+    }
   }
-  &.el-button--text.is-loading {
+
+  &.el-button--text.is-loading,
+  &.el-button--text.is-loading:hover,
+  &.el-button--text.is-loading:active {
     background: #fff;
-    color: var(--k-blue-300);
+    color: var(--k-button-loading-color);
+
+    label,
+    span {
+      color: var(--k-button-loading-color);
+    }
+
+    .loading-icon {
+      color: var(--k-button-color);
+    }
   }
 
   // icon style
   &.el-button--icon {
     width: 2rem;
     padding: 0;
-    color: var(--k-button-icon-color);
+    color: var(--k-gray-300);
+    background: #fff;
+    border-color: var(--k-gray-200);
     justify-content: center;
-    > span > span > .ksw-icon > svg {
-      transform: translate(25%) scale(2);
-    }
-    > span > label > span > svg {
-      width: 1rem;
-      height: 1rem;
-    }
   }
   &.el-button--icon.el-button--sm {
     height: 1.5rem;
     width: 1.5rem;
-    > span > label > span {
-      > svg {
-        width: 0.75rem;
-        height: 0.75rem;
-      }
-    }
-    > span > span > .ksw-icon > svg {
-      transform: translate(12.5%) scale(1.5);
-    }
-    > i {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      > span {
-        width: 0.75rem;
-        height: 0.75rem;
-      }
-    }
+  }
+  &.el-button--icon:hover {
+    background: #fff;
+    color: var(--k-button-color);
+    border-color: var(--k-button-color);
+  }
+  &.el-button--icon:active{
+    background: #fff;
+    color: var(--k-button-active-color);
+    border-color: var(--k-button-active-color);
+  }
+  &.el-button--icon.is-disabled,
+  &.el-button--icon.is-disabled:hover,
+  &.el-button--icon.is-disabled:active {
+    background: #fff;
+    color: var(--k-gray-300);
+    border-color: var(--k-gray-300);
   }
   &.el-button--icon.is-disabled {
     cursor: not-allowed;
   }
   &.el-button--icon.is-loading {
-    i {
-      width: 1rem;
-      height: 1rem;
-      transform: translate(0, 0);
-    }
-    > span {
-      display: none;
+    background: #fff;
+    color: var(--k-button-color);
+    border-color: var(--k-gray-100);
+    span {
+      label {
+        display: none;
+      }
+      margin-left:0;
     }
   }
 }
