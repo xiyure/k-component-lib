@@ -16,4 +16,5 @@ export interface TreeTransferProps {
   treeConfig?: any
   label?: string
   scrollY?: any
+  drag?: boolean
 }

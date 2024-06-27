@@ -262,11 +262,8 @@ const dialogVisible = ref(false);
 const textareaContent = ref('');
 const isSelectAll = ref(false);
 const isIndeterminate = ref(false);
-let emitter:any;
+const emitter = getCurrentInstance()?.appContext.app.config.globalProperties.__emitter__;
 
-onMounted(() => {
-  emitter = getCurrentInstance()?.appContext.app.config.globalProperties.__emitter__;
-});
 watch(() => props.desc, (newValue) => {
   if (!newValue) {
     return;

@@ -72,7 +72,6 @@ export function GetColorLevel(hex:any, v:number = 1) {
   const darkColor = rgbToHex(...adjustBrightness(rgb, darkFactor));
   const loadingColor = rgbToHex(...adjustBrightnessLoading(rgb, 1.4));
 
-
   const hsl:number = 0.5;
   if (v >= 0.5 && v <= 1.5) {
     hsl = v;

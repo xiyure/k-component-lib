@@ -74,7 +74,7 @@
               <template #default="{ row }">
                 <div
                   class="column-body"
-                  :draggable="true"
+                  :draggable="drag"
                   @dragstart="handleDragStart(row)"
                   @dragenter="handleDragenter($event, row)"
                   @dragend="handleDrop()"

@@ -13,7 +13,7 @@
         <IconRefresh />
       </span>
     </div>
-    <div :id="specialViewId" class="k-view__spcial-data">
+    <div :id="specialViewId" class="k-view__special-data">
       <slot></slot>
     </div>
     <div :id="customViewId" class="k-view__custom-data text-base">
