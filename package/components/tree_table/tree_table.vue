@@ -105,8 +105,11 @@
             :edit-render="item.editRender"
             :show-column-menu="item.showColumnMenu !== false"
           >
+            <template v-if="$slots[item.field]" #default="data">
+              <slot :name="item.field" v-bind="data"></slot>
+            </template>
             <template
-              v-if="
+              v-else-if="
                 !item.render &&
                   !item.editRender &&
                   ((item.type && checkboxConfig.labelField) || !item.type)
@@ -124,18 +127,9 @@
                   :size="row.iconStyle?.size ?? 13"
                 />
               </span>
-              <span>
-                {{
-                  row[
-                    item.type && checkboxConfig.labelField
-                      ? checkboxConfig.labelField
-                      : item.field
-                  ]
-                }}
+              <span v-if="!item.type">
+                {{ row[item.field] === '' ? '-' : row[item.field] ?? '-' }}
               </span>
-            </template>
-            <template v-else-if="!item.render" #default="{ row, column }">
-              {{ row[column['field']] === '' ? '-' : row[column['field']] ?? '-' }}
             </template>
           </k-table-column>
         </template>

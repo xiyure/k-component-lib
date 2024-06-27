@@ -7,11 +7,11 @@ export interface TreeTransferProps {
   rightTitle?: string
   showFilter?: boolean
   useTree?: boolean
-  expandIcon?: Component
+  expandIcon?: Component | string
   expandIconColor?: string
-  collapseIcon?: Component
+  collapseIcon?: Component | string
   collapseIconColor?: string
-  icon?: Component
+  icon?: Component | string
   iconColor?: string
   treeConfig?: any
   label?: string

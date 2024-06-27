@@ -41,9 +41,7 @@
                   }"
                   @click="toggleTreeExpand(row, $event)"
                 >
-                  <props.icon v-if="isExpand(row) === 0" :color="iconColor" />
-                  <props.expandIcon v-if="isExpand(row) === 1" :color="expandIconColor" />
-                  <props.collapseIcon v-if="isExpand(row) === 2" :color="collapseIconColor" />
+                  <component :is="columnIcon(row)?.icon" class="column-icon" :color="columnIcon(row)?.color" />
                   {{ row[props.label] }}
                 </span>
               </template>
@@ -81,7 +79,10 @@
                   @dragenter="handleDragenter($event, row)"
                   @dragend="handleDrop()"
                 >
-                  <span class="column-content"><props.icon v-if="props.icon" />{{ row[props.label] }}</span>
+                  <span class="column-content">
+                    <component :is="props.icon" v-if="props.icon" class="column-icon" />
+                    {{ row[props.label] }}
+                  </span>
                   <div class="column-operate">
                     <IconDrag />
                     <IconClose @click="removeRightData(row)" />
@@ -136,17 +137,17 @@ onMounted(() => {
   });
 });
 
-const isExpand = computed(() => function (row) {
+const columnIcon = computed(() => function (row) {
   const expand = treeLeftRef.value?.tableInstance.isTreeExpandByRow(row);
   const isLeafNode = !(row.children && row.children.length);
-  if (props.icon && isLeafNode && row.nodeType === 1) {
-    return 2;
+  if (isLeafNode && row.nodeType === 1) {
+    return { icon: props.collapseIcon, color: props.collapseIconColor };
   } if (props.icon && isLeafNode) {
-    return 0;
+    return { icon: props.icon, color: props.iconColor };
   } if (props.expandIcon && expand && !isLeafNode) {
-    return 1;
+    return { icon: props.expandIcon, color: props.expandIconColor };
   } if (props.collapseIcon && !expand && !isLeafNode) {
-    return 2;
+    return { icon: props.collapseIcon, color: props.collapseIconColor };
   }
 });
 const treeConfig = computed(() => {
@@ -159,8 +160,6 @@ const treeConfig = computed(() => {
 });
 const scrollY = computed(() => ({ enabled: true, ...props.scrollY || {} }));
 const rowLevel = computed(() => (row) => getTreeNodeLevel(row));
-
-getParentNode;
 
 watch(() => props.data, (newValue) => {
   if (!newValue) {
@@ -400,9 +399,12 @@ defineExpose({
 .tree-transfer__cell, .column-content {
   display: inline-flex;
   align-items: center;
+  .column-icon {
+    margin-right: 3px;
+  }
   svg {
-    width: 2vw;
-    height: 2vh;
+    width: 1.5em;
+    height: 1.5em;
   }
 }
 </style>

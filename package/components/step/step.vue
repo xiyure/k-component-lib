@@ -18,10 +18,12 @@
       :disabled="!props.description"
     >
       <template #reference>
-        <span class="k-step__title">
-          <props.icon v-if="props.icon" class="k-step__icon" />
-          {{ props.title }}
-        </span>
+        <slot name="title">
+          <span class="k-step__title">
+            <component :is="props.icon" v-if="props.icon" />
+            {{ props.title }}
+          </span>
+        </slot>
       </template>
       {{ props.description }}
     </k-popover>
