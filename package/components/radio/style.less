@@ -1,4 +1,6 @@
 @import "../../style/variable.less";
+@import "../../style/variable.css";
+@import "../../style/general.css";
 @import "../../style/font.less";
 
 :root {
@@ -15,7 +17,7 @@
     display: flex;
     align-items: center;
     // 输入框 size 隐藏
-    .el-radio__original{
+    .el-radio__original {
       width: 0;
       height: 0;
     }
@@ -28,7 +30,7 @@
       border: 1px solid @k-gray-200;
       border-radius: 100px;
       position: relative;
-      background-color: #FFF;
+      background-color: #fff;
     }
     .el-radio__inner::after {
       // 球内部
@@ -77,16 +79,25 @@
       }
     }
   }
+  &.is-disabled:hover {
+    span {
+      color: @k-gray-300;
+    }
+  }
   &.is-checked.is-disabled {
     .el-radio__input {
       // 球选中禁用样式
-      .el-radio__inner {
-        border-color: @k-gray-300;
-        background-color: @k-gray-100;
-      }
       .el-radio__inner::after {
         background-color: @k-gray-300;
       }
+    }
+    span {
+      color: @k-gray-300;
+    }
+  }
+  &.el-radio:active {
+    span {
+      color: red;
     }
   }
   &.el-radio--sm {
@@ -113,7 +124,7 @@
       }
     }
     .el-radio__label {
-      color: var(--radio-color)
+      color: var(--radio-color);
     }
   }
   &:active {
@@ -180,7 +191,7 @@
 .el-radio-group {
   width: fit-content;
   display: flex;
-  gap:0.75rem;
+  gap: 0.75rem;
 }
 
 .el-radio-group--row {
@@ -189,5 +200,5 @@
 
 .el-radio-group--column {
   flex-direction: column;
-  gap:0.5rem;
+  gap: 0.5rem;
 }

@@ -37,5 +37,5 @@ provide('_fillColor', fillColor);
 </script>
 
 <style lang="less">
-@import './style.less';
+@import './style2.less';
 </style>

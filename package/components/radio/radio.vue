@@ -45,5 +45,5 @@ const getSizeClass = computed(() => (props.size ? `el-radio--${ props.size }` : 
 </script>
 
 <style lang="less">
-@import './style.less';
+@import './style2.less';
 </style>

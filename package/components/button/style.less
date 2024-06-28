@@ -1,5 +1,5 @@
-@import "../../style/variable.less";
-@import "../../style/variable2.css";
+@import "../../style/variable.css";
+@import "../../style/general.less";
 
 .k-button {
   --k-button-color: var(--k-blue-500);
@@ -19,7 +19,9 @@
   gap: 0.25rem;
   border-radius: var(--k-rounded-base);
   color: var(--k-gray-400);
-  font-size: var(--font-base) !important;
+  // font-size: var(--font-base) !important;
+  .text-base();
+  // .font-light();
   cursor: pointer;
 
   label {
