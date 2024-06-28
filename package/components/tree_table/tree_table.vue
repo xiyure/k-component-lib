@@ -125,7 +125,7 @@
                   :style="{
                     marginRight: '3px'
                   }"
-                  :color="row.iconStyle?.color"
+                  :color="row.iconStyle?.empty ? '#cdcacf' : row.iconStyle?.color"
                   :size="row.iconStyle?.size ?? 13"
                 />
               </span>
