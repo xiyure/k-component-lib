@@ -1,5 +1,7 @@
 export interface KTableProps {
   showOverflow?: any
+  data?: any[]
+  showDragColumn?: false
 }
 export interface TableColumnProps {
   sortable?: boolean

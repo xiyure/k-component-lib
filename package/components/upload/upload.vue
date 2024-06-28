@@ -21,8 +21,8 @@
           <div v-else class="default-upload-btn" @click.stop>
             <k-button
               secondary
-              @click="selectFile"
               :icon-left="autoUpload ? 'IconUpload': ''"
+              @click="selectFile"
             >
               {{ props.autoUpload ? $t('uploadFile') : $t('selectFile') }}
             </k-button>
@@ -84,7 +84,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { UploadFile, UploadRawFile, UploadStatus } from 'element-plus';
-import { IconEmptyBox, IconWarning, IconCheck, IconDelete, IconFile, IconUpload } from 'ksw-vue-icon';
+import { IconEmptyBox, IconWarning, IconCheck, IconDelete, IconFile } from 'ksw-vue-icon';
 import { UploadProps } from './type';
 
 defineOptions({
@@ -94,8 +94,6 @@ defineOptions({
 const props = withDefaults(defineProps<UploadProps>(), {});
 
 const emits = defineEmits(['update:modelValue']);
-
-const slots = defineSlots();
 
 const KUploadRef = ref<any>(null);
 const fileList = ref(props.modelValue || []);

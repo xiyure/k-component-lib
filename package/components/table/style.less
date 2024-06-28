@@ -41,6 +41,15 @@
   .vxe-cell--edit-icon {
     display: none !important;
   }
+  &.drag_table {
+    .vxe-table--header {
+        th:first-child {
+            > .is--line {
+                display: none;
+            }
+        }
+    }
+}
 }
 .expand-icon {
   &:hover {

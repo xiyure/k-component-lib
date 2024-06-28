@@ -135,6 +135,15 @@
             </template>
           </k-table-column>
         </template>
+        <template v-if="slots.empty" #empty>
+          <slot name="empty"></slot>
+        </template>
+        <template v-if="slots.dragIcon" #dragIcon>
+          <slot name="dragIcon"></slot>
+        </template>
+        <template v-if="slots.loading" #loading>
+          <slot name="loading"></slot>
+        </template>
       </k-table>
     </div>
     <div v-if="isPaging" class="pagination-box">
@@ -188,6 +197,7 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
   autoResize: true
 });
 
+const slots = defineSlots();
 const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
 const t = _global?.$t;
 const DEFAULT_PAGES = [25, 50, 80, 100, 150];
