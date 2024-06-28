@@ -5,7 +5,7 @@ export interface ButtonProps {
   /**
    *   继承 el-button 的颜色
    */
-  type?: 'primary' | 'success' | 'info' | 'warning' | 'danger';
+  type?: 'primary' | 'success' | 'info' | 'warning' | 'danger' | '';
     /**
    * 主要按钮
    */
@@ -53,5 +53,5 @@ export interface ButtonProps {
   /**
    *  十六进制颜色: 例如 #ff5500
    */
-  color?: Color;
+  color?: Color | string;
 }

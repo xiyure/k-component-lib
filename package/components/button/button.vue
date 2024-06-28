@@ -22,12 +22,12 @@
     @click="handleClick"
   >
     <slot name="iconLeft" class="icon-left">
-      <component v-if="props.iconLeft" :is="props.iconLeft" />
+      <component :is="props.iconLeft" v-if="props.iconLeft" />
     </slot>
     <label v-if="props.value">{{ props.value }}</label>
     <label v-else><slot class="slot-content"></slot></label>
     <slot name="iconRight" class="icon-right">
-      <component v-if="props.iconRight" :is="props.iconRight" />
+      <component :is="props.iconRight" v-if="props.iconRight" />
     </slot>
     <component
       :is="props.loadingIcon"
@@ -45,22 +45,22 @@ import { isValidColor, GetColorLevel, genRandomStr } from '../../utils';
 import 'ksw-vue-icon/styles/icon.css';
 
 defineOptions({
-  name: "KButton",
+  name: 'KButton',
 });
 
 const id = genRandomStr(8);
 const btn = ref();
 
 const props = withDefaults(defineProps<ButtonProps>(), {
-  type: "",
-  size: "base",
-  value: "",
+  type: '',
+  size: 'base',
+  value: '',
   disabled: false,
   loading: false,
   loadingIcon: IconLoading,
-  iconLeft: null,
-  iconRight: null,
-  color: "",
+  iconLeft: '',
+  iconRight: '',
+  color: '',
   main: false,
   secondary: false,
   text: false,
@@ -76,27 +76,24 @@ nextTick(() => {
 });
 
 watch(() => props.color, () => {
-  if (props.color && isValidColor(props.color)) {
+  if (props.color && isValidColor(props.color as string)) {
     const hexColor = props.color;
-    const { lightColor, darkColor, loadingColor } = GetColorLevel(
-      hexColor,
-      0.1
-    );
+    const { lightColor, darkColor, loadingColor } = GetColorLevel(hexColor);
     if (el.value?.style) {
       // 添加一个 css 颜色变量
-      el.value?.style.setProperty("--k-button-color", hexColor);
-      el.value?.style.setProperty("--k-button-hover-color", lightColor);
-      el.value?.style.setProperty("--k-button-active-color", darkColor);
-      el.value?.style.setProperty("--k-button-icon-color", hexColor);
-      el.value?.style.setProperty("--k-button-loading-color", loadingColor);
+      el.value?.style.setProperty('--k-button-color', hexColor);
+      el.value?.style.setProperty('--k-button-hover-color', lightColor);
+      el.value?.style.setProperty('--k-button-active-color', darkColor);
+      el.value?.style.setProperty('--k-button-icon-color', hexColor);
+      el.value?.style.setProperty('--k-button-loading-color', loadingColor);
     }
   }
 });
 
 const getElTypeColor = computed(() => {
-  const elTypeColorArgs = ["primary", "success", "warning", "danger"];
+  const elTypeColorArgs = ['primary', 'success', 'warning', 'danger'];
   if (props.type && elTypeColorArgs.includes(props.type)) {
-    return `el-button--${props.type}`;
+    return `el-button--${ props.type }`;
   }
   return '';
 });
@@ -113,13 +110,9 @@ const getOriginAttrs = () => {
   };
 };
 
-const getSizeClass = computed(() =>
-  props.size !== "" ? `el-button--${props.size}` : ""
-);
-
-const emits = defineEmits(["click"]);
+const emits = defineEmits(['click']);
 const handleClick = (e: Event) => {
-  emits("click", e);
+  emits('click', e);
 };
 </script>
 
