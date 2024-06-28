@@ -42,6 +42,7 @@ if (props.capsule) {
         name: item.props?.title
       };
     }
+    return null;
   }).filter(item => item);
 }
 

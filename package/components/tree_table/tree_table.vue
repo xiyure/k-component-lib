@@ -86,6 +86,8 @@
         :show-overflow="showOverflow"
         :auto-resize="autoResize"
         v-bind="$attrs"
+        @hide-column="hideColumn"
+        @cell-click="cellClick"
       >
         <template v-for="item in columns">
           <k-table-column
@@ -314,7 +316,6 @@ watch(() => props.column.length, () => {
     label: item.title,
     key: item.field
   }));
-  defaultKeys.value = selectData.value.map(item => item.key);
 }, { immediate: true, deep: true });
 
 // 表格内容搜索
@@ -509,7 +510,32 @@ function advancedFilter(conditionInfo, newTableData) {
 function filter(searchStr: string) {
   query.value = searchStr;
 }
-
+function hideColumn(column) {
+  if (!props.showHeaderTools || !props.showTransfer) {
+    return;
+  }
+  const columnItem = columns.value.find(item => item.field === column.field);
+  columnItem.visible = false;
+  selectData.value = columns.value.filter(col => col.visible !== false)
+  .map((item) => ({
+    label: item.title,
+    key: item.field
+  }));
+}
+// 行高亮
+let isHighlight = false;
+let preRowKey = null;
+function cellClick({ _rowIndex }) {
+  if (!isHighlight) {
+    isHighlight = true;
+  } else if (isHighlight && preRowKey === _rowIndex) {
+    xTree.value.tableInstance.setCurrentRow(null);
+    isHighlight = false;
+  }
+  if (preRowKey !== _rowIndex) {
+    preRowKey = _rowIndex;
+  }
+}
 const tableInstance = computed(() => xTree?.value.tableInstance);
 defineExpose({
   tableInstance,

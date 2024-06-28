@@ -37,12 +37,13 @@ const props = withDefaults(defineProps<ViewProps>(), {
   width: '200px'
 });
 
+const id = genRandomStr(8);
 onMounted(() => {
   const emitter = getCurrentInstance()?.appContext.app.config.globalProperties.__emitter__;
-  emitter.on('change-active-view', handleChange.bind(this));
-  emitter.on('remove', handleRemove.bind(this));
-  emitter.on('drag-start', onDragStart.bind(this));
-  emitter.on('drag-drop', onDrop.bind(this));
+  emitter.on('change-active-view', id, handleChange.bind(this));
+  emitter.on('remove', id, handleRemove.bind(this));
+  emitter.on('drag-start', id, onDragStart.bind(this));
+  emitter.on('drag-drop', id, onDrop.bind(this));
 });
 const emits = defineEmits(['refresh', 'change', 'remove', 'update:modelValue']);
 const activeView = ref(props.modelValue);
@@ -94,6 +95,7 @@ function isChildElement(parentElem:HTMLElement | null, element:HTMLElement) {
 }
 
 provide('activeView', activeView);
+provide('viewId', id);
 </script>
 
 <style lang="less">

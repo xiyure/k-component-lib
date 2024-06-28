@@ -222,7 +222,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, ref, watch, getCurrentInstance, onMounted } from 'vue';
+import { inject, ref, watch, getCurrentInstance } from 'vue';
 import { VxeColumnProps } from 'vxe-table';
 import {
   IconTips,
@@ -250,6 +250,7 @@ defineOptions({
 });
 
 const tableInstance:any = inject('tableInstance');
+const pid = inject('tableId');
 const props = withDefaults(defineProps<TableColumnProps>(), {
   showColumnMenu: true
 });
@@ -307,11 +308,11 @@ function openDialog() {
 function addDescription(column:VxeColumnProps) {
   colDesc.value = textareaContent.value;
   dialogVisible.value = false;
-  (emitter as any)?.emit('desc-change', column, colDesc.value);
+  (emitter as any)?.emit('desc-change', pid, column, colDesc.value);
 }
 // 列隐藏
 function hideColumn(column) {
-  emitter?.emit('hide-column', column);
+  emitter?.emit('hide-column', pid, column);
 }
 // 筛选表格数据
 function selectAll() {

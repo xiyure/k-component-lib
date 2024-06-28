@@ -16,9 +16,7 @@
         'button-loading': props.loading,
         'el-button--sm': props.size === 'sm',
       },
-      getCustomColor,
-      getElTypeColor,
-      ,
+      getElTypeColor
     ]"
     v-bind="attrs"
     @click="handleClick"
@@ -40,11 +38,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, nextTick } from "vue";
-import { IconLoading } from "ksw-vue-icon";
-import { ButtonProps } from "./type.d";
-import { isValidColor, GetColorLevel, genRandomStr } from "../../utils";
-import "ksw-vue-icon/styles/icon.css";
+import { computed, ref, onMounted, nextTick, watch } from 'vue';
+import { IconLoading } from 'ksw-vue-icon';
+import { ButtonProps } from './type.d';
+import { isValidColor, GetColorLevel, genRandomStr } from '../../utils';
+import 'ksw-vue-icon/styles/icon.css';
 
 defineOptions({
   name: "KButton",
@@ -77,7 +75,7 @@ nextTick(() => {
   el.value = document.getElementById(id);
 });
 
-const getCustomColor = computed(() => {
+watch(() => props.color, () => {
   if (props.color && isValidColor(props.color)) {
     const hexColor = props.color;
     const { lightColor, darkColor, loadingColor } = GetColorLevel(
@@ -100,6 +98,7 @@ const getElTypeColor = computed(() => {
   if (props.type && elTypeColorArgs.includes(props.type)) {
     return `el-button--${props.type}`;
   }
+  return '';
 });
 
 const attrs = computed(() => ({

@@ -32,7 +32,7 @@ export function isValidColor(strColor:string | undefined) {
 }
 
 // 获取色阶
-export function GetColorLevel(hex:any, v:number = 1) {
+export function GetColorLevel(hex:any) {
   // 1. 将16进制颜色代码转换为RGB
   function hexToRgb(h:any) {
     const bigint = parseInt(h.slice(1), 16);
@@ -95,32 +95,51 @@ export function getListeners(attrs: any) {
 }
 // 自定义事件总线调度
 type emitterType = {
-  name: string,
+  id: string,
   callback: () => any
 }
 export class Emitter {
-  events: emitterType[];
+  events: Map<string, emitterType[]>;
 
   constructor() {
-    this.events = [];
+    this.events = new Map();
   }
 
-  on(eventName:string, callback:() => any) {
-    const eventItem = this.events.find(item => item.name === eventName);
-    if (eventItem) {
+  on(eventName:string, id: string, callback:() => any) {
+    const eventItem = this.events.get(eventName);
+    if (!eventItem) {
+      this.events.set(eventName, [{ id, callback }]);
       return;
     }
-    this.events.push({
-      name: eventName,
+    eventItem.push({
+      id,
       callback
     });
   }
 
-  emit(eventName:string, ...arg:any[]) {
-    const eventItem = this.events.find(item => item.name === eventName);
+  emit(eventName:string, id: string, ...arg:any[]) {
+    const event = this.events.get(eventName);
+    if (!event) {
+      return;
+    }
+    const eventItem = event.find(item => item.id === id);
     if (eventItem) {
       const { callback } = eventItem;
       callback.call(null, ...arg);
+    }
+  }
+
+  remove(eventName: string, id: string) {
+    const eventItem = this.events.get(eventName);
+    if (!eventItem) {
+      return;
+    }
+    const removeIndex = eventItem.findIndex(item => item.id === id);
+    if (removeIndex !== -1) {
+      eventItem.splice(removeIndex, 1);
+    }
+    if (eventItem.length === 0) {
+      this.events.delete(eventName);
     }
   }
 }

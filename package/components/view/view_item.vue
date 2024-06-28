@@ -46,6 +46,7 @@ const props = withDefaults(defineProps<ViewItemProps>(), {
 });
 
 const activeView:any = inject('activeView');
+const pid = inject('viewId');
 const emitter = getCurrentInstance()?.appContext.app.config.globalProperties.__emitter__;
 
 function handleCommand(command:string) {
@@ -57,20 +58,20 @@ function handleChange() {
   if (props.disabled || activeView.value === props.value) {
     return;
   }
-  emitter.emit('change-active-view', props.value);
+  emitter.emit('change-active-view', pid, props.value);
 }
 function handleRemove(value:any) {
-  emitter.emit('remove', value);
+  emitter.emit('remove', pid, value);
 }
 // 拖拽
 function handleDragStart(e:Event) {
-  emitter.emit('drag-start', e.currentTarget, props.isCustom);
+  emitter.emit('drag-start', pid, e.currentTarget, props.isCustom);
 }
 function handleDragOver(e:Event) {
   e.preventDefault();
 }
 function handleDrop(e:Event) {
-  emitter.emit('drag-drop', e.currentTarget);
+  emitter.emit('drag-drop', pid, e.currentTarget);
 }
 
 </script>
