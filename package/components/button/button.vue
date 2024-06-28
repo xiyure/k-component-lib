@@ -14,7 +14,7 @@
         'is-loading': props.loading,
         'is-disabled': props.disabled,
         'button-loading': props.loading,
-        'el-button--sm': props.size === 'sm',
+        'el-button--sm': props.size === 'sm'
       },
       getElTypeColor
     ]"
@@ -25,15 +25,13 @@
       <component :is="props.iconLeft" v-if="props.iconLeft" />
     </slot>
     <label v-if="props.value">{{ props.value }}</label>
-    <label v-else><slot class="slot-content"></slot></label>
+    <label v-else>
+      <slot class="slot-content"></slot>
+    </label>
     <slot name="iconRight" class="icon-right">
       <component :is="props.iconRight" v-if="props.iconRight" />
     </slot>
-    <component
-      :is="props.loadingIcon"
-      v-if="props.loading"
-      class="loading-icon"
-    />
+    <component :is="props.loadingIcon" v-if="props.loading" class="loading-icon" />
   </el-button>
 </template>
 
@@ -45,7 +43,7 @@ import { isValidColor, GetColorLevel, genRandomStr } from '../../utils';
 import 'ksw-vue-icon/styles/icon.css';
 
 defineOptions({
-  name: 'KButton',
+  name: 'KButton'
 });
 
 const id = genRandomStr(8);
@@ -64,49 +62,62 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   main: false,
   secondary: false,
   text: false,
-  icon: false,
+  icon: false
 });
+
+const color = ref(props.color);
 
 onMounted(() => {});
 
+// 获取 button dom
 const el = ref();
+// 等待 dom 更新
 nextTick(() => {
-  // 等待 dom 更新
   el.value = document.getElementById(id);
 });
 
-watch(() => props.color, () => {
-  if (props.color && isValidColor(props.color as string)) {
-    const hexColor = props.color;
-    const { lightColor, darkColor, loadingColor } = GetColorLevel(hexColor);
-    if (el.value?.style) {
-      // 添加一个 css 颜色变量
-      el.value?.style.setProperty('--k-button-color', hexColor);
-      el.value?.style.setProperty('--k-button-hover-color', lightColor);
-      el.value?.style.setProperty('--k-button-active-color', darkColor);
-      el.value?.style.setProperty('--k-button-icon-color', hexColor);
-      el.value?.style.setProperty('--k-button-loading-color', loadingColor);
+// watch props.color 变化, 更新颜色变量
+watch(
+  () => props.color,
+  (newVal) => {
+    color.value = newVal; // 更新 ref
+    if (newVal && isValidColor(newVal as string)) {
+      const hexColor = newVal;
+      const { lightColor, darkColor, loadingColor } = GetColorLevel(hexColor);
+
+      // 等待 dom 更新
+      nextTick(() => {
+        if (el.value?.style) {
+          // 添加一个 css 颜色变量
+          el.value?.style.setProperty('--k-button-color', hexColor);
+          el.value?.style.setProperty('--k-button-hover-color', lightColor);
+          el.value?.style.setProperty('--k-button-active-color', darkColor);
+          el.value?.style.setProperty('--k-button-icon-color', hexColor);
+          el.value?.style.setProperty('--k-button-loading-color', loadingColor);
+        }
+      });
     }
-  }
-});
+  },
+  { immediate: true }
+);
 
 const getElTypeColor = computed(() => {
-  const elTypeColorArgs = ['primary', 'success', 'warning', 'danger'];
+  const elTypeColorArgs = ['primary', 'success', 'info', 'warning', 'danger'];
   if (props.type && elTypeColorArgs.includes(props.type)) {
-    return `el-button--${ props.type }`;
+    return `el-button--${props.type}`;
   }
   return '';
 });
 
 const attrs = computed(() => ({
-  ...getOriginAttrs(),
+  ...getOriginAttrs()
 }));
 
 const getOriginAttrs = () => {
   const { loading, loadingIcon } = props;
   return {
     loading,
-    loadingIcon,
+    loadingIcon
   };
 };
 
@@ -117,5 +128,5 @@ const handleClick = (e: Event) => {
 </script>
 
 <style lang="less">
-@import "./style.less";
+@import './style.less';
 </style>
