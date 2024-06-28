@@ -1,12 +1,27 @@
+import Color from 'element-plus/es/components/color-picker/src/utils/color';
 import { Component } from 'vue';
 
 export interface ButtonProps {
   /**
-   *   按钮状态: 普通按钮, 主要按钮, 次级按钮, 文字按钮, 图标按钮.
-   *   可选值为:
+   *   继承 el-button 的颜色
    */
-  
-  type?: 'primary'|'success' | 'info' | 'warning' | 'danger' | string ;
+  type?: 'primary' | 'success' | 'info' | 'warning' | 'danger';
+    /**
+   * 主要按钮
+   */
+  main?: boolean,
+  /**
+   * 次要按钮
+   */
+  secondary?: boolean,
+  /**
+   * 文字按钮
+   */
+  text?: boolean,
+  /**
+   * icon按钮
+   */
+  icon?: boolean,
   /**
    * 按钮尺寸，可选值为:
    */
@@ -14,11 +29,11 @@ export interface ButtonProps {
   /**
    * 文字左边图标
    */
-  iconLeft?: Component | null;
+  iconLeft?: string;
   /**
    * 文字右边图标
    */
-  iconRight?: Component | null;
+  iconRight?: string;
   /**
    * 按钮内容
    */
@@ -38,9 +53,5 @@ export interface ButtonProps {
   /**
    *  十六进制颜色: 例如 #ff5500
    */
-  color?: string;
-  main?: boolean,
-  secondary?: boolean,
-  text?: boolean,
-  icon?: boolean,
+  color?: Color;
 }

@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, nextTick, inject } from 'vue';
-import { SelectButtonProps } from './type';
+import { SelectButtonProps } from './type.d';
 import { isValidColor } from '../../utils';
 
 defineOptions({
