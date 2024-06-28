@@ -115,7 +115,7 @@
               <k-option :label="$t('anyOne')" :value="0"></k-option>
               <k-option :label="$t('all')" :value="1"></k-option>
             </k-select>
-            <k-button :size="props.size" type="main" @click="filter">{{ $t('query') }}</k-button>
+            <k-button :size="props.size" main @click="filter">{{ $t('query') }}</k-button>
           </div>
         </div>
       </div>

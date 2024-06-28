@@ -20,58 +20,59 @@
           </div>
           <div v-else class="default-upload-btn" @click.stop>
             <k-button
-              type="secondary"
+              secondary
               @click="selectFile"
+              :icon-left="autoUpload ? 'IconUpload': ''"
             >
-              <IconUpload v-if="props.autoUpload" />
               {{ props.autoUpload ? $t('uploadFile') : $t('selectFile') }}
             </k-button>
             <k-button
               v-if="!props.autoUpload"
-              type="main"
+              main
               class="main-btn"
               :disabled="props.disabled"
+              icon-left="IconUpload"
               @click="submit"
             >
-              <IconUpload />
               {{ $t('uploadFile') }}
             </k-button>
           </div>
         </slot>
       </template>
       <template #file="{ file }">
-        <div v-if="!slots.file" class="file-list">
-          <div>
-            <a @click="handlePreview">
-              <span class="header-icon"><IconFile /></span>
-              <span
-                :title="file.name"
-              >
-                {{ file.name }}
+        <slot name="file">
+          <div class="file-list">
+            <div>
+              <a @click="handlePreview">
+                <span class="header-icon"><IconFile /></span>
+                <span
+                  :title="file.name"
+                >
+                  {{ file.name }}
+                </span>
+              </a>
+              <el-progress
+                v-if="file.status === 'uploading'"
+                :type="'line'"
+                :stroke-width="2"
+                :percentage="Number(file.percentage)"
+                :style="'margin-top: 0.5rem'"
+              />
+            </div>
+            <div class="status-icon-box">
+              <span class="status-icon">
+                <IconCheck v-if="!props.successIcon && file.status === 'success'" class="default-success-icon" />
+                <IconWarning v-else-if="!props.failIcon && file.status === 'fail'" class="default-fail-icon" />
+                <props.successIcon v-else-if="props.successIcon && file.status === 'success'" />
+                <props.failIcon v-else-if="props.failIcon && file.status === 'fail'" />
               </span>
-            </a>
-            <el-progress
-              v-if="file.status === 'uploading'"
-              :type="'line'"
-              :stroke-width="2"
-              :percentage="Number(file.percentage)"
-              :style="'margin-top: 0.5rem'"
-            />
+              <span class="remove-file">
+                <props.removeIcon v-if="props.removeIcon" @click="handleRemove(file)" />
+                <IconDelete v-else class="default-remove-icon" @click="handleRemove(file)" />
+              </span>
+            </div>
           </div>
-          <div class="status-icon-box">
-            <span class="status-icon">
-              <IconCheck v-if="!props.successIcon && file.status === 'success'" class="default-success-icon" />
-              <IconWarning v-else-if="!props.failIcon && file.status === 'fail'" class="default-fail-icon" />
-              <props.successIcon v-else-if="props.successIcon && file.status === 'success'" />
-              <props.failIcon v-else-if="props.failIcon && file.status === 'fail'" />
-            </span>
-            <span class="remove-file">
-              <props.removeIcon v-if="props.removeIcon" @click="handleRemove(file)" />
-              <IconDelete v-else class="default-remove-icon" @click="handleRemove(file)" />
-            </span>
-          </div>
-        </div>
-        <slot v-else name="file"></slot>
+        </slot>
       </template>
       <div class="el-upload__tip">
         <slot name="tip"></slot>

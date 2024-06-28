@@ -31,7 +31,7 @@
             <k-input v-model="textareaContent" type="textarea"></k-input>
             <div class="header-dialog__buttons">
               <k-button @click="() => dialogVisible = false">{{ $t('cancel') }}</k-button>
-              <k-button type="main" @click="addDescription(headerSlotProps.column)">{{ $t('confirm') }}</k-button>
+              <k-button main @click="addDescription(headerSlotProps.column)">{{ $t('confirm') }}</k-button>
             </div>
           </div>
         </k-dialog>
@@ -123,7 +123,7 @@
                       <k-button
                         class="filter-btn-item"
                         size="sm"
-                        type="secondary"
+                        secondary
                         @click="setFilter(headerSlotProps.column.field, props.filters)"
                       >{{ $t('filter') }}</k-button>
                     </div>
