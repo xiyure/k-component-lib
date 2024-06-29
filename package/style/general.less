@@ -1,40 +1,46 @@
 // 引入 其他 less 文件
-@import "./variable.css";
+@import './variable.css';
 @font-face {
-  font-family: "MyCustomFont-Light";
-  src: url("/public/font/AlibabaPuHuiTi-3-45-Light.otf") format("opentype");
+  font-family: 'MyCustomFont-Light';
+  src: url('/public/font/AlibabaPuHuiTi-3-45-Light.otf') format('opentype');
 }
 @font-face {
-  font-family: "MyCustomFont";
-  src: url("/public/font/AlibabaPuHuiTi-3-55-Regular.otf") format("opentype");
+  font-family: 'MyCustomFont';
+  src: url('/public/font/AlibabaPuHuiTi-3-55-Regular.otf') format('opentype');
 }
 @font-face {
-  font-family: "MyCustomFont-SemiBold";
-  src: url("/public/font/AlibabaPuHuiTi-3-75-SemiBold.otf") format("opentype");
+  font-family: 'MyCustomFont-SemiBold';
+  src: url('/public/font/AlibabaPuHuiTi-3-75-SemiBold.otf') format('opentype');
 }
 @font-face {
-  font-family: "MyCustomFont-Bold";
-  src: url("/public/font/AlibabaPuHuiTi-3-85-Bold.otf") format("opentype");
+  font-family: 'MyCustomFont-Bold';
+  src: url('/public/font/AlibabaPuHuiTi-3-85-Bold.otf') format('opentype');
+}
+html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-  font-family: "MyCustomFont", sans-serif;
+  font-family: 'MyCustomFont', sans-serif;
   font-weight: 550;
+  box-sizing: border-box;
 }
 
 /* font-weight */
 .font-light {
-  font-family: "MyCustomFont-Light";
+  font-family: 'MyCustomFont-Light';
   font-weight: 450;
 }
 
 .font-semibold {
-  font-family: "MyCustomFont-SemiBold";
+  font-family: 'MyCustomFont-SemiBold';
   font-weight: 750;
 }
 
 .font-bold {
-  font-family: "MyCustomFont-Bold";
+  font-family: 'MyCustomFont-Bold';
   font-weight: 850;
 }
 
@@ -78,4 +84,3 @@ body {
   font-size: var(--font-4xl);
   line-height: var(--font-4xl-line);
 }
-

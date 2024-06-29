@@ -13,10 +13,10 @@
         'el-button--icon': props.icon === true,
         'is-loading': props.loading,
         'is-disabled': props.disabled,
-        'button-loading': props.loading,
-        'el-button--sm': props.size === 'sm'
+        'button-loading': props.loading
       },
-      getElTypeColor
+      getElTypeColor,
+      getSizeClass
     ]"
     v-bind="attrs"
     @click="handleClick"
@@ -24,7 +24,7 @@
     <slot name="iconLeft" class="icon-left">
       <component :is="props.iconLeft" v-if="props.iconLeft" />
     </slot>
-    <label v-if="props.value">{{ props.value }}</label>
+    <label v-if="props.value && props.icon === false">{{ props.value }}</label>
     <label v-else>
       <slot class="slot-content"></slot>
     </label>
@@ -40,7 +40,6 @@ import { computed, ref, onMounted, nextTick, watch } from 'vue';
 import { IconLoading } from 'ksw-vue-icon';
 import { ButtonProps } from './type.d';
 import { isValidColor, GetColorLevel, genRandomStr } from '../../utils';
-import 'ksw-vue-icon/styles/icon.css';
 
 defineOptions({
   name: 'KButton'
@@ -108,6 +107,8 @@ const getElTypeColor = computed(() => {
   }
   return '';
 });
+
+const getSizeClass = computed(() => (props.size ? `el-button--${props.size}` : ''));
 
 const attrs = computed(() => ({
   ...getOriginAttrs()

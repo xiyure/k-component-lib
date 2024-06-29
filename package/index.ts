@@ -13,9 +13,9 @@ import en from './internal/en';
 import { Emitter } from './utils';
 
 type optionsType = {
-  locale?: 'zh' | 'en'
-}
-const install = (Vue:any, options?:optionsType) => {
+  locale?: 'zh' | 'en';
+};
+const install = (Vue: any, options?: optionsType) => {
   // 国际化
   const messages = { zh, en };
   const i18n = createI18n({

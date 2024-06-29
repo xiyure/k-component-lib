@@ -1,10 +1,5 @@
 <template>
-  <el-radio-group
-    class="k-radio-group"
-    v-bind="$attrs"
-    :size="getCompSize(size)"
-    :class="directionClass"
-  >
+  <el-radio-group class="k-radio-group" v-bind="$attrs" :size="getCompSize(size)" :class="[{ 'k-radio-group--button': props.button === true }, directionClass, getSizeClass]">
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
       <slot :name="name" v-bind="data"></slot>
     </template>
@@ -13,29 +8,36 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, provide } from 'vue';
-import { SelectButtonGroupProps } from './type';
+import { RadioGroupProps } from './typeGroup.d';
 import { getCompSize } from '../../utils';
 
 defineOptions({
   name: 'KRadioGroup'
 });
 
-const props = withDefaults(defineProps<SelectButtonGroupProps>(), {
+const props = withDefaults(defineProps<RadioGroupProps>(), {
   direction: 'row',
+  size: 'base',
+  button: false
 });
 
 // computed props.direction , 返回一个 class
-const directionClass = computed(() => (props.direction === 'row' ? 'el-radio-group--row' : 'el-radio-group--column'));
+const directionClass = computed(() => (props.direction === 'row' ? 'k-radio-group--row' : 'k-radio-group--column'));
 const fillColor = ref(props.color);
 
-watch(() => props.color, (newValue) => {
-  fillColor.value = newValue;
-});
+const getSizeClass = computed(() => (props.size ? `k-radio-group--${props.size}` : ''));
+const getBtnClass = computed(() => (props.size ? `k-radio-group--${props.size}` : ''));
+
+watch(
+  () => props.color,
+  (newValue) => {
+    fillColor.value = newValue;
+  }
+);
 
 provide('_fillColor', fillColor);
-
 </script>
 
 <style lang="less">
-@import './style2.less';
+@import './style.less';
 </style>

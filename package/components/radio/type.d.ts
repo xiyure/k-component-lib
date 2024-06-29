@@ -1,25 +1,14 @@
-export interface SelectButtonGroupProps {
+export interface RadioProps {
   /**
    * 尺寸
    */
-  size?: 'lg' | 'base' | 'sm' | ''
-    /**
-   * 自定义颜色
-   */
-  color?: string
-  /**
-   * 排列方向
-   */
-  direction?: 'row' | 'column'
-}
-
-export interface SelectButtonProps {
-  /**
-   * 尺寸
-   */
-  size?: 'lg' | 'base' | 'sm' | ''
+  size?: 'lg' | 'base' | 'sm' | '';
   /**
    * 自定义颜色
    */
-  color?: string
+  color?: string;
+  /**
+   * 是否为按钮样式
+   */
+  button?: boolean;
 }

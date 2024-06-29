@@ -1,5 +1,5 @@
-@import "../../style/variable.css";
-@import "../../style/general.less";
+@import '../../style/variable.css';
+@import '../../style/general.less';
 
 .k-button {
   --k-button-color: var(--k-blue-500);
@@ -41,7 +41,7 @@
     gap: 0.125rem;
     border-radius: var(--k-rounded-sm);
 
-    >span {
+    > span {
       display: flex;
       align-items: center;
       gap: 0.125rem;
@@ -49,11 +49,11 @@
   }
 
   &:hover {
-    background: var(--k-gray-100);
+    background: var(--k-gray-50);
   }
 
   &:active {
-    background: var(--k-gray-200);
+    background: var(--k-gray-100);
   }
 
   &.is-disabled {
@@ -202,6 +202,7 @@
   }
 
   &.el-button--text:hover {
+    background-color: unset;
     color: var(--k-button-hover-color);
 
     span {
@@ -258,13 +259,15 @@
   }
   &.el-button--icon:hover {
     background: #fff;
-    color: var(--k-button-color);
-    border-color: var(--k-button-color);
+    color: var(--k-gray-300);
+    border-color: var(--k-gray-200);
+    background: var(--k-gray-50);
   }
-  &.el-button--icon:active{
+  &.el-button--icon:active {
     background: #fff;
-    color: var(--k-button-active-color);
-    border-color: var(--k-button-active-color);
+    color: var(--k-gray-300);
+    border-color: var(--k-gray-200);
+    background: var(--k-gray-100);
   }
   &.el-button--icon.is-disabled,
   &.el-button--icon.is-disabled:hover,
@@ -284,7 +287,7 @@
       label {
         display: none;
       }
-      margin-left:0;
+      margin-left: 0;
     }
   }
 }
