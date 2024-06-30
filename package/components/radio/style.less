@@ -186,6 +186,14 @@
         color: #fff;
       }
     }
+    &.is-button.is-disabled {
+      color: #fff;
+      background-color: var(--radio-color-disabled);
+      border-color: var(--radio-color-disabled);
+      .el-radio__label {
+        color: #fff;
+      }
+    }
     &.k-radio--sm.is-button {
       height: var(--radio-height-sm);
       padding: 0.25rem 0.75rem;
@@ -229,6 +237,14 @@
         color: #fff;
         background-color: var(--radio-color-checked);
         border-color: var(--radio-color-checked);
+        .el-radio__label {
+          color: #fff;
+        }
+      }
+      &.is-disabled {
+        color: #fff;
+        background-color: var(--radio-color-disabled);
+        border-color: var(--radio-color-disabled);
         .el-radio__label {
           color: #fff;
         }
@@ -298,7 +314,6 @@
       padding: 0.25rem 0.75rem;
     }
     .k-radio:not(.is-button) {
-      // background: red;
       --radio-size: 0.75rem;
       .text-sm();
       gap: 0.25rem;

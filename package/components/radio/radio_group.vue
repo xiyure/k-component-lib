@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, provide } from 'vue';
-import { RadioGroupProps } from './typeGroup.d';
+import { RadioGroupProps } from './type.d';
 import { getCompSize } from '../../utils';
 
 defineOptions({
