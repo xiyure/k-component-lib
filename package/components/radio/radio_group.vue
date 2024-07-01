@@ -1,8 +1,5 @@
 <template>
-  <el-radio-group
-    class="k-radio-group" v-bind="$attrs" :size="getCompSize(size)"
-    :class="[{ 'k-radio-group--button': props.button === true }, directionClass, getSizeClass]"
-  >
+  <el-radio-group class="k-radio-group" v-bind="$attrs" :size="getCompSize(size)" :class="[{ 'k-radio-group--button': props.button === true }, directionClass, getSizeClass]">
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
       <slot :name="name" v-bind="data"></slot>
     </template>
