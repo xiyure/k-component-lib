@@ -20,7 +20,7 @@
     <template v-if="slots.empty" #empty="data">
       <slot name="empty" v-bind="data"></slot>
     </template>
-    <template v-if="slots.loading" #empty="data">
+    <template v-if="slots.loading" #loading="data">
       <slot name="loading" v-bind="data"></slot>
     </template>
   </vxe-table>

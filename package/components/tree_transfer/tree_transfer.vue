@@ -21,7 +21,7 @@
             :tree-config="treeConfig"
             :row-config="{ keyField: 'id' }"
             :scroll-y="scrollY"
-            :checkbox-config="{ reserve: true, checkRowKeys: selectData, trigger: 'null' }"
+            :checkbox-config="{ checkRowKeys: selectData, trigger: 'null' }"
             @checkbox-change="checkboxChange"
             @checkbox-all="checkboxChange"
           >
@@ -80,7 +80,7 @@
                   @dragend="handleDrop()"
                 >
                   <span class="column-content">
-                    <component :is="props.icon" v-if="props.icon" class="column-icon" />
+                    <component :is="getIcon(props.icon, row)" v-if="props.icon" class="column-icon" />
                     {{ row[props.label] }}
                   </span>
                   <div class="column-operate">
@@ -141,13 +141,13 @@ const columnIcon = computed(() => function (row) {
   const expand = treeLeftRef.value?.tableInstance.isTreeExpandByRow(row);
   const isLeafNode = !(row.children && row.children.length);
   if (isLeafNode && row.nodeType === 1) {
-    return { icon: props.collapseIcon, color: props.collapseIconColor };
+    return { icon: getIcon(props.collapseIcon, row), color: props.collapseIconColor };
   } if (props.icon && isLeafNode) {
-    return { icon: props.icon, color: props.iconColor };
+    return { icon: getIcon(props.icon, row), color: props.iconColor };
   } if (props.expandIcon && expand && !isLeafNode) {
-    return { icon: props.expandIcon, color: props.expandIconColor };
+    return { icon: getIcon(props.expandIcon, row), color: props.expandIconColor };
   } if (props.collapseIcon && !expand && !isLeafNode) {
-    return { icon: props.collapseIcon, color: props.collapseIconColor };
+    return { icon: getIcon(props.collapseIcon, row), color: props.collapseIconColor };
   }
 });
 const treeConfig = computed(() => {
@@ -387,6 +387,12 @@ function sortFunc(targetData:any[], sortData: any) {
 }
 function getSelectedData() {
   return fullData.value.filter(item => selectData.value.includes(item.id));
+}
+function getIcon(icon: any, row: any) {
+  if (typeof icon === 'function') {
+    return icon?.(row);
+  }
+  return icon;
 }
 
 defineExpose({

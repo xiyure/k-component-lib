@@ -4,9 +4,6 @@
     class="k-dropdown"
     v-bind="$attrs"
     :size="getCompSize(size)"
-    @command="handleComand"
-    @click="handleClick"
-    @visible-change="handleVisibleChange"
   >
     <slot name="title">
       <span class="k-dropdown-link">{{ props.title }}</span>
@@ -29,20 +26,8 @@ defineOptions({
 });
 
 const props = withDefaults(defineProps<DropDownProps>(), {});
-
-const emits = defineEmits(['command', 'click', 'visible-change']);
-
 const kDropDownRef = ref();
 
-function handleComand(command: string) {
-  emits('command', command);
-}
-function handleClick() {
-  emits('click');
-}
-function handleVisibleChange(isVisible: boolean) {
-  emits('visible-change', isVisible);
-}
 function handleOpen() {
   kDropDownRef.value?.handleOpen();
 }

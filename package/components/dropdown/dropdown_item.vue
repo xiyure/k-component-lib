@@ -1,5 +1,5 @@
 <template>
-  <el-dropdown-item v-bind="$attrs" @click="handleClick">
+  <el-dropdown-item v-bind="$attrs">
     <slot></slot>
   </el-dropdown-item>
 </template>
@@ -8,13 +8,6 @@
 defineOptions({
   name: 'KDropDownItem'
 });
-
-const emits = defineEmits(['click']);
-
-function handleClick(event: Event) {
-  emits('click', event);
-}
-
 </script>
 
 <style lang="less">

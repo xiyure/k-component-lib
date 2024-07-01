@@ -233,7 +233,13 @@ const defaultEditConfig = {
 const defaultScrollY = { enabled: true };
 const defaultColumnConfig = { resizable: true };
 
-const emits = defineEmits(['remote-query', 'server-paging', 'refresh']);
+const emits = defineEmits([
+  'remote-query',
+  'server-paging',
+  'refresh',
+  'highlight-clear',
+  'highlight-change'
+]);
 const xTree = ref();
 const columns = ref<any>([]);
 const query = ref('');
@@ -535,16 +541,19 @@ function hideColumn(column) {
 // 行高亮
 let isHighlight = false;
 let preRowKey = null;
-function cellClick({ _rowIndex }) {
+function cellClick({ row, _rowIndex }) {
   if (!isHighlight) {
     isHighlight = true;
   } else if (isHighlight && preRowKey === _rowIndex) {
     xTree.value.tableInstance.setCurrentRow(null);
     isHighlight = false;
+    preRowKey = null;
+    emits('highlight-clear', row);
   }
   if (preRowKey !== _rowIndex) {
     preRowKey = _rowIndex;
   }
+  emits('highlight-change', row, isHighlight);
 }
 const tableInstance = computed(() => xTree?.value.tableInstance);
 defineExpose({
