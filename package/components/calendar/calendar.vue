@@ -17,64 +17,39 @@
         </slot>
       </template>
       <template #date-cell="{ data }">
-        <k-popover
-          class="k-calendar-item__popover"
-          :show-after="1000"
-          width="auto"
-          :disabled="!props.schedule[formatDate(data.date)]"
-        >
-          <template #reference>
-            <div class="k-calendar__item">
-              <div class="k-calendar__date">
-                <span class="k-calendar__solar">{{ data.date.getDate() }}</span>
-                <span v-show="isShowLunar" class="k-calendar__lunar">{{ lunarDate(data.date).lunarDate_zh }}</span>
-              </div>
-              <slot name="schedule" :date="data.date">
-                <div class="k-calendar__schedule">
-                  <ul>
-                    <li
-                      v-for="item in scheduleContent(data.date)"
-                      :key="item"
-                      ref="scheduleItemRef"
-                      class="k-calendar__schedule-item"
-                    >
-                      {{ item }}
-                    </li>
-                  </ul>
-                </div>
-                <span
-                  v-show="props.schedule[formatDate(data.date)]?.length > max"
-                  class="k-calendar__more"
-                  @click.stop.prevent="handleMore"
-                >更多...</span>
-              </slot>
-            </div>
-          </template>
-          <div class="k-calendar__poper">
-            <ul>
-              <li
-                v-for="item in props.schedule[formatDate(data.date)] || []"
-                :key="item"
-              >
-                {{ item }}
-              </li>
-            </ul>
+        <div class="k-calendar__item">
+          <div class="k-calendar__date">
+            <span class="k-calendar__solar">{{ data.date.getDate() }}</span>
+            <span v-show="isShowLunar" class="k-calendar__lunar">{{ lunarDate(data.date).lunarDate_zh }}</span>
           </div>
-        </k-popover>
+          <slot name="schedule" :date="data.date">
+            <div class="k-calendar__schedule">
+              <ul>
+                <li
+                  v-for="item in scheduleContent(data.date)"
+                  :key="item"
+                  ref="scheduleItemRef"
+                  class="k-calendar__schedule-item"
+                >
+                  {{ item }}
+                </li>
+              </ul>
+            </div>
+          </slot>
+        </div>
       </template>
     </el-calendar>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, nextTick } from 'vue';
+import { ref, computed } from 'vue';
 import { getLunar } from 'chinese-lunar-calendar';
 import { IconArrowLeft, IconArrowRight } from 'ksw-vue-icon';
 import type { CalendarDateType, CalendarInstance } from 'element-plus';
 import { CalendarProps } from './type';
 import { lunarMonth, lunarDay } from './const';
 import { KCheckbox } from '../checkbox';
-import { KPopover } from '../popover';
 import { genRandomStr } from '../../utils';
 
 defineOptions({
@@ -82,10 +57,8 @@ defineOptions({
 });
 
 const props = withDefaults(defineProps<CalendarProps>(), {
-  schedule: {},
-  max: 4
+  schedule: {}
 });
-const emits = defineEmits(['show-all']);
 
 const kCalendarRef = ref<CalendarInstance>();
 const isShowLunar = ref(false);
@@ -104,8 +77,7 @@ const lunarDate = computed(() => function (date:Date) {
 });
 
 const scheduleContent = computed(() => function (date:Date) {
-  const content = props.schedule[formatDate(date)] || [];
-  return content.slice(0, props.max);
+  return props.schedule[formatDate(date)] || [];
 });
 
 function jumpDate(command:CalendarDateType) {
@@ -114,35 +86,12 @@ function jumpDate(command:CalendarDateType) {
 function handleLunar(showLunar:boolean) {
   isShowLunar.value = showLunar;
 }
-function handleMore() {
-  emits('show-all');
-}
 function formatDate(date:Date) {
   const y = date.getFullYear();
   const m = date.getMonth() + 1;
   const d = date.getDate();
-  return `${ y }-${ m }-${ d }`;
+  return `${y}-${m < 10 ? '0' : ''}${m}-${d < 10 ? '0' : ''}${d}`;
 }
-
-// 根据实际数据重新计算容器高度
-const scheduleItemRef = ref();
-nextTick(() => {
-  const rootBox = document.getElementById(id);
-  if (!rootBox) {
-    return;
-  }
-  const scheduleBox = rootBox?.getElementsByClassName('k-calendar__schedule');
-  for (let i = 0; i < scheduleBox?.length; i++) {
-    const schduleBoxItem = scheduleBox[i] as HTMLElement;
-    const scheduleListItem = scheduleItemRef.value[0];
-    const scheduleBoxHeight = schduleBoxItem?.offsetHeight;
-    const itemHeight = scheduleListItem?.offsetHeight;
-    if (!scheduleBoxHeight || !itemHeight) {
-      return;
-    }
-    schduleBoxItem.style.height = `${ scheduleBoxHeight - (scheduleBoxHeight % itemHeight) }px`;
-  }
-});
 
 defineExpose({ jumpDate, handleLunar });
 </script>

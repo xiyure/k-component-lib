@@ -71,7 +71,7 @@ watch(() => props.type, (newValue) => {
   }
   currentIcon.value = INNER_STATUS_ICON[newValue];
   currentContent.value = INNER_STATUS_CONTENT[newValue];
-  defaultClassName.value = `${ newValue }-status`;
+  defaultClassName.value = `${newValue}-status`;
 }, { immediate: true });
 watch(() => props.icon, (newValue) => {
   if ((!newValue)) {

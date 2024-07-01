@@ -250,10 +250,10 @@ const headerText = computed(() => {
   let text = '';
   if (filterConditionInfo.value?.conditionList?.length) {
     filterConditionInfo.value.conditionList.forEach(item => {
-      text += ` . ${ item.title } ${ item.logic } ${ item.value }`;
+      text += ` . ${item.title} ${item.logic} ${item.value}`;
     });
   } else {
-    text += ` . ${ t?.('showAll') }`;
+    text += ` . ${t?.('showAll')}`;
   }
   return text;
 });
@@ -264,7 +264,7 @@ const paginationConfig = ref(Object.assign(defaultPaginationConfig, props.pagina
 const tableHeight = computed(() => {
   const headerHeight = props.showHeaderTools ? props.size === 'mini' ? 34 : 42 : 0;
   const pageHeight = props.showPage ? props.size === 'mini' ? 34 : 42 : 0;
-  return `calc(100% - ${ headerHeight }px - ${ pageHeight }px)`;
+  return `calc(100% - ${headerHeight}px - ${pageHeight}px)`;
 });
 // 合并用户与表格默认配置
 const treeConfig = computed(() => {

@@ -158,8 +158,8 @@ function extendContent() {
   transferHeader.appendChild(label);
   // 替换第三方组件内部图标
   const transButton = transferBox.querySelectorAll('.el-transfer__button');
-  transButton[0].innerHTML = `<img class="k-transfer__left-arrow" src="${ ArrowToLeft }" />`;
-  transButton[1].innerHTML = `<img class="k-transfer__right-arrow" src="${ ArrowToRight }" />`;
+  transButton[0].innerHTML = `<img class="k-transfer__left-arrow" src="${ArrowToLeft}" />`;
+  transButton[1].innerHTML = `<img class="k-transfer__right-arrow" src="${ArrowToRight}" />`;
 }
 function resetTransferData() {
   if (!Array.isArray(props.defaultKeys)) {

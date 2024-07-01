@@ -55,7 +55,7 @@ watch(() => props.height, (newValue) => {
   }
   nextTick(() => {
     const stepBoxHeight = typeof newValue === 'number'
-      ? `${ newValue }px`
+      ? `${newValue}px`
       : newValue;
     const element = document.getElementById(id);
     element?.style.setProperty('--height', stepBoxHeight);
