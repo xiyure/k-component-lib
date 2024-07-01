@@ -9,7 +9,7 @@ lerna-debug.log*
 pnpm-lock.yaml
 
 node_modules
-kingsware-ui
+kingsware-uiua
 dist
 dist-ssr
 *.local
