@@ -1,10 +1,5 @@
 <template>
-  <el-input
-    ref="inputRef"
-    class="k-input"
-    v-bind="$attrs"
-    :size="getCompSize(props.size)"
-  >
+  <el-input ref="inputRef" class="k-input" v-bind="$attrs" :size="getCompSize(props.size)">
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
       <slot :name="name" v-bind="data"></slot>
     </template>
@@ -12,8 +7,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { InputProps } from './type';
+import { ref, onMounted } from 'vue';
+import { InputProps } from './type.d';
 import { getCompSize } from '../../utils';
 
 defineOptions({
@@ -21,7 +16,12 @@ defineOptions({
 });
 
 const props = withDefaults(defineProps<InputProps>(), {
-  size: 'base'
+  size: 'base',
+  iconLeft: ''
+});
+
+onMounted(() => {
+  // console.log(props.iconLeft);
 });
 
 const inputRef = ref<any>(null);
@@ -46,7 +46,7 @@ defineExpose({
   blur,
   select,
   clear,
-  resizeTextarea,
+  resizeTextarea
 });
 </script>
 
