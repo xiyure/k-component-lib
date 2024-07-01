@@ -2,6 +2,9 @@
 @import '../../style/general.less';
 
 .k-radio {
+  // 所有样式设置为unset
+  .init-style();
+
   --radio-radius: var(--k-rounded-base);
   // 变量
   --radio-size: 1rem;
@@ -81,6 +84,7 @@
   }
   &.is-checked {
     .el-radio__inner {
+      background: unset;
       border-color: var(--radio-color-checked);
     }
     .el-radio__inner::after {
