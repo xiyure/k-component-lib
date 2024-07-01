@@ -268,8 +268,14 @@ const paginationConfig = ref(Object.assign(defaultPaginationConfig, props.pagina
 
 // 表格高度计算
 const tableHeight = computed(() => {
-  const headerHeight = props.showHeaderTools ? props.size === 'mini' ? 34 : 42 : 0;
-  const pageHeight = props.showPage ? props.size === 'mini' ? 34 : 42 : 0;
+  const isShowHeader = (props.showDescription
+    || props.showSearchInput
+    || props.showFilter
+    || props.showRefresh
+    || props.showTransfer
+  ) && props.showHeaderTools;
+  const headerHeight = isShowHeader ? props.size === 'mini' ? 34 : 42 : 0;
+  const pageHeight = isPaging.value ? props.size === 'mini' ? 34 : 42 : 0;
   return `calc(100% - ${headerHeight}px - ${pageHeight}px)`;
 });
 // 合并用户与表格默认配置

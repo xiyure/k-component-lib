@@ -65,11 +65,13 @@
               :title="props.rightTitle"
               :show-column-menu="false"
             >
-              <template #header>
-                <div class="right-data-header">
-                  <span class="right-data-title">{{ props.rightTitle }}</span>
-                  <span class="clear-data" @click="clearData">{{ $t('clearData') }}</span>
-                </div>
+              <template #header="data">
+                <slot name="rightHeader" v-bind="data">
+                  <div class="right-data-header">
+                    <span class="right-data-title">{{ props.rightTitle }}</span>
+                    <span class="clear-data" @click="clearData">{{ $t('clearData') }}</span>
+                  </div>
+                </slot>
               </template>
               <template #default="{ row }">
                 <div
