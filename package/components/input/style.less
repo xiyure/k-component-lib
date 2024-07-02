@@ -19,6 +19,7 @@
     padding: 0.25rem 0.625rem;
     border-radius: var(--border-radius);
     border: var(--border-color--normal) 1px solid;
+    // box-shadow: 0 0 0 1px var(--border-color--normal);
 
     .el-input__inner {
       .init-style();
@@ -37,6 +38,7 @@
     padding: 0.25rem 0.625rem;
     border-radius: var(--border-radius);
     border: var(--border-color--hover) 1px solid;
+    // box-shadow: 0 0 0 1px var(--border-color--hover);
   }
   .el-input__wrapper.is-focus {
     .init-style();
@@ -44,7 +46,8 @@
     padding: 0.25rem 0.625rem;
     border-radius: var(--border-radius);
     border: var(--border-color--checked) 1px solid;
-    box-shadow: 0 0 0 4px rgba(40, 130, 255, 0.2);
+    box-shadow: // 0 0 0 1px var(--border-color--checked),
+      0 0 0 4px rgba(40, 130, 255, 0.2);
   }
 
   &.el-input.is-disabled {
@@ -60,11 +63,121 @@
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
-
-  //  .el-input__wrapper  后面有 .el-input-group__append  则为组合型输入框
   .el-input__wrapper:has(+ .el-input-group__append) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     z-index: 1;
+  }
+  .el-input-group__prepend,
+  .el-input-group__append {
+    box-shadow: unset;
+    .text-base();
+    height: var(--height);
+    box-sizing: border-box;
+    border: 1px solid var(--border-color--normal);
+
+    > .el-button {
+      // background: none;
+    }
+  }
+
+  .el-input-group__prepend {
+    border-right: 0;
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+  }
+  .el-input-group__append {
+    border-left: 0;
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+  }
+}
+
+.k-input-group {
+  --bg-color: #fff;
+  --height: 2rem;
+  --border-radius: var(--k-rounded-base);
+  --border-color--normal: var(--k-gray-200);
+  --border-color--hover: var(--k-blue-400);
+  --border-color--checked: var(--k-blue-500);
+  --border-radius: var(--k-rounded-base);
+
+  display: flex;
+  height: 2rem;
+  position: relative;
+  // background: #ddd;
+  border-radius: var(--border-radius);
+  .k-input-group__prepend,
+  .k-input-group__append {
+    .text-base();
+    color: var(--k-status-info);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 1rem;
+    border: 1px solid var(--border-color--normal);
+    background-color: var(--k-gray-50);
+  }
+  .k-input-group__prepend {
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+    transform: translateX(1px);
+  }
+  .k-input-group__append {
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+    transform: translateX(-1px);
+  }
+
+  // append,
+  .k-input-group__append:has(button) {
+    padding: 0;
+    border: unset;
+    button {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+  .k-input-group__prepend + .k-input {
+    .el-input__wrapper {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+  .k-input:has(+ .k-input-group__append) {
+    .el-input__wrapper {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      z-index: 1;
+    }
+  }
+
+  // prepend
+  .k-input-group__prepend:has(button),
+  .k-input-group__prepend:has(.k-select) {
+    padding: 0;
+    border: unset;
+    button,
+    .k-select {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+  .k-input-group__prepend + .k-input {
+    .el-input__wrapper {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+  .k-input:has(+ .k-input-group__prepend) {
+    .el-input__wrapper {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      z-index: 1;
+    }
+  }
+  .k-input-group__prepend:has(button):hover,
+  .k-input-group__append:has(button):hover {
+    z-index: 2;
   }
 }

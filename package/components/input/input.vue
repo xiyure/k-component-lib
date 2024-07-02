@@ -1,10 +1,12 @@
 <template>
-  <el-input ref="inputRef" class="k-input" v-bind="$attrs" :size="getCompSize(props.size)">
+  <el-input ref="inputRef" class="k-input" v-bind="$attrs" :prefix-icon="iconLeft ?? prefixIcon" :suffix-icon="iconRight ?? suffixIcon" :size="getCompSize(props.size)">
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
       <slot :name="name" v-bind="data"></slot>
     </template>
   </el-input>
 </template>
+
+<!-- :suffix-icon="iconLeft ?? suffixIcon"  -->
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
@@ -17,11 +19,13 @@ defineOptions({
 
 const props = withDefaults(defineProps<InputProps>(), {
   size: 'base',
-  iconLeft: ''
+  iconLeft: undefined,
+  iconRight: undefined
 });
 
 onMounted(() => {
-  // console.log(props.iconLeft);
+  console.log('iconLeft', props.iconLeft);
+  console.log('iconRight', props.iconRight);
 });
 
 const inputRef = ref<any>(null);
