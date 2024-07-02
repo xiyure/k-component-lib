@@ -1,38 +1,36 @@
 <template>
-  <div v-show="isVisible" class="k-operate">
-    <div class="k-operate__header">{{ props.dataSize ? props.dataSize : '--' }}</div>
+  <div v-if="Number.isInteger(dataSize) && dataSize > 0" class="k-operate">
+    <span class="k-operate__header">{{ dataSize || '-' }}</span>
     <div class="k-operate__content">
       <ul class="k-operate__list">
         <li class="list-header">{{ $t('batchOperation') }}:</li>
         <li
-          v-for="item, index in modelValue"
+          v-for="item, index in showData"
           :key="index"
           class="k-operate-list__item"
-          @click="run(item)"
+          @click="handler(item.handler)"
         >
           {{ item.label }}
         </li>
         <li
-          v-show="props.modelValue.length > props.max"
+          v-if="hideData.length"
           class="k-operate-rest"
         >
-          <el-dropdown trigger="click">
-            <span class="el-dropdown-link">
-              <IconMore color="#2882FF" />
-            </span>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item
-                  v-for="item, index in restData"
-                  :key="index"
-                  :style="{color: '#2882FF'}"
-                  @click="run(item)"
-                >
-                  {{ item.label }}
-                </el-dropdown-item>
-              </el-dropdown-menu>
+          <k-dropdown trigger="click">
+            <template #title>
+              <span class="el-dropdown-link">
+                <IconMore color="#2882FF" />
+              </span>
             </template>
-          </el-dropdown>
+            <k-dropdown-item
+              v-for="item, index in hideData"
+              :key="index"
+              :style="{color: '#2882FF'}"
+              @click="handler(item.handler)"
+            >
+              {{ item.label }}
+            </k-dropdown-item>
+          </k-dropdown>
         </li>
       </ul>
       <div class="k-operate__close"><IconClose @click="handleClose" /></div>
@@ -43,60 +41,47 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { IconClose, IconMore } from 'ksw-vue-icon';
+import { KDropdown, KDropdownItem } from '../dropdown';
+import { OperateProps } from './type.d';
 
 defineOptions({
   name: 'KOperate'
 });
 
-type ActionDataType = {
-  label: string,
-  action: () => any,
-  params: Array<any>
-}
-
-const props = defineProps({
-  dataSize: {
-    type: Number || String,
-    default: () => '--'
-  },
-  modelValue: {
-    type: Array<ActionDataType>,
-    default: () => [],
-    reuired: true
-  },
-  max: {
-    type: Number,
-    default: () => 5
-  },
-  visible: {
-    type: Boolean,
-    default: () => false,
-    reuired: true
-  }
+const props = withDefaults(defineProps<OperateProps>(), {
+  data: [],
+  max: 5,
+  dataSize: 0
 });
 
-const modelValue = ref(props.modelValue);
-const isVisible = ref(props.visible);
-const restData = ref<ActionDataType[]>([]);
+const hideData = ref<any>([]);
+const showData = ref<any>([]);
 
-watch(() => [props.modelValue, props.max], () => {
-  const { max } = props;
-  if (props.modelValue.length > max) {
-    modelValue.value = props.modelValue.slice(0, max);
-    restData.value = props.modelValue.slice(max);
+watch(() => [props.data, props.max], () => {
+  if (!Array.isArray(props.data)) {
+    showData.value = [];
+    hideData.value = [];
+    return;
   }
-}, { immediate: true });
-watch(() => props.visible, (newValue) => {
-  isVisible.value = newValue;
-}, { immediate: true });
+  const { max } = props;
+  if (props.data?.length > max) {
+    showData.value = props.data.slice(0, max);
+    hideData.value = props.data.slice(max);
+  } else {
+    showData.value = props.data;
+    hideData.value = [];
+  }
+}, { immediate: true, deep: true });
 
-const emits = defineEmits(['run', 'close']);
+const emits = defineEmits(['close', 'update:ModelValue']);
 
-function run(runItem: any) {
-  emits('run', runItem);
+function handler(callback: () => any) {
+  if (typeof callback === 'function') {
+    callback();
+  }
 }
 function handleClose() {
-  isVisible.value = false;
+  emits('update:ModelValue', false);
   emits('close');
 }
 

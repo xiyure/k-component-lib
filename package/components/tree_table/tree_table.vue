@@ -86,6 +86,8 @@
         :show-overflow="showOverflow"
         :auto-resize="autoResize"
         v-bind="$attrs"
+        @checkbox-change="checkBoxChange"
+        @checkbox-all="checkboxAll"
         @hide-column="hideColumn"
         @cell-click="cellClick"
       >
@@ -145,6 +147,13 @@
           <slot name="loading"></slot>
         </template>
       </k-table>
+      <!-- 批量操作 -->
+      <div v-if="showBatchOperation" v-ksw_drag class="batch-operate">
+        <k-operate
+          :data-size="checkedDataSize"
+          :data="batchOperations"
+        />
+      </div>
     </div>
     <div v-if="isPaging" class="pagination-box">
       <k-pagination
@@ -171,6 +180,7 @@ import { KInput } from '../input';
 import { KButton } from '../button';
 import { KTransfer } from '../transfer';
 import { KPopover } from '../popover';
+import { KOperate } from '../operate';
 import { TreeTableProps } from './type';
 import { KTable, KTableColumn } from '../table';
 import { KPagination } from '../pagination';
@@ -560,6 +570,35 @@ function cellClick({ row, _rowIndex }) {
     preRowKey = _rowIndex;
   }
   emits('highlight-change', row, isHighlight);
+}
+// 批量操作
+const checkedData = new Set();
+const checkedDataSize = ref(0);
+function checkBoxChange({ row, checked }) {
+  if (!props.showBatchOperation) {
+    return;
+  }
+  if (checked) {
+    checkedData.add(row.id);
+  } else {
+    checkedData.delete(row.id);
+  }
+  checkedDataSize.value = checkedData.size;
+}
+function checkboxAll({ checked }) {
+  if (!props.showBatchOperation) {
+    return;
+  }
+  if (checked) {
+    for (const row of showTableData.value) {
+      checkedData.add(row.id);
+    }
+  } else {
+    for (const row of showTableData.value) {
+      checkedData.delete(row.id);
+    }
+  }
+  checkedDataSize.value = checkedData.size;
 }
 const tableInstance = computed(() => xTree?.value.tableInstance);
 defineExpose({

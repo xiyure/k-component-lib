@@ -7,7 +7,7 @@
     :size="getCompSize(size)"
   >
     <slot>
-      <span class="checkbox__label">
+      <span class="checkbox__label" @click="handleClickLabel">
         {{ props.label }}
       </span>
     </slot>
@@ -25,7 +25,9 @@ defineOptions({
 
 const fillColor = inject('_fillColor', ref(''));
 
-const props = withDefaults(defineProps<SelectButtonProps>(), {});
+const props = withDefaults(defineProps<SelectButtonProps>(), {
+  strict: false
+});
 const kCheckboxRef = ref();
 
 watch(() => [props.color, fillColor.value], () => {
@@ -41,6 +43,11 @@ watch(() => [props.color, fillColor.value], () => {
   });
 }, { immediate: true });
 
+function handleClickLabel(e) {
+  if (props.strict) {
+    e.preventDefault();
+  }
+}
 </script>
 
 <style lang="css">

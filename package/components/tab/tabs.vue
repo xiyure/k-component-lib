@@ -18,7 +18,7 @@ defineOptions({
 const props = defineProps({
   modelValue: {
     type: String,
-    default: '',
+    default: undefined,
   },
   router: {
     type: Boolean,
@@ -26,7 +26,7 @@ const props = defineProps({
   }
 });
 
-const activeName = ref('');
+const activeName = ref<string | undefined>(undefined);
 
 provide('isUseRouter', props.router);
 provide('activeName', activeName);

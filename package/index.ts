@@ -8,6 +8,7 @@ import 'ksw-vue-icon/styles/icon.css';
 import './style/font.less';
 import { createI18n } from 'vue-i18n';
 import * as components from './components';
+import * as directives from './directives';
 import zh from './internal/zh';
 import en from './internal/en';
 import { Emitter } from './utils';
@@ -27,8 +28,13 @@ const install = (Vue: any, options?: optionsType) => {
   });
   Vue.use(VXETable);
   Vue.use(i18n);
+  // 组件注册
   for (const name in components) {
     Vue.component(name, components[name]);
+  }
+  // 自定义指令注册
+  for (const name in directives) {
+    Vue.directive(`ksw_${name}`, directives[name]);
   }
   // 全局事件管理，用于多级组件之间的通信
   Vue.config.globalProperties.__emitter__ = new Emitter();

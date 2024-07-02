@@ -2,7 +2,7 @@
   <el-tab-pane
     class="k-tab-item"
     v-bind="$attrs"
-    :name="props.name"
+    :name="name"
   >
     <template #label>
       <div class="k-tab__label">
@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { shallowRef, watch, inject, getCurrentInstance } from 'vue';
+import { shallowRef, watch, inject, getCurrentInstance, ref } from 'vue';
 import { TabItemProps } from './type';
 
 defineOptions({
@@ -32,16 +32,16 @@ defineOptions({
 
 const props = withDefaults(defineProps<TabItemProps>(), {
   label: '',
-  name: '',
-  path: '#'
+  path: '#',
+  name: undefined
 });
 
 const slots = defineSlots();
 
 const appConfig = getCurrentInstance()?.appContext.app.config;
 const router = appConfig?.globalProperties.$router;
-const isUseRouter = inject('isUseRouter');
-const activeName:any = inject('activeName');
+const isUseRouter = inject('isUseRouter', false);
+const activeName:any = inject('activeName', ref(''));
 const routes = router?.getRoutes() || [];
 const currentRouteComp = shallowRef<any>(null);
 

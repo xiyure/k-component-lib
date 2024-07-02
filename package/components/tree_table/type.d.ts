@@ -54,4 +54,6 @@ export interface TreeTableProps {
   showDescription?: boolean
   showTransfer?: boolean
   showHeaderTools?: boolean
+  batchOperations?: any[]
+  showBatchOperation?: boolean
 }
