@@ -13,8 +13,12 @@
   --border-color--checked: var(--k-blue-500);
   --border-radius: var(--k-rounded-base);
 
+  cursor: text;
+
   .el-input__wrapper {
     .init-style();
+
+    cursor: text;
     height: var(--height);
     padding: 0.25rem 0.625rem;
     border-radius: var(--border-radius);
@@ -24,6 +28,8 @@
     .el-input__inner {
       .init-style();
       .text-base();
+
+      cursor: text;
       color: var(--k-normal);
       caret-color: var(--border-color--checked);
     }
@@ -110,12 +116,18 @@
   --border-color--checked: var(--k-blue-500);
   --border-radius: var(--k-rounded-base);
 
-  display: flex;
+  width: 100%;
   height: 2rem;
   position: relative;
   border-radius: var(--border-radius);
+
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+
   .k-input-group__prepend,
   .k-input-group__append {
+    // min-width: 2rem;
+    width: fit-content;
     .text-base();
     color: var(--k-status-info);
     display: flex;
@@ -141,6 +153,7 @@
   .k-input-group__prepend:has(.k-select) {
     padding: 0;
     border: unset;
+
     button,
     .k-select .el-select__wrapper {
       border-top-right-radius: 0;
@@ -166,6 +179,7 @@
   .k-input-group__append:has(.k-select) {
     padding: 0;
     border: unset;
+
     button,
     .k-select .el-select__wrapper {
       border-top-left-radius: 0;
