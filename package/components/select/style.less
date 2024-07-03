@@ -1,0 +1,38 @@
+@import '../../style/variable.css';
+@import '../../style/general.less';
+
+.k-select {
+  // 所有样式设置为unset
+  .init-style();
+  min-width: 64px;
+
+  --bg-color: #fff;
+  --height: 2rem;
+  --border-radius: var(--k-rounded-base);
+  --border-color--normal: var(--k-gray-200);
+  --border-color--hover: var(--k-blue-400);
+  --border-color--checked: var(--k-blue-500);
+  --border-radius: var(--k-rounded-base);
+
+  position: fixed;
+
+  .el-select__wrapper {
+    .init-style();
+    .text-base();
+    height: var(--height);
+    padding: 0.25rem 0.625rem;
+    border-radius: var(--border-radius);
+    border: var(--border-color--normal) 1px solid;
+    background: #fff;
+  }
+  .el-select__wrapper.is-hovering:not(.is-focused) {
+    box-shadow: unset;
+    // box-shadow: 0 0 0 4px rgba(40, 130, 255, 0.2);
+    border: var(--border-color--hover) 1px solid;
+  }
+  .el-select__wrapper.is-focused {
+    box-shadow: unset;
+    border: var(--border-color--checked) 1px solid;
+    box-shadow: 0 0 0 4px rgba(40, 130, 255, 0.2);
+  }
+}

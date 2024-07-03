@@ -91,6 +91,14 @@
     border-top-right-radius: var(--border-radius);
     border-bottom-right-radius: var(--border-radius);
   }
+  &.is-disabled {
+    .el-input__wrapper {
+      .el-input__inner {
+        pointer-events: none;
+        cursor: not-allowed;
+      }
+    }
+  }
 }
 
 .k-input-group {
@@ -105,7 +113,6 @@
   display: flex;
   height: 2rem;
   position: relative;
-  // background: #ddd;
   border-radius: var(--border-radius);
   .k-input-group__prepend,
   .k-input-group__append {
@@ -129,11 +136,38 @@
     transform: translateX(-1px);
   }
 
-  // append,
-  .k-input-group__append:has(button) {
+  // prepend
+  .k-input-group__prepend:has(button),
+  .k-input-group__prepend:has(.k-select) {
     padding: 0;
     border: unset;
-    button {
+    button,
+    .k-select .el-select__wrapper {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+  .k-input-group__prepend + .k-input {
+    .el-input__wrapper {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+  .k-input:has(+ .k-input-group__prepend) {
+    .el-input__wrapper {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      z-index: 1;
+    }
+  }
+
+  // append,
+  .k-input-group__append:has(button),
+  .k-input-group__append:has(.k-select) {
+    padding: 0;
+    border: unset;
+    button,
+    .k-select .el-select__wrapper {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
@@ -152,32 +186,25 @@
     }
   }
 
-  // prepend
-  .k-input-group__prepend:has(button),
-  .k-input-group__prepend:has(.k-select) {
-    padding: 0;
-    border: unset;
-    button,
-    .k-select {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-  }
-  .k-input-group__prepend + .k-input {
-    .el-input__wrapper {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-  }
-  .k-input:has(+ .k-input-group__prepend) {
-    .el-input__wrapper {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-      z-index: 1;
-    }
-  }
   .k-input-group__prepend:has(button):hover,
   .k-input-group__append:has(button):hover {
     z-index: 2;
+  }
+}
+
+.k-input.el-textarea {
+  .el-textarea__inner {
+    .text-base();
+    box-shadow: unset;
+    box-sizing: border-box;
+
+    border: 1px solid var(--border-color--normal);
+  }
+  .el-textarea__inner:hover {
+    border: 1px solid var(--border-color--hover);
+  }
+  .el-textarea__inner:focus {
+    border: 1px solid var(--border-color--checked);
+    box-shadow: 0 0 0 4px rgba(40, 130, 255, 0.2);
   }
 }

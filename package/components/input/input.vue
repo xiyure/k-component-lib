@@ -23,11 +23,6 @@ const props = withDefaults(defineProps<InputProps>(), {
   iconRight: undefined
 });
 
-onMounted(() => {
-  console.log('iconLeft', props.iconLeft);
-  console.log('iconRight', props.iconRight);
-});
-
 const inputRef = ref<any>(null);
 
 const focus = () => {

@@ -66,8 +66,6 @@ const props = withDefaults(defineProps<ButtonProps>(), {
 
 const color = ref(props.color);
 
-onMounted(() => {});
-
 // 获取 button dom
 const el = ref();
 // 等待 dom 更新

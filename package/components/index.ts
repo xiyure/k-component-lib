@@ -1,5 +1,5 @@
 import { KButton } from './button';
-import { KInput } from './input';
+import { KInput, KInputGroup } from './input';
 import { KInputNumber } from './input _number';
 import { KRadio, KRadioGroup } from './radio';
 import { KCheckbox, KCheckboxGroup } from './checkbox';
@@ -38,6 +38,7 @@ import { KTreeTransfer } from './tree_transfer';
 export {
   KButton,
   KInput,
+  KInputGroup,
   KInputNumber,
   KRadio,
   KRadioGroup,
