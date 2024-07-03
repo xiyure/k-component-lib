@@ -1,6 +1,6 @@
 <template>
   <div :id="id" class="k-transfer">
-    <div class="k-transfer_seacher">
+    <div class="k-transfer_searcher">
       <k-input
         v-if="filterable"
         v-model="searchStr"

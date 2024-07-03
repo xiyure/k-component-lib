@@ -339,10 +339,16 @@ watch(() => props.column, () => {
   handleCustomRender();
 }, { immediate: true, deep: true });
 watch(() => props.column.length, () => {
-  originData.value = props.column.map((item) => ({
-    label: item.title,
-    key: item.field
-  }));
+  originData.value = props.column.map((item) => {
+    if (item.title && item.field) {
+      return {
+        label: item.title,
+        key: item.field
+      }
+    } else {
+      return null;
+    }
+  }).filter(item => item);
   selectData.value = props.column.filter(col => col.visible !== false)
   .map((item) => ({
     label: item.title,
