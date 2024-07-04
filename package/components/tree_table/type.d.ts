@@ -1,5 +1,8 @@
+import { VxeColgroupProps } from 'vxe-table';
+
 export interface columnConfigType {
   visible?: boolean
+  type?: string
   key?: string | number
   field?: string
   title?: string
@@ -13,6 +16,10 @@ export interface columnConfigType {
   minWidth?: string | number
   sortable?: boolean
   showIcon?: boolean
+  showColumnMenu?: boolean
+  group?: VxeColgroupProps[]
+  dataType?: string
+  render?: () => any
 }
 
 export interface PaginationConfigType {
@@ -38,10 +45,10 @@ export interface TreeTableProps {
   autoResize?: boolean
   height?: string
   fit?: boolean
-  border?: boolean
+  border?: boolean | string
   emptyText?: string
   rowStyle?: object | ((rowInfo: any) => object)
-  column: any[]
+  column: columnConfigType[]
   exactMatch?: boolean
   showPage?: boolean
   useTree?: boolean

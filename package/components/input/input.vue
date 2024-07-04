@@ -1,5 +1,8 @@
 <template>
-  <el-input ref="inputRef" class="k-input" v-bind="$attrs" :prefix-icon="iconLeft ?? prefixIcon" :suffix-icon="iconRight ?? suffixIcon" :size="getCompSize(props.size)">
+  <el-input
+    ref="inputRef" class="k-input" v-bind="$attrs"
+    :prefix-icon="iconLeft ?? prefixIcon" :suffix-icon="iconRight ?? suffixIcon" :size="getCompSize(props.size)"
+  >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
       <slot :name="name" v-bind="data"></slot>
     </template>

@@ -1,4 +1,5 @@
 import { Component } from 'vue';
+
 export interface InputProps {
   /**
    * 尺寸

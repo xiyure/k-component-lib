@@ -91,52 +91,11 @@
         @hide-column="hideColumn"
         @cell-click="cellClick"
       >
-        <template v-for="item in columns">
-          <k-table-column
-            v-if="item.visible !== false"
-            :key="item.key"
-            :type="item.type"
-            :field="item.field"
-            :title="item.title"
-            :fixed="item.fixed"
-            :width="item.width || 'auto'"
-            :filters="item.filters"
-            :tree-node="item.treeNode"
-            :align="item.align"
-            :cell-render="item.cellRender"
-            :sortable="item.sortable"
-            :min-width="item.minWidth"
-            :edit-render="item.editRender"
-            :show-column-menu="item.showColumnMenu !== false"
-          >
-            <template v-if="$slots[item.field]" #default="data">
-              <slot :name="item.field" v-bind="data"></slot>
-            </template>
-            <template
-              v-else-if="
-                !item.render &&
-                  !item.editRender &&
-                  ((item.type && checkboxConfig.labelField) || !item.type)
-              "
-              #default="{ row }"
-            >
-              <span>
-                <component 
-                  :is="row.icon"
-                  v-if="item.showIcon && row.icon" 
-                  :style="{
-                    marginRight: '3px'
-                  }"
-                  :color="row.iconStyle?.empty ? '#cdcacf' : row.iconStyle?.color"
-                  :size="row.iconStyle?.size ?? 13"
-                />
-              </span>
-              <span v-if="!item.type">
-                {{ row[item.field] === '' ? '-' : row[item.field] ?? '-' }}
-              </span>
-            </template>
-          </k-table-column>
-        </template>
+        <KColumnGroup :column="columns">
+          <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+            <slot :name="name" v-bind="data"></slot>
+          </template>
+        </KColumnGroup>
         <template v-if="slots.empty" #empty>
           <slot name="empty"></slot>
         </template>
@@ -176,13 +135,14 @@ import { ref, computed, watch, nextTick, getCurrentInstance } from 'vue';
 import VXETable, { VxeTableInstance } from 'vxe-table';
 import { IconSearch, IconSetting, IconRefresh } from 'ksw-vue-icon';
 import { isNumber } from 'lodash';
+import KColumnGroup from './column_group';
 import { KInput } from '../input';
 import { KButton } from '../button';
 import { KTransfer } from '../transfer';
 import { KPopover } from '../popover';
 import { KOperate } from '../operate';
 import { TreeTableProps } from './type';
-import { KTable, KTableColumn } from '../table';
+import { KTable } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
 import { genRandomStr } from '../../utils';
@@ -193,7 +153,7 @@ defineOptions({
 
 const props = withDefaults(defineProps<TreeTableProps>(), {
   showPage: true,
-  border: true,
+  border: 'default',
   height: '100%',
   showOverflow: true,
   showHeader: true,
@@ -344,10 +304,9 @@ watch(() => props.column.length, () => {
       return {
         label: item.title,
         key: item.field
-      }
-    } else {
-      return null;
-    }
+      };
+    } 
+    return null;
   }).filter(item => item);
   selectData.value = props.column.filter(col => col.visible !== false)
   .map((item) => ({
