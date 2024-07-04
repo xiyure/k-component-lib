@@ -122,6 +122,7 @@ const getOriginAttrs = () => {
 
 const emits = defineEmits(['click']);
 const handleClick = (e: Event) => {
+  if (props.disabled) return;
   emits('click', e);
 };
 </script>

@@ -1,8 +1,17 @@
 <template>
   <el-tree-select ref="KTreeSelectRef" v-bind="$attrs" @node-click="handleNodeClick">
-    <template #default="{ node, data }">
-      <span class="custom-tree-node" @click="() => console.log(node, data, data.icon)">
+    <!-- <template #default="{ node, data }">
+      <span class="custom-tree-node" @click="() => console.log(node, data)">
+        <component :is="IconClose" v-show="!states"></component>
+        <component :is="IconOpen" v-show="states"></component>
         <component :is="data.icon"></component>
+        {{ data.label }}
+      </span>
+    </template> -->
+
+    <template #default="{ node, data }">
+      <span>
+        <component :is="data.icon" />
         {{ data.label }}
       </span>
     </template>
@@ -15,25 +24,50 @@ import { TreeSelectProps } from './type.d';
 import { IconFlowNested, IconFolderOpen } from 'ksw-vue-icon';
 import { toRaw } from 'vue';
 
+
+
 defineOptions({
   name: 'KTreeSelect'
 });
 
+
+const handleNodeClick = (data, node, context) => {
+  if (Node.expanded) {
+    console.log(`Node ${data.label} is a leaf node. 展开`);
+    data.icon = IconFolderOpen;
+  } else {
+    console.log(`Node ${data.label} is not a leaf node. 收起`);
+    data.icon = IconFlowNested;
+    if (!node.expanded) {
+      data.icon = IconFolderOpen;
+    } else {
+      data.icon = IconFlowNested;
+    }
+  }
+};
+
 // const myicon = ref(IconFlowNested);
 const props = withDefaults(defineProps<TreeSelectProps>(), {
-  icon: IconFlowNested
+  icon: IconFlowNested,
 });
 
-const handleNodeClick = (data, Node, conext) => {
-  // 获取当前节点的 class
+// const IconOpen = IconFolderOpen;
+// const IconClose = IconFlowNested;
 
-  // console.log(Node.icon);
-  // console.log(Node.expanded, data);
-  // // 如果是节点展开, 更改当前节点的图标
-  // if (Node.expanded) {
-  // } else {
-  // }
-};
+// const states = ref(false)
+
+// const handleNodeClick = (data, Node, conext) => {
+//   // 获取当前节点的 class
+
+//   // states.value = !states.value;
+
+//   // console.log(Node.icon);
+//   // console.log(Node.expanded, data);
+//   // // 如果是节点展开, 更改当前节点的图标
+//   // if (Node.expanded) {
+//   // } else {
+//   // }
+// };
 
 const KTreeSelectRef = ref();
 
