@@ -28,42 +28,41 @@ export default defineComponent({
           }
       </Fragment>
     )
+    function addColumnGroup(col) {
+      const group = col.group || [];
+      return  <KColumnGroup
+        { ...col }
+        resizable={true}
+      >
+        {
+          group.map((item) => {
+            if (Array.isArray(item.group) && item.group.length) {
+              return addColumnGroup(item)
+            } else {
+              return <KTableColumn {...item}></KTableColumn>
+            }
+          })
+        }
+      </KColumnGroup>
+    }
+    function getTableColumn(slots, col) {
+      if (!col.render) {
+        return <KTableColumn {...col}>
+        {
+         (data) =>{
+           const field = col.field ?? '';
+           const { row } = data;
+           if (slots[field]) {
+             return slots[field]?.(data);
+           } else if (!col.render && !col.type) {
+               return <TableColumnContent col={col} row={row} />
+           }
+         }
+        }
+        </KTableColumn>
+      } else {
+        return <KTableColumn {...col} />
+      }
+    }
   }
 })
-
-function addColumnGroup(col) {
-  const group = col.group || [];
-  return  <KColumnGroup
-    { ...col }
-    resizable={true}
-  >
-    {
-      group.map((item) => {
-        if (Array.isArray(item.group) && item.group.length) {
-          return addColumnGroup(item)
-        } else {
-          return <KTableColumn {...item}></KTableColumn>
-        }
-      })
-    }
-  </KColumnGroup>
-}
-function getTableColumn(slots, col) {
-  if (!col.render) {
-    return <KTableColumn {...col}>
-    {
-     (data) =>{
-       const field = col.field ?? '';
-       const { row } = data;
-       if (slots[field]) {
-         return slots[field]?.(data);
-       } else if (!col.render && !col.editRender && !col.type) {
-           return <TableColumnContent col={col} row={row} />
-       }
-     }
-    }
-    </KTableColumn>
-  } else {
-    return <KTableColumn {...col} />
-  }
-}

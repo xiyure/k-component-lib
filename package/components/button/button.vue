@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, nextTick, watch } from 'vue';
+import { computed, ref, nextTick, watch } from 'vue';
 import { IconLoading } from 'ksw-vue-icon';
 import { ButtonProps } from './type.d';
 import { isValidColor, GetColorLevel, genRandomStr } from '../../utils';

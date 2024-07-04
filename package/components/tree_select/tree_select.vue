@@ -19,10 +19,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { TreeSelectProps } from './type.d';
+import { ref, onMounted, toRaw } from 'vue';
 import { IconFlowNested, IconFolderOpen } from 'ksw-vue-icon';
-import { toRaw } from 'vue';
+import { TreeSelectProps } from './type.d';
 
 
 

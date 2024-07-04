@@ -86,10 +86,22 @@
         :show-overflow="showOverflow"
         :auto-resize="autoResize"
         v-bind="$attrs"
-        @checkbox-change="checkBoxChange"
-        @checkbox-all="checkboxAll"
-        @hide-column="hideColumn"
-        @cell-click="cellClick"
+        @checkbox-change="(data) => {
+          checkBoxChange(data);
+          emits('checkbox-change', data);
+        }"
+        @checkbox-all="(data) => {
+          checkboxAll(data);
+          emits('checkbox-all', data);
+        }"
+        @hide-column="(data) => {
+          hideColumn(data);
+          emits('hide-column', data);
+        }"
+        @cell-click="(data) => {
+          cellClick(data);
+          emits('cell-click', data);
+        }"
       >
         <KColumnGroup :column="columns">
           <template v-for="(_, name) in $slots" :key="name" #[name]="data">
@@ -107,10 +119,11 @@
         </template>
       </k-table>
       <!-- 批量操作 -->
-      <div v-if="showBatchOperation" v-ksw_drag class="batch-operate">
+      <div v-if="showBatchOperation && checkedDataSize > 0" v-ksw_drag class="batch-operate">
         <k-operate
           :data-size="checkedDataSize"
           :data="batchOperations"
+          @close="closeBatchOperation"
         />
       </div>
     </div>
@@ -131,8 +144,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, getCurrentInstance } from 'vue';
-import VXETable, { VxeTableInstance } from 'vxe-table';
+import { ref, computed, onMounted, watch, nextTick, getCurrentInstance } from 'vue';
+import VXETable from 'vxe-table';
 import { IconSearch, IconSetting, IconRefresh } from 'ksw-vue-icon';
 import { isNumber } from 'lodash';
 import KColumnGroup from './column_group';
@@ -203,12 +216,25 @@ const defaultEditConfig = {
 const defaultScrollY = { enabled: true };
 const defaultColumnConfig = { resizable: true };
 
+onMounted(() => {
+  const { checkRowKeys } = checkboxConfig.value;
+  if (Array.isArray(checkRowKeys)) {
+    for (const id of checkRowKeys) {
+      checkedData.add(id);
+    }
+    checkedDataSize.value = checkedData.size;
+  }
+});
 const emits = defineEmits([
   'remote-query',
   'server-paging',
   'refresh',
   'highlight-clear',
-  'highlight-change'
+  'highlight-change',
+  'cell-click',
+  'hide-column',
+  'checkbox-change',
+  'checkbox-all'
 ]);
 const xTree = ref();
 const columns = ref<any>([]);
@@ -222,6 +248,9 @@ const defaultKeys = ref<any>([]);
 const tableFilterRef = ref();
 const filterData = ref(props.data || []);
 const filterConditionInfo:any = ref(null);
+
+// 表格实例
+const tableInstance = computed(() => xTree.value?.tableInstance);
 const headerText = computed(() => {
   let text = '';
   if (filterConditionInfo.value?.conditionList?.length) {
@@ -307,7 +336,7 @@ watch(() => props.column.length, () => {
       };
     } 
     return null;
-  }).filter(item => item);
+  }).filter((item) => item);
   selectData.value = props.column.filter(col => col.visible !== false)
   .map((item) => ({
     label: item.title,
@@ -323,8 +352,7 @@ function filterTableData() {
   if (!searchKey) {
     if (props.useTree) {
       nextTick(() => {
-        const VxeInstance:VxeTableInstance = xTree.value.tableInstance;
-        VxeInstance.setAllTreeExpand(false);
+        tableInstance.value?.setAllTreeExpand(false);
       });
     }
     return filterData.value;
@@ -348,8 +376,7 @@ function filterTableData() {
     tableData = sortFunc(treeData, props.data, rowField);
     if (tableData.length < 500) {
       nextTick(() => {
-        const VxeInstance:VxeTableInstance = xTree.value.tableInstance;
-        VxeInstance.setAllTreeExpand(true);
+        tableInstance.value?.setAllTreeExpand(true);
       });
     }
   }
@@ -489,10 +516,12 @@ function getTreeConfigField() {
 }
 function updateColumn(ids: string[]) {
   columns.value.forEach(col => {
-    if (ids.includes(col.field)) {
-      col.visible = true;
-    } else {
-      col.visible = false;
+    if (!col.type) {
+      if (ids.includes(col.field)) {
+        col.visible = true;
+      } else {
+        col.visible = false;
+      }
     }
   });
 }
@@ -526,7 +555,7 @@ function cellClick({ row, _rowIndex }) {
   if (!isHighlight) {
     isHighlight = true;
   } else if (isHighlight && preRowKey === _rowIndex) {
-    xTree.value.tableInstance.setCurrentRow(null);
+    tableInstance.value?.setCurrentRow(null);
     isHighlight = false;
     preRowKey = null;
     emits('highlight-clear', row);
@@ -565,10 +594,41 @@ function checkboxAll({ checked }) {
   }
   checkedDataSize.value = checkedData.size;
 }
-const tableInstance = computed(() => xTree?.value.tableInstance);
+function closeBatchOperation() {
+  checkedData.clear();
+  checkedDataSize.value = 0;
+  tableInstance.value?.clearCheckboxRow?.();
+  tableInstance.value?.clearCheckboxReserve?.();
+}
+function setCheckboxRow(rows, checked) {
+  const newRows = Array.isArray(rows) ? rows : [rows];
+  for (const row of newRows) {
+    if (checked) {
+      checkedData.add(row.id);
+    } else {
+      checkedData.delete(row.id);
+    }
+  }
+  checkedDataSize.value = checkedData.size;
+  xTree.value?.tableInstance?.setCheckboxRow(newRows, checked);
+}
+function setAllCheckboxRow(checked) {
+  if (checked) {
+    for (const row of showTableData.value) {
+      checkedData.add(row.id);
+    }
+  } else {
+    checkedData.clear();
+  }
+  checkedDataSize.value = checkedData.size;
+  xTree.value?.tableInstance?.setAllCheckboxRow(checked);
+}
+
 defineExpose({
   tableInstance,
-  filter
+  filter,
+  setCheckboxRow,
+  setAllCheckboxRow
 });
 </script>
 

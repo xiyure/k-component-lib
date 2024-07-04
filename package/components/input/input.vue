@@ -12,7 +12,7 @@
 <!-- :suffix-icon="iconLeft ?? suffixIcon"  -->
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { InputProps } from './type.d';
 import { getCompSize } from '../../utils';
 

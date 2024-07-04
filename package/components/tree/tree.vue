@@ -1,7 +1,10 @@
 <template>
   <div class="k-tree">
     <div class="k-tree__filter">
-      <k-input v-if="props.showFilter" v-model="query" @input="filterTreeNode" @keyup.enter="filter(query)">
+      <k-input
+        v-if="props.showFilter" v-model="query" @input="filterTreeNode"
+        @keyup.enter="filter(query)"
+      >
         <template #append>
           <span class="k-tree__filter-append" @click="filter(query)"><IconSearch /></span>
         </template>

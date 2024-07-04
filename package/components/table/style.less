@@ -35,6 +35,13 @@
   }
 }
 .k-table {
+  .vxe-cell {
+    // display: flex;
+    // align-items: center;
+    // .vxe-cell--title {
+    //   width: 100%;
+    // }
+  }
   .vxe-cell--sort,
   .vxe-cell--filter,
   .vxe-table--filter-wrapper,
@@ -43,8 +50,10 @@
   }
   .vxe-cell--checkbox.is--disabled {
     .vxe-checkbox--icon {
-      background-color: @k-gray-100;
-      box-shadow: inset 0px 0px 0px 2px #FFFFFF;
+      background-image: linear-gradient(@k-gray-100, @k-gray-100);
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 80% 80%;
     }
   }
   &.drag_table {
