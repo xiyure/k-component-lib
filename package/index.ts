@@ -12,7 +12,6 @@ import * as directives from './directives';
 import zh from './internal/zh';
 import en from './internal/en';
 import { Emitter } from './utils';
-import { KswIcon } from 'ksw-vue-icon';
 
 type optionsType = {
   locale?: 'zh' | 'en';
@@ -40,8 +39,6 @@ const install = (Vue: any, options?: optionsType) => {
   // 全局事件管理，用于多级组件之间的通信
   Vue.config.globalProperties.__emitter__ = new Emitter();
   Vue.config.globalProperties.$t = i18n.global.t;
-
-  Vue.use(KswIcon); // 图标组件注册
 };
 
 export * from './components';
