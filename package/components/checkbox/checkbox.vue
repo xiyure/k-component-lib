@@ -5,9 +5,10 @@
     v-bind="$attrs"
     :label="label"
     :size="getCompSize(size)"
+    @click="handleClickLabel"
   >
     <slot>
-      <span class="checkbox__label" @click="handleClickLabel">
+      <span class="checkbox__label">
         {{ props.label }}
       </span>
     </slot>
@@ -44,7 +45,11 @@ watch(() => [props.color, fillColor.value], () => {
 }, { immediate: true });
 
 function handleClickLabel(e) {
-  if (props.strict) {
+  if (!props.strict) {
+    return;
+  }
+  const isCheckbox = e.target.classList.contains('el-checkbox__inner');
+  if (!isCheckbox) {
     e.preventDefault();
   }
 }

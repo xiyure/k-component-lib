@@ -1,13 +1,15 @@
 <template>
-  <component 
-    :is="displayIcon(row)"
-    v-if="props.col.showIcon && (row.icon || row.__folder)"
-    :style="{ marginRight: `${row.iconStyle?.marginRight ?? 3}px`}"
-    :color="row.iconStyle?.empty ? '#cdcacf' : row.iconStyle?.color"
-    :size="row.iconStyle?.size ?? 13"
-  />
-  <span v-if="!col.type">
-    {{ row[col.field] === '' ? '-' : row[col.field] ?? '-' }}
+  <span class="k-column-default__content">
+    <component 
+      :is="displayIcon(row)"
+      v-if="props.col.showIcon && (row.icon || row.__folder)"
+      :style="{ marginRight: `${row.iconStyle?.marginRight ?? 3}px`}"
+      :color="row.iconStyle?.empty ? '#cdcacf' : row.iconStyle?.color"
+      :size="row.iconStyle?.size ?? 13"
+    />
+    <span v-if="!col.type">
+      {{ row[col.field] === '' ? '-' : row[col.field] ?? '-' }}
+    </span>
   </span>
 </template>
 
