@@ -1,22 +1,13 @@
 <template>
   <div class="k-tree">
     <div class="k-tree__filter">
-      <k-input
-        v-if="props.showFilter"
-        v-model="query"
-        @input="filterTreeNode"
-        @keyup.enter="filter(query)"
-      >
+      <k-input v-if="props.showFilter" v-model="query" @input="filterTreeNode" @keyup.enter="filter(query)">
         <template #append>
           <span class="k-tree__filter-append" @click="filter(query)"><IconSearch /></span>
         </template>
       </k-input>
     </div>
-    <el-tree-v2
-      ref="KTreeRef"
-      v-bind="$attrs"
-      :filter-method="filterMethod"
-    >
+    <el-tree-v2 ref="KTreeRef" v-bind="$attrs" :filter-method="filterMethod">
       <template v-for="(_, name) in $slots" :key="name" #[name]="data">
         <slot :name="name" v-bind="data"></slot>
       </template>
@@ -38,13 +29,13 @@ defineOptions({
 const props = withDefaults(defineProps<TreeProps>(), {
   showFilter: true,
   lazy: true,
-  filterMethod: (query:string, node:TreeNode) => node.label?.includes(query)
+  filterMethod: (query: string, node: TreeNode) => node.label?.includes(query)
 });
 
 const KTreeRef = ref();
 const query = ref('');
 
-function filterTreeNode(value:string) {
+function filterTreeNode(value: string) {
   if (props.lazy) {
     return;
   }
