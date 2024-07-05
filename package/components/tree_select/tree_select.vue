@@ -23,12 +23,9 @@ import { ref, onMounted, toRaw } from 'vue';
 import { IconFlowNested, IconFolderOpen } from 'ksw-vue-icon';
 import { TreeSelectProps } from './type.d';
 
-
-
 defineOptions({
   name: 'KTreeSelect'
 });
-
 
 const handleNodeClick = (data, node, context) => {
   if (Node.expanded) {

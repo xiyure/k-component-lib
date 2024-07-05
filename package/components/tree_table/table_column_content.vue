@@ -1,5 +1,5 @@
 <template>
-  <span class="k-column-default__content">
+  <span v-if="!col.type" class="column-default__content">
     <component 
       :is="displayIcon(row)"
       v-if="props.col.showIcon && (row.icon || row.__folder)"
@@ -7,9 +7,7 @@
       :color="row.iconStyle?.empty ? '#cdcacf' : row.iconStyle?.color"
       :size="row.iconStyle?.size ?? 13"
     />
-    <span v-if="!col.type">
-      {{ row[col.field] === '' ? '-' : row[col.field] ?? '-' }}
-    </span>
+    {{ row[col.field] === '' ? '-' : row[col.field] ?? '-' }}
   </span>
 </template>
 
@@ -35,3 +33,5 @@ const displayIcon = computed(() => (row) => {
   return tableInstance.value?.isTreeExpandByRow(row) ? 'IconFolderOpen' : 'IconFlowNested';
 });
 </script>
+<style lang="less" scoped>
+</style>

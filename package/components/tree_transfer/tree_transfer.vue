@@ -86,8 +86,8 @@
                     {{ row[props.label] }}
                   </span>
                   <div class="column-operate">
-                    <IconDrag />
-                    <IconClose @click="removeRightData(row)" />
+                    <IconDrag class="column-drag" />
+                    <IconClose class="column-close" @click="removeRightData(row)" />
                   </div>
                 </div>
               </template>
