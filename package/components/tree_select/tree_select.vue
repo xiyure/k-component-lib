@@ -11,7 +11,7 @@
 
     <template #default="{ node, data }">
       <span>
-        <component :is="data.icon" />
+        <component :is="data.icon ?? 'IconFlowNested'" />
         {{ data.label }}
       </span>
     </template>
@@ -27,43 +27,24 @@ defineOptions({
   name: 'KTreeSelect'
 });
 
-const handleNodeClick = (data, node, context) => {
-  if (Node.expanded) {
-    console.log(`Node ${data.label} is a leaf node. 展开`);
-    data.icon = IconFolderOpen;
+const handleNodeClick = (data: any, node: any) => {
+  console.log(data.icon);
+  if (data.icon) {
+    console.log('有图标');
   } else {
-    console.log(`Node ${data.label} is not a leaf node. 收起`);
-    data.icon = IconFlowNested;
-    if (!node.expanded) {
-      data.icon = IconFolderOpen;
-    } else {
-      data.icon = IconFlowNested;
-    }
   }
+  // if (!node.expanded) {
+  //   data.icon = 'IconFolderOpen';
+  //   console.log('展开了');
+  // } else {
+  //   console.log('收起了', !data.icon);
+  //   if (data.icon) {
+  //     data.icon = 'IconFlowNested';
+  //   } else {
+  //     return;
+  //   }
+  // }
 };
-
-// const myicon = ref(IconFlowNested);
-const props = withDefaults(defineProps<TreeSelectProps>(), {
-  icon: IconFlowNested,
-});
-
-// const IconOpen = IconFolderOpen;
-// const IconClose = IconFlowNested;
-
-// const states = ref(false)
-
-// const handleNodeClick = (data, Node, conext) => {
-//   // 获取当前节点的 class
-
-//   // states.value = !states.value;
-
-//   // console.log(Node.icon);
-//   // console.log(Node.expanded, data);
-//   // // 如果是节点展开, 更改当前节点的图标
-//   // if (Node.expanded) {
-//   // } else {
-//   // }
-// };
 
 const KTreeSelectRef = ref();
 

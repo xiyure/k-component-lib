@@ -1,7 +1,8 @@
 @import '../../style/variable.css';
 @import '../../style/general.less';
 
-.k-input {
+.k-input.el-input,
+.k-input.el-textarea {
   // 所有样式设置为unset
   .init-style();
 
@@ -65,6 +66,10 @@
       box-shadow: unset;
     }
   }
+
+  // el-input-group
+
+  // 中间输入框边框取消
   .el-input-group__prepend + .el-input__wrapper {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
@@ -74,151 +79,168 @@
     border-bottom-right-radius: 0;
     z-index: 1;
   }
+
+  // 默认插槽的文字样式与 p,m 等样式保持一致
   .el-input-group__prepend,
   .el-input-group__append {
-    box-shadow: unset;
-    .text-base();
     height: var(--height);
-    box-sizing: border-box;
+    .text-base();
+    box-shadow: unset;
     border: 1px solid var(--border-color--normal);
-
-    > .el-button {
-      // background: none;
-    }
   }
 
   .el-input-group__prepend {
+    // width: 200px;
     border-right: 0;
     border-top-left-radius: var(--border-radius);
     border-bottom-left-radius: var(--border-radius);
+
+    &:has(.k-button.el-button),
+    &:has(.k-select.el-select) {
+      margin: 0;
+      padding: 0;
+      border-left: unset;
+    }
+    .k-button.el-button,
+    .k-select.el-select {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      box-shadow: unset;
+    }
   }
   .el-input-group__append {
     border-left: 0;
     border-top-right-radius: var(--border-radius);
     border-bottom-right-radius: var(--border-radius);
-  }
-  &.is-disabled {
-    .el-input__wrapper {
-      .el-input__inner {
-        pointer-events: none;
-        cursor: not-allowed;
-      }
+
+    &:has(.k-button.el-button),
+    &:has(.k-select.el-select) {
+      margin: 0;
+      padding: 0;
+      border-right: unset;
+    }
+    .k-button.el-button,
+    .k-select.el-select {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      box-shadow: unset;
     }
   }
 }
 
-.k-input-group {
-  --bg-color: #fff;
-  --height: 2rem;
-  --border-radius: var(--k-rounded-base);
-  --border-color--normal: var(--k-gray-200);
-  --border-color--hover: var(--k-blue-400);
-  --border-color--checked: var(--k-blue-500);
-  --border-radius: var(--k-rounded-base);
+// .k-input-group {
+//   --bg-color: #fff;
+//   --height: 2rem;
+//   --border-radius: var(--k-rounded-base);
+//   --border-color--normal: var(--k-gray-200);
+//   --border-color--hover: var(--k-blue-400);
+//   --border-color--checked: var(--k-blue-500);
+//   --border-radius: var(--k-rounded-base);
 
-  width: 100%;
-  height: 2rem;
-  position: relative;
-  border-radius: var(--border-radius);
+//   width: 100%;
+//   height: 2rem;
+//   position: relative;
+//   border-radius: var(--border-radius);
 
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+//   display: grid;
+//   grid-template-columns: auto 1fr auto;
 
-  .k-input-group__prepend,
-  .k-input-group__append {
-    // min-width: 2rem;
-    width: fit-content;
-    .text-base();
-    color: var(--k-status-info);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0 1rem;
-    border: 1px solid var(--border-color--normal);
-    background-color: var(--k-gray-50);
-  }
-  .k-input-group__prepend {
-    border-top-left-radius: var(--border-radius);
-    border-bottom-left-radius: var(--border-radius);
-    transform: translateX(1px);
-  }
-  .k-input-group__append {
-    border-top-right-radius: var(--border-radius);
-    border-bottom-right-radius: var(--border-radius);
-    transform: translateX(-1px);
-  }
+//   .k-input-group__prepend,
+//   .k-input-group__append {
+//     // min-width: 2rem;
+//     width: fit-content;
+//     .text-base();
+//     color: var(--k-status-info);
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     padding: 0 1rem;
+//     border: 1px solid var(--border-color--normal);
+//     background-color: var(--k-gray-50);
+//   }
+//   .k-input-group__prepend {
+//     border-top-left-radius: var(--border-radius);
+//     border-bottom-left-radius: var(--border-radius);
+//     transform: translateX(1px);
+//   }
+//   .k-input-group__append {
+//     border-top-right-radius: var(--border-radius);
+//     border-bottom-right-radius: var(--border-radius);
+//     transform: translateX(-1px);
+//   }
 
-  // prepend
-  .k-input-group__prepend:has(button),
-  .k-input-group__prepend:has(.k-select) {
-    padding: 0;
-    border: unset;
+//   // prepend
+//   .k-input-group__prepend:has(button),
+//   .k-input-group__prepend:has(.k-select.el-select) {
+//     padding: 0;
+//     border: unset;
 
-    button,
-    .k-select .el-select__wrapper {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-  }
-  .k-input-group__prepend + .k-input {
-    .el-input__wrapper {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-  }
-  .k-input:has(+ .k-input-group__prepend) {
-    .el-input__wrapper {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-      z-index: 1;
-    }
-  }
+//     button,
+//     .k-select .el-select__wrapper {
+//       border-top-right-radius: 0;
+//       border-bottom-right-radius: 0;
+//     }
+//   }
+//   .k-input-group__prepend + .k-input {
+//     .el-input__wrapper {
+//       border-top-left-radius: 0;
+//       border-bottom-left-radius: 0;
+//     }
+//   }
+//   .k-input:has(+ .k-input-group__prepend) {
+//     .el-input__wrapper {
+//       border-top-right-radius: 0;
+//       border-bottom-right-radius: 0;
+//       z-index: 1;
+//     }
+//   }
 
-  // append,
-  .k-input-group__append:has(button),
-  .k-input-group__append:has(.k-select) {
-    padding: 0;
-    border: unset;
+//   // append,
+//   .k-input-group__append:has(button),
+//   .k-input-group__append:has(.k-select.el-select) {
+//     padding: 0;
+//     border: unset;
 
-    button,
-    .k-select .el-select__wrapper {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-  }
-  .k-input-group__prepend + .k-input {
-    .el-input__wrapper {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-  }
-  .k-input:has(+ .k-input-group__append) {
-    .el-input__wrapper {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-      z-index: 1;
-    }
-  }
+//     button,
+//     .k-select .el-select__wrapper {
+//       border-top-left-radius: 0;
+//       border-bottom-left-radius: 0;
+//     }
+//   }
+//   .k-input-group__prepend + .k-input {
+//     .el-input__wrapper {
+//       border-top-left-radius: 0;
+//       border-bottom-left-radius: 0;
+//     }
+//   }
+//   .k-input:has(+ .k-input-group__append) {
+//     .el-input__wrapper {
+//       border-top-right-radius: 0;
+//       border-bottom-right-radius: 0;
+//       z-index: 1;
+//     }
+//   }
 
-  .k-input-group__prepend:has(button):hover,
-  .k-input-group__append:has(button):hover {
-    z-index: 2;
-  }
-}
+//   .k-input-group__prepend:has(button):hover,
+//   .k-input-group__append:has(button):hover {
+//     z-index: 2;
+//   }
+// }
 
-.k-input.el-textarea {
-  .el-textarea__inner {
-    .text-base();
-    box-shadow: unset;
-    box-sizing: border-box;
+// .k-input.el-textarea {
+//   .el-textarea__inner {
+//     .text-base();
+//     box-shadow: unset;
+//     box-sizing: border-box;
+//     border-radius: var(--border-radius);
 
-    border: 1px solid var(--border-color--normal);
-  }
-  .el-textarea__inner:hover {
-    border: 1px solid var(--border-color--hover);
-  }
-  .el-textarea__inner:focus {
-    border: 1px solid var(--border-color--checked);
-    box-shadow: 0 0 0 4px rgba(40, 130, 255, 0.2);
-  }
-}
+//     border: 1px solid var(--border-color--normal);
+//   }
+//   .el-textarea__inner:hover {
+//     border: 1px solid var(--border-color--hover);
+//   }
+//   .el-textarea__inner:focus {
+//     border: 1px solid var(--border-color--checked);
+//     box-shadow: 0 0 0 4px rgba(40, 130, 255, 0.2);
+//   }
+// }
