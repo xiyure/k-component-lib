@@ -4,7 +4,7 @@ import { KInputNumber } from './input _number';
 import { KRadio, KRadioGroup } from './radio';
 import { KCheckbox, KCheckboxGroup } from './checkbox';
 import { KSwitch } from './switch';
-import { KTabs, KTabItem } from './tab';
+import { KTabs, KTabPane } from './tab';
 import { KPagination } from './pagination';
 import { KSelect, KOption, KOptionGroup } from './select';
 import { KCascader } from './cascader';
@@ -47,7 +47,7 @@ export {
   KCheckboxGroup,
   KSwitch,
   KTabs,
-  KTabItem,
+  KTabPane,
   KPagination,
   KSelect,
   KOption,

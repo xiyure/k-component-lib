@@ -8,7 +8,7 @@
       <div v-if="showDescription" class="k-table-info">
         <slot name="description" :total="dataLength" :condition-info="filterConditionInfo">
           <div class="k-table-header-text">
-            <span>{{ $t('total') }}
+            <span v-if="!useTree">{{ $t('total') }}
               {{ isNumber(paginationConfig.total) ? paginationConfig.total : dataLength }} 
               {{ $t('data') }}
             </span>
@@ -256,11 +256,13 @@ const tableInstance = computed(() => xTree.value?.tableInstance);
 const headerText = computed(() => {
   let text = '';
   if (filterConditionInfo.value?.conditionList?.length) {
-    filterConditionInfo.value.conditionList.forEach(item => {
-      text += ` . ${item.title} ${item.logic} ${item.value}`;
+    filterConditionInfo.value.conditionList.forEach((item: any, index: number) => {
+      const point = (props.useTree && index === 0) ? '' : '. ';
+      text += ` ${point} ${item.title} ${item.logic} ${item.value}`;
     });
   } else {
-    text += ` . ${t?.('showAll')}`;
+    const point = (props.useTree) ? '' : '. ';
+    text += ` ${point} ${t?.('showAll')}`;
   }
   return text;
 });
@@ -294,7 +296,12 @@ const columnConfig = computed(() => Object.assign(defaultColumnConfig, props.col
 const checkboxConfig = computed(() => Object.assign(defaultCheckboxConfig, props.checkboxConfig || {}));
 
 // 表格数据量
-const dataLength = computed(() => filterTableData().length);
+const dataLength = computed(() => {
+  if (props.useTree) {
+    return 0;
+  } 
+  return filterTableData().length;
+});
 // 是否分页
 const isPaging = computed(() => props.showPage && !props.useTree);
 

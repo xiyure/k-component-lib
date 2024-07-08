@@ -27,7 +27,7 @@ import { shallowRef, watch, inject, getCurrentInstance, ref } from 'vue';
 import { TabItemProps } from './type';
 
 defineOptions({
-  name: 'KTabItem'
+  name: 'KTabPane'
 });
 
 const props = withDefaults(defineProps<TabItemProps>(), {

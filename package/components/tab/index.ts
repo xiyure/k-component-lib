@@ -1,4 +1,4 @@
 import KTabs from './tabs.vue';
-import KTabItem from './tab_item.vue';
+import KTabPane from './tab_pane.vue';
 
-export { KTabs, KTabItem };
+export { KTabs, KTabPane };
