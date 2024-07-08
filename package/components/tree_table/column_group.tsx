@@ -10,7 +10,16 @@ export default defineComponent({
     column: {
       type: Array<columnConfigType>,
       default: []
+    },
+    size: {
+      type: String,
+      default: 'default'
+    },
+    cellStyle: {
+      type: [Object, Function],
+      default: () => {}
     }
+
   },
   setup(props, { slots }) {
     return () => (
@@ -55,7 +64,7 @@ export default defineComponent({
            if (slots[field]) {
              return slots[field]?.(data);
            } else if (!col.render && !col.type) {
-               return <TableColumnContent col={col} row={row} />
+               return <TableColumnContent col={col} row={row} size={props.size} cellStyle={props.cellStyle} />
            }
          }
         }

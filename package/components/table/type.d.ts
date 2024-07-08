@@ -3,6 +3,7 @@ export interface KTableProps {
   data?: any[]
   showDragColumn?: false
   fullData?: any[]
+  showColumnMenu?: boolean
 }
 export interface TableColumnProps {
   sortable?: boolean

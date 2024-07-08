@@ -63,7 +63,7 @@
               :style="{ color: headerSlotProps.column.order == 'desc' ? '#2882FF' : '' }"
             ></i>
           </span>
-          <span v-if="showColumnMenu" class="k-table-column__more">
+          <span v-if="isShowColumnMenu" class="k-table-column__more">
             <k-popover
               trigger="click"
               :show-arrow="false"
@@ -222,7 +222,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, ref, watch, getCurrentInstance } from 'vue';
+import { inject, ref, watch, getCurrentInstance, computed } from 'vue';
 import { VxeColumnProps } from 'vxe-table';
 import {
   IconTips,
@@ -251,8 +251,9 @@ defineOptions({
 
 const tableInstance:any = inject('tableInstance');
 const pid = inject('tableId');
+const showColumnMenuParent = inject('showColumnMenu', false);
 const props = withDefaults(defineProps<TableColumnProps>(), {
-  showColumnMenu: false
+  showColumnMenu: undefined
 });
 const slots = defineSlots();
 
@@ -271,6 +272,8 @@ watch(() => props.desc, (newValue) => {
   }
   colDesc.value = newValue;
 }, { immediate: true });
+
+const isShowColumnMenu = computed(() => props.showColumnMenu ?? showColumnMenuParent);
 // 排序
 function changeSortStatus(e:any, column:any) {
   const id = e.target?.id;

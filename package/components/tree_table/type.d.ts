@@ -63,4 +63,6 @@ export interface TreeTableProps {
   showHeaderTools?: boolean
   batchOperations?: any[]
   showBatchOperation?: boolean
+  cellStyle?: object | ((rowInfo: any, column: any) => object)
+  showColumnMenu?: boolean
 }

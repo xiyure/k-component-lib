@@ -85,6 +85,7 @@
         :row-style="getRowStyle"
         :show-overflow="showOverflow"
         :auto-resize="autoResize"
+        :show-column-menu="showColumnMenu"
         v-bind="$attrs"
         @checkbox-change="(data) => {
           checkBoxChange(data);
@@ -103,7 +104,7 @@
           emits('cell-click', data);
         }"
       >
-        <KColumnGroup :column="columns">
+        <KColumnGroup :column="columns" :size="size" :cell-style="cellStyle">
           <template v-for="(_, name) in $slots" :key="name" #[name]="data">
             <slot :name="name" v-bind="data"></slot>
           </template>
@@ -177,7 +178,8 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
   showSearchInput: true,
   showTransfer: false,
   showHeaderTools: true,
-  autoResize: true
+  autoResize: true,
+  showColumnMenu: false
 });
 
 const slots = defineSlots();
@@ -197,7 +199,7 @@ const defaultTreeConfig = {
   parentField: 'pid',
   childrenField: 'children',
   trigger: 'cell',
-  hasChild: 'hasChild'
+  hasChildField: 'hasChild'
 };
 const defaultPaginationConfig = {
   pagerCount: 7,

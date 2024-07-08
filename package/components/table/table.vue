@@ -1,7 +1,7 @@
 <template>
   <vxe-table
     ref="vxeTableRef"
-    class="k-table bbm"
+    class="k-table"
     :class="showDragColumn ? 'drag_table' : ''"
     :show-overflow="props.showOverflow"
     :data="data"
@@ -9,11 +9,12 @@
   >
     <vxe-column v-if="showDragColumn" width="25" class="drag-column">
       <template #default>
-        <slot name="dragIcon">
-          <span class="drag-btn">
+        <span class="__column-drag-icon">
+          <slot name="dragIcon">
+            
             <IconDrag />
-          </span>
-        </slot>
+          </slot>
+        </span>
       </template>
     </vxe-column>
     <slot v-bind="data"></slot>
@@ -72,15 +73,23 @@ onUnmounted(() => {
     sortable.destroy();
   }
 });
-
 function rowDrop() {
   const $table = vxeTableRef.value;
   sortable = Sortable.create($table?.$el.querySelector('.body--wrapper>.vxe-table--body tbody'), {
-    handle: '.drag-btn',
+    handle: '.__column-drag-icon',
     onEnd: (sortableEvent) => {
-      const tableData = Array.isArray(props.data) ? props.data : [];
-      const newIndex = sortableEvent.newIndex as number;
-      const oldIndex = sortableEvent.oldIndex as number;
+      let tableData:any[] = [];
+      let newIndex: number = sortableEvent.newIndex;
+      let oldIndex: number = sortableEvent.oldIndex;
+      if (Array.isArray(props.fullData)) {
+        tableData = props.fullData;
+        const newItem = props.data?.[newIndex];
+        const oldItem = props.data?.[oldIndex];
+        newIndex = tableData.findIndex(item => item.id === newItem.id);
+        oldIndex = tableData.findIndex(item => item.id === oldItem.id);
+      } else if (Array.isArray(props.data)) {
+        tableData = props.data;
+      }
       const currRow = tableData.splice(oldIndex, 1)[0];
       tableData.splice(newIndex, 0, currRow);
       emits('drag-end', tableData);
@@ -95,7 +104,7 @@ function hideColumn(column: VxeColumnProps) {
 }
 provide('tableInstance', vxeTableRef);
 provide('tableId', id);
-
+provide('showColumnMenu', props.showColumnMenu);
 const tableInstance = computed(() => vxeTableRef.value);
 defineExpose({
   tableInstance
@@ -104,7 +113,7 @@ defineExpose({
 
 <style lang="less">
 @import './style.less';
-.drag-btn {
+.__column-drag-icon {
   cursor: move;
   font-size: 16px;
 }
