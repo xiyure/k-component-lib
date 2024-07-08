@@ -6,6 +6,7 @@
   .init-style();
   min-width: 64px;
   width: 100%;
+  // height: 100%;
 
   --bg-color: #fff;
   --height: 2rem;
@@ -26,12 +27,11 @@
   }
   .el-select__wrapper.is-hovering:not(.is-focused) {
     box-shadow: unset;
-    // box-shadow: 0 0 0 4px rgba(40, 130, 255, 0.2);
     border: var(--border-color--hover) 1px solid;
   }
   .el-select__wrapper.is-focused {
     box-shadow: unset;
     border: var(--border-color--checked) 1px solid;
-    box-shadow: 0 0 0 4px rgba(40, 130, 255, 0.2);
+    box-shadow: 0 0 0 2px rgba(40, 130, 255, 0.1);
   }
 }

@@ -24,3 +24,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+example/view/index.vue
