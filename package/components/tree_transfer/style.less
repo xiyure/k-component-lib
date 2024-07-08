@@ -66,18 +66,24 @@
     width: 100%;
     .column-operate {
       display: flex;
-      .column-drag {
+      align-items: center;
+      .__column-drag-icon {
         cursor: move;
+        margin-right: 5px;
       }
       .column-close {
         cursor: pointer;
         &:hover {
           color: @k-status-primary;
         }
+        svg {
+          width: 13px;
+          height: 13px;
+        }
       }
       svg {
-        width: 13px;
-        height: 13px;
+        width: 15px;
+        height: 15px;
       }
     }
   }

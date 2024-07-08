@@ -30,7 +30,6 @@
               :field="label"
               width="auto"
               :title="leftTitle"
-              :show-column-menu="false"
               :tree-node="props.useTree"
             >
               <template #default="{ row }">
@@ -57,13 +56,15 @@
             :border="false"
             height="100%"
             :data="showRightData"
+            :row-config="{ useKey: true }"
             show-overflow
             :scroll-y="scrollY"
+            :full-data="fullData"
+            @drag-end="dragSort"
           >
             <k-table-column
               :field="label"
               :title="props.rightTitle"
-              :show-column-menu="false"
             >
               <template #header="data">
                 <slot name="rightHeader" v-bind="data">
@@ -76,17 +77,13 @@
               <template #default="{ row }">
                 <div
                   class="column-body"
-                  :draggable="drag"
-                  @dragstart="handleDragStart(row)"
-                  @dragenter="handleDragenter($event, row)"
-                  @dragend="handleDrop()"
                 >
                   <span class="column-content">
                     <component :is="getIcon(props.icon, row)" v-if="props.icon" class="column-icon" />
                     {{ row[props.label] }}
                   </span>
                   <div class="column-operate">
-                    <IconDrag class="column-drag" />
+                    <IconDrag class="__column-drag-icon" />
                     <IconClose class="column-close" @click="removeRightData(row)" />
                   </div>
                 </div>
@@ -354,35 +351,11 @@ function toggleTreeExpand(row, e) {
   treeLeftRef.value.tableInstance.toggleTreeExpand(row);
 }
 // 拖拽排序
-let dragTarget = null; // 拖拽项
-let dragIndex = -1; // 拖拽项在源数据中的索引
-let targetOption: any = null;// 拖动过程中停放目标
-const handleDragStart = (row) => {
-  dragTarget = row;
-  const label = props.label;
-  dragIndex = fullData.value.findIndex(item => item[label] === row[label]);
-};
-
-const handleDragenter = (event, row) => {
-  event.preventDefault();
-  if (!dragTarget || !row) return;
-  targetOption = row;
-};
-
-const handleDrop = () => {
-  const label = props.label;
-  const targetIndex = fullData.value.findIndex(item => item[label] === targetOption[label]);
-  const newIndex = targetIndex;
-  const [removedIndex] = fullData.value.splice(dragIndex, 1);
-  fullData.value.splice(newIndex, 0, removedIndex);
-  updateSelectData();
-  dragTarget = null;
-  targetOption = null;
-  dragIndex = -1;
+function dragSort() {
   const selectedData = getSelectedData();
   emits('change', selectedData);
   emits('sort', selectedData);
-};
+}
 function sortFunc(targetData:any[], sortData: any) {
   const sortKeyList = sortData.map((item:any) => item.id);
   return targetData.sort((a, b) => (sortKeyList.indexOf(a.id) < sortKeyList.indexOf(b.id) ? -1 : 1));

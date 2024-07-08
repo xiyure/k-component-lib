@@ -252,7 +252,7 @@ defineOptions({
 const tableInstance:any = inject('tableInstance');
 const pid = inject('tableId');
 const props = withDefaults(defineProps<TableColumnProps>(), {
-  showColumnMenu: true
+  showColumnMenu: false
 });
 const slots = defineSlots();
 
