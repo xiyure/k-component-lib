@@ -42,6 +42,7 @@ export default defineComponent({
       };
       return  <KColumnGroup
         { ...col }
+        key={col}
         resizable={true}
         v-slots={childrenSlots}
       >
@@ -69,11 +70,11 @@ export default defineComponent({
           if (slots[field]) {
             return slots[field]?.(data);
           } else if (!col.render && !col.type) {
-              return <TableColumnContent col={col} row={row} size={props.size} />
+              return <TableColumnContent key={col.field} col={col} row={row} size={props.size} />
           }
         };
       }
-      return <KTableColumn {...col} v-slots={childrenSlots} />
+      return <KTableColumn key={col.field} {...col} v-slots={childrenSlots} />
     }
   }
 })
