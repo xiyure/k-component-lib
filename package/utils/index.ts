@@ -143,3 +143,30 @@ export class Emitter {
     }
   }
 }
+
+export function sortBySmallerList(targetData, sourceData) {
+  const indexMap = new Map(targetData.map((v, i) => [v.id, i]));
+  const dataMap = new Map(targetData.map((v) => [v.id, v]));
+  const indexList: any = [];
+  const newSourceData: any = [];
+  for (const v of sourceData) {
+    const index: any = indexMap.get(v);
+    if (index >= 0) {
+      indexList.push(index);
+      newSourceData.push(v);
+    }
+  }
+  indexList.sort((a, b) => a - b);
+  for (const index in indexList) {
+    indexMap.set(newSourceData[index], indexList[index]);
+  }
+  const result: any = [];
+  for (const [v, i] of indexMap) {
+    result[i as number] = v;
+  }
+  const newData: any = [];
+  for (const v of result) {
+    newData.push(dataMap.get(v));
+  }
+  return newData;
+}

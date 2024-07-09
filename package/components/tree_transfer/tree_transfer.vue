@@ -97,11 +97,12 @@
 </template>
 
 <script setup lang="tsx">
-import { ref, onMounted, computed, watch, nextTick } from 'vue';
+import { ref, computed, watch, nextTick } from 'vue';
 import { IconSearch, IconDrag, IconClose } from 'ksw-vue-icon';
 import { TreeTransferProps } from './type.d';
 import { KTable, KTableColumn } from '../table';
 import { KInput } from '../input';
+import { sortBySmallerList } from '../../utils';
 
 const props = withDefaults(defineProps<TreeTransferProps>(), {
   showFilter: true,
@@ -129,12 +130,6 @@ const rightData = ref<any>([]);
 const showRightData = ref<any>([]);
 const fullData = ref<any>([]);
 const selectData = ref<any>([]);
-
-onMounted(() => {
-  setTimeout(() => { 
-    updateSelectData();
-  });
-});
 
 const columnIcon = computed(() => function (row) {
   const expand = treeLeftRef.value?.tableInstance.isTreeExpandByRow(row);
@@ -168,7 +163,13 @@ watch(() => props.data, (newValue) => {
   leftData.value = fullData.value;
 }, { immediate: true, deep: true });
 watch(() => props.defaultData, (newValue) => {
-  selectData.value = selectData.value.concat(...(newValue || []));
+  if (!Array.isArray(newValue)) {
+    return;
+  }
+  selectData.value = newValue;
+  fullData.value = sortBySmallerList(fullData.value, props.defaultData ?? []);
+  rightData.value = fullData.value.filter(item => newValue.includes(item.id));
+  showRightData.value = rightData.value;
 }, { immediate: true, deep: true });
 
 function checkboxChange() {

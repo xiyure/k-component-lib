@@ -36,8 +36,9 @@ export default defineComponent({
     function addColumnGroup(col) {
       const group = col.group || [];
       const childrenSlots = {};
-      if (slots[col.field]) {
-        childrenSlots['header'] = (data) => slots[col.field]?.(data)
+      const slotName = `${col.field}-header`;
+      if (slots[slotName]) {
+        childrenSlots['header'] = (data) => slots[slotName]?.(data)
       };
       return  <KColumnGroup
         { ...col }
@@ -56,23 +57,23 @@ export default defineComponent({
       </KColumnGroup>
     }
     function getTableColumn(slots, col) {
+      const childrenSlots = {};
+      const slotName = `${col.field}-header`;
+      if (slots[slotName]) {
+        childrenSlots['header'] = (data) => slots[slotName]?.(data);
+      };
       if (!col.render) {
-        return <KTableColumn {...col}>
-        {
-         (data) =>{
-           const field = col.field ?? '';
-           const { row } = data;
-           if (slots[field]) {
-             return slots[field]?.(data);
-           } else if (!col.render && !col.type) {
-               return <TableColumnContent col={col} row={row} size={props.size} />
-           }
-         }
-        }
-        </KTableColumn>
-      } else {
-        return <KTableColumn {...col} />
+        childrenSlots['default'] =  (data) =>{
+          const field = col.field ?? '';
+          const { row } = data;
+          if (slots[field]) {
+            return slots[field]?.(data);
+          } else if (!col.render && !col.type) {
+              return <TableColumnContent col={col} row={row} size={props.size} />
+          }
+        };
       }
+      return <KTableColumn {...col} v-slots={childrenSlots} />
     }
   }
 })
