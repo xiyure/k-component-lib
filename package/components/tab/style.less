@@ -1,45 +1,129 @@
 @import '../../style/variable.css';
 @import '../../style/general.less';
 
-.k-tabs{
+
+// 类选择器方案
+.k-tabs {
   --icon-size: 1rem;
   --icon-skew: 0.625rem;
   --icon-Space: 2rem;
-  padding: 0 0.5rem;
+
   .el-tabs__item{
     padding: 0;
-    position: relative;
     .k-tab__label {
-      .text-base();
-      padding: 0 1rem;
-      display: flex;
-      align-items: center;
-      > svg {
-        width: var(--icon-size);
-        height: var(--icon-size);
+       display: flex;
+       padding:0 1rem;
+    }
+    .k-tab__label.has--icon {
+      padding-left:var(--icon-Space);
+
+      position: relative;
+
+      >svg {
         position: absolute;
         top: 50%;
         left: var(--icon-skew);
         transform: translate(0, -50%);
+        width: var(--icon-size);
+        height: var(--icon-size);
       }
-      &:has(>svg) {
-        padding-left: var(--icon-Space);
-      }
-    }
+   }
+  }
+
+  .el-tabs__item.is-closable{
+    position: relative;
+
+    .k-tab__label {
+      display: flex;
+      padding-right: var(--icon-Space);
+   }
+
     .el-icon.is-icon-close{
-    font-size: var(--icon-size);
+      width: var(--icon-size);
+      height: var(--icon-size);
       position: absolute;
       top: 50%;
       right: var(--icon-skew);
       transform: translate(0, -50%);
     }
-    &:has(.el-icon.is-icon-close){
-      .k-tab__label {
-        padding-right: var(--icon-Space);
-      }
-    }
   }
 }
+
+// 固定 padding 方案
+// .k-tabs{
+//   --icon-size: 1rem;
+//   --icon-skew: 0.75rem;
+//   --icon-Space: 2rem;
+//   .el-tabs__item{
+//     padding:0 0.5rem;
+//     position: relative;
+//     // background: #fafafa;
+//     .k-tab__label {
+//       display: flex;
+//       padding: 0 1.5rem;
+//       align-items: center;
+//       > svg {
+//         width: var(--icon-size);
+//         height: var(--icon-size);
+//         position: absolute;
+//         top: 50%;
+//         left: .875rem;
+//         transform: translate(0, -50%);
+//       }
+//     }
+//     .el-icon.is-icon-close{
+//       font-size: var(--icon-size);
+//       position: absolute;
+//       top: 50%;
+//       right: .875rem;
+//       transform: translate(0, -50%);
+//     }
+//   }
+//   :nth-child(even){
+//     // background: #eee;
+//   }
+// }
+
+// :has() 方案
+// .k-tabs{
+//   --icon-size: 1rem;
+//   --icon-skew: 0.625rem;
+//   --icon-Space: 2rem;
+//   padding: 0 0.5rem;
+//   .el-tabs__item{
+//     padding: 0;
+//     position: relative;
+//     .k-tab__label {
+//       .text-base();
+//       padding: 0 1rem;
+//       display: flex;
+//       align-items: center;
+//       > svg {
+//         width: var(--icon-size);
+//         height: var(--icon-size);
+//         position: absolute;
+//         top: 50%;
+//         left: var(--icon-skew);
+//         transform: translate(0, -50%);
+//       }
+//       &:has(>svg) {
+//         padding-left: var(--icon-Space);
+//       }
+//     }
+//     .el-icon.is-icon-close{
+//     font-size: var(--icon-size);
+//       position: absolute;
+//       top: 50%;
+//       right: var(--icon-skew);
+//       transform: translate(0, -50%);
+//     }
+//     &:has(.el-icon.is-icon-close){
+//       .k-tab__label {
+//         padding-right: var(--icon-Space);
+//       }
+//     }
+//   }
+// }
 
 // .k-tabs {
 //   .el-tabs__item {

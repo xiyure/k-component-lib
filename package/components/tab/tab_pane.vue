@@ -5,7 +5,7 @@
     :name="name"
   >
     <template #label>
-      <div class="k-tab__label">
+      <div class="k-tab__label"  :class="{'has--icon': props.icon}">
         <component :is="props.icon"></component>
         <span v-if="!slots.label">{{ props.label }}</span>
         <slot
@@ -33,7 +33,8 @@ defineOptions({
 const props = withDefaults(defineProps<TabItemProps>(), {
   label: '',
   path: '#',
-  name: undefined
+  name: undefined,
+  icon: undefined
 });
 
 const slots = defineSlots();
