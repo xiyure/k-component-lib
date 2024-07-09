@@ -110,6 +110,7 @@
     --k-rounded-base: 0.375rem;
     --k-rounded-lg: 0.5rem;
     --k-rounded-xl: 0.75rem;
+    --k-rounded-full: 100rem;
 
     /* // font */
     --font-xs: 0.625rem;

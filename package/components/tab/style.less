@@ -11,8 +11,10 @@
   .el-tabs__item{
     padding: 0;
     .k-tab__label {
+       .text-base();
        display: flex;
        padding:0 1rem;
+       transition: all 0.3s cubic-bezier(0.645,0.045,0.355,1);
     }
     .k-tab__label.has--icon {
       padding-left:var(--icon-Space);
@@ -28,6 +30,9 @@
         height: var(--icon-size);
       }
    }
+    &:hover{
+      color: var(--k-blue-400);
+    }
   }
 
   .el-tabs__item.is-closable{
@@ -45,6 +50,15 @@
       top: 50%;
       right: var(--icon-skew);
       transform: translate(0, -50%);
+
+      &:hover{
+        background: unset;
+        color: unset;
+        border-radius: unset;
+
+        background: var(--k-blue-100);
+        border-radius: var(--k-rounded-full);
+      }
     }
   }
 }
