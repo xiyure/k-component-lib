@@ -2,7 +2,6 @@
   <span
     v-if="!col.type"
     class="column-default__content"
-    :style="typeof cellStyle === 'function'? cellStyle(row, col) : cellStyle"
     :class="size === 'mini' ? 'column-mini' : 'column-default'"
   >
     <component 
@@ -32,10 +31,6 @@ const props = defineProps({
   size: {
     type: String,
     default: 'default'
-  },
-  cellStyle: {
-    type: [Object, Function],
-    default: () => {}
   }
 });
 const displayIcon = computed(() => (row) => {

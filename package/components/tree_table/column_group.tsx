@@ -14,10 +14,6 @@ export default defineComponent({
     size: {
       type: String,
       default: 'default'
-    },
-    cellStyle: {
-      type: [Object, Function],
-      default: () => {}
     }
 
   },
@@ -39,16 +35,21 @@ export default defineComponent({
     )
     function addColumnGroup(col) {
       const group = col.group || [];
+      const childrenSlots = {};
+      if (slots[col.field]) {
+        childrenSlots['header'] = (data) => slots[col.field]?.(data)
+      };
       return  <KColumnGroup
         { ...col }
         resizable={true}
+        v-slots={childrenSlots}
       >
         {
           group.map((item) => {
             if (Array.isArray(item.group) && item.group.length) {
               return addColumnGroup(item)
             } else {
-              return <KTableColumn {...item}></KTableColumn>
+              return getTableColumn(slots, item);
             }
           })
         }
@@ -64,7 +65,7 @@ export default defineComponent({
            if (slots[field]) {
              return slots[field]?.(data);
            } else if (!col.render && !col.type) {
-               return <TableColumnContent col={col} row={row} size={props.size} cellStyle={props.cellStyle} />
+               return <TableColumnContent col={col} row={row} size={props.size} />
            }
          }
         }

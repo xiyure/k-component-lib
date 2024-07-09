@@ -104,7 +104,7 @@
           emits('cell-click', data);
         }"
       >
-        <KColumnGroup :column="columns" :size="size" :cell-style="cellStyle">
+        <KColumnGroup :column="columns" :size="size">
           <template v-for="(_, name) in $slots" :key="name" #[name]="data">
             <slot :name="name" v-bind="data"></slot>
           </template>
