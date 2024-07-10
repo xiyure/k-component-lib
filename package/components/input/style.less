@@ -67,18 +67,20 @@
   }
 
   // el-input-group
-
-  // // 中间输入框边框取消
   .el-input-group__prepend + .el-input__wrapper {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
-  }
-
-  &.k-input-has-append {
-    .el-input__wrapper {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-      z-index: 1;
+    border-right-color: transparent;
+    transform: translate(-1px, 0);
+    &:hover {
+      z-index: 2;
+      border-left: var(--border-color--hover) 1px solid;
+      border-right: var(--border-color--hover) 1px solid;
+    }
+    &.is-focus {
+      z-index: 2;
+      border-left: var(--border-color--checked) 1px solid;
+      border-right: var(--border-color--checked) 1px solid;
     }
   }
 
@@ -86,21 +88,32 @@
     .el-input__wrapper {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
-      z-index: 1;
+      border-right-color: transparent;
+      transform: translate(-1px, 0);
+      &:hover {
+        z-index: 2;
+        border-left: var(--border-color--hover) 1px solid;
+        border-right: var(--border-color--hover) 1px solid;
+      }
+      &.is-focus {
+        z-index: 2;
+        border-left: var(--border-color--checked) 1px solid;
+        border-right: var(--border-color--checked) 1px solid;
+      }
     }
   }
 
-  // // 默认插槽的文字样式与 p,m 等样式保持一致
+  // 前后插槽公共样式
   .el-input-group__prepend,
   .el-input-group__append {
+    z-index: 1;
+    &:hover {
+      z-index: 2;
+    }
+    .init-style();
     height: var(--height);
     .text-base();
     box-shadow: unset;
-    border: 1px solid var(--border-color--normal);
-  }
-
-  .el-input-group__prepend {
-    .init-style();
     .k-input-slot--string,
     .k-input-slot--htmlTag {
       .text-base();
@@ -108,31 +121,94 @@
       background-color: var(--k-gray-50);
       height: 100%;
       padding: 0.3125rem 0.625rem;
-      // 文字居中垂直居中
-
-      border-top-left-radius: var(--border-radius);
-      border-bottom-left-radius: var(--border-radius);
       border: 1px solid var(--border-color--normal);
-      border-right: unset;
     }
     .k-input-slot--component {
       padding: 0;
+      .k-button,
+      .el-button {
+        border: 1px solid var(--border-color--normal);
+        color: var(--k-status-info);
+        &:hover {
+          background-color: var(--k-gray-50);
+        }
+        &:active {
+          background-color: var(--k-gray-100);
+        }
+      }
+      .k-button.el-button.el-button--main {
+        border-color: transparent;
+        color: #fff;
+        &:hover {
+          background-color: var(--k-blue-400);
+        }
+        &:active {
+          background-color: var(--k-blue-600);
+        }
+      }
+      .k-button.el-button.el-button--secondary {
+        color: var(--k-status-primary);
+        &:hover {
+          color: var(--k-blue-400);
+          background-color: #fff;
+          border: 1px solid var(--border-color--hover);
+        }
+        &:active {
+          color: var(--k-blue-600);
+          background-color: #fff;
+        }
+      }
+      .k-select,
+      .el-select {
+        .init-style();
+        .el-select__wrapper {
+          // .init-style();
+          box-shadow: unset;
+          border: 1px solid var(--border-color--normal);
+        }
+      }
     }
   }
 
-  .el-input-group__append {
-    .init-style();
+  // 前插槽样式
+  .el-input-group__prepend {
     .k-input-slot--string,
     .k-input-slot--htmlTag {
-      .text-base();
-      color: var(--k-status-info);
-      background-color: var(--k-gray-50);
-      height: 100%;
-      padding: 0.3125rem 0.625rem;
+      border-top-left-radius: var(--border-radius);
+      border-bottom-left-radius: var(--border-radius);
+      // border-right: unset;
+
+    }
+    // slot type 组件
+    .k-input-slot--component {
+      // 按钮
+      .k-button,
+      .el-button {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        // border-right: unset;
+      }
+    }
+  }
+
+  // 后槽样式
+  .el-input-group__append {
+    margin-right:-2px;
+    transform: translate(-2px, 0);
+    .k-input-slot--string,
+    .k-input-slot--htmlTag {
       border-top-right-radius: var(--border-radius);
       border-bottom-right-radius: var(--border-radius);
-      border: 1px solid var(--border-color--normal);
-      border-left: unset;
+
+    }
+    // slot type 组件
+    .k-input-slot--component {
+      // 按钮
+      .k-button,
+      .el-button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
     }
   }
 
