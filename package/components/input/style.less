@@ -12,7 +12,7 @@
   --border-color--normal: var(--k-gray-200);
   --border-color--hover: var(--k-blue-400);
   --border-color--checked: var(--k-blue-500);
-  --border-radius: var(--k-rounded-base);
+  --input-offset: 0;
 
   cursor: text;
   box-sizing: content-box;
@@ -22,7 +22,7 @@
 
     cursor: text;
     height: var(--height);
-    padding: 0.25rem 0.625rem;
+    padding: 0.375rem 0.75rem;
     border-radius: var(--border-radius);
     border: var(--border-color--normal) 1px solid;
     // box-shadow: 0 0 0 1px var(--border-color--normal);
@@ -38,25 +38,42 @@
     .el-input__inner::placeholder {
       color: var(--k-gray-300);
     }
+    &:hover {
+      .init-style();
+      height: var(--height);
+      padding: 0.375rem 0.75rem;
+      border-radius: var(--border-radius);
+      border: var(--border-color--hover) 1px solid;
+    }
+    &.is-focus {
+      .init-style();
+      height: var(--height);
+      padding: 0.375rem 0.75rem;
+      border-radius: var(--border-radius);
+      border: var(--border-color--checked) 1px solid;
+      box-shadow: 0 0 0 2px rgba(40, 130, 255, 0.1);
+      z-index: 10;
+    }
   }
 
-  .el-input__wrapper:hover {
-    .init-style();
-    height: var(--height);
-    padding: 0.25rem 0.625rem;
-    border-radius: var(--border-radius);
-    border: var(--border-color--hover) 1px solid;
-  }
-  .el-input__wrapper.is-focus {
-    .init-style();
-    height: var(--height);
-    padding: 0.25rem 0.625rem;
-    border-radius: var(--border-radius);
-    border: var(--border-color--checked) 1px solid;
-    box-shadow: 0 0 0 2px rgba(40, 130, 255, 0.1);
-  }
+  // .el-input__wrapper:hover {
+  //   .init-style();
+  //   height: var(--height);
+  //   padding: 0.25rem 0.625rem;
+  //   border-radius: var(--border-radius);
+  //   border: var(--border-color--hover) 1px solid;
+  // }
+  // .el-input__wrapper.is-focus {
+  //   .init-style();
+  //   height: var(--height);
+  //   padding: 0.25rem 0.625rem;
+  //   border-radius: var(--border-radius);
+  //   border: var(--border-color--checked) 1px solid;
+  //   box-shadow: 0 0 0 2px rgba(40, 130, 255, 0.1);
+  //   z-index: 10;
+  // }
 
-  &.el-input.is-disabled {
+  &.is-disabled {
     .el-input__wrapper {
       // 禁用状态下
       cursor: not-allowed;
@@ -66,18 +83,51 @@
     }
   }
 
+  .el-input__wrapper {
+    margin-right: calc(var(--input-offset));
+    transform: translateX(var(--input-offset));
+  }
+
+  &.el-input--small {
+    --border-radius: var(--k-rounded-sm);
+    .el-input__wrapper {
+      --height: 1.5rem;
+      padding: 0.25rem 0.625rem;
+      .el-input__inner {
+          .text-sm();
+      }
+    }
+  }
+
+
+
   // el-input-group
+  &.k-input-has-prepend {
+    --input-offset:-0.0625rem;
+  }
+
+  &.k-input-has-append.k-input-has-prepend {
+    --input-offset: -0.0625rem;
+    --append-offset:-0.125rem;
+  }
+
+
+  &.k-input-has-append {
+    --append-offset:-0.0625rem;
+    --input-offset: 0;
+  }
+
   .el-input-group__prepend + .el-input__wrapper {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
-    border-right-color: transparent;
-    transform: translate(-1px, 0);
+    // border-left-color: transparent;
     &:hover {
+      margin-right: var(--input-offset);
       z-index: 2;
       border-left: var(--border-color--hover) 1px solid;
       border-right: var(--border-color--hover) 1px solid;
     }
-    &.is-focus {
+    &:hover.is-focus {
       z-index: 2;
       border-left: var(--border-color--checked) 1px solid;
       border-right: var(--border-color--checked) 1px solid;
@@ -88,14 +138,13 @@
     .el-input__wrapper {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
-      border-right-color: transparent;
-      transform: translate(-1px, 0);
+      // border-right-color: transparent;
       &:hover {
         z-index: 2;
         border-left: var(--border-color--hover) 1px solid;
         border-right: var(--border-color--hover) 1px solid;
       }
-      &.is-focus {
+      &:hover.is-focus {
         z-index: 2;
         border-left: var(--border-color--checked) 1px solid;
         border-right: var(--border-color--checked) 1px solid;
@@ -122,27 +171,32 @@
       height: 100%;
       padding: 0.3125rem 0.625rem;
       border: 1px solid var(--border-color--normal);
+      cursor: text;
+      // 禁止选中
+      user-select: all;
     }
     .k-input-slot--component {
       padding: 0;
       .k-button,
       .el-button {
         border: 1px solid var(--border-color--normal);
+        background-color: #fff;
         color: var(--k-status-info);
         &:hover {
           background-color: var(--k-gray-50);
         }
-        &:active {
+        &:hover:active {
           background-color: var(--k-gray-100);
         }
       }
       .k-button.el-button.el-button--main {
         border-color: transparent;
         color: #fff;
+        background-color: var(--k-status-primary);
         &:hover {
           background-color: var(--k-blue-400);
         }
-        &:active {
+        &:hover:active {
           background-color: var(--k-blue-600);
         }
       }
@@ -153,9 +207,10 @@
           background-color: #fff;
           border: 1px solid var(--border-color--hover);
         }
-        &:active {
+        &:hover:active {
           color: var(--k-blue-600);
           background-color: #fff;
+          border: 1px solid var(--k-blue-600);
         }
       }
       .k-select,
@@ -165,6 +220,14 @@
           // .init-style();
           box-shadow: unset;
           border: 1px solid var(--border-color--normal);
+          background-color: #fff;
+          &:hover {
+            border-color: var(--border-color--hover);
+          }
+          &:hover.is-focused {
+            border-color: var(--border-color--checked);
+            box-shadow: 0 0 0 2px rgba(40, 130, 255, 0.1);
+          }
         }
       }
     }
@@ -193,8 +256,8 @@
 
   // 后槽样式
   .el-input-group__append {
-    margin-right:-2px;
-    transform: translate(-2px, 0);
+    margin-right: calc(var(--append-offset));
+    transform: translateX(var(--append-offset));
     .k-input-slot--string,
     .k-input-slot--htmlTag {
       border-top-right-radius: var(--border-radius);
@@ -211,72 +274,12 @@
       }
     }
   }
-
-  // .el-input-group__prepend {
-  //   // width: 200px;
-  //   border-right: 0;
-  //   border-top-left-radius: var(--border-radius);
-  //   border-bottom-left-radius: var(--border-radius);
-
-  //   &:has(.k-button.el-button),
-  //   &:has(.k-select.el-select) {
-  //     margin: 0;
-  //     padding: 0;
-  //     border: unset;
-  //   }
-  //   .k-button.el-button,
-  //   .k-select.el-select {
-  //     height: 2rem;
-  //     border-radius: var(--border-radius);
-  //     border-top-right-radius: 0;
-  //     border-bottom-right-radius: 0;
-  //     border-right: unset;
-  //     margin: 0;
-  //     box-shadow: unset;
-
-  //     .el-select__wrapper {
-  //       box-shadow: unset;
-  //       height: 100%;
-  //       border: 1px solid var(--border-color--normal);
-  //       border-right: unset;
-  //     }
-  //   }
-  // }
-  // .el-input-group__append {
-  //   border-left: 0;
-  //   border-top-right-radius: var(--border-radius);
-  //   border-bottom-right-radius: var(--border-radius);
-  //   width: fit-content;
-
-  //   &:has(.k-button.el-button),
-  //   &:has(.k-select.el-select) {
-  //     margin: 0;
-  //     padding: 0;
-  //     border: unset;
-  //   }
-  //   .k-button.el-button,
-  //   .k-select.el-select {
-  //     height: 2rem;
-  //     border-radius: var(--border-radius);
-  //     border-top-left-radius: 0;
-  //     border-bottom-left-radius: 0;
-  //     border-left: unset;
-  //     margin: 0;
-  //     box-shadow: unset;
-
-  //     .el-select__wrapper {
-  //       box-shadow: unset;
-  //       height: 100%;
-  //       border: 1px solid var(--border-color--normal);
-  //       border-left: unset;
-  //     }
-  //   }
-  // }
 }
 
 .el-textarea {
   // box-shadow: unset;
   .el-textarea__inner {
+    .text-base();
     box-shadow: unset;
     border: 1px solid var(--border-color--normal);
   }
@@ -286,5 +289,11 @@
   .el-textarea__inner:focus {
     border: 1px solid var(--border-color--checked);
     box-shadow: 0 0 0 2px rgba(40, 130, 255, 0.1);
+  }
+
+  &.el-input--small{
+    .el-textarea__inner {
+      .text-sm();
+    }
   }
 }
