@@ -170,3 +170,18 @@ export function sortBySmallerList(targetData, sourceData) {
   }
   return newData;
 }
+
+export function treeDataToArray(treeData: any[], childrenField: string) {
+  if (!Array.isArray(treeData) || treeData.length === 0) {
+    return [];
+  }
+  let result: any[] = [];
+  for (const item of treeData) {
+    if (!item[childrenField]) {
+      result.push(item);
+    } else {
+      result = result.concat(treeDataToArray(item[childrenField], childrenField));
+    }
+  }
+  return result;
+}

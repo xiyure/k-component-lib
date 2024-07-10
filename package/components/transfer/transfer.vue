@@ -102,7 +102,7 @@ watch(() => [props.modelValue, props.matchKey], () => {
   }
   modelValue.value = [];
   props.modelValue.forEach(valueItem => {
-    const targetData = sourceData.value.find((item:object) => item[props.matchKey] === valueItem[props.matchKey]);
+    const targetData = props.data.find((item:object) => item[props.matchKey] === valueItem[props.matchKey]);
     if (targetData) {
       const { key } = defaultPropsConfig.value;
       modelValue.value.push(targetData[key]);

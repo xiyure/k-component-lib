@@ -58,7 +58,6 @@
           <k-transfer
             v-model="selectData"
             :data="originData"
-            :default-keys="defaultKeys"
             @change="updateColumn"
             @reset="updateColumn"
             @sort="sortTableHeader"
@@ -159,7 +158,7 @@ import { TreeTableProps } from './type';
 import { KTable } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
-import { genRandomStr } from '../../utils';
+import { genRandomStr, treeDataToArray } from '../../utils';
 
 defineOptions({
   name: 'KTreeTable'
@@ -240,12 +239,12 @@ const emits = defineEmits([
 ]);
 const xTree = ref();
 const columns = ref<any>([]);
+const flatColumns = ref<any>([]);
 const query = ref('');
 const searchStr = ref('');
 // 穿梭框
 const selectData = ref<any>([]);
 const originData = ref<any>([]);
-const defaultKeys = ref<any>([]);
 // 高级筛选
 const tableFilterRef = ref();
 const filterData = ref(props.data || []);
@@ -313,7 +312,7 @@ const showTableData = computed(() => {
   }
   return getShowTableData(tableData);
 });
-const filterColumn = computed(() => props.column.filter(item => item.dataType).map(item => ({
+const filterColumn = computed(() => flatColumns.value.filter(item => item.dataType).map(item => ({
   title: item.title,
   field: item.field,
   dataType: item.dataType
@@ -334,10 +333,11 @@ watch(() => props.column, () => {
     const visible = col.visible !== false;
     return { ...col, visible };
   });
+  flatColumns.value = treeDataToArray(columns.value, 'group');
   handleCustomRender();
 }, { immediate: true, deep: true });
-watch(() => props.column.length, () => {
-  originData.value = props.column.map((item) => {
+watch(() => flatColumns.value.length, () => {
+  originData.value = flatColumns.value.map((item) => {
     if (item.title && item.field) {
       return {
         label: item.title,
@@ -346,7 +346,7 @@ watch(() => props.column.length, () => {
     } 
     return null;
   }).filter((item) => item);
-  selectData.value = props.column.filter(col => col.visible !== false)
+  selectData.value = flatColumns.value.filter(col => col.visible !== false)
   .map((item) => ({
     label: item.title,
     key: item.field
@@ -370,7 +370,7 @@ function filterTableData() {
     emits('remote-query', searchKey);
     return;
   }
-  const visibleColumns = columns.value.filter(col => col.visible);
+  const visibleColumns = flatColumns.value.filter(col => col.visible);
   const fieldList = visibleColumns.map(col => col.field || '');
   let tableData = filterData.value.filter((dataItem:any) => fieldList.some(field => {
     if (props.exactMatch) {
@@ -493,7 +493,7 @@ function getRowStyle(rowInfo:any) {
 }
 // 自定义单元格渲染
 function handleCustomRender() {
-  for (const col of columns.value) {
+  for (const col of flatColumns.value) {
     if (col.render) {
       col.cellRender = {
         name: genRandomStr(16),
@@ -524,7 +524,7 @@ function getTreeConfigField() {
   return { parentField, rowField };
 }
 function updateColumn(ids: string[]) {
-  columns.value.forEach(col => {
+  flatColumns.value.forEach(col => {
     if (!col.type) {
       if (ids.includes(col.field)) {
         col.visible = true;
@@ -549,9 +549,9 @@ function hideColumn(column) {
   if (!props.showHeaderTools || !props.showTransfer) {
     return;
   }
-  const columnItem = columns.value.find(item => item.field === column.field);
+  const columnItem = flatColumns.value.find(item => item.field === column.field);
   columnItem.visible = false;
-  selectData.value = columns.value.filter(col => col.visible !== false)
+  selectData.value = flatColumns.value.filter(col => col.visible !== false)
   .map((item) => ({
     label: item.title,
     key: item.field
