@@ -32,6 +32,7 @@ const handleNodeClick = (data: any, node: any) => {
   if (data.icon) {
     console.log('有图标');
   } else {
+    console.log('没有图标');
   }
   // if (!node.expanded) {
   //   data.icon = 'IconFolderOpen';

@@ -5,7 +5,6 @@ import enLocal from 'element-plus/es/locale/lang/en';
 import 'element-plus/dist/index.css';
 import 'vxe-table/lib/style.css';
 import 'ksw-vue-icon/styles/icon.css';
-import './style/font.less';
 import { createI18n } from 'vue-i18n';
 import * as components from './components';
 import * as directives from './directives';
@@ -21,10 +20,10 @@ const install = (Vue: any, options?: optionsType) => {
   const messages = { zh, en };
   const i18n = createI18n({
     locale: options?.locale === 'en' ? 'en' : 'zh',
-    messages
+    messages,
   });
   Vue.use(ElementPlus, {
-    locale: options?.locale === 'en' ? enLocal : zhLocal
+    locale: options?.locale === 'en' ? enLocal : zhLocal,
   });
   Vue.use(VXETable);
   Vue.use(i18n);

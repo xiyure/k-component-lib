@@ -1,10 +1,22 @@
 <template>
   <el-input
-    ref="inputRef" class="k-input" v-bind="$attrs"
-    :prefix-icon="iconLeft ?? prefixIcon" :suffix-icon="iconRight ?? suffixIcon" :size="getCompSize(props.size)"
+    ref="inputRef"
+    class="k-input"
+    :class="{ 'k-input-has-prepend': slots.prepend, 'k-input-has-append': slots.append }"
+    v-bind="$attrs"
+    :prefix-icon="iconLeft ?? prefixIcon"
+    :suffix-icon="iconRight ?? suffixIcon"
+    :size="getCompSize(props.size)"
   >
-    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
-      <slot :name="name" v-bind="data"></slot>
+    <template v-if="slots.prepend" #prepend>
+      <div :class="prependSlotClass()">
+        <slot name="prepend"></slot>
+      </div>
+    </template>
+    <template v-if="slots.append" #append>
+      <div :class="appendSlotClass()">
+        <slot name="append"></slot>
+      </div>
     </template>
   </el-input>
 </template>
@@ -17,14 +29,51 @@ import { InputProps } from './type.d';
 import { getCompSize } from '../../utils';
 
 defineOptions({
-  name: 'KInput'
+  name: 'KInput',
 });
 
 const props = withDefaults(defineProps<InputProps>(), {
   size: 'base',
   iconLeft: undefined,
-  iconRight: undefined
+  iconRight: undefined,
+  prepend: undefined,
+  append: undefined,
 });
+
+const slots = defineSlots(); // 具名插槽
+const prependSlot = slots.prepend?.();
+const prependSlotType = prependSlot?.[0]?.type;
+
+const appendSlot = slots.append?.();
+const appendSlotType = appendSlot?.[0]?.type;
+
+const prependSlotClass = () => {
+  switch (typeof prependSlotType) {
+    case 'string':
+      return 'k-input-slot--htmlTag';
+    case 'object':
+      return 'k-input-slot--component';
+    case 'symbol':
+      return 'k-input-slot--string';
+    default:
+      return '';
+  }
+};
+
+const appendSlotClass = () => {
+  switch (typeof appendSlotType) {
+    case 'string':
+      return 'k-input-slot--htmlTag';
+    case 'object':
+      return 'k-input-slot--component';
+    case 'symbol':
+      return 'k-input-slot--string';
+    default:
+      return '';
+  }
+};
+
+// console.log(prependSlotClass());
 
 const inputRef = ref<any>(null);
 
@@ -48,7 +97,7 @@ defineExpose({
   blur,
   select,
   clear,
-  resizeTextarea
+  resizeTextarea,
 });
 </script>
 
