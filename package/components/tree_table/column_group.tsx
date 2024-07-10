@@ -1,15 +1,14 @@
 import { defineComponent, Fragment } from 'vue';
 import { KTableColumn, KColumnGroup } from '../table';
 import TableColumnContent from './table_column_content.vue';
-import { columnConfigType } from './type.d';
 
 export default defineComponent({
   name: 'ColumnGroup',
   props: {
     data: Array,
     column: {
-      type: Array<columnConfigType>,
-      default: []
+      type: Object,
+      default: () => ({})
     },
     size: {
       type: String,
@@ -19,19 +18,9 @@ export default defineComponent({
   },
   setup(props, { slots }) {
     return () => (
-      <Fragment>
-          {
-           props.column.map((col) => {
-              if (!col) {
-                return;
-              } else if (Array.isArray(col.group) && col.group.length) {
-                return addColumnGroup(col);
-              } else {
-                return getTableColumn(slots, col);
-              }
-            })
-          }
-      </Fragment>
+      Array.isArray(props.column.group)
+        && props.column.group.length ? addColumnGroup(props.column)
+        : getTableColumn(slots, props.column)
     )
     function addColumnGroup(col) {
       const group = col.group || [];

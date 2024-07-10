@@ -103,11 +103,13 @@
           emits('cell-click', data);
         }"
       >
-        <KColumnGroup :column="columns" :size="size">
-          <template v-for="(_, name) in $slots" :key="name" #[name]="data">
-            <slot :name="name" v-bind="data"></slot>
-          </template>
-        </KColumnGroup>
+        <template v-for="item, index in columns" :key="index">
+          <KColumnGroup :column="item" :size="size">
+            <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+              <slot :name="name" v-bind="data"></slot>
+            </template>
+          </KColumnGroup>
+        </template>
         <template v-if="slots.empty" #empty>
           <slot name="empty"></slot>
         </template>
