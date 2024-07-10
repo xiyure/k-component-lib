@@ -1,7 +1,7 @@
 @import '../../style/variable.css';
 @import '../../style/general.less';
 
-.k-select {
+.k-select.el-select {
   // 所有样式设置为unset
   .init-style();
   min-width: 64px;
@@ -20,6 +20,7 @@
     .init-style();
     .text-base();
     height: var(--height);
+    min-height: unset;
     padding: 0.25rem 0.625rem;
     border-radius: var(--border-radius);
     border: var(--border-color--normal) 1px solid;
