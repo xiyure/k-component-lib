@@ -156,7 +156,7 @@ import { KButton } from '../button';
 import { KTransfer } from '../transfer';
 import { KPopover } from '../popover';
 import { KOperate } from '../operate';
-import { TreeTableProps } from './type';
+import { TreeTableProps, columnConfigType } from './type';
 import { KTable } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
@@ -536,9 +536,21 @@ function updateColumn(ids: string[]) {
     }
   });
 }
-function sortTableHeader(ids: string[]) {
-  const tempSortData = ids.map((id: string) => ({ field: id }));
-  columns.value = sortFunc(columns.value, tempSortData, 'field');
+function sortTableHeader(fieldList: string[]) {
+  const map = new Map(flatColumns.value.map((v: columnConfigType) => [v.field, v]));
+  const setData = (columns: columnConfigType) => {
+    for (const key in columns) {
+      const col = columns[key];
+      if (Array.isArray(col.group) && col.group.length > 0) {
+        setData(col.group);
+      } else {
+        const field = fieldList.shift();
+        columns[key] = map.get(field);
+      }
+    }
+  };
+  setData(columns.value);
+  flatColumns.value = treeDataToArray(columns.value, 'group');
 }
 function advancedFilter(conditionInfo, newTableData) {
   filterConditionInfo.value = conditionInfo;

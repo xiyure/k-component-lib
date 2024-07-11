@@ -5,7 +5,7 @@
     :name="name"
   >
     <template #label>
-      <div class="k-tab__label"  :class="{'has--icon': props.icon}">
+      <div class="k-tab__label" :class="{'has--icon': props.icon}">
         <component :is="props.icon"></component>
         <span v-if="!slots.label">{{ props.label }}</span>
         <slot
