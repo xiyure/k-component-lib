@@ -13,6 +13,12 @@
         <slot name="prepend"></slot>
       </div>
     </template>
+    <template #prefix>
+      <slot name="prefix"></slot>
+    </template>
+    <template #suffix>
+      <slot name="suffix"></slot>
+    </template>
     <template v-if="slots.append" #append>
       <div :class="appendSlotClass()">
         <slot name="append"></slot>
@@ -38,6 +44,8 @@ const props = withDefaults(defineProps<InputProps>(), {
   iconRight: undefined,
   prepend: undefined,
   append: undefined,
+  prefixIcon: undefined,
+  suffixIcon: undefined,
 });
 
 const slots = defineSlots(); // 具名插槽
