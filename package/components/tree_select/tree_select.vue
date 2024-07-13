@@ -19,32 +19,37 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, toRaw } from 'vue';
+import { ref, onMounted, toRaw, nextTick } from 'vue';
 import { IconFlowNested, IconFolderOpen } from 'ksw-vue-icon';
 import { TreeSelectProps } from './type.d';
 
 defineOptions({
-  name: 'KTreeSelect'
+  name: 'KTreeSelect',
 });
 
 const handleNodeClick = (data: any, node: any) => {
-  console.log(data.icon);
-  if (data.icon) {
-    console.log('有图标');
-  } else {
-    console.log('没有图标');
+  // async, await nextTick()
+  // console.log(node, data);
+
+  // 1. 判断是否有子节点
+  if (data.children) {
+    console.log('有子节点');
+    data.children.forEach((item, index) => {
+      // 2. 没有子节点, 且没有 icon, 则禁用该
+      if (!item.children && !item.icon) {
+        item.disabled = true;
+      }
+    });
   }
-  // if (!node.expanded) {
-  //   data.icon = 'IconFolderOpen';
-  //   console.log('展开了');
-  // } else {
-  //   console.log('收起了', !data.icon);
-  //   if (data.icon) {
-  //     data.icon = 'IconFlowNested';
-  //   } else {
-  //     return;
-  //   }
-  // }
+
+  if (node.expanded && (data.icon === 'IconFlowNested' || !data.icon)) {
+    // console.log('展开了');
+    data.icon = 'IconFolderOpen';
+  }
+  if (!node.expanded && data.icon === 'IconFolderOpen') {
+    // console.log('收起');
+    data.icon = 'IconFlowNested';
+  }
 };
 
 const KTreeSelectRef = ref();
@@ -110,7 +115,7 @@ defineExpose({
   getNode,
   expandNode,
   collapseNode,
-  setData
+  setData,
 });
 </script>
 
