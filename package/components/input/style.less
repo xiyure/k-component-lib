@@ -1,12 +1,8 @@
 @import '../../style/variable.css';
 @import '../../style/general.less';
 
-<<<<<<< Updated upstream
 .k-input,
 .el-input,
-=======
-.k-input.el-input,
->>>>>>> Stashed changes
 .el-textarea {
   // 所有样式设置为unset
   .init-style();
@@ -60,28 +56,8 @@
     }
   }
 
-<<<<<<< Updated upstream
   &.is-disabled {
     cursor: not-allowed;
-=======
-  .el-input__wrapper:hover {
-    .init-style();
-    height: var(--height);
-    padding: 0.25rem 0.625rem;
-    border-radius: var(--border-radius);
-    border: var(--border-color--hover) 1px solid;
-  }
-  .el-input__wrapper.is-focus {
-    .init-style();
-    height: var(--height);
-    padding: 0.25rem 0.625rem;
-    border-radius: var(--border-radius);
-    border: var(--border-color--checked) 1px solid;
-    box-shadow: 0 0 0 2px rgba(40, 130, 255, 0.1);
-  }
-
-  &.el-input.is-disabled {
->>>>>>> Stashed changes
     .el-input__wrapper {
       // 禁用状态下
       cursor: not-allowed;
@@ -186,6 +162,11 @@
         border: 1px solid var(--border-color--normal);
         background-color: #fff;
         color: var(--k-status-info);
+        span {
+          label {
+            display: inline-flex;
+          }
+        }
         &:hover {
           background-color: var(--k-gray-50);
         }
@@ -238,7 +219,6 @@
 
   // 前插槽样式
   .el-input-group__prepend {
-<<<<<<< Updated upstream
     .k-input-slot--string,
     .k-input-slot--htmlTag {
       border-top-left-radius: var(--border-radius);
@@ -249,41 +229,12 @@
       .el-button {
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
-=======
-    // width: 200px;
-    border-right: 0;
-    border-top-left-radius: var(--border-radius);
-    border-bottom-left-radius: var(--border-radius);
-
-    &:has(.k-button.el-button),
-    &:has(.k-select.el-select) {
-      margin: 0;
-      padding: 0;
-      border: unset;
-    }
-    .k-button.el-button,
-    .k-select.el-select {
-      height: 2rem;
-      border-radius: var(--border-radius);
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-      border-right: unset;
-      margin: 0;
-      box-shadow: unset;
-
-      .el-select__wrapper {
-        box-shadow: unset;
-        height: 100%;
-        border: 1px solid var(--border-color--normal);
-        border-right: unset;
->>>>>>> Stashed changes
       }
     }
   }
 
   // 后槽样式
   .el-input-group__append {
-<<<<<<< Updated upstream
     margin-right: calc(var(--append-offset));
     transform: translateX(var(--append-offset));
     .k-input-slot--string,
@@ -297,39 +248,10 @@
       .el-button {
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
-=======
-    border-left: 0;
-    border-top-right-radius: var(--border-radius);
-    border-bottom-right-radius: var(--border-radius);
-    width: fit-content;
-
-    &:has(.k-button.el-button),
-    &:has(.k-select.el-select) {
-      margin: 0;
-      padding: 0;
-      border: unset;
-    }
-    .k-button.el-button,
-    .k-select.el-select {
-      height: 2rem;
-      border-radius: var(--border-radius);
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-      border-left: unset;
-      margin: 0;
-      box-shadow: unset;
-
-      .el-select__wrapper {
-        box-shadow: unset;
-        height: 100%;
-        border: 1px solid var(--border-color--normal);
-        border-left: unset;
->>>>>>> Stashed changes
       }
     }
   }
 
-<<<<<<< Updated upstream
   &.el-input--small {
     --height: 1.5rem;
     --border-radius: var(--k-rounded-sm);
@@ -354,6 +276,8 @@
           .text-sm();
           padding: 0.1875rem 0.625rem;
           height: var(--height);
+          &.el-button--icon {
+          }
         }
         .k-select,
         .el-select {
@@ -372,11 +296,6 @@
   // 文本域样式
   .el-textarea__inner {
     .text-base();
-=======
-.el-textarea {
-  // box-shadow: unset;
-  .el-textarea__inner {
->>>>>>> Stashed changes
     box-shadow: unset;
     border: 1px solid var(--border-color--normal);
   }
@@ -387,13 +306,10 @@
     border: 1px solid var(--border-color--checked);
     box-shadow: 0 0 0 2px rgba(40, 130, 255, 0.1);
   }
-<<<<<<< Updated upstream
 
   &.el-input--small {
     .el-textarea__inner {
       .text-sm();
     }
   }
-=======
->>>>>>> Stashed changes
 }
