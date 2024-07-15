@@ -87,6 +87,7 @@
         :show-overflow="showOverflow"
         :auto-resize="autoResize"
         :show-column-menu="showColumnMenu"
+        :align="align"
         v-bind="$attrs"
         @checkbox-change="(data) => {
           checkBoxChange(data);
@@ -106,7 +107,7 @@
         }"
       >
         <template v-for="item, index in columns" :key="index">
-          <KColumnGroup :column="item" :size="size">
+          <KColumnGroup :column="item" :size="size" :align="align">
             <template v-for="(_, name) in $slots" :key="name" #[name]="data">
               <slot :name="name" v-bind="data"></slot>
             </template>

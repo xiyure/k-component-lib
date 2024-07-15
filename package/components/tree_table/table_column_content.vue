@@ -2,7 +2,7 @@
   <span
     v-if="!col.type"
     class="column-default__content"
-    :class="size === 'mini' ? 'column-mini' : 'column-default'"
+    :class="align ? `${align}-align` : ''"
   >
     <component 
       :is="displayIcon(row)"
@@ -31,6 +31,10 @@ const props = defineProps({
   size: {
     type: String,
     default: 'default'
+  },
+  align: {
+    type: String,
+    default: () => 'left'
   }
 });
 const displayIcon = computed(() => (row) => {
@@ -40,40 +44,5 @@ const displayIcon = computed(() => (row) => {
   return tableInstance.value?.isTreeExpandByRow(row) ? 'IconFolderOpen' : 'IconFlowNested';
 });
 </script>
-<style lang="less" scoped>
-.column-mini {
-  display: inline-flex;
-  line-height: 16px;
-  .ksw-icon {
-    position: relative;
-    margin-right: 3px;
-    width: 16px;
-    height: 16px;
-    svg {
-      position: absolute;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-  }
-}
-.column-default {
-  display: inline-flex;
-  line-height: 20px;
-  .ksw-icon {
-    position: relative;
-    margin-right: 3px;
-    width: 20px;
-    height: 20px;
-    svg {
-      position: absolute;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-  }
-}
-.column-default__content:has(.ksw-icon) {
-  margin-top: 0.375rem;
-}
+<style lang="less">
 </style>

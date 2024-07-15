@@ -9,7 +9,7 @@ export interface columnConfigType {
   fixed?: boolean
   width?: string | number
   filters?: any
-  align?: boolean
+  align?: string
   treeNode?: any
   cellRender?: any
   editRender?: any
@@ -45,6 +45,7 @@ export interface TreeTableProps {
   autoResize?: boolean
   height?: string
   fit?: boolean
+  align?: string
   border?: boolean | string
   emptyText?: string
   rowStyle?: object | ((rowInfo: any) => object)

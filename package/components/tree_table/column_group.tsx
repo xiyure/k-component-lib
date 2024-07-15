@@ -13,6 +13,10 @@ export default defineComponent({
     size: {
       type: String,
       default: 'default'
+    },
+    align: {
+      type: String,
+      default: () => 'left'
     }
 
   },
@@ -59,7 +63,12 @@ export default defineComponent({
           if (slots[field]) {
             return slots[field]?.(data);
           } else if (!col.render && !col.type) {
-              return <TableColumnContent key={col.field} col={col} row={row} size={props.size} />
+              return <TableColumnContent
+                key={col.field} col={col}
+                row={row}
+                size={props.size}
+                align={props.align}
+              />
           }
         };
       }
