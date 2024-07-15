@@ -2,11 +2,12 @@
   <div class="k-tree">
     <div class="k-tree__filter">
       <k-input
-        v-if="props.showFilter" v-model="query" @input="filterTreeNode"
+        v-if="props.showFilter" v-model="query" :placeholder="$t('enterInputSearch')"
+        @input="filterTreeNode"
         @keyup.enter="filter(query)"
       >
         <template #append>
-          <span class="k-tree__filter-append" @click="filter(query)"><IconSearch /></span>
+          <k-button main @click="filter(query)"><IconSearch /></k-button>
         </template>
       </k-input>
     </div>
@@ -24,6 +25,7 @@ import type { TreeNode, TreeNodeData, TreeKey, TreeData } from 'element-plus/es/
 import { IconSearch } from 'ksw-vue-icon';
 import { TreeProps } from './type';
 import { KInput } from '../input';
+import { KButton } from '../button';
 
 defineOptions({
   name: 'KTree'

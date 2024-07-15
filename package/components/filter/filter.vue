@@ -31,22 +31,25 @@
             <IconClearDate />{{ $t('clearAll') }}
           </span>
         </div>
-        <div v-for="item, index in filterData" :key="index" class="k-filter__item">
+        <div
+          v-for="item, index in filterData" :key="index" :title="item.title.join('/')"
+          class="k-filter__item"
+        >
           <div class="k-filter__condition">
-            <k-select
+            <k-cascader
               v-model="item.title"
               :teleported="false"
               :size="props.size"
+              :options="column"
+              :props="{
+                label: 'title',
+                value: 'title',
+                children: props.childrenField
+              }"
               clearable
               @change="changeCondition(index)"
             >
-              <k-option
-                v-for="dataItem in column"
-                :key="dataItem.title"
-                :label="dataItem.title"
-                :value="dataItem.title"
-              />
-            </k-select>
+            </k-cascader>
           </div>
           <div class="k-filter__logic">
             <k-select
@@ -64,8 +67,8 @@
               />
             </k-select>
           </div>
-          <div class="k-filter__value">
-            <div v-if="instance(item.title)?.dataType === 'date'" class="k-filter__date-box">
+          <div class="k-filter__value" :title="item.value">
+            <div v-if="instance(item.key)?.dataType === 'date'" class="k-filter__date-box">
               <k-select
                 v-model="item.dateRange"
                 :size="props.size"
@@ -131,7 +134,9 @@ import { KInput } from '../input';
 import { KSelect, KOption } from '../select';
 import { KButton } from '../button';
 import { KPopover } from '../popover';
+import { KCascader } from '../cascader';
 import { dateTypeOptions, logicOptions } from './const';
+import { treeDataToArray } from '../../utils';
 
 defineOptions({
   name: 'KFilter'
@@ -139,12 +144,15 @@ defineOptions({
 
 const props = withDefaults(defineProps<FilterProps>(), {
   border: true,
-  size: 'base'
+  size: 'base',
+  filterKey: 'title',
+  childrenField: 'children'
 });
 type IFilterDataType = {
-  title: string,
+  title: string[],
   logic: string,
   value: any,
+  key: any,
   dateRange?: string,
   dateType?: string,
   handler: ((a: any, b: any) => boolean) | null
@@ -161,12 +169,13 @@ const t = _global?.$t;
 const filterData = ref<IFilterDataType[]>([]);
 const filterRule = ref(0);
 
-const instance = computed(() => function (title:string) {
-  const matchInstance:any = props.column?.find(item => item.title === title);
-  return matchInstance || [];
+const flatColumns = computed(() => treeDataToArray(JSON.parse(JSON.stringify(props.column)), 'group'));
+const instance = computed(() => function (value: any) {
+  const matchInstance:any = flatColumns.value?.find(item => item[props.filterKey] === value);
+  return matchInstance;
 });
 const conditionList = computed(() => function (item: any) {
-  const columnItem = props.column?.find(col => col.title === item.title);
+  const columnItem = flatColumns.value?.find(col => col[props.filterKey] === item.key);
   const type = columnItem?.dataType || 'string';
   return logicOptions.find(item => item.type === type);
 });
@@ -179,7 +188,7 @@ const dateLogicList = computed(() => function (item:IFilterDataType) {
   return dateTypeOptions.filter((item) => !hideLogicList.includes(item.value));
 });
 
-const isConfigCondition = computed(() => filterData.value.some(item => item.title && item.logic && (item.value || ['empty', 'nonEmpty'].includes(item.logic))));
+const isConfigCondition = computed(() => filterData.value.some(item => item.key && item.logic && (item.value || ['empty', 'nonEmpty'].includes(item.logic))));
 
 // 日期禁用
 const disabledInput = computed(() => function (item:IFilterDataType) {
@@ -194,9 +203,10 @@ const disabledDatePicker = computed(() => function (item:IFilterDataType) {
 // 添加条件
 function addCondition() {
   const addItem = {
-    title: '',
+    title: [],
     logic: '',
     value: '',
+    key: '',
     handler: null,
     dateRange: 'date',
     dateType: 'datetime',
@@ -220,9 +230,9 @@ function clearFilter() {
 function filter() {
   const disabledLogicTypes = ['empty', 'nonEmpty'];
   const conditionList = filterData.value
-  .filter(item => item.title && item.logic && (item.value || disabledLogicTypes.includes(item.logic)))
+  .filter(item => item.key && item.logic && (item.value || disabledLogicTypes.includes(item.logic)))
   .map(item => ({
-    title: item.title,
+    title: item.title.join(' - '),
     logic: t?.(item.logic),
     value: item.value,
     handler: item.handler
@@ -238,7 +248,7 @@ function filter() {
   const newData = props.data.filter(dataItem => {
     if (filterRule.value === 0) {
       return filterData.value.some(item => {
-        const targetColumn = props.column?.find(col => col.title === item.title);
+        const targetColumn = flatColumns.value?.find(col => col[props.filterKey] === item.key);
         if (!targetColumn || !targetColumn.field) {
           return false;
         }
@@ -246,7 +256,7 @@ function filter() {
       });
     } 
     return filterData.value.every(item => {
-      const targetColumn = props.column?.find(col => col.title === item.title);
+      const targetColumn = flatColumns.value?.find(col => col[props.filterKey] === item.key);
       if (!targetColumn && !targetColumn.field) {
         return false;
       }
@@ -257,6 +267,14 @@ function filter() {
 }
 function changeCondition(index:number) {
   const targetItem = filterData.value[index];
+  const titles = targetItem.title ?? [];
+  let columns: any[] = props.column ?? [];
+  let columnItem: any = null;
+  for (const title of titles) {
+    columnItem = columns?.find(item => item.title === title);
+    columns = columnItem?.group ?? [];
+  }
+  targetItem.key = columnItem?.[props.filterKey];
   targetItem.logic = '';
   targetItem.value = '';
 }
@@ -268,7 +286,7 @@ function changeLogic(dataItem) {
     dataItem.dateType = 'datetime';
     dataItem.dateRange = 'date';
   }
-  const type = instance.value(dataItem.title)?.dataType;
+  const type = instance.value(dataItem.key)?.dataType;
   const logicOptionItem = logicOptions.find(item => item.type === type);
   if (!logicOptionItem) {
     return;

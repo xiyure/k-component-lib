@@ -33,7 +33,7 @@ export interface PaginationConfigType {
 
 export interface TreeTableProps {
   data: any[]
-  size: string
+  size?: string
   sortConfig?: object
   rowConfig?: object
   editConfig?: object

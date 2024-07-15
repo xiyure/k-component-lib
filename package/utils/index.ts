@@ -171,7 +171,7 @@ export function sortBySmallerList(targetData, sourceData) {
   return newData;
 }
 
-export function treeDataToArray(treeData: any[], childrenField: string) {
+export function treeDataToArray(treeData: any[] | undefined, childrenField: string) {
   if (!Array.isArray(treeData) || treeData.length === 0) {
     return [];
   }

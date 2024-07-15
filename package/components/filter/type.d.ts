@@ -4,4 +4,6 @@ export interface FilterProps {
   column?: any[]
   border?: boolean
   size?: 'base' | 'sm'
+  childrenField?: string
+  filterKey?: string
 }

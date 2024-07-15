@@ -24,7 +24,7 @@
           :suffix-icon="IconSearch"
           :placeholder="$t('searchTable')"
           clearable
-          size="sm"
+          :size="compSize"
           @change="(value: string) => query = value"
         />
         <k-button
@@ -41,8 +41,10 @@
           <k-filter
             ref="tableFilterRef"
             :data="data"
-            :column="filterColumn"
+            :column="columns"
             :size="compSize"
+            children-field="group"
+            filter-key="field"
             @confirm="advancedFilter"
           ><IconRefresh /></k-filter>
         </span>
@@ -314,11 +316,6 @@ const showTableData = computed(() => {
   }
   return getShowTableData(tableData);
 });
-const filterColumn = computed(() => flatColumns.value.filter(item => item.dataType).map(item => ({
-  title: item.title,
-  field: item.field,
-  dataType: item.dataType
-})));
 const compSize = computed(() => (props.size === 'mini' ? 'sm' : undefined));
 watch(() => props.data, (newValue) => {
   filterData.value = newValue || [];
