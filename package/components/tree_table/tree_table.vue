@@ -183,7 +183,8 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
   showTransfer: false,
   showHeaderTools: true,
   autoResize: true,
-  showColumnMenu: false
+  showColumnMenu: false,
+  cellClickToggleHighlight: true
 });
 
 const slots = defineSlots();
@@ -573,6 +574,9 @@ function hideColumn(column) {
 let isHighlight = false;
 let preRowKey = null;
 function cellClick({ row, _rowIndex }) {
+  if (!props.cellClickToggleHighlight) {
+    return;
+  }
   if (!isHighlight) {
     isHighlight = true;
   } else if (isHighlight && preRowKey === _rowIndex) {

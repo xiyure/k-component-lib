@@ -56,13 +56,13 @@ export default defineComponent({
       if (slots[slotName]) {
         childrenSlots['header'] = (data) => slots[slotName]?.(data);
       };
-      if (!col.render) {
+      if (!col.render && (slots[col.field ?? ''] || col.showIcon) && !col.type) {
         childrenSlots['default'] =  (data) =>{
           const field = col.field ?? '';
           const { row } = data;
           if (slots[field]) {
             return slots[field]?.(data);
-          } else if (!col.render && !col.type) {
+          } else if (col.showIcon) {
               return <TableColumnContent
                 key={col.field} col={col}
                 row={row}

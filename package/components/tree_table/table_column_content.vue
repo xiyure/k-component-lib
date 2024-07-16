@@ -2,7 +2,7 @@
   <span
     v-if="!col.type"
     class="column-default__content"
-    :class="align ? `${align}-align` : ''"
+    :class="col.align ? `${col.align}-align` : `${align}-align`"
   >
     <component 
       :is="displayIcon(row)"

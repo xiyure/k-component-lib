@@ -11,7 +11,6 @@
       <template #default>
         <span class="__column-drag-icon">
           <slot name="dragIcon">
-            
             <IconDrag />
           </slot>
         </span>
@@ -29,6 +28,7 @@
 
 <script setup lang="ts">
 import { ref, provide, computed, getCurrentInstance, onUnmounted, nextTick } from 'vue';
+import XEUtils from 'xe-utils';
 import { VxeColumnProps, VxeTableInstance } from 'vxe-table';
 import Sortable from 'sortablejs';
 import { IconDrag } from 'ksw-vue-icon';
@@ -47,6 +47,10 @@ const props = withDefaults(defineProps<KTableProps>(), {
   showDragColumn: false
 });
 
+const treeTableData = props.data?.map(item => item) ?? [];
+treeTableData.forEach(item => {
+  delete item.children;
+});
 const slots = defineSlots();
 const id = genRandomStr(8);
 // 事件管理
@@ -78,21 +82,52 @@ function rowDrop() {
   sortable = Sortable.create($table?.$el.querySelector('.body--wrapper>.vxe-table--body tbody'), {
     handle: '.__column-drag-icon',
     onEnd: (sortableEvent) => {
-      let tableData:any[] = [];
-      let newIndex: number = sortableEvent.newIndex;
-      let oldIndex: number = sortableEvent.oldIndex;
-      if (Array.isArray(props.fullData)) {
-        tableData = props.fullData;
-        const newItem = props.data?.[newIndex];
-        const oldItem = props.data?.[oldIndex];
-        newIndex = tableData.findIndex(item => item.id === newItem.id);
-        oldIndex = tableData.findIndex(item => item.id === oldItem.id);
-      } else if (Array.isArray(props.data)) {
-        tableData = props.data;
+      const targetTrElem = sortableEvent.item;
+      const oldIndex = sortableEvent.oldIndex as number;
+      const options = { children: 'children' };
+      const wrapperElem = targetTrElem.parentNode as HTMLElement;
+      const prevTrElem = targetTrElem.previousElementSibling as HTMLElement;
+      const targetRowNode = vxeTableRef.value?.getRowNode(targetTrElem);
+      if (!targetRowNode) {
+        return;
       }
-      const currRow = tableData.splice(oldIndex, 1)[0];
-      tableData.splice(newIndex, 0, currRow);
-      emits('drag-end', tableData);
+      const selfRow = targetRowNode.item;
+      const curRowIndex = treeTableData.findIndex(row => row.id === selfRow.id);
+      const curRow = treeTableData.splice(curRowIndex, 1)[0];
+      if (prevTrElem) {
+      // 移动到节点
+        const prevRowNode = vxeTableRef.value?.getRowNode(prevTrElem);
+        if (!prevRowNode) {
+          return;
+        }
+        const prevRow = prevRowNode.item;
+        if (XEUtils.findTree(selfRow[options.children], row => prevRow === row, options)) {
+        // 错误的移动
+          const oldTrElem = wrapperElem.children[oldIndex];
+          wrapperElem.insertBefore(targetTrElem, oldTrElem);
+          console.log('不允许父级与自身子集交换');
+          return;
+        }
+        const prevRowIndex = treeTableData.findIndex(row => row.id === prevRow.id);
+        const prevParentRow = vxeTableRef.value?.getRowById(prevRow.parentId);
+        if (vxeTableRef.value?.isTreeExpandByRow(prevRow)) {
+        // 移动到当前的子节点
+          curRow.parentId = prevRow.id;
+          treeTableData.splice(prevRowIndex + 1, 0, curRow);
+        } else if (vxeTableRef.value?.isTreeExpandByRow(prevParentRow)) {
+        // 移动到相邻节点
+          curRow.parentId = prevRow.parentId;
+          treeTableData.splice(prevRowIndex + 1, 0, curRow);
+        } else {
+          // 移动到父节点的相邻节点
+          curRow.parentId = prevParentRow?.parentId ?? null;
+          treeTableData.splice(prevRowIndex + 1, 0, curRow);
+        }
+      } else {
+      // 移动到第一行
+        treeTableData.unshift(curRow);
+      }
+      emits('drag-end', [...treeTableData]);
     }
   });
 }

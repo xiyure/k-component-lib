@@ -1,15 +1,12 @@
-import { VxeColgroupProps } from 'vxe-table';
+import { VxeColgroupProps, VxeColumnProps } from 'vxe-table';
 
-export interface columnConfigType {
+export interface columnConfigType extends VxeColumnProps {
   visible?: boolean
-  type?: string
   key?: string | number
   field?: string
   title?: string
-  fixed?: boolean
   width?: string | number
   filters?: any
-  align?: string
   treeNode?: any
   cellRender?: any
   editRender?: any
@@ -65,4 +62,5 @@ export interface TreeTableProps {
   batchOperations?: any[]
   showBatchOperation?: boolean
   showColumnMenu?: boolean
+  cellClickToggleHighlight?: boolean
 }
