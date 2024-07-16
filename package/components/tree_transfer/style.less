@@ -12,8 +12,29 @@
       border-radius: 8px;
     }
   }
+  .k-transfer-content__left {
+    .vxe-cell--checkbox {
+      overflow: hidden;
+    }
+    .vxe-cell--checkbox {
+      display: flex;
+      align-items: center;
+    }
+    .vxe-checkbox--label,
+    .tree-transfer__cell-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
   .k-transfer-content__right {
     margin-left: 10px;
+    .column-content {
+      overflow: hidden;
+    }
+    .tree-transfer__cell-label {
+     margin-right: 8px;
+    }
   }
   .k-transfer-content {
     flex-grow: 1;
@@ -39,6 +60,11 @@
         }
       }
     }
+  }
+  .tree-transfer__cell-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .k-transfer__operate{
     display: flex;

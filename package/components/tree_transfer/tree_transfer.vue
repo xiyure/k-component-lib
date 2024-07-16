@@ -41,7 +41,10 @@
                   @click="toggleTreeExpand(row, $event)"
                 >
                   <component :is="columnIcon(row)?.icon" class="column-icon" :color="columnIcon(row)?.color" />
-                  {{ row[props.label] }}
+                  <span
+                    class="tree-transfer__cell-label"
+                    :title="row[props.label]"
+                  >{{ row[props.label] }}</span>
                 </span>
               </template>
             </k-table-column>
@@ -57,7 +60,6 @@
             height="100%"
             :data="showRightData"
             :row-config="{ useKey: true }"
-            show-overflow
             :scroll-y="scrollY"
             :full-data="fullData"
             @drag-end="dragSort"
@@ -80,7 +82,7 @@
                 >
                   <span class="column-content">
                     <component :is="getIcon(props.icon, row)" v-if="props.icon" class="column-icon" />
-                    {{ row[props.label] }}
+                    <span class="tree-transfer__cell-label" :title="row[props.label]">{{ row[props.label] }}</span>
                   </span>
                   <div class="column-operate">
                     <IconDrag class="__column-drag-icon" />
@@ -379,7 +381,7 @@ defineExpose({
 <style lang="less">
 @import './style.less';
 .tree-transfer__cell, .column-content {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   .column-icon {
     margin-right: 3px;

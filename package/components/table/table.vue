@@ -47,10 +47,7 @@ const props = withDefaults(defineProps<KTableProps>(), {
   showDragColumn: false
 });
 
-const treeTableData = props.data?.map(item => item) ?? [];
-treeTableData.forEach(item => {
-  delete item.children;
-});
+const treeTableData = Array.isArray(props.fullData) ? props.fullData : [];
 const slots = defineSlots();
 const id = genRandomStr(8);
 // 事件管理
@@ -83,9 +80,6 @@ function rowDrop() {
     handle: '.__column-drag-icon',
     onEnd: (sortableEvent) => {
       const targetTrElem = sortableEvent.item;
-      const oldIndex = sortableEvent.oldIndex as number;
-      const options = { children: 'children' };
-      const wrapperElem = targetTrElem.parentNode as HTMLElement;
       const prevTrElem = targetTrElem.previousElementSibling as HTMLElement;
       const targetRowNode = vxeTableRef.value?.getRowNode(targetTrElem);
       if (!targetRowNode) {
@@ -101,13 +95,6 @@ function rowDrop() {
           return;
         }
         const prevRow = prevRowNode.item;
-        if (XEUtils.findTree(selfRow[options.children], row => prevRow === row, options)) {
-        // 错误的移动
-          const oldTrElem = wrapperElem.children[oldIndex];
-          wrapperElem.insertBefore(targetTrElem, oldTrElem);
-          console.log('不允许父级与自身子集交换');
-          return;
-        }
         const prevRowIndex = treeTableData.findIndex(row => row.id === prevRow.id);
         const prevParentRow = vxeTableRef.value?.getRowById(prevRow.parentId);
         if (vxeTableRef.value?.isTreeExpandByRow(prevRow)) {
@@ -127,7 +114,7 @@ function rowDrop() {
       // 移动到第一行
         treeTableData.unshift(curRow);
       }
-      emits('drag-end', [...treeTableData]);
+      emits('drag-end', treeTableData);
     }
   });
 }

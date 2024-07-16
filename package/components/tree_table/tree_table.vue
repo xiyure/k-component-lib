@@ -75,6 +75,7 @@
         :size="size"
         height="100%"
         :data="showTableData"
+        :full-data="data"
         :row-config="rowConfig"
         :sort-config="sortConfig"
         :tree-config="treeConfig"
@@ -104,6 +105,10 @@
         @cell-click="(data) => {
           cellClick(data);
           emits('cell-click', data);
+        }"
+        @drag-end="(data) => {
+          dragEnd(data);
+          emits('drag-end', data);
         }"
       >
         <template v-for="item, index in columns" :key="index">
@@ -241,7 +246,8 @@ const emits = defineEmits([
   'cell-click',
   'hide-column',
   'checkbox-change',
-  'checkbox-all'
+  'checkbox-all',
+  'drag-end'
 ]);
 const xTree = ref();
 const columns = ref<any>([]);
@@ -253,7 +259,7 @@ const selectData = ref<any>([]);
 const originData = ref<any>([]);
 // 高级筛选
 const tableFilterRef = ref();
-const filterData = ref(props.data || []);
+const filterData = ref<any>([]);
 const filterConditionInfo:any = ref(null);
 
 // 表格实例
@@ -320,7 +326,7 @@ const showTableData = computed(() => {
 });
 const compSize = computed(() => (props.size === 'mini' ? 'sm' : undefined));
 watch(() => props.data, (newValue) => {
-  filterData.value = newValue || [];
+  filterData.value = newValue ?? [];
   nextTick(() => {
     tableFilterRef.value?.filter();
   });
@@ -647,6 +653,9 @@ function setAllCheckboxRow(checked) {
   }
   checkedDataSize.value = checkedData.size;
   xTree.value?.tableInstance?.setAllCheckboxRow(checked);
+}
+function dragEnd(data: any[]) {
+  emits('drag-end', data);
 }
 
 defineExpose({
