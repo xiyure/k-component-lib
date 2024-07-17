@@ -579,20 +579,20 @@ function hideColumn(column) {
 // 行高亮
 let isHighlight = false;
 let preRowKey = null;
-function cellClick({ row, _rowIndex }) {
+function cellClick({ row, rowid }) {
   if (!props.cellClickToggleHighlight) {
     return;
   }
   if (!isHighlight) {
     isHighlight = true;
-  } else if (isHighlight && preRowKey === _rowIndex) {
+  } else if (isHighlight && preRowKey === rowid) {
     tableInstance.value?.setCurrentRow(null);
     isHighlight = false;
     preRowKey = null;
     emits('highlight-clear', row);
   }
-  if (preRowKey !== _rowIndex) {
-    preRowKey = _rowIndex;
+  if (preRowKey !== rowid) {
+    preRowKey = rowid;
   }
   emits('highlight-change', row, isHighlight);
 }
