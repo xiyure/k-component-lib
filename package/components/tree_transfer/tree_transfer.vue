@@ -168,10 +168,11 @@ watch(() => props.defaultData, (newValue) => {
   if (!Array.isArray(newValue)) {
     return;
   }
-  selectData.value = newValue;
-  fullData.value = sortBySmallerList(fullData.value, props.defaultData ?? []);
+  selectData.value = [...newValue];
+  fullData.value = sortBySmallerList(props.data, props.defaultData ?? []);
   rightData.value = fullData.value.filter(item => newValue.includes(item.id));
   showRightData.value = rightData.value;
+  treeLeftRef.value?.tableInstance.reloadData(leftData.value);
 }, { immediate: true, deep: true });
 
 function checkboxChange() {
@@ -242,12 +243,12 @@ async function filterData() {
 }
 async function filterLeftData() {
   const searchKey = query.value.trim();
-  let tableData = fullData.value.filter((dataItem:any) => dataItem[props.label].toString().indexOf(searchKey) !== -1);
+  let tableData = props.data.filter((dataItem:any) => dataItem[props.label].toString().indexOf(searchKey) !== -1);
   // 当表格数据为树时，筛选后的数据应展示完整的子树
   if (props.useTree) {
     handleTreeData(tableData);
     const { rowField } = getTreeConfigField();
-    tableData = sortTreeData(treeData, fullData.value, rowField);
+    tableData = sortTreeData(treeData, props.data, rowField);
     if (tableData.length < 500 && searchKey) {
       nextTick(() => {
         const VxeInstance = treeLeftRef.value.tableInstance;
@@ -285,7 +286,7 @@ function handleTreeData(leafData:any[]) {
 }
 function addChildNodes(currentNode: any) {
   const { parentField, rowField } = getTreeConfigField();
-  const childNodes = fullData.value?.filter(
+  const childNodes = props.data?.filter(
     (node: any) => node[parentField] === currentNode[rowField]
   );
   if (!childNodes) {
@@ -305,7 +306,7 @@ function addChildNodes(currentNode: any) {
 // 根据叶子节点递归遍历获取祖先节点
 function getParentNode(dataItem: any, parentField: string, rowField: string) {
   const parentKey = dataItem[parentField];
-  const parentItem = fullData.value?.find(item => item[rowField] === parentKey);
+  const parentItem = props.data?.find(item => item[rowField] === parentKey);
   if (!parentItem) {
     return;
   }
