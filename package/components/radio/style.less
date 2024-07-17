@@ -15,6 +15,7 @@
   --radio-color-hover: var(--k-blue-400);
   --radio-color-checked: var(--k-blue-500);
   --radio-color-disabled: var(--k-gray-300);
+  --border-color-shadow: var(--k-blue-100);
 
   .text-base();
   display: flex;
@@ -44,6 +45,7 @@
     border: 1px solid var(--radio-color);
     border-radius: calc(var(--radio-size) / 2);
     position: relative;
+    transition: all 0.2s;
   }
   .el-radio__inner::after {
     content: '';
@@ -56,13 +58,17 @@
     height: 0;
     border-radius: calc(var(--ball-size) * 0.5);
     background-color: var(--radio-color-checked);
+    transition: all 0.2s;
   }
   .el-radio__label {
     user-select: none;
+    padding-left: 0;
+    transition: all 0.2s;
   }
   &:hover {
     .el-radio__inner {
       border-color: var(--radio-color-hover);
+      box-shadow: 0 0 0 2px var(--border-color-shadow);
     }
     .el-radio__inner::after {
       background-color: var(--radio-color-hover);
@@ -86,6 +92,7 @@
     .el-radio__inner {
       background: unset;
       border-color: var(--radio-color-checked);
+      box-shadow: unset;
     }
     .el-radio__inner::after {
       background-color: var(--radio-color-checked);
@@ -99,6 +106,7 @@
     cursor: not-allowed;
     .el-radio__inner {
       border-color: var(--radio-color-disabled);
+      box-shadow: unset;
     }
     .el-radio__inner::after {
       animation: unset;
@@ -286,7 +294,7 @@
       margin: 0;
       &:first-child {
         border-top-left-radius: var(--radio-radius);
-        border-top-right-radius: var(--radio-radius); 
+        border-top-right-radius: var(--radio-radius);
         border-bottom-left-radius: unset;
       }
 
@@ -295,7 +303,7 @@
         border-bottom-right-radius: var(--radio-radius);
         border-top-right-radius: unset;
       }
-      &:hover{
+      &:hover {
         // border:1px solid var(--radio-color-hover) !important;
         // border-top: unset;
         border-left: 1px solid var(--radio-color-hover) !important;
@@ -309,7 +317,7 @@
       &.is-disabled:hover {
         border-left: 1px solid var(--radio-color-disabled) !important;
       }
-      &.is-disabled.is-checked{
+      &.is-disabled.is-checked {
         border-left: 1px solid var(--radio-color-disabled) !important;
       }
     }

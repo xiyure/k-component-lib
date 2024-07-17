@@ -1,7 +1,10 @@
 <template>
   <el-radio
-    v-bind="$attrs" :id="id" ref="kRadioRef"
-    class="k-radio" :class="[getSizeClass, { 'is-button': props.button === true }]"
+    v-bind="$attrs"
+    :id="id"
+    ref="kRadioRef"
+    class="k-radio"
+    :class="[getSizeClass, { 'is-button': props.button === true }]"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
       <slot :name="name" v-bind="data"></slot>
@@ -15,13 +18,13 @@ import { RadioProps } from './type.d';
 import { isValidColor, GetColorLevel, genRandomStr } from '../../utils';
 
 defineOptions({
-  name: 'KRadio'
+  name: 'KRadio',
 });
 
 const props = withDefaults(defineProps<RadioProps>(), {
   size: 'base',
   color: '',
-  button: false
+  button: false,
 });
 
 const id = genRandomStr(8);
@@ -58,7 +61,7 @@ watch(
       });
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 const getSizeClass = computed(() => (props.size ? `k-radio--${props.size}` : ''));

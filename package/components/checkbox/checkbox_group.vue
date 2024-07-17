@@ -1,9 +1,5 @@
 <template>
-  <el-checkbox-group
-    class="k-checkbox-group"
-    v-bind="$attrs"
-    :size="getCompSize(size)"
-  >
+  <el-checkbox-group class="k-checkbox-group" v-bind="$attrs" :size="getCompSize(size)">
     <slot></slot>
   </el-checkbox-group>
 </template>
@@ -14,23 +10,26 @@ import { SelectButtonGroupProps } from './type';
 import { getCompSize } from '../../utils/index';
 
 defineOptions({
-  name: 'KCheckboxGroup'
+  name: 'KCheckboxGroup',
 });
 
 const props = withDefaults(defineProps<SelectButtonGroupProps>(), {
-  color: '#409eff'
+  color: '#409eff',
 });
 
 const fillColor = ref(props.color);
 
-watch(() => props.color, (newValue) => {
-  fillColor.value = newValue;
-});
+watch(
+  () => props.color,
+  (newValue) => {
+    fillColor.value = newValue;
+  },
+);
 
 provide('useCheckboxGroup', true);
 provide('_fillColor', fillColor);
 </script>
 
-<style lang="css">
-@import './style.css';
+<style lang="less">
+@import './style.less';
 </style>
