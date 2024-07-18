@@ -83,33 +83,39 @@
     transition: all 0.2s;
   }
   &:hover {
-    .el-checkbox__inner {
-      box-shadow: 0 0 0 2px var(--border-color-shadow);
-      border-color: var(--border-color-hover);
+    .el-checkbox__input {
+      .el-checkbox__inner {
+        box-shadow: 0 0 0 2px var(--border-color-shadow);
+        border-color: var(--border-color-hover);
+      }
     }
     .el-checkbox__label {
       color: var(--border-color-hover);
     }
   }
   &.is-checked {
-    .el-checkbox__inner {
-      background: var(--bg-color-checked);
-      border-color: var(--bg-color-checked);
-      box-shadow: 0 0 0 0 var(--border-color-shadow);
-    }
-    .el-checkbox__inner::after {
-      transform: translate(-50%, -50%) rotate(45deg);
-      opacity: 1;
+    .el-checkbox__input {
+      .el-checkbox__inner {
+        background: var(--bg-color-checked);
+        border-color: var(--bg-color-checked);
+        box-shadow: 0 0 0 0 var(--border-color-shadow);
+      }
+      .el-checkbox__inner::after {
+        transform: translate(-50%, -50%) rotate(45deg);
+        opacity: 1;
+      }
     }
     .el-checkbox__label {
       color: var(--bg-color-checked);
     }
   }
   &.is-disabled {
-    .el-checkbox__inner {
-      background-color: var(--k-gray-100);
-      border-color: var(--k-gray-200);
-      cursor: not-allowed;
+    .el-checkbox__input {
+      .el-checkbox__inner {
+        background-color: var(--k-gray-100);
+        border-color: var(--k-gray-200);
+        cursor: not-allowed;
+      }
     }
     .el-checkbox__label {
       color: var(--k-gray-500);
@@ -117,18 +123,22 @@
     }
   }
   &.is-disabled:hover {
-    .el-checkbox__inner {
-      box-shadow: 0 0 0 0px var(--border-color-shadow);
+    .el-checkbox__input {
+      .el-checkbox__inner {
+        box-shadow: 0 0 0 0px var(--border-color-shadow);
+      }
     }
   }
   &.is-disabled&.is-checked {
-    .el-checkbox__inner {
-      background: var(--k-gray-100);
-      border-color: var(--border-color-normal);
-      box-shadow: 0 0 0 0 var(--border-color-shadow);
-    }
-    .el-checkbox__inner::after {
-      border-color: var(--k-gray-300);
+    .el-checkbox__input {
+      .el-checkbox__inner {
+        background: var(--k-gray-100);
+        border-color: var(--border-color-normal);
+        box-shadow: 0 0 0 0 var(--border-color-shadow);
+      }
+      .el-checkbox__inner::after {
+        border-color: var(--k-gray-300);
+      }
     }
   }
 }
