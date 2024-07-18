@@ -18,8 +18,10 @@
       getElTypeColor,
       getSizeClass
     ]"
-    v-bind="attrs"
-    @click="handleClick"
+    :loading="loading"
+    :loading-icon="loadingIcon"
+    :disabled="disabled"
+    v-bind="$attrs"
   >
     <slot name="iconLeft" class="icon-left">
       <component :is="props.iconLeft" v-if="props.iconLeft" />
@@ -107,24 +109,6 @@ const getElTypeColor = computed(() => {
 });
 
 const getSizeClass = computed(() => (props.size ? `el-button--${props.size}` : ''));
-
-const attrs = computed(() => ({
-  ...getOriginAttrs()
-}));
-
-const getOriginAttrs = () => {
-  const { loading, loadingIcon } = props;
-  return {
-    loading,
-    loadingIcon
-  };
-};
-
-const emits = defineEmits(['click']);
-const handleClick = (e: Event) => {
-  if (props.disabled) return;
-  emits('click', e);
-};
 </script>
 
 <style lang="less">
