@@ -24,7 +24,3 @@ export interface InputProps {
    */
   suffixIcon?: Component | string | undefined;
 }
-
-export interface InputGroupProps {
-  size?: 'base' | 'sm';
-}

@@ -26,9 +26,6 @@
     </template>
   </el-input>
 </template>
-
-<!-- :suffix-icon="iconLeft ?? suffixIcon"  -->
-
 <script setup lang="ts">
 import { ref } from 'vue';
 import { InputProps } from './type.d';
@@ -80,8 +77,6 @@ const appendSlotClass = () => {
       return '';
   }
 };
-
-// console.log(prependSlotClass());
 
 const inputRef = ref<any>(null);
 

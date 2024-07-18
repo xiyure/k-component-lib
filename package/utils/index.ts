@@ -79,20 +79,6 @@ export function GetColorLevel(hex:any) {
   };
 }
 
-// 获取$attrs对象中的事件
-export function getListeners(attrs: any) {
-  const listeners = {};
-  if (typeof attrs !== 'object' || attrs === null) {
-    return listeners;
-  }
-  for (const key in attrs) {
-    if (key.startsWith('on')) {
-      const eventName = key.substring(2);
-      listeners[eventName] = attrs[key];
-    }
-  }
-  return listeners;
-}
 // 自定义事件总线调度
 type emitterType = {
   id: string,
@@ -144,6 +130,7 @@ export class Emitter {
   }
 }
 
+// 较大长度数组依据较小长度数组排序
 export function sortBySmallerList(targetData, sourceData) {
   const indexMap = new Map(targetData.map((v, i) => [v.id, i]));
   const dataMap = new Map(targetData.map((v) => [v.id, v]));
@@ -171,6 +158,7 @@ export function sortBySmallerList(targetData, sourceData) {
   return newData;
 }
 
+// 树形数据转数组
 export function treeDataToArray(treeData: any[] | undefined, childrenField: string) {
   if (!Array.isArray(treeData) || treeData.length === 0) {
     return [];
