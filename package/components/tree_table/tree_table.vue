@@ -41,7 +41,7 @@
           <k-filter
             ref="tableFilterRef"
             :data="data"
-            :column="columns"
+            :column="filterColumns"
             :size="compSize"
             children-field="group"
             filter-key="field"
@@ -75,7 +75,7 @@
         :size="size"
         height="100%"
         :data="showTableData"
-        :full-data="data"
+        :full-data="fullData"
         :row-config="rowConfig"
         :sort-config="sortConfig"
         :tree-config="treeConfig"
@@ -88,6 +88,7 @@
         :show-overflow="showOverflow"
         :auto-resize="autoResize"
         :show-column-menu="showColumnMenu"
+        :show-drag-column="showDragColumn"
         :align="align"
         v-bind="$attrs"
         @checkbox-change="(data) => {
@@ -108,7 +109,6 @@
         }"
         @drag-end="(data) => {
           dragEnd(data);
-          emits('drag-end', data);
         }"
       >
         <template v-for="item, index in columns" :key="index">
@@ -157,7 +157,7 @@
 import { ref, computed, onMounted, watch, nextTick, getCurrentInstance } from 'vue';
 import VXETable from 'vxe-table';
 import { IconSearch, IconSetting, IconRefresh } from 'ksw-vue-icon';
-import { isNumber } from 'lodash';
+import { cloneDeep, isNumber } from 'lodash-es';
 import KColumnGroup from './column_group';
 import { KInput } from '../input';
 import { KButton } from '../button';
@@ -251,6 +251,7 @@ const emits = defineEmits([
 ]);
 const xTree = ref();
 const columns = ref<any>([]);
+const fullData = ref<any[]>([]);
 const flatColumns = ref<any>([]);
 const query = ref('');
 const searchStr = ref('');
@@ -262,6 +263,8 @@ const tableFilterRef = ref();
 const filterData = ref<any>([]);
 const filterConditionInfo:any = ref(null);
 
+// 高级筛选功能只处理非特殊、可见的有效数据
+const filterColumns = computed(() => columns.value.filter((item: any) => !item.type && item.visible !== false && item.field));
 // 表格实例
 const tableInstance = computed(() => xTree.value?.tableInstance);
 const headerText = computed(() => {
@@ -318,6 +321,9 @@ const isPaging = computed(() => props.showPage && !props.useTree);
 
 // 页面展示的表格数据
 const showTableData = computed(() => {
+  if (!Array.isArray(props.data)) {
+    return [];
+  }
   const tableData = filterTableData();
   if (!isPaging.value || props.isServerPaging) {
     return tableData;
@@ -326,9 +332,15 @@ const showTableData = computed(() => {
 });
 const compSize = computed(() => (props.size === 'mini' ? 'sm' : undefined));
 watch(() => props.data, (newValue) => {
-  filterData.value = newValue ?? [];
   nextTick(() => {
     tableFilterRef.value?.filter();
+  });
+  setTimeout(() => {
+    if (props.showDragColumn && Array.isArray(newValue)) {
+      fullData.value = cloneDeep(props.data);
+    } else {
+      fullData.value = [];
+    }
   });
 }, { deep: true, immediate: true });
 watch(() => filterData.value.length, (newValue) => {
@@ -419,7 +431,7 @@ function handleTreeData(leafData:any[]) {
 }
 function addChildNodes(currentNode: any) {
   const { parentField, rowField } = getTreeConfigField();
-  const childNodes = props.data?.filter(
+  const childNodes = filterData.value?.filter(
     (node: any) => node[parentField] === currentNode[rowField]
   );
   if (!childNodes) {
@@ -439,7 +451,7 @@ function addChildNodes(currentNode: any) {
 // 根据叶子节点递归遍历获取祖先节点
 function getParentNode(dataItem: any, parentField: string, rowField: string) {
   const parentKey = dataItem[parentField];
-  const parentItem = props.data?.find(item => item[rowField] === parentKey);
+  const parentItem = filterData.value?.find(item => item[rowField] === parentKey);
   if (!parentItem) {
     return;
   }
@@ -559,7 +571,17 @@ function sortTableHeader(fieldList: string[]) {
 }
 function advancedFilter(conditionInfo, newTableData) {
   filterConditionInfo.value = conditionInfo;
-  filterData.value = newTableData;
+  filterData.value = cloneDeep(newTableData);
+  if (props.useTree) {
+    handleTreeData(filterData.value);
+    const { rowField } = getTreeConfigField();
+    filterData.value = sortFunc(treeData, props.data, rowField);
+    if (filterData.value.length < 500 && filterData.value.length !== props.data?.length) {
+      setTimeout(() => {
+        tableInstance.value?.setAllTreeExpand(true);
+      });
+    }
+  }
 }
 function filter(searchStr: string) {
   query.value = searchStr;
@@ -655,7 +677,10 @@ function setAllCheckboxRow(checked) {
   xTree.value?.tableInstance?.setAllCheckboxRow(checked);
 }
 function dragEnd(data: any[]) {
-  emits('drag-end', data);
+  emits('drag-end', {
+    data,
+    originData: props.data
+  });
 }
 
 defineExpose({

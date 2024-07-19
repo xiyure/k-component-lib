@@ -28,7 +28,6 @@
 
 <script setup lang="ts">
 import { ref, provide, computed, getCurrentInstance, onUnmounted, nextTick } from 'vue';
-import XEUtils from 'xe-utils';
 import { VxeColumnProps, VxeTableInstance } from 'vxe-table';
 import Sortable from 'sortablejs';
 import { IconDrag } from 'ksw-vue-icon';
@@ -47,7 +46,6 @@ const props = withDefaults(defineProps<KTableProps>(), {
   showDragColumn: false
 });
 
-const treeTableData = Array.isArray(props.fullData) ? props.fullData : [];
 const slots = defineSlots();
 const id = genRandomStr(8);
 // 事件管理
@@ -86,8 +84,8 @@ function rowDrop() {
         return;
       }
       const selfRow = targetRowNode.item;
-      const curRowIndex = treeTableData.findIndex(row => row.id === selfRow.id);
-      const curRow = treeTableData.splice(curRowIndex, 1)[0];
+      const curRowIndex = props.fullData?.findIndex(row => row.id === selfRow.id) as number;
+      const curRow = props.fullData?.splice(curRowIndex, 1)[0];
       if (prevTrElem) {
       // 移动到节点
         const prevRowNode = vxeTableRef.value?.getRowNode(prevTrElem);
@@ -95,26 +93,27 @@ function rowDrop() {
           return;
         }
         const prevRow = prevRowNode.item;
-        const prevRowIndex = treeTableData.findIndex(row => row.id === prevRow.id);
+        const prevRowIndex = props.fullData?.findIndex(row => row.id === prevRow.id) as number;
         const prevParentRow = vxeTableRef.value?.getRowById(prevRow.parentId);
         if (vxeTableRef.value?.isTreeExpandByRow(prevRow)) {
         // 移动到当前的子节点
           curRow.parentId = prevRow.id;
-          treeTableData.splice(prevRowIndex + 1, 0, curRow);
+          props.fullData?.splice(prevRowIndex + 1, 0, curRow);
         } else if (vxeTableRef.value?.isTreeExpandByRow(prevParentRow)) {
         // 移动到相邻节点
-          curRow.parentId = prevRow.parentId;
-          treeTableData.splice(prevRowIndex + 1, 0, curRow);
+          curRow.parentId = prevRow.parentId ?? null;
+          props.fullData?.splice(prevRowIndex + 1, 0, curRow);
         } else {
           // 移动到父节点的相邻节点
           curRow.parentId = prevParentRow?.parentId ?? null;
-          treeTableData.splice(prevRowIndex + 1, 0, curRow);
+          props.fullData?.splice(prevRowIndex + 1, 0, curRow);
         }
       } else {
       // 移动到第一行
-        treeTableData.unshift(curRow);
+        curRow.parentId = null;
+        props.fullData?.unshift(curRow);
       }
-      emits('drag-end', treeTableData);
+      emits('drag-end', props.fullData);
     }
   });
 }

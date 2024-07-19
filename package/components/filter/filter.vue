@@ -32,7 +32,7 @@
           </span>
         </div>
         <div
-          v-for="item, index in filterData" :key="index" :title="item.title.join('/')"
+          v-for="item, index in filterData" :key="index" :title="item.title?.join('/')"
           class="k-filter__item"
         >
           <div class="k-filter__condition">
@@ -146,7 +146,8 @@ const props = withDefaults(defineProps<FilterProps>(), {
   border: true,
   size: 'base',
   filterKey: 'title',
-  childrenField: 'children'
+  childrenField: 'children',
+  data: []
 });
 type IFilterDataType = {
   title: string[],
@@ -245,7 +246,7 @@ function filter() {
     emits('confirm', conditionInfo, props.data);
     return; 
   }
-  const newData = props.data.filter(dataItem => {
+  const newData = props.data?.filter(dataItem => {
     if (filterRule.value === 0) {
       return filterData.value.some(item => {
         const targetColumn = flatColumns.value?.find(col => col[props.filterKey] === item.key);
@@ -263,7 +264,7 @@ function filter() {
       return item.handler?.(dataItem[targetColumn.field], item.value);
     });
   });
-  emits('confirm', conditionInfo, newData);
+  emits('confirm', conditionInfo, newData ?? []);
 }
 function changeCondition(index:number) {
   const targetItem = filterData.value[index];
@@ -286,7 +287,7 @@ function changeLogic(dataItem) {
     dataItem.dateType = 'datetime';
     dataItem.dateRange = 'date';
   }
-  const type = instance.value(dataItem.key)?.dataType;
+  const type = instance.value(dataItem.key)?.dataType ?? 'string';
   const logicOptionItem = logicOptions.find(item => item.type === type);
   if (!logicOptionItem) {
     return;

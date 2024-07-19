@@ -62,5 +62,6 @@ export interface TreeTableProps {
   batchOperations?: any[]
   showBatchOperation?: boolean
   showColumnMenu?: boolean
+  showDragColumn?: boolean
   cellClickToggleHighlight?: boolean
 }
