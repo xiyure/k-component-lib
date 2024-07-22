@@ -45,7 +45,7 @@
             :size="compSize"
             children-field="group"
             filter-key="field"
-            @confirm="advancedFilter"
+            @confirm="refreshAdvancedFilter"
           ><IconRefresh /></k-filter>
         </span>
         <!-- 穿梭框 -->
@@ -569,7 +569,7 @@ function sortTableHeader(fieldList: string[]) {
   setData(columns.value);
   flatColumns.value = treeDataToArray(columns.value, 'group');
 }
-function advancedFilter(conditionInfo, newTableData) {
+function refreshAdvancedFilter(conditionInfo, newTableData) {
   filterConditionInfo.value = conditionInfo;
   filterData.value = newTableData;
   if (props.useTree) {
@@ -685,9 +685,15 @@ function dragEnd(data: any[]) {
   });
 }
 
+// 刷新高级筛选的表格数据
+function advancedFilter() {
+  tableFilterRef.value?.filter();
+}
+
 defineExpose({
   tableInstance,
   filter,
+  advancedFilter,
   setCheckboxRow,
   setAllCheckboxRow
 });
