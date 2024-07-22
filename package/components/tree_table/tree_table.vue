@@ -342,7 +342,7 @@ watch(() => props.data, (newValue) => {
       fullData.value = [];
     }
   });
-}, { deep: true, immediate: true });
+}, { immediate: true });
 watch(() => filterData.value.length, (newValue) => {
   const length = newValue || 0;
   updatePageNum(length);
@@ -431,7 +431,7 @@ function handleTreeData(leafData:any[]) {
 }
 function addChildNodes(currentNode: any) {
   const { parentField, rowField } = getTreeConfigField();
-  const childNodes = filterData.value?.filter(
+  const childNodes = props.data?.filter(
     (node: any) => node[parentField] === currentNode[rowField]
   );
   if (!childNodes) {
@@ -451,7 +451,7 @@ function addChildNodes(currentNode: any) {
 // 根据叶子节点递归遍历获取祖先节点
 function getParentNode(dataItem: any, parentField: string, rowField: string) {
   const parentKey = dataItem[parentField];
-  const parentItem = filterData.value?.find(item => item[rowField] === parentKey);
+  const parentItem = props.data?.find(item => item[rowField] === parentKey);
   if (!parentItem) {
     return;
   }
@@ -571,7 +571,7 @@ function sortTableHeader(fieldList: string[]) {
 }
 function advancedFilter(conditionInfo, newTableData) {
   filterConditionInfo.value = conditionInfo;
-  filterData.value = cloneDeep(newTableData);
+  filterData.value = newTableData;
   if (props.useTree) {
     handleTreeData(filterData.value);
     const { rowField } = getTreeConfigField();
@@ -613,7 +613,9 @@ function cellClick({ row, rowid }) {
     preRowKey = null;
     emits('highlight-clear', row);
   }
-  if (preRowKey !== rowid) {
+  const currentHighlightRow = tableInstance.value?.getCurrentRecord();
+  const currentRowId = tableInstance.value?.getRowid(currentHighlightRow);
+  if (preRowKey !== rowid && currentRowId === rowid) {
     preRowKey = rowid;
   }
   emits('highlight-change', row, isHighlight);

@@ -129,6 +129,7 @@
 <script setup lang="ts">
 import { ref, computed, getCurrentInstance, onMounted } from 'vue';
 import { IconClose, IconClearDate, IconAdd, IconFilter, IconFilterFill } from 'ksw-vue-icon';
+import { cloneDeep } from 'lodash-es';
 import { FilterProps } from './type';
 import { KInput } from '../input';
 import { KSelect, KOption } from '../select';
@@ -170,7 +171,7 @@ const t = _global?.$t;
 const filterData = ref<IFilterDataType[]>([]);
 const filterRule = ref(0);
 
-const flatColumns = computed(() => treeDataToArray(JSON.parse(JSON.stringify(props.column)), 'group'));
+const flatColumns = computed(() => treeDataToArray(cloneDeep(props.column), 'group'));
 const instance = computed(() => function (value: any) {
   const matchInstance:any = flatColumns.value?.find(item => item[props.filterKey] === value);
   return matchInstance;

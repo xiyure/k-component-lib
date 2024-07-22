@@ -1,5 +1,6 @@
 import ElementPlus from 'element-plus';
-import VXETable from 'vxe-table';
+import VxeTable from 'vxe-table';
+import VxeUI from 'vxe-pc-ui';
 import zhLocal from 'element-plus/es/locale/lang/zh-cn';
 import enLocal from 'element-plus/es/locale/lang/en';
 import 'element-plus/dist/index.css';
@@ -25,7 +26,7 @@ const install = (Vue: any, options?: optionsType) => {
   Vue.use(ElementPlus, {
     locale: options?.locale === 'en' ? enLocal : zhLocal,
   });
-  Vue.use(VXETable);
+  Vue.use(VxeTable).use(VxeUI);
   Vue.use(i18n);
   // 组件注册
   for (const name in components) {
