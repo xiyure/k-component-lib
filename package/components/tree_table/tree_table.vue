@@ -332,9 +332,13 @@ const showTableData = computed(() => {
 });
 const compSize = computed(() => (props.size === 'mini' ? 'sm' : undefined));
 watch(() => props.data, (newValue) => {
-  nextTick(() => {
-    tableFilterRef.value?.filter();
-  });
+  if (props.showFilter) {
+    nextTick(() => {
+      tableFilterRef.value?.filter();
+    });
+  } else {
+    filterData.value = newValue ?? [];
+  }
   setTimeout(() => {
     if (props.showDragColumn && Array.isArray(newValue)) {
       fullData.value = cloneDeep(props.data);
@@ -342,7 +346,7 @@ watch(() => props.data, (newValue) => {
       fullData.value = [];
     }
   });
-}, { immediate: true });
+}, { immediate: true});
 watch(() => filterData.value.length, (newValue) => {
   const length = newValue || 0;
   updatePageNum(length);
