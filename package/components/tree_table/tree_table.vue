@@ -168,7 +168,7 @@ import { TreeTableProps, columnConfigType } from './type';
 import { KTable } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
-import { genRandomStr, treeDataToArray } from '../../utils';
+import { genRandomStr, isValidColor, treeDataToArray } from '../../utils';
 
 defineOptions({
   name: 'KTreeTable'
@@ -259,8 +259,8 @@ const searchStr = ref('');
 const selectData = ref<any>([]);
 const originData = ref<any>([]);
 // 高级筛选
-const tableFilterRef = ref();
-const filterData = ref<any>([]);
+const tableFilterRef = ref(); //高级筛选后的数据
+const newFilterData = ref<any>([]);
 const filterConditionInfo:any = ref(null);
 
 // 高级筛选功能只处理非特殊、可见的有效数据
@@ -310,47 +310,21 @@ const columnConfig = computed(() => Object.assign(defaultColumnConfig, props.col
 const checkboxConfig = computed(() => Object.assign(defaultCheckboxConfig, props.checkboxConfig || {}));
 
 // 表格数据量
-const dataLength = computed(() => {
-  if (props.useTree) {
-    return 0;
-  } 
-  return filterTableData().length;
-});
+const dataLength = ref<number>(0);
 // 是否分页
 const isPaging = computed(() => props.showPage && !props.useTree);
 
 // 页面展示的表格数据
 const showTableData = computed(() => {
-  if (!Array.isArray(props.data)) {
-    return [];
-  }
   const tableData = filterTableData();
   if (!isPaging.value || props.isServerPaging) {
     return tableData;
   }
   return getShowTableData(tableData);
 });
+// 表格size控制
 const compSize = computed(() => (props.size === 'mini' ? 'sm' : undefined));
-watch(() => props.data, (newValue) => {
-  if (props.showFilter) {
-    nextTick(() => {
-      tableFilterRef.value?.filter();
-    });
-  } else {
-    filterData.value = newValue ?? [];
-  }
-  setTimeout(() => {
-    if (props.showDragColumn && Array.isArray(newValue)) {
-      fullData.value = cloneDeep(props.data);
-    } else {
-      fullData.value = [];
-    }
-  });
-}, { immediate: true});
-watch(() => filterData.value.length, (newValue) => {
-  const length = newValue || 0;
-  updatePageNum(length);
-}, { immediate: true });
+
 watch(() => props.column, () => {
   columns.value = props.column.map(col => {
     const visible = col.visible !== false;
@@ -375,19 +349,28 @@ watch(() => flatColumns.value.length, () => {
     key: item.field
   }));
 }, { immediate: true, deep: true });
+watch(() => showTableData.value?.length, (newValue) => {
+  const length = isNumber(newValue) ? newValue : 0;
+  nextTick(() => {
+    if (query.value.trim() && length < 500) {
+      tableInstance.value?.setAllTreeExpand(true);
+    } else {
+      tableInstance.value?.setAllTreeExpand(false);
+    }
+  })
+}, { immediate: true });
 
 // 表格内容搜索
 let treeData:any[] = [];
 const nodeSet = new Set();
 function filterTableData() {
-  const searchKey = query.value.trim();
+  const filterData = filterConditionInfo.value?.conditionList?.length
+    ? newFilterData.value
+    : props.data;
+  const searchKey = query.value.trim().replace(/\\/g, '\\\\');
   if (!searchKey) {
-    if (props.useTree) {
-      nextTick(() => {
-        tableInstance.value?.setAllTreeExpand(false);
-      });
-    }
-    return filterData.value;
+    dataLength.value = props.useTree ? 0 : filterData.length;
+    return filterData;
   }
   if (props.isRemoteQuery) {
     emits('remote-query', searchKey);
@@ -395,7 +378,7 @@ function filterTableData() {
   }
   const visibleColumns = flatColumns.value.filter(col => col.visible);
   const fieldList = visibleColumns.map(col => col.field || '');
-  let tableData = filterData.value.filter((dataItem:any) => fieldList.some(field => {
+  let tableData = filterData.filter((dataItem:any) => fieldList.some(field => {
     if (props.exactMatch) {
       return dataItem[field] === searchKey;
     } 
@@ -406,11 +389,10 @@ function filterTableData() {
     handleTreeData(tableData);
     const { rowField } = getTreeConfigField();
     tableData = sortFunc(treeData, props.data, rowField);
-    if (tableData.length < 500) {
-      nextTick(() => {
-        tableInstance.value?.setAllTreeExpand(true);
-      });
-    }
+    dataLength.value = 0;
+  } else {
+    dataLength.value = tableData.length;
+    updatePageNum(tableData.length);
   }
   return tableData;
 }
@@ -488,7 +470,7 @@ function changeCurrentPage(pageNum: number) {
 function getShowTableData(data) {
   if (props.isServerPaging) {
     emits('server-paging', paginationConfig.value);
-    return;
+    return data;
   }
   const { currentPage, pageSize } = paginationConfig.value;
   const startIndex = (currentPage - 1) * pageSize;
@@ -575,17 +557,7 @@ function sortTableHeader(fieldList: string[]) {
 }
 function refreshAdvancedFilter(conditionInfo, newTableData) {
   filterConditionInfo.value = conditionInfo;
-  filterData.value = newTableData;
-  if (props.useTree) {
-    handleTreeData(filterData.value);
-    const { rowField } = getTreeConfigField();
-    filterData.value = sortFunc(treeData, props.data, rowField);
-    if (filterData.value.length < 500 && filterData.value.length !== props.data?.length) {
-      setTimeout(() => {
-        tableInstance.value?.setAllTreeExpand(true);
-      });
-    }
-  }
+  newFilterData.value = newTableData;
 }
 function filter(searchStr: string) {
   query.value = searchStr;
