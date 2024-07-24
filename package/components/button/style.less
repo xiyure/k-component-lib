@@ -60,10 +60,12 @@
     background: var(--k-gray-100);
   }
 
-  &.is-disabled {
+  &.is-disabled,
+  &.is-disabled:hover {
     background: var(--k-gray-100);
     color: var(--k-gray-300);
     cursor: not-allowed;
+    border-color: var(--k-gray-200);
 
     // pointer-events: none;
 
