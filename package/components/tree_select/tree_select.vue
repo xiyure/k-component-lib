@@ -2,7 +2,7 @@
   <el-tree-select ref="KTreeSelectRef" v-bind="$attrs" @node-click="handleNodeClick">
     <template #default="{ data }">
       <span>
-        <component :is="data.icon ?? 'IconFlowNested'" />
+        <component :is="data.icon ?? 'IconFlowNested'" :class="!data.children?.length ? 'tree-item-icon--noChildren' : ''" />
         {{ data.label }}
       </span>
     </template>
@@ -10,23 +10,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { nextTick, ref } from 'vue';
 import type { TreeNode, TreeNodeData, TreeKey, TreeData } from 'element-plus/es/components/tree-v2/src/types';
 
 defineOptions({
   name: 'KTreeSelect',
 });
 
-const handleNodeClick = (data: any, node: any) => {
+const handleNodeClick = async (data: any, node: any) => {
   // 1. 判断是否有子节点
-  if (data.children) {
+  if (data.children && data.children.length > 0) {
     data.children.forEach((item: any) => {
-      // 2. 没有子节点, 且没有 icon, 则禁用该
-      if (!item.children && !item.icon) {
-        item.disabled = true;
-      }
     });
   }
+  await nextTick()
   if (node.expanded && (data.icon === 'IconFlowNested' || !data.icon)) {
     data.icon = 'IconFolderOpen';
   }
