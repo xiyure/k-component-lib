@@ -17,7 +17,7 @@
                 && tableInstance.editConfig.showIcon !== false
                 && editRender
               "
-              class="k-table-column__edit vxe-icon-edit"
+              class="k-table-column__edit vxe-table-icon-edit"
             ></i>
             {{ headerSlotProps.column.title ?? '-' }}
           </slot>
@@ -54,12 +54,12 @@
           >
             <i
               id="_asc-icon"
-              class="vxe-icon-caret-up"
+              class="vxe-table-icon-caret-up"
               :style="{ color: headerSlotProps.column.order == 'asc' ? '#2882FF' : '' }"
             ></i>
             <i
               id="_desc-icon"
-              class="vxe-icon-caret-down"
+              class="vxe-table-icon-caret-down"
               :style="{ color: headerSlotProps.column.order == 'desc' ? '#2882FF' : '' }"
             ></i>
           </span>
