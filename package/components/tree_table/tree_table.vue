@@ -60,6 +60,7 @@
           <k-transfer
             v-model="selectData"
             :data="originData"
+            :titles="[$t('unselectedFields'), $t('selectedFields')]"
             @change="updateColumn"
             @reset="updateColumn"
             @sort="sortTableHeader"
@@ -157,7 +158,7 @@
 import { ref, computed, onMounted, watch, nextTick, getCurrentInstance } from 'vue';
 import VXETable from 'vxe-table';
 import { IconSearch, IconSetting, IconRefresh } from 'ksw-vue-icon';
-import { cloneDeep, isNumber } from 'lodash-es';
+import { isNumber } from 'lodash-es';
 import KColumnGroup from './column_group';
 import { KInput } from '../input';
 import { KButton } from '../button';
@@ -168,7 +169,7 @@ import { TreeTableProps, columnConfigType } from './type';
 import { KTable } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
-import { genRandomStr, isValidColor, treeDataToArray } from '../../utils';
+import { genRandomStr, treeDataToArray } from '../../utils';
 
 defineOptions({
   name: 'KTreeTable'
@@ -259,7 +260,7 @@ const searchStr = ref('');
 const selectData = ref<any>([]);
 const originData = ref<any>([]);
 // 高级筛选
-const tableFilterRef = ref(); //高级筛选后的数据
+const tableFilterRef = ref(); // 高级筛选后的数据
 const newFilterData = ref<any>([]);
 const filterConditionInfo:any = ref(null);
 
@@ -357,7 +358,7 @@ watch(() => showTableData.value?.length, (newValue) => {
     } else {
       tableInstance.value?.setAllTreeExpand(false);
     }
-  })
+  });
 }, { immediate: true });
 
 // 表格内容搜索

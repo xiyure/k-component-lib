@@ -10,7 +10,7 @@
           class="k-operate-list__item"
           @click="handler(item.handler)"
         >
-          {{ item.label }}
+          <span class="k-operate-list__label">{{ item.label }}</span>
         </li>
         <li
           v-if="hideData.length"

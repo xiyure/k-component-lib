@@ -17,9 +17,10 @@
       }
       .el-transfer-panel__header {
         height: 32px;
+        padding-left: 10px;
         background-color: @k-gray-50;
         .transfer-restore__text {
-          width: 120px;
+          flex-shrink: 0;
           padding-right: 5px;
           color: @k-status-primary;
           cursor: pointer;
@@ -77,6 +78,9 @@
     justify-content: space-between;
     .k-transfer-sort {
       margin-right: 10px;
+      &:hover {
+        cursor: move;
+      }
       svg {
         width: 20px;
         height: 20px;

@@ -1,15 +1,6 @@
 <template>
   <el-tree-select ref="KTreeSelectRef" v-bind="$attrs" @node-click="handleNodeClick">
-    <!-- <template #default="{ node, data }">
-      <span class="custom-tree-node" @click="() => console.log(node, data)">
-        <component :is="IconClose" v-show="!states"></component>
-        <component :is="IconOpen" v-show="states"></component>
-        <component :is="data.icon"></component>
-        {{ data.label }}
-      </span>
-    </template> -->
-
-    <template #default="{ node, data }">
+    <template #default="{ data }">
       <span>
         <component :is="data.icon ?? 'IconFlowNested'" />
         {{ data.label }}
@@ -19,35 +10,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, toRaw, nextTick } from 'vue';
-import { IconFlowNested, IconFolderOpen } from 'ksw-vue-icon';
-import { TreeSelectProps } from './type.d';
+import { ref } from 'vue';
+import type { TreeNode, TreeNodeData, TreeKey, TreeData } from 'element-plus/es/components/tree-v2/src/types';
 
 defineOptions({
   name: 'KTreeSelect',
 });
 
 const handleNodeClick = (data: any, node: any) => {
-  // async, await nextTick()
-  // console.log(node, data);
-
   // 1. 判断是否有子节点
   if (data.children) {
-    console.log('有子节点');
-    data.children.forEach((item, index) => {
+    data.children.forEach((item: any) => {
       // 2. 没有子节点, 且没有 icon, 则禁用该
       if (!item.children && !item.icon) {
         item.disabled = true;
       }
     });
   }
-
   if (node.expanded && (data.icon === 'IconFlowNested' || !data.icon)) {
-    // console.log('展开了');
     data.icon = 'IconFolderOpen';
   }
   if (!node.expanded && data.icon === 'IconFolderOpen') {
-    // console.log('收起');
     data.icon = 'IconFlowNested';
   }
 };

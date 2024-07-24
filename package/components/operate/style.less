@@ -40,8 +40,23 @@
           border-right: 1px @k-gray-100 solid;
         }
       }
+      .k-operate-list__item, .list-header {
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 6rem;
+        min-width: 1.5rem;
+        font-size: 14px;
+        .k-operate-list__label {
+          width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          text-align: center;
+        }
+      }
       .k-operate-list__item {
-        line-height: 21px;
         font-size: 14px;
       }
       .k-operate-rest {
@@ -51,6 +66,7 @@
       }
       .list-header, .k-operate-rest {
         margin-left: 10px;
+        margin-right: 10px;
       }
     }
   }

@@ -22,7 +22,7 @@ export default {
   after: 'after',
   empty: 'empty',
   nonEmpty: 'non empty',
-  batchOperation: 'batch operation',
+  batchOperation: 'Operation',
   customDescription: 'custom description',
   cancel: 'cancel',
   confirm: 'confirm',
