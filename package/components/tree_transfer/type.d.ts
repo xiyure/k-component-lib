@@ -3,8 +3,7 @@ import { Component } from 'vue';
 export interface TreeTransferProps {
   data: any[]
   defaultData?: any[]
-  leftTitle?: string
-  rightTitle?: string
+  titles?: [string, string]
   showFilter?: boolean
   useTree?: boolean
   expandIcon?: Component | string
@@ -17,4 +16,5 @@ export interface TreeTransferProps {
   label?: string
   scrollY?: any
   drag?: boolean
+  checkMethod?: (data: any) => boolean
 }

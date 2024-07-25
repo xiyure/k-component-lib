@@ -79,7 +79,14 @@
     border-left: 1px @k-gray-100 solid;
     cursor: pointer;
     &:hover {
-      color: @k-status-primary
+      color: @k-status-primary;
     }
+  }
+  li.k-dropdown-item__content.el-dropdown-menu__item {
+    color: @k-status-primary;
+  }
+  .k-operate-list__item--disabled {
+    cursor: not-allowed !important;
+    filter: grayscale(0.5);
   }
 }

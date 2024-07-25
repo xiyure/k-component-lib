@@ -8,7 +8,8 @@
           v-for="item, index in showData"
           :key="index"
           class="k-operate-list__item"
-          @click="handler(item.handler)"
+          :class="{ 'k-operate-list__item--disabled': item.disabled }"
+          @click="handler(item)"
         >
           <span class="k-operate-list__label">{{ item.label }}</span>
         </li>
@@ -25,8 +26,9 @@
             <k-dropdown-item
               v-for="item, index in hideData"
               :key="index"
-              :style="{color: '#2882FF'}"
-              @click="handler(item.handler)"
+              :disabled="item.disabled"
+              class="k-dropdown-item__content "
+              @click="handler(item)"
             >
               {{ item.label }}
             </k-dropdown-item>
@@ -41,6 +43,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { IconClose, IconMore } from 'ksw-vue-icon';
+import { drop } from 'lodash-es';
 import { KDropdown, KDropdownItem } from '../dropdown';
 import { OperateProps } from './type.d';
 
@@ -75,7 +78,11 @@ watch(() => [props.data, props.max], () => {
 
 const emits = defineEmits(['close', 'update:ModelValue']);
 
-function handler(callback: () => any) {
+function handler(item: any) {
+  const { disabled, callback } = item;
+  if (disabled) {
+    return;
+  }
   if (typeof callback === 'function') {
     callback();
   }

@@ -5,7 +5,7 @@
         v-model="query"
         :placeholder="$t('enterInputSearch')"
         :suffix-icon="IconSearch"
-        @change="filterData"
+        @blur="filterData"
         @keyup.enter="filterData"
       />
     </div>
@@ -21,15 +21,14 @@
             :tree-config="treeConfig"
             :row-config="{ keyField: 'id' }"
             :scroll-y="scrollY"
-            :checkbox-config="{ checkRowKeys: selectData, trigger: 'null' }"
+            :checkbox-config="{ checkRowKeys, trigger: 'null', checkMethod }"
             @checkbox-change="checkboxChange"
             @checkbox-all="checkboxChange"
           >
             <k-table-column
               type="checkbox"
               :field="label"
-              width="auto"
-              :title="leftTitle"
+              :title="titles?.[0] ?? ''"
               :tree-node="props.useTree"
             >
               <template #default="{ row }">
@@ -38,6 +37,7 @@
                   :style="{
                     marginLeft: `${ rowLevel(row) * (props.treeConfig?.indent ?? 12) }px`
                   }"
+                  :class="{'list-item-disabled': row.disabled }"
                   @click="toggleTreeExpand(row, $event)"
                 >
                   <component :is="columnIcon(row)?.icon" class="column-icon" :color="columnIcon(row)?.color" />
@@ -66,12 +66,11 @@
           >
             <k-table-column
               :field="label"
-              :title="props.rightTitle"
             >
               <template #header="data">
                 <slot name="rightHeader" v-bind="data">
                   <div class="right-data-header">
-                    <span class="right-data-title">{{ props.rightTitle }}</span>
+                    <span class="right-data-title">{{ props.titles?.[1] ?? '' }}</span>
                     <span class="clear-data" @click="clearData">{{ $t('clearData') }}</span>
                   </div>
                 </slot>
@@ -120,7 +119,7 @@ const defaultTreeConfig = {
   parentField: 'pid',
   childrenField: 'children',
   trigger: 'cell',
-  hasChild: 'hasChild',
+  hasChildField: 'hasChild',
   indent: 0,
   showIcon: false
 };
@@ -131,7 +130,9 @@ const treeRightRef = ref();
 const rightData = ref<any>([]);
 const showRightData = ref<any>([]);
 const fullData = ref<any>([]);
-const selectData = ref<any>([]);
+const selectData = ref<Set<number | string>>(new Set());
+let treeData:any[] = [];
+const nodeSet = new Set();
 
 const columnIcon = computed(() => function (row) {
   const expand = treeLeftRef.value?.tableInstance.isTreeExpandByRow(row);
@@ -146,6 +147,7 @@ const columnIcon = computed(() => function (row) {
     return { icon: getIcon(props.collapseIcon, row), color: props.collapseIconColor };
   }
 });
+const checkRowKeys = computed(() => Array.from((selectData.value)));
 const treeConfig = computed(() => {
   if (props.useTree) {
     const newTreeConfig = Object.assign(defaultTreeConfig, props.treeConfig || {});
@@ -155,22 +157,29 @@ const treeConfig = computed(() => {
   return undefined;
 });
 const scrollY = computed(() => ({ enabled: true, ...props.scrollY || {} }));
-const rowLevel = computed(() => (row) => getTreeNodeLevel(row));
+const rowLevel = computed(() => (row: any) => getTreeNodeLevel(row));
 
 watch(() => props.data, (newValue) => {
   if (!newValue) {
     return;
   }
-  fullData.value = JSON.parse(JSON.stringify(newValue));
+  fullData.value = newValue;
   leftData.value = fullData.value;
 }, { immediate: true, deep: true });
 watch(() => props.defaultData, (newValue) => {
   if (!Array.isArray(newValue)) {
     return;
   }
-  selectData.value = [...newValue];
+  newValue.forEach((id: string | number) => {
+    selectData.value.add(id);
+  });
   fullData.value = sortBySmallerList(props.data, props.defaultData ?? []);
-  rightData.value = fullData.value.filter(item => newValue.includes(item.id));
+  rightData.value = fullData.value.filter((item: any) => {
+    if (newValue.includes(item.id) && checkMethod({ row: item })) {
+      return true;
+    }
+    return false;
+  });
   showRightData.value = rightData.value;
   treeLeftRef.value?.tableInstance.reloadData(leftData.value);
 }, { immediate: true, deep: true });
@@ -181,38 +190,28 @@ function checkboxChange() {
   emits('change', getSelectedData());
 }
 function updateSelectData() {
-  const checkNodes = treeLeftRef.value.tableInstance.getCheckboxRecords(true);
-  const newData = checkNodes.filter(item => !item.children?.length);
-  rightData.value = sortFunc(newData, fullData.value);
+  const newData = fullData.value.filter((item: any) => selectData.value.has(item.id));
+  rightData.value = newData.filter((item: any) => {
+    if (props.defaultData?.includes(item.id) && !checkMethod({ row: item })) {
+      return false;
+    }
+    return true;
+  });
+  rightData.value = sortFunc(rightData.value, fullData.value);
   filterRightData();
 }
 function handleSelectData() {
   const checkNodes = treeLeftRef.value.tableInstance.getCheckboxRecords(true);
-  const data = checkNodes.filter(item => !item.children?.length);
-  // 处理新增的数据
-  const addList:any[] = [];
+  const data = checkNodes.filter((item: any) => !item.children?.length);
+  selectData.value.clear();
   for (const dataItem of data) {
-    const targetItem = selectData.value.find(item => item.id === dataItem.id);
-    if (!targetItem) {
-      addList.push(dataItem.id);
-    }
+    selectData.value.add(dataItem.id);
   }
-  const ids = leftData.value.map(item => item.id);
-  for (let i = 0; i < selectData.value.length; i++) {
-    const isSelected = data.find(item => item.id === selectData.value[i]);
-    const isLeftData = ids.includes(selectData.value[i]);
-    if (!isSelected && isLeftData) {
-      selectData.value.splice(i, 1);
-      i--;
-    }
-  }
-  selectData.value = selectData.value.concat(...selectData.value, ...addList);
-  selectData.value = Array.from(new Set(selectData.value));
 }
 function removeRightData(row) {
-  const targetIndex = selectData.value.findIndex(id => id === row.id);
-  if (targetIndex >= 0) {
-    selectData.value.splice(targetIndex, 1);
+  const isSelect = selectData.value.has(row.id);
+  if (isSelect) {
+    selectData.value.delete(row.id);
   }
   const targetRow = leftData.value.find(item => item.id === row.id);
   treeLeftRef.value.tableInstance.setCheckboxRow(targetRow, false);
@@ -224,9 +223,9 @@ function removeRightData(row) {
 }
 function clearData() {
   for (const dataItem of showRightData.value) {
-    const targetIndex = selectData.value.findIndex(id => id === dataItem.id);
-    if (targetIndex >= 0) {
-      selectData.value.splice(targetIndex, 1);
+    const hasSelect = selectData.value.has(dataItem.id);
+    if (hasSelect) {
+      selectData.value.delete(dataItem.id);
     }
     const targetRow = leftData.value.find(item => item.id === dataItem.id);
     treeLeftRef.value.tableInstance.setCheckboxRow(targetRow, false);
@@ -235,8 +234,6 @@ function clearData() {
   emits('change', getSelectedData());
 }
 // 筛选
-let treeData:any[] = [];
-const nodeSet = new Set();
 async function filterData() {
   await filterLeftData();
   updateSelectData();
@@ -365,13 +362,17 @@ function sortFunc(targetData:any[], sortData: any) {
   return targetData.sort((a, b) => (sortKeyList.indexOf(a.id) < sortKeyList.indexOf(b.id) ? -1 : 1));
 }
 function getSelectedData() {
-  return fullData.value.filter(item => selectData.value.includes(item.id));
+  return fullData.value.filter((item: any) => selectData.value.has(item.id));
 }
 function getIcon(icon: any, row: any) {
   if (typeof icon === 'function') {
     return icon?.(row);
   }
   return icon;
+}
+function checkMethod(data: any) {
+  const { row } = data;
+  return props.checkMethod?.(data) ?? !row.disabled ?? true;
 }
 
 defineExpose({
@@ -391,5 +392,9 @@ defineExpose({
     width: 1.5em;
     height: 1.5em;
   }
+}
+.list-item-disabled {
+  filter: grayscale(1);
+  opacity: 0.8;
 }
 </style>
