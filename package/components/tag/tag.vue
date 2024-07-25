@@ -7,15 +7,15 @@
       :color="fillColor"
       :size="getCompSize(size)"
       :style="{
-        borderColor: fillColor
+        borderColor: fillColor,
       }"
     >
       <span
         :style="{
-          color: tagTextColor
+          color: tagTextColor,
         }"
       >
-        <slot></slot>
+        <slot>{{ props.text }}</slot>
       </span>
     </el-tag>
     <div v-else class="k-tag__point">
@@ -24,17 +24,17 @@
         :style="{
           backgroundColor: fillColor,
           width: tagAttrs?.width,
-          height: tagAttrs?.height
+          height: tagAttrs?.height,
         }"
       ></div>
       <div
         class="k-tag__content"
         :style="{
           color: tagTextColor,
-          fontSize: tagAttrs?.fontSize
+          fontSize: tagAttrs?.fontSize,
         }"
       >
-        <slot></slot>
+        <slot>{{ props.text }}</slot>
       </div>
     </div>
   </div>
@@ -46,12 +46,13 @@ import { TagProps } from './type';
 import { getCompSize, isValidColor } from '../../utils';
 
 defineOptions({
-  name: 'KTag'
+  name: 'KTag',
 });
 
 const props = withDefaults(defineProps<TagProps>(), {
   point: false,
-  type: 'primary'
+  type: 'primary',
+  text: undefined,
 });
 
 const defaultColor = {
@@ -59,10 +60,12 @@ const defaultColor = {
   success: '#22C55E',
   danger: '#EF4444',
   warning: '#F97316',
-  info: '#6B7280'
+  info: '#6B7280',
 };
 
-const fillColor = computed(() => (isValidColor(props.color) ? props.color : defaultColor[props.type]));
+const fillColor = computed(() =>
+  isValidColor(props.color) ? props.color : defaultColor[props.type],
+);
 const tagTextColor = computed(() => {
   const color = props.point ? fillColor.value : '#FFF';
   return isValidColor(props.textColor) ? props.textColor : color;
@@ -71,13 +74,13 @@ const tagAttrs = computed(() => {
   let sizeAttr = {
     width: '12px',
     height: '12px',
-    fontSize: '15px'
+    fontSize: '15px',
   };
   if (props.size === 'sm') {
     sizeAttr = {
       width: '8px',
       height: '8px',
-      fontSize: '13px'
+      fontSize: '13px',
     };
   }
   return sizeAttr;
