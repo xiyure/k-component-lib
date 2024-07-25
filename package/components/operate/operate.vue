@@ -17,7 +17,7 @@
           v-if="hideData.length"
           class="k-operate-rest"
         >
-          <k-dropdown trigger="click">
+          <k-dropdown trigger="click" :hide-on-click="hideOnClick">
             <template #title>
               <span class="el-dropdown-link">
                 <IconMore color="#2882FF" />
@@ -43,7 +43,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { IconClose, IconMore } from 'ksw-vue-icon';
-import { drop } from 'lodash-es';
 import { KDropdown, KDropdownItem } from '../dropdown';
 import { OperateProps } from './type.d';
 
@@ -54,7 +53,8 @@ defineOptions({
 const props = withDefaults(defineProps<OperateProps>(), {
   data: [],
   max: 5,
-  dataSize: 0
+  dataSize: 0,
+  hideOnClick: true
 });
 
 const hideData = ref<any>([]);
@@ -79,12 +79,12 @@ watch(() => [props.data, props.max], () => {
 const emits = defineEmits(['close', 'update:ModelValue']);
 
 function handler(item: any) {
-  const { disabled, callback } = item;
+  const { disabled, handler } = item;
   if (disabled) {
     return;
   }
-  if (typeof callback === 'function') {
-    callback();
+  if (typeof handler === 'function') {
+    handler();
   }
 }
 function handleClose() {
