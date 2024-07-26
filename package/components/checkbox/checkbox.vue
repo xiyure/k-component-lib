@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { ref, watch, nextTick, inject } from 'vue';
-import { SelectButtonProps } from './type';
+import { CheckboxProps } from './type';
 import { getCompSize, isValidColor } from '../../utils/index';
 
 defineOptions({
@@ -26,7 +26,7 @@ defineOptions({
 
 const fillColor = inject('_fillColor', ref(''));
 
-const props = withDefaults(defineProps<SelectButtonProps>(), {
+const props = withDefaults(defineProps<CheckboxProps>(), {
   strict: false,
 });
 const kCheckboxRef = ref();

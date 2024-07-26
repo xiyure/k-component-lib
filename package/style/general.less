@@ -92,3 +92,11 @@ body {
   font-size: var(--font-4xl);
   line-height: var(--font-4xl-line);
 }
+
+// 修改多层表头样式
+.vxe-table--render-default .vxe-body--column:not(.col--ellipsis),
+.vxe-table--render-default .vxe-footer--column:not(.col--ellipsis),
+.vxe-table--render-default .vxe-header--column:not(.col--ellipsis) {
+  padding-top: 0.325rem;
+  padding-bottom: 0.325rem;
+}
