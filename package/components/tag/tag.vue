@@ -74,7 +74,7 @@ const tagAttrs = computed(() => {
   let sizeAttr = {
     width: '12px',
     height: '12px',
-    fontSize: '15px',
+    fontSize: '14px',
   };
   if (props.size === 'sm') {
     sizeAttr = {

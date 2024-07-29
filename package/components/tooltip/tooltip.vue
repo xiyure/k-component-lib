@@ -7,28 +7,27 @@
     }"
   >
     <slot></slot>
-    <template v-if="$slots.reference" #reference>
-      <slot name="reference"></slot>
-    </template>
-    <template v-else #reference>
-      <i v-if="props.icon" class="k-tooltip-icon">
-        <props.icon
-          :style="{
-            color: toolTipColor,
-            width: iconSize,
-            height: iconSize,
-          }"
-        />
-      </i>
-      <i v-else class="k-tooltip-icon">
-        <IconTips
-          :style="{
-            color: toolTipColor,
-            width: iconSize,
-            height: iconSize,
-          }"
-        />
-      </i>
+    <template #reference>
+      <slot name="reference">
+        <i v-if="props.icon" class="k-tooltip-icon">
+          <props.icon
+            :style="{
+              color: toolTipColor,
+              width: iconSize,
+              height: iconSize,
+            }"
+          />
+        </i>
+        <i v-else class="k-tooltip-icon">
+          <IconTips
+            :style="{
+              color: toolTipColor,
+              width: iconSize,
+              height: iconSize,
+            }"
+          />
+        </i>
+      </slot>
     </template>
   </k-popover>
 </template>
