@@ -134,6 +134,8 @@ defineExpose({
 
 <style lang="less">
 @import './style.less';
+// 临时解决方案，vxe-table上游样式问题，重写tooltip样式
+@import './tooltip.less';
 .__column-drag-icon {
   cursor: move;
   font-size: 16px;
