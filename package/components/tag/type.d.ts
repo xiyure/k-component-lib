@@ -1,5 +1,5 @@
 export interface TagProps {
-  type?: string;
+  type?: 'primary' | 'success' | 'warning' | 'danger' | 'info' | string;
   color?: string;
   size?: 'lg' | 'base' | 'sm' | '';
   textColor?: string;
