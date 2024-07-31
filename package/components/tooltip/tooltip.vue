@@ -1,42 +1,30 @@
 <template>
-  <k-popover
+  <el-tooltip
+    class="k-tooltip"
     v-bind="$attrs"
-    :popper-style="{
-      color: textColor,
-      backgroundColor: toolTipColor,
-    }"
+    :popper-style="_popperStyle"
   >
-    <slot></slot>
-    <template #reference>
-      <slot name="reference">
-        <i v-if="props.icon" class="k-tooltip-icon">
-          <props.icon
-            :style="{
-              color: toolTipColor,
-              width: iconSize,
-              height: iconSize,
-            }"
-          />
-        </i>
-        <i v-else class="k-tooltip-icon">
-          <IconTips
-            :style="{
-              color: toolTipColor,
-              width: iconSize,
-              height: iconSize,
-            }"
-          />
-        </i>
-      </slot>
+    <slot>
+      <i class="k-tooltip-icon">
+        <IconTips
+          :style="{
+            color: fillColor,
+            width: '15px',
+            height: '15px',
+          }"
+        />
+      </i>
+    </slot>
+    <template v-if="$slots.content" #content>
+      <slot name="content"></slot>
     </template>
-  </k-popover>
+  </el-tooltip>
 </template>
 
 <script setup lang="ts">
-import { watch, ref } from 'vue';
+import { watch, ref, computed } from 'vue';
 import { IconTips } from 'ksw-vue-icon';
 import { TooltipProps } from './type';
-import { KPopover } from '../popover';
 import { isValidColor } from '../../utils';
 
 defineOptions({
@@ -56,17 +44,25 @@ const props = withDefaults(defineProps<TooltipProps>(), {
   iconSize: '15px',
 });
 
-const toolTipColor = ref('#000');
+const fillColor: any = ref(undefined);
+
+const _popperStyle = computed(() => {
+  const popperStyle = props.popperStyle || {};
+  return { color: props.textColor,
+    backgroundColor: fillColor.value,
+    borderColor: fillColor.value,
+    ...popperStyle };
+});
 
 watch(
   () => [props.type, props.color],
   () => {
     if (props.color && isValidColor(props.color)) {
-      toolTipColor.value = props.color;
+      fillColor.value = props.color;
     } else if (!props.color && props.type && INNER_TYPE_COLOR[props.type]) {
-      toolTipColor.value = INNER_TYPE_COLOR[props.type];
+      fillColor.value = INNER_TYPE_COLOR[props.type];
     } else {
-      toolTipColor.value = '#000';
+      fillColor.value = undefined;
     }
   },
   { immediate: true },

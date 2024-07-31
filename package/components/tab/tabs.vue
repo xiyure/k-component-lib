@@ -1,11 +1,11 @@
 <template>
-  <div class="k-tabs-box" :id="id">
+  <div :id="id" class="k-tabs-box">
     <!-- editable -->
     <el-tabs
       v-model="activeName"
       class="k-tabs"
       v-bind="$attrs"
-      :tabPosition="tabPosition"
+      :tab-position="tabPosition"
       :editable="editable"
       :addable="addable"
     >
@@ -36,8 +36,8 @@
 
 <script setup lang="ts">
 import { ref, watch, provide, nextTick } from 'vue';
-import { KDropdown, KDropdownItem } from '../dropdown';
 import { IconMore } from 'ksw-vue-icon';
+import { KDropdown, KDropdownItem } from '../dropdown';
 import { genRandomStr } from '../../utils';
 
 defineOptions({
@@ -76,13 +76,13 @@ const id = `_${genRandomStr(8)}`;
 let tabsElem: HTMLElement | null = null;
 let translateElem: HTMLElement | null = null;
 const tabPaneDoms = ref<any>([]);
-const tabItems: any = [];
+const tabItems: any = [];;
 const slots = defineSlots();
 slots.default?.().forEach((item: any) => {
   if (item.type?.name === 'KTabPane') {
     tabItems.push({
       label: item.props.label,
-      name: item.props.name,
+      name: item.props.name
     });
   }
   if (Array.isArray(item.children)) {
@@ -90,11 +90,12 @@ slots.default?.().forEach((item: any) => {
       if (child.type?.name === 'KTabPane') {
         tabItems.push({
           label: child.props.label,
-          name: child.props.name,
+          name: child.props.name
         });
       }
     });
   }
+});
 });
 const hideTabs = ref<any>([]);
 let preTranslate = 0;
@@ -135,10 +136,9 @@ function isElementInContainerView(el: any, translate: number = 0) {
   const containerRect = tabsElem.getBoundingClientRect();
   const diff = translate - preTranslate;
   if (props.tabPosition === 'top' || props.tabPosition === 'bottom') {
-    return elRect.left + diff >= containerRect.left && elRect.right + diff <= containerRect.right;
-  } else {
-    return elRect.top + diff >= containerRect.top && elRect.bottom + diff <= containerRect.bottom;
-  }
+    return elRect.left + diff >= containerRect.left && elRect.right + diff <= containerRect.right; 
+  } 
+  return elRect.top + diff >= containerRect.top && elRect.bottom + diff <= containerRect.bottom;
 }
 function jumpToTab(item: any) {
   const name = item.name ?? '';

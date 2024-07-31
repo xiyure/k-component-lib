@@ -1,67 +1,12 @@
-@import url('../../style/general.less');
-@import url('../../style/variable.css');
-.k-tag,
-.el-tag {
-  .init-style ();
-  .text-base();
-
-  --bg-color: var(--k-blue-300);
-  --text-color: var(--k-normal);
-  height: 1.5rem;
-  padding: 0 0.5rem;
-  border-radius: var(--k-rounded-sm);
-  background-color: var(--bg-color);
-  color: var(--text-color);
-
-  &.k-tag--point {
-    background-color: unset;
-    position: relative;
-
-    padding-left: 1.25rem;
-
-    &:before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 0.25rem;
-      transform: translate(0, -50%);
-      width: 0.75rem;
-      height: 0.75rem;
-      border-radius: 50%;
-      background-color: var(--text-color);
+.k-tag {
+  width: fit-content;
+  .k-tag__point {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    .k-tag__sign {
+      margin-right: 5px;
+      border-radius: 50% 50%;
     }
-  }
-
-  .el-tag__close {
-    margin-left: 0.125rem;
-    color: var(--text-color);
-    &:hover {
-      background: var(--text-color);
-      color: #fff;
-      // 滤镜透明 50%
-      filter: opacity(60%);
-    }
-  }
-
-  &.is-primary {
-    --bg-color: var(--k-blue-200);
-    --text-color: var(--k-blue-500);
-  }
-
-  &.is-success {
-    --bg-color: var(--k-green-200);
-    --text-color: var(--k-green-500);
-  }
-  &.is-warning {
-    --bg-color: var(--k-yellow-200);
-    --text-color: var(--k-yellow-500);
-  }
-  &.is-danger {
-    --bg-color: var(--k-red-200);
-    --text-color: var(--k-red-500);
-  }
-  &.is-info {
-    --bg-color: var(--k-gray-200);
-    --text-color: var(--k-gray-500);
   }
 }
