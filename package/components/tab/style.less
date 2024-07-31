@@ -1,27 +1,26 @@
 @import '../../style/variable.css';
 @import '../../style/general.less';
 
-
 // 类选择器方案
 .k-tabs {
   --icon-size: 1rem;
   --icon-skew: 0.625rem;
   --icon-Space: 2rem;
 
-  .el-tabs__item{
+  .el-tabs__item {
     padding: 0;
     .k-tab__label {
-       .text-base();
-       display: flex;
-       padding:0 1rem;
-       transition: all 0.3s cubic-bezier(0.645,0.045,0.355,1);
+      .text-base();
+      display: flex;
+      padding: 0 1rem;
+      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
     }
     .k-tab__label.has--icon {
-      padding-left:var(--icon-Space);
+      padding-left: var(--icon-Space);
 
       position: relative;
 
-      >svg {
+      > svg {
         position: absolute;
         top: 50%;
         left: var(--icon-skew);
@@ -29,21 +28,21 @@
         width: var(--icon-size);
         height: var(--icon-size);
       }
-   }
-    &:hover{
+    }
+    &:hover {
       color: var(--k-blue-400);
     }
   }
 
-  .el-tabs__item.is-closable{
+  .el-tabs__item.is-closable {
     position: relative;
 
     .k-tab__label {
       display: flex;
       padding-right: var(--icon-Space);
-   }
+    }
 
-    .el-icon.is-icon-close{
+    .el-icon.is-icon-close {
       width: var(--icon-size);
       height: var(--icon-size);
       position: absolute;
@@ -51,7 +50,7 @@
       right: var(--icon-skew);
       transform: translate(0, -50%);
 
-      &:hover{
+      &:hover {
         background: unset;
         color: unset;
         border-radius: unset;
@@ -65,10 +64,12 @@
 
 .k-tabs-box {
   position: relative;
-  .el-tabs__nav-next, .el-tabs__nav-prev {
+  .el-tabs__nav-next,
+  .el-tabs__nav-prev {
     display: none;
   }
   .k-tabs-more {
+    --width: 2rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -76,10 +77,22 @@
     position: absolute;
     right: 0;
     top: 0;
-    width: 40px;
-    height: 40px;
-    background-color: transparent;
+    width: var(--width);
+    height: 2.5rem;
+    background-color: #fff;
     z-index: 2;
     cursor: pointer;
+
+    right: var(--width);
+    border-bottom: 2px solid #e4e7ed;
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: calc(var(--width) / 2 * -1);
+      width: calc(var(--width) / 2);
+      height: 100%;
+      background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.05));
+    }
   }
 }

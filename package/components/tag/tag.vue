@@ -2,7 +2,6 @@
   <el-tag
     class="k-tag"
     :class="[{ 'k-tag--point': point === true, [`is-${type}`]: type !== '' }]"
-    :style="getColor"
     v-bind="$attrs"
   >
     <span :style="{}">
@@ -30,7 +29,7 @@ const props = withDefaults(defineProps<TagProps>(), {
 onMounted(() => {});
 
 // watch getColor
-const getColor = watch();
+// const getColor = watch();
 
 // const defaultColor = {
 //   primary: '#2882FF',
