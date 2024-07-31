@@ -75,7 +75,7 @@ const id = `_${genRandomStr(8)}`;
 let tabsElem: HTMLElement | null = null;
 let translateElem: HTMLElement | null = null;
 const tabPaneDoms = ref<any>([]);
-const tabItems: any = [];;
+const tabItems: any = [];
 const slots = defineSlots();
 slots.default?.().forEach((item: any) => {
   if (item.type?.name === 'KTabPane') {

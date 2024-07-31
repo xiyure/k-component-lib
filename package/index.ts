@@ -1,6 +1,6 @@
 import ElementPlus from 'element-plus';
 import VxeTable from 'vxe-table';
-import VxeUI from 'vxe-pc-ui';
+import VxeUI, { VxeGlobalConfig } from 'vxe-pc-ui';
 import zhLocal from 'element-plus/es/locale/lang/zh-cn';
 import enLocal from 'element-plus/es/locale/lang/en';
 import 'element-plus/dist/index.css';
@@ -15,6 +15,7 @@ import { Emitter } from './utils';
 
 type optionsType = {
   locale?: 'zh' | 'en';
+  vxeGlobalConfig?: VxeGlobalConfig
 };
 const install = (Vue: any, options?: optionsType) => {
   // 国际化
@@ -27,6 +28,8 @@ const install = (Vue: any, options?: optionsType) => {
     locale: options?.locale === 'en' ? enLocal : zhLocal,
   });
   Vue.use(VxeTable).use(VxeUI);
+  // 设置vxe-table全局配置
+  VxeUI.setConfig(options?.vxeGlobalConfig ?? {});
   Vue.use(i18n);
   // 组件注册
   for (const name in components) {
