@@ -5,13 +5,28 @@
       v-model="activeName"
       class="k-tabs"
       v-bind="$attrs"
+      :tabPosition="tabPosition"
       :editable="editable"
       :addable="addable"
     >
       <slot></slot>
     </el-tabs>
-    <div class="k-tabs-more" :style="{ right: !editable && !addable ? 0 : '2rem' }">
-      <k-dropdown trigger="click" :disabled="hideTabs.length === 0" @command="jumpToTab">
+    <div
+      v-if="hideTabs?.length"
+      class="k-tabs-more"
+      :class="{
+        'tab-top-layout': tabPosition === 'top',
+        'tab-bottom-layout': tabPosition === 'bottom',
+        'tab-left-layout': tabPosition === 'left',
+        'tab-right-layout': tabPosition === 'right'
+      }"
+      :style="{ right: !editable && !addable ? 0 : '2rem' }"
+    >
+      <k-dropdown
+        trigger="click"
+        :disabled="hideTabs.length === 0"
+        @command="jumpToTab"
+      >
         <template #title>
           <IconMore />
         </template>
@@ -38,6 +53,10 @@ const props = defineProps({
     type: String,
     default: undefined,
   },
+  tabPosition: {
+    type: String,
+    default: 'top',
+  },
   router: {
     type: Boolean,
     default: false,
@@ -57,14 +76,28 @@ const id = `_${genRandomStr(8)}`;
 let tabsElem: HTMLElement | null = null;
 let translateElem: HTMLElement | null = null;
 const tabPaneDoms = ref<any>([]);
+const tabItems: any = []
 const slots = defineSlots();
-const defaultSlot = slots.default?.()[0].children ?? [];
-const tabItems = defaultSlot.map((item: any) => ({
-  label: item.props.label,
-  name: item.props.name,
-}));
+slots.default?.().forEach((item: any) => {
+  if (item.type?.name === 'KTabPane') {
+    tabItems.push({
+      label:item.props.label,
+      name: item.props.name
+    })
+  }
+  if (Array.isArray(item.children)) {
+    item.children.forEach((child: any) => {
+      if (child.type?.name === 'KTabPane') {
+      tabItems.push({
+        label:child.props.label,
+        name: child.props.name
+      })
+    }
+    })
+  }
+})
 const hideTabs = ref<any>([]);
-let preTranslateX = 0;
+let preTranslate = 0;
 
 nextTick(() => {
   tabsElem = document.querySelector(`#${id} .el-tabs__nav-scroll`);
@@ -73,15 +106,18 @@ nextTick(() => {
   getHideTabs();
 });
 
-function isElementInContainerView(el: any, translateX: number = 0, translateY: number = 0) {
+function isElementInContainerView(el: any, translate: number = 0) {
   if (!tabsElem) {
     return;
   }
   const elRect = el.getBoundingClientRect();
   const containerRect = tabsElem.getBoundingClientRect();
-  const diffX = translateX - preTranslateX;
-  console.log(elRect.left + diffX, containerRect.left, elRect.right + diffX, containerRect.right);
-  return elRect.left + diffX >= containerRect.left && elRect.right + diffX <= containerRect.right;
+  const diff = translate - preTranslate;
+  if (props.tabPosition === 'top' || props.tabPosition === 'bottom') {
+    return elRect.left + diff >= containerRect.left && elRect.right + diff <= containerRect.right 
+  } else {
+    return elRect.top + diff >= containerRect.top && elRect.bottom + diff <= containerRect.bottom
+  }
 }
 function jumpToTab(item: any) {
   const name = item.name ?? '';
@@ -95,18 +131,18 @@ function getHideTabs() {
     if (!matches) {
       return;
     }
-    const [translateX] = matches.map((m) => parseFloat(m.slice(1, -1)));
-
+    const [translate] = matches.map(m => parseFloat(m.slice(1, -1)));
+    
     const res: any[] = [];
     if (!tabItems) {
       return [];
     }
     tabPaneDoms.value.forEach((item: any, index: number) => {
-      if (!isElementInContainerView(item, translateX)) {
+      if (!isElementInContainerView(item, translate)) {
         res.push(tabItems[index]);
       }
-    });
-    preTranslateX = translateX;
+    })
+    preTranslate = translate;
     hideTabs.value = res;
   });
 }
