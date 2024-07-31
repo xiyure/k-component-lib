@@ -10,6 +10,7 @@
       :style="{ marginRight: `${row.iconStyle?.marginRight ?? 3}px`}"
       :color="row.__folder ? '#FAC814' : row.iconStyle?.empty ? '#cdcacf' : row.iconStyle?.color"
       :size="row.iconStyle?.size ?? (props.size ==='mini'? 16 : 20)"
+      :grayscale="Boolean(row.iconStyle?.grayscale)"
     />
     <template v-if="$slots[`${col.field ?? ''}-label`]">
       <slot :name="`${col.field ?? ''}-label`" :row="row" :column="col"></slot>
