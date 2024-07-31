@@ -11,7 +11,10 @@
       :color="row.__folder ? '#FAC814' : row.iconStyle?.empty ? '#cdcacf' : row.iconStyle?.color"
       :size="row.iconStyle?.size ?? (props.size ==='mini'? 16 : 20)"
     />
-    <template v-if="typeof col.formatter === 'function'">
+    <template v-if="$slots[`${col.field ?? ''}-label`]">
+      <slot :name="`${col.field ?? ''}-label`" :row="row" :column="col"></slot>
+    </template>
+    <template v-else-if="typeof col.formatter === 'function'">
       {{ col.formatter({cellValue: row[col.field], row, column:col}) }}
     </template>
     <template v-else>{{ row[col.field] === '' ? '-' : row[col.field] ?? '-' }}</template>

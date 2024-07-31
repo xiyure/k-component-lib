@@ -1,6 +1,5 @@
 <template>
   <div :id="id" class="k-tabs-box">
-    <!-- editable -->
     <el-tabs
       v-model="activeName"
       class="k-tabs"
@@ -96,7 +95,6 @@ slots.default?.().forEach((item: any) => {
     });
   }
 });
-});
 const hideTabs = ref<any>([]);
 let preTranslate = 0;
 
@@ -105,8 +103,6 @@ nextTick(() => {
   translateElem = document.querySelector(`#${id} .el-tabs__nav`);
   tabPaneDoms.value = tabsElem?.querySelectorAll('.el-tabs__item') ?? [];
   getHideTabs();
-
-  console.log(props.maxWidth);
 });
 
 // watch props.maxWidth , 如果有值, 则把 k-tabs-box 中的变量 "  --plane-max-width" = props.maxWidth
@@ -115,9 +111,7 @@ watch(
   (val) => {
     if (val) {
       nextTick(() => {
-        const box = document.querySelector(`#${id}`);
-        console.log('box =>>', box);
-
+        const box: HTMLElement | null = document.querySelector(`#${id}`);
         if (!box) {
           return;
         }

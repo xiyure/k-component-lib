@@ -1,4 +1,4 @@
-import { defineComponent, Fragment } from 'vue';
+import { defineComponent } from 'vue';
 import { KTableColumn, KColumnGroup } from '../table';
 import TableColumnContent from './table_column_content.vue';
 
@@ -63,12 +63,18 @@ export default defineComponent({
           if (slots[field]) {
             return slots[field]?.(data);
           } else if (col.showIcon) {
-              return <TableColumnContent
-                key={col.field} col={col}
-                row={row}
-                size={props.size}
-                align={props.align}
-              />
+            const fieldLabelSlot = {};
+            const fieldLabelSlotName = `${field}-label`;
+            if (slots[fieldLabelSlotName]) {
+              fieldLabelSlot[fieldLabelSlotName] = (data) => slots[fieldLabelSlotName]?.(data);
+            }
+            return <TableColumnContent
+              key={col.field} col={col}
+              row={row}
+              size={props.size}
+              align={props.align}
+              v-slots={fieldLabelSlot}
+            />
           }
         };
       }
