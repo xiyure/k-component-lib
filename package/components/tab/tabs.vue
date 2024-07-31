@@ -1,14 +1,16 @@
 <template>
-  <div class="k-tabs-box" :id = id>
+  <div class="k-tabs-box" :id="id">
+    <!-- editable -->
     <el-tabs
       v-model="activeName"
       class="k-tabs"
       v-bind="$attrs"
-      editable
+      :editable="editable"
+      :addable="addable"
     >
-    <slot></slot>
+      <slot></slot>
     </el-tabs>
-    <div class="k-tabs-more">
+    <div class="k-tabs-more" :style="{ right: !editable && !addable ? 0 : '2rem' }">
       <k-dropdown trigger="click" :disabled="hideTabs.length === 0" @command="jumpToTab">
         <template #title>
           <IconMore />
@@ -23,12 +25,12 @@
 
 <script setup lang="ts">
 import { ref, watch, provide, nextTick } from 'vue';
-import { KDropdown,KDropdownItem } from '../dropdown';
+import { KDropdown, KDropdownItem } from '../dropdown';
 import { IconMore } from 'ksw-vue-icon';
 import { genRandomStr } from '../../utils';
 
 defineOptions({
-  name: 'KTabs'
+  name: 'KTabs',
 });
 
 const props = defineProps({
@@ -39,7 +41,15 @@ const props = defineProps({
   router: {
     type: Boolean,
     default: false,
-  }
+  },
+  editable: {
+    type: Boolean,
+    default: false,
+  },
+  addable: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const activeName = ref<string | undefined>(undefined);
@@ -50,8 +60,8 @@ const tabPaneDoms = ref<any>([]);
 const slots = defineSlots();
 const defaultSlot = slots.default?.()[0].children ?? [];
 const tabItems = defaultSlot.map((item: any) => ({
-  label:item.props.label,
-  name: item.props.name
+  label: item.props.label,
+  name: item.props.name,
 }));
 const hideTabs = ref<any>([]);
 let preTranslateX = 0;
@@ -70,11 +80,8 @@ function isElementInContainerView(el: any, translateX: number = 0, translateY: n
   const elRect = el.getBoundingClientRect();
   const containerRect = tabsElem.getBoundingClientRect();
   const diffX = translateX - preTranslateX;
-  console.log(elRect.left + diffX, containerRect.left, elRect.right + diffX, containerRect.right)
-  return (
-    elRect.left + diffX >= containerRect.left &&
-    elRect.right + diffX <= containerRect.right  
-  );
+  console.log(elRect.left + diffX, containerRect.left, elRect.right + diffX, containerRect.right);
+  return elRect.left + diffX >= containerRect.left && elRect.right + diffX <= containerRect.right;
 }
 function jumpToTab(item: any) {
   const name = item.name ?? '';
@@ -88,8 +95,8 @@ function getHideTabs() {
     if (!matches) {
       return;
     }
-    const [translateX] = matches.map(m => parseFloat(m.slice(1, -1)));
-    
+    const [translateX] = matches.map((m) => parseFloat(m.slice(1, -1)));
+
     const res: any[] = [];
     if (!tabItems) {
       return [];
@@ -98,19 +105,22 @@ function getHideTabs() {
       if (!isElementInContainerView(item, translateX)) {
         res.push(tabItems[index]);
       }
-    })
+    });
     preTranslateX = translateX;
     hideTabs.value = res;
-  })
+  });
 }
 
 provide('isUseRouter', props.router);
 provide('activeName', activeName);
 
-watch(() => props.modelValue, () => {
-  activeName.value = props.modelValue as string;
-}, { immediate: true });
-
+watch(
+  () => props.modelValue,
+  () => {
+    activeName.value = props.modelValue as string;
+  },
+  { immediate: true },
+);
 </script>
 
 <style lang="less">
