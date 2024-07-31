@@ -18,15 +18,11 @@
         'tab-top-layout': tabPosition === 'top',
         'tab-bottom-layout': tabPosition === 'bottom',
         'tab-left-layout': tabPosition === 'left',
-        'tab-right-layout': tabPosition === 'right'
+        'tab-right-layout': tabPosition === 'right',
       }"
       :style="{ right: !editable && !addable ? 0 : '2rem' }"
     >
-      <k-dropdown
-        trigger="click"
-        :disabled="hideTabs.length === 0"
-        @command="jumpToTab"
-      >
+      <k-dropdown trigger="click" :disabled="hideTabs.length === 0" @command="jumpToTab">
         <template #title>
           <IconMore />
         </template>
@@ -69,6 +65,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  maxWidth: {
+    type: String,
+    default: undefined,
+  },
 });
 
 const activeName = ref<string | undefined>(undefined);
@@ -76,26 +76,26 @@ const id = `_${genRandomStr(8)}`;
 let tabsElem: HTMLElement | null = null;
 let translateElem: HTMLElement | null = null;
 const tabPaneDoms = ref<any>([]);
-const tabItems: any = []
+const tabItems: any = [];
 const slots = defineSlots();
 slots.default?.().forEach((item: any) => {
   if (item.type?.name === 'KTabPane') {
     tabItems.push({
-      label:item.props.label,
-      name: item.props.name
-    })
+      label: item.props.label,
+      name: item.props.name,
+    });
   }
   if (Array.isArray(item.children)) {
     item.children.forEach((child: any) => {
       if (child.type?.name === 'KTabPane') {
-      tabItems.push({
-        label:child.props.label,
-        name: child.props.name
-      })
-    }
-    })
+        tabItems.push({
+          label: child.props.label,
+          name: child.props.name,
+        });
+      }
+    });
   }
-})
+});
 const hideTabs = ref<any>([]);
 let preTranslate = 0;
 
@@ -104,7 +104,28 @@ nextTick(() => {
   translateElem = document.querySelector(`#${id} .el-tabs__nav`);
   tabPaneDoms.value = tabsElem?.querySelectorAll('.el-tabs__item') ?? [];
   getHideTabs();
+
+  console.log(props.maxWidth);
 });
+
+// watch props.maxWidth , 如果有值, 则把 k-tabs-box 中的变量 "  --plane-max-width" = props.maxWidth
+watch(
+  () => props.maxWidth,
+  (val) => {
+    if (val) {
+      nextTick(() => {
+        const box = document.querySelector(`#${id}`);
+        console.log('box =>>', box);
+
+        if (!box) {
+          return;
+        }
+        box?.style.setProperty('--plane-max-width', val);
+      });
+    }
+  },
+  { immediate: true },
+);
 
 function isElementInContainerView(el: any, translate: number = 0) {
   if (!tabsElem) {
@@ -114,9 +135,9 @@ function isElementInContainerView(el: any, translate: number = 0) {
   const containerRect = tabsElem.getBoundingClientRect();
   const diff = translate - preTranslate;
   if (props.tabPosition === 'top' || props.tabPosition === 'bottom') {
-    return elRect.left + diff >= containerRect.left && elRect.right + diff <= containerRect.right 
+    return elRect.left + diff >= containerRect.left && elRect.right + diff <= containerRect.right;
   } else {
-    return elRect.top + diff >= containerRect.top && elRect.bottom + diff <= containerRect.bottom
+    return elRect.top + diff >= containerRect.top && elRect.bottom + diff <= containerRect.bottom;
   }
 }
 function jumpToTab(item: any) {
@@ -131,8 +152,8 @@ function getHideTabs() {
     if (!matches) {
       return;
     }
-    const [translate] = matches.map(m => parseFloat(m.slice(1, -1)));
-    
+    const [translate] = matches.map((m) => parseFloat(m.slice(1, -1)));
+
     const res: any[] = [];
     if (!tabItems) {
       return [];
@@ -141,7 +162,7 @@ function getHideTabs() {
       if (!isElementInContainerView(item, translate)) {
         res.push(tabItems[index]);
       }
-    })
+    });
     preTranslate = translate;
     hideTabs.value = res;
   });
