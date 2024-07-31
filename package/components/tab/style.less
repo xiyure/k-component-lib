@@ -2,6 +2,12 @@
 @import '../../style/general.less';
 
 // 类选择器方案
+.k-tabs-box {
+  --icon-size: 1rem;
+  --icon-skew: 0.625rem;
+  --icon-Space: 2rem;
+  --width: 2rem;
+}
 .k-tabs {
   --icon-size: 1rem;
   --icon-skew: 0.625rem;
@@ -60,8 +66,10 @@
       }
     }
   }
+  .el-tabs__nav-wrap {
+    padding-right: var(--width);
+  }
 }
-
 .k-tabs-box {
   position: relative;
   .el-tabs__nav-next,
@@ -69,7 +77,6 @@
     display: none;
   }
   .k-tabs-more {
-    --width: 2rem;
     display: flex;
     justify-content: center;
     align-items: center;
