@@ -63,132 +63,23 @@
   }
 }
 
-// 固定 padding 方案
-// .k-tabs{
-//   --icon-size: 1rem;
-//   --icon-skew: 0.75rem;
-//   --icon-Space: 2rem;
-//   .el-tabs__item{
-//     padding:0 0.5rem;
-//     position: relative;
-//     // background: #fafafa;
-//     .k-tab__label {
-//       display: flex;
-//       padding: 0 1.5rem;
-//       align-items: center;
-//       > svg {
-//         width: var(--icon-size);
-//         height: var(--icon-size);
-//         position: absolute;
-//         top: 50%;
-//         left: .875rem;
-//         transform: translate(0, -50%);
-//       }
-//     }
-//     .el-icon.is-icon-close{
-//       font-size: var(--icon-size);
-//       position: absolute;
-//       top: 50%;
-//       right: .875rem;
-//       transform: translate(0, -50%);
-//     }
-//   }
-//   :nth-child(even){
-//     // background: #eee;
-//   }
-// }
-
-// :has() 方案
-// .k-tabs{
-//   --icon-size: 1rem;
-//   --icon-skew: 0.625rem;
-//   --icon-Space: 2rem;
-//   padding: 0 0.5rem;
-//   .el-tabs__item{
-//     padding: 0;
-//     position: relative;
-//     .k-tab__label {
-//       .text-base();
-//       padding: 0 1rem;
-//       display: flex;
-//       align-items: center;
-//       > svg {
-//         width: var(--icon-size);
-//         height: var(--icon-size);
-//         position: absolute;
-//         top: 50%;
-//         left: var(--icon-skew);
-//         transform: translate(0, -50%);
-//       }
-//       &:has(>svg) {
-//         padding-left: var(--icon-Space);
-//       }
-//     }
-//     .el-icon.is-icon-close{
-//     font-size: var(--icon-size);
-//       position: absolute;
-//       top: 50%;
-//       right: var(--icon-skew);
-//       transform: translate(0, -50%);
-//     }
-//     &:has(.el-icon.is-icon-close){
-//       .k-tab__label {
-//         padding-right: var(--icon-Space);
-//       }
-//     }
-//   }
-// }
-
-// .k-tabs {
-//   .el-tabs__item {
-//     border: none !important;
-//     padding-left: 20px !important;
-//     padding-right: 20px !important;
-//     a {
-//       color: #000;
-//       text-decoration: none;
-//     }
-//     svg {
-//       width: 15px;
-//       height: 15px;
-//       margin-right: 3px;
-//       vertical-align: middle;
-//     }
-//   }
-//   .el-tabs--card {
-//     .el-tabs__item:not(.el-tabs__item:last-child) {
-//       border-right: 1px #e4e7ed solid !important;
-//     }
-//   }
-//   .el-tabs__item a:hover,
-//   .is-active a {
-//     color: @k-status-primary;
-//     text-decoration: none;
-//   }
-//   .is-disabled {
-//     a {
-//       color: @k-gray-200;
-//       cursor: not-allowed;
-//       pointer-events: none;
-//     }
-//   }
-//   .is-icon-close {
-//     margin-left: 0.375rem;
-//     &:hover {
-//       color: @k-status-primary;
-//       background-color: transparent;
-//     }
-//     &:active {
-//       color: #0037db;
-//       background-color: transparent;
-//     }
-//     svg {
-//       margin-right: 0;
-//       width: 12px;
-//       height: 12px;
-//     }
-//   }
-//   .is-disabled {
-//     background-color: transparent !important;
-//   }
-// }
+.k-tabs-box {
+  position: relative;
+  .el-tabs__nav-next, .el-tabs__nav-prev {
+    display: none;
+  }
+  .k-tabs-more {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    z-index: 2;
+    cursor: pointer;
+  }
+}
