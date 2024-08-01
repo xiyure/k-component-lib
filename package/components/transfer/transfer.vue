@@ -47,13 +47,14 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, getCurrentInstance } from 'vue';
 import { TransferKey, TransferDirection } from 'element-plus';
+// @ts-expect-error 引入第三方js库
 import { IconSearch, IconDrag } from 'ksw-vue-icon';
 import { TransferProps } from './type';
 import { KInput } from '../input';
 import { genRandomStr } from '../../utils/index';
-// @ts-ignore
+// @ts-expect-error 引入本地静态图片资源
 import ArrowToLeft from '../../assets/svg/arrow-to-left.svg';
-// @ts-ignore
+// @ts-expect-error 引入本地静态图片资源
 import ArrowToRight from '../../assets/svg/arrow-to-right.svg';
 
 defineOptions({

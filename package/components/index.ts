@@ -15,7 +15,8 @@ import { KOperate } from './operate';
 import { KTag } from './tag';
 import { KPopover } from './popover';
 import { KPopconfirm } from './popconfirm';
-import { KStatus } from './status';
+import { KResult } from './result';
+import { KEmpty } from './empty';
 import { KMessage } from './message';
 import { KLoading } from './loading';
 import { KDialog } from './dialog';
@@ -59,7 +60,8 @@ export {
   KTag,
   KPopover,
   KPopconfirm,
-  KStatus,
+  KResult,
+  KEmpty,
   KMessage,
   KLoading,
   KDialog,

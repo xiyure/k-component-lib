@@ -26,10 +26,6 @@ defineOptions({
 });
 
 const handleNodeClick = async (data: any, node: any) => {
-  // 1. 判断是否有子节点
-  if (data.children && data.children.length > 0) {
-    data.children.forEach((item: any) => {});
-  }
   await nextTick();
   if (node.expanded && (data.icon === 'IconFlowNested' || !data.icon)) {
     data.icon = 'IconFolderOpen';
