@@ -20,6 +20,7 @@
     .k-tab__label {
       .text-base();
       display: flex;
+      justify-content: center;
       padding: 0 1rem;
       transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
     }
@@ -46,7 +47,7 @@
         height: var(--icon-size);
       }
     }
-    &:hover {
+    &:hover:not(.is-disabled) {
       color: var(--k-blue-400);
     }
   }
@@ -135,9 +136,6 @@
       }
     }
   }
-}
-
-.tab-right-layout {
 }
 .tab-top-layout {
   top: 0;

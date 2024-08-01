@@ -21,14 +21,11 @@
       }"
       :style="{ right: !editable && !addable ? 0 : '2rem' }"
     >
-      <k-dropdown trigger="click" :disabled="hideTabs.length === 0" @command="jumpToTab">
+      <TabDropdownMenu :tabs="hideTabs" @command="jumpToTab">
         <template #title>
           <IconMore />
         </template>
-        <k-dropdown-item v-for="item in hideTabs" :key="item.name" :command="item">
-          {{ item.label }}
-        </k-dropdown-item>
-      </k-dropdown>
+      </TabDropdownMenu>
     </div>
   </div>
 </template>
@@ -36,8 +33,8 @@
 <script setup lang="ts">
 import { ref, watch, provide, nextTick } from 'vue';
 import { IconMore } from 'ksw-vue-icon';
-import { KDropdown, KDropdownItem } from '../dropdown';
-import { genRandomStr } from '../../utils';
+import TabDropdownMenu from './tab_dropdown_menu';
+import { genRandomStr, flattenChildren, isValidElement, camelize } from '../../utils';
 
 defineOptions({
   name: 'KTabs',
@@ -75,26 +72,10 @@ const id = `_${genRandomStr(8)}`;
 let tabsElem: HTMLElement | null = null;
 let translateElem: HTMLElement | null = null;
 const tabPaneDoms = ref<any>([]);
-const tabItems: any = [];
 const slots = defineSlots();
-slots.default?.().forEach((item: any) => {
-  if (item.type?.name === 'KTabPane') {
-    tabItems.push({
-      label: item.props.label,
-      name: item.props.name
-    });
-  }
-  if (Array.isArray(item.children)) {
-    item.children.forEach((child: any) => {
-      if (child.type?.name === 'KTabPane') {
-        tabItems.push({
-          label: child.props.label,
-          name: child.props.name
-        });
-      }
-    });
-  }
-});
+
+const tabs = parseTabList(flattenChildren(slots.default?.()));
+
 const hideTabs = ref<any>([]);
 let preTranslate = 0;
 
@@ -149,17 +130,43 @@ function getHideTabs() {
     const [translate] = matches.map((m) => parseFloat(m.slice(1, -1)));
 
     const res: any[] = [];
-    if (!tabItems) {
+    if (!tabs) {
       return [];
     }
     tabPaneDoms.value.forEach((item: any, index: number) => {
-      if (!isElementInContainerView(item, translate)) {
-        res.push(tabItems[index]);
+      if (!isElementInContainerView(item, translate) && tabs[index]) {
+        res.push(tabs[index]);
       }
     });
     preTranslate = translate;
     hideTabs.value = res;
   });
+}
+// 解析tab-pane
+function parseTabList(children: any[]): any[] {
+  return children
+  .map(node => {
+    if (isValidElement(node)) {
+      const props = { ...(node.props || {}) };
+      for (const [k, v] of Object.entries(props)) {
+        delete props[k];
+        props[camelize(k)] = v;
+      }
+      const slots = node.children || {};
+      const name = node.props?.name !== undefined ? node.props.name : undefined;
+      const {
+        label = slots.label,
+        disabled
+      } = props;
+      return {
+        name,
+        label,
+        disabled: disabled === '' || disabled
+      };
+    }
+    return null;
+  })
+  .filter(tab => tab);
 }
 
 provide('isUseRouter', props.router);
@@ -172,6 +179,7 @@ watch(
   },
   { immediate: true },
 );
+
 </script>
 
 <style lang="less">
