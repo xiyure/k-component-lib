@@ -76,7 +76,6 @@
         :size="size"
         height="100%"
         :data="showTableData"
-        :full-data="fullData"
         :row-config="rowConfig"
         :sort-config="sortConfig"
         :tree-config="treeConfig"
@@ -252,7 +251,6 @@ const emits = defineEmits([
 ]);
 const xTree = ref();
 const columns = ref<any>([]);
-const fullData = ref<any[]>([]);
 const flatColumns = ref<any>([]);
 const query = ref('');
 const searchStr = ref('');

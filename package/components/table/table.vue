@@ -84,8 +84,8 @@ function rowDrop() {
         return;
       }
       const selfRow = targetRowNode.item;
-      const curRowIndex = props.fullData?.findIndex(row => row.id === selfRow.id) as number;
-      const curRow = props.fullData?.splice(curRowIndex, 1)[0];
+      const curRowIndex = props.data?.findIndex(row => row.id === selfRow.id) as number;
+      const curRow = props.data?.splice(curRowIndex, 1)[0];
       if (prevTrElem) {
       // 移动到节点
         const prevRowNode = vxeTableRef.value?.getRowNode(prevTrElem);
@@ -93,27 +93,28 @@ function rowDrop() {
           return;
         }
         const prevRow = prevRowNode.item;
-        const prevRowIndex = props.fullData?.findIndex(row => row.id === prevRow.id) as number;
+        const prevRowIndex = props.data?.findIndex(row => row.id === prevRow.id) as number;
         const prevParentRow = vxeTableRef.value?.getRowById(prevRow.parentId);
         if (vxeTableRef.value?.isTreeExpandByRow(prevRow)) {
         // 移动到当前的子节点
           curRow.parentId = prevRow.id;
-          props.fullData?.splice(prevRowIndex + 1, 0, curRow);
+          props.data?.splice(prevRowIndex + 1, 0, curRow);
         } else if (vxeTableRef.value?.isTreeExpandByRow(prevParentRow)) {
         // 移动到相邻节点
           curRow.parentId = prevRow.parentId ?? null;
-          props.fullData?.splice(prevRowIndex + 1, 0, curRow);
+          props.data?.splice(prevRowIndex + 1, 0, curRow);
         } else {
           // 移动到父节点的相邻节点
           curRow.parentId = prevParentRow?.parentId ?? null;
-          props.fullData?.splice(prevRowIndex + 1, 0, curRow);
+          props.data?.splice(prevRowIndex + 1, 0, curRow);
         }
       } else {
       // 移动到第一行
         curRow.parentId = null;
-        props.fullData?.unshift(curRow);
+        props.data?.unshift(curRow);
       }
-      emits('drag-end', props.fullData);
+      emits('drag-end', props.data);
+      vxeTableRef.value?.reloadData(props.data ?? []);
     }
   });
 }

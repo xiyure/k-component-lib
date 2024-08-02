@@ -61,7 +61,6 @@
             :data="showRightData"
             :row-config="{ useKey: true }"
             :scroll-y="scrollY"
-            :full-data="fullData"
             @drag-end="dragSort"
           >
             <k-table-column
@@ -123,13 +122,13 @@ const defaultTreeConfig = {
   indent: 0,
   showIcon: false
 };
-const leftData = ref<any>([]);
+const fullData = ref<any>(props.data ?? []);
+const leftData = ref<any>(fullData.value);
 const query = ref('');
 const treeLeftRef = ref();
 const treeRightRef = ref();
 const rightData = ref<any>([]);
 const showRightData = ref<any>([]);
-const fullData = ref<any>([]);
 const selectData = ref<Set<number | string>>(new Set());
 let treeData:any[] = [];
 const nodeSet = new Set();
@@ -159,13 +158,6 @@ const treeConfig = computed(() => {
 const scrollY = computed(() => ({ enabled: true, ...props.scrollY || {} }));
 const rowLevel = computed(() => (row: any) => getTreeNodeLevel(row));
 
-watch(() => props.data, (newValue) => {
-  if (!newValue) {
-    return;
-  }
-  fullData.value = newValue;
-  leftData.value = fullData.value;
-}, { immediate: true, deep: true });
 watch(() => props.defaultData, (newValue) => {
   if (!Array.isArray(newValue)) {
     return;
@@ -352,7 +344,9 @@ function toggleTreeExpand(row, e) {
   treeLeftRef.value.tableInstance.toggleTreeExpand(row);
 }
 // 拖拽排序
-function dragSort() {
+function dragSort(newData: any[]) {
+  const ids = newData.map(item => item.id);
+  fullData.value = sortBySmallerList(fullData.value, ids);
   const selectedData = getSelectedData();
   emits('change', selectedData);
   emits('sort', selectedData);

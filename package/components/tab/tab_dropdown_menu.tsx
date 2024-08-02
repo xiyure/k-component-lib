@@ -16,6 +16,7 @@ export default defineComponent({
        <KDropdown
           trigger={"click"}
           disabled={props.tabs.length === 0}
+          maxHeight={'300px'}
           onCommand={jumpToTab}
           v-slots={slots}
         >

@@ -2,7 +2,6 @@ export interface KTableProps {
   showOverflow?: any
   data?: any[]
   showDragColumn?: boolean
-  fullData?: any[]
   showColumnMenu?: boolean
 }
 export interface TableColumnProps {
