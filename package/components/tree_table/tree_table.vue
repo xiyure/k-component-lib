@@ -466,7 +466,7 @@ function changeCurrentPage(pageNum: number) {
     emits('server-paging', paginationConfig.value);
   }
 }
-function getShowTableData(data) {
+function getShowTableData(data: any[]) {
   if (props.isServerPaging) {
     emits('server-paging', paginationConfig.value);
     return data;
@@ -554,21 +554,21 @@ function sortTableHeader(fieldList: string[]) {
   setData(columns.value);
   flatColumns.value = treeDataToArray(columns.value, 'group');
 }
-function refreshAdvancedFilter(conditionInfo, newTableData) {
+function refreshAdvancedFilter(conditionInfo: any[], newTableData: any[]) {
   filterConditionInfo.value = conditionInfo;
   newFilterData.value = newTableData;
 }
 function filter(searchStr: string) {
   query.value = searchStr;
 }
-function hideColumn(column) {
+function hideColumn(column: any) {
   if (!props.showHeaderTools || !props.showTransfer) {
     return;
   }
   const columnItem = flatColumns.value.find(item => item.field === column.field);
   columnItem.visible = false;
   selectData.value = flatColumns.value.filter(col => col.visible !== false)
-  .map((item) => ({
+  .map((item: any) => ({
     label: item.title,
     key: item.field
   }));
@@ -602,10 +602,11 @@ function checkBoxChange({ row, checked }) {
   if (!props.showBatchOperation) {
     return;
   }
+  const keyField = rowConfig.value.keyField;
   if (checked) {
-    checkedData.add(row.id);
+    checkedData.add(row[keyField]);
   } else {
-    checkedData.delete(row.id);
+    checkedData.delete(row[keyField]);
   }
   checkedDataSize.value = checkedData.size;
 }
@@ -613,13 +614,15 @@ function checkboxAll({ checked }) {
   if (!props.showBatchOperation) {
     return;
   }
-  if (checked) {
-    for (const row of showTableData.value) {
-      checkedData.add(row.id);
+  for (const row of showTableData.value) {
+    if (isCheckboxDisabled(row)) {
+      continue;
     }
-  } else {
-    for (const row of showTableData.value) {
-      checkedData.delete(row.id);
+    const keyField = rowConfig.value.keyField;
+    if (checked) {
+      checkedData.add(row[keyField]);
+    } else {
+      checkedData.delete(row[keyField]);
     }
   }
   checkedDataSize.value = checkedData.size;
@@ -630,28 +633,40 @@ function closeBatchOperation() {
   tableInstance.value?.clearCheckboxRow?.();
   tableInstance.value?.clearCheckboxReserve?.();
 }
-function setCheckboxRow(rows, checked) {
+function setCheckboxRow(rows: any[], checked: boolean) {
   const newRows = Array.isArray(rows) ? rows : [rows];
+  const keyField = rowConfig.value.keyField;
   for (const row of newRows) {
     if (checked) {
-      checkedData.add(row.id);
+      checkedData.add(row[keyField]);
     } else {
-      checkedData.delete(row.id);
+      checkedData.delete(row[keyField]);
     }
   }
   checkedDataSize.value = checkedData.size;
   xTree.value?.tableInstance?.setCheckboxRow(newRows, checked);
 }
-function setAllCheckboxRow(checked) {
+function setAllCheckboxRow(checked: boolean) {
+  const keyField = rowConfig.value.keyField;
   if (checked) {
     for (const row of showTableData.value) {
-      checkedData.add(row.id);
+      checkedData.add(row[keyField]);
     }
   } else {
     checkedData.clear();
   }
   checkedDataSize.value = checkedData.size;
   xTree.value?.tableInstance?.setAllCheckboxRow(checked);
+}
+function isCheckboxDisabled(row: any) {
+  const { visibleMethod, checkMethod } = checkboxConfig.value;
+  if (typeof visibleMethod === 'function' && !visibleMethod({ row })) {
+    return true;
+  }
+  if (typeof checkMethod === 'function' && !checkMethod({ row })) {
+    return true;
+  }
+  return false;
 }
 function dragEnd(data: any[]) {
   emits('drag-end', {
