@@ -57,8 +57,12 @@
     }
   }
   .column-default__content {
-    display: flex;
-    align-items: center;
+    position: relative;
+    .ksw-icon {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%),
+    }
   }
   .left-align {
     justify-content: flex-start;

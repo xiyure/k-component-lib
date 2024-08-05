@@ -2,23 +2,25 @@
   <span
     v-if="!col.type"
     class="column-default__content"
-    :class="col.align ? `${col.align}-align` : `${align}-align`"
   >
     <component 
       :is="displayIcon(row)"
       v-if="props.col.showIcon && (row.icon || row.__folder)"
-      :style="{ marginRight: `${row.iconStyle?.marginRight ?? 3}px`}"
       :color="row.__folder ? '#FAC814' : row.iconStyle?.empty ? '#cdcacf' : row.iconStyle?.color"
-      :size="row.iconStyle?.size ?? (props.size ==='mini'? 16 : 20)"
+      :size="iconSize(row)"
       :grayscale="Boolean(row.iconStyle?.grayscale)"
     />
-    <template v-if="$slots[`${col.field ?? ''}-label`]">
-      <slot :name="`${col.field ?? ''}-label`" :row="row" :column="col"></slot>
-    </template>
-    <template v-else-if="typeof col.formatter === 'function'">
-      {{ col.formatter({cellValue: row[col.field], row, column:col}) }}
-    </template>
-    <template v-else>{{ row[col.field] === '' ? '-' : row[col.field] ?? '-' }}</template>
+    <span class="column-default__content__text" :style="{
+      marginLeft: `${iconSize(row) + (row.iconStyle?.indent ?? 3)}px`,
+    }">
+      <template v-if="$slots[`${col.field ?? ''}-label`]">
+        <slot :name="`${col.field ?? ''}-label`" :row="row" :column="col"></slot>
+      </template>
+      <template v-else-if="typeof col.formatter === 'function'">
+        {{ col.formatter({cellValue: row[col.field], row, column:col}) }}
+      </template>
+      <template v-else>{{ row[col.field] === '' ? '-' : row[col.field] ?? '-' }}</template>
+    </span>
   </span>
 </template>
 
@@ -44,7 +46,10 @@ const props = defineProps({
     default: () => 'left'
   }
 });
-const displayIcon = computed(() => (row) => {
+const iconSize = computed(() => (row: any) =>{
+  return row.iconStyle?.size ?? (props.size ==='mini'? 16 : 20)
+})
+const displayIcon = computed(() => (row: any) => {
   if (!row.__folder) {
     return row.icon;
   }
