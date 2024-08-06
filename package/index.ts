@@ -8,6 +8,7 @@ import 'vxe-table/lib/style.css';
 import 'ksw-vue-icon/styles/icon.css';
 import { createI18n } from 'vue-i18n';
 import * as components from './components';
+import originComponents from './element-plus';
 import * as directives from './directives';
 import zh from './internal/zh';
 import en from './internal/en';
@@ -27,14 +28,17 @@ const install = (Vue: any, options?: optionsType) => {
   Vue.use(ElementPlus, {
     locale: options?.locale === 'en' ? enLocal : zhLocal,
   });
-  Vue.use(VxeTable).use(VxeUI);
-  // 设置vxe-table全局配置
-  VxeUI.setConfig(options?.vxeGlobalConfig ?? {});
-  Vue.use(i18n);
   // 组件注册
   for (const name in components) {
     Vue.component(name, components[name]);
   }
+  for (const name in originComponents) {
+    Vue.component(name, originComponents[name]);
+  }
+  Vue.use(VxeTable).use(VxeUI);
+  // 设置vxe-table全局配置
+  VxeUI.setConfig(options?.vxeGlobalConfig ?? {});
+  Vue.use(i18n);
   // 自定义指令注册
   for (const name in directives) {
     Vue.directive(`ksw_${name}`, directives[name]);
