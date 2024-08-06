@@ -10,9 +10,11 @@
       :size="iconSize(row)"
       :grayscale="Boolean(row.iconStyle?.grayscale)"
     />
-    <span class="column-default__content__text" :style="{
-      marginLeft: `${iconSize(row) + (row.iconStyle?.indent ?? 3)}px`,
-    }">
+    <span
+      class="column-default__content__text" :style="{
+        marginLeft: `${iconSize(row) + (row.iconStyle?.indent ?? 3)}px`,
+      }"
+    >
       <template v-if="$slots[`${col.field ?? ''}-label`]">
         <slot :name="`${col.field ?? ''}-label`" :row="row" :column="col"></slot>
       </template>
@@ -46,9 +48,7 @@ const props = defineProps({
     default: () => 'left'
   }
 });
-const iconSize = computed(() => (row: any) =>{
-  return row.iconStyle?.size ?? (props.size ==='mini'? 16 : 20)
-})
+const iconSize = computed(() => (row: any) => row.iconStyle?.size ?? (props.size === 'mini' ? 16 : 20));
 const displayIcon = computed(() => (row: any) => {
   if (!row.__folder) {
     return row.icon;

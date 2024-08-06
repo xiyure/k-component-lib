@@ -3,7 +3,10 @@
     <div
       v-if="showHeaderTools"
       class="k-tree-table__header"
-      :style="{ justifyContent: showDescription ? 'space-between' : 'flex-end'}"
+      :style="{
+        justifyContent: showDescription ? 'space-between' : 'flex-end',
+        height: compSize ==='sm'? '24px' : '32px'
+      }"
     >
       <div v-if="showDescription" class="k-table-info">
         <slot name="description" :total="dataLength" :condition-info="filterConditionInfo">
@@ -18,54 +21,67 @@
         </slot>
       </div>
       <div class="k-table-func">
-        <k-input
-          v-if="showSearchInput"
-          v-model="searchStr"
-          :suffix-icon="IconSearch"
-          :placeholder="$t('searchTable')"
-          clearable
-          :size="compSize"
-          @change="(value: string) => query = value"
-        />
-        <k-button
-          v-if="showRefresh"
-          :size="compSize"
-          @click="() => {
-            emits('refresh')
-          }"
-        >
-          <IconRefresh />
-        </k-button>
-        <!-- 高级筛选 -->
-        <span v-if="showFilter">
-          <k-filter
-            ref="tableFilterRef"
-            :data="data"
-            :column="filterColumns"
-            :size="compSize"
-            children-field="group"
-            filter-key="field"
-            @confirm="refreshAdvancedFilter"
-          ><IconRefresh /></k-filter>
-        </span>
-        <!-- 穿梭框 -->
-        <k-popover
-          v-if="showTransfer"
-          trigger="click"
-          width="auto"
-        >
-          <template #reference>
-            <k-button :size="compSize"><IconSetting /></k-button>
+        <template v-for="widget in widgets" :key="widget.id">
+          <template v-if="widget.slot && $slots[widget.slot]">
+            <slot :name="widget.slot"></slot>
           </template>
-          <k-transfer
-            v-model="selectData"
-            :data="originData"
-            :titles="[$t('unselectedFields'), $t('selectedFields')]"
-            @change="updateColumn"
-            @reset="updateColumn"
-            @sort="sortTableHeader"
-          ></k-transfer>
-        </k-popover>
+          <template v-else-if="widget.widget">
+            <component :is="typeof widget.widget ==='function'? widget.widget() : widget.widget" />
+          </template>
+          <template v-else-if="widget.id ==='search'">
+            <k-input
+              v-model="searchStr"
+              :suffix-icon="IconSearch"
+              :placeholder="$t('searchTable')"
+              clearable
+              :size="compSize"
+              @change="(value: string) => query = value"
+            />
+          </template>
+          <template v-else-if="widget.id ==='refresh'">
+            <k-button
+              :size="compSize"
+              @click="() => {
+                emits('refresh')
+              }"
+            >
+              <IconRefresh />
+            </k-button>
+          </template>
+          <template v-else-if="widget.id === 'filter'">
+            <!-- 高级筛选 -->
+            <k-filter
+              ref="tableFilterRef"
+              :data="data"
+              :column="filterColumns"
+              :size="compSize"
+              children-field="group"
+              filter-key="field"
+              @confirm="refreshAdvancedFilter"
+            >
+              <IconRefresh />
+            </k-filter>
+          </template>
+          <template v-else-if="widget.id === 'transfer'">
+            <!-- 穿梭框 -->
+            <k-popover
+              trigger="click"
+              width="auto"
+            >
+              <template #reference>
+                <k-button :size="compSize"><IconSetting /></k-button>
+              </template>
+              <k-transfer
+                v-model="selectData"
+                :data="originData"
+                :titles="[$t('unselectedFields'), $t('selectedFields')]"
+                @change="updateColumn"
+                @reset="updateColumn"
+                @sort="sortTableHeader"
+              ></k-transfer>
+            </k-popover>
+          </template>
+        </template>
       </div>
     </div>
     <div class="table-box" :style="{ height: tableHeight}">
@@ -182,10 +198,6 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
   showHeader: true,
   fit: true,
   showDescription: true,
-  showFilter: true,
-  showRefresh: false,
-  showSearchInput: true,
-  showTransfer: false,
   showHeaderTools: true,
   autoResize: true,
   showColumnMenu: false,
@@ -196,6 +208,7 @@ const slots = defineSlots();
 const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
 const t = _global?.$t;
 const DEFAULT_PAGES = [25, 50, 80, 100, 150];
+const DEFAULT_WIDGETS = ['search', 'filter', 'refresh', 'transfer'];
 // 表格默认配置
 const defaultRowConfig = {
   isHover: true,
@@ -262,6 +275,28 @@ const tableFilterRef = ref(); // 高级筛选后的数据
 const newFilterData = ref<any>([]);
 const filterConditionInfo:any = ref(null);
 
+const widgets = computed(() => {
+  const widgetsList: any[] = [];
+  if (!Array.isArray(props.widgets)) {
+    return [];
+  }
+  for (const widget of props.widgets) {
+    if (!widget) {
+      continue;
+    }
+    const t = typeof widget;
+    if (t === 'string') { 
+      if (DEFAULT_WIDGETS.includes(widget as string)) {
+        widgetsList.push({ id: widget, slot: null });
+      } else {
+        widgetsList.push({ id: widget, slot: widget });
+      }
+    } else if (t === 'object' || t === 'function') {
+      widgetsList.push(widget);
+    }
+  }
+  return widgetsList;
+});
 // 高级筛选功能只处理非特殊、可见的有效数据
 const filterColumns = computed(() => columns.value.filter((item: any) => !item.type && item.visible !== false && item.field));
 // 表格实例
@@ -279,16 +314,11 @@ const headerText = computed(() => {
   }
   return text;
 });
-// 分页相关变量
-const paginationConfig = ref(Object.assign(defaultPaginationConfig, props.paginationConfig || {}));
 
 // 表格高度计算
 const tableHeight = computed(() => {
   const isShowHeader = (props.showDescription
-    || props.showSearchInput
-    || props.showFilter
-    || props.showRefresh
-    || props.showTransfer
+  || props.widgets?.length
   ) && props.showHeaderTools;
   const headerHeight = isShowHeader ? props.size === 'mini' ? 34 : 42 : 0;
   const pageHeight = isPaging.value ? props.size === 'mini' ? 34 : 42 : 0;
@@ -307,6 +337,8 @@ const editConfig = computed(() => Object.assign(defaultEditConfig, props.editCon
 const scrollY = computed(() => Object.assign(defaultScrollY, props.scrollY || {}));
 const columnConfig = computed(() => Object.assign(defaultColumnConfig, props.columnConfig || {}));
 const checkboxConfig = computed(() => Object.assign(defaultCheckboxConfig, props.checkboxConfig || {}));
+// 分页配置
+const paginationConfig = computed(() => Object.assign(defaultPaginationConfig, props.paginationConfig || {}));
 
 // 表格数据量
 const dataLength = ref<number>(0);

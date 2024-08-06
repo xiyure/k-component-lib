@@ -1,3 +1,4 @@
+import { Component, VNode } from 'vue';
 import { VxeColgroupProps, VxeColumnProps } from 'vxe-table';
 
 export interface columnConfigType extends VxeColumnProps {
@@ -19,6 +20,10 @@ export interface columnConfigType extends VxeColumnProps {
   render?: () => any
 }
 
+type widgetItemType = {
+  id: string,
+  widget: Component | (() => VNode | Component) 
+}
 export interface PaginationConfigType {
   total?: number
   pagerCount?: number
@@ -53,15 +58,12 @@ export interface TreeTableProps {
   isRemoteQuery?: boolean
   isServerPaging?: boolean
   paginationConfig?: PaginationConfigType
-  showSearchInput?: boolean
-  showFilter?: boolean
-  showRefresh?: boolean
   showDescription?: boolean
-  showTransfer?: boolean
   showHeaderTools?: boolean
   batchOperations?: any[]
   showBatchOperation?: boolean
   showColumnMenu?: boolean
   showDragColumn?: boolean
   cellClickToggleHighlight?: boolean
+  widgets?: (string | widgetItemType)[]
 }
