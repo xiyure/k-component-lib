@@ -312,7 +312,6 @@ const widgets = computed(() => {
         slot: null
       });
     }
-    console.log(widgetsList)
     return widgetsList;
   }
   for (const widget of props.widgets) {
