@@ -88,7 +88,6 @@
       <k-table
         ref="xTree"
         :border="border"
-        :fit="fit"
         :size="size"
         height="100%"
         :data="showTableData"
@@ -200,7 +199,6 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
   showRefresh: false,
   showSearchInput: true,
   showTransfer: false,
-  fit: true,
   showDescription: true,
   showHeaderTools: true,
   autoResize: true,
@@ -294,15 +292,15 @@ const widgets = computed(() => {
         slot: null
       });
     }
-    if (props.showFilter) {
-      widgetsList.push({
-        id: 'filter',
-        slot: null
-      });
-    }
     if (props.showRefresh) {
       widgetsList.push({
         id: 'refresh',
+        slot: null
+      });
+    }
+    if (props.showFilter) {
+      widgetsList.push({
+        id: 'filter',
         slot: null
       });
     }
@@ -594,9 +592,9 @@ function getTreeConfigField() {
   return { parentField, rowField };
 }
 function updateColumn(ids: string[]) {
-  flatColumns.value.forEach(col => {
+  flatColumns.value.forEach((col: columnConfigType) => {
     if (!col.type) {
-      if (ids.includes(col.field)) {
+      if (ids.includes(col.field as string)) {
         col.visible = true;
       } else {
         col.visible = false;
@@ -627,7 +625,7 @@ function refreshAdvancedFilter(conditionInfo: any[], newTableData: any[]) {
 function filter(searchStr: string) {
   query.value = searchStr;
 }
-function hideColumn(column: any) {
+function hideColumn(column: columnConfigType) {
   if (!props.showHeaderTools || !widgets.value?.includes('transfer')) {
     return;
   }

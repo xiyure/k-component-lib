@@ -3,7 +3,6 @@
     ref="vxeTableRef"
     class="k-table"
     :class="showDragColumn ? 'drag_table' : ''"
-    :show-overflow="props.showOverflow"
     :data="data"
     v-bind="$attrs"
   >
@@ -42,7 +41,6 @@ defineOptions({
 });
 
 const props = withDefaults(defineProps<KTableProps>(), {
-  showOverflow: true,
   showDragColumn: false
 });
 

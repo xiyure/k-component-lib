@@ -1,5 +1,4 @@
 export interface KTableProps {
-  showOverflow?: any
   data?: any[]
   showDragColumn?: boolean
   showColumnMenu?: boolean

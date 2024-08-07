@@ -1,5 +1,5 @@
 <template>
-  <div :id="id" class="k-tabs-box">
+  <div :id="id" class="k-tabs-box" :class="class">
     <el-tabs
       v-model="activeName"
       class="k-tabs"
@@ -37,7 +37,7 @@ import TabDropdownMenu from './tab_dropdown_menu';
 import { genRandomStr, flattenChildren, isValidElement, camelize } from '../../utils';
 
 defineOptions({
-  name: 'KTabs',
+  name: 'KTabs'
 });
 
 const props = defineProps({
@@ -65,6 +65,10 @@ const props = defineProps({
     type: String,
     default: undefined,
   },
+  class: {
+    type: String || Array || Object,
+    default: '',
+  }
 });
 
 const activeName = ref<string | undefined>(undefined);
