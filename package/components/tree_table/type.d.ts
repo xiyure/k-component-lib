@@ -7,8 +7,8 @@ export interface columnConfigType extends VxeColumnProps {
   field?: string
   title?: string
   width?: string | number
-  filters?: any
-  treeNode?: any
+  filters?: any[]
+  treeNode?: boolean
   cellRender?: any
   editRender?: any
   minWidth?: string | number
@@ -17,7 +17,7 @@ export interface columnConfigType extends VxeColumnProps {
   showColumnMenu?: boolean
   group?: VxeColgroupProps[]
   dataType?: string
-  render?: () => any
+  render?: () => VNode
 }
 
 type widgetItemType = {
@@ -66,4 +66,8 @@ export interface TreeTableProps {
   showDragColumn?: boolean
   cellClickToggleHighlight?: boolean
   widgets?: (string | widgetItemType)[]
+  showSearchInput?: boolean
+  showFilter?: boolean
+  showRefresh?: boolean
+  showTransfer?: boolean
 }

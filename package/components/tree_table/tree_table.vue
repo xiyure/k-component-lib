@@ -196,6 +196,10 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
   height: '100%',
   showOverflow: true,
   showHeader: true,
+  showFilter: true,
+  showRefresh: false,
+  showSearchInput: true,
+  showTransfer: false,
   fit: true,
   showDescription: true,
   showHeaderTools: true,
@@ -208,7 +212,12 @@ const slots = defineSlots();
 const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
 const t = _global?.$t;
 const DEFAULT_PAGES = [25, 50, 80, 100, 150];
-const DEFAULT_WIDGETS = ['search', 'filter', 'refresh', 'transfer'];
+const DEFAULT_WIDGETS = new Map([
+  ['search', 'search'],
+  ['filter', 'filter'],
+  ['refresh','refresh'],
+  ['transfer', 'transfer']
+]);
 // 表格默认配置
 const defaultRowConfig = {
   isHover: true,
@@ -276,9 +285,35 @@ const newFilterData = ref<any>([]);
 const filterConditionInfo:any = ref(null);
 
 const widgets = computed(() => {
-  const widgetsList: any[] = [];
+  let widgetsList: any[] = [];
   if (!Array.isArray(props.widgets)) {
-    return [];
+    // 兼容老版本参数
+    if (props.showSearchInput) {
+      widgetsList.push({
+        id: 'search',
+        slot: null
+      });
+    }
+    if (props.showFilter) {
+      widgetsList.push({
+        id: 'filter',
+        slot: null
+      });
+    }
+    if (props.showRefresh) {
+      widgetsList.push({
+        id: 'refresh',
+        slot: null
+      });
+    }
+    if (props.showTransfer) {
+      widgetsList.push({
+        id: 'transfer',
+        slot: null
+      });
+    }
+    console.log(widgetsList)
+    return widgetsList;
   }
   for (const widget of props.widgets) {
     if (!widget) {
@@ -286,7 +321,7 @@ const widgets = computed(() => {
     }
     const t = typeof widget;
     if (t === 'string') { 
-      if (DEFAULT_WIDGETS.includes(widget as string)) {
+      if (DEFAULT_WIDGETS.get(widget as string)) {
         widgetsList.push({ id: widget, slot: null });
       } else {
         widgetsList.push({ id: widget, slot: widget });
@@ -318,7 +353,7 @@ const headerText = computed(() => {
 // 表格高度计算
 const tableHeight = computed(() => {
   const isShowHeader = (props.showDescription
-  || props.widgets?.length
+  || widgets.value?.length
   ) && props.showHeaderTools;
   const headerHeight = isShowHeader ? props.size === 'mini' ? 34 : 42 : 0;
   const pageHeight = isPaging.value ? props.size === 'mini' ? 34 : 42 : 0;
@@ -594,7 +629,7 @@ function filter(searchStr: string) {
   query.value = searchStr;
 }
 function hideColumn(column: any) {
-  if (!props.showHeaderTools || !props.showTransfer) {
+  if (!props.showHeaderTools || !widgets.value?.includes('transfer')) {
     return;
   }
   const columnItem = flatColumns.value.find(item => item.field === column.field);
