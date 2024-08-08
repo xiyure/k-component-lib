@@ -24,6 +24,15 @@ type widgetItemType = {
   id: string,
   widget: Component | (() => VNode | Component) 
 }
+type FilterColumnType = {
+  title: string
+  field: string
+  dataType?: string
+  options: {
+    label: string
+    value: any
+  }[]
+}
 export interface PaginationConfigType {
   total?: number
   pagerCount?: number
@@ -70,5 +79,7 @@ export interface TreeTableProps {
   showFilter?: boolean
   showRefresh?: boolean
   showTransfer?: boolean
-  advancedFilterConfig?: any
+  advancedFilterConfig?: {
+    filterColumns?: FilterColumnType[]
+  }
 }

@@ -342,9 +342,9 @@ const filterColumns = computed(() => {
     'group',
     (dataItem) => !dataItem.type && dataItem.visible !== false && dataItem.field
   );
-  const { filterData } = props.advancedFilterConfig;
-  if (filterData) {
-    return resetTreeData(validColumns, 'group', filterData, 'field');
+  const { filterColumns } = props.advancedFilterConfig ?? {};
+  if (filterColumns) {
+    return resetTreeData(validColumns, 'group', filterColumns, 'field');
   }
   return validColumns;
 });
