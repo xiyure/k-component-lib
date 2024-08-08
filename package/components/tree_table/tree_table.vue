@@ -16,7 +16,13 @@
               {{ $t('data') }}
             </span>
             <span :title="headerText" class="condition-info">{{ headerText }}</span>
-            <span class="filter-reset" @click="() => tableFilterRef?.clearFilter?.()">{{ $t('reset') }}</span>
+            <span
+              v-if="filterConditionInfo?.conditionList?.length"
+              class="filter-reset"
+              @click="() => tableFilterRef?.clearFilter?.()"
+            >
+              {{ $t('reset') }}
+            </span>
           </div>
         </slot>
       </div>
@@ -172,7 +178,7 @@
 import { ref, computed, onMounted, watch, nextTick, getCurrentInstance } from 'vue';
 import VXETable from 'vxe-table';
 import { IconSearch, IconSetting, IconRefresh } from 'ksw-vue-icon';
-import { isNumber } from 'lodash-es';
+import { isNumber, cloneDeep } from 'lodash-es';
 import KColumnGroup from './column_group';
 import { KInput } from '../input';
 import { KButton } from '../button';
@@ -183,7 +189,7 @@ import { TreeTableProps, columnConfigType } from './type';
 import { KTable } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
-import { genRandomStr, treeDataToArray } from '../../utils';
+import { genRandomStr, treeDataToArray, getValidTreeData, resetTreeData } from '../../utils';
 
 defineOptions({
   name: 'KTreeTable'
@@ -213,7 +219,7 @@ const DEFAULT_PAGES = [25, 50, 80, 100, 150];
 const DEFAULT_WIDGETS = new Map([
   ['search', 'search'],
   ['filter', 'filter'],
-  ['refresh','refresh'],
+  ['refresh', 'refresh'],
   ['transfer', 'transfer']
 ]);
 // 表格默认配置
@@ -283,7 +289,7 @@ const newFilterData = ref<any>([]);
 const filterConditionInfo:any = ref(null);
 
 const widgets = computed(() => {
-  let widgetsList: any[] = [];
+  const widgetsList: any[] = [];
   if (!Array.isArray(props.widgets)) {
     // 兼容老版本参数
     if (props.showSearchInput) {
@@ -330,7 +336,18 @@ const widgets = computed(() => {
   return widgetsList;
 });
 // 高级筛选功能只处理非特殊、可见的有效数据
-const filterColumns = computed(() => columns.value.filter((item: any) => !item.type && item.visible !== false && item.field));
+const filterColumns = computed(() => {
+  const validColumns = getValidTreeData(
+    cloneDeep(columns.value),
+    'group',
+    (dataItem) => !dataItem.type && dataItem.visible !== false && dataItem.field
+  );
+  const { filterData } = props.advancedFilterConfig;
+  if (filterData) {
+    return resetTreeData(validColumns, 'group', filterData, 'field');
+  }
+  return validColumns;
+});
 // 表格实例
 const tableInstance = computed(() => xTree.value?.tableInstance);
 const headerText = computed(() => {
@@ -621,6 +638,16 @@ function sortTableHeader(fieldList: string[]) {
 function refreshAdvancedFilter(conditionInfo: any[], newTableData: any[]) {
   filterConditionInfo.value = conditionInfo;
   newFilterData.value = newTableData;
+  if (props.useTree) {
+    handleTreeData(newFilterData.value);
+    const { rowField } = getTreeConfigField();
+    newFilterData.value = sortFunc(treeData, props.data, rowField);
+    if (newFilterData.value.length < 500 && newFilterData.value.length !== props.data?.length) {
+      setTimeout(() => {
+        tableInstance.value?.setAllTreeExpand(true);
+      });
+    }
+  }
 }
 function filter(searchStr: string) {
   query.value = searchStr;

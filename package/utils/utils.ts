@@ -177,3 +177,36 @@ export function treeDataToArray(treeData: any[] | undefined, childrenField: stri
   }
   return result;
 }
+
+export function getValidTreeData(treeData: any[], childrenField: string, filterCallback: (item: any) => boolean) {
+  if (!Array.isArray(treeData) || treeData.length === 0) {
+    return [];
+  }
+  for (let i = 0; i < treeData.length; i++) {
+    const item = treeData[i];
+    if (!filterCallback(item)) {
+      treeData.splice(i, 1);
+      i--;
+      continue;
+    }
+    if (Array.isArray(item[childrenField])) {
+      getValidTreeData(item[childrenField], childrenField, filterCallback);
+    }
+  }
+  return treeData;
+}
+
+export function resetTreeData(treeData: any[], childrenField: string, targetData: any[], key: string) {
+  const dataMap = new Map(targetData.map((v) => [v[key], v]));
+  for (let i = 0; i < treeData.length; i++) {
+    const item = treeData[i];
+    if (dataMap.has(item[key])) {
+      treeData[i] = dataMap.get(item[key]);
+      continue;
+    }
+    if (Array.isArray(item[childrenField])) {
+      resetTreeData(item[childrenField], childrenField, targetData, key);
+    }
+  }
+  return treeData;
+}

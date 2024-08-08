@@ -1,24 +1,16 @@
 <template>
-  <div :id="id" class="k-tabs-box" :class="class">
-    <el-tabs
-      v-model="activeName"
-      class="k-tabs"
-      v-bind="$attrs"
-      :tab-position="tabPosition"
-      :editable="editable"
-      :addable="addable"
-    >
-      <slot></slot>
-    </el-tabs>
+  <el-tabs
+    ref="KTabsRef"
+    v-model="activeName"
+    class="k-tabs"
+    v-bind="$attrs"
+    :tab-position="tabPosition"
+    :editable="editable"
+    :addable="addable"
+  >
     <div
-      v-if="hideTabs?.length"
       class="k-tabs-more"
-      :class="{
-        'tab-top-layout': tabPosition === 'top',
-        'tab-bottom-layout': tabPosition === 'bottom',
-        'tab-left-layout': tabPosition === 'left',
-        'tab-right-layout': tabPosition === 'right',
-      }"
+      :class="`tab-${tabPosition}-layout`"
       :style="{ right: !editable && !addable ? 0 : '2rem' }"
     >
       <TabDropdownMenu :tabs="hideTabs" @command="jumpToTab">
@@ -27,14 +19,15 @@
         </template>
       </TabDropdownMenu>
     </div>
-  </div>
+    <slot></slot>
+  </el-tabs>
 </template>
 
 <script setup lang="ts">
 import { ref, watch, provide, nextTick } from 'vue';
 import { IconMore } from 'ksw-vue-icon';
 import TabDropdownMenu from './tab_dropdown_menu';
-import { genRandomStr, flattenChildren, isValidElement, camelize } from '../../utils';
+import { flattenChildren, isValidElement, camelize } from '../../utils';
 
 defineOptions({
   name: 'KTabs'
@@ -72,11 +65,11 @@ const props = defineProps({
 });
 
 const activeName = ref<string | undefined>(undefined);
-const id = `_${genRandomStr(8)}`;
 let tabsElem: HTMLElement | null = null;
-let translateElem: HTMLElement | null = null;
-const tabPaneDoms = ref<any>([]);
+let translateElem: HTMLElement | null | undefined = null;
+let tabPaneDoms: NodeListOf<Element> | null | undefined = null;
 const slots = defineSlots();
+const KTabsRef = ref<any>();
 
 const tabs = parseTabList(flattenChildren(slots.default?.()));
 
@@ -84,9 +77,9 @@ const hideTabs = ref<any>([]);
 let preTranslate = 0;
 
 nextTick(() => {
-  tabsElem = document.querySelector(`#${id} .el-tabs__nav-scroll`);
-  translateElem = document.querySelector(`#${id} .el-tabs__nav`);
-  tabPaneDoms.value = tabsElem?.querySelectorAll('.el-tabs__item') ?? [];
+  tabsElem = KTabsRef.value.$el;
+  translateElem = tabsElem?.querySelector('.el-tabs__nav');
+  tabPaneDoms = tabsElem?.querySelectorAll('.el-tabs__item');
   getHideTabs();
 });
 
@@ -96,11 +89,10 @@ watch(
   (val) => {
     if (val) {
       nextTick(() => {
-        const box: HTMLElement | null = document.querySelector(`#${id}`);
-        if (!box) {
+        if (!tabsElem) {
           return;
         }
-        box?.style.setProperty('--plane-max-width', val);
+        tabsElem?.style.setProperty('--plane-max-width', val);
       });
     }
   },
@@ -127,6 +119,7 @@ function jumpToTab(item: any) {
 function getHideTabs() {
   setTimeout(() => {
     const regex = /\(([^)]+)\)/g;
+    // 获取tab栏偏移量
     const matches = translateElem?.style.transform?.match(regex);
     if (!matches) {
       return;
@@ -137,7 +130,7 @@ function getHideTabs() {
     if (!tabs) {
       return [];
     }
-    tabPaneDoms.value.forEach((item: any, index: number) => {
+    tabPaneDoms?.forEach((item: any, index: number) => {
       if (!isElementInContainerView(item, translate) && tabs[index]) {
         res.push(tabs[index]);
       }

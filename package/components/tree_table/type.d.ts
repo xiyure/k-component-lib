@@ -34,7 +34,7 @@ export interface PaginationConfigType {
 }
 
 export interface TreeTableProps {
-  data: any[]
+  data?: any[]
   size?: string
   sortConfig?: object
   rowConfig?: object
@@ -70,4 +70,5 @@ export interface TreeTableProps {
   showFilter?: boolean
   showRefresh?: boolean
   showTransfer?: boolean
+  advancedFilterConfig?: any
 }

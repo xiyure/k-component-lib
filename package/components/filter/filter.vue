@@ -57,6 +57,7 @@
               :size="props.size"
               :teleported="false"
               clearable
+              :disabled="item._allowSelectLogic === false"
               @change="changeLogic(item)"
             >
               <k-option
@@ -94,6 +95,21 @@
                 :disabled="disabledDatePicker(item)"
               />
             </div>
+            <k-select
+              v-else-if="instance(item.key)?.options?.length"
+              v-model="item.value"
+              :size="props.size"
+              :teleported="false"
+              :disabled="disabledInput(item)"
+              clearable
+            >
+              <k-option
+                v-for="optionItem in instance(item.key)?.options"
+                :key="optionItem.value"
+                :label="optionItem.label"
+                :value="optionItem.value"
+              />
+            </k-select>
             <k-input
               v-else
               v-model="item.value"
@@ -157,7 +173,8 @@ type IFilterDataType = {
   key: any,
   dateRange?: string,
   dateType?: string,
-  handler: ((a: any, b: any) => boolean) | null
+  handler: ((a: any, b: any) => boolean) | null,
+  _allowSelectLogic?: boolean,
 };
 
 const emits = defineEmits(['confirm']);
@@ -251,18 +268,18 @@ function filter() {
     if (filterRule.value === 0) {
       return filterData.value.some(item => {
         const targetColumn = flatColumns.value?.find(col => col[props.filterKey] === item.key);
-        if (!targetColumn || !targetColumn.field) {
+        if (!targetColumn || !targetColumn[props.filterKey]) {
           return false;
         }
-        return item.handler?.(dataItem[targetColumn.field], item.value);
+        return item.handler?.(dataItem[targetColumn[props.filterKey]], item.value);
       });
     } 
     return filterData.value.every(item => {
       const targetColumn = flatColumns.value?.find(col => col[props.filterKey] === item.key);
-      if (!targetColumn && !targetColumn.field) {
+      if (!targetColumn && !targetColumn[props.filterKey]) {
         return false;
       }
-      return item.handler?.(dataItem[targetColumn.field], item.value);
+      return item.handler?.(dataItem[targetColumn[props.filterKey]], item.value);
     });
   });
   emits('confirm', conditionInfo, newData ?? []);
@@ -277,8 +294,19 @@ function changeCondition(index:number) {
     columns = columnItem?.group ?? [];
   }
   targetItem.key = columnItem?.[props.filterKey];
-  targetItem.logic = '';
-  targetItem.value = '';
+  targetItem.logic = 'equal';
+  const logicOptionItem = logicOptions.find(item => item.type === (columnItem.dataType || 'string'));
+  if (logicOptionItem) {
+    const logicItem = logicOptionItem.logicList.find(item => item.logic === 'equal');
+    targetItem.handler = logicItem?.handler as any;
+  }
+  if (columnItem?.options?.length) {
+    targetItem.value = columnItem.options[0].value;
+    targetItem._allowSelectLogic = false;
+  } else {
+    targetItem.value = '';
+    targetItem._allowSelectLogic = true;
+  }
 }
 function changeLogic(dataItem) {
   if ((dataItem.logic === 'after'
