@@ -9,6 +9,7 @@
     :addable="addable"
   >
     <div
+      v-if="hideTabs.length"
       class="k-tabs-more"
       :class="`tab-${tabPosition}-layout`"
       :style="{ right: !editable && !addable ? 0 : '2rem' }"
@@ -57,10 +58,6 @@ const props = defineProps({
   maxWidth: {
     type: String,
     default: undefined,
-  },
-  class: {
-    type: String || Array || Object,
-    default: '',
   }
 });
 
