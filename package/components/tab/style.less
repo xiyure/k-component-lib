@@ -14,7 +14,7 @@
   --icon-size: 1rem;
   --icon-skew: 0.625rem;
   --icon-Space: 2rem;
-  
+
   position: relative;
   .el-tabs__nav-next,
   .el-tabs__nav-prev {
@@ -30,7 +30,7 @@
       transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
     }
     .k-tab__label {
-      width: var(--plane-max-width);
+      max-width: var(--plane-max-width);
       span {
         width: 100%;
         overflow: hidden;
@@ -55,6 +55,9 @@
     &:hover:not(.is-disabled) {
       color: var(--k-blue-400);
     }
+  }
+  .el-tabs__item.is-left {
+    width: calc(var(--plane-max-width) + 2rem);
   }
 
   .el-tabs__item.is-closable {
