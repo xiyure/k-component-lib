@@ -19,7 +19,7 @@
             <span
               v-if="filterConditionInfo?.conditionList?.length"
               class="filter-reset"
-              @click="() => tableFilterRef?.clearFilter?.()"
+              @click="clearAdvancedFilter"
             >
               {{ $t('reset') }}
             </span>
@@ -58,7 +58,7 @@
             <!-- 高级筛选 -->
             <k-filter
               ref="tableFilterRef"
-              :data="data"
+              :data="xeData"
               :column="filterColumns"
               :size="compSize"
               children-field="group"
@@ -276,8 +276,14 @@ const emits = defineEmits([
   'drag-end'
 ]);
 const xTree = ref();
+// 列配置
 const columns = ref<any>([]);
 const flatColumns = ref<any>([]);
+// 表格数据
+const xeData = ref<any>(
+  Array.isArray(props.data) ? props.data : []
+);
+// 搜索框关键词
 const query = ref('');
 const searchStr = ref('');
 // 穿梭框
@@ -446,7 +452,7 @@ const nodeSet = new Set();
 function filterTableData() {
   const filterData = filterConditionInfo.value?.conditionList?.length
     ? newFilterData.value
-    : props.data;
+    : xeData.value;
   const searchKey = query.value.trim().replace(/\\/g, '\\\\');
   if (!searchKey) {
     dataLength.value = props.useTree ? 0 : filterData.length;
@@ -468,7 +474,7 @@ function filterTableData() {
   if (props.useTree) {
     handleTreeData(tableData);
     const { rowField } = getTreeConfigField();
-    tableData = sortFunc(treeData, props.data, rowField);
+    tableData = sortFunc(treeData, xeData.value, rowField);
     dataLength.value = 0;
   } else {
     dataLength.value = tableData.length;
@@ -497,7 +503,7 @@ function handleTreeData(leafData:any[]) {
 }
 function addChildNodes(currentNode: any) {
   const { parentField, rowField } = getTreeConfigField();
-  const childNodes = props.data?.filter(
+  const childNodes = xeData.value?.filter(
     (node: any) => node[parentField] === currentNode[rowField]
   );
   if (!childNodes) {
@@ -517,7 +523,7 @@ function addChildNodes(currentNode: any) {
 // 根据叶子节点递归遍历获取祖先节点
 function getParentNode(dataItem: any, parentField: string, rowField: string) {
   const parentKey = dataItem[parentField];
-  const parentItem = props.data?.find(item => item[rowField] === parentKey);
+  const parentItem = xeData.value?.find(item => item[rowField] === parentKey);
   if (!parentItem) {
     return;
   }
@@ -641,8 +647,8 @@ function refreshAdvancedFilter(conditionInfo: any[], newTableData: any[]) {
   if (props.useTree) {
     handleTreeData(newFilterData.value);
     const { rowField } = getTreeConfigField();
-    newFilterData.value = sortFunc(treeData, props.data, rowField);
-    if (newFilterData.value.length < 500 && newFilterData.value.length !== props.data?.length) {
+    newFilterData.value = sortFunc(treeData, xeData.value, rowField);
+    if (newFilterData.value.length < 500 && newFilterData.value.length !== xeData.value?.length) {
       setTimeout(() => {
         tableInstance.value?.setAllTreeExpand(true);
       });
@@ -762,21 +768,33 @@ function isCheckboxDisabled(row: any) {
 function dragEnd(data: any[]) {
   emits('drag-end', {
     data,
-    originData: props.data
+    originData: xeData.value
   });
 }
 
 // 刷新高级筛选的表格数据
-function advancedFilter() {
-  tableFilterRef.value?.filter();
+function advancedFilter(data: any[] | undefined) {
+  tableFilterRef.value?.[0]?.filter(data);
+}
+function clearAdvancedFilter() {
+  tableFilterRef.value?.[0]?.clearFilter();
+}
+function loadData(data: any[]) {
+  if (!Array.isArray(data)) {
+    return;
+  }
+  xeData.value = data;
+  advancedFilter(data);
 }
 
 defineExpose({
   tableInstance,
   filter,
   advancedFilter,
+  clearAdvancedFilter,
   setCheckboxRow,
-  setAllCheckboxRow
+  setAllCheckboxRow,
+  loadData
 });
 </script>
 

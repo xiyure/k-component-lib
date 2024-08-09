@@ -236,17 +236,21 @@ function addCondition() {
 // 移除条件
 function removeConditionItem(index:number) {
   if (index === 0 && filterData.value.length === 1) {
+    clearFilter(false);
     return;
   }
   filterData.value.splice(index, 1);
 }
-function clearFilter() {
+function clearFilter(isFilter:boolean = true) {
   filterData.value.length = 0;
   addCondition();
-  filter();
+  if (isFilter) {
+    filter();
+  }
 }
 
-function filter() {
+function filter(data?: any[]) {
+  const sourceData = Array.isArray(data) ? data : props.data;
   const disabledLogicTypes = ['empty', 'nonEmpty'];
   const conditionList = filterData.value
   .filter(item => item.key && item.logic && (item.value || disabledLogicTypes.includes(item.logic)))
@@ -261,10 +265,10 @@ function filter() {
     filterRule: filterRule.value
   };
   if (conditionList.length === 0) {
-    emits('confirm', conditionInfo, props.data);
+    emits('confirm', conditionInfo, sourceData);
     return; 
   }
-  const newData = props.data?.filter(dataItem => {
+  const newData = sourceData?.filter(dataItem => {
     if (filterRule.value === 0) {
       return filterData.value.some(item => {
         const targetColumn = flatColumns.value?.find(col => col[props.filterKey] === item.key);
