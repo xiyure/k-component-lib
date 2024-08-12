@@ -5,13 +5,13 @@
       width="auto"
     >
       <template #reference>
-        <slot name="icon">
+        <slot name="reference" :has-config-condition="hasConfigCondition">
           <k-button v-if="border" :size="props.size">
-            <IconFilter v-if="!isConfigCondition" />
+            <IconFilter v-if="!hasConfigCondition" />
             <IconFilterFill v-else color="#2882FF" />
           </k-button>
           <span v-else>
-            <IconFilter v-if="!isConfigCondition" />
+            <IconFilter v-if="!hasConfigCondition" />
             <IconFilterFill v-else color="#2882FF" />
           </span>
         </slot>
@@ -22,7 +22,7 @@
             :class="props.size === 'sm' ? 'text-base' : 'text-lg'"
             class="font-bold"
           >
-            {{ $t('seniorFilter') }}
+            {{ $t('advancedFilter') }}
           </span>
           <span
             :class="props.size === 'sm' ? 'text-sm' : 'text-base'"
@@ -207,7 +207,7 @@ const dateLogicList = computed(() => function (item:IFilterDataType) {
   return dateTypeOptions.filter((item) => !hideLogicList.includes(item.value));
 });
 
-const isConfigCondition = computed(() => filterData.value.some(item => item.key && item.logic && (item.value || ['empty', 'nonEmpty'].includes(item.logic))));
+const hasConfigCondition = computed(() => filterData.value.some(item => item.key && item.logic && (item.value || ['empty', 'nonEmpty'].includes(item.logic))));
 
 // 日期禁用
 const disabledInput = computed(() => function (item:IFilterDataType) {

@@ -1,5 +1,5 @@
 export default {
-  seniorFilter: 'Senior Filter',
+  advancedFilter: 'Advanced Filter',
   clearAll: 'clear all',
   addCondition: 'add condition',
   aboveCondition: 'above condition',
@@ -62,12 +62,15 @@ export default {
   gte: 'gte',
   lte: 'lte',
   contain: 'contain',
-  notEqual: 'not eaual',
+  notEqual: 'not equal',
   clearData: 'Clear Data',
   enterInputSearch: 'Press Enter to search',
   within7days: 'within 7 days',
   within15days: 'within 15 days',
   curMonth: 'current month',
   curQuarter: 'current quarter',
-  curYear: 'current year'
+  curYear: 'current year',
+  refresh: 'refresh',
+  columnHeaderController: 'column header controller',
+  advancedFilter_c: 'advanced filter'
 };

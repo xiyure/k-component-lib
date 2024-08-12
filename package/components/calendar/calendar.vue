@@ -11,7 +11,7 @@
               <span>{{ date }}</span>
             </div>
             <div class="k-calendar__header-right">
-              <k-checkbox v-model="isShowLunar" :label="$t('showLunar')"></k-checkbox>
+              <k-checkbox v-if="showLunar" v-model="isShowLunar" :label="$t('showLunar')"></k-checkbox>
             </div>
           </div>
         </slot>
@@ -57,7 +57,8 @@ defineOptions({
 });
 
 const props = withDefaults(defineProps<CalendarProps>(), {
-  schedule: {}
+  schedule: {},
+  showLunar: false
 });
 
 const kCalendarRef = ref<CalendarInstance>();

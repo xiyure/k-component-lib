@@ -130,8 +130,7 @@ const treeRightRef = ref();
 const rightData = ref<any>([]);
 const showRightData = ref<any>([]);
 const selectData = ref<Set<number | string>>(new Set());
-let treeData:any[] = [];
-const nodeSet = new Set();
+const treeDataMap:Map<string | number, any> = new Map();
 
 const columnIcon = computed(() => function (row) {
   const expand = treeLeftRef.value?.tableInstance.isTreeExpandByRow(row);
@@ -237,7 +236,7 @@ async function filterLeftData() {
   if (props.useTree) {
     handleTreeData(tableData);
     const { rowField } = getTreeConfigField();
-    tableData = sortTreeData(treeData, props.data, rowField);
+    tableData = sortTreeData([...treeDataMap.values()], props.data, rowField);
     if (tableData.length < 500 && searchKey) {
       nextTick(() => {
         const VxeInstance = treeLeftRef.value.tableInstance;
@@ -255,42 +254,30 @@ async function filterLeftData() {
   await treeLeftRef.value.tableInstance.reloadData(leftData.value);
 }
 // 处理树形数据
-function handleTreeData(leafData:any[]) {
-  nodeSet.clear();
-  treeData = [];
+function handleTreeData(leafData: any[]) {
   const { parentField, rowField } = getTreeConfigField();
+  treeDataMap.clear();
   for (let index = 0; index < leafData.length; index++) {
     const dataItem = leafData[index];
     // 如果tableData中已存在该数据，则不再重复添加
-    const targetItem = treeData.find((item: any) => item[rowField] === dataItem[rowField]
-        && item[parentField] === dataItem[parentField]);
+    const targetItem = treeDataMap.get(dataItem[rowField]);
     if (targetItem) {
       continue;
     }
-    treeData.push(dataItem);
-    addChildNodes(dataItem);
-    nodeSet.add(dataItem[rowField]);
+    treeDataMap.set(dataItem[rowField], dataItem);
     getParentNode(dataItem, parentField, rowField);
   }
+  addChildNodes(leafData);
 }
-function addChildNodes(currentNode: any) {
+function addChildNodes(leafData: any[]) {
   const { parentField, rowField } = getTreeConfigField();
-  const childNodes = props.data?.filter(
-    (node: any) => node[parentField] === currentNode[rowField]
-  );
-  if (!childNodes) {
-    return;
-  }
-  childNodes.forEach((node: any) => {
-    const targetItem = treeData.find(
-      (treeDataItem: any) => treeDataItem[rowField] === node[rowField]
-        && treeDataItem[parentField] === node[parentField]
-    );
-    if (!targetItem) {
-      treeData.push(node);
+  const childrenMap = new Map(leafData.map(item => [item[rowField], item]));
+  for (const dataItem of props.data) {
+    const parentKey = dataItem[parentField];
+    if (childrenMap.get(parentKey)) {
+      treeDataMap.set(dataItem[rowField], dataItem);
     }
-    addChildNodes(node);
-  });
+  }
 }
 // 根据叶子节点递归遍历获取祖先节点
 function getParentNode(dataItem: any, parentField: string, rowField: string) {
@@ -299,9 +286,8 @@ function getParentNode(dataItem: any, parentField: string, rowField: string) {
   if (!parentItem) {
     return;
   }
-  if (!nodeSet.has(parentKey)) {
-    treeData.push(parentItem);
-    nodeSet.add(parentKey);
+  if (!treeDataMap.get(parentKey)) {
+    treeDataMap.set(parentKey, parentItem);
   }
   if (parentItem[parentField] !== null) {
     getParentNode(parentItem, parentField, rowField);

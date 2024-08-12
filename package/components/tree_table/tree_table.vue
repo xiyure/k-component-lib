@@ -45,14 +45,16 @@
             />
           </template>
           <template v-else-if="widget.id ==='refresh'">
-            <k-button
-              :size="compSize"
-              @click="() => {
-                emits('refresh')
-              }"
-            >
-              <IconRefresh />
-            </k-button>
+            <k-tooltip trigger="hover" :content="$t('refresh')" :show-after="500">
+              <k-button
+                :size="compSize"
+                @click="() => {
+                  emits('refresh')
+                }"
+              >
+                <IconRefresh />
+              </k-button>
+            </k-tooltip>
           </template>
           <template v-else-if="widget.id === 'filter'">
             <!-- 高级筛选 -->
@@ -65,7 +67,16 @@
               filter-key="field"
               @confirm="refreshAdvancedFilter"
             >
-              <IconRefresh />
+              <template #reference="{ hasConfigCondition }">
+                <div class="k-filter__trigger">
+                  <k-tooltip trigger="hover" :content="$t('advancedFilter_c')" :show-after="500">
+                    <k-button :size="compSize">
+                      <IconFilter v-if="!hasConfigCondition" />
+                      <IconFilterFill v-else color="#2882FF" />
+                    </k-button>
+                  </k-tooltip>
+                </div>
+              </template>
             </k-filter>
           </template>
           <template v-else-if="widget.id === 'transfer'">
@@ -73,9 +84,14 @@
             <k-popover
               trigger="click"
               width="auto"
+              :teleported="false"
             >
               <template #reference>
-                <k-button :size="compSize"><IconSetting /></k-button>
+                <div class="k-transfer__trigger">
+                  <k-tooltip trigger="hover" :content="$t('columnHeaderController')" :show-after="500">
+                    <k-button :size="compSize"><IconSetting /></k-button>
+                  </k-tooltip>
+                </div>
               </template>
               <k-transfer
                 v-model="selectData"
@@ -185,10 +201,11 @@ import { KButton } from '../button';
 import { KTransfer } from '../transfer';
 import { KPopover } from '../popover';
 import { KOperate } from '../operate';
-import { TreeTableProps, columnConfigType } from './type';
 import { KTable } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
+import { KTooltip } from '../tooltip';
+import { TreeTableProps, columnConfigType } from './type';
 import { genRandomStr, treeDataToArray, getValidTreeData, resetTreeData } from '../../utils';
 
 defineOptions({

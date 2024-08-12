@@ -1,5 +1,5 @@
 export default {
-  seniorFilter: '高级筛选',
+  advancedFilter: '高级筛选',
   clearAll: '清除所有条件',
   addCondition: '添加条件',
   aboveCondition: '以上条件',
@@ -69,5 +69,8 @@ export default {
   within15days: '15天内',
   curMonth: '本月',
   curQuarter: '本季度',
-  curYear: '本年度'
+  curYear: '本年度',
+  refresh: '刷新',
+  columnHeaderController: '列头控制器',
+  advancedFilter_c: '高级筛选'
 };
