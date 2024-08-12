@@ -293,6 +293,8 @@ const originData = ref<any>([]);
 const tableFilterRef = ref(); // 高级筛选后的数据
 const newFilterData = ref<any>([]);
 const filterConditionInfo:any = ref(null);
+// 分页配置
+const paginationConfig = ref<any>(defaultPaginationConfig);
 
 const widgets = computed(() => {
   const widgetsList: any[] = [];
@@ -392,8 +394,6 @@ const editConfig = computed(() => Object.assign(defaultEditConfig, props.editCon
 const scrollY = computed(() => Object.assign(defaultScrollY, props.scrollY || {}));
 const columnConfig = computed(() => Object.assign(defaultColumnConfig, props.columnConfig || {}));
 const checkboxConfig = computed(() => Object.assign(defaultCheckboxConfig, props.checkboxConfig || {}));
-// 分页配置
-const paginationConfig = computed(() => Object.assign(defaultPaginationConfig, props.paginationConfig || {}));
 
 // 表格数据量
 const dataLength = ref<number>(0);
@@ -411,6 +411,9 @@ const showTableData = computed(() => {
 // 表格size控制
 const compSize = computed(() => (props.size === 'mini' ? 'sm' : undefined));
 
+watch(() => props.paginationConfig, () => {
+  paginationConfig.value = Object.assign(paginationConfig.value, props.paginationConfig || {});
+}, { immediate: true, deep: true });
 watch(() => props.column, () => {
   columns.value = props.column.map(col => {
     const visible = col.visible !== false;
@@ -447,8 +450,7 @@ watch(() => showTableData.value?.length, (newValue) => {
 }, { immediate: true });
 
 // 表格内容搜索
-let treeData:any[] = [];
-const nodeSet = new Set();
+const treeDataMap:Map<string | number, any> = new Map();
 function filterTableData() {
   const filterData = filterConditionInfo.value?.conditionList?.length
     ? newFilterData.value
@@ -474,7 +476,7 @@ function filterTableData() {
   if (props.useTree) {
     handleTreeData(tableData);
     const { rowField } = getTreeConfigField();
-    tableData = sortFunc(treeData, xeData.value, rowField);
+    tableData = sortFunc([...treeDataMap.values()], xeData.value, rowField);
     dataLength.value = 0;
   } else {
     dataLength.value = tableData.length;
@@ -483,42 +485,30 @@ function filterTableData() {
   return tableData;
 }
 // 处理树形数据
-function handleTreeData(leafData:any[]) {
-  nodeSet.clear();
-  treeData = [];
+function handleTreeData(leafData: any[]) {
   const { parentField, rowField } = getTreeConfigField();
+  treeDataMap.clear();
   for (let index = 0; index < leafData.length; index++) {
     const dataItem = leafData[index];
     // 如果tableData中已存在该数据，则不再重复添加
-    const targetItem = treeData.find((item: any) => item[rowField] === dataItem[rowField]
-        && item[parentField] === dataItem[parentField]);
+    const targetItem = treeDataMap.get(dataItem[rowField]);
     if (targetItem) {
       continue;
     }
-    treeData.push(dataItem);
-    addChildNodes(dataItem);
-    nodeSet.add(dataItem[rowField]);
+    treeDataMap.set(dataItem[rowField], dataItem);
     getParentNode(dataItem, parentField, rowField);
   }
+  addChildNodes(leafData);
 }
-function addChildNodes(currentNode: any) {
+function addChildNodes(leafData: any[]) {
   const { parentField, rowField } = getTreeConfigField();
-  const childNodes = xeData.value?.filter(
-    (node: any) => node[parentField] === currentNode[rowField]
-  );
-  if (!childNodes) {
-    return;
-  }
-  childNodes.forEach((node: any) => {
-    const targetItem = treeData.find(
-      (treeDataItem: any) => treeDataItem[rowField] === node[rowField]
-        && treeDataItem[parentField] === node[parentField]
-    );
-    if (!targetItem) {
-      treeData.push(node);
+  const childrenMap = new Map(leafData.map(item => [item[rowField], item]));
+  for (const dataItem of xeData.value) {
+    const parentKey = dataItem[parentField];
+    if (childrenMap.get(parentKey)) {
+      treeDataMap.set(dataItem[rowField], dataItem);
     }
-    addChildNodes(node);
-  });
+  }
 }
 // 根据叶子节点递归遍历获取祖先节点
 function getParentNode(dataItem: any, parentField: string, rowField: string) {
@@ -527,9 +517,8 @@ function getParentNode(dataItem: any, parentField: string, rowField: string) {
   if (!parentItem) {
     return;
   }
-  if (!nodeSet.has(parentKey)) {
-    treeData.push(parentItem);
-    nodeSet.add(parentKey);
+  if (!treeDataMap.get(parentKey)) {
+    treeDataMap.set(parentKey, parentItem);
   }
   if (parentItem[parentField] !== null) {
     getParentNode(parentItem, parentField, rowField);
@@ -647,7 +636,7 @@ function refreshAdvancedFilter(conditionInfo: any[], newTableData: any[]) {
   if (props.useTree) {
     handleTreeData(newFilterData.value);
     const { rowField } = getTreeConfigField();
-    newFilterData.value = sortFunc(treeData, xeData.value, rowField);
+    newFilterData.value = sortFunc([...treeDataMap.values()], xeData.value, rowField);
     if (newFilterData.value.length < 500 && newFilterData.value.length !== xeData.value?.length) {
       setTimeout(() => {
         tableInstance.value?.setAllTreeExpand(true);
@@ -786,6 +775,15 @@ function loadData(data: any[]) {
   xeData.value = data;
   advancedFilter(data);
 }
+function getRowById(id: string | number) {
+  const row = tableInstance.value?.getRowById(id);
+  if (row) {
+    return row;
+  }
+  const tempRows = tableInstance.value?.getInsertRecords();
+  const targetRow = tempRows.find((item: any) => item[rowConfig.value.keyField] === id);
+  return targetRow;
+}
 
 defineExpose({
   tableInstance,
@@ -794,7 +792,8 @@ defineExpose({
   clearAdvancedFilter,
   setCheckboxRow,
   setAllCheckboxRow,
-  loadData
+  loadData,
+  getRowById
 });
 </script>
 

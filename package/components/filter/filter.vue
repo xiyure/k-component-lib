@@ -153,7 +153,7 @@ import { KButton } from '../button';
 import { KPopover } from '../popover';
 import { KCascader } from '../cascader';
 import { dateTypeOptions, logicOptions } from './const';
-import { treeDataToArray } from '../../utils';
+import { treeDataToArray, isValid } from '../../utils';
 
 defineOptions({
   name: 'KFilter'
@@ -253,7 +253,7 @@ function filter(data?: any[]) {
   const sourceData = Array.isArray(data) ? data : props.data;
   const disabledLogicTypes = ['empty', 'nonEmpty'];
   const conditionList = filterData.value
-  .filter(item => item.key && item.logic && (item.value || disabledLogicTypes.includes(item.logic)))
+  .filter(item => item.key && item.logic && (isValid(item.value) || disabledLogicTypes.includes(item.logic)))
   .map(item => ({
     title: item.title.join(' - '),
     logic: t?.(item.logic),
@@ -291,6 +291,12 @@ function filter(data?: any[]) {
 function changeCondition(index:number) {
   const targetItem = filterData.value[index];
   const titles = targetItem.title ?? [];
+  if (titles.length === 0) {
+    targetItem.key = null;
+    targetItem.logic = 'equal';
+    targetItem.value = '';
+    return;
+  }
   let columns: any[] = props.column ?? [];
   let columnItem: any = null;
   for (const title of titles) {

@@ -25,3 +25,4 @@ dist-ssr
 *.sln
 *.sw?
 example/view/index.vue
+example.json
