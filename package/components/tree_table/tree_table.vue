@@ -45,16 +45,15 @@
             />
           </template>
           <template v-else-if="widget.id ==='refresh'">
-            <k-tooltip trigger="hover" :content="$t('refresh')" :show-after="500">
               <k-button
                 :size="compSize"
                 @click="() => {
                   emits('refresh')
                 }"
+                v-ksw_tooltip="$t('refresh')"
               >
                 <IconRefresh />
               </k-button>
-            </k-tooltip>
           </template>
           <template v-else-if="widget.id === 'filter'">
             <!-- 高级筛选 -->
@@ -68,14 +67,10 @@
               @confirm="refreshAdvancedFilter"
             >
               <template #reference="{ hasConfigCondition }">
-                <div class="k-filter__trigger">
-                  <k-tooltip trigger="hover" :content="$t('advancedFilter_c')" :show-after="500">
-                    <k-button :size="compSize">
-                      <IconFilter v-if="!hasConfigCondition" />
-                      <IconFilterFill v-else color="#2882FF" />
-                    </k-button>
-                  </k-tooltip>
-                </div>
+                <k-button :size="compSize" v-ksw_tooltip="$t('advancedFilter_c')">
+                  <IconFilter v-if="!hasConfigCondition" />
+                  <IconFilterFill v-else color="#2882FF" />
+                </k-button>
               </template>
             </k-filter>
           </template>
@@ -87,11 +82,9 @@
               :teleported="false"
             >
               <template #reference>
-                <div class="k-transfer__trigger">
-                  <k-tooltip trigger="hover" :content="$t('columnHeaderController')" :show-after="500">
-                    <k-button :size="compSize"><IconSetting /></k-button>
-                  </k-tooltip>
-                </div>
+                <k-button :size="compSize" v-ksw_tooltip="$t('columnHeaderController')">
+                  <IconSetting />
+                </k-button>
               </template>
               <k-transfer
                 v-model="selectData"
@@ -193,7 +186,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch, nextTick, getCurrentInstance } from 'vue';
 import VXETable from 'vxe-table';
-import { IconSearch, IconSetting, IconRefresh } from 'ksw-vue-icon';
+import { IconSearch, IconSetting, IconRefresh, IconFilter, IconFilterFill } from 'ksw-vue-icon';
 import { isNumber, cloneDeep } from 'lodash-es';
 import KColumnGroup from './column_group';
 import { KInput } from '../input';
