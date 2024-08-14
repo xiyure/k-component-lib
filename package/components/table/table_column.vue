@@ -12,6 +12,7 @@
       <div v-if="!isExpandColumn" class="k-table-column__header">
         <div class="k-table-column__title">
           <slot name="header" v-bind="headerSlotProps">
+            <!-- 列标题 -->
             <i
               v-if="tableInstance.editConfig
                 && tableInstance.editConfig.showIcon !== false
@@ -35,6 +36,7 @@
             </div>
           </div>
         </k-dialog>
+        <!-- 排序、筛选等操作区域 -->
         <div class="k-table-column__operate">
           <span v-if="colDesc" class="k-table-column__tooltip">
             <k-popover
@@ -63,6 +65,7 @@
               :style="{ color: headerSlotProps.column.order == 'desc' ? '#2882FF' : '' }"
             ></i>
           </span>
+          <!-- 列头菜单栏 -->
           <span v-if="isShowColumnMenu" class="k-table-column__more">
             <k-popover
               trigger="click"

@@ -45,15 +45,15 @@
             />
           </template>
           <template v-else-if="widget.id ==='refresh'">
-              <k-button
-                :size="compSize"
-                @click="() => {
-                  emits('refresh')
-                }"
-                v-ksw_tooltip="$t('refresh')"
-              >
-                <IconRefresh />
-              </k-button>
+            <k-button
+              v-ksw_tooltip="$t('refresh')"
+              :size="compSize"
+              @click="() => {
+                emits('refresh')
+              }"
+            >
+              <IconRefresh />
+            </k-button>
           </template>
           <template v-else-if="widget.id === 'filter'">
             <!-- 高级筛选 -->
@@ -67,7 +67,7 @@
               @confirm="refreshAdvancedFilter"
             >
               <template #reference="{ hasConfigCondition }">
-                <k-button :size="compSize" v-ksw_tooltip="$t('advancedFilter_c')">
+                <k-button v-ksw_tooltip="$t('advancedFilter_c')" :size="compSize">
                   <IconFilter v-if="!hasConfigCondition" />
                   <IconFilterFill v-else color="#2882FF" />
                 </k-button>
@@ -82,7 +82,7 @@
               :teleported="false"
             >
               <template #reference>
-                <k-button :size="compSize" v-ksw_tooltip="$t('columnHeaderController')">
+                <k-button v-ksw_tooltip="$t('columnHeaderController')" :size="compSize">
                   <IconSetting />
                 </k-button>
               </template>
@@ -197,7 +197,6 @@ import { KOperate } from '../operate';
 import { KTable } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
-import { KTooltip } from '../tooltip';
 import { TreeTableProps, columnConfigType } from './type';
 import { genRandomStr, treeDataToArray, getValidTreeData, resetTreeData } from '../../utils';
 
@@ -355,10 +354,9 @@ const widgets = computed(() => {
 const fullData = computed(() => {
   if (Array.isArray(xeData.value)) {
     return xeData.value;
-  } else {
-    return props.data ?? [];
-  }
-})
+  } 
+  return props.data ?? [];
+});
 // 高级筛选功能只处理非特殊、可见的有效数据
 const filterColumns = computed(() => {
   const validColumns = getValidTreeData(
@@ -483,10 +481,11 @@ function filterTableData() {
   const visibleColumns = flatColumns.value.filter(col => col.visible);
   const fieldList = visibleColumns.map(col => col.field || '');
   let tableData = filterData.filter((dataItem:any) => fieldList.some(field => {
+    const cellLabel = xTree.value?.tableInstance.getCellLabel(dataItem, field);
     if (props.exactMatch) {
-      return dataItem[field] === searchKey;
+      return cellLabel === searchKey;
     } 
-    return (String(dataItem[field])).toLowerCase().search((searchKey).toLowerCase()) !== -1;
+    return (String(cellLabel)).toLowerCase().search((searchKey).toLowerCase()) !== -1;
   })) as any;
   // 当表格数据为树时，筛选后的数据应展示完整的子树
   if (props.useTree) {
