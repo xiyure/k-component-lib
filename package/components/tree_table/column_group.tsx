@@ -1,6 +1,7 @@
-import { defineComponent } from 'vue';
+import { SlotsType, defineComponent } from 'vue';
 import { KTableColumn, KColumnGroup } from '../table';
 import TableColumnContent from './table_column_content.vue';
+import { columnConfigType } from './type.d';
 
 export default defineComponent({
   name: 'ColumnGroup',
@@ -26,12 +27,12 @@ export default defineComponent({
         && props.column.group.length ? addColumnGroup(props.column)
         : getTableColumn(slots, props.column)
     )
-    function addColumnGroup(col) {
+    function addColumnGroup(col: columnConfigType) {
       const group = col.group || [];
       const childrenSlots = {};
       const slotName = `${col.field}-header`;
       if (slots[slotName]) {
-        childrenSlots['header'] = (data) => slots[slotName]?.(data)
+        childrenSlots['header'] = (data: any) => slots[slotName]?.(data)
       };
       return  <KColumnGroup
         { ...col }
@@ -40,7 +41,7 @@ export default defineComponent({
         v-slots={childrenSlots}
       >
         {
-          group.map((item) => {
+          group.map((item: columnConfigType) => {
             if (Array.isArray(item.group) && item.group.length) {
               return addColumnGroup(item)
             } else {
@@ -50,14 +51,14 @@ export default defineComponent({
         }
       </KColumnGroup>
     }
-    function getTableColumn(slots, col) {
+    function getTableColumn(slots: SlotsType, col: columnConfigType) {
       const childrenSlots = {};
       const slotName = `${col.field}-header`;
       if (slots[slotName]) {
-        childrenSlots['header'] = (data) => slots[slotName]?.(data);
+        childrenSlots['header'] = (data: any) => slots[slotName]?.(data);
       };
       if (!col.render && (slots[col.field ?? ''] || col.showIcon) && !col.type) {
-        childrenSlots['default'] =  (data) =>{
+        childrenSlots['default'] =  (data: any) =>{
           const field = col.field ?? '';
           const { row } = data;
           if (slots[field]) {
@@ -66,7 +67,7 @@ export default defineComponent({
             const fieldLabelSlot = {};
             const fieldLabelSlotName = `${field}-label`;
             if (slots[fieldLabelSlotName]) {
-              fieldLabelSlot[fieldLabelSlotName] = (data) => slots[fieldLabelSlotName]?.(data);
+              fieldLabelSlot[fieldLabelSlotName] = (data: any) => slots[fieldLabelSlotName]?.(data);
             }
             return <TableColumnContent
               key={col.field} col={col}

@@ -371,7 +371,12 @@ const filterColumns = computed(() => {
   return validColumns;
 });
 // 表格实例
-const tableInstance = computed(() => xTree.value?.tableInstance);
+const $tableMethods = new Map();
+const tableInstance = computed(() => {
+  const tableInstance = xTree.value?.tableInstance;
+  rewriteTableMethods(tableInstance);
+  return tableInstance;
+});
 const headerText = computed(() => {
   let text = '';
   if (filterConditionInfo.value?.conditionList?.length) {
@@ -736,7 +741,7 @@ function closeBatchOperation() {
 }
 function setCheckboxRow(rows: any[], checked: boolean) {
   const newRows = Array.isArray(rows) ? rows : [rows];
-  const keyField = rowConfig.value.keyField;
+  const keyField = rowConfig.value.keyField ?? 'id';
   for (const row of newRows) {
     if (checked) {
       checkedData.add(row[keyField]);
@@ -745,10 +750,10 @@ function setCheckboxRow(rows: any[], checked: boolean) {
     }
   }
   checkedDataSize.value = checkedData.size;
-  xTree.value?.tableInstance?.setCheckboxRow(newRows, checked);
+  $tableMethods.get('setCheckboxRow')(rows, checked);
 }
 function setAllCheckboxRow(checked: boolean) {
-  const keyField = rowConfig.value.keyField;
+  const keyField = rowConfig.value.keyField ?? 'id';
   if (checked) {
     for (const row of showTableData.value) {
       checkedData.add(row[keyField]);
@@ -757,7 +762,7 @@ function setAllCheckboxRow(checked: boolean) {
     checkedData.clear();
   }
   checkedDataSize.value = checkedData.size;
-  xTree.value?.tableInstance?.setAllCheckboxRow(checked);
+  $tableMethods.get('setAllCheckboxRow')(checked);
 }
 function isCheckboxDisabled(row: any) {
   const { visibleMethod, checkMethod } = checkboxConfig.value;
@@ -791,7 +796,7 @@ function loadData(data: any[]) {
   advancedFilter(data);
 }
 function getRowById(id: string | number) {
-  const row = tableInstance.value?.getRowById(id);
+  const row = $tableMethods.get('getRowById')(id);
   if (row) {
     return row;
   }
@@ -799,16 +804,30 @@ function getRowById(id: string | number) {
   const targetRow = tempRows.find((item: any) => item[rowConfig.value.keyField] === id);
   return targetRow;
 }
+// 重写部分vxe的原生方法满足业务需求
+function rewriteTableMethods(instance: any) {
+  if (typeof instance?.setAllCheckboxRow === 'function' && !$tableMethods.get('setAllCheckboxRow')) {
+    $tableMethods.set('setAllCheckboxRow', instance.setAllCheckboxRow.bind(instance));
+  }
+  if (typeof instance?.setCheckboxRow === 'function' && !$tableMethods.get('setCheckboxRow')) {
+    $tableMethods.set('setCheckboxRow', instance.setCheckboxRow.bind(instance));
+  }
+  if (typeof instance?.getRowById === 'function' && !$tableMethods.get('getRowById')) {
+    $tableMethods.set('getRowById', instance.getRowById.bind(instance));
+  }
+  if (typeof instance === 'object') {
+    instance.setAllCheckboxRow = setAllCheckboxRow;
+    instance.setCheckboxRow = setCheckboxRow;
+    instance.loadData = loadData;
+    instance.getRowById = getRowById;
+  }
+}
 
 defineExpose({
   tableInstance,
   filter,
   advancedFilter,
-  clearAdvancedFilter,
-  setCheckboxRow,
-  setAllCheckboxRow,
-  loadData,
-  getRowById
+  clearAdvancedFilter
 });
 </script>
 
