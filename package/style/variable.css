@@ -1,16 +1,16 @@
 :root {
-  /* // color blue */
-  --k-blue-50: #f5fcff;
-  --k-blue-100: #ebf9ff;
-  --k-blue-200: #c9ebff;
-  --k-blue-300: #a8dbff;
-  --k-blue-400: #69b4ff;
-  --k-blue-500: #2882ff;
-  --k-blue-600: #0037db;
-  --k-blue-700: #002bb8;
-  --k-blue-800: #002094;
-  --k-blue-900: #00166e;
-  --k-blue-950: #000c47;
+  /* blue colors */
+  --k-blue-50: #e8fbff;
+  --k-blue-100: #d0f0ff;
+  --k-blue-200: #bddcf7;
+  --k-blue-300: #92cbfb;
+  --k-blue-400: #54b3fd;
+  --k-blue-500: #0095f9;
+  --k-blue-600: #2c90d7;
+  --k-blue-700: #1f86cd;
+  --k-blue-800: #2f6590;
+  --k-blue-900: #304b61;
+  --k-blue-950: #1b354b;
 
   /* // color gray */
   --k-gray-100: #eae8eb;
@@ -26,70 +26,70 @@
   --k-gray-900: #0f0b1c;
   --k-gray-950: #080512;
 
-  /* // color red */
-  --k-red-100: #ffe8f4;
-  --k-red-200: #ffc4df;
-  --k-red-300: #ffa1c6;
-  --k-red-400: #ff5c87;
-  --k-red-50: #fff2f9;
-  --k-red-500: #ff1535;
-  --k-red-600: #e6102d;
-  --k-red-700: #bf0b20;
-  --k-red-800: #990816;
-  --k-red-900: #730510;
-  --k-red-950: #4a0108;
+  /* red colors */
+  --k-red-50: #fff1ee;
+  --k-red-100: #ffdfda;
+  --k-red-200: #f7cbc7;
+  --k-red-300: #f9aea7;
+  --k-red-400: #f7857d;
+  --k-red-500: #ed5350;
+  --k-red-600: #d0635d;
+  --k-red-700: #c65954;
+  --k-red-800: #8c4b46;
+  --k-red-900: #603d3a;
+  --k-red-950: #492826;
 
-  /* // color green */
-  --k-green-50: #f2fcf9;
-  --k-green-100: #e6faf3;
-  --k-green-200: #bdf0dc;
-  --k-green-300: #9be8c6;
-  --k-green-400: #5ad694;
-  --k-green-500: #22c55e;
-  --k-green-600: #1ab04f;
-  --k-green-700: #13943c;
-  --k-green-800: #0c752b;
-  --k-green-900: #07591d;
-  --k-green-950: #03380f;
+  /* green colors */
+  --k-green-50: #edfeec;
+  --k-green-100: #d7f5d7;
+  --k-green-200: #c4e1c4;
+  --k-green-300: #a0d4a0;
+  --k-green-400: #6ec272;
+  --k-green-500: #25ab3a;
+  --k-green-600: #4b9f50;
+  --k-green-700: #419547;
+  --k-green-800: #3d6e3f;
+  --k-green-900: #364f37;
+  --k-green-950: #223a23;
 
-  /* // color purple */
-  --k-purple-50: #fdf5ff;
-  --k-purple-100: #faebff;
-  --k-purple-200: #f1ccff;
-  --k-purple-300: #e6abff;
-  --k-purple-400: #ca6eff;
-  --k-purple-500: #a52fff;
-  --k-purple-600: #8c25e6;
-  --k-purple-700: #6c19bf;
-  --k-purple-800: #4e1199;
-  --k-purple-900: #350973;
-  --k-purple-950: #1d044a;
+  /* purple colors */
+  --k-purple-50: #fdf4ff;
+  --k-purple-100: #f3e3ff;
+  --k-purple-200: #dfd0f3;
+  --k-purple-300: #d1b6f3;
+  --k-purple-400: #bf93f1;
+  --k-purple-500: #ab6aea;
+  --k-purple-600: #9d71cc;
+  --k-purple-700: #9468c2;
+  --k-purple-800: #6c5289;
+  --k-purple-900: #4e415e;
+  --k-purple-950: #392c47;
 
-  /* // color yellow */
-  --k-yellow-50: #fffef2;
-  --k-yellow-100: #fffce8;
-  --k-yellow-200: #fff7c4;
-  --k-yellow-300: #fcee9f;
-  --k-yellow-400: #fcdf5b;
-  --k-yellow-500: #fac814;
-  --k-yellow-600: #e0ac10;
-  --k-yellow-700: #ba830b;
-  --k-yellow-800: #966208;
-  --k-yellow-900: #704204;
-  --k-yellow-950: #472401;
+  /* yellow colors */
+  --k-yellow-50: #fff7e2;
+  --k-yellow-100: #fbe9c6;
+  --k-yellow-200: #e7d6b3;
+  --k-yellow-300: #dfc07f;
+  --k-yellow-400: #d3a329;
+  --k-yellow-500: #c38100;
+  --k-yellow-600: #b08000;
+  --k-yellow-700: #a67700;
+  --k-yellow-800: #785c18;
+  --k-yellow-900: #544627;
+  --k-yellow-950: #3f3112;
 
-  /* // color orange */
-  --k-orange-50: #fffbf2;
-  --k-orange-100: #fff8e8;
-  --k-orange-200: #ffe9c4;
-  --k-orange-300: #fcd8a2;
-  --k-orange-400: #fcac5b;
-  --k-orange-500: #f97316;
-  --k-orange-600: #e06512;
-  --k-orange-700: #ba4d0d;
-  --k-orange-800: #963708;
-  --k-orange-900: #702504;
-  --k-orange-950: #471502;
+  /* orange colors */
+  --k-orange-50: #fff4e6;
+  --k-orange-100: #ffe3cc;
+  --k-orange-200: #f3d0b9;
+  --k-orange-300: #f2b58c;
+  --k-orange-400: #ed914c;
+  --k-orange-500: #e26600;
+  --k-orange-600: #c86f25;
+  --k-orange-700: #be6517;
+  --k-orange-800: #87512a;
+  --k-orange-900: #5d402d;
+  --k-orange-950: #462c19;
 
   --k-shadow-base: 0px 4px 12px 0px rgba(0, 0, 0, 0.16);
   --k-shadow-input-active: 0px 0px 0px 4px rgba(40, 130, 255, 0.2); /* 输入框获取焦点 */
@@ -129,4 +129,19 @@
   --font-3xl-line: 2rem;
   --font-4xl: 1.75rem;
   --font-4xl-line: 2.25rem;
+
+  /* theme */
+  --theme--bg: #e5f1f9;
+  --theme-text--heavy: var(--k-gray-900);
+  --theme-text--normal: var(--k-normal);
+  --theme-text--light: var(--k-status-info);
+  --theme-text--info: var(--k-status-info);
+  --theme-color--primary: var(--k-status-primary);
+  --theme-color--success: var(--k-status-success);
+  --theme-color--warning: var(--k-status-warning);
+  --theme-color--danger: var(--k-status-danger);
+  --theme-color--captured: var(--k-status-captured);
+  --theme-border-color-heavy: var(--k-gray-300);
+  --theme-border-color-normal: var(--k-gray-200);
+  --theme-border-color-light: var(--k-gray-100);
 }
