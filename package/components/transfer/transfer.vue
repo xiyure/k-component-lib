@@ -6,6 +6,7 @@
         v-model="searchStr"
         :placeholder="filterablePlaceholder"
         :prefix-icon="IconSearch"
+        :size="size"
       ></k-input>
     </div>
     <el-transfer
@@ -47,7 +48,6 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, getCurrentInstance } from 'vue';
 import { TransferKey, TransferDirection } from 'element-plus';
-// @ts-expect-error 引入第三方js库
 import { IconSearch, IconDrag } from 'ksw-vue-icon';
 import { TransferProps } from './type';
 import { KInput } from '../input';
@@ -63,7 +63,8 @@ defineOptions({
 
 const props = withDefaults(defineProps<TransferProps>(), {
   matchKey: 'label',
-  filterable: true
+  filterable: true,
+  size: 'base'
 });
 
 const emits = defineEmits([

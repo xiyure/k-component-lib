@@ -21,37 +21,6 @@
     display: none;
   }
   .el-tabs__item {
-    padding: 0;
-    .k-tab__label {
-      .text-base();
-      display: flex;
-      justify-content: center;
-      padding: 0 1rem;
-      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-    }
-    .k-tab__label {
-      max-width: var(--plane-max-width);
-      span {
-        width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-    }
-    .k-tab__label.has--icon {
-      padding-left: var(--icon-Space);
-
-      position: relative;
-
-      > svg {
-        position: absolute;
-        top: 50%;
-        left: var(--icon-skew);
-        transform: translate(0, -50%);
-        width: var(--icon-size);
-        height: var(--icon-size);
-      }
-    }
     &:hover:not(.is-disabled) {
       color: var(--k-blue-400);
     }
@@ -71,11 +40,6 @@
     .el-icon.is-icon-close {
       width: var(--icon-size);
       height: var(--icon-size);
-      position: absolute;
-      top: 50%;
-      right: var(--icon-skew);
-      transform: translate(0, -50%);
-
       &:hover {
         background: unset;
         color: unset;

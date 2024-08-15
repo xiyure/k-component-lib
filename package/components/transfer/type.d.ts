@@ -10,4 +10,5 @@ export interface TransferProps {
   matchKey?: string
   defaultKeys?: string[]
   filterable?: boolean
+  size?: 'base' | 'sm'
 }

@@ -1,7 +1,7 @@
 {
   "name": "@ksware/ksw-ux",
   "private": false,
-  "version": "0.0.29",
+  "version": "0.0.32",
   "description": "Kingsware Component Library",
   "main": "kingsware-ui/index.umd.js",
   "module": "kingsware-ui/index.js",
@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "chinese-lunar-calendar": "^1.0.1",
-    "element-plus": "^2.7.6",
+    "element-plus": "^2.8.0",
     "ksw-vue-icon": "latest",
     "less": "^4.2.0",
     "less-loader": "^12.2.0",

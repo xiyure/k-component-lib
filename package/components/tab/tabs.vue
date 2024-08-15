@@ -21,11 +21,14 @@
       </TabDropdownMenu>
     </div>
     <slot></slot>
+    <template v-if="$slots.addIcon" #add-icon>
+      <slot name="add-icon"></slot>
+    </template>
   </el-tabs>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, provide, nextTick } from 'vue';
+import { ref, watch, nextTick } from 'vue';
 import { IconMore } from 'ksw-vue-icon';
 import TabDropdownMenu from './tab_dropdown_menu';
 import { flattenChildren, isValidElement, camelize } from '../../utils';
@@ -42,10 +45,6 @@ const props = defineProps({
   tabPosition: {
     type: String,
     default: 'top',
-  },
-  router: {
-    type: Boolean,
-    default: false,
   },
   editable: {
     type: Boolean,
@@ -162,9 +161,6 @@ function parseTabList(children: any[]): any[] {
   })
   .filter(tab => tab);
 }
-
-provide('isUseRouter', props.router);
-provide('activeName', activeName);
 
 watch(
   () => props.modelValue,
