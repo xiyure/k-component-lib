@@ -102,6 +102,7 @@
               :teleported="false"
               :disabled="disabledInput(item)"
               clearable
+              @change="updateValue(item, 'select', instance(item.key).options)"
             >
               <k-option
                 v-for="optionItem in instance(item.key)?.options"
@@ -116,6 +117,7 @@
               :size="props.size"
               :disabled="disabledInput(item)"
               clearable
+              @change="updateValue(item, 'input', instance(item.key).options)"
             />
           </div>
           <i class="close-icon" @click="removeConditionItem(index)"><IconClose /></i>
@@ -170,6 +172,7 @@ type IFilterDataType = {
   title: string[],
   logic: string,
   value: any,
+  showValue: any
   key: any,
   dateRange?: string,
   dateType?: string,
@@ -224,6 +227,7 @@ function addCondition() {
   const addItem = {
     title: [],
     logic: '',
+    showValue: '',
     value: '',
     key: '',
     handler: null,
@@ -257,6 +261,7 @@ function filter(data?: any[]) {
   .map(item => ({
     title: item.title.join(' - '),
     logic: t?.(item.logic),
+    showValue: item.showValue,
     value: item.value,
     handler: item.handler
   }));
@@ -295,6 +300,7 @@ function changeCondition(index:number) {
     targetItem.key = null;
     targetItem.logic = 'equal';
     targetItem.value = '';
+    targetItem.showValue = '';
     return;
   }
   let columns: any[] = props.column ?? [];
@@ -312,9 +318,11 @@ function changeCondition(index:number) {
   }
   if (columnItem?.options?.length) {
     targetItem.value = columnItem.options[0].value;
+    targetItem.showValue = columnItem.options[0].label;
     targetItem._allowSelectLogic = false;
   } else {
     targetItem.value = '';
+    targetItem.showValue = '';
     targetItem._allowSelectLogic = true;
   }
 }
@@ -340,6 +348,7 @@ function changeLogic(dataItem) {
 function changeDateLogic(item:IFilterDataType) {
   if (disabledInput.value(item)) {
     item.value = '';
+    item.showValue = '';
     return;
   }
   changeDateRange(item);
@@ -367,8 +376,10 @@ function changeDateRange(item:IFilterDataType) {
   const targetRanges = ['current-week', 'last-week', 'current-month', 'last-month'];
   if (item.dateType === 'datetime' && targetRanges.includes(item.dateRange as string)) {
     item.value = dateValue[0];
+    item.showValue = dateValue[0];
   } else {
     item.value = dateValue;
+    item.showValue = dateValue;
   }
 }
 // 日期推导
@@ -409,6 +420,15 @@ function setDatePickerType(item:IFilterDataType) {
   } else if (item.logic === 'after' || item.logic === 'before') {
     const dateArray = ['range'];
     item.dateType = !dateArray.includes(item.dateRange as string) ? 'datetime' : 'datetimerange';
+  }
+}
+function updateValue(dataItem:IFilterDataType, uiType:string, options?:any[]) {
+  if (uiType === 'input') {
+    dataItem.showValue = dataItem.value;
+  } else if (uiType ==='select') {
+    console.log(dataItem)
+    const targetOption = options?.find(item => item.value === dataItem.value);
+    dataItem.showValue = targetOption?.label ?? '';
   }
 }
 

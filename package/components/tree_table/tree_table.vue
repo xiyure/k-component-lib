@@ -382,7 +382,7 @@ const headerText = computed(() => {
   if (filterConditionInfo.value?.conditionList?.length) {
     filterConditionInfo.value.conditionList.forEach((item: any, index: number) => {
       const point = (props.useTree && index === 0) ? '' : '. ';
-      text += ` ${point} ${item.title} ${item.logic} ${item.value}`;
+      text += ` ${point} ${item.title} ${item.logic} ${item.showValue}`;
     });
   } else {
     const point = (props.useTree) ? '' : '. ';

@@ -4,9 +4,6 @@
       <slot name="label"></slot>
     </template>
     <slot></slot>
-    <!-- <template v-for="(_, name) in $slots" :key="name" #[name]="data">
-      <slot :name="name" v-bind="data"></slot>
-    </template> -->
   </el-tab-pane>
 </template>
 
