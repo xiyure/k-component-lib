@@ -61,7 +61,6 @@ export interface TreeTableProps {
   emptyText?: string
   rowStyle?: object | ((rowInfo: any) => object)
   column: columnConfigType[]
-  exactMatch?: boolean
   showPage?: boolean
   useTree?: boolean
   isRemoteQuery?: boolean
@@ -82,5 +81,9 @@ export interface TreeTableProps {
   advancedFilterConfig?: {
     filterColumns?: FilterColumnType[]
     filterAll?: boolean
+  }
+  searchConfig?: {
+    strict?: boolean
+    searchMethod?: (key, data: any[]) => any[]
   }
 }

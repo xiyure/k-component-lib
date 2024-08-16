@@ -483,6 +483,7 @@ function filterTableData() {
   const filterData = filterConditionInfo.value?.conditionList?.length
     ? newFilterData.value
     : fullData.value;
+  const { strict, searchMethod } = props.searchConfig ?? {};
   const searchKey = query.value.trim().replace(/\\/g, '\\\\');
   if (!searchKey) {
     dataLength.value = props.useTree ? 0 : filterData.length;
@@ -492,11 +493,14 @@ function filterTableData() {
     emits('remote-query', searchKey);
     return;
   }
+  if (typeof searchMethod === 'function') {
+    return searchMethod(searchKey, filterData);
+  }
   const visibleColumns = flatColumns.value.filter(col => col.visible !== false);
   const fieldList = visibleColumns.map(col => col.field || '');
   let tableData = filterData.filter((dataItem:any) => fieldList.some(field => {
     const cellLabel = xTree.value?.tableInstance.getCellLabel(dataItem, field);
-    if (props.exactMatch) {
+    if (strict === true) {
       return cellLabel === searchKey;
     } 
     return (String(cellLabel)).toLowerCase().search((searchKey).toLowerCase()) !== -1;
