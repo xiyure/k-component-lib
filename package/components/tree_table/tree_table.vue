@@ -359,12 +359,15 @@ const fullData = computed(() => {
 });
 // 高级筛选功能只处理非特殊、可见的有效数据
 const filterColumns = computed(() => {
+  const { filterColumns, filterAll } = props.advancedFilterConfig ?? {};
   const validColumns = getValidTreeData(
     cloneDeep(columns.value),
     'group',
-    (dataItem) => !dataItem.type && dataItem.visible !== false && dataItem.field
+    (dataItem) => (!dataItem.type 
+      && dataItem.field
+      && (filterAll !== false || (dataItem.visible !== false))
+    )
   );
-  const { filterColumns } = props.advancedFilterConfig ?? {};
   if (filterColumns) {
     return resetTreeData(validColumns, 'group', filterColumns, 'field');
   }
@@ -457,10 +460,15 @@ watch(() => flatColumns.value.length, () => {
     key: item.field
   }));
 }, { immediate: true, deep: true });
-watch(() => showTableData.value?.length, (newValue) => {
-  const length = isNumber(newValue) ? newValue : 0;
+
+const isFilterStatus = ref(false);
+watch(() => showTableData.value?.length, () => {
+  if (!props.useTree) {
+    return;
+  }
   nextTick(() => {
-    if (query.value.trim() && length < 500) {
+    if (query.value.trim() || isFilterStatus.value) {
+      isFilterStatus.value = false;
       tableInstance.value?.setAllTreeExpand(true);
     } else {
       tableInstance.value?.setAllTreeExpand(false);
@@ -469,6 +477,7 @@ watch(() => showTableData.value?.length, (newValue) => {
 }, { immediate: true });
 
 // 表格内容搜索
+let tableDataMap:Map<string | number, any> = new Map();
 const treeDataMap:Map<string | number, any> = new Map();
 function filterTableData() {
   const filterData = filterConditionInfo.value?.conditionList?.length
@@ -483,7 +492,7 @@ function filterTableData() {
     emits('remote-query', searchKey);
     return;
   }
-  const visibleColumns = flatColumns.value.filter(col => col.visible);
+  const visibleColumns = flatColumns.value.filter(col => col.visible !== false);
   const fieldList = visibleColumns.map(col => col.field || '');
   let tableData = filterData.filter((dataItem:any) => fieldList.some(field => {
     const cellLabel = xTree.value?.tableInstance.getCellLabel(dataItem, field);
@@ -494,8 +503,9 @@ function filterTableData() {
   })) as any;
   // 当表格数据为树时，筛选后的数据应展示完整的子树
   if (props.useTree) {
-    handleTreeData(tableData);
     const { rowField } = getTreeConfigField();
+    tableDataMap = new Map(fullData.value.map(item => [item[rowField], item]));
+    handleTreeData(tableData);
     tableData = sortFunc([...treeDataMap.values()], fullData.value, rowField);
     dataLength.value = 0;
   } else {
@@ -533,7 +543,7 @@ function addChildNodes(leafData: any[]) {
 // 根据叶子节点递归遍历获取祖先节点
 function getParentNode(dataItem: any, parentField: string, rowField: string) {
   const parentKey = dataItem[parentField];
-  const parentItem = fullData.value?.find(item => item[rowField] === parentKey);
+  const parentItem = tableDataMap.get(parentKey);
   if (!parentItem) {
     return;
   }
@@ -650,18 +660,18 @@ function sortTableHeader(fieldList: string[]) {
   setData(columns.value);
   flatColumns.value = treeDataToArray(columns.value, 'group');
 }
-function refreshAdvancedFilter(conditionInfo: any[], newTableData: any[]) {
+function refreshAdvancedFilter(conditionInfo: any, newTableData: any[]) {
   filterConditionInfo.value = conditionInfo;
   newFilterData.value = newTableData;
   if (props.useTree) {
     handleTreeData(newFilterData.value);
     const { rowField } = getTreeConfigField();
     newFilterData.value = sortFunc([...treeDataMap.values()], fullData.value, rowField);
-    if (newFilterData.value.length < 500 && newFilterData.value.length !== fullData.value?.length) {
-      setTimeout(() => {
-        tableInstance.value?.setAllTreeExpand(true);
-      });
-    }
+  }
+  if (conditionInfo?.conditionList?.length) {
+    isFilterStatus.value = true;
+  } else {
+    isFilterStatus.value = false;
   }
 }
 function filter(searchStr: string) {

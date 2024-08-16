@@ -425,8 +425,8 @@ function setDatePickerType(item:IFilterDataType) {
 function updateValue(dataItem:IFilterDataType, uiType:string, options?:any[]) {
   if (uiType === 'input') {
     dataItem.showValue = dataItem.value;
-  } else if (uiType ==='select') {
-    console.log(dataItem)
+  } else if (uiType === 'select') {
+    console.log(dataItem);
     const targetOption = options?.find(item => item.value === dataItem.value);
     dataItem.showValue = targetOption?.label ?? '';
   }

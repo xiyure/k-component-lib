@@ -81,5 +81,6 @@ export interface TreeTableProps {
   showTransfer?: boolean
   advancedFilterConfig?: {
     filterColumns?: FilterColumnType[]
+    filterAll?: boolean
   }
 }
