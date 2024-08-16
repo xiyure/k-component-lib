@@ -18,6 +18,8 @@
   cursor: text;
   box-sizing: content-box;
 
+  height: fit-content;
+
   .el-input__wrapper {
     .init-style();
 
@@ -218,6 +220,24 @@
           }
         }
       }
+      .k-button.el-button:first-child {
+        border-radius: 0;
+      }
+      .k-button.el-button + .k-button.el-button {
+        border-left: 1px solid rgba(0, 0, 0, 0.1);
+      }
+      .k-button.el-button.is-disabled {
+        background: var(--k-gray-300);
+        &:hover {
+          background: var(--k-gray-300);
+        }
+        &:active {
+          background: var(--k-gray-300);
+        }
+        &:hover:active {
+          background: var(--k-gray-300);
+        }
+      }
     }
   }
 
@@ -315,5 +335,11 @@
     .el-textarea__inner {
       .text-sm();
     }
+  }
+}
+
+.el-button-group {
+  .el-button + .el-button {
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
   }
 }

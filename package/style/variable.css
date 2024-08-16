@@ -99,10 +99,10 @@
   --k-status-captured: #fac814;
   --k-status-danger: #ef4444;
   --k-status-info: #6b7280;
-  --k-status-primary: #2882ff;
+  --k-status-primary: var(--k-blue-500);
   --k-status-success: #22c55e;
   --k-status-warning: #f97316;
-  --k-theme-default: #2882ff;
+  --k-theme-default: var(--k-blue-500);
   --k-theme-light: #ffffff;
 
   /* // border-radius */
