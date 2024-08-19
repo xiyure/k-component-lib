@@ -21,6 +21,25 @@
     display: none;
   }
   .el-tabs__item {
+    max-width: 10rem;
+
+    span {
+      padding-left: 1rem;
+      padding-right: 1rem;
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .k-tab-item-closeable {
+      padding-right: 0;
+    }
+
+    .k-tab-item-closeable + .el-icon {
+      margin-right: 0.5rem;
+    }
+
     &:hover:not(.is-disabled) {
       color: var(--k-blue-400);
     }
