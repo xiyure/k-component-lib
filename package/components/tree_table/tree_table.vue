@@ -493,7 +493,8 @@ watch(() => showTableData.value?.length, () => {
   setTimeout(() => {
     if (query.value.trim() || isFilterStatus.value) {
       isFilterStatus.value = false;
-      const expandRows = showTableData.value.slice(0, 500);
+      const maxLength = showTableData.value.length > 500 ? 500 : showTableData.value.length;
+      const expandRows = showTableData.value.slice(0, maxLength);
       tableInstance.value?.setTreeExpand(expandRows, true);
     } else {
       tableInstance.value?.clearTreeExpand();
