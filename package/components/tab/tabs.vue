@@ -7,12 +7,16 @@
     :tab-position="tabPosition"
     :editable="editable"
     :addable="addable"
+    @tab-click="getHideTabs"
   >
     <div
       v-if="hideTabs.length"
       class="k-tabs-more"
       :class="`tab-${tabPosition}-layout`"
-      :style="{ right: !editable && !addable ? 0 : '2rem' }"
+      :style="{ right: (editable
+        || addable)
+        && (tabPosition === 'top'
+        || tabPosition === 'bottom') ? '2rem' : 0 }"
     >
       <TabDropdownMenu :tabs="hideTabs" @command="jumpToTab">
         <template #title>
@@ -28,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick } from 'vue';
+import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue';
 import { IconMore } from 'ksw-vue-icon';
 import TabDropdownMenu from './tab_dropdown_menu';
 import { flattenChildren, isValidElement, camelize } from '../../utils';
@@ -64,6 +68,7 @@ const activeName = ref<string | undefined>(undefined);
 let tabsElem: HTMLElement | null = null;
 let translateElem: HTMLElement | null | undefined = null;
 let tabPaneDoms: NodeListOf<Element> | null | undefined = null;
+let addTabElem: HTMLElement | null | undefined = null;
 const slots = defineSlots();
 const KTabsRef = ref<any>();
 
@@ -72,9 +77,18 @@ const tabs = parseTabList(flattenChildren(slots.default?.()));
 const hideTabs = ref<any>([]);
 let preTranslate = 0;
 
+// 可视区域发生变化时，下拉列表也随之更新
+onMounted(() => {
+  window.addEventListener('resize', getHideTabs);
+});
+onUnmounted(() => {
+  window.removeEventListener('resize', getHideTabs)
+});
+
 nextTick(() => {
   tabsElem = KTabsRef.value.$el;
   translateElem = tabsElem?.querySelector('.el-tabs__nav');
+  addTabElem = tabsElem?.querySelector('.el-tabs__new-tab');
   tabPaneDoms = tabsElem?.querySelectorAll('.el-tabs__item');
   getHideTabs();
 });
@@ -102,10 +116,11 @@ function isElementInContainerView(el: any, translate: number = 0) {
   const elRect = el.getBoundingClientRect();
   const containerRect = tabsElem.getBoundingClientRect();
   const diff = translate - preTranslate;
+  const { width: addTabWidth, height: addTabHeight } = addTabElem?.getBoundingClientRect() ?? {};
   if (props.tabPosition === 'top' || props.tabPosition === 'bottom') {
-    return elRect.left + diff >= containerRect.left && elRect.right + diff <= containerRect.right; 
-  } 
-  return elRect.top + diff >= containerRect.top && elRect.bottom + diff <= containerRect.bottom;
+    return elRect.left + diff >= containerRect.left && elRect.right + diff <= containerRect.right - (addTabWidth ?? 0); 
+  }
+  return elRect.top + diff >= containerRect.top && elRect.bottom + diff <= containerRect.bottom - (addTabHeight ?? 0);
 }
 function jumpToTab(item: any) {
   const name = item.name ?? '';

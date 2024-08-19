@@ -10,6 +10,10 @@
 </template>
 
 <script setup lang="ts">
+defineOptions({
+  name: 'KTabPane',
+});
+
 const props = defineProps({
   closable: {
     type: Boolean,
@@ -19,12 +23,6 @@ const props = defineProps({
     type: String,
     default: '',
   },
-});
-
-console.log(props);
-
-defineOptions({
-  name: 'KTabPane',
 });
 </script>
 
