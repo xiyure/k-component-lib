@@ -1,29 +1,30 @@
 <template>
-  <div class="k-tree-table" :style="{ height: height}">
+  <div class="k-tree-table" :style="{ height: height }">
     <div
       v-if="showHeaderTools"
       class="k-tree-table__header"
       :style="{
         justifyContent: showDescription ? 'space-between' : 'flex-end',
-        height: compSize ==='sm'? '24px' : '32px'
+        height: compSize === 'sm' ? '24px' : '32px',
       }"
     >
       <div v-if="showDescription" class="k-table-info">
         <slot name="description" :total="dataLength" :condition-info="filterConditionInfo">
-          <div class="k-table-header-text">
-            <span v-if="!useTree">{{ $t('total') }}
-              {{ isNumber(paginationConfig.total) ? paginationConfig.total : dataLength }} 
-              {{ $t('data') }}
-            </span>
-            <span :title="headerText" class="condition-info">{{ headerText }}</span>
-            <span
-              v-if="filterConditionInfo?.conditionList?.length"
-              class="filter-reset"
-              @click="clearAdvancedFilter"
-            >
-              {{ $t('reset') }}
-            </span>
-          </div>
+          <span v-if="!useTree">
+            {{ $t('total') }}
+            {{ isNumber(paginationConfig.total) ? paginationConfig.total : dataLength }}
+            {{ $t('data') }}
+          </span>
+          <span :title="headerText" class="condition-info">
+            {{ headerText }}
+          </span>
+          <span
+            v-if="filterConditionInfo?.conditionList?.length"
+            class="filter-reset"
+            @click="clearAdvancedFilter"
+          >
+            · {{ $t('reset') }}
+          </span>
         </slot>
       </div>
       <div class="k-table-func">
@@ -32,25 +33,29 @@
             <slot :name="widget.slot"></slot>
           </template>
           <template v-else-if="widget.widget">
-            <component :is="typeof widget.widget ==='function'? widget.widget() : widget.widget" />
+            <component
+              :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
+            />
           </template>
-          <template v-else-if="widget.id ==='search'">
+          <template v-else-if="widget.id === 'search'">
             <k-input
               v-model="searchStr"
               :suffix-icon="IconSearch"
               :placeholder="$t('searchTable')"
               clearable
               :size="compSize"
-              @change="(value: string) => query = value"
+              @change="(value: string) => (query = value)"
             />
           </template>
-          <template v-else-if="widget.id ==='refresh'">
+          <template v-else-if="widget.id === 'refresh'">
             <k-button
               v-ksw_tooltip="$t('refresh')"
               :size="compSize"
-              @click="() => {
-                emits('refresh')
-              }"
+              @click="
+                () => {
+                  emits('refresh');
+                }
+              "
             >
               <IconRefresh />
             </k-button>
@@ -76,11 +81,7 @@
           </template>
           <template v-else-if="widget.id === 'transfer'">
             <!-- 穿梭框 -->
-            <k-popover
-              trigger="click"
-              width="auto"
-              :teleported="false"
-            >
+            <k-popover trigger="click" width="auto" :teleported="false">
               <template #reference>
                 <k-button v-ksw_tooltip="$t('columnHeaderController')" :size="compSize">
                   <IconSetting />
@@ -99,7 +100,7 @@
         </template>
       </div>
     </div>
-    <div class="table-box" :style="{ height: tableHeight}">
+    <div class="table-box" :style="{ height: tableHeight }">
       <k-table
         ref="xTree"
         :border="border"
@@ -121,27 +122,37 @@
         :show-drag-column="showDragColumn"
         :align="align"
         v-bind="$attrs"
-        @checkbox-change="(data) => {
-          checkBoxChange(data);
-          emits('checkbox-change', data);
-        }"
-        @checkbox-all="(data) => {
-          checkboxAll(data);
-          emits('checkbox-all', data);
-        }"
-        @hide-column="(data) => {
-          hideColumn(data);
-          emits('hide-column', data);
-        }"
-        @cell-click="(data) => {
-          cellClick(data);
-          emits('cell-click', data);
-        }"
-        @drag-end="(data) => {
-          dragEnd(data);
-        }"
+        @checkbox-change="
+          (data) => {
+            checkBoxChange(data);
+            emits('checkbox-change', data);
+          }
+        "
+        @checkbox-all="
+          (data) => {
+            checkboxAll(data);
+            emits('checkbox-all', data);
+          }
+        "
+        @hide-column="
+          (data) => {
+            hideColumn(data);
+            emits('hide-column', data);
+          }
+        "
+        @cell-click="
+          (data) => {
+            cellClick(data);
+            emits('cell-click', data);
+          }
+        "
+        @drag-end="
+          (data) => {
+            dragEnd(data);
+          }
+        "
       >
-        <template v-for="item, index in columns" :key="index">
+        <template v-for="(item, index) in columns" :key="index">
           <KColumnGroup :column="item" :size="size" :align="align">
             <template v-for="(_, name) in $slots" :key="name" #[name]="data">
               <slot :name="name" v-bind="data"></slot>
@@ -201,7 +212,7 @@ import { TreeTableProps, columnConfigType } from './type';
 import { genRandomStr, treeDataToArray, getValidTreeData, resetTreeData } from '../../utils';
 
 defineOptions({
-  name: 'KTreeTable'
+  name: 'KTreeTable',
 });
 
 const props = withDefaults(defineProps<TreeTableProps>(), {
@@ -218,7 +229,7 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
   showHeaderTools: true,
   autoResize: true,
   showColumnMenu: false,
-  cellClickToggleHighlight: true
+  cellClickToggleHighlight: true,
 });
 
 const slots = defineSlots();
@@ -229,14 +240,14 @@ const DEFAULT_WIDGETS = new Map([
   ['search', 'search'],
   ['filter', 'filter'],
   ['refresh', 'refresh'],
-  ['transfer', 'transfer']
+  ['transfer', 'transfer'],
 ]);
 // 表格默认配置
 const defaultRowConfig = {
   isHover: true,
   isCurrent: true,
   useKey: true,
-  keyField: 'id'
+  keyField: 'id',
 };
 const defaultTreeConfig = {
   transform: true,
@@ -244,20 +255,20 @@ const defaultTreeConfig = {
   parentField: 'pid',
   childrenField: 'children',
   trigger: 'cell',
-  hasChildField: 'hasChild'
+  hasChildField: 'hasChild',
 };
 const defaultPaginationConfig = {
   pagerCount: 7,
   currentPage: 1,
   pageSizes: DEFAULT_PAGES,
-  pageSize: DEFAULT_PAGES[0]
+  pageSize: DEFAULT_PAGES[0],
 };
 const defaultSortConfig = {};
 const defaultCheckboxConfig = {};
 const defaultEditConfig = {
   key: 'id',
   trigger: 'click',
-  mode: 'cell'
+  mode: 'cell',
 };
 
 const defaultScrollY = { enabled: true };
@@ -282,7 +293,7 @@ const emits = defineEmits([
   'hide-column',
   'checkbox-change',
   'checkbox-all',
-  'drag-end'
+  'drag-end',
 ]);
 const xTree = ref();
 // 列配置
@@ -299,7 +310,7 @@ const originData = ref<any>([]);
 // 高级筛选
 const tableFilterRef = ref(); // 高级筛选后的数据
 const newFilterData = ref<any>([]);
-const filterConditionInfo:any = ref(null);
+const filterConditionInfo: any = ref(null);
 // 分页配置
 const paginationConfig = ref<any>(defaultPaginationConfig);
 
@@ -310,25 +321,25 @@ const widgets = computed(() => {
     if (props.showSearchInput) {
       widgetsList.push({
         id: 'search',
-        slot: null
+        slot: null,
       });
     }
     if (props.showRefresh) {
       widgetsList.push({
         id: 'refresh',
-        slot: null
+        slot: null,
       });
     }
     if (props.showFilter) {
       widgetsList.push({
         id: 'filter',
-        slot: null
+        slot: null,
       });
     }
     if (props.showTransfer) {
       widgetsList.push({
         id: 'transfer',
-        slot: null
+        slot: null,
       });
     }
     return widgetsList;
@@ -338,7 +349,7 @@ const widgets = computed(() => {
       continue;
     }
     const t = typeof widget;
-    if (t === 'string') { 
+    if (t === 'string') {
       if (DEFAULT_WIDGETS.get(widget as string)) {
         widgetsList.push({ id: widget, slot: null });
       } else {
@@ -354,7 +365,7 @@ const widgets = computed(() => {
 const fullData = computed(() => {
   if (Array.isArray(xeData.value)) {
     return xeData.value;
-  } 
+  }
   return props.data ?? [];
 });
 // 高级筛选功能只处理非特殊、可见的有效数据
@@ -363,10 +374,8 @@ const filterColumns = computed(() => {
   const validColumns = getValidTreeData(
     cloneDeep(columns.value),
     'group',
-    (dataItem) => (!dataItem.type 
-      && dataItem.field
-      && (filterAll !== false || (dataItem.visible !== false))
-    )
+    (dataItem) =>
+      !dataItem.type && dataItem.field && (filterAll !== false || dataItem.visible !== false),
   );
   if (filterColumns) {
     return resetTreeData(validColumns, 'group', filterColumns, 'field');
@@ -384,23 +393,21 @@ const headerText = computed(() => {
   let text = '';
   if (filterConditionInfo.value?.conditionList?.length) {
     filterConditionInfo.value.conditionList.forEach((item: any, index: number) => {
-      const point = (props.useTree && index === 0) ? '' : '. ';
-      text += ` ${point} ${item.title} ${item.logic} ${item.showValue}`;
+      const point = props.useTree && index === 0 ? '' : '·';
+      text += `  ${point} ${item.title} ${item.logic} ${item.showValue}`;
     });
   } else {
-    const point = (props.useTree) ? '' : '. ';
-    text += ` ${point} ${t?.('showAll')}`;
+    const point = props.useTree ? '' : '· ';
+    text += `${point}${t?.('showAll')}`;
   }
   return text;
 });
 
 // 表格高度计算
 const tableHeight = computed(() => {
-  const isShowHeader = (props.showDescription
-  || widgets.value?.length
-  ) && props.showHeaderTools;
-  const headerHeight = isShowHeader ? props.size === 'mini' ? 34 : 42 : 0;
-  const pageHeight = isPaging.value ? props.size === 'mini' ? 34 : 42 : 0;
+  const isShowHeader = (props.showDescription || widgets.value?.length) && props.showHeaderTools;
+  const headerHeight = isShowHeader ? (props.size === 'mini' ? 34 : 42) : 0;
+  const pageHeight = isPaging.value ? (props.size === 'mini' ? 34 : 42) : 0;
   return `calc(100% - ${headerHeight}px - ${pageHeight}px)`;
 });
 // 合并用户与表格默认配置
@@ -415,7 +422,9 @@ const rowConfig = computed(() => Object.assign(defaultRowConfig, props.rowConfig
 const editConfig = computed(() => Object.assign(defaultEditConfig, props.editConfig || {}));
 const scrollY = computed(() => Object.assign(defaultScrollY, props.scrollY || {}));
 const columnConfig = computed(() => Object.assign(defaultColumnConfig, props.columnConfig || {}));
-const checkboxConfig = computed(() => Object.assign(defaultCheckboxConfig, props.checkboxConfig || {}));
+const checkboxConfig = computed(() =>
+  Object.assign(defaultCheckboxConfig, props.checkboxConfig || {}),
+);
 
 // 表格数据量
 const dataLength = ref<number>(0);
@@ -433,52 +442,71 @@ const showTableData = computed(() => {
 // 表格size控制
 const compSize = computed(() => (props.size === 'mini' ? 'sm' : undefined));
 
-watch(() => props.paginationConfig, () => {
-  paginationConfig.value = Object.assign(paginationConfig.value, props.paginationConfig || {});
-}, { immediate: true, deep: true });
-watch(() => props.column, () => {
-  columns.value = props.column.map(col => {
-    const visible = col.visible !== false;
-    return { ...col, visible };
-  });
-  flatColumns.value = treeDataToArray(columns.value, 'group');
-  handleCustomRender();
-}, { immediate: true, deep: true });
-watch(() => flatColumns.value.length, () => {
-  originData.value = flatColumns.value.map((item) => {
-    if (item.title && item.field) {
-      return {
+watch(
+  () => props.paginationConfig,
+  () => {
+    paginationConfig.value = Object.assign(paginationConfig.value, props.paginationConfig || {});
+  },
+  { immediate: true, deep: true },
+);
+watch(
+  () => props.column,
+  () => {
+    columns.value = props.column.map((col) => {
+      const visible = col.visible !== false;
+      return { ...col, visible };
+    });
+    flatColumns.value = treeDataToArray(columns.value, 'group');
+    handleCustomRender();
+  },
+  { immediate: true, deep: true },
+);
+watch(
+  () => flatColumns.value.length,
+  () => {
+    originData.value = flatColumns.value
+      .map((item) => {
+        if (item.title && item.field) {
+          return {
+            label: item.title,
+            key: item.field,
+          };
+        }
+        return null;
+      })
+      .filter((item) => item);
+    selectData.value = flatColumns.value
+      .filter((col) => col.visible !== false)
+      .map((item) => ({
         label: item.title,
-        key: item.field
-      };
-    } 
-    return null;
-  }).filter((item) => item);
-  selectData.value = flatColumns.value.filter(col => col.visible !== false)
-  .map((item) => ({
-    label: item.title,
-    key: item.field
-  }));
-}, { immediate: true, deep: true });
+        key: item.field,
+      }));
+  },
+  { immediate: true, deep: true },
+);
 
 const isFilterStatus = ref(false);
-watch(() => showTableData.value?.length, () => {
-  if (!props.useTree) {
-    return;
-  }
-  nextTick(() => {
-    if (query.value.trim() || isFilterStatus.value) {
-      isFilterStatus.value = false;
-      tableInstance.value?.setAllTreeExpand(true);
-    } else {
-      tableInstance.value?.setAllTreeExpand(false);
+watch(
+  () => showTableData.value?.length,
+  () => {
+    if (!props.useTree) {
+      return;
     }
-  });
-}, { immediate: true });
+    nextTick(() => {
+      if (query.value.trim() || isFilterStatus.value) {
+        isFilterStatus.value = false;
+        tableInstance.value?.setAllTreeExpand(true);
+      } else {
+        tableInstance.value?.setAllTreeExpand(false);
+      }
+    });
+  },
+  { immediate: true },
+);
 
 // 表格内容搜索
-let tableDataMap:Map<string | number, any> = new Map();
-const treeDataMap:Map<string | number, any> = new Map();
+let tableDataMap: Map<string | number, any> = new Map();
+const treeDataMap: Map<string | number, any> = new Map();
 function filterTableData() {
   const filterData = filterConditionInfo.value?.conditionList?.length
     ? newFilterData.value
@@ -496,19 +524,21 @@ function filterTableData() {
   if (typeof searchMethod === 'function') {
     return searchMethod(searchKey, filterData);
   }
-  const visibleColumns = flatColumns.value.filter(col => col.visible !== false);
-  const fieldList = visibleColumns.map(col => col.field || '');
-  let tableData = filterData.filter((dataItem:any) => fieldList.some(field => {
-    const cellLabel = xTree.value?.tableInstance.getCellLabel(dataItem, field);
-    if (strict === true) {
-      return cellLabel === searchKey;
-    } 
-    return (String(cellLabel)).toLowerCase().search((searchKey).toLowerCase()) !== -1;
-  })) as any;
+  const visibleColumns = flatColumns.value.filter((col) => col.visible !== false);
+  const fieldList = visibleColumns.map((col) => col.field || '');
+  let tableData = filterData.filter((dataItem: any) =>
+    fieldList.some((field) => {
+      const cellLabel = xTree.value?.tableInstance.getCellLabel(dataItem, field);
+      if (strict === true) {
+        return cellLabel === searchKey;
+      }
+      return String(cellLabel).toLowerCase().search(searchKey.toLowerCase()) !== -1;
+    }),
+  ) as any;
   // 当表格数据为树时，筛选后的数据应展示完整的子树
   if (props.useTree) {
     const { rowField } = getTreeConfigField();
-    tableDataMap = new Map(fullData.value.map(item => [item[rowField], item]));
+    tableDataMap = new Map(fullData.value.map((item) => [item[rowField], item]));
     handleTreeData(tableData);
     tableData = sortFunc([...treeDataMap.values()], fullData.value, rowField);
     dataLength.value = 0;
@@ -536,7 +566,7 @@ function handleTreeData(leafData: any[]) {
 }
 function addChildNodes(leafData: any[]) {
   const { parentField, rowField } = getTreeConfigField();
-  const childrenMap = new Map(leafData.map(item => [item[rowField], item]));
+  const childrenMap = new Map(leafData.map((item) => [item[rowField], item]));
   for (const dataItem of fullData.value) {
     const parentKey = dataItem[parentField];
     if (childrenMap.get(parentKey)) {
@@ -559,9 +589,11 @@ function getParentNode(dataItem: any, parentField: string, rowField: string) {
   }
 }
 // 筛选后的数据与用户输入数据的顺序保持一致
-function sortFunc(targetData:any[], sortData: any, key: string | number) {
-  const sortKeyList = sortData.map((item:any) => item[key]);
-  return targetData.sort((a, b) => (sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1));
+function sortFunc(targetData: any[], sortData: any, key: string | number) {
+  const sortKeyList = sortData.map((item: any) => item[key]);
+  return targetData.sort((a, b) =>
+    sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1,
+  );
 }
 // 分页相关
 function changePageSize(pageSize: number) {
@@ -595,7 +627,7 @@ function updatePageNum(length: number) {
   }
   paginationConfig.value.currentPage = currentPage;
 }
-function getRowStyle(rowInfo:any) {
+function getRowStyle(rowInfo: any) {
   if (!props.rowStyle) {
     const { row } = rowInfo;
     return row.style || {};
@@ -611,23 +643,23 @@ function handleCustomRender() {
     if (col.render) {
       col.cellRender = {
         name: genRandomStr(16),
-        ...col.cellRender || {}
+        ...(col.cellRender || {}),
       };
       VXETable.renderer.add(col.cellRender.name, {
         renderDefault(_renderOpts, { row, column }) {
           return col.render({ row, column });
-        }
+        },
       });
     }
     if (col.renderEdit) {
       col.editRender = {
         name: genRandomStr(16),
-        ...col.editRender || {}
+        ...(col.editRender || {}),
       };
       VXETable.renderer.add(col.editRender.name, {
         renderEdit(_renderOpts, { row, column }) {
           return col.renderEdit({ row, column });
-        }
+        },
       });
     }
   }
@@ -685,13 +717,14 @@ function hideColumn(column: columnConfigType) {
   if (!props.showHeaderTools || !widgets.value?.includes('transfer')) {
     return;
   }
-  const columnItem = flatColumns.value.find(item => item.field === column.field);
+  const columnItem = flatColumns.value.find((item) => item.field === column.field);
   columnItem.visible = false;
-  selectData.value = flatColumns.value.filter(col => col.visible !== false)
-  .map((item: any) => ({
-    label: item.title,
-    key: item.field
-  }));
+  selectData.value = flatColumns.value
+    .filter((col) => col.visible !== false)
+    .map((item: any) => ({
+      label: item.title,
+      key: item.field,
+    }));
 }
 // 行高亮
 let isHighlight = false;
@@ -791,7 +824,7 @@ function isCheckboxDisabled(row: any) {
 function dragEnd(data: any[]) {
   emits('drag-end', {
     data,
-    originData: fullData.value
+    originData: fullData.value,
   });
 }
 
@@ -820,7 +853,10 @@ function getRowById(id: string | number) {
 }
 // 重写部分vxe的原生方法满足业务需求
 function rewriteTableMethods(instance: any) {
-  if (typeof instance?.setAllCheckboxRow === 'function' && !$tableMethods.get('setAllCheckboxRow')) {
+  if (
+    typeof instance?.setAllCheckboxRow === 'function' &&
+    !$tableMethods.get('setAllCheckboxRow')
+  ) {
     $tableMethods.set('setAllCheckboxRow', instance.setAllCheckboxRow.bind(instance));
   }
   if (typeof instance?.setCheckboxRow === 'function' && !$tableMethods.get('setCheckboxRow')) {
@@ -841,7 +877,7 @@ defineExpose({
   tableInstance,
   filter,
   advancedFilter,
-  clearAdvancedFilter
+  clearAdvancedFilter,
 });
 </script>
 
