@@ -86,4 +86,6 @@ export interface TreeTableProps {
     strict?: boolean
     searchMethod?: (key, data: any[]) => any[]
   }
+  style?: object
+  class?: string
 }

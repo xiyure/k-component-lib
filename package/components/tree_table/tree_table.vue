@@ -1,5 +1,5 @@
 <template>
-  <div class="k-tree-table" :style="{ height: height }">
+  <div :class="['k-tree-table', props.class]" :style="{ height: height, ...style }">
     <div
       v-if="showHeaderTools"
       class="k-tree-table__header"
@@ -486,23 +486,20 @@ watch(
 );
 
 const isFilterStatus = ref(false);
-watch(
-  () => showTableData.value?.length,
-  () => {
-    if (!props.useTree) {
-      return;
+watch(() => showTableData.value?.length, () => {
+  if (!props.useTree) {
+    return;
+  }
+  setTimeout(() => {
+    if (query.value.trim() || isFilterStatus.value) {
+      isFilterStatus.value = false;
+      const expandRows = showTableData.value.slice(0, 500);
+      tableInstance.value?.setTreeExpand(expandRows, true);
+    } else {
+      tableInstance.value?.clearTreeExpand();
     }
-    nextTick(() => {
-      if (query.value.trim() || isFilterStatus.value) {
-        isFilterStatus.value = false;
-        tableInstance.value?.setAllTreeExpand(true);
-      } else {
-        tableInstance.value?.setAllTreeExpand(false);
-      }
-    });
-  },
-  { immediate: true },
-);
+  });
+}, { immediate: true });
 
 // 表格内容搜索
 let tableDataMap: Map<string | number, any> = new Map();
