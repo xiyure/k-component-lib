@@ -210,3 +210,12 @@ export function resetTreeData(treeData: any[], childrenField: string, targetData
   }
   return treeData;
 }
+
+export function handleExpose(instance: any, ref: any) {
+  for (const key in ref.value ?? {}) {
+    if (instance[key]) {
+      continue
+    }
+    instance[key] = ref.value[key];
+  }
+}

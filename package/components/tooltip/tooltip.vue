@@ -1,5 +1,6 @@
 <template>
   <el-tooltip
+    ref="tooltipRef"
     class="k-tooltip"
     v-bind="$attrs"
     :popper-style="_popperStyle"
@@ -22,10 +23,10 @@
 </template>
 
 <script setup lang="ts">
-import { watch, ref, computed } from 'vue';
+import { watch, ref, computed, nextTick } from 'vue';
 import { IconTips } from 'ksw-vue-icon';
 import { TooltipProps } from './type';
-import { isValidColor } from '../../utils';
+import { isValidColor, handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KTooltip',
@@ -44,6 +45,7 @@ const props = withDefaults(defineProps<TooltipProps>(), {
   iconSize: '15px',
 });
 
+const tooltipRef = ref<any>(null);
 const fillColor: any = ref(undefined);
 
 const _popperStyle = computed(() => {
@@ -67,6 +69,13 @@ watch(
   },
   { immediate: true },
 );
+
+// expose instance
+const instance: any = {};
+nextTick(() => {
+  handleExpose(instance, tooltipRef)
+});
+defineExpose(instance)
 </script>
 
 <style>

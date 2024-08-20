@@ -1,7 +1,7 @@
 {
   "name": "@ksware/ksw-ux",
   "private": false,
-  "version": "0.0.32",
+  "version": "0.0.34",
   "description": "Kingsware Component Library",
   "main": "kingsware-ui/index.umd.js",
   "module": "kingsware-ui/index.js",
@@ -32,6 +32,7 @@
     "vxe-table": "^4.7.57"
   },
   "devDependencies": {
+    "@types/node": "^22.4.1",
     "@typescript-eslint/eslint-plugin": "^7.6.0",
     "@typescript-eslint/parser": "^7.6.0",
     "@vitejs/plugin-vue": "^5.0.4",

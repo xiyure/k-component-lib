@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import pathsystem from 'path';
+import _path from 'path';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import dts from 'vite-plugin-dts'
@@ -19,20 +19,20 @@ export default defineConfig({
       tsconfigPath: 'tsconfig.json'
     }),
     copyFilePlugin({
-      src: pathsystem.resolve(__dirname, 'package/components/components.d.ts'),
-      dest: pathsystem.resolve(__dirname, `${name}/components/components.d.ts`)
+      src: _path.resolve(__dirname, 'package/components/components.d.ts'),
+      dest: _path.resolve(__dirname, `${name}/components/components.d.ts`)
     }),
     AutoImport({
       resolvers: [ElementPlusResolver()],
     }),
     Components({
       resolvers: [ElementPlusResolver()],
-    }),
+    })
   ],
   build: {
     outDir: name,
 		lib: {
-			entry: pathsystem.resolve(__dirname, "package/index.ts"),
+			entry: _path.resolve(__dirname, "package/index.ts"),
 			name: name,
 			fileName: "index",
 		},
@@ -48,7 +48,7 @@ export default defineConfig({
   resolve: {
     // 配置路径别名
     alias: {
-      '@': pathsystem.resolve(__dirname, './package'),
+      '@': _path.resolve(__dirname, './package'),
     },
   },
   server: {
