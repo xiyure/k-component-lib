@@ -1,5 +1,6 @@
 <template>
   <el-option
+    ref="KOptionRef"
     class="k-option"
     v-bind="$attrs"
   >
@@ -10,10 +11,17 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+import { handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KOption'
 });
+
+const KOptionRef = ref(null);
+const instance: any = {};
+handleExpose(instance, KOptionRef, 'KOption');
+defineExpose(instance);
 
 </script>
 

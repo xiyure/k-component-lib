@@ -1,5 +1,6 @@
 <template>
   <el-result
+    ref="KResultRef"
     class="k-result"
     v-bind="$attrs"
   >
@@ -15,10 +16,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-// @ts-expect-error 引入本地静态图片资源
+import { ref, computed } from 'vue';
 import { IconStatusSuccess, IconStatusDanger, IconStatusWarning, IconStatusInfo } from 'ksw-vue-icon';
 import { ResultProps } from './type.d';
+import { handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KResult'
@@ -38,6 +39,11 @@ const showIcon = computed(() => ({
   type: INNER_STATUS_ICON[props.icon] ? props.icon : 'info',
   icon: INNER_STATUS_ICON[props.icon] || IconStatusInfo
 }));
+
+const KResultRef = ref(null);
+const instance: any = {};
+handleExpose(instance, KResultRef, 'KResult');
+defineExpose(instance);
 </script>
 
 <style lang="less">

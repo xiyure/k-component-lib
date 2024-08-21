@@ -2,6 +2,7 @@
   <div class="k-tag">
     <el-tag
       v-if="!point"
+      ref="KTagRef"
       class="k-tag__block"
       v-bind="$attrs"
       :color="fillColor"
@@ -41,9 +42,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 import { TagProps } from './type';
-import { getCompSize, isValidColor } from '../../utils';
+import { getCompSize, isValidColor, handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KTag',
@@ -83,6 +84,11 @@ const tagAttrs = computed(() => {
   }
   return sizeAttr;
 });
+
+const KTagRef = ref(null);
+const instance: any = {};
+handleExpose(instance, KTagRef, 'KTag');
+defineExpose(instance);
 </script>
 
 <style lang="less">

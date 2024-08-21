@@ -1,6 +1,7 @@
 <template>
   <el-step
     v-if="!stepsProps.capsule"
+    ref="KStepRef"
     class="k-step"
     v-bind="$attrs"
     :title="title"
@@ -31,10 +32,10 @@
 </template>
 
 <script setup lang="ts">
-import { watch, inject, nextTick } from 'vue';
+import { ref, watch, inject, nextTick } from 'vue';
 import { StepProps } from './type';
 import { KPopover } from '../popover';
-import { genRandomStr } from '../../utils';
+import { genRandomStr, handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KStep'
@@ -111,6 +112,11 @@ function getProcessStatus(type:string) {
     default: return '';
   }
 }
+
+const KStepRef = ref(null);
+const instance: any = {};
+handleExpose(instance, KStepRef, 'KStep');
+defineExpose(instance);
 </script>
 
 <style lang="css">

@@ -1,5 +1,6 @@
 <template>
   <div
+    ref="KTimelineRef"
     class="k-timeline"
     :class="{'hidden-line': isHideLine}"
   >
@@ -10,8 +11,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 import { TimelineProps } from './type';
+import { handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KTimeline'
@@ -22,6 +24,11 @@ const props = withDefaults(defineProps<TimelineProps>(), {
 });
 
 const isHideLine = computed(() => !props.showLine);
+
+const KTimelineRef = ref(null);
+const instance: any = {};
+handleExpose(instance, KTimelineRef, 'KTimeline');
+defineExpose(instance);
 </script>
 
 <style lang="less">

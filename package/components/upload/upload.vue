@@ -83,9 +83,10 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { UploadFile, UploadRawFile, UploadStatus } from 'element-plus';
+import { UploadFile, UploadRawFile } from 'element-plus';
 import { IconEmptyBox, IconWarning, IconCheck, IconDelete, IconFile } from 'ksw-vue-icon';
 import { UploadProps } from './type';
+import { handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KUpload'
@@ -107,19 +108,10 @@ watch(() => fileList.value, (newValue) => {
   }
   emits('update:modelValue', newValue);
 });
-function abort(file: UploadFile) {
-  KUploadRef.value?.abort(file);
-}
 function submit(e:Event) {
   e && e.stopPropagation();
   e && e.preventDefault();
   KUploadRef.value?.submit();
-}
-function clearFiles(file: UploadStatus) {
-  KUploadRef.value?.clearFiles(file);
-}
-function handleStart(file: UploadRawFile) {
-  KUploadRef.value?.handleStart(file);
 }
 function handleRemove(file: UploadFile, rawFile?: UploadRawFile) {
   KUploadRef.value?.handleRemove(file, rawFile);
@@ -140,14 +132,9 @@ function selectFile() {
   KUploadRef.value.$el.querySelector('input').click();
 }
 
-defineExpose({ 
-  abort,
-  submit,
-  clearFiles,
-  selectFile,
-  handleStart,
-  handleRemove
-});
+const instance: any = { submit, selectFile, handleRemove };
+handleExpose(instance, KUploadRef, 'KUpload');
+defineExpose(instance);
 </script>
 
 <style lang="less">

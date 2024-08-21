@@ -2,6 +2,7 @@
   <el-timeline-item
     v-bind="$attrs"
     :id="id"
+    ref="KTimelineItemRef"
     :type="getTimelineType(type)"
     :placement="placement === 'right' ? 'top' : placement"
     :hollow="hollow"
@@ -19,9 +20,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, watch, nextTick } from 'vue';
+import { ref, computed, onMounted, watch, nextTick } from 'vue';
 import { TimelineItemProps } from './type';
-import { genRandomStr } from '../../utils';
+import { genRandomStr, handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KTimelineItem'
@@ -63,6 +64,11 @@ function getTimelineType(type: string) {
   }
   return type;
 }
+
+const KTimelineItemRef = ref(null);
+const instance: any = {};
+handleExpose(instance, KTimelineItemRef, 'KTimelineItem');
+defineExpose(instance);
 </script>
 
 <style lang="less">

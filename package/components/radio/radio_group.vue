@@ -1,7 +1,10 @@
 <template>
   <el-radio-group
-    class="k-radio-group" v-bind="$attrs" :size="getCompSize(size)"
+    ref="KRadioGroupRef"
+    class="k-radio-group"
     :class="[{ 'k-radio-group--button': props.button === true }, directionClass, getSizeClass]"
+    v-bind="$attrs"
+    :size="getCompSize(size)"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
       <slot :name="name" v-bind="data"></slot>
@@ -12,7 +15,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, provide } from 'vue';
 import { RadioGroupProps } from './type.d';
-import { getCompSize } from '../../utils';
+import { getCompSize, handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KRadioGroup'
@@ -38,6 +41,11 @@ watch(
 );
 
 provide('_fillColor', fillColor);
+
+const KRadioGroupRef = ref(null);
+const instance: any = {};
+handleExpose(instance, KRadioGroupRef, 'KRadioGroup');
+defineExpose(instance);
 </script>
 
 <style lang="less">

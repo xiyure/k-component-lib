@@ -21,11 +21,12 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { TreeNode, TreeNodeData, TreeKey, TreeData } from 'element-plus/es/components/tree-v2/src/types';
+import type { TreeNode } from 'element-plus/es/components/tree-v2/src/types';
 import { IconSearch } from 'ksw-vue-icon';
 import { TreeProps } from './type';
 import { KInput } from '../input';
 import { KButton } from '../button';
+import { handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KTree'
@@ -49,66 +50,10 @@ function filterTreeNode(value: string) {
 function filter(query: string) {
   return KTreeRef.value?.filter(query);
 }
-function getCheckedNodes(leafOnly: boolean) {
-  return KTreeRef.value?.getCheckedNodes(leafOnly);
-}
-function getCheckedKeys(leafOnly: boolean) {
-  return KTreeRef.value?.getCheckedKeys(leafOnly);
-}
-function setChecked(key: TreeKey, checked: boolean) {
-  return KTreeRef.value?.setChecked(key, checked);
-}
-function setExpandedKeys(keys: TreeKey[]) {
-  return KTreeRef.value?.setExpandedKeys(keys);
-}
-function setCheckedKeys(keys: TreeKey[]) {
-  return KTreeRef.value?.setCheckedKeys(keys);
-}
-function getHalfCheckedNodes() {
-  return KTreeRef.value?.getHalfCheckedNodes();
-}
-function getHalfCheckedKeys() {
-  return KTreeRef.value?.getHalfCheckedKeys();
-}
-function getCurrentKey() {
-  return KTreeRef.value?.getCurrentKey();
-}
-function getCurrentNode() {
-  return KTreeRef.value?.getCurrentNode();
-}
-function setCurrentKey(key: TreeKey) {
-  return KTreeRef.value?.setCurrentKey(key);
-}
-function getNode(data: TreeKey | TreeNodeData) {
-  return KTreeRef.value?.getNode(data);
-}
-function expandNode(node: TreeNode) {
-  return KTreeRef.value?.expandNode(node);
-}
-function collapseNode(node: TreeNode) {
-  return KTreeRef.value?.collapseNode(node);
-}
-function setData(data: TreeData) {
-  return KTreeRef.value?.setData(data);
-}
 
-defineExpose({
-  filter,
-  getCheckedNodes,
-  getCheckedKeys,
-  setChecked,
-  setExpandedKeys,
-  setCheckedKeys,
-  getHalfCheckedKeys,
-  getHalfCheckedNodes,
-  getCurrentKey,
-  getCurrentNode,
-  setCurrentKey,
-  getNode,
-  expandNode,
-  collapseNode,
-  setData
-});
+const instance: any = { filter };
+handleExpose(instance, KTreeRef, 'KTree');
+defineExpose(instance);
 </script>
 
 <style lang="less">

@@ -51,7 +51,7 @@ import { TransferKey, TransferDirection } from 'element-plus';
 import { IconSearch, IconDrag } from 'ksw-vue-icon';
 import { TransferProps } from './type';
 import { KInput } from '../input';
-import { genRandomStr } from '../../utils/index';
+import { genRandomStr, handleExpose } from '../../utils/index';
 // @ts-expect-error 引入本地静态图片资源
 import ArrowToLeft from '../../assets/svg/arrow-to-left.svg';
 // @ts-expect-error 引入本地静态图片资源
@@ -214,6 +214,11 @@ const handleDrop = () => {
 function getPropsConfig() {
   return defaultPropsConfig.value;
 }
+
+const kTransferRef = ref(null);
+const instance: any = {};
+handleExpose(instance, kTransferRef, 'KTransfer');
+defineExpose(instance);
 </script>
 
 <style lang="less">

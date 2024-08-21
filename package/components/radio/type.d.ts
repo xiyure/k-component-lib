@@ -25,4 +25,5 @@ export interface RadioGroupProps {
    * button 样式的 radio
    */
   button?: boolean
+  color?: string
 }

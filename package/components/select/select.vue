@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { SelectInputProps } from './type';
-import { getCompSize } from '../../utils';
+import { getCompSize, handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KSelect'
@@ -25,18 +25,9 @@ const props = withDefaults(defineProps<SelectInputProps>(), {
 });
 
 const inputRef = ref<any>(null);
-
-function focus() {
-  inputRef.value?.focus();
-}
-function blur() {
-  inputRef.value?.blur();
-}
-
-defineExpose({
-  focus,
-  blur
-});
+const instance: any = {};
+handleExpose(instance, inputRef, 'KSelect');
+defineExpose(instance);
 </script>
 
 <style lang="less">

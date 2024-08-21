@@ -2,6 +2,7 @@
   <div class="k-steps">
     <el-steps
       v-if="!capsule"
+      ref="KStepsRef"
       v-bind="$attrs"
       :process-status="getProcessStatus(processStatus)"
       :finish-status="getProcessStatus(finishStatus)"
@@ -20,7 +21,7 @@
 <script setup lang="ts">
 import { ref, watch, provide, nextTick, useSlots } from 'vue';
 import { StepsProps } from './type';
-import { genRandomStr } from '../../utils';
+import { genRandomStr, handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KSteps'
@@ -74,6 +75,11 @@ function getProcessStatus(type:string) {
 
 provide('stepProps', props);
 provide('stepsInfo', steps);
+
+const KStepsRef = ref(null);
+const instance: any = {};
+handleExpose(instance, KStepsRef, 'KSteps');
+defineExpose(instance);
 </script>
 
 <style lang="css">

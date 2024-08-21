@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { SwitchProps } from './type';
-import { getCompSize } from '../../utils';
+import { getCompSize, handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KSwitch'
@@ -27,12 +27,9 @@ const props = withDefaults(defineProps<SwitchProps>(), {
 });
 
 const kSwitchRef = ref();
-
-function focus() {
-  kSwitchRef.value?.focus();
-}
-
-defineExpose({ focus });
+const instance: any = {};
+handleExpose(instance, kSwitchRef, 'KSwitch');
+defineExpose(instance);
 
 </script>
 

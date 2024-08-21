@@ -35,7 +35,7 @@
 import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue';
 import { IconMore } from 'ksw-vue-icon';
 import TabDropdownMenu from './tab_dropdown_menu';
-import { flattenChildren, isValidElement, camelize } from '../../utils';
+import { flattenChildren, isValidElement, camelize, handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KTabs'
@@ -185,6 +185,9 @@ watch(
   { immediate: true },
 );
 
+const instance: any = {};
+handleExpose(instance, KTabsRef, 'KTabs');
+defineExpose(instance);
 </script>
 
 <style lang="less">
