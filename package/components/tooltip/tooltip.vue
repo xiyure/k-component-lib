@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch, ref, computed, nextTick } from 'vue';
+import { watch, ref, computed } from 'vue';
 import { IconTips } from 'ksw-vue-icon';
 import { TooltipProps } from './type';
 import { isValidColor, handleExpose } from '../../utils';
@@ -72,10 +72,8 @@ watch(
 
 // expose instance
 const instance: any = {};
-nextTick(() => {
-  handleExpose(instance, tooltipRef)
-});
-defineExpose(instance)
+handleExpose(instance, tooltipRef);
+defineExpose(instance);
 </script>
 
 <style>

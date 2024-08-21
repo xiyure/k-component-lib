@@ -1,3 +1,5 @@
+import { computed, nextTick, isReactive, isRef, isReadonly, isProxy } from 'vue';
+
 // 获取随机字符串
 export function genRandomStr(bit:number) {
   let result = '';
@@ -212,10 +214,23 @@ export function resetTreeData(treeData: any[], childrenField: string, targetData
 }
 
 export function handleExpose(instance: any, ref: any) {
-  for (const key in ref.value ?? {}) {
-    if (instance[key]) {
-      continue
+  nextTick(() => {
+    for (const key in ref.value ?? {}) {
+      if (instance[key]) {
+        continue;
+      }
+      if (typeof ref.value[key] === 'function') {
+        instance[key] = ref.value[key];
+        continue;
+      } else if (isResponsiveData(ref.value[key])) {
+        instance[key] = ref.value[key];
+      } else {
+        instance[key] = computed(() => ref.value[key]);
+      }
     }
-    instance[key] = ref.value[key];
-  }
+  });
+}
+
+export function isResponsiveData(data: any) {
+  return isRef(data) || isReactive(data) || isReadonly(data) || isProxy(data);
 }

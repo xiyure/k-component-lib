@@ -2,7 +2,7 @@
   <!-- getSizeClass, -->
   <el-button
     :id="id"
-    ref="btn"
+    ref="buttonRef"
     class="k-button"
     :class="[
       'el-button',
@@ -41,14 +41,14 @@
 import { computed, ref, nextTick, watch } from 'vue';
 import { IconLoading } from 'ksw-vue-icon';
 import { ButtonProps } from './type.d';
-import { isValidColor, GetColorLevel, genRandomStr } from '../../utils';
+import { isValidColor, GetColorLevel, genRandomStr, handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KButton'
 });
 
 const id = genRandomStr(8);
-const btn = ref();
+const buttonRef = ref();
 
 const props = withDefaults(defineProps<ButtonProps>(), {
   type: '',
@@ -68,9 +68,7 @@ const props = withDefaults(defineProps<ButtonProps>(), {
 
 const color = ref(props.color);
 
-// 获取 button dom
 const el = ref();
-// 等待 dom 更新
 nextTick(() => {
   el.value = document.getElementById(id);
 });
@@ -83,8 +81,6 @@ watch(
     if (newVal && isValidColor(newVal as string)) {
       const hexColor = newVal;
       const { lightColor, darkColor, loadingColor } = GetColorLevel(hexColor);
-
-      // 等待 dom 更新
       nextTick(() => {
         if (el.value?.style) {
           // 添加一个 css 颜色变量
@@ -109,6 +105,9 @@ const getElTypeColor = computed(() => {
 });
 
 const getSizeClass = computed(() => (props.size ? `el-button--${props.size}` : ''));
+const instance: any = {};
+handleExpose(instance, buttonRef);
+defineExpose(instance);
 </script>
 
 <style lang="less">

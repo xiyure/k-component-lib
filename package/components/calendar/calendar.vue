@@ -50,7 +50,7 @@ import type { CalendarDateType, CalendarInstance } from 'element-plus';
 import { CalendarProps } from './type';
 import { lunarMonth, lunarDay } from './const';
 import { KCheckbox } from '../checkbox';
-import { genRandomStr } from '../../utils';
+import { genRandomStr, handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KCalendar'
@@ -94,7 +94,13 @@ function formatDate(date:Date) {
   return `${y}-${m < 10 ? '0' : ''}${m}-${d < 10 ? '0' : ''}${d}`;
 }
 
-defineExpose({ jumpDate, handleLunar });
+// expose instance
+const instance: any = {
+  jumpDate,
+  handleLunar
+};
+handleExpose(instance, kCalendarRef);
+defineExpose(instance);
 </script>
 
 <style lang="less">

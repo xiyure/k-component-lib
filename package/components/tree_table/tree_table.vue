@@ -374,8 +374,7 @@ const filterColumns = computed(() => {
   const validColumns = getValidTreeData(
     cloneDeep(columns.value),
     'group',
-    (dataItem) =>
-      !dataItem.type && dataItem.field && (filterAll !== false || dataItem.visible !== false),
+    (dataItem) => !dataItem.type && dataItem.field && (filterAll !== false || dataItem.visible !== false),
   );
   if (filterColumns) {
     return resetTreeData(validColumns, 'group', filterColumns, 'field');
@@ -422,9 +421,7 @@ const rowConfig = computed(() => Object.assign(defaultRowConfig, props.rowConfig
 const editConfig = computed(() => Object.assign(defaultEditConfig, props.editConfig || {}));
 const scrollY = computed(() => Object.assign(defaultScrollY, props.scrollY || {}));
 const columnConfig = computed(() => Object.assign(defaultColumnConfig, props.columnConfig || {}));
-const checkboxConfig = computed(() =>
-  Object.assign(defaultCheckboxConfig, props.checkboxConfig || {}),
-);
+const checkboxConfig = computed(() => Object.assign(defaultCheckboxConfig, props.checkboxConfig || {}));
 
 // 表格数据量
 const dataLength = ref<number>(0);
@@ -465,22 +462,22 @@ watch(
   () => flatColumns.value.length,
   () => {
     originData.value = flatColumns.value
-      .map((item) => {
-        if (item.title && item.field) {
-          return {
-            label: item.title,
-            key: item.field,
-          };
-        }
-        return null;
-      })
-      .filter((item) => item);
+    .map((item) => {
+      if (item.title && item.field) {
+        return {
+          label: item.title,
+          key: item.field,
+        };
+      }
+      return null;
+    })
+    .filter((item) => item);
     selectData.value = flatColumns.value
-      .filter((col) => col.visible !== false)
-      .map((item) => ({
-        label: item.title,
-        key: item.field,
-      }));
+    .filter((col) => col.visible !== false)
+    .map((item) => ({
+      label: item.title,
+      key: item.field,
+    }));
   },
   { immediate: true, deep: true },
 );
@@ -490,7 +487,7 @@ watch(() => showTableData.value?.length, () => {
   if (!props.useTree) {
     return;
   }
-  setTimeout(() => {
+  nextTick(() => {
     if (query.value.trim() || isFilterStatus.value) {
       isFilterStatus.value = false;
       const maxLength = showTableData.value.length > 500 ? 500 : showTableData.value.length;
@@ -524,15 +521,13 @@ function filterTableData() {
   }
   const visibleColumns = flatColumns.value.filter((col) => col.visible !== false);
   const fieldList = visibleColumns.map((col) => col.field || '');
-  let tableData = filterData.filter((dataItem: any) =>
-    fieldList.some((field) => {
-      const cellLabel = xTree.value?.tableInstance.getCellLabel(dataItem, field);
-      if (strict === true) {
-        return cellLabel === searchKey;
-      }
-      return String(cellLabel).toLowerCase().search(searchKey.toLowerCase()) !== -1;
-    }),
-  ) as any;
+  let tableData = filterData.filter((dataItem: any) => fieldList.some((field) => {
+    const cellLabel = xTree.value?.tableInstance.getCellLabel(dataItem, field);
+    if (strict === true) {
+      return cellLabel === searchKey;
+    }
+    return String(cellLabel).toLowerCase().search(searchKey.toLowerCase()) !== -1;
+  })) as any;
   // 当表格数据为树时，筛选后的数据应展示完整的子树
   if (props.useTree) {
     const { rowField } = getTreeConfigField();
@@ -589,9 +584,7 @@ function getParentNode(dataItem: any, parentField: string, rowField: string) {
 // 筛选后的数据与用户输入数据的顺序保持一致
 function sortFunc(targetData: any[], sortData: any, key: string | number) {
   const sortKeyList = sortData.map((item: any) => item[key]);
-  return targetData.sort((a, b) =>
-    sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1,
-  );
+  return targetData.sort((a, b) => (sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1));
 }
 // 分页相关
 function changePageSize(pageSize: number) {
@@ -718,11 +711,11 @@ function hideColumn(column: columnConfigType) {
   const columnItem = flatColumns.value.find((item) => item.field === column.field);
   columnItem.visible = false;
   selectData.value = flatColumns.value
-    .filter((col) => col.visible !== false)
-    .map((item: any) => ({
-      label: item.title,
-      key: item.field,
-    }));
+  .filter((col) => col.visible !== false)
+  .map((item: any) => ({
+    label: item.title,
+    key: item.field,
+  }));
 }
 // 行高亮
 let isHighlight = false;
@@ -852,8 +845,8 @@ function getRowById(id: string | number) {
 // 重写部分vxe的原生方法满足业务需求
 function rewriteTableMethods(instance: any) {
   if (
-    typeof instance?.setAllCheckboxRow === 'function' &&
-    !$tableMethods.get('setAllCheckboxRow')
+    typeof instance?.setAllCheckboxRow === 'function'
+    && !$tableMethods.get('setAllCheckboxRow')
   ) {
     $tableMethods.set('setAllCheckboxRow', instance.setAllCheckboxRow.bind(instance));
   }

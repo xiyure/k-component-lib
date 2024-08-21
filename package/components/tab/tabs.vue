@@ -16,7 +16,7 @@
       :style="{ right: (editable
         || addable)
         && (tabPosition === 'top'
-        || tabPosition === 'bottom') ? '2rem' : 0 }"
+          || tabPosition === 'bottom') ? '2rem' : 0 }"
     >
       <TabDropdownMenu :tabs="hideTabs" @command="jumpToTab">
         <template #title>
@@ -82,7 +82,7 @@ onMounted(() => {
   window.addEventListener('resize', getHideTabs);
 });
 onUnmounted(() => {
-  window.removeEventListener('resize', getHideTabs)
+  window.removeEventListener('resize', getHideTabs);
 });
 
 nextTick(() => {
