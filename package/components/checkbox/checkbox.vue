@@ -18,7 +18,7 @@
 <script setup lang="ts">
 import { ref, watch, nextTick, inject } from 'vue';
 import { CheckboxProps } from './type';
-import { getCompSize, isValidColor } from '../../utils/index';
+import { getCompSize, isValidColor, handleExpose } from '../../utils/index';
 
 defineOptions({
   name: 'KCheckbox',
@@ -57,6 +57,10 @@ function handleClickLabel(e) {
     e.preventDefault();
   }
 }
+
+const instance: any = {};
+handleExpose(instance, kCheckboxRef, 'KCheckbox');
+defineExpose(instance);
 </script>
 
 <style lang="less">

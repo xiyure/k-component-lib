@@ -105,8 +105,9 @@ const getElTypeColor = computed(() => {
 });
 
 const getSizeClass = computed(() => (props.size ? `el-button--${props.size}` : ''));
+
 const instance: any = {};
-handleExpose(instance, buttonRef);
+handleExpose(instance, buttonRef, 'KButton');
 defineExpose(instance);
 </script>
 

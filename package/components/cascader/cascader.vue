@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { CascaderProps } from './type';
-import { getCompSize } from '../../utils';
+import { getCompSize, handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KCascader'
@@ -26,17 +26,9 @@ const props = withDefaults(defineProps<CascaderProps>(), {
 
 const cascaderRef = ref<any>(null);
 
-function getCheckedNodes(isOnlyLeaf:boolean) {
-  return cascaderRef.value?.getCheckedNodes(isOnlyLeaf);
-}
-function togglePopperVisible(isExpand:boolean) {
-  cascaderRef.value?.togglePopperVisible(isExpand);
-}
-
-defineExpose({
-  getCheckedNodes,
-  togglePopperVisible
-});
+const instance: any = {};
+handleExpose(instance, cascaderRef, 'KCascader');
+defineExpose(instance);
 </script>
 
 <style lang="less">

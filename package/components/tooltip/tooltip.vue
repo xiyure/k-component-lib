@@ -72,7 +72,7 @@ watch(
 
 // expose instance
 const instance: any = {};
-handleExpose(instance, tooltipRef);
+handleExpose(instance, tooltipRef, 'KTooltip');
 defineExpose(instance);
 </script>
 

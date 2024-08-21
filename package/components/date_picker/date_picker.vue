@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { ref, getCurrentInstance, computed } from 'vue';
 import { DatePicker } from './type';
-import { getCompSize } from '../../utils';
+import { getCompSize, handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KDatePicker'
@@ -128,17 +128,9 @@ function getCurYearRange() {
   return [startDate, endDate];
 }
 
-function focus(focusStartInput?: boolean, isIgnoreFocusEvent?: boolean) {
-  datePickerRef.value?.foucus(focusStartInput, isIgnoreFocusEvent);
-}
-function handleOpen() {
-  datePickerRef.value?.handleOpen();
-}
-function handleClose() {
-  datePickerRef.value?.handleClose();
-}
-
-defineExpose({ focus, handleOpen, handleClose });
+const instance: any = {};
+handleExpose(instance, datePickerRef, 'KDatePicker');
+defineExpose(instance);
 
 </script>
 

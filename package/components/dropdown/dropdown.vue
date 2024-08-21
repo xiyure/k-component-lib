@@ -19,23 +19,18 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { DropDownProps } from './type';
-import { getCompSize } from '../../utils';
+import { getCompSize, handleExpose } from '../../utils';
 
 defineOptions({
-  name: 'KDropDown'
+  name: 'KDropdown'
 });
 
 const props = withDefaults(defineProps<DropDownProps>(), {});
 const kDropDownRef = ref();
 
-function handleOpen() {
-  kDropDownRef.value?.handleOpen();
-}
-function handleClose() {
-  kDropDownRef.value?.handleClose();
-}
-
-defineExpose({ handleOpen, handleClose });
+const instance: any = {};
+handleExpose(instance, kDropDownRef, 'KDropdown');
+defineExpose(instance);
 
 </script>
 

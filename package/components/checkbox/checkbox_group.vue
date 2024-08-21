@@ -1,5 +1,10 @@
 <template>
-  <el-checkbox-group class="k-checkbox-group" v-bind="$attrs" :size="getCompSize(size)">
+  <el-checkbox-group
+    ref="kCheckboxGroupRef"
+    class="k-checkbox-group"
+    v-bind="$attrs"
+    :size="getCompSize(size)"
+  >
     <slot></slot>
   </el-checkbox-group>
 </template>
@@ -7,7 +12,7 @@
 <script setup lang="ts">
 import { ref, watch, provide } from 'vue';
 import { CheckboxGroupProps } from './type';
-import { getCompSize } from '../../utils/index';
+import { getCompSize, handleExpose } from '../../utils/index';
 
 defineOptions({
   name: 'KCheckboxGroup',
@@ -18,6 +23,7 @@ const props = withDefaults(defineProps<CheckboxGroupProps>(), {
 });
 
 const fillColor = ref(props.color);
+const kCheckboxGroupRef = ref(null);
 
 watch(
   () => props.color,
@@ -28,6 +34,10 @@ watch(
 
 provide('useCheckboxGroup', true);
 provide('_fillColor', fillColor);
+
+const instance: any = {};
+handleExpose(instance, kCheckboxGroupRef, 'KCheckboxGroup');
+defineExpose(instance);
 </script>
 
 <style lang="less">

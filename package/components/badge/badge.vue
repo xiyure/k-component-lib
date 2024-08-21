@@ -18,7 +18,7 @@ const badgeRef = ref(null);
 
 // expose instance
 const instance: any = {};
-handleExpose(instance, badgeRef);
+handleExpose(instance, badgeRef, 'KBadge');
 defineExpose(instance);
 </script>
 

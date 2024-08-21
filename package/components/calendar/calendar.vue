@@ -99,7 +99,7 @@ const instance: any = {
   jumpDate,
   handleLunar
 };
-handleExpose(instance, kCalendarRef);
+handleExpose(instance, kCalendarRef, 'KCalendar');
 defineExpose(instance);
 </script>
 

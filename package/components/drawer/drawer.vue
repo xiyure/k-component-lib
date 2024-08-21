@@ -12,6 +12,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KDrawer'
@@ -19,11 +20,9 @@ defineOptions({
 
 const KDrawerRef = ref<any>(null);
 
-function handleClose() {
-  KDrawerRef.value?.handleClose();
-}
-
-defineExpose({ handleClose });
+const instance: any = {};
+handleExpose(instance, KDrawerRef, 'KDrawer');
+defineExpose(instance);
 </script>
 
 <style lang="less">

@@ -1,4 +1,5 @@
 import { computed, nextTick, isReactive, isRef, isReadonly, isProxy } from 'vue';
+import COMPONENT_EXPOSE_METHODS from './el_expose_methods';
 
 // 获取随机字符串
 export function genRandomStr(bit:number) {
@@ -213,19 +214,17 @@ export function resetTreeData(treeData: any[], childrenField: string, targetData
   return treeData;
 }
 
-export function handleExpose(instance: any, ref: any) {
+export function handleExpose(instance: any, ref: any, compName: string) {
   nextTick(() => {
-    for (const key in ref.value ?? {}) {
-      if (instance[key]) {
+    const exposeMethods = COMPONENT_EXPOSE_METHODS[compName] ?? [];
+    for (const methodsName of exposeMethods) {
+      if (instance[methodsName]) {
         continue;
       }
-      if (typeof ref.value[key] === 'function') {
-        instance[key] = ref.value[key];
-        continue;
-      } else if (isResponsiveData(ref.value[key])) {
-        instance[key] = ref.value[key];
+      if (typeof ref.value[methodsName] === 'function') {
+        instance[methodsName] = ref.value[methodsName].bind(ref.value);
       } else {
-        instance[key] = computed(() => ref.value[key]);
+        instance[methodsName] = computed(() => ref.value[methodsName]);
       }
     }
   });
