@@ -1,5 +1,6 @@
 <template>
   <el-pagination
+    ref="KPaginationRef"
     class="k-pagination"
     v-bind="$attrs"
     :size="getCompSize(props.size)"
@@ -7,7 +8,8 @@
 </template>
 
 <script setup lang="ts">
-import { getCompSize } from '../../utils';
+import { ref } from 'vue';
+import { getCompSize, handleExpose } from '../../utils';
 import { PaginationProps } from './type.d';
 
 defineOptions({
@@ -18,6 +20,10 @@ const props = withDefaults(defineProps<PaginationProps>(), {
   size: 'base'
 });
 
+const KPaginationRef = ref(null);
+const instance: any = {};
+handleExpose(instance, KPaginationRef, 'KPagination');
+defineExpose(instance);
 </script>
 
 <style lang="less">

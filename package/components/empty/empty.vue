@@ -1,5 +1,6 @@
 <template>
   <el-empty
+    ref="KEmptyRef"
     class="k-empty"
     v-bind="$attrs"
   >
@@ -14,12 +15,19 @@
   </el-empty>
 </template>
 <script setup lang="ts">
+import { ref } from 'vue';
 // @ts-expect-error 引入本地静态图片资源
 import empty from '../../assets/svg/empty.svg';
+import { handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KEmpty'
 });
+
+const KEmptyRef = ref(null);
+const instance: any = {};
+handleExpose(instance, KEmptyRef, 'KEmpty');
+defineExpose(instance);
 </script>
 
 <style lang="less">

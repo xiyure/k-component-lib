@@ -12,16 +12,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { FormItemProp, FormValidateCallback } from 'element-plus';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { FormProps } from './type';
-import { getCompSize } from '../../utils';
+import { getCompSize, handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KForm'
 });
-
-type Arrayable<T> = T | T[];
 
 const props = withDefaults(defineProps<FormProps>(), {
   size: 'base'
@@ -69,30 +66,10 @@ function onKeyDown(event:any) {
     inputDoms[nextIndex].focus();
   }
 }
-const validate = (callback?: FormValidateCallback) => KFormRef.value?.validate(callback);
-const validateField = (
-  props?: Arrayable<FormItemProp> | undefined,
-  callback?: FormValidateCallback | undefined
-) => KFormRef.value?.validateField(props, callback);
-const resetFields = (props?: Arrayable<FormItemProp> | undefined) => {
-  KFormRef.value?.resetFields(props);
-};
-const scrollToField = (prop: FormItemProp) => {
-  KFormRef.value?.scrollToField(prop);
-};
-const clearValidate = (props?: Arrayable<FormItemProp> | undefined) => {
-  KFormRef.value?.clearValidate(props);
-};
-const fields = computed(() => KFormRef.value?.fields);
 
-defineExpose({
-  fields,
-  validate,
-  validateField,
-  resetFields,
-  scrollToField,
-  clearValidate
-});
+const instance: any = {};
+handleExpose(instance, KFormRef, 'KForm');
+defineExpose(instance);
 
 </script>
 

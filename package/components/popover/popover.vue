@@ -1,5 +1,6 @@
 <template>
   <el-popover
+    ref="KPopoverRef"
     class="k-popover"
     v-bind="$attrs"
   >
@@ -10,10 +11,17 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+import { handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KPopover'
 });
+
+const KPopoverRef = ref(null);
+const instance: any = {};
+handleExpose(instance, KPopoverRef, 'KPopover');
+defineExpose(instance);
 </script>
 
 <style lang="less">

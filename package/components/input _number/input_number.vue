@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { InputNumberProps } from './type';
-import { getCompSize } from '../../utils';
+import { getCompSize, handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KInputNumber'
@@ -24,14 +24,9 @@ const props = withDefaults(defineProps<InputNumberProps>(), {});
 
 const inputNumberRef = ref<HTMLElement | null>(null);
 
-const focus = () => {
-  inputNumberRef.value?.focus();
-};
-const blur = () => {
-  inputNumberRef.value?.blur();
-};
-defineExpose({ focus, blur });
-
+const instance: any = {};
+handleExpose(instance, inputNumberRef, 'KInputNumber');
+defineExpose(instance);
 </script>
 
 <style lang="less">

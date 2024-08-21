@@ -1,5 +1,6 @@
 <template>
   <el-popconfirm
+    ref="KPopconfirmRef"
     class="k-popconfirm"
     v-bind="$attrs"
     :icon="props.icon"
@@ -12,8 +13,10 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import { IconClear } from 'ksw-vue-icon';
 import { PopconfirmProps } from './type';
+import { handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KPopconfirm'
@@ -22,6 +25,11 @@ defineOptions({
 const props = withDefaults(defineProps<PopconfirmProps>(), {
   icon: IconClear
 });
+
+const KPopconfirmRef = ref(null);
+const instance: any = {};
+handleExpose(instance, KPopconfirmRef, 'KPopconfirm');
+defineExpose(instance);
 </script>
 
 <style lang="less">

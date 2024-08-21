@@ -12,10 +12,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { FormValidateCallback } from 'element-plus';
+import { ref } from 'vue';
 import { FormItemProps } from './type';
-import { getCompSize } from '../../utils';
+import { getCompSize, handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KFormItem'
@@ -26,26 +25,9 @@ const props = withDefaults(defineProps<FormItemProps>(), {
 });
 
 const KFormItemRef = ref<any>(null);
-
-const validate = (trigger: string, callback?: FormValidateCallback) => KFormItemRef.value?.validate(trigger, callback);
-const resetField = () => {
-  KFormItemRef.value?.resetField();
-};
-const clearValidate = () => {
-  KFormItemRef.value?.clearValidate();
-};
-const size = computed(() => KFormItemRef.value?.size);
-const validateMessage = computed(() => KFormItemRef.value?.validateMessage);
-const validateState = computed(() => KFormItemRef.value?.validateState);
-
-defineExpose({
-  size,
-  validateMessage,
-  validateState,
-  validate,
-  resetField,
-  clearValidate
-});
+const instance: any = {};
+handleExpose(instance, KFormItemRef, 'KFormItem');
+defineExpose(instance);
 </script>
 
 <style lang="less">

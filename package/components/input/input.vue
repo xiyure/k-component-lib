@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { InputProps } from './type.d';
-import { getCompSize } from '../../utils';
+import { getCompSize, handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KInput',
@@ -79,29 +79,9 @@ const appendSlotClass = () => {
 };
 
 const inputRef = ref<any>(null);
-
-const focus = () => {
-  inputRef.value?.focus();
-};
-const blur = () => {
-  inputRef.value?.blur();
-};
-const select = () => {
-  inputRef.value?.select();
-};
-const clear = () => {
-  inputRef.value?.clear();
-};
-const resizeTextarea = () => {
-  inputRef.value?.resizeTextarea();
-};
-defineExpose({
-  focus,
-  blur,
-  select,
-  clear,
-  resizeTextarea,
-});
+const instance: any = {};
+handleExpose(instance, inputRef, 'KInput');
+defineExpose(instance);
 </script>
 
 <style lang="less">
