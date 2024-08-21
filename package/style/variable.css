@@ -96,12 +96,24 @@
 
   /* // color custom&status */
   --k-normal: #38363c; /* 默认字体颜色 */
-  --k-status-captured: #fac814;
-  --k-status-danger: #ef4444;
   --k-status-info: #6b7280;
+  --k-status-captured: #fac814;
+  --k-status-danger: var(--k-red-500);
+  --k-status-danger--hover: var(--k-red-400);
+  --k-status-danger--active: var(--k-red-600);
+  --k-status-danger--focus: var(--k-red-100);
   --k-status-primary: var(--k-blue-500);
-  --k-status-success: #22c55e;
-  --k-status-warning: #f97316;
+  --k-status-primary--hover: var(--k-blue-400);
+  --k-status-primary--active: var(--k-blue-600);
+  --k-status-primary--focus: var(--k-blue-100);
+  --k-status-success: var(--k-green-500);
+  --k-status-success--hover: var(--k-green-400);
+  --k-status-success--active: var(--k-green-600);
+  --k-status-success--focus: var(--k-green-100);
+  --k-status-warning: var(--k-orange-500);
+  --k-status-warning--hover: var(--k-orange-400);
+  --k-status-warning--active: var(--k-orange-600);
+  --k-status-warning--focus: var(--k-orange-100);
   --k-theme-default: var(--k-blue-500);
   --k-theme-light: #ffffff;
 

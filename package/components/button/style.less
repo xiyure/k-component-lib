@@ -1,7 +1,9 @@
 @import '../../style/variable.css';
 @import '../../style/general.less';
 
-.el-button.k-button {
+.el-button.k-button,
+.k-button,
+.k-button--base {
   // 初始化所有样式
   .init-style();
 
@@ -153,9 +155,9 @@
 
   &.el-button--main.is-disabled,
   &.el-button--main.is-disabled:hover {
-    background: var(--k-gray-300);
-    border-color: var(--k-gray-300);
-    color: #fff;
+    background: var(--k-gray-100);
+    border-color: var(--k-gray-200);
+    color: var(--k-gray-300);
   }
 
   &.el-button--main.is-loading,
@@ -187,7 +189,7 @@
   &.el-button--secondary.is-disabled:hover {
     background: var(--k-gray-100);
     color: var(--k-gray-300);
-    border: 1px solid var(--k-gray-300);
+    border: 1px solid var(--k-gray-200);
   }
 
   &.el-button--secondary.is-loading,
@@ -281,9 +283,9 @@
   &.el-button--icon.is-disabled,
   &.el-button--icon.is-disabled:hover,
   &.el-button--icon.is-disabled:active {
-    background: #fff;
+    background: var(--k-gray-100);
     color: var(--k-gray-300);
-    border-color: var(--k-gray-300);
+    border-color: var(--k-gray-200);
   }
   &.el-button--icon.is-disabled {
     cursor: not-allowed;
@@ -304,5 +306,39 @@
     outline: unset;
     outline-offset: unset;
     transition: unset;
+  }
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(40, 130, 255, 0.1);
+  }
+}
+.el-button-group {
+  display: inline-flex;
+  .k-button,
+  .el-button,
+  .k-button.el-button {
+    border-radius: 0;
+    margin: 0;
+    margin-left: -1px;
+    z-index: 1;
+  }
+  .el-button:hover,
+  .el-button:focus {
+    z-index: 2;
+  }
+  .el-button + .el-button--main {
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  .k-button:first-child,
+  .el-button:first-child,
+  .k-button.el-button:first-child {
+    border-top-left-radius: var(--k-rounded-base);
+    border-bottom-left-radius: var(--k-rounded-base);
+  }
+  .k-button:last-child,
+  .el-button:last-child,
+  .k-button.el-button:last-child {
+    border-top-right-radius: var(--k-rounded-base);
+    border-bottom-right-radius: var(--k-rounded-base);
   }
 }

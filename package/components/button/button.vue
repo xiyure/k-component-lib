@@ -13,10 +13,11 @@
         'el-button--icon': props.icon === true,
         'is-loading': props.loading,
         'is-disabled': props.disabled,
-        'button-loading': props.loading
+        'button-loading': props.loading,
       },
       getElTypeColor,
-      getSizeClass
+      getSizeClass,
+      getBtnBase,
     ]"
     :loading="loading"
     :loading-icon="loadingIcon"
@@ -44,7 +45,7 @@ import { ButtonProps } from './type.d';
 import { isValidColor, GetColorLevel, genRandomStr, handleExpose } from '../../utils';
 
 defineOptions({
-  name: 'KButton'
+  name: 'KButton',
 });
 
 const id = genRandomStr(8);
@@ -63,7 +64,7 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   main: false,
   secondary: false,
   text: false,
-  icon: false
+  icon: false,
 });
 
 const color = ref(props.color);
@@ -93,7 +94,7 @@ watch(
       });
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 const getElTypeColor = computed(() => {
@@ -105,6 +106,37 @@ const getElTypeColor = computed(() => {
 });
 
 const getSizeClass = computed(() => (props.size ? `el-button--${props.size}` : ''));
+
+const getBtnBase = computed(() => {
+  // props.type 中包含 primary, success, info, warning, danger 时, 返回 true
+  const checkType = (tp: string) => {
+    switch (tp) {
+      case 'primary':
+        return true;
+      case 'success':
+        return true;
+      case 'info':
+        return true;
+      case 'warning':
+        return true;
+      case 'danger':
+        return true;
+      default:
+        return false;
+    }
+  };
+
+  if (
+    props.main === false &&
+    props.secondary === false &&
+    props.text === false &&
+    props.icon === false &&
+    checkType(props.type)
+  ) {
+    return 'k-button--base';
+  }
+  return '';
+});
 
 const instance: any = {};
 handleExpose(instance, buttonRef, 'KButton');

@@ -9,7 +9,7 @@
     :size="getCompSize(props.size)"
   >
     <template v-if="slots.prepend" #prepend>
-      <div :class="prependSlotClass()">
+      <div :class="slotClass(prependSlotType)">
         <slot name="prepend"></slot>
       </div>
     </template>
@@ -20,14 +20,14 @@
       <slot name="suffix"></slot>
     </template>
     <template v-if="slots.append" #append>
-      <div :class="appendSlotClass()">
+      <div :class="slotClass(appendSlotType)">
         <slot name="append"></slot>
       </div>
     </template>
   </el-input>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { InputProps } from './type.d';
 import { getCompSize, handleExpose } from '../../utils';
 
@@ -52,8 +52,8 @@ const prependSlotType = prependSlot?.[0]?.type;
 const appendSlot = slots.append?.();
 const appendSlotType = appendSlot?.[0]?.type;
 
-const prependSlotClass = () => {
-  switch (typeof prependSlotType) {
+const slotClass = computed(() => (slot) => {
+  switch (typeof slot) {
     case 'string':
       return 'k-input-slot--htmlTag';
     case 'object':
@@ -63,20 +63,7 @@ const prependSlotClass = () => {
     default:
       return '';
   }
-};
-
-const appendSlotClass = () => {
-  switch (typeof appendSlotType) {
-    case 'string':
-      return 'k-input-slot--htmlTag';
-    case 'object':
-      return 'k-input-slot--component';
-    case 'symbol':
-      return 'k-input-slot--string';
-    default:
-      return '';
-  }
-};
+});
 
 const inputRef = ref<any>(null);
 const instance: any = {};
