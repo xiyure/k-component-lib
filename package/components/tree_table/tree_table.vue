@@ -424,7 +424,11 @@ const columnConfig = computed(() => Object.assign(defaultColumnConfig, props.col
 const checkboxConfig = computed(() => Object.assign(defaultCheckboxConfig, props.checkboxConfig || {}));
 
 // 表格数据量
-const dataLength = ref<number>(0);
+const dataLength = computed(() => {
+  const data = tableInstance.value?.getTableData();
+  const { tableData } = data ?? {};
+  return tableData?.length ?? 0;
+});
 // 是否分页
 const isPaging = computed(() => props.showPage && !props.useTree);
 
@@ -482,14 +486,14 @@ watch(
   { immediate: true, deep: true },
 );
 
-const isFilterStatus = ref(false);
+let isFilterStatus = false;
 watch(() => showTableData.value?.length, () => {
   if (!props.useTree) {
     return;
   }
   nextTick(() => {
-    if (query.value.trim() || isFilterStatus.value) {
-      isFilterStatus.value = false;
+    if (query.value.trim() || isFilterStatus) {
+      isFilterStatus = false;
       const maxLength = showTableData.value.length > 500 ? 500 : showTableData.value.length;
       const expandRows = showTableData.value.slice(0, maxLength);
       tableInstance.value?.setTreeExpand(expandRows, true);
@@ -509,7 +513,6 @@ function filterTableData() {
   const { strict, searchMethod } = props.searchConfig ?? {};
   const searchKey = query.value.trim().replace(/\\/g, '\\\\');
   if (!searchKey) {
-    dataLength.value = props.useTree ? 0 : filterData.length;
     return filterData;
   }
   if (props.isRemoteQuery) {
@@ -534,9 +537,7 @@ function filterTableData() {
     tableDataMap = new Map(fullData.value.map((item) => [item[rowField], item]));
     handleTreeData(tableData);
     tableData = sortFunc([...treeDataMap.values()], fullData.value, rowField);
-    dataLength.value = 0;
   } else {
-    dataLength.value = tableData.length;
     updatePageNum(tableData.length);
   }
   return tableData;
@@ -696,9 +697,9 @@ function refreshAdvancedFilter(conditionInfo: any, newTableData: any[]) {
     newFilterData.value = sortFunc([...treeDataMap.values()], fullData.value, rowField);
   }
   if (conditionInfo?.conditionList?.length) {
-    isFilterStatus.value = true;
+    isFilterStatus = true;
   } else {
-    isFilterStatus.value = false;
+    isFilterStatus = false;
   }
 }
 function filter(searchStr: string) {
@@ -777,6 +778,48 @@ function closeBatchOperation() {
   tableInstance.value?.clearCheckboxRow?.();
   tableInstance.value?.clearCheckboxReserve?.();
 }
+function isCheckboxDisabled(row: any) {
+  const { visibleMethod, checkMethod } = checkboxConfig.value;
+  if (typeof visibleMethod === 'function' && !visibleMethod({ row })) {
+    return true;
+  }
+  if (typeof checkMethod === 'function' && !checkMethod({ row })) {
+    return true;
+  }
+  return false;
+}
+function dragEnd(data: any[]) {
+  emits('drag-end', {
+    data,
+    originData: fullData.value,
+  });
+}
+
+// 刷新高级筛选的表格数据
+function advancedFilter(data: any[] | undefined) {
+  tableFilterRef.value?.[0]?.filter(data);
+}
+function clearAdvancedFilter() {
+  tableFilterRef.value?.[0]?.clearFilter();
+}
+// 重写部分vxe的原生方法满足业务需求
+const methods = {
+  setAllCheckboxRow,
+  setCheckboxRow,
+  loadData,
+  getRowById
+};
+function rewriteTableMethods(instance: any) {
+  if (typeof instance !== 'object') {
+    return;
+  }
+  for (const methodName in methods) {
+    if (typeof instance[methodName] === 'function' && !$tableMethods.get(methodName)) {
+      $tableMethods.set(methodName, instance[methodName].bind(instance));
+    }
+    instance[methodName] = methods[methodName];
+  }
+}
 function setCheckboxRow(rows: any[], checked: boolean) {
   const newRows = Array.isArray(rows) ? rows : [rows];
   const keyField = rowConfig.value.keyField ?? 'id';
@@ -802,30 +845,6 @@ function setAllCheckboxRow(checked: boolean) {
   checkedDataSize.value = checkedData.size;
   $tableMethods.get('setAllCheckboxRow')(checked);
 }
-function isCheckboxDisabled(row: any) {
-  const { visibleMethod, checkMethod } = checkboxConfig.value;
-  if (typeof visibleMethod === 'function' && !visibleMethod({ row })) {
-    return true;
-  }
-  if (typeof checkMethod === 'function' && !checkMethod({ row })) {
-    return true;
-  }
-  return false;
-}
-function dragEnd(data: any[]) {
-  emits('drag-end', {
-    data,
-    originData: fullData.value,
-  });
-}
-
-// 刷新高级筛选的表格数据
-function advancedFilter(data: any[] | undefined) {
-  tableFilterRef.value?.[0]?.filter(data);
-}
-function clearAdvancedFilter() {
-  tableFilterRef.value?.[0]?.clearFilter();
-}
 function loadData(data: any[]) {
   if (!Array.isArray(data)) {
     return;
@@ -841,27 +860,6 @@ function getRowById(id: string | number) {
   const tempRows = tableInstance.value?.getInsertRecords();
   const targetRow = tempRows.find((item: any) => item[rowConfig.value.keyField] === id);
   return targetRow;
-}
-// 重写部分vxe的原生方法满足业务需求
-function rewriteTableMethods(instance: any) {
-  if (
-    typeof instance?.setAllCheckboxRow === 'function'
-    && !$tableMethods.get('setAllCheckboxRow')
-  ) {
-    $tableMethods.set('setAllCheckboxRow', instance.setAllCheckboxRow.bind(instance));
-  }
-  if (typeof instance?.setCheckboxRow === 'function' && !$tableMethods.get('setCheckboxRow')) {
-    $tableMethods.set('setCheckboxRow', instance.setCheckboxRow.bind(instance));
-  }
-  if (typeof instance?.getRowById === 'function' && !$tableMethods.get('getRowById')) {
-    $tableMethods.set('getRowById', instance.getRowById.bind(instance));
-  }
-  if (typeof instance === 'object') {
-    instance.setAllCheckboxRow = setAllCheckboxRow;
-    instance.setCheckboxRow = setCheckboxRow;
-    instance.loadData = loadData;
-    instance.getRowById = getRowById;
-  }
 }
 
 defineExpose({
