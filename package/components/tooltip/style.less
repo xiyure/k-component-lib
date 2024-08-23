@@ -1,3 +1,5 @@
+@import '../../style/general.less';
+@import '../../style/variable.css';
 .el-popper__arrow {
   background-color: inherit !important;
   border-color: inherit;
@@ -6,4 +8,15 @@
 .el-popper__arrow::before {
   background-color: inherit !important;
   border-color: inherit !important;
+}
+
+.el-popper {
+  .text-sm();
+  max-width: 20rem;
+  &.is-dark {
+    background: #2d313f;
+    border: 1px solid #38363c;
+    border-radius: var(--k-rounded-base);
+  }
+  box-shadow: 0 4px 12px 0 rgba(56, 54, 60, 0.3);
 }
