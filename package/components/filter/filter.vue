@@ -327,9 +327,9 @@ function changeCondition(index:number) {
   }
 }
 function changeLogic(dataItem) {
-  if ((dataItem.logic === 'after'
-    || dataItem.logic === 'before')
-    && dataItem.dateType === 'datetimerange'
+  if ((dataItem.logic === 'after' ||
+    dataItem.logic === 'before') &&
+    dataItem.dateType === 'datetimerange'
   ) {
     dataItem.dateType = 'datetime';
     dataItem.dateRange = 'date';

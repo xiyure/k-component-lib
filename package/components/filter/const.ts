@@ -140,8 +140,8 @@ export const logicOptions = [
         logic: 'equal',
         handler(a: string, b: string | any[]) {
           if (Array.isArray(b)) {
-            return a > b[0] 
-              && a < b[1];
+            return a > b[0] && 
+              a < b[1];
           }
           return a === b;
         }

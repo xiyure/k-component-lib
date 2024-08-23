@@ -65,14 +65,14 @@ watch(() => stepsProps.active, (newValue) => {
   let color:string = '';
   if (newValue === key) {
     const processStatus = getProcessStatus(stepsProps.processStatus);
-    color = typeKeys.includes(processStatus)
-      ? DEFAULT_STATUS_COLOR[processStatus]
-      : DEFAULT_STATUS_COLOR.primary;
+    color = typeKeys.includes(processStatus) ?
+      DEFAULT_STATUS_COLOR[processStatus] :
+      DEFAULT_STATUS_COLOR.primary;
   } else if (newValue > key) {
     const finishStatus = getProcessStatus(stepsProps.finishStatus);
-    color = typeKeys.includes(finishStatus)
-      ? DEFAULT_STATUS_COLOR[finishStatus]
-      : DEFAULT_STATUS_COLOR.success;
+    color = typeKeys.includes(finishStatus) ?
+      DEFAULT_STATUS_COLOR[finishStatus] :
+      DEFAULT_STATUS_COLOR.success;
   } else {
     color = DEFAULT_STATUS_COLOR.wait;
   }

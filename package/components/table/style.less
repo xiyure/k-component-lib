@@ -12,9 +12,7 @@
   .k-table-column__operate {
     display: flex;
     justify-content: flex-start;
-    .k-table-column__tooltip, .k-table-column__sort {
-      margin-right: 5px;
-    }
+    gap: 5px;
     .k-table-column__tooltip, .k-table-column__more {
       cursor: pointer;
       &:hover {
@@ -28,6 +26,11 @@
       #_desc-icon {
         margin-top: -5px;
       }
+    }
+    .k-table-column__filter {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
     }
     .more-menu-item {
       width: 100%;

@@ -6,6 +6,7 @@
     :filters="filters"
     :sortable="sortable"
     :type="type"
+    :field="field"
     class="k-table-column"
   >
     <template v-if="!type" #header="headerSlotProps">
@@ -39,7 +40,7 @@
         <!-- 排序、筛选等操作区域 -->
         <div class="k-table-column__operate">
           <span v-if="colDesc" class="k-table-column__tooltip">
-            <k-popover
+            <k-tooltip
               trigger="click"
               :content="colDesc"
               placement="top"
@@ -47,7 +48,7 @@
               <template #reference>
                 <i><IconTips /></i>
               </template>
-            </k-popover>
+            </k-tooltip>
           </span>
           <span
             v-if="props.sortable"
@@ -65,6 +66,34 @@
               :style="{ color: headerSlotProps.column.order == 'desc' ? '#2882FF' : '' }"
             ></i>
           </span>
+          <filter-popper
+            :filters="props.filters"
+            :column="headerSlotProps.column"
+            trigger="click"
+            :visible="filterPanelVisible"
+            :text="filterButtonText"
+            @set-filter="setFilter"
+            @clear-filter="clearFilter"
+          >
+            <span
+              v-show="props.filters && filterConfig?.showIcon !== false"
+              class="k-table-column__filter"
+              @click="() => filterPanelVisible = !filterPanelVisible"
+            >
+              <component :is="filterConfig.iconNone" v-if="filterConfig.iconNone && !isFilterActive"></component>
+              <component :is="filterConfig.iconMatch" v-else-if="filterConfig.iconMatch && isFilterActive"></component>
+              <IconFilterFill v-else :size="16" :color="isFilterActive ? '#2882FF' : ''" />
+            </span>
+            <template v-if="$slots.filter">
+              <slot
+                name="filter"
+                :column="headerSlotProps.column"
+                :set-filter="setFilter"
+                :clear-filter="clearFilter"
+              >
+              </slot>
+            </template>
+          </filter-popper>
           <!-- 列头菜单栏 -->
           <span v-if="isShowColumnMenu" class="k-table-column__more">
             <k-popover
@@ -80,57 +109,27 @@
               </template>
               <ul class="more-menu">
                 <li class="more-menu-item">
-                  <k-popover
-                    trigger="hover"
-                    :show-arrow="false"
-                    placement="right-start"
-                    popper-class="filter-box"
-                    :offset="2"
-                    :disabled="!props.filters"
-                    :teleported="false"
-                    @show="updateCheckboxData"
+                  <filter-popper
+                    :filters="props.filters"
+                    :column="headerSlotProps.column"
+                    :text="filterButtonText"
+                    @set-filter="setFilter"
+                    @clear-filter="clearFilter"
                   >
-                    <template #reference>
-                      <div class="filter-select-item" :class="{'disabled': !props.filters}">
-                        <IconFilter class="menu-item-icon" />
-                        {{ $t('filter') }}
-                      </div>
-                    </template>
-                    <slot name="filter">
-                      <ul class="filter-menu">
-                        <li class="filter-menu-item">
-                          <k-checkbox
-                            v-model="isSelectAll"
-                            :label="$t('all')"
-                            value="all"
-                            :indeterminate="isIndeterminate"
-                            @change="selectAll"
-                          />
-                        </li>
-                        <li
-                          v-for="item, index in props.filters"
-                          :key="index"
-                          class="filter-menu-item"
-                        >
-                          <k-checkbox
-                            v-model="item.checked"
-                            :label="item.label"
-                            :value="item.value"
-                            @change="updateCheckboxData"
-                          />
-                        </li>
-                      </ul>
-                    </slot>
-                    <div class="filter-buttons">
-                      <k-button size="sm" @click="clearFilter(headerSlotProps.column)">{{ $t('reset') }}</k-button>
-                      <k-button
-                        class="filter-btn-item"
-                        size="sm"
-                        secondary
-                        @click="setFilter(headerSlotProps.column.field, props.filters)"
-                      >{{ $t('filter') }}</k-button>
+                    <div class="filter-select-item" :class="{'disabled': !props.filters}">
+                      <IconFilter class="menu-item-icon" />
+                      {{ $t('filter') }}
                     </div>
-                  </k-popover>
+                    <template v-if="$slots.filter">
+                      <slot
+                        name="filter"
+                        :column="headerSlotProps.column"
+                        :set-filter="setFilter"
+                        :clear-filter="clearFilter"
+                      >
+                      </slot>
+                    </template>
+                  </filter-popper>
                 </li>
                 <li class="more-menu-item">
                   <k-popover
@@ -231,6 +230,7 @@ import {
   IconTips,
   IconMore,
   IconFilter,
+  IconFilterFill,
   IconHide,
   IconFold,
   IconUnfold,
@@ -241,11 +241,12 @@ import {
   IconEdit,
   IconClearDate
 } from 'ksw-vue-icon';
+import FilterPopper from './filter_popper.vue';
 import { KPopover } from '../popover';
 import { KDialog } from '../dialog';
 import { KInput } from '../input';
 import { KButton } from '../button';
-import { KCheckbox } from '../checkbox';
+import { KTooltip } from '../tooltip';
 import { TableColumnProps } from './type.d';
 
 defineOptions({
@@ -254,6 +255,7 @@ defineOptions({
 
 const tableInstance:any = inject('tableInstance');
 const pid = inject('tableId');
+const filterPanelConfig: any = inject('filterPanelConfig');
 const showColumnMenuParent = inject('showColumnMenu', false);
 const props = withDefaults(defineProps<TableColumnProps>(), {
   showColumnMenu: undefined
@@ -265,8 +267,7 @@ const columnWidth = ref(props.width);
 const colDesc = ref('');
 const dialogVisible = ref(false);
 const textareaContent = ref('');
-const isSelectAll = ref(false);
-const isIndeterminate = ref(false);
+const filterPanelVisible = ref(false);
 const emitter = getCurrentInstance()?.appContext.app.config.globalProperties.__emitter__;
 
 watch(() => props.desc, (newValue) => {
@@ -276,7 +277,28 @@ watch(() => props.desc, (newValue) => {
   colDesc.value = newValue;
 }, { immediate: true });
 
+watch(() => filterPanelConfig.value, () => {
+  const { field, isOpen } = filterPanelConfig.value;
+  if (props.field !== field) {
+    return;
+  }
+  if (isOpen === true) {
+    filterPanelVisible.value = true;
+  } else if (isOpen === false) {
+    filterPanelVisible.value = false;
+  }
+}, { deep: true });
+
 const isShowColumnMenu = computed(() => props.showColumnMenu ?? showColumnMenuParent);
+const isFilterActive = computed(() => tableInstance.value?.isFilter(props.field));
+const filterConfig = computed(() => tableInstance.value.filterConfig ?? {});
+const filterButtonText = computed(() => {
+  const { confirmButtonText, resetButtonText } = filterConfig.value;
+  return {
+    confirmButtonText,
+    resetButtonText
+  };  
+});
 // 排序
 function changeSortStatus(e:any, column:any) {
   const id = e.target?.id;
@@ -317,42 +339,16 @@ function addDescription(column:VxeColumnProps) {
   (emitter as any)?.emit('desc-change', pid, column, colDesc.value);
 }
 // 列隐藏
-function hideColumn(column) {
+function hideColumn(column: VxeColumnProps) {
   emitter?.emit('hide-column', pid, column);
 }
 // 筛选表格数据
-function selectAll() {
-  if (isSelectAll.value && isIndeterminate.value) {
-    isIndeterminate.value = false;
-  }
-  props.filters?.forEach(item => {
-    item.checked = isSelectAll.value;
-  });
-}
-function updateCheckboxData() {
-  if (!Array.isArray(props.filters)) {
-    isSelectAll.value = false;
-    return;
-  }
-  isSelectAll.value = props.filters?.every(item => item.checked);
-  const hasChecked = props.filters?.some(item => item.checked);
-  if (!isSelectAll.value && hasChecked) {
-    isIndeterminate.value = true;
-  } else {
-    isIndeterminate.value = false;
-  }
-}
 async function setFilter(column: string | VxeColumnProps, options: any) {
   await tableInstance.value.setFilter(column, options);
   tableInstance.value.updateData();
 }
 async function clearFilter(column: string | VxeColumnProps) {
   await tableInstance.value.clearFilter(column);
-  props.filters?.forEach(item => {
-    item.checked = false;
-  });
-  isIndeterminate.value = false;
-  isSelectAll.value = false;
 }
 </script>
 

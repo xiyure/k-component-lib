@@ -95,8 +95,8 @@ const defaultPropsConfig = computed(() => ({ label: 'label',
   disabled: 'disabled',
   ...props.props }));
 
-const filterablePlaceholder = computed(() => props.filterablePlaceholder
-  ?? _global?.$t('searchHeaderName'));
+const filterablePlaceholder = computed(() => props.filterablePlaceholder ??
+  _global?.$t('searchHeaderName'));
 
 watch(() => [props.modelValue, props.matchKey], () => {
   if (!Array.isArray(props.modelValue)) {

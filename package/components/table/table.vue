@@ -60,6 +60,11 @@ nextTick(() => {
   timer = setTimeout(() => {
     rowDrop();
   }, 500);
+  if (!tableInstance.value) {
+    return;
+  }
+  tableInstance.value.openFilter = openFilter as any;
+  tableInstance.value.closeFilter = closeFilter as any;
 });
 
 onUnmounted(() => {
@@ -122,9 +127,38 @@ function updateDescription(column:VxeColumnProps, desc:string) {
 function hideColumn(column: VxeColumnProps) {
   emits(HIDE_COLUMN, column);
 }
+// 处理筛选面板是否显示
+const filterPanelConfig = ref({
+  field: '___default___',
+  isOpen: false
+});
+function openFilter(column: VxeColumnProps | string) {
+  return new Promise((resolve) => {
+    let field = column;
+    if (typeof column === 'object') {
+      field = column.field ?? '';
+    }
+    filterPanelConfig.value.field = field as string;
+    filterPanelConfig.value.isOpen = true;
+    resolve(true);
+  });
+}
+function closeFilter(column: VxeColumnProps | string) {
+  return new Promise((resolve) => {
+    let field = column;
+    if (typeof column === 'object') {
+      field = column.field ?? '';
+    }
+    filterPanelConfig.value.field = field as string;
+    filterPanelConfig.value.isOpen = false;
+    resolve(true);
+  });
+}
+
 provide('tableInstance', vxeTableRef);
 provide('tableId', id);
 provide('showColumnMenu', props.showColumnMenu);
+provide('filterPanelConfig', filterPanelConfig);
 const tableInstance = computed(() => vxeTableRef.value);
 defineExpose({
   tableInstance

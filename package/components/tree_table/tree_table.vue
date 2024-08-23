@@ -507,9 +507,9 @@ watch(() => showTableData.value?.length, () => {
 let tableDataMap: Map<string | number, any> = new Map();
 const treeDataMap: Map<string | number, any> = new Map();
 function filterTableData() {
-  const filterData = filterConditionInfo.value?.conditionList?.length
-    ? newFilterData.value
-    : fullData.value;
+  const filterData = filterConditionInfo.value?.conditionList?.length ?
+    newFilterData.value :
+    fullData.value;
   const { strict, searchMethod } = props.searchConfig ?? {};
   const searchKey = query.value.trim().replace(/\\/g, '\\\\');
   if (!searchKey) {

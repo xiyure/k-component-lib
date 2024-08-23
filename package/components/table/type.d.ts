@@ -11,4 +11,5 @@ export interface TableColumnProps {
   showColumnMenu?: boolean
   editRender?: any
   type?: 'seq' | 'checkbox' | 'radio' | 'html' | 'expand'
+  field?: string
 }
