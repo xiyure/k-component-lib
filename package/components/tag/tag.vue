@@ -64,22 +64,24 @@ const defaultColor = {
   info: '#6B7280',
 };
 
-const fillColor = computed(() => (isValidColor(props.color) ? props.color : defaultColor[props.type]));
+const fillColor = computed(() =>
+  isValidColor(props.color) ? props.color : defaultColor[props.type],
+);
 const tagTextColor = computed(() => {
   const color = props.point ? fillColor.value : '#FFF';
   return isValidColor(props.textColor) ? props.textColor : color;
 });
 const tagAttrs = computed(() => {
   let sizeAttr = {
-    width: '12px',
-    height: '12px',
-    fontSize: '14px',
+    width: '0.75rem',
+    height: '0.75rem',
+    fontSize: '0.875rem',
   };
   if (props.size === 'sm') {
     sizeAttr = {
-      width: '8px',
-      height: '8px',
-      fontSize: '13px',
+      width: '0.5rem',
+      height: '0.5rem',
+      fontSize: '0.75rem',
     };
   }
   return sizeAttr;
