@@ -51,19 +51,41 @@
             </k-tooltip>
           </span>
           <span
-            v-if="props.sortable"
-            class="k-table-column__sort"
-            @click="changeSortStatus($event,headerSlotProps.column)"
+            v-if="props.sortable && sortConfig?.showIcon !== false"
+            :class="[
+              'k-table-column__sort',
+              sortConfig.iconLayout === 'horizontal' ? 'sort-icon__horizontal' : 'sort-icon__vertical'
+            ]"
           >
+            <component
+              :is="sortConfig.iconAsc"
+              v-if="sortConfig.iconAsc"
+              :style="{
+                color: headerSlotProps.column.order == 'asc' ? '#2882FF' : '' ,
+                fontSize: '15px'
+              }"
+              @click="changeSortStatus('_asc-icon', headerSlotProps.column)"
+            ></component>
             <i
-              id="_asc-icon"
-              class="vxe-table-icon-caret-up"
+              v-else
+              class="vxe-table-icon-caret-up icon-asc"
               :style="{ color: headerSlotProps.column.order == 'asc' ? '#2882FF' : '' }"
+              @click="changeSortStatus('_asc-icon', headerSlotProps.column)"
             ></i>
+            <component
+              :is="sortConfig.iconDesc"
+              v-if="sortConfig.iconDesc"
+              :style="{
+                color: headerSlotProps.column.order == 'desc' ? '#2882FF' : '' ,
+                fontSize: '15px'
+              }"
+              @click="changeSortStatus('_desc-icon', headerSlotProps.column)"
+            ></component>
             <i
-              id="_desc-icon"
-              class="vxe-table-icon-caret-down"
+              v-else
+              class="vxe-table-icon-caret-down icon-desc"
               :style="{ color: headerSlotProps.column.order == 'desc' ? '#2882FF' : '' }"
+              @click="changeSortStatus('_desc-icon', headerSlotProps.column)"
             ></i>
           </span>
           <filter-popper
@@ -74,6 +96,8 @@
             :text="filterButtonText"
             @set-filter="setFilter"
             @clear-filter="clearFilter"
+            @filter-change="filterChange"
+            @filter-visible="filterVisible"
           >
             <span
               v-show="props.filters && filterConfig?.showIcon !== false"
@@ -115,6 +139,8 @@
                     :text="filterButtonText"
                     @set-filter="setFilter"
                     @clear-filter="clearFilter"
+                    @filter-change="filterChange"
+                    @filter-visible="filterVisible"
                   >
                     <div class="filter-select-item" :class="{'disabled': !props.filters}">
                       <IconFilter class="menu-item-icon" />
@@ -299,9 +325,9 @@ const filterButtonText = computed(() => {
     resetButtonText
   };  
 });
+const sortConfig = computed(() => tableInstance.value.sortConfig ?? {});
 // 排序
-function changeSortStatus(e:any, column:any) {
-  const id = e.target?.id;
+function changeSortStatus(id: string, column:any) {
   const order = column.order;
   let op:any = null;
   if (id === '_asc-icon' && order !== 'asc') {
@@ -347,9 +373,18 @@ async function setFilter(column: string | VxeColumnProps, options: any) {
   await tableInstance.value.setFilter(column, options);
   tableInstance.value.updateData();
 }
+// 事件处理
 async function clearFilter(column: string | VxeColumnProps) {
   await tableInstance.value.clearFilter(column);
+  emitter?.emit('clear-filter', pid, { filterList: props.filters });
 }
+function filterChange(column: VxeColumnProps, field: string, filterList: any[]) {
+  emitter.emit('filter-change', pid, { column, field, filterList });
+}
+function filterVisible(column: VxeColumnProps, field: string, visible: boolean, filterList: any[]) {
+  emitter.emit('filter-visible', pid, { column, field, visible, filterList });
+}
+
 </script>
 
 <style lang="less">

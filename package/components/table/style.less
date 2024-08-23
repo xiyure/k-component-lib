@@ -21,11 +21,23 @@
     }
     .k-table-column__sort {
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      margin-right: 6px;
       cursor: pointer;
-      #_desc-icon {
-        margin-top: -5px;
+      .icon-asc, .icon-desc {
+        width: 0.5em;
+        height: 0.6em;
+        color: #c0c4cc;
+        &:hover {
+          color: #606266;
+        }
       }
+    }
+    .sort-icon__vertical {
+      flex-direction: column;
+    }
+    .sort-icon__horizontal {
+      flex-direction: row;
     }
     .k-table-column__filter {
       display: flex;

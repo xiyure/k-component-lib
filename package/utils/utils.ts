@@ -87,52 +87,42 @@ export function GetColorLevel(hex:any) {
 }
 
 // 自定义事件总线调度
-type emitterType = {
-  id: string,
-  callback: () => any
-}
 export class Emitter {
-  events: Map<string, emitterType[]>;
+  events: Map<string | number, any>;
 
   constructor() {
     this.events = new Map();
   }
 
   on(eventName:string, id: string, callback:() => any) {
-    const eventItem = this.events.get(eventName);
+    const eventItem = this.events.get(id);
     if (!eventItem) {
-      this.events.set(eventName, [{ id, callback }]);
+      this.events.set(id, { [eventName]: callback });
       return;
     }
-    eventItem.push({
-      id,
-      callback
-    });
+    if (!eventItem[eventName]) {
+      eventItem[eventName] = callback;
+    }
   }
 
   emit(eventName:string, id: string, ...arg:any[]) {
-    const event = this.events.get(eventName);
-    if (!event) {
+    const func = this.events.get(id)?.[eventName];
+    if (typeof func !== 'function') {
       return;
     }
-    const eventItem = event.find(item => item.id === id);
-    if (eventItem) {
-      const { callback } = eventItem;
-      callback.call(null, ...arg);
-    }
+    func.call(null, ...arg);
   }
 
   remove(eventName: string, id: string) {
-    const eventItem = this.events.get(eventName);
+    const eventItem = this.events.get(id);
     if (!eventItem) {
       return;
     }
-    const removeIndex = eventItem.findIndex(item => item.id === id);
-    if (removeIndex !== -1) {
-      eventItem.splice(removeIndex, 1);
+    if (eventItem[eventName]) {
+      delete eventItem[eventName];
     }
-    if (eventItem.length === 0) {
-      this.events.delete(eventName);
+    if (Object.keys(eventItem).length === 0) {
+      this.events.delete(id);
     }
   }
 }

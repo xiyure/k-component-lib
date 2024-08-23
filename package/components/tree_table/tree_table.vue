@@ -19,7 +19,7 @@
             {{ headerText }}
           </span>
           <span
-            v-if="filterConditionInfo?.conditionList?.length"
+            v-if="filterConditionInfo?.conditionList?.length && tableFilterRef?.[0].clearFilter"
             class="filter-reset"
             @click="clearAdvancedFilter"
           >
@@ -370,11 +370,14 @@ const fullData = computed(() => {
 });
 // 高级筛选功能只处理非特殊、可见的有效数据
 const filterColumns = computed(() => {
-  const { filterColumns, filterAll } = props.advancedFilterConfig ?? {};
+  const { filterColumns, filterAll, exclude = [] } = props.advancedFilterConfig ?? {};
   const validColumns = getValidTreeData(
     cloneDeep(columns.value),
     'group',
-    (dataItem) => !dataItem.type && dataItem.field && (filterAll !== false || dataItem.visible !== false),
+    (dataItem) => !dataItem.type &&
+      dataItem.title && dataItem.field &&
+      (filterAll !== false || dataItem.visible !== false) &&
+      !exclude.includes(dataItem.field)
   );
   if (filterColumns) {
     return resetTreeData(validColumns, 'group', filterColumns, 'field');
@@ -426,8 +429,8 @@ const checkboxConfig = computed(() => Object.assign(defaultCheckboxConfig, props
 // 表格数据量
 const dataLength = computed(() => {
   const data = tableInstance.value?.getTableData();
-  const { tableData } = data ?? {};
-  return tableData?.length ?? 0;
+  const { fullData } = data ?? {};
+  return fullData?.length ?? 0;
 });
 // 是否分页
 const isPaging = computed(() => props.showPage && !props.useTree);

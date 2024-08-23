@@ -5,10 +5,10 @@
     placement="right-start"
     popper-class="filter-box"
     :offset="2"
-    :disabled="!props.filters"
+    :disabled="!props.filters?.length"
     :teleported="true"
     :visible="visible"
-    @show="updateCheckboxData"
+    @show="showPopover"
   >
     <template #reference>
       <slot></slot>
@@ -24,7 +24,7 @@
         <li v-for="item, index in props.filters" :key="index" class="filter-menu-item">
           <k-checkbox
             v-model="item.checked" :label="item.label" :value="item.value"
-            @change="updateCheckboxData"
+            @change="updateCheckboxData(true)"
           />
         </li>
       </ul>
@@ -70,12 +70,19 @@ const props = defineProps({
   }
 });
 
-const emits = defineEmits(['set-filter', 'clear-filter']);
+const emits = defineEmits(['set-filter', 'clear-filter', 'filter-change', 'filter-visible']);
 
 const isSelectAll = ref(false);
 const isIndeterminate = ref(false);
 
-function updateCheckboxData() {
+function showPopover() {
+  updateCheckboxData(false);
+  emits('filter-visible', props.column, props.column?.field, true, props.filters);
+}
+function updateCheckboxData(isEmit: boolean) {
+  if (isEmit) {
+    emits('filter-change', props.column, props.column?.field, props.filters);
+  }
   if (!Array.isArray(props.filters)) {
     isSelectAll.value = false;
     return;
@@ -96,6 +103,7 @@ function selectAll() {
   props.filters?.forEach((item: any) => {
     item.checked = isSelectAll.value;
   });
+  emits('filter-change', props.column, props.column?.field, props.filters);
 }
 function setFilter() {
   emits('set-filter', props.column, props.filters);

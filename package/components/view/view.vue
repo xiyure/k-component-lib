@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, provide, getCurrentInstance } from 'vue';
+import { ref, onUnmounted, watch, provide, getCurrentInstance } from 'vue';
 import { IconRefresh } from 'ksw-vue-icon';
 import { ViewProps } from './type';
 import { genRandomStr } from '../../utils';
@@ -38,18 +38,22 @@ const props = withDefaults(defineProps<ViewProps>(), {
 });
 
 const id = genRandomStr(8);
-onMounted(() => {
-  const emitter = getCurrentInstance()?.appContext.app.config.globalProperties.__emitter__;
-  emitter.on('change-active-view', id, handleChange.bind(this));
-  emitter.on('remove', id, handleRemove.bind(this));
-  emitter.on('drag-start', id, onDragStart.bind(this));
-  emitter.on('drag-drop', id, onDrop.bind(this));
-});
+const emitter = getCurrentInstance()?.appContext.app.config.globalProperties.__emitter__;
+emitter.on('change-active-view', id, handleChange.bind(this));
+emitter.on('remove', id, handleRemove.bind(this));
+emitter.on('drag-start', id, onDragStart.bind(this));
+emitter.on('drag-drop', id, onDrop.bind(this));
 const emits = defineEmits(['refresh', 'change', 'remove', 'update:modelValue']);
 const activeView = ref(props.modelValue);
 const specialViewId = genRandomStr(8);
 const customViewId = genRandomStr(8);
 
+onUnmounted(() => {
+  emitter.on('change-active-view', id);
+  emitter.on('remove', id);
+  emitter.on('drag-start', id);
+  emitter.on('drag-drop', id);
+});
 watch(() => props.modelValue, (newValue) => {
   activeView.value = newValue;
 });

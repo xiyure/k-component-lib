@@ -36,6 +36,29 @@ import { genRandomStr } from '../../utils';
 const DESC_EVENT_NAME = 'desc-change';
 const HIDE_COLUMN = 'hide-column';
 
+const eventMap = {
+  descChange: {
+    name: 'desc-change',
+    callback: updateDescription.bind(this)
+  },
+  hideColumn: {
+    name: 'hide-column',
+    callback: hideColumn.bind(this)
+  },
+  clearFilter: {
+    name: 'clear-filter',
+    callback: onClearFilter.bind(this)
+  }, 
+  filterChange: {
+    name: 'filter-change',
+    callback: onFilterChange.bind(this)
+  },
+  filterVisible: {
+    name: 'filter-visible',
+    callback: onFilterVisible.bind(this)
+  }
+};
+
 defineOptions({
   name: 'KTable'
 });
@@ -48,10 +71,19 @@ const slots = defineSlots();
 const id = genRandomStr(8);
 // 事件管理
 const emitter = getCurrentInstance()?.appContext.app.config.globalProperties.__emitter__;
-emitter.on(DESC_EVENT_NAME, id, updateDescription.bind(this));
-emitter.on(HIDE_COLUMN, id, hideColumn.bind(this));
+for (const key in eventMap) {
+  const { name, callback } = eventMap[key];
+  emitter.on(name, id, callback);
+}
 
-const emits = defineEmits(['desc-change', 'hide-column', 'drag-end']);
+const emits = defineEmits([
+  'desc-change',
+  'hide-column',
+  'drag-end',
+  'filter-change',
+  'filter-visible',
+  'clear-filter'
+]);
 const vxeTableRef = ref<VxeTableInstance>();
 // 拖拽
 let timer: any;
@@ -68,8 +100,10 @@ nextTick(() => {
 });
 
 onUnmounted(() => {
-  emitter.remove(DESC_EVENT_NAME, id);
-  emitter.remove(HIDE_COLUMN, id);
+  for (const key in eventMap) {
+    const { name } = eventMap[key];
+    emitter.remove(name, id);
+  }
   clearTimeout(timer);
   if (sortable) {
     sortable.destroy();
@@ -153,6 +187,15 @@ function closeFilter(column: VxeColumnProps | string) {
     filterPanelConfig.value.isOpen = false;
     resolve(true);
   });
+}
+function onFilterChange(data: any) {
+  emits('filter-change', data);
+}
+function onFilterVisible(data: any) {
+  emits('filter-visible', data);
+}
+function onClearFilter(data: any) {
+  emits('clear-filter', data);
 }
 
 provide('tableInstance', vxeTableRef);
