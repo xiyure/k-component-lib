@@ -19,7 +19,7 @@
             {{ headerText }}
           </span>
           <span
-            v-if="filterConditionInfo?.conditionList?.length && tableFilterRef?.[0].clearFilter"
+            v-if="filterConditionInfo?.conditionList?.length && tableFilterRef?.[0]?.clearFilter"
             class="filter-reset"
             @click="clearAdvancedFilter"
           >
