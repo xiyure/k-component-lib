@@ -1,5 +1,8 @@
 <template>
   <el-tree-select ref="KTreeSelectRef" v-bind="$attrs" @node-click="handleNodeClick">
+    <template v-if="$slots.empty" #empty>
+      <slot name="empty"></slot>
+    </template>
     <template #default="{ data }">
       <span>
         <component
@@ -34,7 +37,6 @@ const KTreeSelectRef = ref();
 const instance: any = {};
 handleExpose(instance, KTreeSelectRef, 'KTreeSelect');
 defineExpose(instance);
-
 </script>
 
 <style lang="less">
