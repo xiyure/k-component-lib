@@ -64,9 +64,7 @@ const defaultColor = {
   info: '#6B7280',
 };
 
-const fillColor = computed(() =>
-  isValidColor(props.color) ? props.color : defaultColor[props.type],
-);
+const fillColor = computed(() => (isValidColor(props.color) ? props.color : defaultColor[props.type]));
 const tagTextColor = computed(() => {
   const color = props.point ? fillColor.value : '#FFF';
   return isValidColor(props.textColor) ? props.textColor : color;

@@ -90,6 +90,7 @@
               <k-transfer
                 v-model="selectData"
                 :data="originData"
+                :default-keys="defaultHeader"
                 :titles="[$t('unselectedFields'), $t('selectedFields')]"
                 @change="updateColumn"
                 @reset="updateColumn"
@@ -307,6 +308,7 @@ const searchStr = ref('');
 // 穿梭框
 const selectData = ref<any>([]);
 const originData = ref<any>([]);
+const defaultHeader = ref<string[]>([]);
 // 高级筛选
 const tableFilterRef = ref(); // 高级筛选后的数据
 const newFilterData = ref<any>([]);
@@ -458,33 +460,11 @@ watch(
   () => {
     columns.value = props.column.map((col) => {
       const visible = col.visible !== false;
-      return { ...col, visible };
+      return { ...(cloneDeep(col)), visible };
     });
-    flatColumns.value = treeDataToArray(columns.value, 'group');
+    // 列配置更新时需要初始化表头控制器的数据
+    initTransfer();
     handleCustomRender();
-  },
-  { immediate: true, deep: true },
-);
-watch(
-  () => flatColumns.value.length,
-  () => {
-    originData.value = flatColumns.value
-    .map((item) => {
-      if (item.title && item.field) {
-        return {
-          label: item.title,
-          key: item.field,
-        };
-      }
-      return null;
-    })
-    .filter((item) => item);
-    selectData.value = flatColumns.value
-    .filter((col) => col.visible !== false)
-    .map((item) => ({
-      label: item.title,
-      key: item.field,
-    }));
   },
   { immediate: true, deep: true },
 );
@@ -675,6 +655,41 @@ function updateColumn(ids: string[]) {
     }
   });
 }
+// 表头控制相关方法
+function initTransfer() {
+  flatColumns.value = treeDataToArray(columns.value, 'group');
+  originData.value = flatColumns.value
+  .map((item: columnConfigType) => {
+    if (item.title && item.field) {
+      return {
+        label: item.title,
+        key: item.field,
+      };
+    }
+    return null;
+  })
+  .filter((item: columnConfigType) => item);
+  selectData.value = flatColumns.value
+  .filter((col: columnConfigType) => col.visible !== false)
+  .map((item: columnConfigType) => ({
+    label: item.title,
+    key: item.field,
+  }));
+  defaultHeader.value = selectData.value.map((item: columnConfigType) => item.key);
+}
+function hideColumn(column: columnConfigType) {
+  if (!props.showHeaderTools || !widgets.value?.includes('transfer')) {
+    return;
+  }
+  const columnItem = flatColumns.value.find((item) => item.field === column.field);
+  columnItem.visible = false;
+  selectData.value = flatColumns.value
+  .filter((col) => col.visible !== false)
+  .map((item: any) => ({
+    label: item.title,
+    key: item.field,
+  }));
+}
 function sortTableHeader(fieldList: string[]) {
   const map = new Map(flatColumns.value.map((v: columnConfigType) => [v.field, v]));
   const setData = (columns: columnConfigType) => {
@@ -707,19 +722,6 @@ function refreshAdvancedFilter(conditionInfo: any, newTableData: any[]) {
 }
 function filter(searchStr: string) {
   query.value = searchStr;
-}
-function hideColumn(column: columnConfigType) {
-  if (!props.showHeaderTools || !widgets.value?.includes('transfer')) {
-    return;
-  }
-  const columnItem = flatColumns.value.find((item) => item.field === column.field);
-  columnItem.visible = false;
-  selectData.value = flatColumns.value
-  .filter((col) => col.visible !== false)
-  .map((item: any) => ({
-    label: item.title,
-    key: item.field,
-  }));
 }
 // 行高亮
 let isHighlight = false;
