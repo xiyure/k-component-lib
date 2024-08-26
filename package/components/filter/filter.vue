@@ -145,7 +145,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, getCurrentInstance, onMounted } from 'vue';
+import { ref, computed, getCurrentInstance } from 'vue';
 import { IconClose, IconClearDate, IconAdd, IconFilter, IconFilterFill } from 'ksw-vue-icon';
 import { cloneDeep } from 'lodash-es';
 import { FilterProps } from './type';
@@ -181,11 +181,6 @@ type IFilterDataType = {
 };
 
 const emits = defineEmits(['confirm']);
-
-onMounted(() => {
-  addCondition();
-});
-
 const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
 const t = _global?.$t;
 const filterData = ref<IFilterDataType[]>([]);
@@ -222,6 +217,35 @@ const disabledDatePicker = computed(() => function (item:IFilterDataType) {
   return disabledInput.value(item) || !notDisabledDateRanges.includes(item.dateRange as string);
 });
 
+initData();
+function initData() {
+  const defaultFilterData = props.defaultConditions;
+  if (!Array.isArray(defaultFilterData) || !defaultFilterData.length) {
+    addCondition();
+    return;
+  }
+  for (let i = 0; i < defaultFilterData.length; i++) {
+    addCondition();
+  }
+  for (let index = 0; index < filterData.value.length; index++) {
+    const v = filterData.value[index];
+    const { title, logic, value, showValue, key, handler } = defaultFilterData[index];
+    v.title = title.split('-');
+    v.logic = logic;
+    v.value = value;
+    v.showValue = showValue;
+    v.key = key;
+    v.handler = handler;
+    const columnItem = flatColumns.value?.find(col => col[props.filterKey] === key);
+    if (columnItem.dataType === 'date' && !Array.isArray(value)) {
+      v.dateRange = 'date';
+      v.dateType = 'datetime';
+    } else if (columnItem.dataType === 'date' && Array.isArray(value)) {
+      v.dateRange = 'range';
+      v.dateType = 'datetimerange';
+    }
+  }
+}
 // 添加条件
 function addCondition() {
   const addItem = {
@@ -261,6 +285,7 @@ function filter(data?: any[]) {
   .map(item => ({
     title: item.title.join(' - '),
     logic: t?.(item.logic),
+    key: item.key,
     showValue: item.showValue,
     value: item.value,
     handler: item.handler
@@ -426,7 +451,6 @@ function updateValue(dataItem:IFilterDataType, uiType:string, options?:any[]) {
   if (uiType === 'input') {
     dataItem.showValue = dataItem.value;
   } else if (uiType === 'select') {
-    console.log(dataItem);
     const targetOption = options?.find(item => item.value === dataItem.value);
     dataItem.showValue = targetOption?.label ?? '';
   }

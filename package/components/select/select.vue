@@ -1,5 +1,8 @@
 <template>
-  <el-select ref="inputRef" class="k-select" v-bind="$attrs" :size="getCompSize(props.size)">
+  <el-select
+    ref="inputRef" class="k-select" v-bind="$attrs"
+    :size="getCompSize(props.size)"
+  >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
       <slot :name="name" v-bind="data"></slot>
     </template>

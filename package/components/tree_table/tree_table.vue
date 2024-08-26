@@ -69,6 +69,7 @@
               :size="compSize"
               children-field="group"
               filter-key="field"
+              :default-conditions="advancedFilterConfig?.defaultConditions"
               @confirm="refreshAdvancedFilter"
             >
               <template #reference="{ hasConfigCondition }">

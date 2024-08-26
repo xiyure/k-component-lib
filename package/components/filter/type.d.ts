@@ -5,5 +5,6 @@ export interface FilterProps {
   border?: boolean
   size?: 'base' | 'sm'
   childrenField?: string
-  filterKey?: string
+  filterKey?: string,
+  defaultConditions?: any[]
 }

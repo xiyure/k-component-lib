@@ -81,7 +81,8 @@ export interface TreeTableProps {
   advancedFilterConfig?: {
     filterColumns?: FilterColumnType[]
     filterAll?: boolean
-    exclude?: string[]
+    exclude?: string[],
+    defaultConditions?: any[]
   }
   searchConfig?: {
     strict?: boolean
