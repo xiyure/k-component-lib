@@ -1,10 +1,5 @@
 <template>
-  <el-tooltip
-    ref="tooltipRef"
-    class="k-tooltip"
-    v-bind="$attrs"
-    :popper-style="_popperStyle"
-  >
+  <el-tooltip ref="tooltipRef" class="k-tooltip" v-bind="$attrs" :popper-style="_popperStyle">
     <slot>
       <i class="k-tooltip-icon">
         <IconTips
@@ -50,10 +45,12 @@ const fillColor: any = ref(undefined);
 
 const _popperStyle = computed(() => {
   const popperStyle = props.popperStyle || {};
-  return { color: props.textColor,
+  return {
+    color: props.textColor,
     backgroundColor: fillColor.value,
     borderColor: fillColor.value,
-    ...popperStyle };
+    ...popperStyle,
+  };
 });
 
 watch(
