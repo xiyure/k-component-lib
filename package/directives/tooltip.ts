@@ -1,5 +1,5 @@
 import { createApp, DirectiveBinding, Directive } from 'vue';
-import { ElTooltip } from 'element-plus';
+import { KTooltip } from '../components/tooltip';
 
 export const tooltip: Directive = {
   mounted(el: HTMLElement, binding: DirectiveBinding) {
@@ -23,7 +23,7 @@ const createTooltip = (el: any, binding: DirectiveBinding) => {
   _tipRoot.classList.add('_tipRoot');
   const { trigger, placement, content, showAfter, autoClose } = binding?.value ?? {};
   // 通过createApp 创建实例组件
-  const _tipApp = createApp(ElTooltip, {
+  const _tipApp = createApp(KTooltip, {
     virtualRef: el,
     rawContent: true,
     virtualTriggering: true,

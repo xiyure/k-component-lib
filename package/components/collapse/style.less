@@ -1,19 +1,20 @@
 @import '../../style/variable.less';
 
-.el-collapse {
-  border: none !important;
-}
-.el-collapse-item__header, .el-collapse-item__content {
-  font-size: inherit;
-}
-.el-collapse-item__header {
-  height: 38px;
-  border-radius: 8px;
-  background-color: @k-gray-50;
-}
-.el-collapse-item__header {
-  padding-left: 8px;
-}
-.el-collapse-item__content {
-  padding-bottom: 10px;
+.k-collapse {
+  .el-collapse {
+    border: none !important;
+  }
+  .el-collapse-item__header, .el-collapse-item__content {
+    font-size: inherit;
+  }
+  .el-collapse-item__header {
+    height: 38px;
+    border-radius: 8px;
+  }
+  .el-collapse-item__header {
+    padding-left: 8px;
+  }
+  .el-collapse-item__content {
+    padding-bottom: 10px;
+  }
 }
