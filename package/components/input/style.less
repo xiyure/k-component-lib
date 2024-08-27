@@ -1,8 +1,7 @@
 @import '../../style/variable.css';
 @import '../../style/general.less';
 
-.k-input,
-.el-input,
+.k-input.el-input,
 .el-textarea {
   // 所有样式设置为unset
   .init-style();
@@ -116,6 +115,9 @@
         user-select: all;
       }
       .k-input-slot--component {
+        .k-button {
+          margin: 0;
+        }
         .k-button--base {
           border: 1px solid var(--border-color--normal);
           &:hover {
@@ -143,6 +145,9 @@
               }
             }
           }
+        }
+        .k-button + .k-button {
+          margin: 0;
         }
       }
     }
