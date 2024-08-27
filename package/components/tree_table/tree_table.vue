@@ -440,8 +440,9 @@ const isPaging = computed(() => props.showPage && !props.useTree);
 
 // 页面展示的表格数据
 const showTableData = computed(() => {
+  const { isRemotePaging } = paginationConfig.value;
   const tableData = filterTableData();
-  if (!isPaging.value || props.isServerPaging) {
+  if (!isPaging.value || props.isServerPaging || isRemotePaging) {
     return tableData;
   }
   return getShowTableData(tableData);
@@ -499,9 +500,9 @@ function filterTableData() {
   if (!searchKey) {
     return filterData;
   }
-  if (props.isRemoteQuery) {
+  if (props.isRemoteQuery || props.searchConfig?.isRemoteQuery) {
     emits('remote-query', searchKey);
-    return;
+    return filterData;
   }
   if (typeof searchMethod === 'function') {
     return searchMethod(searchKey, filterData);
@@ -574,18 +575,21 @@ function sortFunc(targetData: any[], sortData: any, key: string | number) {
 // 分页相关
 function changePageSize(pageSize: number) {
   paginationConfig.value.pageSize = pageSize;
-  if (props.isServerPaging) {
+  const { isRemotePaging } = paginationConfig.value;
+  if (props.isServerPaging || isRemotePaging) {
     emits('server-paging', paginationConfig.value);
   }
 }
 function changeCurrentPage(pageNum: number) {
   paginationConfig.value.currentPage = pageNum;
-  if (props.isServerPaging) {
+  const { isRemotePaging } = paginationConfig.value;
+  if (props.isServerPaging || isRemotePaging) {
     emits('server-paging', paginationConfig.value);
   }
 }
 function getShowTableData(data: any[]) {
-  if (props.isServerPaging) {
+  const { isRemotePaging } = paginationConfig.value;
+  if (props.isServerPaging || isRemotePaging) {
     emits('server-paging', paginationConfig.value);
     return data;
   }

@@ -40,6 +40,7 @@ export interface PaginationConfigType {
   pageSizes?: number[]
   pageSize?: number
   layout?: string
+  isRemotePaging?: boolean
 }
 
 export interface TreeTableProps {
@@ -87,6 +88,7 @@ export interface TreeTableProps {
   searchConfig?: {
     strict?: boolean
     searchMethod?: (key, data: any[]) => any[]
+    isRemoteQuery?: boolean
   }
   style?: object
   class?: string
