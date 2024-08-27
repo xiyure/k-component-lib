@@ -110,20 +110,11 @@ const getSizeClass = computed(() => (props.size ? `el-button--${props.size}` : '
 const getBtnBase = computed(() => {
   // props.type 中包含 primary, success, info, warning, danger 时, 返回 true
   const checkType = (tp: string) => {
-    switch (tp) {
-      case 'primary':
-        return true;
-      case 'success':
-        return true;
-      case 'info':
-        return true;
-      case 'warning':
-        return true;
-      case 'danger':
-        return true;
-      default:
-        return false;
+    const arr = ['primary', 'success', 'info', 'warning', 'danger'];
+    if (arr.includes(tp)) {
+      return true;
     }
+    return false;
   };
 
   if (
@@ -131,7 +122,7 @@ const getBtnBase = computed(() => {
     props.secondary === false &&
     props.text === false &&
     props.icon === false &&
-    checkType(props.type)
+    !checkType(props.type)
   ) {
     return 'k-button--base';
   }
