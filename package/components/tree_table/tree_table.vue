@@ -69,7 +69,8 @@
               :size="compSize"
               children-field="group"
               filter-key="field"
-              :default-conditions="advancedFilterConfig?.defaultConditions"
+              :default-condition="
+                advancedFilterConfig?.defaultCondition ?? filterConditionInfo"
               @confirm="refreshAdvancedFilter"
             >
               <template #reference="{ hasConfigCondition }">
@@ -317,8 +318,6 @@ const newFilterData = ref<any>([]);
 const filterConditionInfo: any = ref(null);
 // 分页配置
 const paginationConfig = ref<any>(defaultPaginationConfig);
-// 表格数据量
-const dataLength = ref(0);
 
 const widgets = computed(() => {
   const widgetsList: any[] = [];
@@ -434,15 +433,16 @@ const checkboxConfig = computed(() => Object.assign(defaultCheckboxConfig, props
 const isPaging = computed(() => props.showPage && !props.useTree);
 
 // 页面展示的表格数据
+const visibleData = computed(() => filterTableData());
 const showTableData = computed(() => {
   const { isRemotePaging } = paginationConfig.value;
-  const tableData = filterTableData();
-  dataLength.value = tableData.length;
   if (!isPaging.value || props.isServerPaging || isRemotePaging) {
-    return tableData;
+    return visibleData.value;
   }
-  return getShowTableData(tableData);
+  return getShowTableData(visibleData.value);
 });
+// 表格数据量
+const dataLength = computed(() => visibleData.value.length ?? 0);
 // 表格size控制
 const compSize = computed(() => (props.size === 'mini' ? 'sm' : undefined));
 

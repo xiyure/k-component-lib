@@ -6,5 +6,8 @@ export interface FilterProps {
   size?: 'base' | 'sm'
   childrenField?: string
   filterKey?: string,
-  defaultConditions?: any[]
+  defaultCondition?: {
+    conditionList?: any[]
+    filterRule?: number
+  }
 }

@@ -219,17 +219,18 @@ const disabledDatePicker = computed(() => function (item:IFilterDataType) {
 
 initData();
 function initData() {
-  const defaultFilterData = props.defaultConditions;
-  if (!Array.isArray(defaultFilterData) || !defaultFilterData.length) {
+  filterRule.value = props.defaultCondition?.filterRule ?? 0;
+  const { conditionList = [] } = props.defaultCondition ?? {};
+  if (!Array.isArray(conditionList) || !conditionList.length) {
     addCondition();
     return;
   }
-  for (let i = 0; i < defaultFilterData.length; i++) {
+  for (let i = 0; i < conditionList.length; i++) {
     addCondition();
   }
   for (let index = 0; index < filterData.value.length; index++) {
     const v = filterData.value[index];
-    const { title, logic, value, showValue, key, handler } = defaultFilterData[index];
+    const { title, logic, value, showValue, key, handler } = conditionList[index];
     v.title = title.split('-');
     v.logic = logic;
     v.value = value;
@@ -237,6 +238,7 @@ function initData() {
     v.key = key;
     v.handler = handler;
     const columnItem = flatColumns.value?.find(col => col[props.filterKey] === key);
+    v._allowSelectLogic = Boolean(!columnItem.options?.length);
     if (columnItem.dataType === 'date' && !Array.isArray(value)) {
       v.dateRange = 'date';
       v.dateType = 'datetime';
