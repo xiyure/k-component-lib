@@ -12,7 +12,7 @@
         <slot name="description" :total="dataLength" :condition-info="filterConditionInfo">
           <span v-if="!useTree">
             {{ $t('total') }}
-            {{ isNumber(paginationConfig.total) ? paginationConfig.total : dataLength }}
+            {{ dataLength }}
             {{ $t('data') }}
           </span>
           <span :title="headerText" class="condition-info">
@@ -44,7 +44,7 @@
               :placeholder="$t('searchTable')"
               clearable
               :size="compSize"
-              @change="(value: string) => (query = value)"
+              @change="filter"
             />
           </template>
           <template v-else-if="widget.id === 'refresh'">
@@ -182,7 +182,7 @@
     </div>
     <div v-if="isPaging" class="pagination-box">
       <k-pagination
-        :total="isNumber(paginationConfig.total) ? paginationConfig.total : dataLength"
+        :total="dataLength"
         :page-size="paginationConfig.pageSize"
         :pager-count="paginationConfig.pagerCount"
         :page-sizes="paginationConfig.pageSizes"
@@ -200,7 +200,7 @@
 import { ref, computed, onMounted, watch, nextTick, getCurrentInstance } from 'vue';
 import VXETable from 'vxe-table';
 import { IconSearch, IconSetting, IconRefresh, IconFilter, IconFilterFill } from 'ksw-vue-icon';
-import { isNumber, cloneDeep } from 'lodash-es';
+import { cloneDeep } from 'lodash-es';
 import KColumnGroup from './column_group';
 import { KInput } from '../input';
 import { KButton } from '../button';
@@ -212,6 +212,7 @@ import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
 import { TreeTableProps, columnConfigType } from './type';
 import { genRandomStr, treeDataToArray, getValidTreeData, resetTreeData } from '../../utils';
+import { useTableData } from './hooks/use_table_data';
 
 defineOptions({
   name: 'KTreeTable',
@@ -316,6 +317,8 @@ const newFilterData = ref<any>([]);
 const filterConditionInfo: any = ref(null);
 // 分页配置
 const paginationConfig = ref<any>(defaultPaginationConfig);
+// 表格数据量
+const dataLength = ref(0);
 
 const widgets = computed(() => {
   const widgetsList: any[] = [];
@@ -366,10 +369,9 @@ const widgets = computed(() => {
 });
 // 表格数据
 const fullData = computed(() => {
-  if (Array.isArray(xeData.value)) {
-    return xeData.value;
-  }
-  return props.data ?? [];
+  const _tableData = Array.isArray(xeData.value) ? xeData.value : props.data ?? [];
+  useTableData(tableInstance.value, _tableData);
+  return _tableData;
 });
 // 高级筛选功能只处理非特殊、可见的有效数据
 const filterColumns = computed(() => {
@@ -428,13 +430,6 @@ const editConfig = computed(() => Object.assign(defaultEditConfig, props.editCon
 const scrollY = computed(() => Object.assign(defaultScrollY, props.scrollY || {}));
 const columnConfig = computed(() => Object.assign(defaultColumnConfig, props.columnConfig || {}));
 const checkboxConfig = computed(() => Object.assign(defaultCheckboxConfig, props.checkboxConfig || {}));
-
-// 表格数据量
-const dataLength = computed(() => {
-  const data = tableInstance.value?.getTableData();
-  const { fullData } = data ?? {};
-  return fullData?.length ?? 0;
-});
 // 是否分页
 const isPaging = computed(() => props.showPage && !props.useTree);
 
@@ -442,6 +437,7 @@ const isPaging = computed(() => props.showPage && !props.useTree);
 const showTableData = computed(() => {
   const { isRemotePaging } = paginationConfig.value;
   const tableData = filterTableData();
+  dataLength.value = tableData.length;
   if (!isPaging.value || props.isServerPaging || isRemotePaging) {
     return tableData;
   }
@@ -507,9 +503,9 @@ function filterTableData() {
   if (typeof searchMethod === 'function') {
     return searchMethod(searchKey, filterData);
   }
-  const visibleColumns = flatColumns.value.filter((col) => col.visible !== false);
-  const fieldList = visibleColumns.map((col) => col.field || '');
-  let tableData = filterData.filter((dataItem: any) => fieldList.some((field) => {
+  const visibleColumns = flatColumns.value.filter((col: columnConfigType) => col.visible !== false);
+  const fieldList = visibleColumns.map((col: columnConfigType) => col.field || '');
+  let tableData = filterData.filter((dataItem: any) => fieldList.some((field: string) => {
     const cellLabel = xTree.value?.tableInstance.getCellLabel(dataItem, field);
     if (strict === true) {
       return cellLabel === searchKey;
@@ -726,7 +722,7 @@ function refreshAdvancedFilter(conditionInfo: any, newTableData: any[]) {
   }
 }
 function filter(searchStr: string) {
-  query.value = searchStr;
+  query.value = searchStr ?? '';
 }
 // 行高亮
 let isHighlight = false;

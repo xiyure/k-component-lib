@@ -206,6 +206,9 @@ export function resetTreeData(treeData: any[], childrenField: string, targetData
 
 export function handleExpose(instance: any, ref: any, compName: string) {
   nextTick(() => {
+    if (!ref) {
+      return;
+    }
     const exposeMethods = COMPONENT_EXPOSE_METHODS[compName] ?? [];
     for (const methodsName of exposeMethods) {
       if (instance[methodsName]) {
