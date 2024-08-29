@@ -213,7 +213,6 @@ import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
 import { TreeTableProps, columnConfigType } from './type';
 import { genRandomStr, treeDataToArray, getValidTreeData, resetTreeData } from '../../utils';
-import { useTableData } from './hooks/use_table_data';
 
 defineOptions({
   name: 'KTreeTable',
@@ -369,7 +368,6 @@ const widgets = computed(() => {
 // 表格数据
 const fullData = computed(() => {
   const _tableData = Array.isArray(xeData.value) ? xeData.value : props.data ?? [];
-  useTableData(tableInstance.value, _tableData);
   return _tableData;
 });
 // 高级筛选功能只处理非特殊、可见的有效数据
