@@ -12,7 +12,9 @@
     />
     <span
       class="column-default__content__text" :style="{
-        marginLeft: `${iconSize(row) + (row.iconStyle?.indent ?? 3)}px`,
+        marginLeft: ((row.icon || row.__folder) && col.showIcon)
+          ? `${iconSize(row) + (row.iconStyle?.indent ?? 3)}px`
+          : 0,
       }"
     >
       <template v-if="$slots[`${col.field ?? ''}-label`]">
