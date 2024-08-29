@@ -302,13 +302,16 @@
     }
   }
   // 覆盖原生样式
-  .el-button:focus-visible {
+  &:focus-visible {
     outline: unset;
+  }
+  &:focus,
+  &:visited,
+  &:focus-visible,
+  &:focus-within {
+    outline: none;
     outline-offset: unset;
     transition: unset;
-  }
-  &:focus-visible {
-    outline: none;
     box-shadow: 0 0 0 2px rgba(40, 130, 255, 0.1);
   }
 }
