@@ -223,6 +223,23 @@ export function handleExpose(instance: any, ref: any, compName: string) {
   });
 }
 
+export function getExposeProxy(instance: any, source: any) {
+  const proxy = new Proxy(instance, {
+    get(target, key, _receiver) {
+      if (Object.hasOwnProperty.call(target, key)) {
+        return target[key];
+      } else {
+        return source.value?.[key];
+      }
+    },
+    has(_target, key) {
+      const sourceInstance = isRef(source)? source.value : source;
+      return Reflect.has(instance, key) || Reflect.has(sourceInstance, key)
+    }
+  });
+  return proxy;
+}
+
 export function isResponsiveData(data: any) {
   return isRef(data) || isReactive(data) || isReadonly(data) || isProxy(data);
 }

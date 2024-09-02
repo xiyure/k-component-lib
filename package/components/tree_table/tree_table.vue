@@ -212,7 +212,7 @@ import { KTable } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
 import { TreeTableProps, columnConfigType } from './type';
-import { genRandomStr, treeDataToArray, getValidTreeData, resetTreeData } from '../../utils';
+import { genRandomStr, treeDataToArray, getValidTreeData, resetTreeData, getExposeProxy } from '../../utils';
 import { useTableData } from './hooks/use_table_data';
 
 defineOptions({
@@ -384,10 +384,8 @@ const filterColumns = computed(() => {
   return validColumns;
 });
 // 表格实例
-const $tableMethods = new Map();
 const tableInstance = computed(() => {
   const tableInstance = xTree.value?.tableInstance;
-  rewriteTableMethods(tableInstance);
   return tableInstance;
 });
 const headerText = computed(() => {
@@ -508,7 +506,7 @@ function filterTableData() {
   const visibleColumns = flatColumns.value.filter((col: columnConfigType) => col.visible !== false);
   const fieldList = visibleColumns.map((col: columnConfigType) => col.field || '');
   let tableData = filterData.filter((dataItem: any) => fieldList.some((field: string) => {
-    const cellLabel = xTree.value?.tableInstance.getCellLabel(dataItem, field);
+    const cellLabel = tableInstance.value.getCellLabel(dataItem, field);
     if (strict === true) {
       return cellLabel === searchKey;
     }
@@ -810,73 +808,65 @@ function advancedFilter(data: any[] | undefined) {
 function clearAdvancedFilter() {
   tableFilterRef.value?.[0]?.clearFilter();
 }
-// 重写部分vxe的原生方法满足业务需求
-const methods = {
-  setAllCheckboxRow,
-  setCheckboxRow,
-  loadData,
-  getRowById
-};
-function rewriteTableMethods(instance: any) {
-  if (typeof instance !== 'object') {
-    return;
-  }
-  for (const methodName in methods) {
-    if (typeof instance[methodName] === 'function' && !$tableMethods.get(methodName)) {
-      $tableMethods.set(methodName, instance[methodName].bind(instance));
-    }
-    instance[methodName] = methods[methodName];
-  }
-}
 function setCheckboxRow(rows: any[], checked: boolean) {
-  const newRows = Array.isArray(rows) ? rows : [rows];
-  const keyField = rowConfig.value.keyField ?? 'id';
-  for (const row of newRows) {
-    if (checked) {
-      checkedData.add(row[keyField]);
-    } else {
-      checkedData.delete(row[keyField]);
+  return new Promise((resolve) => {
+    const newRows = Array.isArray(rows) ? rows : [rows];
+    const keyField = rowConfig.value.keyField ?? 'id';
+    for (const row of newRows) {
+      if (checked) {
+        checkedData.add(row[keyField]);
+      } else {
+        checkedData.delete(row[keyField]);
+      }
     }
-  }
-  checkedDataSize.value = checkedData.size;
-  $tableMethods.get('setCheckboxRow')(rows, checked);
+    checkedDataSize.value = checkedData.size;
+    tableInstance.value?.setCheckboxRow(rows, checked);
+    resolve({rows, checked})
+  });
 }
 function setAllCheckboxRow(checked: boolean) {
-  const keyField = rowConfig.value.keyField ?? 'id';
-  if (checked) {
-    for (const row of showTableData.value) {
-      checkedData.add(row[keyField]);
+  return new Promise((resolve) => {
+    const keyField = rowConfig.value.keyField ?? 'id';
+    if (checked) {
+      for (const row of showTableData.value) {
+        checkedData.add(row[keyField]);
+      }
+    } else {
+      checkedData.clear();
     }
-  } else {
-    checkedData.clear();
-  }
-  checkedDataSize.value = checkedData.size;
-  $tableMethods.get('setAllCheckboxRow')(checked);
+    checkedDataSize.value = checkedData.size;
+    tableInstance.value?.setAllCheckboxRow(checked);
+    resolve({checked});
+  });
 }
 function loadData(data: any[]) {
   if (!Array.isArray(data)) {
     return;
   }
-  setTableData(data);
+  xeTableData = setTableData(data);
   advancedFilter(data);
 }
 function getRowById(id: string | number) {
-  const row = $tableMethods.get('getRowById')(id);
+  const row = tableInstance.value?.getRowById(id);
   if (row) {
     return row;
   }
   const targetRow = xeTableData.find((item: any) => item[rowConfig.value.keyField] === id);
-  return targetRow;
+  return targetRow ?? null;
 }
 
-defineExpose({
-  tableInstance,
+const customMethods = {
   filter,
   advancedFilter,
   clearAdvancedFilter,
-  ..._methods,
-  as: () => console.log(xeTableData)
-});
+  getRowById,
+  setCheckboxRow,
+  setAllCheckboxRow,
+  loadData,
+  ..._methods
+};
+
+defineExpose(getExposeProxy(customMethods, tableInstance));
 </script>
 
 <style lang="less">
