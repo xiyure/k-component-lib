@@ -25,6 +25,7 @@ import { watch, ref, computed } from 'vue';
 import { IconTips } from 'ksw-vue-icon';
 import { TooltipProps } from './type';
 import { isValidColor, handleExpose } from '../../utils';
+import { ElTooltip } from 'element-plus';
 
 defineOptions({
   name: 'KTooltip',
