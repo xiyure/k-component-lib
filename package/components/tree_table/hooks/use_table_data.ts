@@ -1,46 +1,42 @@
-import { VxeTableInstance } from 'vxe-table';
+import { ref } from 'vue';
 
 // 重定义vxe-table的部分方法
-export function useTableData($table: VxeTableInstance, data: any[]) {
-  if (!$table) {
-    return;
-  }
+export function useTableData(keyField: string = 'id') {
+  const xeTableData = ref<any>([]);
   const tempInsertData = new Map();
   const tempRemoveData = new Map();
   const tempSetData = new Map();
-  const keyField = $table.rowConfig?.keyField ?? 'id';
-  // 获取行数据
-  $table.getRowById = ((rowId: string | number) => data.find((item) => item[keyField] === rowId) ?? null);
+
   // 在第一行插入行数据
-  $table.insert = (rows: any) => new Promise((resolve) => {
+  const insert = (rows: any) => new Promise((resolve) => {
     const newRows = Array.isArray(rows) ? rows : [rows];
-    data.unshift(...newRows);
+    xeTableData.value.unshift(...newRows);
     addTempData(newRows, tempInsertData);
     resolve(rows);
   });
   // 在指定位置插入数据
-  $table.insertAt = (rows: any, index: number) => new Promise((resolve) => {
+  const insertAt = (rows: any, index: number) => new Promise((resolve) => {
     const newRows = Array.isArray(rows) ? rows : [rows];
     const newIndex = Number.isNaN(Math.floor(index)) ? 0 : Math.floor(index);
-    data.splice(newIndex, 0, ...newRows);
+    xeTableData.value.splice(newIndex, 0, ...newRows);
     addTempData(newRows, tempInsertData);
     resolve(rows);
   });
   // 在指定行后插入数据
-  $table.insertNextAt = (rows: any, index: number) => {
+  const insertNextAt = (rows: any, index: number) => {
     const newIndex = Number.isNaN(Math.floor(index)) ? 0 : Math.floor(index); 
-    return $table.insertAt(rows, newIndex + 1);
+    return insertAt(rows, newIndex + 1);
   };
   // 删除临时添加的数据
-  $table.removeInsertRow = () => new Promise((resolve) => {
+  const removeInsertRow = () => new Promise((resolve) => {
     const rows = Array.from(tempInsertData.values());
-    for (let i = 0; i < data.length - 1; i++) {
+    for (let i = 0; i < xeTableData.value.length - 1; i++) {
       if (tempInsertData.size === 0) {
         break;
       }
-      const key = data[i][keyField];
+      const key = xeTableData.value[i][keyField];
       if (tempInsertData.has(key)) {
-        data.splice(i, 1);
+        xeTableData.value.splice(i, 1);
         tempInsertData.delete(key);
         i--;
       }
@@ -48,13 +44,13 @@ export function useTableData($table: VxeTableInstance, data: any[]) {
     resolve({ rows, row: rows });
   });
   // 获取临时添加的数据
-  $table.getInsertRecords = () => Array.from(tempInsertData.values());
+  const getInsertRecords = () => Array.from(tempInsertData.values());
   // 判断是否是临时添加的数据
-  $table.isInsertByRow = (row: any) => tempInsertData.has(row[keyField]);
+  const isInsertByRow = (row: any) => tempInsertData.has(row[keyField]);
   // 删除指定行数据
-  $table.remove = (rows: any) => new Promise((resolve) => {
+  const remove = (rows: any) => new Promise((resolve) => {
     if (rows === undefined) {
-      data.length = 0;
+      xeTableData.value.length = 0;
       resolve({ rows: [], row: null });
     }
     let rest = rows;
@@ -62,10 +58,10 @@ export function useTableData($table: VxeTableInstance, data: any[]) {
       rest = [rows];
     }
     const removeMap = new Map(rest.map((row: any) => [row[keyField], row]));
-    for (let i = 0; i < data.length; i++) {
-      const key = data[i][keyField];
+    for (let i = 0; i < xeTableData.value.length; i++) {
+      const key = xeTableData.value[i][keyField];
       if (removeMap.has(key)) {
-        data.splice(i, 1);
+        xeTableData.value.splice(i, 1);
         removeMap.delete(key);
         i--;
       }
@@ -74,17 +70,17 @@ export function useTableData($table: VxeTableInstance, data: any[]) {
     resolve({ rows, row: rows });
   });
   // 获取临时删除的数据
-  $table.getRemoveRecords = () => Array.from(tempRemoveData.values());
+  const getRemoveRecords = () => Array.from(tempRemoveData.values());
   // 获取数据集
-  $table.getRecordset = () => ({
+  const getRecordset = () => ({
     insertRecords: Array.from(tempInsertData.values()),
     removeRecords: Array.from(tempRemoveData.values()),
     updateRecords: Array.from(tempSetData.values()),
     pendingRecords: []
   });
-  $table.setRow = (rows: any, record: object) => new Promise((resolve) => {
+  const setRow = (rows: any, record: object) => new Promise((resolve) => {
     if (!rows || !record) {
-      resolve();
+      resolve(rows);
     }
     let rest = rows;
     if (!Array.isArray(rows)) {
@@ -94,11 +90,36 @@ export function useTableData($table: VxeTableInstance, data: any[]) {
       Object.assign(item, record);
       tempSetData.set(item[keyField], item);
     });
-    resolve();
+    resolve(rows);
   });
   function addTempData(rows: any[], dataMap: Map<string | number, any>) {
     rows.forEach((item: any) => {
       dataMap.set(item[keyField], item);
     });
   }
+  // 数据更新时应清除所有缓存数据
+  function setTableData(data: any) {
+    tempInsertData.clear();
+    tempRemoveData.clear();
+    tempSetData.clear();
+    const newData = Array.isArray(data) ? data : [];
+    xeTableData.value = Array.from(newData);
+    return xeTableData.value;
+  }
+
+  return {
+    _methods: {
+      insert,
+      insertAt,
+      insertNextAt,
+      removeInsertRow,
+      getInsertRecords,
+      isInsertByRow,
+      remove,
+      getRemoveRecords,
+      getRecordset,
+      setRow,
+    },
+    setTableData
+  };
 }

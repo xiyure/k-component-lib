@@ -64,7 +64,7 @@
             <!-- 高级筛选 -->
             <k-filter
               ref="tableFilterRef"
-              :data="fullData"
+              :data="xeTableData"
               :column="filterColumns"
               :size="compSize"
               children-field="group"
@@ -213,6 +213,7 @@ import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
 import { TreeTableProps, columnConfigType } from './type';
 import { genRandomStr, treeDataToArray, getValidTreeData, resetTreeData } from '../../utils';
+import { useTableData } from './hooks/use_table_data';
 
 defineOptions({
   name: 'KTreeTable',
@@ -303,7 +304,8 @@ const xTree = ref();
 const columns = ref<any>([]);
 const flatColumns = ref<any>([]);
 // 表格数据
-const xeData = ref<any>(null);
+let xeTableData: any[] = [];
+const { setTableData, _methods } = useTableData(props.rowConfig?.keyField ?? 'id');
 // 搜索框关键词
 const query = ref('');
 const searchStr = ref('');
@@ -364,11 +366,6 @@ const widgets = computed(() => {
     }
   }
   return widgetsList;
-});
-// 表格数据
-const fullData = computed(() => {
-  const _tableData = Array.isArray(xeData.value) ? xeData.value : props.data ?? [];
-  return _tableData;
 });
 // 高级筛选功能只处理非特殊、可见的有效数据
 const filterColumns = computed(() => {
@@ -445,6 +442,13 @@ const dataLength = computed(() => visibleData.value.length ?? 0);
 const compSize = computed(() => (props.size === 'mini' ? 'sm' : undefined));
 
 watch(
+  () => props.data?.length,
+  () => {
+    xeTableData = setTableData(props.data);
+  },
+  { immediate: true }
+);
+watch(
   () => props.paginationConfig,
   () => {
     paginationConfig.value = Object.assign(paginationConfig.value, props.paginationConfig || {});
@@ -488,7 +492,7 @@ const treeDataMap: Map<string | number, any> = new Map();
 function filterTableData() {
   const filterData = filterConditionInfo.value?.conditionList?.length ?
     newFilterData.value :
-    fullData.value;
+    xeTableData;
   const { strict, searchMethod } = props.searchConfig ?? {};
   const searchKey = query.value.trim().replace(/\\/g, '\\\\');
   if (!searchKey) {
@@ -513,9 +517,9 @@ function filterTableData() {
   // 当表格数据为树时，筛选后的数据应展示完整的子树
   if (props.useTree) {
     const { rowField } = getTreeConfigField();
-    tableDataMap = new Map(fullData.value.map((item) => [item[rowField], item]));
+    tableDataMap = new Map(xeTableData.map((item) => [item[rowField], item]));
     handleTreeData(tableData);
-    tableData = sortFunc([...treeDataMap.values()], fullData.value, rowField);
+    tableData = sortFunc([...treeDataMap.values()], xeTableData, rowField);
   } else {
     updatePageNum(tableData.length);
   }
@@ -540,7 +544,7 @@ function handleTreeData(leafData: any[]) {
 function addChildNodes(leafData: any[]) {
   const { parentField, rowField } = getTreeConfigField();
   const childrenMap = new Map(leafData.map((item) => [item[rowField], item]));
-  for (const dataItem of fullData.value) {
+  for (const dataItem of xeTableData) {
     const parentKey = dataItem[parentField];
     if (childrenMap.get(parentKey)) {
       treeDataMap.set(dataItem[rowField], dataItem);
@@ -711,7 +715,7 @@ function refreshAdvancedFilter(conditionInfo: any, newTableData: any[]) {
   if (props.useTree) {
     handleTreeData(newFilterData.value);
     const { rowField } = getTreeConfigField();
-    newFilterData.value = sortFunc([...treeDataMap.values()], fullData.value, rowField);
+    newFilterData.value = sortFunc([...treeDataMap.values()], xeTableData, rowField);
   }
   if (conditionInfo?.conditionList?.length) {
     isFilterStatus = true;
@@ -795,7 +799,7 @@ function isCheckboxDisabled(row: any) {
 function dragEnd(data: any[]) {
   emits('drag-end', {
     data,
-    originData: fullData.value,
+    originData: xeTableData,
   });
 }
 
@@ -853,7 +857,7 @@ function loadData(data: any[]) {
   if (!Array.isArray(data)) {
     return;
   }
-  xeData.value = data;
+  setTableData(data);
   advancedFilter(data);
 }
 function getRowById(id: string | number) {
@@ -861,8 +865,7 @@ function getRowById(id: string | number) {
   if (row) {
     return row;
   }
-  const tempRows = tableInstance.value?.getInsertRecords();
-  const targetRow = tempRows.find((item: any) => item[rowConfig.value.keyField] === id);
+  const targetRow = xeTableData.find((item: any) => item[rowConfig.value.keyField] === id);
   return targetRow;
 }
 
@@ -871,6 +874,8 @@ defineExpose({
   filter,
   advancedFilter,
   clearAdvancedFilter,
+  ..._methods,
+  as: () => console.log(xeTableData)
 });
 </script>
 
