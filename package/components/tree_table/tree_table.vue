@@ -133,7 +133,7 @@
         "
         @checkbox-all="
           (data) => {
-            checkboxAll(data, showTableData);
+            checkboxAll(data);
             emits('checkbox-all', data);
           }
         "
@@ -294,7 +294,7 @@ const xTree = ref();
 const columns = ref<any>([]);
 const flatColumns = ref<any>([]);
 // 表格数据
-let xeTableData: any[] = [];
+const xeTableData = ref<any>([]);
 // 搜索框关键词
 const query = ref('');
 const searchStr = ref('');
@@ -438,7 +438,7 @@ const { checkedDataSize,
 watch(
   () => props.data?.length,
   () => {
-    xeTableData = setTableData(props.data);
+    xeTableData.value = setTableData(props.data);
   },
   { immediate: true }
 );
@@ -486,7 +486,7 @@ const treeDataMap: Map<string | number, any> = new Map();
 function filterTableData() {
   const filterData = filterConditionInfo.value?.conditionList?.length ?
     newFilterData.value :
-    xeTableData;
+    xeTableData.value;
   const { strict, searchMethod } = props.searchConfig ?? {};
   const searchKey = query.value.trim().replace(/\\/g, '\\\\');
   if (!searchKey) {
@@ -511,9 +511,9 @@ function filterTableData() {
   // 当表格数据为树时，筛选后的数据应展示完整的子树
   if (props.useTree) {
     const { rowField } = getTreeConfigField();
-    tableDataMap = new Map(xeTableData.map((item) => [item[rowField], item]));
+    tableDataMap = new Map(xeTableData.value.map((item) => [item[rowField], item]));
     handleTreeData(tableData);
-    tableData = sortFunc([...treeDataMap.values()], xeTableData, rowField);
+    tableData = sortFunc([...treeDataMap.values()], xeTableData.value, rowField);
   } else {
     updatePageNum(tableData.length);
   }
@@ -538,7 +538,7 @@ function handleTreeData(leafData: any[]) {
 function addChildNodes(leafData: any[]) {
   const { parentField, rowField } = getTreeConfigField();
   const childrenMap = new Map(leafData.map((item) => [item[rowField], item]));
-  for (const dataItem of xeTableData) {
+  for (const dataItem of xeTableData.value) {
     const parentKey = dataItem[parentField];
     if (childrenMap.get(parentKey)) {
       treeDataMap.set(dataItem[rowField], dataItem);
@@ -709,7 +709,7 @@ function refreshAdvancedFilter(conditionInfo: any, newTableData: any[]) {
   if (props.useTree) {
     handleTreeData(newFilterData.value);
     const { rowField } = getTreeConfigField();
-    newFilterData.value = sortFunc([...treeDataMap.values()], xeTableData, rowField);
+    newFilterData.value = sortFunc([...treeDataMap.values()], xeTableData.value, rowField);
   }
   if (conditionInfo?.conditionList?.length) {
     isFilterStatus = true;
@@ -745,7 +745,7 @@ function cellClick({ row, rowid }) {
 function dragEnd(data: any[]) {
   emits('drag-end', {
     data,
-    originData: xeTableData,
+    originData: xeTableData.value,
   });
 }
 
@@ -760,7 +760,7 @@ function loadData(data: any[]) {
   if (!Array.isArray(data)) {
     return;
   }
-  xeTableData = setTableData(data);
+  xeTableData.value = setTableData(data);
   advancedFilter(data);
 }
 function getRowById(id: string | number) {
@@ -768,11 +768,12 @@ function getRowById(id: string | number) {
   if (row) {
     return row;
   }
-  const targetRow = xeTableData.find((item: any) => item[rowConfig.value.keyField] === id);
+  const targetRow = xeTableData.value.find((item: any) => item[rowConfig.value.keyField] === id);
   return targetRow ?? null;
 }
 
 const customMethods = {
+  tableInstance,
   filter,
   advancedFilter,
   clearAdvancedFilter,

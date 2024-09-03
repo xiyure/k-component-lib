@@ -79,11 +79,11 @@ export function useCheckbox($table: any, tableData: any, props: any) {
     }
   }
   // 表格头部复选框点击事件
-  function checkboxAll({ checked }, data) {
+  function checkboxAll({ checked }) {
     if (!props.showBatchOperation) {
       return;
     }
-    for (const row of data) {
+    for (const row of tableData.value) {
       if (checked) {
         checkedData.value.add(row[keyField.value]);
       } else {
