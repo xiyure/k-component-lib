@@ -228,13 +228,12 @@ export function getExposeProxy(instance: any, source: any) {
     get(target, key, _receiver) {
       if (Object.hasOwnProperty.call(target, key)) {
         return target[key];
-      } else {
-        return source.value?.[key];
-      }
+      } 
+      return source.value?.[key];
     },
     has(_target, key) {
-      const sourceInstance = isRef(source)? source.value : source;
-      return Reflect.has(instance, key) || Reflect.has(sourceInstance, key)
+      const sourceInstance = isRef(source) ? source.value : source;
+      return Reflect.has(instance, key) || Reflect.has(sourceInstance, key);
     }
   });
   return proxy;

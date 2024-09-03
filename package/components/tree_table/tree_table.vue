@@ -133,7 +133,7 @@
         "
         @checkbox-all="
           (data) => {
-            checkboxAll(data);
+            checkboxAll(data, showTableData);
             emits('checkbox-all', data);
           }
         "
@@ -198,7 +198,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch, nextTick, getCurrentInstance } from 'vue';
+import { ref, computed, watch, nextTick, getCurrentInstance } from 'vue';
 import VXETable from 'vxe-table';
 import { IconSearch, IconSetting, IconRefresh, IconFilter, IconFilterFill } from 'ksw-vue-icon';
 import { cloneDeep } from 'lodash-es';
@@ -213,7 +213,7 @@ import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
 import { TreeTableProps, columnConfigType } from './type';
 import { genRandomStr, treeDataToArray, getValidTreeData, resetTreeData, getExposeProxy } from '../../utils';
-import { useTableData } from './hooks/use_table_data';
+import { useMethods, useCheckbox } from './hooks';
 
 defineOptions({
   name: 'KTreeTable',
@@ -268,7 +268,6 @@ const defaultPaginationConfig = {
   pageSize: DEFAULT_PAGES[0],
 };
 const defaultSortConfig = {};
-const defaultCheckboxConfig = {};
 const defaultEditConfig = {
   key: 'id',
   trigger: 'click',
@@ -278,15 +277,6 @@ const defaultEditConfig = {
 const defaultScrollY = { enabled: true };
 const defaultColumnConfig = { resizable: true };
 
-onMounted(() => {
-  const { checkRowKeys } = checkboxConfig.value;
-  if (Array.isArray(checkRowKeys)) {
-    for (const id of checkRowKeys) {
-      checkedData.add(id);
-    }
-    checkedDataSize.value = checkedData.size;
-  }
-});
 const emits = defineEmits([
   'remote-query',
   'server-paging',
@@ -305,7 +295,6 @@ const columns = ref<any>([]);
 const flatColumns = ref<any>([]);
 // 表格数据
 let xeTableData: any[] = [];
-const { setTableData, _methods } = useTableData(props.rowConfig?.keyField ?? 'id');
 // 搜索框关键词
 const query = ref('');
 const searchStr = ref('');
@@ -421,7 +410,6 @@ const rowConfig = computed(() => Object.assign(defaultRowConfig, props.rowConfig
 const editConfig = computed(() => Object.assign(defaultEditConfig, props.editConfig || {}));
 const scrollY = computed(() => Object.assign(defaultScrollY, props.scrollY || {}));
 const columnConfig = computed(() => Object.assign(defaultColumnConfig, props.columnConfig || {}));
-const checkboxConfig = computed(() => Object.assign(defaultCheckboxConfig, props.checkboxConfig || {}));
 // 是否分页
 const isPaging = computed(() => props.showPage && !props.useTree);
 
@@ -439,6 +427,14 @@ const dataLength = computed(() => visibleData.value.length ?? 0);
 // 表格size控制
 const compSize = computed(() => (props.size === 'mini' ? 'sm' : undefined));
 
+const { setTableData, _methods } = useMethods(props);
+const { checkedDataSize,
+  checkboxConfig,
+  closeBatchOperation,
+  checkBoxChange,
+  checkboxAll,
+  _checkboxMethods
+} = useCheckbox(tableInstance, showTableData, props);
 watch(
   () => props.data?.length,
   () => {
@@ -746,54 +742,6 @@ function cellClick({ row, rowid }) {
   }
   emits('highlight-change', row, isHighlight);
 }
-// 批量操作
-const checkedData = new Set();
-const checkedDataSize = ref(0);
-function checkBoxChange({ row, checked }) {
-  if (!props.showBatchOperation) {
-    return;
-  }
-  const keyField = rowConfig.value.keyField;
-  if (checked) {
-    checkedData.add(row[keyField]);
-  } else {
-    checkedData.delete(row[keyField]);
-  }
-  checkedDataSize.value = checkedData.size;
-}
-function checkboxAll({ checked }) {
-  if (!props.showBatchOperation) {
-    return;
-  }
-  for (const row of showTableData.value) {
-    if (isCheckboxDisabled(row)) {
-      continue;
-    }
-    const keyField = rowConfig.value.keyField;
-    if (checked) {
-      checkedData.add(row[keyField]);
-    } else {
-      checkedData.delete(row[keyField]);
-    }
-  }
-  checkedDataSize.value = checkedData.size;
-}
-function closeBatchOperation() {
-  checkedData.clear();
-  checkedDataSize.value = 0;
-  tableInstance.value?.clearCheckboxRow?.();
-  tableInstance.value?.clearCheckboxReserve?.();
-}
-function isCheckboxDisabled(row: any) {
-  const { visibleMethod, checkMethod } = checkboxConfig.value;
-  if (typeof visibleMethod === 'function' && !visibleMethod({ row })) {
-    return true;
-  }
-  if (typeof checkMethod === 'function' && !checkMethod({ row })) {
-    return true;
-  }
-  return false;
-}
 function dragEnd(data: any[]) {
   emits('drag-end', {
     data,
@@ -807,37 +755,6 @@ function advancedFilter(data: any[] | undefined) {
 }
 function clearAdvancedFilter() {
   tableFilterRef.value?.[0]?.clearFilter();
-}
-function setCheckboxRow(rows: any[], checked: boolean) {
-  return new Promise((resolve) => {
-    const newRows = Array.isArray(rows) ? rows : [rows];
-    const keyField = rowConfig.value.keyField ?? 'id';
-    for (const row of newRows) {
-      if (checked) {
-        checkedData.add(row[keyField]);
-      } else {
-        checkedData.delete(row[keyField]);
-      }
-    }
-    checkedDataSize.value = checkedData.size;
-    tableInstance.value?.setCheckboxRow(rows, checked);
-    resolve({rows, checked})
-  });
-}
-function setAllCheckboxRow(checked: boolean) {
-  return new Promise((resolve) => {
-    const keyField = rowConfig.value.keyField ?? 'id';
-    if (checked) {
-      for (const row of showTableData.value) {
-        checkedData.add(row[keyField]);
-      }
-    } else {
-      checkedData.clear();
-    }
-    checkedDataSize.value = checkedData.size;
-    tableInstance.value?.setAllCheckboxRow(checked);
-    resolve({checked});
-  });
 }
 function loadData(data: any[]) {
   if (!Array.isArray(data)) {
@@ -860,10 +777,9 @@ const customMethods = {
   advancedFilter,
   clearAdvancedFilter,
   getRowById,
-  setCheckboxRow,
-  setAllCheckboxRow,
   loadData,
-  ..._methods
+  ..._methods,
+  ..._checkboxMethods
 };
 
 defineExpose(getExposeProxy(customMethods, tableInstance));

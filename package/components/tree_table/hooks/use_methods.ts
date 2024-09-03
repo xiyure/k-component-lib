@@ -1,12 +1,13 @@
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 // 重定义vxe-table的部分方法
-export function useTableData(keyField: string = 'id') {
+export function useMethods(props: any) {
   const xeTableData = ref<any>([]);
   const tempInsertData = new Map();
   const tempRemoveData = new Map();
   const tempSetData = new Map();
 
+  const keyField = computed(() => props.rowConfig.keyField.value ?? 'id');
   // 在第一行插入行数据
   const insert = (rows: any) => new Promise((resolve) => {
     const newRows = Array.isArray(rows) ? rows : [rows];
@@ -34,7 +35,7 @@ export function useTableData(keyField: string = 'id') {
       if (tempInsertData.size === 0) {
         break;
       }
-      const key = xeTableData.value[i][keyField];
+      const key = xeTableData.value[i][keyField.value];
       if (tempInsertData.has(key)) {
         xeTableData.value.splice(i, 1);
         tempInsertData.delete(key);
@@ -46,7 +47,7 @@ export function useTableData(keyField: string = 'id') {
   // 获取临时添加的数据
   const getInsertRecords = () => Array.from(tempInsertData.values());
   // 判断是否是临时添加的数据
-  const isInsertByRow = (row: any) => tempInsertData.has(row[keyField]);
+  const isInsertByRow = (row: any) => tempInsertData.has(row[keyField.value]);
   // 删除指定行数据
   const remove = (rows: any) => new Promise((resolve) => {
     if (rows === undefined) {
@@ -57,9 +58,9 @@ export function useTableData(keyField: string = 'id') {
     if (!Array.isArray(rows)) {
       rest = [rows];
     }
-    const removeMap = new Map(rest.map((row: any) => [row[keyField], row]));
+    const removeMap = new Map(rest.map((row: any) => [row[keyField.value], row]));
     for (let i = 0; i < xeTableData.value.length; i++) {
-      const key = xeTableData.value[i][keyField];
+      const key = xeTableData.value[i][keyField.value];
       if (removeMap.has(key)) {
         xeTableData.value.splice(i, 1);
         removeMap.delete(key);
@@ -88,13 +89,13 @@ export function useTableData(keyField: string = 'id') {
     }
     rest.forEach((item: any) => {
       Object.assign(item, record);
-      tempSetData.set(item[keyField], item);
+      tempSetData.set(item[keyField.value], item);
     });
     resolve(rows);
   });
   function addTempData(rows: any[], dataMap: Map<string | number, any>) {
     rows.forEach((item: any) => {
-      dataMap.set(item[keyField], item);
+      dataMap.set(item[keyField.value], item);
     });
   }
   // 数据更新时应清除所有缓存数据
@@ -118,8 +119,8 @@ export function useTableData(keyField: string = 'id') {
       remove,
       getRemoveRecords,
       getRecordset,
-      setRow,
+      setRow
     },
-    setTableData
+    setTableData,
   };
 }
