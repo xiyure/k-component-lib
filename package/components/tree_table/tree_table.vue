@@ -226,7 +226,7 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
   showOverflow: true,
   showHeader: true,
   showFilter: true,
-  showRefresh: false,
+  showRefresh: true,
   showSearchInput: true,
   showTransfer: false,
   showDescription: true,
