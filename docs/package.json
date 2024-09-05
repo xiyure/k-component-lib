@@ -1,0 +1,23 @@
+{
+  "name": "ksw-ux-docs",
+  "private": false,
+  "version": "0.0.1",
+  "description": "Kingsware Ux Document",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vitepress",
+    "build": "vitepress build --base /vitepress-demo/",
+    "serve": "vitepress serve",
+    "register:components": "vitepress-rc",
+    "deploy": "zsh scripts/gh-pages.sh"
+  },
+  "dependencies": {
+    "vue": "^3.4.21"
+  },
+  "devDependencies": {
+    "vite": "^5.2.0"
+  },
+  "author": "zhj",
+  "license": "MIT"
+}

@@ -11,12 +11,20 @@
   "files": [
     "kingsware-ui/*"
   ],
+  "workspaces": [
+    "docs"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint --fix . --ext .ts,.js,.vue",
-    "fix": "eslint --fix"
+    "fix": "eslint --fix",
+    "docs:dev": "npm run -C docs dev",
+    "docs:build": "vitepress build docs --base /vitepress-demo/",
+    "docs:serve": "npm run -C docs serve",
+    "register:components": "npm run -C docs register:components",
+    "deploy": "sh scripts/gh-pages.sh"
   },
   "peerDependencies": {
     "chinese-lunar-calendar": "^1.0.1",
@@ -35,6 +43,8 @@
     "@typescript-eslint/parser": "^7.6.0",
     "@vitejs/plugin-vue": "^5.0.4",
     "@vitejs/plugin-vue-jsx": "^4.0.0",
+    "@vitepress-demo-preview/component": "^2.3.2",
+    "@vitepress-demo-preview/plugin": "^1.2.3",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-vue": "^9.24.1",
@@ -46,6 +56,8 @@
     "typescript": "^5.4.5",
     "vite": "^5.2.0",
     "vite-plugin-dts": "^3.9.1",
+    "vitepress": "^1.3.4",
+    "vitepress-theme-demoblock": "^3.0.7",
     "vue-tsc": "^2.0.6"
   },
   "author": "zhj",
