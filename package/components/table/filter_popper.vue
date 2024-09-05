@@ -1,5 +1,6 @@
 <template>
   <k-popover
+    ref="filterPopper"
     :trigger="trigger"
     :show-arrow="false"
     placement="right-start"
@@ -72,6 +73,7 @@ const props = defineProps({
 
 const emits = defineEmits(['set-filter', 'clear-filter', 'filter-change', 'filter-visible']);
 
+const filterPopper = ref();
 const isSelectAll = ref(false);
 const isIndeterminate = ref(false);
 
@@ -107,6 +109,7 @@ function selectAll() {
 }
 function setFilter() {
   emits('set-filter', props.column, props.filters);
+  closeFilterPanel();
 }
 function clearFilter() {
   props.filters?.forEach((item: any) => {
@@ -115,5 +118,11 @@ function clearFilter() {
   isIndeterminate.value = false;
   isSelectAll.value = false;
   emits('clear-filter', props.column);
+  closeFilterPanel();
 }
+function closeFilterPanel() {
+  filterPopper.value?.hide();
+}
+
+defineExpose({ closeFilterPanel })
 </script>

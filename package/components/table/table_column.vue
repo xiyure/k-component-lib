@@ -1,7 +1,6 @@
 <template>
   <vxe-column
     v-bind="$attrs"
-    :width="columnWidth"
     :edit-render="editRender"
     :filters="filters"
     :sortable="sortable"
@@ -92,7 +91,6 @@
             :filters="props.filters"
             :column="headerSlotProps.column"
             trigger="click"
-            :visible="filterPanelVisible"
             :text="filterButtonText"
             @set-filter="setFilter"
             @clear-filter="clearFilter"
@@ -106,7 +104,8 @@
             >
               <component :is="filterConfig.iconNone" v-if="filterConfig.iconNone && !isFilterActive"></component>
               <component :is="filterConfig.iconMatch" v-else-if="filterConfig.iconMatch && isFilterActive"></component>
-              <IconFilterFill v-else :size="16" :color="isFilterActive ? '#2882FF' : ''" />
+              <IconFilterFill v-else-if="isFilterActive" :size="16" color="#2882FF" />
+              <IconFilter v-else :size="16" />
             </span>
             <template v-if="$slots.filter">
               <slot
@@ -289,7 +288,7 @@ const props = withDefaults(defineProps<TableColumnProps>(), {
 const slots = defineSlots();
 
 const isExpandColumn = ref(false);
-const columnWidth = ref(props.width);
+const oldWidth = ref<number | string>('');
 const colDesc = ref('');
 const dialogVisible = ref(false);
 const textareaContent = ref('');
@@ -349,11 +348,14 @@ function clearSort(column: string | VxeColumnProps) {
 // 展开/收起
 function expandColumn(isExpand:boolean) {
   isExpandColumn.value = isExpand;
+  let newWidth: number | string = '';
   if (isExpand) {
-    columnWidth.value = '40';
+    oldWidth.value = tableInstance.value.getColumnWidth(props.field);
+    newWidth = '40';
   } else {
-    columnWidth.value = props.width;
+    newWidth = oldWidth.value;
   }
+  tableInstance.value.setColumnWidth(props.field, newWidth);
 }
 // 自定义说明
 function openDialog() {
