@@ -8,6 +8,7 @@ import 'vxe-table/lib/style.css';
 import 'ksw-vue-icon/styles/icon.css';
 import { createI18n } from 'vue-i18n';
 import * as components from './components';
+import * as templates from './templates';
 import originComponents from './element-plus';
 import * as directives from './directives';
 import zh from './internal/zh';
@@ -16,7 +17,7 @@ import { Emitter } from './utils';
 
 type optionsType = {
   locale?: 'zh' | 'en';
-  vxeGlobalConfig?: VxeGlobalConfig
+  vxeGlobalConfig?: VxeGlobalConfig;
 };
 const install = (Vue: any, options?: optionsType) => {
   // 国际化
@@ -31,6 +32,10 @@ const install = (Vue: any, options?: optionsType) => {
   // 组件注册
   for (const name in components) {
     Vue.component(name, components[name]);
+  }
+  // 模板组件注册
+  for (const name in templates) {
+    Vue.component(name, templates[name]);
   }
   for (const name in originComponents) {
     Vue.component(name, originComponents[name]);
@@ -49,4 +54,5 @@ const install = (Vue: any, options?: optionsType) => {
 };
 
 export * from './components';
+export * from './templates';
 export default install;
