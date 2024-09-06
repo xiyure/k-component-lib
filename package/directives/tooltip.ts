@@ -4,10 +4,7 @@ import { KTooltip } from '../components/tooltip';
 export const tooltip: Directive = {
   mounted(el: HTMLElement, binding: DirectiveBinding) {
     createTooltip(el, binding);
-  },
-  updated(el: HTMLElement, binding: DirectiveBinding) {
-    createTooltip(el, binding);
-  },
+  }
 };
 
 const createTooltip = (el: any, binding: DirectiveBinding) => {

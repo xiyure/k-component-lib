@@ -423,7 +423,16 @@ const showTableData = computed(() => {
   return getShowTableData(visibleData.value);
 });
 // 表格数据量
-const dataLength = computed(() => visibleData.value.length ?? 0);
+const dataLength = computed(() => {
+  if (filterConditionInfo.value?.conditionList?.length) {
+    return newFilterData.value.length;
+  }
+  const { isRemotePaging, total } = paginationConfig.value;
+  if (isPaging.value && (isRemotePaging || props.isServerPaging)) {
+    return total;
+  }
+  return visibleData.value.length;
+});
 // 表格size控制
 const compSize = computed(() => (props.size === 'mini' ? 'sm' : undefined));
 

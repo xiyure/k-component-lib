@@ -1,4 +1,4 @@
-import { computed, nextTick, isReactive, isRef, isReadonly, isProxy } from 'vue';
+import { computed, nextTick, isRef } from 'vue';
 import COMPONENT_EXPOSE_METHODS from './el_expose_methods';
 
 // 获取随机字符串
@@ -189,6 +189,7 @@ export function getValidTreeData(treeData: any[], childrenField: string, filterC
   return treeData;
 }
 
+// Array => Tree
 export function resetTreeData(treeData: any[], childrenField: string, targetData: any[], key: string) {
   const dataMap = new Map(targetData.map((v) => [v[key], v]));
   for (let i = 0; i < treeData.length; i++) {
@@ -204,6 +205,7 @@ export function resetTreeData(treeData: any[], childrenField: string, targetData
   return treeData;
 }
 
+// 获取组件实例的expose方法
 export function handleExpose(instance: any, ref: any, compName: string) {
   nextTick(() => {
     if (!ref) {
@@ -223,6 +225,7 @@ export function handleExpose(instance: any, ref: any, compName: string) {
   });
 }
 
+// 获取组件实例的expose方法（proxy模式）
 export function getExposeProxy(instance: any, source: any) {
   const proxy = new Proxy(instance, {
     get(target, key, _receiver) {
@@ -237,8 +240,4 @@ export function getExposeProxy(instance: any, source: any) {
     }
   });
   return proxy;
-}
-
-export function isResponsiveData(data: any) {
-  return isRef(data) || isReactive(data) || isReadonly(data) || isProxy(data);
 }

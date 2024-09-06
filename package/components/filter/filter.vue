@@ -93,6 +93,7 @@
                 :size="props.size"
                 clearable
                 :disabled="disabledDatePicker(item)"
+                @change="(val: any) => item.showValue = val"
               />
             </div>
             <k-select
@@ -154,7 +155,7 @@ import { KSelect, KOption } from '../select';
 import { KButton } from '../button';
 import { KPopover } from '../popover';
 import { KCascader } from '../cascader';
-import { dateTypeOptions, logicOptions } from './const';
+import { dateTypeOptions, logicOptions } from './data';
 import { treeDataToArray, isValid } from '../../utils';
 
 defineOptions({
@@ -366,6 +367,10 @@ function changeLogic(dataItem) {
   if (!logicOptionItem) {
     return;
   }
+  if (disabledInput.value(dataItem)) {
+    dataItem.value = '';
+    dataItem.showValue = '';
+  }
   const logicItem = logicOptionItem.logicList.find(item => item.logic === dataItem.logic);
   dataItem.handler = logicItem?.handler;
   if (type === 'date') {
@@ -382,9 +387,8 @@ function changeDateLogic(item:IFilterDataType) {
 }
 function changeDateRange(item:IFilterDataType) {
   setDatePickerType(item);
-  let dateValue:any = '';
+  let dateValue:any = item.value;
   switch (item.dateRange) {
-    case 'date': dateValue = ''; break;
     case 'range': dateValue = ['', '']; break;
     case 'today': dateValue = getTargetDay(0); break;
     case 'tomorrow': dateValue = getTargetDay(1); break;

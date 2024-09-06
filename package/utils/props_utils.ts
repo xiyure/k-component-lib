@@ -1,4 +1,4 @@
-import { isVNode, Fragment, Comment, Text } from 'vue';
+import { isVNode, Fragment, Comment, Text, isRef, isReactive, isReadonly, isProxy } from 'vue';
 import { isValid } from './index';
 
 const cacheStringFunction = fn => {
@@ -190,6 +190,11 @@ export const getTextFromElement = (ele: any) => {
   }
   return ele;
 };
+
+// 判断数据是否响应式
+function isResponsiveData(data: any) {
+  return isRef(data) || isReactive(data) || isReadonly(data) || isProxy(data);
+}
 export {
   hasProp,
   getComponent,
@@ -201,5 +206,6 @@ export {
   findDOMNode,
   flattenChildren,
   getPropsSlot,
+  isResponsiveData
 };
 export default hasProp;

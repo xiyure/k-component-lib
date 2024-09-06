@@ -124,5 +124,5 @@ function closeFilterPanel() {
   filterPopper.value?.hide();
 }
 
-defineExpose({ closeFilterPanel })
+defineExpose({ closeFilterPanel });
 </script>

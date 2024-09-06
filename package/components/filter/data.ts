@@ -138,24 +138,24 @@ export const logicOptions = [
     logicList: [
       {
         logic: 'equal',
-        handler(a: string, b: string | any[]) {
+        handler(a: string | Date, b: string | Date | any[]) {
           if (Array.isArray(b)) {
-            return a > b[0] && 
-              a < b[1];
+            return getTime(a) > getTime(b[0]) && 
+              getTime(a) < getTime(b[1]);
           }
-          return a === b;
+          return getTime(a) === getTime(b);
         }
       },
       {
         logic: 'before',
         handler(a: string, b: string) {
-          return a > b;
+          return getTime(a) < getTime(b);
         }
       },
       {
         logic: 'after',
         handler(a: string, b: string) {
-          return a < b;
+          return getTime(a) > getTime(b);
         }
       },
       {
@@ -173,3 +173,10 @@ export const logicOptions = [
     ]
   }
 ];
+
+function getTime(d: string | Date) {
+  if (d instanceof Date) {
+    return d.getTime();
+  }
+  return new Date(d).getTime();
+}
