@@ -16,9 +16,9 @@
           <h1 :data-h1="status">
             {{ status }}
             <div class="presuppose-icon" :style="{ backgroundColor: statusMessage.color }">
-              <IconLocked v-if="status == 403" size="1.8vw" color="#FFFFFF"></IconLocked>
-              <span v-if="status == 404">?</span>
-              <span v-if="status == 500">!</span>
+              <IconLocked v-if="status == '403'" size="1.8vw" color="#FFFFFF"></IconLocked>
+              <span v-if="status == '404'">?</span>
+              <span v-if="status == '500'">!</span>
             </div>
           </h1>
           <svg
@@ -105,9 +105,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { ElResult } from 'element-plus';
-import { IconStatusSuccess, IconStatusDanger, IconStatusWarning, IconStatusInfo } from 'ksw-vue-icon';
+import { computed } from 'vue';
+
 import { ResultProps } from './type.d';
 
 defineOptions({
