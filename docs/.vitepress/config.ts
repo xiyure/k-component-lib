@@ -4,7 +4,6 @@ import path from 'path';
 import nav from '../configs/nav';
 import { containerPreview, componentPreview } from '@vitepress-demo-preview/plugin';
 import sidebar from '../configs/sidebar';
-import '../../tailwind.css';
 
 export default defineConfig({
   // lang: 'en-US',
