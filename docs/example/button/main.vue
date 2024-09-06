@@ -1,4 +1,5 @@
 <template>
+  <div class="text-red-500">123</div>
   <k-button>默认按钮</k-button>
   <k-button type="primary" main>主要按钮</k-button>
   <k-button type="success" main>成功按钮</k-button>

@@ -1,9 +1,10 @@
-import { defineConfig } from 'vitepress'
-import vueJsx from '@vitejs/plugin-vue-jsx'
-import path from 'path'
-import nav from '../configs/nav'
-import { containerPreview, componentPreview } from '@vitepress-demo-preview/plugin'
-import sidebar from '../configs/sidebar'
+import { defineConfig } from 'vitepress';
+import vueJsx from '@vitejs/plugin-vue-jsx';
+import path from 'path';
+import nav from '../configs/nav';
+import { containerPreview, componentPreview } from '@vitepress-demo-preview/plugin';
+import sidebar from '../configs/sidebar';
+import '../../tailwind.css';
 
 export default defineConfig({
   // lang: 'en-US',
@@ -14,9 +15,7 @@ export default defineConfig({
   cleanUrls: true,
 
   base: process.env.BASE || '/',
-  head: [
-    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }]
-  ],
+  head: [['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }]],
 
   markdown: {
     theme: { light: 'github-light', dark: 'github-dark' },
@@ -24,16 +23,16 @@ export default defineConfig({
     config: (md) => {
       md.use(containerPreview);
       md.use(componentPreview);
-    }
+    },
   },
 
   vite: {
     plugins: [vueJsx()],
     resolve: {
       alias: {
-        '@alias': path.resolve(__dirname, '../')
-      }
-    }
+        '@alias': path.resolve(__dirname, '../'),
+      },
+    },
   },
 
   themeConfig: {
@@ -59,13 +58,11 @@ export default defineConfig({
     //   text: '在 GitHub 上编辑此页'
     // },
 
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/xiyure/k-component-lib' }
-    ],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/xiyure/k-component-lib' }],
 
     footer: {
       message: 'Released under the MIT License.',
-      copyright: 'Copyright © 2024-present ZHJ'
-    }
-  }
-})
+      copyright: 'Copyright © 2024-present ZHJ',
+    },
+  },
+});

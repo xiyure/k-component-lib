@@ -10,7 +10,7 @@ hero:
   tagline: 基于 vitepress-theme-demoblock 插件来实现 Vue 组件的支持。
   image:
     src: /logo.svg
-    alt: vitepress-theme-demoblock  
+    alt: vitepress-theme-demoblock
   actions:
     - theme: brand
       text: Get Started
