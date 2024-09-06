@@ -12,6 +12,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { ElTimeline } from 'element-plus';
 import { TimelineProps } from './type';
 import { handleExpose } from '../../utils';
 

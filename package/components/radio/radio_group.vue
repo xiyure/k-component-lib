@@ -14,6 +14,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, provide } from 'vue';
+import { ElRadioGroup } from 'element-plus';
 import { RadioGroupProps } from './type.d';
 import { getCompSize, handleExpose } from '../../utils';
 

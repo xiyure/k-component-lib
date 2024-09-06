@@ -18,6 +18,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { ElDropdown } from 'element-plus';
 import { DropDownProps } from './type';
 import { getCompSize, handleExpose } from '../../utils';
 

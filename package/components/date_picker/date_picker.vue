@@ -15,6 +15,7 @@
 
 <script setup lang="ts">
 import { ref, getCurrentInstance, computed } from 'vue';
+import { ElDatePicker } from 'element-plus';
 import { DatePicker } from './type';
 import { getCompSize, handleExpose } from '../../utils';
 

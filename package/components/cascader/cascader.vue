@@ -13,6 +13,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { ElCascader } from 'element-plus';
 import { CascaderProps } from './type';
 import { getCompSize, handleExpose } from '../../utils';
 

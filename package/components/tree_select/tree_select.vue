@@ -17,6 +17,7 @@
 
 <script setup lang="ts">
 import { nextTick, ref } from 'vue';
+import { ElTreeSelect } from 'element-plus';
 import { handleExpose } from '../../utils';
 
 defineOptions({

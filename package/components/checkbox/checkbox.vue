@@ -17,6 +17,7 @@
 
 <script setup lang="ts">
 import { ref, watch, nextTick, inject } from 'vue';
+import { ElCheckbox } from 'element-plus';
 import { CheckboxProps } from './type';
 import { getCompSize, isValidColor, handleExpose } from '../../utils/index';
 

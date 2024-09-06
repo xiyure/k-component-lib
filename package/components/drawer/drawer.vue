@@ -12,6 +12,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { ElDrawer } from 'element-plus';
 import { handleExpose } from '../../utils';
 
 defineOptions({

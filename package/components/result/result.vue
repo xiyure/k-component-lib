@@ -105,7 +105,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
+import { ElResult } from 'element-plus';
+import { IconStatusSuccess, IconStatusDanger, IconStatusWarning, IconStatusInfo } from 'ksw-vue-icon';
 import { ResultProps } from './type.d';
 
 defineOptions({

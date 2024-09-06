@@ -47,7 +47,8 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, getCurrentInstance } from 'vue';
-import { TransferKey, TransferDirection } from 'element-plus';
+import { ElTransfer, TransferKey, TransferDirection } from 'element-plus';
+
 import { IconSearch, IconDrag } from 'ksw-vue-icon';
 import { TransferProps } from './type';
 import { KInput } from '../input';

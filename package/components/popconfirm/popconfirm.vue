@@ -14,6 +14,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { ElPopconfirm } from 'element-plus';
 import { IconClear } from 'ksw-vue-icon';
 import { PopconfirmProps } from './type';
 import { handleExpose } from '../../utils';

@@ -6,6 +6,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { ElDropdownItem } from 'element-plus';
 import { handleExpose } from '../../utils';
 
 defineOptions({

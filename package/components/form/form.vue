@@ -13,6 +13,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
+import { ElForm } from 'element-plus';
 import { FormProps } from './type';
 import { getCompSize, handleExpose } from '../../utils';
 

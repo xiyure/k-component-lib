@@ -28,6 +28,7 @@
 </template>
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { ElInput } from 'element-plus';
 import { InputProps } from './type.d';
 import { getCompSize, handleExpose } from '../../utils';
 

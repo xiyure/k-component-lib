@@ -40,6 +40,7 @@
 
 <script setup lang="ts">
 import { computed, ref, nextTick, watch } from 'vue';
+import { ElButton } from 'element-plus';
 import { IconLoading } from 'ksw-vue-icon';
 import { ButtonProps } from './type.d';
 import { isValidColor, GetColorLevel, genRandomStr, handleExpose } from '../../utils';

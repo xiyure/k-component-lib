@@ -11,6 +11,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { ElSelect } from 'element-plus';
 import { SelectInputProps } from './type';
 import { getCompSize, handleExpose } from '../../utils';
 

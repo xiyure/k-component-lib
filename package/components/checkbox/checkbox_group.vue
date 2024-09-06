@@ -11,6 +11,7 @@
 
 <script setup lang="ts">
 import { ref, watch, provide } from 'vue';
+import { ElCheckboxGroup } from 'element-plus';
 import { CheckboxGroupProps } from './type';
 import { getCompSize, handleExpose } from '../../utils/index';
 

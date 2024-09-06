@@ -12,6 +12,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { ElDialog } from 'element-plus';
 import { handleExpose } from '../../utils';
 
 defineOptions({

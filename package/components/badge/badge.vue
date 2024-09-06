@@ -8,6 +8,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { ElBadge } from 'element-plus';
 import { handleExpose } from '../../utils';
 
 defineOptions({

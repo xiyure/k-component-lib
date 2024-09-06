@@ -83,7 +83,8 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { UploadFile, UploadRawFile } from 'element-plus';
+import { ElUpload, ElProgress, UploadFile, UploadRawFile } from 'element-plus';
+
 import { IconEmptyBox, IconWarning, IconCheck, IconDelete, IconFile } from 'ksw-vue-icon';
 import { UploadProps } from './type';
 import { handleExpose } from '../../utils';

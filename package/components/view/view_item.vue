@@ -33,6 +33,7 @@
 
 <script setup lang="ts">
 import { inject, getCurrentInstance } from 'vue';
+import { ElDropdown, ElDropdownMenu, ElDropdownItem } from 'element-plus';
 import { IconMore } from 'ksw-vue-icon';
 import { ViewItemProps } from './type';
 

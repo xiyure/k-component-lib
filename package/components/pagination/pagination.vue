@@ -9,6 +9,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { ElPagination } from 'element-plus';
 import { getCompSize, handleExpose } from '../../utils';
 import { PaginationProps } from './type.d';
 

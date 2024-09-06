@@ -33,6 +33,7 @@
 
 <script setup lang="ts">
 import { ref, watch, inject, nextTick } from 'vue';
+import { ElStep } from 'element-plus';
 import { StepProps } from './type';
 import { KPopover } from '../popover';
 import { genRandomStr, handleExpose } from '../../utils';

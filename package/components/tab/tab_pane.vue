@@ -22,6 +22,7 @@
 
 <script setup lang="ts">
 import { ref, computed, useSlots } from 'vue';
+import { ElTabPane } from 'element-plus';
 import { handleExpose } from '../../utils';
 import { KTooltip } from '../tooltip';
 

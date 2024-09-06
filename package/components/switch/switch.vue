@@ -13,6 +13,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { ElSwitch } from 'element-plus';
 import { SwitchProps } from './type';
 import { getCompSize, handleExpose } from '../../utils';
 

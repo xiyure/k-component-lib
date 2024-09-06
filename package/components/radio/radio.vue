@@ -14,6 +14,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch, nextTick } from 'vue';
+import { ElRadio } from 'element-plus';
 import { RadioProps } from './type.d';
 import { isValidColor, GetColorLevel, genRandomStr, handleExpose } from '../../utils';
 

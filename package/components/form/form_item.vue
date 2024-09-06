@@ -13,6 +13,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { ElFormItem } from 'element-plus';
 import { FormItemProps } from './type';
 import { getCompSize, handleExpose } from '../../utils';
 

@@ -21,6 +21,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch, nextTick } from 'vue';
+import { ElTimelineItem } from 'element-plus';
 import { TimelineItemProps } from './type';
 import { genRandomStr, handleExpose } from '../../utils';
 

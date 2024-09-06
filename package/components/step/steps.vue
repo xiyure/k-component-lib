@@ -20,6 +20,7 @@
 
 <script setup lang="ts">
 import { ref, watch, provide, nextTick, useSlots } from 'vue';
+import { ElSteps } from 'element-plus';
 import { StepsProps } from './type';
 import { genRandomStr, handleExpose } from '../../utils';
 

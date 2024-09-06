@@ -33,6 +33,7 @@
 
 <script setup lang="ts">
 import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue';
+import { ElTabs } from 'element-plus';
 import { IconMore } from 'ksw-vue-icon';
 import TabDropdownMenu from './tab_dropdown_menu';
 import { flattenChildren, isValidElement, camelize, handleExpose } from '../../utils';

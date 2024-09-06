@@ -13,6 +13,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { ElInputNumber } from 'element-plus';
 import { InputNumberProps } from './type';
 import { getCompSize, handleExpose } from '../../utils';
 
