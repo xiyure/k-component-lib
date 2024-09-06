@@ -19,7 +19,7 @@ const elExposeMethods = {
   KDatePicker: ['focus', 'handleOpen', 'handleClose'],
   KUpload: ['abort', 'submit', 'clearFiles', 'handleStart', 'handleRemove'],
   KTransfer: ['clearQuery'],
-  KPopover: ['hide'],
+  KPopover: ['popperRef', 'hide'],
   KDialog: ['resetPostion'],
   KTooltip: ['popperRef',
     'contentRef',

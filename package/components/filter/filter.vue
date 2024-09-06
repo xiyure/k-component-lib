@@ -3,6 +3,8 @@
     <k-popover
       trigger="click"
       width="auto"
+      :teleported="false"
+      placement="bottom-end"
     >
       <template #reference>
         <slot name="reference" :has-config-condition="hasConfigCondition">
