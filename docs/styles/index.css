@@ -1,3 +1,5 @@
+@import './tailwind.css';
+
 .input {
   border: 1px solid #ebebeb;
   border-radius: 4px;

@@ -10,7 +10,7 @@ hero:
   tagline: 基于 vitepress-theme-demoblock 插件来实现 Vue 组件的支持。
   image:
     src: /logo.svg
-    alt: vitepress-theme-demoblock  
+    alt: vitepress-theme-demoblock
   actions:
     - theme: brand
       text: Get Started
@@ -33,3 +33,5 @@ features:
     title: Fully static yet still dynamic
     details: Go wild with true SSG + SPA architecture. Static on page load, but engage users with 100% interactivity from there.
 ---
+
+<div class='bg-red-500'>tailwindcss</div>
