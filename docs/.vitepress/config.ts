@@ -4,6 +4,8 @@ import path from 'path';
 import nav from '../configs/nav';
 import { containerPreview, componentPreview } from '@vitepress-demo-preview/plugin';
 import sidebar from '../configs/sidebar';
+import tailwindcss from 'tailwindcss';
+import autoprefixer from 'autoprefixer';
 
 export default defineConfig({
   // lang: 'en-US',
@@ -32,6 +34,11 @@ export default defineConfig({
         '@alias': path.resolve(__dirname, '../'),
       },
     },
+    css: {
+      postcss: {
+        plugins: [tailwindcss, autoprefixer]
+      }
+    }
   },
 
   themeConfig: {
