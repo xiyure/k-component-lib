@@ -1,8 +1,7 @@
 <template>
   <vxe-table
     ref="vxeTableRef"
-    class="k-table"
-    :class="showDragColumn ? 'drag_table' : ''"
+    :class="['k-table', $styleModule, {'drag_table': showDragColumn}]"
     :data="data"
     v-bind="$attrs"
   >

@@ -1,5 +1,10 @@
 <template>
-  <el-tree-select ref="KTreeSelectRef" v-bind="$attrs" @node-click="handleNodeClick">
+  <el-tree-select
+    ref="KTreeSelectRef"
+    :class="['k-tree-select', $styleModule]"
+    v-bind="$attrs"
+    @node-click="handleNodeClick"
+  >
     <template v-if="$slots.empty" #empty>
       <slot name="empty"></slot>
     </template>

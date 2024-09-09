@@ -7,11 +7,14 @@
     :placement="placement === 'right' ? 'top' : placement"
     :hollow="hollow"
     :color="color"
-    class="k-timeline__item"
-    :class="{
-      'is-show-right': showRight,
-      'is-hollow': props.hollow
-    }"
+    :class="[
+      'k-timeline__item',
+      $styleModule,
+      {
+        'is-show-right': showRight,
+        'is-hollow': props.hollow
+      }
+    ]"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
       <slot :name="name" v-bind="data"></slot>

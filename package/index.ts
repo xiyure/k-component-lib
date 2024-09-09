@@ -16,8 +16,10 @@ import en from './internal/en';
 import { Emitter } from './utils';
 
 type optionsType = {
-  locale?: 'zh' | 'en';
-  vxeGlobalConfig?: VxeGlobalConfig;
+  locale?: 'zh' | 'en'
+  vxeGlobalConfig?: VxeGlobalConfig
+  ElementPlusOptions?: any
+  styleModule?: string
 };
 const install = (Vue: any, options?: optionsType) => {
   // 国际化
@@ -27,6 +29,7 @@ const install = (Vue: any, options?: optionsType) => {
     messages,
   });
   Vue.use(ElementPlus, {
+    ...options?.ElementPlusOptions,
     locale: options?.locale === 'en' ? enLocal : zhLocal,
   });
   // 组件注册
@@ -37,6 +40,7 @@ const install = (Vue: any, options?: optionsType) => {
   for (const name in templates) {
     Vue.component(name, templates[name]);
   }
+  // 原生组件注册
   for (const name in originComponents) {
     Vue.component(name, originComponents[name]);
   }
@@ -51,6 +55,7 @@ const install = (Vue: any, options?: optionsType) => {
   // 全局事件管理，用于多级组件之间的通信
   Vue.config.globalProperties.__emitter__ = new Emitter();
   Vue.config.globalProperties.$t = i18n.global.t;
+  Vue.config.globalProperties.$styleModule = options?.styleModule ?? '';
 };
 
 export * from './components';

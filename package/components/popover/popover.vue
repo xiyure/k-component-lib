@@ -1,7 +1,7 @@
 <template>
   <el-popover
     ref="KPopoverRef"
-    class="k-popover"
+    :class="['k-popover', $styleModule]"
     v-bind="$attrs"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">

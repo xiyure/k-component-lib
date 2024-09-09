@@ -1,7 +1,7 @@
 <template>
   <el-popconfirm
     ref="KPopconfirmRef"
-    class="k-popconfirm"
+    :class="['k-popconfirm', $styleModule]"
     v-bind="$attrs"
     :icon="props.icon"
     cancel-button-type="default"

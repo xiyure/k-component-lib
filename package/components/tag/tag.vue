@@ -1,5 +1,5 @@
 <template>
-  <div class="k-tag">
+  <div :class="['k-tag', $styleModule]">
     <el-tag
       v-if="!point"
       ref="KTagRef"

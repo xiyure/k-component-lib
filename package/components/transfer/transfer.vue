@@ -1,5 +1,5 @@
 <template>
-  <div :id="id" class="k-transfer">
+  <div :id="id" :class="['k-transfer', $styleModule]">
     <div class="k-transfer_searcher">
       <k-input
         v-if="filterable"

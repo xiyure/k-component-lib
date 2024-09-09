@@ -1,6 +1,6 @@
 <template>
   <div
-    class="k-view text-base"
+    :class="['k-view', 'text-base', $styleModule]"
     :style="{
       width: props.width + (typeof props.width === 'number' ? 'px' : '')
     }"

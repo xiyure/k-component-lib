@@ -1,8 +1,14 @@
 <template>
   <el-input
     ref="inputRef"
-    class="k-input"
-    :class="{ 'k-input-has-prepend': slots.prepend, 'k-input-has-append': slots.append }"
+    :class="[
+      'k-input',
+      {
+        'k-input-has-prepend': slots.prepend,
+        'k-input-has-append': slots.append
+      },
+      $styleModule
+    ]"
     v-bind="$attrs"
     :prefix-icon="iconLeft ?? prefixIcon"
     :suffix-icon="iconRight ?? suffixIcon"

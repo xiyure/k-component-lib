@@ -1,5 +1,5 @@
 <template>
-  <div :class="['k-tree-table', props.class]" :style="{ height: height, ...style }">
+  <div :class="['k-tree-table', props.class, $styleModule]" :style="{ height: height, ...style }">
     <div
       v-if="showHeaderTools"
       class="k-tree-table__header"

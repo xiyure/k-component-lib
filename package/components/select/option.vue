@@ -1,7 +1,7 @@
 <template>
   <el-option
     ref="KOptionRef"
-    class="k-option"
+    :class="['k-option', $styleModule]"
     v-bind="$attrs"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">

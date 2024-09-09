@@ -1,10 +1,13 @@
 <template>
   <div
-    class="k-view-item"
-    :class="{
-      'k-view-active' : activeView === props.value,
-      'k-view-disabled': props.disabled
-    }"
+    :class="[
+      'k-view-item',
+      $styleModule,
+      {
+        'k-view-active' : activeView === props.value,
+        'k-view-disabled': props.disabled
+      }
+    ]"
     :data-custom="Boolean(props.isCustom)"
     draggable="true"
     @dragstart="handleDragStart"

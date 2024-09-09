@@ -1,5 +1,5 @@
 <template>
-  <div class="k-upload" :class="{'k-dragger': props.drag}">
+  <div :class="['k-upload', $styleModule, {'k-dragger': props.drag}]">
     <el-upload
       ref="KUploadRef"
       v-model:file-list="fileList"

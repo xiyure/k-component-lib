@@ -1,45 +1,43 @@
 <template>
-  <div :id="id" class="k-calendar">
-    <el-calendar ref="kCalendarRef" v-bind="$attrs">
-      <template #header="{ date }">
-        <slot name="header" :date="date">
-          <div class="k-calendar__header">
-            <div class="k-calendar__header-left">
-              <k-button @click="jumpDate('today')">{{ $t('today') }}</k-button>
-              <k-button @click="jumpDate('prev-month')"><IconArrowLeft /></k-button>
-              <k-button @click="jumpDate('next-month')"><IconArrowRight /></k-button>
-              <span>{{ date }}</span>
-            </div>
-            <div class="k-calendar__header-right">
-              <k-checkbox v-if="showLunar" v-model="isShowLunar" :label="$t('showLunar')"></k-checkbox>
-            </div>
+  <el-calendar ref="kCalendarRef" :class="['k-calendar', $styleModule]" v-bind="$attrs">
+    <template #header="{ date }">
+      <slot name="header" :date="date">
+        <div class="k-calendar__header">
+          <div class="k-calendar__header-left">
+            <k-button @click="jumpDate('today')">{{ $t('today') }}</k-button>
+            <k-button @click="jumpDate('prev-month')"><IconArrowLeft /></k-button>
+            <k-button @click="jumpDate('next-month')"><IconArrowRight /></k-button>
+            <span>{{ date }}</span>
+          </div>
+          <div class="k-calendar__header-right">
+            <k-checkbox v-if="showLunar" v-model="isShowLunar" :label="$t('showLunar')"></k-checkbox>
+          </div>
+        </div>
+      </slot>
+    </template>
+    <template #date-cell="{ data }">
+      <div class="k-calendar__item">
+        <div class="k-calendar__date">
+          <span class="k-calendar__solar">{{ data.date.getDate() }}</span>
+          <span v-show="isShowLunar" class="k-calendar__lunar">{{ lunarDate(data.date).lunarDate_zh }}</span>
+        </div>
+        <slot name="schedule" :date="data.date">
+          <div class="k-calendar__schedule">
+            <ul>
+              <li
+                v-for="item in scheduleContent(data.date)"
+                :key="item"
+                ref="scheduleItemRef"
+                class="k-calendar__schedule-item"
+              >
+                {{ item }}
+              </li>
+            </ul>
           </div>
         </slot>
-      </template>
-      <template #date-cell="{ data }">
-        <div class="k-calendar__item">
-          <div class="k-calendar__date">
-            <span class="k-calendar__solar">{{ data.date.getDate() }}</span>
-            <span v-show="isShowLunar" class="k-calendar__lunar">{{ lunarDate(data.date).lunarDate_zh }}</span>
-          </div>
-          <slot name="schedule" :date="data.date">
-            <div class="k-calendar__schedule">
-              <ul>
-                <li
-                  v-for="item in scheduleContent(data.date)"
-                  :key="item"
-                  ref="scheduleItemRef"
-                  class="k-calendar__schedule-item"
-                >
-                  {{ item }}
-                </li>
-              </ul>
-            </div>
-          </slot>
-        </div>
-      </template>
-    </el-calendar>
-  </div>
+      </div>
+    </template>
+  </el-calendar>
 </template>
 
 <script setup lang="ts">
@@ -51,7 +49,7 @@ import { IconArrowLeft, IconArrowRight } from 'ksw-vue-icon';
 import { CalendarProps } from './type';
 import { lunarMonth, lunarDay } from './const';
 import { KCheckbox } from '../checkbox';
-import { genRandomStr, handleExpose } from '../../utils';
+import { handleExpose } from '../../utils';
 
 defineOptions({
   name: 'KCalendar'
@@ -64,7 +62,6 @@ const props = withDefaults(defineProps<CalendarProps>(), {
 
 const kCalendarRef = ref<CalendarInstance>();
 const isShowLunar = ref(false);
-const id = genRandomStr(8);
 
 const lunarDate = computed(() => function (date:Date) {
   const year = date.getFullYear();

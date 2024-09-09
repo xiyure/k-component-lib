@@ -1,7 +1,7 @@
 <template>
   <el-switch
     ref="kSwitchRef"
-    class="k-switch"
+    :class="['k-switch', $styleModule]"
     v-bind="$attrs"
     :size="getCompSize(size)"
     :style="{

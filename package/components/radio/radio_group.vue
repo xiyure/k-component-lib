@@ -2,7 +2,7 @@
   <el-radio-group
     ref="KRadioGroupRef"
     class="k-radio-group"
-    :class="[{ 'k-radio-group--button': props.button === true }, directionClass, getSizeClass]"
+    :class="[{ 'k-radio-group--button': props.button === true }, directionClass, getSizeClass, $styleModule]"
     v-bind="$attrs"
     :size="getCompSize(size)"
   >

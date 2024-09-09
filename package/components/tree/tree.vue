@@ -1,5 +1,5 @@
 <template>
-  <div class="k-tree">
+  <div :class="['k-tree', $styleModule]">
     <div class="k-tree__filter">
       <k-input
         v-if="props.showFilter" v-model="query" :placeholder="$t('enterInputSearch')"

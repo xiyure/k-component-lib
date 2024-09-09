@@ -1,5 +1,11 @@
 <template>
-  <div class="k-filter" :class="props.size === 'sm' ? 'text-sm' : 'text-base'">
+  <div
+    :class="[
+      'k-filter',
+      {'text-sm': props.size ==='sm', 'text-base': props.size !== 'sm'},
+      $styleModule
+    ]"
+  >
     <k-popover
       trigger="click"
       width="auto"

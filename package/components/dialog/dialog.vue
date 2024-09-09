@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     ref="kDialogRef"
-    class="k-dialog"
+    :class="['k-dialog', $styleModule]"
     v-bind="$attrs"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">

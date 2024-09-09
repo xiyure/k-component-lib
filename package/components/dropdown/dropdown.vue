@@ -1,7 +1,7 @@
 <template>
   <el-dropdown
     ref="kDropDownRef"
-    class="k-dropdown"
+    :class="['k-dropdown', $styleModule]"
     v-bind="$attrs"
     :size="getCompSize(size)"
   >

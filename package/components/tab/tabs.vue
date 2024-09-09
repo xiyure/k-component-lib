@@ -2,7 +2,7 @@
   <el-tabs
     ref="KTabsRef"
     v-model="activeName"
-    class="k-tabs"
+    :class="['k-tabs', $styleModule]"
     v-bind="$attrs"
     :tab-position="tabPosition"
     :editable="editable"

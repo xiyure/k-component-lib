@@ -10,9 +10,9 @@
     <div class="KPageHead-title-container" @mouseenter="() => (bbm = true)">
       <component :is="props.icon" v-if="props.icon" size="24" />
       <p class="KPageHead-title">{{ title }}</p>
-      <div class="KPageHead-info" v-if="props.info">
+      <div v-if="props.info" class="KPageHead-info">
         <KTooltip :content="props.info" @hide="() => (bbm = false)">
-          <IconTips color="#4193f2" size="16" v-show="bbm"></IconTips>
+          <IconTips v-show="bbm" color="#4193f2" size="16"></IconTips>
         </KTooltip>
       </div>
     </div>

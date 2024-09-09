@@ -1,5 +1,5 @@
 <template>
-  <div v-if="Number.isInteger(dataSize) && dataSize > 0" class="k-operate">
+  <div v-if="Number.isInteger(dataSize) && dataSize > 0" :class="['k-operate', $styleModule]">
     <span class="k-operate__header">{{ dataSize || '-' }}</span>
     <div class="k-operate__content">
       <ul class="k-operate__list">

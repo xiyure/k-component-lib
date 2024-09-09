@@ -1,5 +1,5 @@
 <template>
-  <div class="k-steps">
+  <div :class="['k-steps', $styleModule]">
     <el-steps
       v-if="!capsule"
       ref="KStepsRef"

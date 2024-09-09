@@ -1,7 +1,7 @@
 <template>
   <el-cascader
     ref="cascaderRef"
-    class="k-cascader"
+    :class="['k-cascader', $styleModule]"
     v-bind="$attrs"
     :size="getCompSize(props.size)"
   >

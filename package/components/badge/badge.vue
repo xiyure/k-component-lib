@@ -1,5 +1,5 @@
 <template>
-  <el-badge ref="badgeRef" class="k-badge" v-bind="$attrs">
+  <el-badge ref="badgeRef" :class="['k-badge', $styleModule]" v-bind="$attrs">
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
       <slot :name="name" v-bind="data"></slot>
     </template>

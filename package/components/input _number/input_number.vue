@@ -1,7 +1,7 @@
 <template>
   <el-input-number
     ref="inputNumberRef"
-    class="k-input-number"
+    :class="['k-input-number', $styleModule]"
     v-bind="$attrs"
     :size="getCompSize(props.size)"
   >

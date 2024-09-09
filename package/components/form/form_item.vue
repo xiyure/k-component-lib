@@ -1,7 +1,7 @@
 <template>
   <el-form-item
     ref="KFormItemRef"
-    class="k-form-item"
+    :class="['k-form-item', $styleModule]"
     v-bind="$attrs"
     :size="getCompSize(props.size)"
   >

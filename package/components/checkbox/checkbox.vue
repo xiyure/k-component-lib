@@ -1,7 +1,7 @@
 <template>
   <el-checkbox
     ref="kCheckboxRef"
-    class="k-checkbox"
+    :class="['k-checkbox', $styleModule]"
     v-bind="$attrs"
     :label="label"
     :size="getCompSize(size)"

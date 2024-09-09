@@ -1,5 +1,5 @@
 <template>
-  <el-dropdown-item ref="kDropDownItemRef" v-bind="$attrs">
+  <el-dropdown-item ref="kDropDownItemRef" :class="[$styleModule]" v-bind="$attrs">
     <slot></slot>
   </el-dropdown-item>
 </template>

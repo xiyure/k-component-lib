@@ -1,6 +1,6 @@
 <template>
   <el-select
-    ref="inputRef" class="k-select" v-bind="$attrs"
+    ref="inputRef" class="k-select" :class="[$styleModule]" v-bind="$attrs"
     :size="getCompSize(props.size)"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">

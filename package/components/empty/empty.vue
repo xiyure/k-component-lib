@@ -1,7 +1,7 @@
 <template>
   <el-empty
     ref="KEmptyRef"
-    class="k-empty"
+    :class="['k-empty', $styleModule]"
     v-bind="$attrs"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">

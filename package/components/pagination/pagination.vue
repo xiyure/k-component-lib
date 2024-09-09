@@ -1,7 +1,7 @@
 <template>
   <el-pagination
     ref="KPaginationRef"
-    class="k-pagination"
+    :class="['k-pagination', $styleModule]"
     v-bind="$attrs"
     :size="getCompSize(props.size)"
   />

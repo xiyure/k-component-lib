@@ -1,7 +1,7 @@
 <template>
   <el-collapse-item
     ref="kCollapseItemRef"
-    class="k-collapse-item"
+    :class="['k-collapse-item', $styleModule]"
     v-bind="$attrs"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">

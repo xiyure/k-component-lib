@@ -18,6 +18,7 @@
       getElTypeColor,
       getSizeClass,
       getBtnBase,
+      $styleModule
     ]"
     :loading="loading"
     :loading-icon="loadingIcon"

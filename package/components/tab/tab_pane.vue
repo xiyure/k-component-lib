@@ -1,7 +1,7 @@
 <template>
   <el-tab-pane
     ref="KTabPaneRef"
-    class="k-tab-item"
+    :class="['k-tab-item', $styleModule]"
     v-bind="$attrs"
     :closable="props.closable"
   >

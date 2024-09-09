@@ -4,7 +4,7 @@ import { KInputNumber } from './input _number';
 import { KRadio, KRadioGroup } from './radio';
 import { KCheckbox, KCheckboxGroup } from './checkbox';
 import { KSwitch } from './switch';
-import { KTabs, KTabItem } from './tab';
+import { KTabs, KTabPane } from './tab';
 import { KPagination } from './pagination';
 import { KSelect, KOption, KOptionGroup } from './select';
 import { KCascader } from './cascader';
@@ -15,7 +15,8 @@ import { KOperate } from './operate';
 import { KTag } from './tag';
 import { KPopover } from './popover';
 import { KPopconfirm } from './popconfirm';
-import { KStatus } from './status';
+import { KResult } from './result';
+import { KEmpty } from './empty';
 import { KMessage } from './message';
 import { KLoading } from './loading';
 import { KDialog } from './dialog';
@@ -45,7 +46,7 @@ declare module 'vue' {
     KCheckboxGroup: typeof KCheckboxGroup
     KSwitch: typeof KSwitch
     KTabs: typeof KTabs
-    KTabItem: typeof KTabItem
+    KTabPane: typeof KTabPane
     KPagination: typeof KPagination
     KSelect: typeof KSelect
     KOption: typeof KOption
@@ -58,7 +59,8 @@ declare module 'vue' {
     KTag: typeof KTag
     KPopover: typeof KPopover
     KPopconfirm: typeof KPopconfirm
-    KStatus: typeof KStatus
+    KResult: typeof KResult
+    KEmpty: typeof KEmpty
     KMessage: typeof KMessage
     KLoading: typeof KLoading
     KDialog: typeof KDialog

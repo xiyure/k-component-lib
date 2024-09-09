@@ -2,7 +2,7 @@
   <el-step
     v-if="!stepsProps.capsule"
     ref="KStepRef"
-    class="k-step"
+    :class="['k-step', $styleModule]"
     v-bind="$attrs"
     :title="title"
     :description="description"
@@ -13,7 +13,7 @@
       <slot :name="name" v-bind="data"></slot>
     </template>
   </el-step>
-  <div v-else :id="id" class="k-step__capsule-box">
+  <div v-else :id="id" :class="['k-step__capsule-box', $styleModule]">
     <k-popover
       :show-after="500"
       :disabled="!props.description"

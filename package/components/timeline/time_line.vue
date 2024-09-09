@@ -1,8 +1,7 @@
 <template>
   <div
     ref="KTimelineRef"
-    class="k-timeline"
-    :class="{'hidden-line': isHideLine}"
+    :class="['k-timeline', $styleModule, {'hidden-line': isHideLine}]"
   >
     <el-timeline>
       <slot></slot>

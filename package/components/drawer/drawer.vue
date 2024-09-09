@@ -1,7 +1,7 @@
 <template>
   <el-drawer
     ref="KDrawerRef"
-    class="k-drawer"
+    :class="['k-drawer', $styleModule]"
     v-bind="$attrs"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">

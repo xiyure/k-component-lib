@@ -1,5 +1,5 @@
 <template>
-  <div class="k-tree-transfer">
+  <div :class="['k-tree-transfer', $styleModule]">
     <div v-if="showFilter" class="k-transfer__filter">
       <k-input
         v-model="query"
