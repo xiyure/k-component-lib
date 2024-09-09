@@ -3,7 +3,7 @@ import VxeTable from 'vxe-table';
 import VxeUI, { VxeGlobalConfig } from 'vxe-pc-ui';
 import zhLocal from 'element-plus/es/locale/lang/zh-cn';
 import enLocal from 'element-plus/es/locale/lang/en';
-import 'element-plus/dist/index.css';
+// import 'element-plus/dist/index.css'; // 禁用 element-plus 默认样式
 import 'vxe-table/lib/style.css';
 import 'ksw-vue-icon/styles/icon.css';
 import { createI18n } from 'vue-i18n';
