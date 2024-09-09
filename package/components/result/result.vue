@@ -114,7 +114,6 @@ defineOptions({
 });
 
 const props = withDefaults(defineProps<ResultProps>(), {
-  icon: 'info',
   status: '',
   title: '',
   subTitle: '',
