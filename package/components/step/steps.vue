@@ -83,6 +83,6 @@ handleExpose(instance, KStepsRef, 'KSteps');
 defineExpose(instance);
 </script>
 
-<style lang="css">
-@import './style.css';
+<style lang="less">
+@import './style.less';
 </style>
