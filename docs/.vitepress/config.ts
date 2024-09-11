@@ -1,5 +1,7 @@
 import { defineConfig } from 'vitepress'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import { genApiDoc } from './api-doc.config';
+import { applyPlugins } from './md-demo-plugin';
 import path from 'path'
 import nav from '../configs/nav'
 import { containerPreview, componentPreview } from '@vitepress-demo-preview/plugin'
@@ -24,11 +26,12 @@ export default defineConfig({
     config: (md) => {
       md.use(containerPreview);
       md.use(componentPreview);
+      md.use(applyPlugins);
     }
   },
 
   vite: {
-    plugins: [vueJsx()],
+    plugins: [vueJsx(), genApiDoc()],
     resolve: {
       alias: {
         '@alias': path.resolve(__dirname, '../')

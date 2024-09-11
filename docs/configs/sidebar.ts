@@ -1,5 +1,6 @@
 import fs from 'fs';
 import _path from 'path';
+import matter from 'gray-matter';
 
 const BASE_PATH = process.cwd();
 const COMPONENT_DIRS = fs.readdirSync(_path.join(BASE_PATH, 'components'));
@@ -35,12 +36,15 @@ function getComponentsSidebar() {
   // 自动导入组件文档
   for (const fileName of COMPONENT_DIRS) {
     const filePath = _path.join(BASE_PATH, 'components', fileName);
+    if (!filePath.endsWith('.md')) {
+      continue;
+    }
     const markdownContent = readMarkdownFile(filePath);
     if (markdownContent) {
       const compName = _path.basename(fileName, '.md');
-      const title = extractField(markdownContent, 'Title');
+      const { title } = matter(markdownContent).data;
       items.push({
-        text: title,
+        text: title ?? 'undefined',
         link: `/components/${compName}`,
       });
     }
@@ -82,18 +86,6 @@ function readMarkdownFile(filePath) {
     return content;
   } catch (err) {
     console.error('Error reading file:', err);
+    return '';
   }
-}
-
-// 提取特定字段
-function extractField(content, fieldName) {
-  // 假设字段格式为 "FieldName: Value"
-  const regex = new RegExp(`${fieldName}:\\s*(.+)`);
-  const match = content.match(regex);
-
-  if (match) {
-    return match[1].trim(); // 返回字段的值
-  } 
-  console.log(`Field "${fieldName}" not found.`);
-  return null;
 }

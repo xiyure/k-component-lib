@@ -1,0 +1,54 @@
+{
+  "name": "Button",
+  "props": [
+    {
+      "displayName": "name",
+      "type": "string",
+      "description": "The name of the component",
+      "defaultValue": "''",
+      "required": false
+    }
+  ],
+  "events": [
+    {
+      "displayName": "close",
+      "description": "关闭时触发",
+      "type": "Function",
+      "tip": "(event: Event) => void"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "default",
+      "description": "默认插槽"
+    },
+    {
+
+      "displayName": "header",
+      "description": "头部插槽"
+    },
+    {
+
+      "displayName": "footer",
+      "description": "底部插槽"
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "close",
+      "description": "关闭弹窗",
+      "type": "Function"
+    },
+    {
+
+      "displayName": "open",
+      "description": "打开弹窗",
+      "type": "Function"
+    },
+    {
+      "displayName": "toggle",
+      "description": "切换弹窗状态",
+      "type": "Function"
+    }
+  ]
+}
