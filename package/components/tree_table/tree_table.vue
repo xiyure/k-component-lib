@@ -445,7 +445,7 @@ const { checkedDataSize,
   _checkboxMethods
 } = useCheckbox(tableInstance, showTableData, props);
 watch(
-  () => props.data?.length,
+ [() => props.data, () => props.data?.length],
   () => {
     xeTableData.value = setTableData(props.data);
   },
