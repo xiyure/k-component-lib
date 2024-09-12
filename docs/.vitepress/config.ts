@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitepress'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import { genApiDoc } from './api-doc.config';
-import { applyPlugins } from './md-demo-plugin';
+import { genApiDoc } from './plugin/api-doc.config';
+import { applyPlugins } from './plugin/md-demo-plugin';
 import path from 'path'
 import nav from '../configs/nav'
 import { containerPreview, componentPreview } from '@vitepress-demo-preview/plugin'
@@ -36,6 +36,10 @@ export default defineConfig({
       alias: {
         '@alias': path.resolve(__dirname, '../')
       }
+    },
+    server: {
+      host: '0.0.0.0',
+      port: 12581
     }
   },
 

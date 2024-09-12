@@ -1,9 +1,9 @@
 import { baseParse } from '@vue/compiler-core';
 import { resolveConfig } from 'vitepress';
 
-function parseProps(content) {
+function parseProps(content: string) {
   const ast = baseParse(content);
-  const demoElement = ast.children[0];
+  const demoElement = ast.children[0] as any;
   const props = getPropsMap(demoElement.props);
   return props;
 }
@@ -21,7 +21,7 @@ async function resolveLocaleConfigs(root = "docs") {
   const defaultLang = siteData.lang;
   const langToPathMap = Object.entries(siteData.locales).reduce(
     (map, [path, localeConfig]) => {
-      map[localeConfig.lang] = path;
+      map[localeConfig.lang ?? 'en'] = path;
       return map;
     },
     {}

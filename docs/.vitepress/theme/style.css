@@ -30,3 +30,11 @@ html.dark {
 .vp-doc th {
   color: unset !important;
 }
+
+.k-tooltip-icon.el-tooltip__trigger > span.ksw-icon {
+  margin-left: 10px;
+  vertical-align: middle;
+}
+.el-popper.is-light {
+  color: #0c61c9 !important;
+}

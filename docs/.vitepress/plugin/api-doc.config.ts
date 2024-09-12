@@ -3,15 +3,18 @@ import MarkdownIt from 'markdown-it';
 import matter from 'gray-matter';
 import { dirname, join, resolve } from 'node:path';
 import fs from 'fs';
+import { componentProps, Props, Events, Methods, Slots } from './type.js';
 
+type Lang = 'zh' | 'en';
 
 // 生成Props模板
-const tmplProps = (props) => {
+const tmplProps = (props: Props[]) => {
   const displayableProps = props;
   const hasVersion = displayableProps.some((prop) => prop?.tags?.version);
   const content = displayableProps.map((prop) => {
-    const { displayName, description, type, defaultValue, required, tags } = prop;
-    let lineContent = `|${displayName}|${description}|\`${type}\`|\`${defaultValue ?? '-'}\`|`;
+    const { displayName, description, type, defaultValue, required, tags, tip } = prop;
+    const tipContent = genTooltip(tip);
+    let lineContent = `|${displayName}|${description}|\`${type}\`${tipContent}|\`${defaultValue ?? '-'}\`|`;
     if (hasVersion) {
       const version = tags?.version?.[0]?.description;
       lineContent += `${version || ""}|`;
@@ -24,12 +27,12 @@ const tmplProps = (props) => {
   };
 };
 // 处理Props
-const handleProps = (props, lang = "zh") => {
+const handleProps = (props: Props[], lang: Lang = 'zh') => {
   const { content, hasVersion } = tmplProps(props);
   if (!content)
     return "";
-  let header = ["", ""];
-  if (lang === "en") {
+  let header = ['', ''];
+  if (lang === 'en') {
     header = ["|Name|Description|Type|Default|", "|---|---|---|:---:|"];
     if (hasVersion) {
       header[0] += "version|";
@@ -50,13 +53,15 @@ ${content}
 };
 
 // 生成Events模板
-const tmplEvents = (events) => {
+const tmplEvents = (events: Events[]) => {
   const displayableEvents = events;
   const hasVersion = displayableEvents.some(
-    (event) => event?.tags?.some((tag) => tag.title === "version")
+    (event) => event?.tags?.some((tag: any) => tag.title === "version")
   );
   const content = displayableEvents.map((event) => {
     const { displayName, description, type, tip, tags } = event;
+    const tipContent = genTooltip(tip);
+    let version = '';
     if (tags?.length) {
       for (const item of tags) {
         if (item.title === "version") {
@@ -65,7 +70,7 @@ const tmplEvents = (events) => {
         }
       }
     }
-    let lineContent = `|${displayName}|${description}|\`${type}\`|`;
+    let lineContent = `|${displayName}|${description}|\`${type}\`${tipContent}|`;
     if (hasVersion) {
       lineContent += `${version}|`;
     }
@@ -77,7 +82,7 @@ const tmplEvents = (events) => {
   };
 };
 // 处理Events
-const handleEvents = (events, lang) => {
+const handleEvents = (events: Events[], lang: Lang = 'zh') => {
   const { content, hasVersion } = tmplEvents(events);
   if (!content)
     return "";
@@ -94,14 +99,13 @@ ${content}
 };
 
 // 生成Methods模板
-const tmplMethods = (methods, lang) => {
-  const displayableMethods = methods.filter(
-    (method) => method.description || lang in (method.tags ?? {})
-  );
+const tmplMethods = (methods: Methods[]) => {
+  const displayableMethods = methods;
   const hasVersion = displayableMethods.some((method) => method?.tags?.version);
   const content = displayableMethods.map((method) => {
-    const { displayName, description, type, tags } = method;
-    let lineContent = `|${displayName}|${description}|\`${type}\`|`;
+    const { displayName, description, type, tip, tags } = method;
+    const tipContent = genTooltip(tip);
+    let lineContent = `|${displayName}|${description}|\`${type}\`${tipContent}|`;
     if (hasVersion) {
       const version = tags?.version?.[0]?.description;
       lineContent += `${version || ""}|`;
@@ -114,7 +118,7 @@ const tmplMethods = (methods, lang) => {
   };
 };
 // 处理Methods
-const handleMethods = (methods, lang) => {
+const handleMethods = (methods: Methods[], lang: Lang = 'zh') => {
   const { content, hasVersion } = tmplMethods(methods);
   if (!content)
     return "";
@@ -131,7 +135,7 @@ ${content}
 };
 
 // 生成Slots模板
-const tmplSlots = (slots, lang) => {
+const tmplSlots = (slots: Slots[]) => {
   const displayableSlots = slots;
   const hasVersion = displayableSlots.some((slot) => slot?.tags?.version);
   const content = displayableSlots.map((slot) => {
@@ -149,7 +153,7 @@ const tmplSlots = (slots, lang) => {
   };
 };
 // 处理Slots
-const handleSlots = (slots, lang) => {
+const handleSlots = (slots: Slots[], lang: Lang = 'zh') => {
   const { content, hasVersion } = tmplSlots(slots);
   if (!content)
     return "";
@@ -165,7 +169,7 @@ ${content}
 `;
 };
 
-const getTmpl = (suffix, content, options) => {
+const getTmpl = (suffix: string, content: string, options: any) => {
   const { displayName, tags, lang } = options;
   if (!content)
     return "";
@@ -182,7 +186,7 @@ const getTmpl = (suffix, content, options) => {
 ${description}` : ""}
 ${content}`;
 };
-const getApiTmpl = (componentDoc, lang) => {
+const getApiTmpl = (componentDoc: any, lang: Lang) => {
   const { name, displayName, props, events, methods, slots, tags } = componentDoc;
   const options = { displayName, tags, lang };
   const propsTmpl =  getTmpl("Props", handleProps(props || [], lang), options);
@@ -196,7 +200,7 @@ const getApiTmpl = (componentDoc, lang) => {
   return res;
 };
 
-const parseParamsFile = async (filePath) => {
+const parseParamsFile = async (filePath: string) => {
   let content = fs.readFileSync(filePath, 'utf-8');
   content = JSON.parse(content);
   return content;
@@ -205,24 +209,24 @@ const parseParamsFile = async (filePath) => {
 const API_REG = /^<API (.*)(<\/API>|\/>)$/;
 const LOG_PREFIX = "[gen-doc-api]";
 function genApiDoc() {
-  let localeConfigs;
-  let md;
+  let localeConfigs: any;
+  let md: any;
   return {
     name: "gen-api-doc",
     enforce: "pre",
-    configResolved: async (config) => {
+    configResolved: async (config: any) => {
       localeConfigs = await resolveLocaleConfigs(config.root);
       md = new MarkdownIt("zero");
     },
-    transform: async (code, id) => {
+    transform: async (code: string, id: string) => {
       if (!id.endsWith(".md")) {
         return null;
       }
       const { data: frontmatter, content } = matter(code);
-      const projectDir = dirname(frontmatter.realPath ? dirname(frontmatter.realPath) : __dirname);
-      const baseDir = join(projectDir, 'components')
-      const blocks = md.parse(content, {}).map((i) => i.content);
-      const replacedBlocks = [];
+      const projectDir = dirname(__dirname);
+      const baseDir = join(dirname(projectDir), 'components')
+      const blocks = md.parse(content, {}).map((i: any) => i.content);
+      const replacedBlocks: any = [];
       for (const block of blocks) {
         if (!block.match(API_REG)) {
           replacedBlocks.push(block);
@@ -239,9 +243,9 @@ function genApiDoc() {
     }
   };
 }
-async function getApiMarkdown(apiComponent, localeConfigs, baseDir) {
-  const props = parseProps(apiComponent);
-  const lang = props.lang ?? (localeConfigs.defaultLang.includes("zh") ? "zh" : "en");
+async function getApiMarkdown(apiComponent: any, localeConfigs: any, baseDir: string) {
+  const props: componentProps = parseProps(apiComponent);
+  const lang = (props.lang ?? (localeConfigs.defaultLang.includes("zh") ? "zh" : "en")) as Lang;
   if (!props.src) {
     console.error(`${LOG_PREFIX} "${apiComponent}" missing src props.`);
     return apiComponent;
@@ -255,5 +259,13 @@ async function getApiMarkdown(apiComponent, localeConfigs, baseDir) {
   const apiMdContents = getApiTmpl(componentDoc, lang);
   return apiMdContents || `${srcPath}'s api is empty!`;
 }
+
+function genTooltip(content: any) {
+  if (!content) {
+    return '';
+  }
+  const html = `<KTooltip content="${content.toString()}" effect="light" trigger="click"></KTooltip>`;
+  return html;
+} 
 
 export { genApiDoc };
