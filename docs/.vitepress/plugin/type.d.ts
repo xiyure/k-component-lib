@@ -27,6 +27,7 @@ export interface Props extends BaseProps {
   type: string
   defaultValue?: string
   required?: boolean
+  tags?: any
 }
 
 // 组件事件类型定义

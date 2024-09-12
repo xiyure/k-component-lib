@@ -7,16 +7,36 @@ import { componentProps, Props, Events, Methods, Slots } from './type.js';
 
 type Lang = 'zh' | 'en';
 
+const escapeCharacter = (str: string) => {
+  if (!str) {
+    return '';
+  }
+  return str.replace(/\r?\n/g, "<br>").replace(/\|/g, "\\|");
+};
+const toKebabCase = (str: string) => {
+  return str.replace(/[A-Z]/g, (match, offset) => {
+    return `${offset > 0 ? "-" : ""}${match.toLocaleLowerCase()}`;
+  });
+};
+function unquote(str: string) {
+  return str && str.replace(/^['"]|['"]$/g, "");
+}
+function trimStr(str: string) {
+  return str && str.replace(/^(\s|\||\r?\n)*|(\s|\||\r?\n)*$/g, "");
+}
+function cleanStr(str: string) {
+  return str && str.replace(/\r?\n/g, "");
+}
+
 // 生成Props模板
 const tmplProps = (props: Props[]) => {
   const displayableProps = props;
   const hasVersion = displayableProps.some((prop) => prop?.tags?.version);
   const content = displayableProps.map((prop) => {
-    const { displayName, description, type, defaultValue, required, tags, tip } = prop;
-    const tipContent = genTooltip(tip);
-    let lineContent = `|${displayName}|${description}|\`${type}\`${tipContent}|\`${defaultValue ?? '-'}\`|`;
+    const { displayName, description, type, defaultValue, tip } = escapeParams(prop);
+    let lineContent = `|${displayName}|${description}|\`${type}\`${tip}|\`${defaultValue}\`|`;
     if (hasVersion) {
-      const version = tags?.version?.[0]?.description;
+      const version = prop?.tags?.version?.[0]?.description;
       lineContent += `${version || ""}|`;
     }
     return lineContent;
@@ -59,8 +79,8 @@ const tmplEvents = (events: Events[]) => {
     (event) => event?.tags?.some((tag: any) => tag.title === "version")
   );
   const content = displayableEvents.map((event) => {
-    const { displayName, description, type, tip, tags } = event;
-    const tipContent = genTooltip(tip);
+    const { tags } = event;
+    const { displayName, description, type, tip } =  escapeParams(event);
     let version = '';
     if (tags?.length) {
       for (const item of tags) {
@@ -70,7 +90,7 @@ const tmplEvents = (events: Events[]) => {
         }
       }
     }
-    let lineContent = `|${displayName}|${description}|\`${type}\`${tipContent}|`;
+    let lineContent = `|${displayName}|${description}|\`${type}\`${tip}|`;
     if (hasVersion) {
       lineContent += `${version}|`;
     }
@@ -103,9 +123,9 @@ const tmplMethods = (methods: Methods[]) => {
   const displayableMethods = methods;
   const hasVersion = displayableMethods.some((method) => method?.tags?.version);
   const content = displayableMethods.map((method) => {
-    const { displayName, description, type, tip, tags } = method;
-    const tipContent = genTooltip(tip);
-    let lineContent = `|${displayName}|${description}|\`${type}\`${tipContent}|`;
+    const { tags } = method;
+    const { displayName, description, type, tip } =  escapeParams(method);
+    let lineContent = `|${displayName}|${description}|\`${type}\`${tip}|`;
     if (hasVersion) {
       const version = tags?.version?.[0]?.description;
       lineContent += `${version || ""}|`;
@@ -139,8 +159,9 @@ const tmplSlots = (slots: Slots[]) => {
   const displayableSlots = slots;
   const hasVersion = displayableSlots.some((slot) => slot?.tags?.version);
   const content = displayableSlots.map((slot) => {
-    const { displayName, description, parameters, tags } = slot;
-    let lineContent = `|${displayName}|${description}|${parameters || "-"}|`;
+    const { tags } = slot;
+    const { displayName, description, parameters } =  escapeParams(slot);
+    let lineContent = `|${displayName}|${description}|${parameters}|`;
     if (hasVersion) {
       const version = tags?.version?.content;
       lineContent += `${version || ""}|`;
@@ -170,10 +191,10 @@ ${content}
 };
 
 const getTmpl = (suffix: string, content: string, options: any) => {
-  const { displayName, tags, lang } = options;
+  const { name, tags, lang } = options;
   if (!content)
     return "";
-  let title = displayName ?? '';
+  let title = `${name ?? ''} ${suffix}`;
   if (tags?.version) {
     const version = tags.version[0]?.description;
     version && (title += ` (${version})`);
@@ -187,16 +208,13 @@ ${description}` : ""}
 ${content}`;
 };
 const getApiTmpl = (componentDoc: any, lang: Lang) => {
-  const { name, displayName, props, events, methods, slots, tags } = componentDoc;
-  const options = { displayName, tags, lang };
+  const { name, props, events, methods, slots, tags } = componentDoc;
+  const options = { name, tags, lang };
   const propsTmpl =  getTmpl("Props", handleProps(props || [], lang), options);
   const eventsTmpl =  getTmpl("Events", handleEvents(events || [], lang), options);
   const methodsTmpl =  getTmpl("Methods", handleMethods(methods || [], lang), options);
   const slotsTmpl =  getTmpl("Slots", handleSlots(slots || [], lang), options);
-  const res = `### ${name} Props\n${propsTmpl}\n
-  ### ${name} Events\n${eventsTmpl}\n
-  ### ${name} Slots\n${slotsTmpl}\n
-  ### ${name} Expose\n${methodsTmpl}`;
+  const res = `${propsTmpl}\n${slotsTmpl}\n${eventsTmpl}\n${methodsTmpl}`;
   return res;
 };
 
@@ -266,6 +284,17 @@ function genTooltip(content: any) {
   }
   const html = `<KTooltip content="${content.toString()}" effect="light" trigger="click"></KTooltip>`;
   return html;
-} 
+}
+function escapeParams(params: any) {
+  const { displayName, description, type, defaultValue, parameters, tip } = params
+  return {
+    displayName: escapeCharacter(displayName),
+    description: escapeCharacter(description),
+    type: escapeCharacter(type),
+    defaultValue: escapeCharacter(defaultValue) || '-',
+    tip: escapeCharacter(genTooltip(tip)),
+    parameters: escapeCharacter(parameters) || '-'
+  }
+}
 
 export { genApiDoc };
