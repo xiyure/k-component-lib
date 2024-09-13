@@ -442,11 +442,13 @@ const { checkedDataSize,
   closeBatchOperation,
   checkBoxChange,
   checkboxAll,
+  clearCheckedData,
   _checkboxMethods
 } = useCheckbox(tableInstance, showTableData, props);
 watch(
   [() => props.data, () => props.data?.length],
   () => {
+    clearCheckedData();
     xeTableData.value = setTableData(props.data);
   },
   { immediate: true }

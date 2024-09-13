@@ -24,26 +24,38 @@ export function useCheckbox($table: any, tableData: any, props: any) {
   // 设置复选框选中行
   const setCheckboxRow = (rows: any[], checked: boolean) => new Promise((resolve) => {
     const newRows = Array.isArray(rows) ? rows : [rows];
+    const res: any[] = [];
     for (const row of newRows) {
       if (checked) {
+        if (isCheckboxDisabled(row)) {
+          continue;
+        }
+        res.push(row);
         checkedData.value.add(row[keyField.value]);
       } else {
+        res.push(row);
         checkedData.value.delete(row[keyField.value]);
       }
     }
-    $table.value?.setCheckboxRow(rows, checked);
+    $table.value?.setCheckboxRow(res, checked);
     resolve({ rows, checked });
   });
   // 设置所有复选框选中行
   const setAllCheckboxRow = (checked: boolean) => new Promise((resolve) => {
+    const res: any[] = [];
     if (checked) {
       for (const row of tableData.value) {
+        if (isCheckboxDisabled(row)) {
+          continue;
+        }
+        res.push(row);
         checkedData.value.add(row[keyField.value]);
       }
+      $table.value?.setCheckboxRow(res, checked);
     } else {
-      checkedData.value.clear();
+      clearCheckedData();
+      $table.value?.setAllCheckboxRow(checked);
     }
-    $table.value?.setAllCheckboxRow(checked);
     resolve({ checked });
   });
   // 清除复选框选中行
@@ -53,7 +65,7 @@ export function useCheckbox($table: any, tableData: any, props: any) {
         checkedData.value.delete(row[keyField.value]);
       }
     } else {
-      checkedData.value.clear();
+      clearCheckedData();
     }
     $table.value?.clearCheckboxRow();
     resolve(undefined);
@@ -93,7 +105,7 @@ export function useCheckbox($table: any, tableData: any, props: any) {
   }
   // 关闭批量操作
   function closeBatchOperation() {
-    checkedData.value.clear();
+    clearCheckedData();
     clearCheckboxRow();
     clearCheckboxReserve();
   }
@@ -108,6 +120,10 @@ export function useCheckbox($table: any, tableData: any, props: any) {
     }
     return false;
   }
+  // 清空已选数据
+  function clearCheckedData() {
+    checkedData.value.clear();
+  }
 
   return {
     _checkboxMethods: {
@@ -120,6 +136,7 @@ export function useCheckbox($table: any, tableData: any, props: any) {
     checkboxAll,
     closeBatchOperation,
     isCheckboxDisabled,
+    clearCheckedData,
     checkedDataSize,
     checkboxConfig
   };
