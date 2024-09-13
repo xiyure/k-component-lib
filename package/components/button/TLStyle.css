@@ -1,0 +1,274 @@
+.k-button {
+  @apply box-border h-8 px-buttonBase rounded border border-borderColorNormal text-base text-normal flex justify-center items-center;
+}
+
+.k-button label {
+  @apply cursor-pointer;
+}
+
+.k-button:hover {
+  @apply bg-gray-100;
+}
+
+.k-button:active {
+  @apply bg-gray-200 shadow-none;
+}
+
+/* tab 获取焦点状态 */
+.k-button:focus-visible {
+  @apply outline-none shadow-focus shadow-primary-100;
+}
+
+.k-button:focus:not(:focus-visible) {
+  @apply outline-none shadow-none;
+}
+
+/* 
+ *
+ * 业务按钮归类:
+ * main, 主要按钮
+ */
+.k-button.el-button--main {
+  @apply bg-primary text-white border-0;
+}
+
+.k-button.el-button--main:hover {
+  @apply bg-primary-400;
+}
+
+.k-button.el-button--main:active {
+  @apply bg-primary-600;
+}
+/* secondary, 次要按钮 */
+.k-button.el-button--secondary {
+  @apply border-primary text-primary;
+}
+
+.k-button.el-button--secondary:hover {
+  @apply bg-primary-50;
+}
+
+.k-button.el-button--secondary:active {
+  @apply bg-primary-100;
+}
+/* text, 文本按钮 */
+.k-button.el-button--text {
+  @apply border-transparent bg-transparent text-primary;
+}
+
+.k-button.el-button--text:hover {
+  @apply text-primary-400;
+}
+
+.k-button.el-button--text:active {
+  @apply text-primary-600;
+}
+
+/* icon, 图标按钮 */
+.k-button.el-button--icon {
+  @apply w-8;
+}
+
+/* 
+ *
+ * 内置状态颜色, props.type 为 primary,info, success, warning, danger 时生效
+ * primary & main 
+ */
+.k-button.el-button--main.el-button--primary {
+  @apply bg-primary text-white;
+}
+.k-button.el-button--main.el-button--primary:hover {
+  @apply bg-primary-400;
+}
+.k-button.el-button--main.el-button--primary:active {
+  @apply bg-primary-600;
+}
+/* primary & secondary, icon */
+.k-button.el-button--primary.el-button--secondary,
+.k-button.el-button--primary.el-button--icon {
+  @apply border-primary text-primary;
+}
+.k-button.el-button--primary.el-button--secondary:hover,
+.k-button.el-button--primary.el-button--icon:hover {
+  @apply bg-primary-50;
+}
+.k-button.el-button--primary.el-button--secondary:active,
+.k-button.el-button--primary.el-button--icon:active {
+  @apply bg-primary-100;
+}
+/* primary & text */
+.k-button.el-button--primary.el-button--text {
+  @apply border-transparent bg-transparent text-primary;
+}
+.k-button.el-button--primary.el-button--text:hover {
+  @apply text-primary-400;
+}
+.k-button.el-button--primary.el-button--text:active {
+  @apply text-primary-600;
+}
+/* info & main */
+.k-button.el-button--main.el-button--info {
+  @apply bg-info text-white;
+}
+.k-button.el-button--main.el-button--info:hover {
+  @apply bg-info-400;
+}
+.k-button.el-button--main.el-button--info:active {
+  @apply bg-info-600;
+}
+/* info & secondary, icon */
+.k-button.el-button--info.el-button--secondary,
+.k-button.el-button--info.el-button--icon {
+  @apply border-info text-info;
+}
+.k-button.el-button--info.el-button--secondary:hover,
+.k-button.el-button--info.el-button--icon:hover {
+  @apply bg-info-50;
+}
+.k-button.el-button--info.el-button--secondary:active,
+.k-button.el-button--info.el-button--icon:active {
+  @apply bg-info-100;
+}
+/* info & text */
+.k-button.el-button--info.el-button--text {
+  @apply border-transparent bg-transparent text-info;
+}
+.k-button.el-button--info.el-button--text:hover {
+  @apply text-info-400;
+}
+.k-button.el-button--info.el-button--text:active {
+  @apply text-info-600;
+}
+/* success & main */
+.k-button.el-button--main.el-button--success {
+  @apply bg-success text-white;
+}
+.k-button.el-button--main.el-button--success:hover {
+  @apply bg-success-400;
+}
+.k-button.el-button--main.el-button--success:active {
+  @apply bg-success-600;
+}
+/* success & secondary, icon */
+.k-button.el-button--success.el-button--secondary,
+.k-button.el-button--success.el-button--icon {
+  @apply border-success text-success;
+}
+.k-button.el-button--success.el-button--secondary:hover,
+.k-button.el-button--success.el-button--icon:hover {
+  @apply bg-success-50;
+}
+.k-button.el-button--success.el-button--secondary:active,
+.k-button.el-button--success.el-button--icon:active {
+  @apply bg-success-100;
+}
+/* success & text */
+.k-button.el-button--success.el-button--text {
+  @apply border-transparent bg-transparent text-success;
+}
+.k-button.el-button--success.el-button--text:hover {
+  @apply text-success-400;
+}
+.k-button.el-button--success.el-button--text:active {
+  @apply text-success-600;
+}
+/* success & main */
+.k-button.el-button--main.el-button--warning {
+  @apply bg-warning text-white;
+}
+.k-button.el-button--main.el-button--warning:hover {
+  @apply bg-warning-400;
+}
+.k-button.el-button--main.el-button--warning:active {
+  @apply bg-warning-600;
+}
+/* warning & secondary, icon */
+.k-button.el-button--warning.el-button--secondary,
+.k-button.el-button--warning.el-button--icon {
+  @apply border-warning text-warning;
+}
+.k-button.el-button--warning.el-button--secondary:hover,
+.k-button.el-button--warning.el-button--icon:hover {
+  @apply bg-warning-50;
+}
+.k-button.el-button--warning.el-button--secondary:active,
+.k-button.el-button--warning.el-button--icon:active {
+  @apply bg-warning-100;
+}
+/* warning & text */
+.k-button.el-button--warning.el-button--text {
+  @apply border-transparent bg-transparent text-warning;
+}
+.k-button.el-button--warning.el-button--text:hover {
+  @apply text-warning-400;
+}
+.k-button.el-button--warning.el-button--text:active {
+  @apply text-warning-600;
+}
+/* danger & main */
+.k-button.el-button--main.el-button--danger {
+  @apply bg-danger text-white;
+}
+.k-button.el-button--main.el-button--danger:hover {
+  @apply bg-danger-400;
+}
+.k-button.el-button--main.el-button--danger:active {
+  @apply bg-danger-600;
+}
+/* danger & secondary, icon */
+.k-button.el-button--danger.el-button--secondary,
+.k-button.el-button--danger.el-button--icon {
+  @apply border-danger text-danger;
+}
+.k-button.el-button--danger.el-button--secondary:hover,
+.k-button.el-button--danger.el-button--icon:hover {
+  @apply bg-danger-50;
+}
+.k-button.el-button--danger.el-button--secondary:active,
+.k-button.el-button--danger.el-button--icon:active {
+  @apply bg-danger-100;
+}
+/* danger & text */
+.k-button.el-button--danger.el-button--text {
+  @apply border-transparent bg-transparent text-danger;
+}
+.k-button.el-button--danger.el-button--text:hover {
+  @apply text-danger-400;
+}
+.k-button.el-button--danger.el-button--text:active {
+  @apply text-danger-600;
+}
+
+/* 
+ *
+ * disabled, 禁用状态 
+ */
+.k-button.is-disabled {
+  @apply bg-gray-100 text-gray-400 cursor-not-allowed;
+}
+.k-button.is-disabled label {
+  @apply cursor-not-allowed;
+}
+/* main */
+.k-button.el-button--main.is-disabled {
+  @apply bg-gray-300 text-gray-500;
+}
+/* secondary */
+.k-button.el-button--secondary.is-disabled {
+  @apply bg-gray-100 text-gray-400 border-gray-300;
+}
+/* text */
+.k-button.el-button--text.is-disabled {
+  @apply bg-transparent text-primary-300;
+}
+
+/* 
+ *
+ * size, 尺寸
+ */
+.k-button.el-button--sm {
+  @apply h-6 px-buttonSm rounded-sm text-sm;
+}
+.k-button.el-button--sm label {
+  @apply text-sm;
+}

@@ -2,11 +2,11 @@ import { computed, nextTick, isRef } from 'vue';
 import COMPONENT_EXPOSE_METHODS from './el_expose_methods';
 
 // 获取随机字符串
-export function genRandomStr(bit:number) {
+export function genRandomStr(bit: number) {
   let result = '';
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   const charactersLength = characters.length;
-    
+
   for (let i = 0; i < bit; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
@@ -18,18 +18,23 @@ export function isValid(value: any): boolean {
 }
 
 // 组件size参数转换
-export function getCompSize(size:string | undefined) {
+export function getCompSize(size: string | undefined) {
   switch (size) {
-    case 'sm': return 'small';
-    case 'lg': return 'large';
-    case 'default': return 'default';
-    case 'base': return 'default';
-    default: return '';
+    case 'sm':
+      return 'small';
+    case 'lg':
+      return 'large';
+    case 'default':
+      return 'default';
+    case 'base':
+      return 'default';
+    default:
+      return '';
   }
 }
 
 // 判断css颜色值是否合法
-export function isValidColor(strColor:string | undefined) {
+export function isValidColor(strColor: string | undefined) {
   if (!strColor) {
     return false;
   }
@@ -39,9 +44,9 @@ export function isValidColor(strColor:string | undefined) {
 }
 
 // 获取色阶
-export function GetColorLevel(hex:any) {
+export function GetColorLevel(hex: any) {
   // 1. 将16进制颜色代码转换为RGB
-  function hexToRgb(h:any) {
+  function hexToRgb(h: any) {
     const bigint = parseInt(h.slice(1), 16);
     const r = (bigint >> 16) & 255;
     const g = (bigint >> 8) & 255;
@@ -49,14 +54,11 @@ export function GetColorLevel(hex:any) {
     return [r, g, b];
   }
   // 2. 将RGB颜色值转换为16进制
-  function rgbToHex(r:number, g:number, b:number) {
-    return (
-      `#${ 
-      ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`
-    );
+  function rgbToHex(r: number, g: number, b: number) {
+    return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`;
   }
   // 3. 调整亮度
-  function adjustBrightness([r, g, b], factor:number) {
+  function adjustBrightness([r, g, b], factor: number) {
     return [
       Math.min(255, Math.max(0, Math.round(r * factor))),
       Math.min(255, Math.max(0, Math.round(g * factor))),
@@ -64,7 +66,7 @@ export function GetColorLevel(hex:any) {
     ];
   }
 
-  function adjustBrightnessLoading([r, g, b], factor:number) {
+  function adjustBrightnessLoading([r, g, b], factor: number) {
     return [
       Math.min(255, Math.max(0, Math.round(r * factor) + 25)),
       Math.min(255, Math.max(0, Math.round(g * factor) + 25)),
@@ -82,7 +84,7 @@ export function GetColorLevel(hex:any) {
   return {
     lightColor,
     darkColor,
-    loadingColor
+    loadingColor,
   };
 }
 
@@ -94,7 +96,7 @@ export class Emitter {
     this.events = new Map();
   }
 
-  on(eventName:string, id: string, callback:() => any) {
+  on(eventName: string, id: string, callback: () => any) {
     const eventItem = this.events.get(id);
     if (!eventItem) {
       this.events.set(id, { [eventName]: callback });
@@ -105,7 +107,7 @@ export class Emitter {
     }
   }
 
-  emit(eventName:string, id: string, ...arg:any[]) {
+  emit(eventName: string, id: string, ...arg: any[]) {
     const func = this.events.get(id)?.[eventName];
     if (typeof func !== 'function') {
       return;
@@ -171,7 +173,11 @@ export function treeDataToArray(treeData: any[] | undefined, childrenField: stri
   return result;
 }
 
-export function getValidTreeData(treeData: any[], childrenField: string, filterCallback: (item: any) => boolean) {
+export function getValidTreeData(
+  treeData: any[],
+  childrenField: string,
+  filterCallback: (item: any) => boolean,
+) {
   if (!Array.isArray(treeData) || treeData.length === 0) {
     return [];
   }
@@ -190,7 +196,12 @@ export function getValidTreeData(treeData: any[], childrenField: string, filterC
 }
 
 // Array => Tree
-export function resetTreeData(treeData: any[], childrenField: string, targetData: any[], key: string) {
+export function resetTreeData(
+  treeData: any[],
+  childrenField: string,
+  targetData: any[],
+  key: string,
+) {
   const dataMap = new Map(targetData.map((v) => [v[key], v]));
   for (let i = 0; i < treeData.length; i++) {
     const item = treeData[i];
@@ -231,13 +242,13 @@ export function getExposeProxy(instance: any, source: any) {
     get(target, key, _receiver) {
       if (Object.hasOwnProperty.call(target, key)) {
         return target[key];
-      } 
+      }
       return source.value?.[key];
     },
     has(_target, key) {
       const sourceInstance = isRef(source) ? source.value : source;
       return Reflect.has(instance, key) || Reflect.has(sourceInstance, key);
-    }
+    },
   });
   return proxy;
 }
