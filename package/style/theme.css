@@ -248,4 +248,24 @@
   --k-theme-button-size-rounded--sm: var(--k-rounded-sm);
   --k-theme-button-size-rounded--base: var(--k-rounded-base);
   --k-theme-button-size-rounded--lg: var(--k-rounded-lg);
+
+  /* radio */
+  --k-theme-radio-size-height--sm: var(--k-theme-button-size-height--sm);
+  --k-theme-radio-size-height--base: var(--k-theme-button-size-height--base);
+  --k-theme-radio-size-height--lg: var(--k-theme-button-size-height--lg);
+  --k-theme-radio-size-gap--sm: var(--k-size-1);
+  --k-theme-radio-size-gap--base: var(--k-size-1);
+  --k-theme-radio-size-gap--lg: var(--k-size-1);
+  --k-theme-radio__inner-size--sm: var(--k-size-3);
+  --k-theme-radio__inner-size--base: var(--k-size-3);
+  --k-theme-radio__inner-size--lg: var(--k-size-4);
+  --k-theme-radio__ball-size--sm: calc(var(--k-theme-radio__inner-size--sm) * 0.635);
+  --k-theme-radio__ball-size--base: calc(var(--k-theme-radio__inner-size--base) * 0.635);
+  --k-theme-radio__ball-size--lg: calc(var(--k-theme-radio__inner-size--lg) * 0.635);
+  --k-theme-radio__button-size-padding--sm: var(--k-theme-button-size-padding--sm);
+  --k-theme-radio__button-size-padding--base: var(--k-theme-button-size-padding--base);
+  --k-theme-radio__button-size-padding--lg: var(--k-theme-button-size-padding--lg);
+  --k-theme-radio__button-rounded--sm: var(--k-theme-button-size-rounded--sm);
+  --k-theme-radio__button-rounded--base: var(--k-theme-button-size-rounded--base);
+  --k-theme-radio__button-rounded--lg: var(--k-theme-button-size-rounded--lg);
 }

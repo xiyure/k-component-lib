@@ -86,13 +86,12 @@ watch(
   () => props.color,
   (newVal) => {
     color.value = newVal; // 更新 ref
-    let getColorS = GetColorLevelNew(newVal).colorLevel;
+    const getColorS = GetColorLevelNew(newVal).colorLevel;
     if (newVal) {
       // console.log('@', newVal, getColorS, getColorS['--k-oklch-500']);
       nextTick(() => {
         if (el.value?.style) {
           // console.log(el.value?.classList);
-
           // 如果 el.value?.classList 包含 el-button--main 打印 'main',包含 el-button--secondary 打印'secondary' 否则打印 'default'
 
           const classList = el.value?.classList;
@@ -177,14 +176,6 @@ watch(
               break;
             case classList?.contains('el-button--text'):
               // console.log('text');
-              //               // bg
-              // // content
-              // --k-button-content-color-text: var(--k-theme-danger);
-              // --k-button-content-color-text--hover: var(--k-theme-danger-400);
-              // --k-button-content-color-text--active: var(--k-theme-danger-600);
-              // --k-button-content-color-text--loading: var(--k-theme-danger-300);
-              // // border
-              // --k-button-focus: rgba(var(--k-theme-danger-rgb), 0.2);
               el.value?.style.setProperty(
                 '--k-button-content-color-text',
                 getColorS['--k-oklch-500'],

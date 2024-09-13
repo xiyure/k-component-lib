@@ -75,7 +75,7 @@ export function GetColorLevelNew(color: any) {
   } else {
     ('请输入正确颜色值');
   }
-  console.log(colorLevel);
+  // console.log(colorLevel);
 
   return {
     colorLevel,
