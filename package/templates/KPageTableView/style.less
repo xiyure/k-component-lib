@@ -1,0 +1,29 @@
+@import '../../style/variable.css';
+@import '../../style/general.less';
+
+.KPageHead {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 0.375rem;
+
+  .KPageHead-title-container {
+    display: flex;
+    align-items: center;
+
+    padding-left: 0.25rem;
+
+    .KPageHead-title {
+      .text-3xl();
+      margin-left: 0.5rem;
+    }
+
+    .KPageHead-info {
+      // opacity: 0;
+      transition: opacity 0.2s ease-in-out 0.2s;
+      margin-left: 0.25rem;
+    }
+  }
+}

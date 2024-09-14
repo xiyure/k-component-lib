@@ -1,3 +1,8 @@
-import { KPageHead } from './KPageHead';
+// KPageViewBus, 视图模板
+import { KPageViewBus } from './KPageViewBus';
+// KPageDetails, 详情模板
+import { KPageDetails } from './KPageDetails';
+// KPageTableView, 表格模板
+import { KPageTableView } from './KPageTableView';
 
-export { KPageHead };
+export { KPageViewBus, KPageDetails, KPageTableView };
