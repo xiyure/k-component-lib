@@ -241,3 +241,36 @@ export function getExposeProxy(instance: any, source: any) {
   });
   return proxy;
 }
+
+type SortFields = {
+  field: string;
+  order: 'asc' | 'desc' | null;
+}
+// 多字段排序
+export function multiFieldSort(data: any[], fields: SortFields[]) {
+  return data.sort((a, b) => {
+    for (let i = 0; i < fields.length; i++) {
+      const { field, order } = fields[i];
+      
+      // 比较 a 和 b 当前字段的值
+      let result = 0;
+      
+      if (typeof a[field] === 'string') {
+        result = a[field].localeCompare(b[field]);
+      } else {
+        result = a[field] - b[field];
+      }
+
+      // 如果是降序排列，则反转结果
+      if (order === 'desc') {
+        result = -result;
+      }
+
+      // 如果该字段结果不为 0，说明排序已经有了结果，直接返回
+      if (result !== 0) {
+        return result;
+      }
+    }
+    return 0; // 如果所有字段都相等，则返回 0
+  });
+}

@@ -341,9 +341,11 @@ function tableSort(column:VxeColumnProps, order:string) {
     field: column.field,
     order
   });
+  emitter.emit('sort-change', pid, { column, field: column.field, order });
 }
 function clearSort(column: string | VxeColumnProps) {
   tableInstance.value?.clearSort(column);
+  emitter.emit('clear-sort', pid);
 }
 // 展开/收起
 function expandColumn(isExpand:boolean) {

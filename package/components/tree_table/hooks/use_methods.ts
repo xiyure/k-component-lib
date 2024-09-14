@@ -1,7 +1,14 @@
 import { ref, computed } from 'vue';
+import { Store } from '../type.d';
+import { multiFieldSort } from '../../../utils';
 
 // 重定义vxe-table的部分方法
 export function useMethods(props: any) {
+  const store: Store = {
+    data: [],
+    sortData: [],
+    filterData: []
+  };
   const xeTableData = ref<any>([]);
   const tempInsertData = new Map();
   const tempRemoveData = new Map();
@@ -30,20 +37,16 @@ export function useMethods(props: any) {
     if (newIndex === -1) {
       xeTableData.value.push(...newRows);
     } else {
-      newIndex = isNext? newIndex + 1 : newIndex;
+      newIndex = isNext ? newIndex + 1 : newIndex;
       xeTableData.value.splice(newIndex, 0, ...newRows);
     }
     addTempData(newRows, tempInsertData);
     resolve(records);
   });
   // 在指定位置插入数据
-  const insertAt = (records: any, row: any) => {
-    return insertRecords(records, row);
-  };
+  const insertAt = (records: any, row: any) => insertRecords(records, row);
   // 在指定行后插入数据
-  const insertNextAt = (records: any, row: any) => {
-    return insertRecords(records, row, true);
-  };
+  const insertNextAt = (records: any, row: any) => insertRecords(records, row, true);
   // 删除临时添加的数据
   const removeInsertRow = () => new Promise((resolve) => {
     const rows = Array.from(tempInsertData.values());
@@ -109,6 +112,15 @@ export function useMethods(props: any) {
     });
     resolve(rows);
   });
+  // 排序
+  const sortChange = (fieldRules: any) => {
+    if (!fieldRules?.length) {
+      xeTableData.value.length = 0;
+      xeTableData.value.push(...store.data);
+      return;
+    }
+    multiFieldSort(xeTableData.value, fieldRules);
+  };
   function addTempData(rows: any[], dataMap: Map<string | number, any>) {
     rows.forEach((item: any) => {
       dataMap.set(item[keyField.value], item);
@@ -121,6 +133,7 @@ export function useMethods(props: any) {
     tempSetData.clear();
     const newData = Array.isArray(data) ? data : [];
     xeTableData.value = Array.from(newData);
+    store.data = [...xeTableData.value];
     return xeTableData.value;
   }
 
@@ -171,5 +184,6 @@ export function useMethods(props: any) {
       setRow
     },
     setTableData,
+    sortChange
   };
 }

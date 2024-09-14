@@ -55,6 +55,14 @@ const eventMap = {
   filterVisible: {
     name: 'filter-visible',
     callback: onFilterVisible.bind(this)
+  },
+  sortChange: {
+    name: 'sort-change',
+    callback: onSort.bind(this)
+  },
+  clearSort: {
+    name: 'clear-sort',
+    callback: onClearSort.bind(this)
   }
 };
 
@@ -79,6 +87,8 @@ const emits = defineEmits([
   'desc-change',
   'hide-column',
   'drag-end',
+  'sort-change',
+  'clear-sort',
   'filter-change',
   'filter-visible',
   'clear-filter'
@@ -186,6 +196,12 @@ function closeFilter(column: VxeColumnProps | string) {
     filterPanelConfig.value.isOpen = false;
     resolve(true);
   });
+}
+function onSort(data: any) {
+  emits('sort-change', data);
+}
+function onClearSort(data: any) {
+  emits('clear-sort', data);
 }
 function onFilterChange(data: any) {
   emits('filter-change', data);

@@ -149,11 +149,8 @@
             emits('cell-click', data);
           }
         "
-        @drag-end="
-          (data) => {
-            dragEnd(data);
-          }
-        "
+        @sort-change="onSortChange"
+        @drag-end="dragEnd"
       >
         <template v-for="(item, index) in columns" :key="index">
           <KColumnGroup :column="item" :size="size" :align="align">
@@ -288,6 +285,7 @@ const emits = defineEmits([
   'checkbox-change',
   'checkbox-all',
   'drag-end',
+  'sort-change'
 ]);
 const xTree = ref();
 // 列配置
@@ -436,7 +434,7 @@ const dataLength = computed(() => {
 // 表格size控制
 const compSize = computed(() => (props.size === 'mini' ? 'sm' : undefined));
 
-const { setTableData, _methods } = useMethods(props);
+const { setTableData, sortChange, _methods } = useMethods(props);
 const { checkedDataSize,
   checkboxConfig,
   closeBatchOperation,
@@ -773,6 +771,11 @@ function loadData(data: any[]) {
   }
   xeTableData.value = setTableData(data);
   advancedFilter(data);
+}
+function onSortChange(data: any) {
+  const fieldRules = tableInstance.value.getSortColumns();
+  sortChange(fieldRules);
+  emits('sort-change', data);
 }
 function getRowById(id: string | number) {
   const row = tableInstance.value?.getRowById(id);

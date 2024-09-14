@@ -96,3 +96,9 @@ export interface TreeTableProps {
   style?: object
   class?: string
 }
+
+export interface Store {
+  data: any[]
+  sortData: any[]
+  filterData: any[]
+}
