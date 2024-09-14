@@ -1,5 +1,4 @@
 import { defineConfig } from 'vitepress'
-import vueJsx from '@vitejs/plugin-vue-jsx'
 import { genApiDoc } from './plugin/api-doc.config';
 import { applyPlugins } from './plugin/md-demo-plugin';
 import path from 'path'
@@ -31,7 +30,7 @@ export default defineConfig({
   },
 
   vite: {
-    plugins: [vueJsx(), genApiDoc()],
+    plugins: [genApiDoc()],
     resolve: {
       alias: {
         '@alias': path.resolve(__dirname, '../')
