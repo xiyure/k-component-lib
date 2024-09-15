@@ -1,5 +1,5 @@
 import DefaultTheme from 'vitepress/theme';
-import KUI from '@ksware/ksw-ux';
+import KUI from '~/package/index';
 import 'vitepress-theme-demoblock/dist/theme/styles/index.css';
 import {
   AntDesignContainer,
@@ -7,9 +7,9 @@ import {
   NaiveUIContainer,
 } from '@vitepress-demo-preview/component';
 import '@vitepress-demo-preview/component/dist/style.css';
-import '@ksware/ksw-ux/kingsware-ui/style.css'
+// import '@ksware/ksw-ux/kingsware-ui/style.css'
 import './style.css';
-import '../../styles/tailwind.css';
+import '~/tailwind.css';
 
 export default {
   ...DefaultTheme,

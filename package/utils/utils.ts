@@ -208,7 +208,7 @@ export function resetTreeData(treeData: any[], childrenField: string, targetData
 // 获取组件实例的expose方法
 export function handleExpose(instance: any, ref: any, compName: string) {
   nextTick(() => {
-    if (!ref) {
+    if (!ref || !ref.value) {
       return;
     }
     const exposeMethods = COMPONENT_EXPOSE_METHODS[compName] ?? [];
@@ -219,7 +219,7 @@ export function handleExpose(instance: any, ref: any, compName: string) {
       if (typeof ref.value[methodsName] === 'function') {
         instance[methodsName] = ref.value[methodsName].bind(ref.value);
       } else {
-        instance[methodsName] = computed(() => ref.value[methodsName]);
+        instance[methodsName] = computed(() => ref.value ? ref.value[methodsName] : undefined);
       }
     }
   });

@@ -73,7 +73,9 @@ const color = ref(props.color);
 
 const el = ref();
 nextTick(() => {
-  el.value = document.getElementById(id);
+  if (typeof window !== 'undefined') {
+    el.value = document.getElementById(id);
+  }
 });
 
 // watch props.color 变化, 更新颜色变量

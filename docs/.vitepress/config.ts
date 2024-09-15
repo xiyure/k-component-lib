@@ -1,10 +1,10 @@
-import { defineConfig } from 'vitepress'
+import { defineConfig } from 'vitepress';
 import { genApiDoc } from './plugin/api-doc.config';
 import { applyPlugins } from './plugin/md-demo-plugin';
-import path from 'path'
-import nav from '../configs/nav'
-import { containerPreview, componentPreview } from '@vitepress-demo-preview/plugin'
-import sidebar from '../configs/sidebar'
+import path from 'path';
+import nav from '../configs/nav';
+import { containerPreview, componentPreview } from '@vitepress-demo-preview/plugin';
+import sidebar from '../configs/sidebar';
 
 export default defineConfig({
   // lang: 'en-US',
@@ -14,10 +14,7 @@ export default defineConfig({
   lastUpdated: true,
   cleanUrls: true,
 
-  base: process.env.BASE || '/',
-  head: [
-    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }]
-  ],
+  head: [['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }]],
 
   markdown: {
     theme: { light: 'github-light', dark: 'github-dark' },
@@ -26,20 +23,24 @@ export default defineConfig({
       md.use(containerPreview);
       md.use(componentPreview);
       md.use(applyPlugins);
-    }
+    },
   },
 
   vite: {
     plugins: [genApiDoc()],
     resolve: {
       alias: {
-        '@alias': path.resolve(__dirname, '../')
-      }
+        '@alias': path.resolve(__dirname, '../'),
+        '~': path.resolve(__dirname, '../../'),
+      },
     },
     server: {
       host: '0.0.0.0',
-      port: 12581
-    }
+      port: 12581,
+    },
+    ssr: {
+      noExternal: ['ksw-vue-icon', 'vue-i18n'],
+    },
   },
 
   themeConfig: {
@@ -65,13 +66,11 @@ export default defineConfig({
     //   text: '在 GitHub 上编辑此页'
     // },
 
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/xiyure/k-component-lib' }
-    ],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/xiyure/k-component-lib' }],
 
     footer: {
       message: 'Released under the MIT License.',
-      copyright: 'Copyright © 2024-present ZHJ'
-    }
-  }
-})
+      copyright: 'Copyright © 2024-present ZHJ',
+    },
+  },
+});

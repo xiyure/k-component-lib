@@ -3,7 +3,7 @@ import _path from 'path';
 import matter from 'gray-matter';
 
 const BASE_PATH = process.cwd();
-const COMPONENT_DIRS = fs.readdirSync(_path.join(BASE_PATH, 'components'));
+const COMPONENT_DIRS = fs.readdirSync(_path.join(BASE_PATH, 'docs', 'components'));
 
 type itemType = {
   text: string
@@ -35,7 +35,7 @@ function getComponentsSidebar() {
   const items: itemType[] = [];
   // 自动导入组件文档
   for (const fileName of COMPONENT_DIRS) {
-    const filePath = _path.join(BASE_PATH, 'components', fileName);
+    const filePath = _path.join(BASE_PATH, "docs", 'components', fileName);
     if (!filePath.endsWith('.md')) {
       continue;
     }
