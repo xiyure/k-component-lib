@@ -35,6 +35,7 @@
     "vxe-table": "^4.7.78"
   },
   "devDependencies": {
+    "@nolebase/vitepress-plugin-enhanced-readabilities": "^2.5.0",
     "@types/node": "^22.4.1",
     "@typescript-eslint/eslint-plugin": "^7.6.0",
     "@typescript-eslint/parser": "^7.6.0",
@@ -52,6 +53,7 @@
     "less": "^4.2.0",
     "less-loader": "^12.2.0",
     "markdown-it": "^14.1.0",
+    "overlayscrollbars": "^2.10.0",
     "postcss": "^8.4.45",
     "prettier": "3.3.2",
     "tailwindcss": "^3.4.10",

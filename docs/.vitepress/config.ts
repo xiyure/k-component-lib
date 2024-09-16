@@ -23,8 +23,17 @@ export default defineConfig({
       host: '0.0.0.0',
       port: 12581,
     },
+    optimizeDeps: {
+      exclude: [ 
+        '@nolebase/vitepress-plugin-enhanced-readabilities/client', 
+      ], 
+    },
     ssr: {
-      noExternal: ['ksw-vue-icon', 'vue-i18n'],
+      noExternal: [
+        'ksw-vue-icon',
+        'vue-i18n',
+        '@nolebase/vitepress-plugin-enhanced-readabilities'
+      ],
     },
   },
 
