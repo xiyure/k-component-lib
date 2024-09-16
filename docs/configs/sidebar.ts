@@ -1,91 +1,61 @@
-import fs from 'fs';
-import _path from 'path';
-import matter from 'gray-matter';
+import { generateSidebar } from 'vitepress-sidebar';
 
-const BASE_PATH = process.cwd();
-const COMPONENT_DIRS = fs.readdirSync(_path.join(BASE_PATH, 'docs', 'components'));
-
-type itemType = {
-  text: string
-  link: string
-}
-
-export default {
-  '/api/': getApiSidebar(),
-  '/components/': getComponentsSidebar(),
-  '/guide/': getGuideSidebar()
+const baseSidebarOptions = {
+  documentRootPath: '/docs',
+  useTitleFromFileHeading: true,
+  useTitleFromFrontmatter: true,
+  useFolderTitleFromIndexFile: true,
+  useFolderLinkFromIndexFile: true,
+  folderLinkNotIncludesFileName: true,
 };
 
-function getApiSidebar() {
-  return [
-    {
-      text: '功能',
-      collapsible: true,
-      items: [
-        {
-          text: '已实现',
-          link: '/api/'
-        },
-      ]
-    }
-  ];
-}
+const apiSidebarOptions = {
+  ...baseSidebarOptions,
+  scanStartPath: 'api',
+  resolvePath: '/api/',
+};
 
-function getComponentsSidebar() {
-  const items: itemType[] = [];
-  // 自动导入组件文档
-  for (const fileName of COMPONENT_DIRS) {
-    const filePath = _path.join(BASE_PATH, "docs", 'components', fileName);
-    if (!filePath.endsWith('.md')) {
-      continue;
-    }
-    const markdownContent = readMarkdownFile(filePath);
-    if (markdownContent) {
-      const compName = _path.basename(fileName, '.md');
-      const { title } = matter(markdownContent).data;
-      items.push({
-        text: title ?? 'undefined',
-        link: `/components/${compName}`,
-      });
-    }
-  }
-  return [
-    {
-      text: '组件',
-      items
-    }
-  ];
-}
+const componentsSidebarOptions = {
+  ...baseSidebarOptions,
+  scanStartPath: 'components',
+  resolvePath: '/components/',
+};
 
-function getGuideSidebar() {
-  return [
-    {
-      text: '指南',
-      items: [
-        {
-          text: '安装',
-          link: '/guide/'
-        },
-        {
-          text: '全局注册',
-          link: '/guide/register_g'
-        },
-        {
-          text: '按需导入',
-          link: '/guide/register_s'
-        }
-      ]
-    }
-  ];
-}
+const docsSidebarOptions = {
+  ...baseSidebarOptions,
+  scanStartPath: 'docs',
+  resolvePath: '/docs/',
+  manualSortFileNameByPriority: [
+    "introduce.md",
+  ]
+};
 
-// 读取 MD 文件内容
-function readMarkdownFile(filePath) {
-  try {
-    const content = fs.readFileSync(filePath, 'utf8');
-    return content;
-  } catch (err) {
-    console.error('Error reading file:', err);
-    return '';
-  }
-}
+export default {
+  '/api/': {
+    base: '/api/',
+    items: [
+      {
+        text: 'Api',
+        items: generateSidebar(apiSidebarOptions),
+      },
+    ],
+  },
+  '/components/': {
+    base: '/components/',
+    items: [
+      {
+        text: '通用',
+        items: generateSidebar(componentsSidebarOptions),
+      },
+    ],
+  },
+  '/docs/': {
+    base: '/docs/',
+    items: [
+      {
+        text: '文档',
+        items: generateSidebar(docsSidebarOptions),
+      },
+    ],
+  },
+};
