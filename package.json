@@ -1,7 +1,7 @@
 {
   "name": "@ksware/ksw-ux",
   "private": false,
-  "version": "0.0.39",
+  "version": "0.0.42",
   "description": "Kingsware Component Library",
   "main": "kingsware-ui/index.umd.js",
   "module": "kingsware-ui/index.js",
@@ -17,11 +17,9 @@
     "preview": "vite preview",
     "lint": "eslint --fix . --ext .ts,.js,.vue",
     "fix": "eslint --fix",
-    "docs:dev": "npm run -C docs docs:dev",
-    "docs:build": "npm run -C docs docs:build",
-    "docs:preview": "npm run -C docs docs:preview",
-    "register:components": "npm run -C docs register:components",
-    "deploy": "sh scripts/gh-pages.sh"
+    "docs:dev": "npm run -C docs dev",
+    "docs:build": "npm run -C docs build",
+    "docs:preview": "npm run -C docs preview"
   },
   "peerDependencies": {
     "chinese-lunar-calendar": "^1.0.1",
@@ -48,7 +46,6 @@
     "globals": "^15.0.0",
     "less": "^4.2.0",
     "less-loader": "^12.2.0",
-    "overlayscrollbars": "^2.10.0",
     "postcss": "^8.4.45",
     "prettier": "3.3.2",
     "tailwindcss": "^3.4.10",
