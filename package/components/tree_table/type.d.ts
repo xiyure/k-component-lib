@@ -90,7 +90,7 @@ export interface TreeTableProps {
   }
   searchConfig?: {
     strict?: boolean
-    searchMethod?: (key, data: any[]) => any[]
+    searchMethod?: (key: string | number, value: any, data: any[]) => any[]
     isRemoteQuery?: boolean
   }
   style?: object

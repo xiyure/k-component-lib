@@ -160,8 +160,8 @@ const tmplSlots = (slots: Slots[]) => {
   const hasVersion = displayableSlots.some((slot) => slot?.tags?.version);
   const content = displayableSlots.map((slot) => {
     const { tags } = slot;
-    const { displayName, description, parameters } =  escapeParams(slot);
-    let lineContent = `|${displayName}|${description}|${parameters}|`;
+    const { displayName, description, parameters, tip } =  escapeParams(slot);
+    let lineContent = `|${displayName}|${description}|\`${parameters}\`${tip}|`;
     if (hasVersion) {
       const version = tags?.version?.content;
       lineContent += `${version || ""}|`;
@@ -208,13 +208,18 @@ ${description}` : ""}
 ${content}`;
 };
 const getApiTmpl = (componentDoc: any, lang: Lang) => {
-  const { name, props, events, methods, slots, tags } = componentDoc;
+  const { name, props, subProps = [], events, methods, slots, tags } = componentDoc;
   const options = { name, tags, lang };
+  const subPropsTmpl: any[] = [];
+  for (const key in subProps) {
+    const subProp = getTmpl('' ,handleProps(subProps[key], lang), { ...options, name: key});
+    subPropsTmpl.push(subProp);
+  }
   const propsTmpl =  getTmpl("Props", handleProps(props || [], lang), options);
   const eventsTmpl =  getTmpl("Events", handleEvents(events || [], lang), options);
   const methodsTmpl =  getTmpl("Methods", handleMethods(methods || [], lang), options);
   const slotsTmpl =  getTmpl("Slots", handleSlots(slots || [], lang), options);
-  const res = `${propsTmpl}\n${slotsTmpl}\n${eventsTmpl}\n${methodsTmpl}`;
+  const res = `${propsTmpl}\n${subPropsTmpl.join("\n")}\n${slotsTmpl}\n${eventsTmpl}\n${methodsTmpl}`;
   return res;
 };
 
@@ -292,8 +297,8 @@ function escapeParams(params: any) {
     description: escapeCharacter(description),
     type: escapeCharacter(type),
     defaultValue: escapeCharacter(defaultValue) || '-',
-    tip: escapeCharacter(genTooltip(tip)),
-    parameters: escapeCharacter(parameters) || '-'
+    tip: escapeCharacter(genTooltip(tip ?? parameters)),
+    parameters: parameters ? 'object' : '-' 
   }
 }
 

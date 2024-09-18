@@ -753,8 +753,8 @@ function cellClick({ row, rowid }) {
 }
 function dragEnd(data: any[]) {
   emits('drag-end', {
-    data,
-    originData: xeTableData.value,
+    newData:data,
+    oldData: xeTableData.value,
   });
 }
 
