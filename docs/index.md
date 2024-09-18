@@ -4,8 +4,8 @@ layout: home
 
 hero:
   name: "ksw-ux"
-  text: "ksw-ux 是一个基于 Element-Plus 的 UI 组件库"
-  tagline: My great project tagline
+  text: "基于 Element-Plus 的 UI 组件库"
+  # tagline: My great project tagline
   actions:
     - theme: brand
       text: 快速开始

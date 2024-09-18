@@ -1,41 +1,15 @@
 import { defineConfig } from 'vitepress';
 import { genApiDoc } from './plugin/api-doc.config';
 import { applyPlugins } from './plugin/md-demo-plugin';
-import path from 'path';
-import nav from '../configs/nav';
-import sidebar from '../configs/sidebar';
+import nav from './configs/nav';
+import sidebar from './configs/sidebar';
 import { containerPreview, componentPreview } from '@vitepress-demo-preview/plugin';
 
+// https://vitepress.dev/reference/site-config
 export default defineConfig({
   lang: 'zh-CN',
   title: 'ksw-ux',
   description: 'ksw-ux 是一个基于 Element-Plus 的 UI 组件库',
-
-  vite: {
-    plugins: [genApiDoc()],
-    resolve: {
-      alias: {
-        '@alias': path.resolve(__dirname, '../'),
-        '~': path.resolve(__dirname, '../../'),
-      },
-    },
-    server: {
-      host: '0.0.0.0',
-      port: 12581,
-    },
-    optimizeDeps: {
-      exclude: [ 
-        '@nolebase/vitepress-plugin-enhanced-readabilities/client', 
-      ], 
-    },
-    ssr: {
-      noExternal: [
-        'ksw-vue-icon',
-        'vue-i18n',
-        '@nolebase/vitepress-plugin-enhanced-readabilities'
-      ],
-    },
-  },
 
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/klogo.svg' }],
@@ -49,12 +23,24 @@ export default defineConfig({
       },
     ],
     ['meta', { property: 'og:site_name', content: 'KSW Design' }],
-    // ['meta', { property: 'og:image', content: 'https://vitepress.dev/vitepress-og.jpg' }],
-    // ['meta', { property: 'og:url', content: 'https://vitepress.dev/' }],
-    // ['script', { src: 'https://cdn.usefathom.com/script.js', 'data-site': 'AZBRSFGG', 'data-spa': 'auto', defer: '' }]
   ],
 
+  markdown: {
+    config: (md) => {
+      md.use(containerPreview);
+      md.use(componentPreview);
+      md.use(applyPlugins);
+    },
+  },
+
   themeConfig: {
+    // https://vitepress.dev/reference/default-theme-config
+    nav,
+
+    sidebar,
+
+    socialLinks: [{ icon: 'github', link: 'https://github.com/xiyure/k-component-lib' }],
+
     logo: { src: '/klogo.svg', width: 24, height: 24 },
 
     docFooter: {
@@ -98,26 +84,19 @@ export default defineConfig({
         detailedView: true,
       },
     },
-
-    nav,
-    sidebar,
-
-    socialLinks: [{ icon: 'github', link: 'https://github.com/xiyure/k-component-lib' }],
-
-    footer: {
-      message: 'Released under the MIT License.',
-      copyright: 'Copyright © 2024-present ZHJ',
-    },
   },
 
-  lastUpdated: true,
-  cleanUrls: true,
-
-  markdown: {
-    config: (md) => {
-      md.use(containerPreview);
-      md.use(componentPreview);
-      md.use(applyPlugins);
+  vite: {
+    plugins: [genApiDoc()],
+    server: {
+      host: '0.0.0.0',
+      port: 12581,
+    },
+    optimizeDeps: {
+      exclude: ['@nolebase/vitepress-plugin-enhanced-readabilities/client'],
+    },
+    ssr: {
+      noExternal: ['ksw-vue-icon', '@ksware/ksw-ux', 'vue-i18n', '@nolebase/*'],
     },
   },
 });

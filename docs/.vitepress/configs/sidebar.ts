@@ -1,7 +1,7 @@
 import { generateSidebar } from 'vitepress-sidebar';
 
 const baseSidebarOptions = {
-  documentRootPath: '/docs',
+  documentRootPath: '/',
   useTitleFromFileHeading: true,
   useTitleFromFrontmatter: true,
   useFolderTitleFromIndexFile: true,
