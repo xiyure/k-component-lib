@@ -53,7 +53,7 @@ export default {
     base: '/docs/',
     items: [
       {
-        text: '文档',
+        text: '如何使用',
         items: generateSidebar(docsSidebarOptions),
       },
     ],

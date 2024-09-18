@@ -30,7 +30,11 @@ export default defineConfig({
       md.use(componentPreview);
       md.use(applyPlugins);
     },
+    image: {
+      lazyLoading: true
+    }
   },
+  cleanUrls: true,
 
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
