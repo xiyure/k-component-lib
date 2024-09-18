@@ -14,12 +14,13 @@ import * as directives from './directives';
 import zh from './internal/zh';
 import en from './internal/en';
 import { Emitter } from './utils';
+import './style/tailwind.css';
 
 type optionsType = {
-  locale?: 'zh' | 'en'
-  vxeGlobalConfig?: VxeGlobalConfig
-  ElementPlusOptions?: any
-  styleModule?: string
+  locale?: 'zh' | 'en';
+  vxeGlobalConfig?: VxeGlobalConfig;
+  ElementPlusOptions?: any;
+  styleModule?: string;
 };
 const install = (Vue: any, options?: optionsType) => {
   // 国际化

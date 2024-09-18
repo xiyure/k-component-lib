@@ -7,7 +7,6 @@
 !-->
 <template>
   <div id="KPageDetails" class="KPageDetails h-full flex-1" style="min-width: 0">
-    <!-- head -->
     <div
       class="KPageDetailsHead-content w-full flex flex-col bg-white rounded overflow-hidden mb-3"
     >
