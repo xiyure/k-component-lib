@@ -9,7 +9,7 @@
     :color="color"
     :class="[
       'k-timeline__item',
-      $styleModule,
+      _styleModule,
       {
         'is-show-right': showRight,
         'is-hollow': props.hollow
@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch, nextTick } from 'vue';
+import { ref, computed, onMounted, watch, nextTick, inject } from 'vue';
 import { ElTimelineItem } from 'element-plus';
 import { TimelineItemProps } from './type';
 import { genRandomStr, handleExpose } from '../../utils';
@@ -39,6 +39,7 @@ const props = withDefaults(defineProps<TimelineItemProps>(), {
   size: 'normal'
 });
 
+const _styleModule = inject('_styleModule', '');
 const id = genRandomStr(8);
 let rootNode:HTMLElement | null;
 let timelineNode:HTMLElement | null;

@@ -1,7 +1,7 @@
 <template>
   <el-checkbox-group
     ref="kCheckboxGroupRef"
-    :class="['k-checkbox-group', $styleModule]"
+    :class="['k-checkbox-group', _styleModule]"
     v-bind="$attrs"
     :size="getCompSize(size)"
   >
@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, provide } from 'vue';
+import { ref, watch, provide, inject } from 'vue';
 import { ElCheckboxGroup } from 'element-plus';
 import { CheckboxGroupProps } from './type';
 import { getCompSize, handleExpose } from '../../utils/index';
@@ -23,6 +23,7 @@ const props = withDefaults(defineProps<CheckboxGroupProps>(), {
   color: '#409eff',
 });
 
+const _styleModule = inject('_styleModule', '');
 const fillColor = ref(props.color);
 const kCheckboxGroupRef = ref(null);
 

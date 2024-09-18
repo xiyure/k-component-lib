@@ -1,5 +1,5 @@
 <template>
-  <el-calendar ref="kCalendarRef" :class="['k-calendar', $styleModule]" v-bind="$attrs">
+  <el-calendar ref="kCalendarRef" :class="['k-calendar', _styleModule]" v-bind="$attrs">
     <template #header="{ date }">
       <slot name="header" :date="date">
         <div class="k-calendar__header">
@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, inject } from 'vue';
 import { ElCalendar } from 'element-plus';
 import type { CalendarDateType, CalendarInstance } from 'element-plus';
 import { getLunar } from 'chinese-lunar-calendar';
@@ -59,6 +59,8 @@ const props = withDefaults(defineProps<CalendarProps>(), {
   schedule: {},
   showLunar: false
 });
+
+const _styleModule = inject('_styleModule', '');
 
 const kCalendarRef = ref<CalendarInstance>();
 const isShowLunar = ref(false);

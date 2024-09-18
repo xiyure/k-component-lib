@@ -4,7 +4,7 @@
     :id="id"
     ref="kRadioRef"
     class="k-radio"
-    :class="[getSizeClass, { 'is-button': props.button === true }, $styleModule]"
+    :class="[getSizeClass, { 'is-button': props.button === true }, _styleModule]"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
       <slot :name="name" v-bind="data"></slot>
@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch, nextTick } from 'vue';
+import { ref, computed, onMounted, watch, nextTick, inject } from 'vue';
 import { ElRadio } from 'element-plus';
 import { RadioProps } from './type.d';
 import { isValidColor, GetColorLevel, genRandomStr, handleExpose } from '../../utils';
@@ -28,6 +28,7 @@ const props = withDefaults(defineProps<RadioProps>(), {
   button: false,
 });
 
+const _styleModule = inject('_styleModule', '');
 const id = genRandomStr(8);
 const color = ref(props.color);
 

@@ -1,7 +1,7 @@
 <template>
   <el-popconfirm
     ref="KPopconfirmRef"
-    :class="['k-popconfirm', $styleModule]"
+    :class="['k-popconfirm', _styleModule]"
     v-bind="$attrs"
     :icon="props.icon"
     cancel-button-type="default"
@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, inject } from 'vue';
 import { ElPopconfirm } from 'element-plus';
 import { IconClear } from 'ksw-vue-icon';
 import { PopconfirmProps } from './type';
@@ -27,6 +27,7 @@ const props = withDefaults(defineProps<PopconfirmProps>(), {
   icon: IconClear
 });
 
+const _styleModule = inject('_styleModule', '');
 const KPopconfirmRef = ref(null);
 const instance: any = {};
 handleExpose(instance, KPopconfirmRef, 'KPopconfirm');

@@ -2,7 +2,7 @@
   <div
     :class="[
       'k-view-item',
-      $styleModule,
+      _styleModule,
       {
         'k-view-active' : activeView === props.value,
         'k-view-disabled': props.disabled
@@ -51,6 +51,7 @@ const props = withDefaults(defineProps<ViewItemProps>(), {
 
 const activeView:any = inject('activeView');
 const pid = inject('viewId');
+const _styleModule = inject('_styleModule', '');
 const emitter = getCurrentInstance()?.appContext.app.config.globalProperties.__emitter__;
 
 function handleCommand(command:string) {

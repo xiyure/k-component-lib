@@ -1,5 +1,5 @@
 <template>
-  <div :class="['k-tree-table', props.class, $styleModule]" :style="{ height: height, ...style }">
+  <div :class="['k-tree-table', props.class, _styleModule]" :style="{ height: height, ...style }">
     <div
       v-if="showHeaderTools"
       class="k-tree-table__header"
@@ -195,7 +195,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, getCurrentInstance } from 'vue';
+import { ref, computed, watch, nextTick, getCurrentInstance, inject } from 'vue';
 import VXETable from 'vxe-table';
 import { IconSearch, IconSetting, IconRefresh, IconFilter, IconFilterFill } from 'ksw-vue-icon';
 import { cloneDeep } from 'lodash-es';
@@ -233,6 +233,7 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
   cellClickToggleHighlight: true,
 });
 
+const _styleModule = inject('_styleModule', '');
 const slots = defineSlots();
 const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
 const t = _global?.$t;
@@ -498,11 +499,11 @@ function filterTableData() {
     xeTableData.value;
   const { strict, searchMethod } = props.searchConfig ?? {};
   const searchKey = query.value.trim().replace(/\\/g, '\\\\');
-  if (!searchKey) {
-    return filterData;
-  }
   if (props.isRemoteQuery || props.searchConfig?.isRemoteQuery) {
     emits('remote-query', searchKey);
+    return filterData;
+  }
+  if (!searchKey) {
     return filterData;
   }
   if (typeof searchMethod === 'function') {

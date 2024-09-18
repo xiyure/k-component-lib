@@ -3,7 +3,7 @@
     :class="[
       'k-filter',
       {'text-sm': props.size ==='sm', 'text-base': props.size !== 'sm'},
-      $styleModule
+      _styleModule
     ]"
   >
     <k-popover
@@ -154,7 +154,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, getCurrentInstance } from 'vue';
+import { ref, computed, getCurrentInstance, inject } from 'vue';
 import { IconClose, IconClearDate, IconAdd, IconFilter, IconFilterFill } from 'ksw-vue-icon';
 import { cloneDeep } from 'lodash-es';
 import { FilterProps } from './type';
@@ -189,6 +189,7 @@ type IFilterDataType = {
   _allowSelectLogic?: boolean,
 };
 
+const _styleModule = inject('_styleModule', '');
 const emits = defineEmits(['confirm']);
 const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
 const t = _global?.$t;

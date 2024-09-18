@@ -1,5 +1,5 @@
 <template>
-  <div :class="['k-steps', $styleModule]">
+  <div :class="['k-steps', _styleModule]">
     <el-steps
       v-if="!capsule"
       ref="KStepsRef"
@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, provide, nextTick, useSlots } from 'vue';
+import { ref, watch, provide, nextTick, useSlots, inject } from 'vue';
 import { ElSteps } from 'element-plus';
 import { StepsProps } from './type';
 import { genRandomStr, handleExpose } from '../../utils';
@@ -32,6 +32,8 @@ const props = withDefaults(defineProps<StepsProps>(), {
   processStatus: 'finish',
   finishStatus: 'success'
 });
+
+const _styleModule = inject('_styleModule', '');
 const steps = ref<any>([]);
 const slots = useSlots();
 

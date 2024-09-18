@@ -18,7 +18,7 @@
       getElTypeColor,
       getSizeClass,
       getBtnBase,
-      $styleModule
+      _styleModule
     ]"
     :loading="loading"
     :loading-icon="loadingIcon"
@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, nextTick, watch } from 'vue';
+import { computed, ref, nextTick, watch, inject } from 'vue';
 import { ElButton } from 'element-plus';
 import { IconLoading } from 'ksw-vue-icon';
 import { ButtonProps } from './type.d';
@@ -50,8 +50,6 @@ defineOptions({
   name: 'KButton',
 });
 
-const id = genRandomStr(8);
-const buttonRef = ref();
 
 const props = withDefaults(defineProps<ButtonProps>(), {
   type: '',
@@ -69,6 +67,9 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   icon: false,
 });
 
+const _styleModule = inject('_styleModule', '');
+const id = genRandomStr(8);
+const buttonRef = ref();
 const color = ref(props.color);
 
 const el = ref();

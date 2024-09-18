@@ -1,6 +1,6 @@
 <template>
   <el-select
-    ref="inputRef" class="k-select" :class="[$styleModule]" v-bind="$attrs"
+    ref="inputRef" class="k-select" :class="[_styleModule]" v-bind="$attrs"
     :size="getCompSize(props.size)"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, inject } from 'vue';
 import { ElSelect } from 'element-plus';
 import { SelectInputProps } from './type';
 import { getCompSize, handleExpose } from '../../utils';
@@ -23,6 +23,7 @@ const props = withDefaults(defineProps<SelectInputProps>(), {
   size: 'base',
 });
 
+const _styleModule = inject('_styleModule', '');
 const inputRef = ref<any>(null);
 const instance: any = {};
 handleExpose(instance, inputRef, 'KSelect');

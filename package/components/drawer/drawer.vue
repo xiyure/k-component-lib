@@ -1,7 +1,7 @@
 <template>
   <el-drawer
     ref="KDrawerRef"
-    :class="['k-drawer', $styleModule]"
+    :class="['k-drawer', _styleModule]"
     v-bind="$attrs"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, inject } from 'vue';
 import { ElDrawer } from 'element-plus';
 import { handleExpose } from '../../utils';
 
@@ -19,8 +19,8 @@ defineOptions({
   name: 'KDrawer'
 });
 
+const _styleModule = inject('_styleModule', '');
 const KDrawerRef = ref<any>(null);
-
 const instance: any = {};
 handleExpose(instance, KDrawerRef, 'KDrawer');
 defineExpose(instance);

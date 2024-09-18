@@ -1,7 +1,7 @@
 <template>
   <el-popover
     ref="KPopoverRef"
-    :class="['k-popover', $styleModule]"
+    :class="['k-popover', _styleModule]"
     v-bind="$attrs"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, inject } from 'vue';
 import { ElPopover } from 'element-plus';
 import { handleExpose } from '../../utils';
 
@@ -19,6 +19,7 @@ defineOptions({
   name: 'KPopover'
 });
 
+const _styleModule = inject('_styleModule', '');
 const KPopoverRef = ref(null);
 const instance: any = {};
 handleExpose(instance, KPopoverRef, 'KPopover');

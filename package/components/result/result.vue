@@ -1,5 +1,5 @@
 <template>
-  <div id="KResult" class="k-result" :class="[$styleModule]">
+  <div id="KResult" class="k-result" :class="[_styleModule]">
     <div
       style="
         max-width: 12vw;
@@ -108,7 +108,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, inject } from 'vue';
 
 import { ResultProps } from './type.d';
 
@@ -122,6 +122,7 @@ const props = withDefaults(defineProps<ResultProps>(), {
   subTitle: '',
 });
 
+const _styleModule = inject('_styleModule', '');
 const DigitalStatusCode = ['403', '404', '500'];
 const TextlStatusCode = ['success', 'warning', 'info', 'error'];
 

@@ -1,7 +1,7 @@
 <template>
   <el-tree-select
     ref="KTreeSelectRef"
-    :class="['k-tree-select', $styleModule]"
+    :class="['k-tree-select', _styleModule]"
     v-bind="$attrs"
     @node-click="handleNodeClick"
   >
@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, ref } from 'vue';
+import { nextTick, ref, inject } from 'vue';
 import { ElTreeSelect } from 'element-plus';
 import { handleExpose } from '../../utils';
 
@@ -29,6 +29,7 @@ defineOptions({
   name: 'KTreeSelect',
 });
 
+const _styleModule = inject('_styleModule', '');
 const handleNodeClick = async (data: any, node: any) => {
   await nextTick();
   if (node.expanded && (data.icon === 'IconFlowNested' || !data.icon)) {

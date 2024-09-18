@@ -1,5 +1,5 @@
 <template>
-  <div :class="['k-tree', $styleModule]">
+  <div :class="['k-tree', _styleModule]">
     <div class="k-tree__filter">
       <k-input
         v-if="props.showFilter" v-model="query" :placeholder="$t('enterInputSearch')"
@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, inject } from 'vue';
 import { ElTreeV2 } from 'element-plus';
 import type { TreeNode } from 'element-plus/es/components/tree-v2/src/types';
 import { IconSearch } from 'ksw-vue-icon';
@@ -39,6 +39,7 @@ const props = withDefaults(defineProps<TreeProps>(), {
   filterMethod: (query: string, node: TreeNode) => node.label?.includes(query)
 });
 
+const _styleModule = inject('_styleModule', '');
 const KTreeRef = ref();
 const query = ref('');
 

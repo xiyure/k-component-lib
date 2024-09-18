@@ -1,7 +1,7 @@
 <template>
   <el-option
     ref="KOptionRef"
-    :class="['k-option', $styleModule]"
+    :class="['k-option', _styleModule]"
     v-bind="$attrs"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, inject } from 'vue';
 import { ElOption } from 'element-plus';
 import { handleExpose } from '../../utils';
 
@@ -19,6 +19,7 @@ defineOptions({
   name: 'KOption'
 });
 
+const _styleModule = inject('_styleModule', '');
 const KOptionRef = ref(null);
 const instance: any = {};
 handleExpose(instance, KOptionRef, 'KOption');

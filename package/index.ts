@@ -22,41 +22,41 @@ type optionsType = {
   ElementPlusOptions?: any;
   styleModule?: string;
 };
-const install = (Vue: any, options?: optionsType) => {
+const install = (app: any, options?: optionsType) => {
   // 国际化
   const messages = { zh, en };
   const i18n = createI18n({
     locale: options?.locale === 'en' ? 'en' : 'zh',
     messages,
   });
-  Vue.use(ElementPlus, {
+  app.use(ElementPlus, {
     ...options?.ElementPlusOptions,
     locale: options?.locale === 'en' ? enLocal : zhLocal,
   });
   // 组件注册
   for (const name in components) {
-    Vue.component(name, components[name]);
+    app.component(name, components[name]);
   }
   // 模板组件注册
   for (const name in templates) {
-    Vue.component(name, templates[name]);
+    app.component(name, templates[name]);
   }
   // 原生组件注册
   for (const name in originComponents) {
-    Vue.component(name, originComponents[name]);
+    app.component(name, originComponents[name]);
   }
-  Vue.use(VxeTable).use(VxeUI);
+  app.use(VxeTable).use(VxeUI);
   // 设置vxe-table全局配置
   VxeUI.setConfig(options?.vxeGlobalConfig ?? {});
-  Vue.use(i18n);
+  app.use(i18n);
   // 自定义指令注册
   for (const name in directives) {
-    Vue.directive(`ksw_${name}`, directives[name]);
+    app.directive(`ksw_${name}`, directives[name]);
   }
   // 全局事件管理，用于多级组件之间的通信
-  Vue.config.globalProperties.__emitter__ = new Emitter();
-  Vue.config.globalProperties.$t = i18n.global.t;
-  Vue.config.globalProperties.$styleModule = options?.styleModule ?? '';
+  app.config.globalProperties.__emitter__ = new Emitter();
+  app.config.globalProperties.$t = i18n.global.t;
+  app.provide('_styleModule', options?.styleModule ?? '');
 };
 
 export * from './components';

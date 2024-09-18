@@ -1,7 +1,7 @@
 <template>
   <el-form-item
     ref="KFormItemRef"
-    :class="['k-form-item', $styleModule]"
+    :class="['k-form-item', _styleModule]"
     v-bind="$attrs"
     :size="getCompSize(props.size)"
   >
@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, inject } from 'vue';
 import { ElFormItem } from 'element-plus';
 import { FormItemProps } from './type';
 import { getCompSize, handleExpose } from '../../utils';
@@ -25,6 +25,7 @@ const props = withDefaults(defineProps<FormItemProps>(), {
   size: 'base'
 });
 
+const _styleModule = inject('_styleModule', '');
 const KFormItemRef = ref<any>(null);
 const instance: any = {};
 handleExpose(instance, KFormItemRef, 'KFormItem');

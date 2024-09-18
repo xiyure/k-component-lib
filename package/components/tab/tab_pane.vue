@@ -1,7 +1,7 @@
 <template>
   <el-tab-pane
     ref="KTabPaneRef"
-    :class="['k-tab-item', $styleModule]"
+    :class="['k-tab-item', _styleModule]"
     v-bind="$attrs"
     :closable="props.closable"
   >
@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, useSlots } from 'vue';
+import { ref, computed, useSlots, inject } from 'vue';
 import { ElTabPane } from 'element-plus';
 import { handleExpose } from '../../utils';
 import { KTooltip } from '../tooltip';
@@ -41,6 +41,7 @@ const props = defineProps({
   },
 });
 
+const _styleModule = inject('_styleModule', '');
 const KTabPaneRef = ref(null);
 const slots = useSlots();
 const isOverflow = ref(false);

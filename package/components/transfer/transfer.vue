@@ -1,5 +1,5 @@
 <template>
-  <div :id="id" :class="['k-transfer', $styleModule]">
+  <div :id="id" :class="['k-transfer', _styleModule]">
     <div class="k-transfer_searcher">
       <k-input
         v-if="filterable"
@@ -46,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, getCurrentInstance } from 'vue';
+import { ref, computed, watch, onMounted, getCurrentInstance, inject } from 'vue';
 import { ElTransfer, TransferKey, TransferDirection } from 'element-plus';
 
 import { IconSearch, IconDrag } from 'ksw-vue-icon';
@@ -78,6 +78,7 @@ const emits = defineEmits([
   'sort'
 ]);
 
+const _styleModule = inject('_styleModule', '');
 const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
 const modelValue:any = ref([]);
 const searchStr = ref('');

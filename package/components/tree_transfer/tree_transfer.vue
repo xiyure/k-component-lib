@@ -1,5 +1,5 @@
 <template>
-  <div :class="['k-tree-transfer', $styleModule]">
+  <div :class="['k-tree-transfer', _styleModule]">
     <div v-if="showFilter" class="k-transfer__filter">
       <k-input
         v-model="query"
@@ -97,7 +97,7 @@
 </template>
 
 <script setup lang="tsx">
-import { ref, computed, watch, nextTick } from 'vue';
+import { ref, computed, watch, nextTick, inject } from 'vue';
 import { IconSearch, IconDrag, IconClose } from 'ksw-vue-icon';
 import { TreeTransferProps } from './type.d';
 import { KTable, KTableColumn } from '../table';
@@ -110,6 +110,7 @@ const props = withDefaults(defineProps<TreeTransferProps>(), {
   label: 'label'
 });
 
+const _styleModule = inject('_styleModule', '');
 // 定义emit
 const emits = defineEmits(['change', 'sort']);
 const defaultTreeConfig = {

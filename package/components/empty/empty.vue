@@ -1,7 +1,7 @@
 <template>
   <el-empty
     ref="KEmptyRef"
-    :class="['k-empty', $styleModule]"
+    :class="['k-empty', _styleModule]"
     v-bind="$attrs"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
@@ -15,7 +15,7 @@
   </el-empty>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, inject } from 'vue';
 import { ElEmpty } from 'element-plus';
 // @ts-expect-error 引入本地静态图片资源
 import empty from '../../assets/svg/empty.svg';
@@ -25,6 +25,7 @@ defineOptions({
   name: 'KEmpty'
 });
 
+const _styleModule = inject('_styleModule', '');
 const KEmptyRef = ref(null);
 const instance: any = {};
 handleExpose(instance, KEmptyRef, 'KEmpty');

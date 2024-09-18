@@ -1,7 +1,7 @@
 <template>
   <el-cascader
     ref="cascaderRef"
-    :class="['k-cascader', $styleModule]"
+    :class="['k-cascader', _styleModule]"
     v-bind="$attrs"
     :size="getCompSize(props.size)"
   >
@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, inject } from 'vue';
 import { ElCascader } from 'element-plus';
 import { CascaderProps } from './type';
 import { getCompSize, handleExpose } from '../../utils';
@@ -25,6 +25,7 @@ const props = withDefaults(defineProps<CascaderProps>(), {
   size: 'base'
 });
 
+const _styleModule = inject('_styleModule', '');
 const cascaderRef = ref<any>(null);
 
 const instance: any = {};

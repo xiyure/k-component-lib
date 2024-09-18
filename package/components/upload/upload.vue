@@ -1,5 +1,5 @@
 <template>
-  <div :class="['k-upload', $styleModule, {'k-dragger': props.drag}]">
+  <div :class="['k-upload', _styleModule, {'k-dragger': props.drag}]">
     <el-upload
       ref="KUploadRef"
       v-model:file-list="fileList"
@@ -82,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, inject } from 'vue';
 import { ElUpload, ElProgress, UploadFile, UploadRawFile } from 'element-plus';
 
 import { IconEmptyBox, IconWarning, IconCheck, IconDelete, IconFile } from 'ksw-vue-icon';
@@ -95,6 +95,7 @@ defineOptions({
 
 const props = withDefaults(defineProps<UploadProps>(), {});
 
+const _styleModule = inject('_styleModule', '');
 const emits = defineEmits(['update:modelValue']);
 
 const KUploadRef = ref<any>(null);

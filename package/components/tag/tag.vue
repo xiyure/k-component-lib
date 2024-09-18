@@ -1,5 +1,5 @@
 <template>
-  <div :class="['k-tag', $styleModule]">
+  <div :class="['k-tag', _styleModule]">
     <el-tag
       v-if="!point"
       ref="KTagRef"
@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, inject } from 'vue';
 import { ElTag } from 'element-plus';
 import { TagProps } from './type';
 import { getCompSize, isValidColor, handleExpose } from '../../utils';
@@ -57,6 +57,7 @@ const props = withDefaults(defineProps<TagProps>(), {
   text: undefined,
 });
 
+const _styleModule = inject('_styleModule', '');
 const defaultColor = {
   primary: '#2882FF',
   success: '#22C55E',

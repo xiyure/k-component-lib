@@ -1,7 +1,7 @@
 <template>
   <el-switch
     ref="kSwitchRef"
-    :class="['k-switch', $styleModule]"
+    :class="['k-switch', _styleModule]"
     v-bind="$attrs"
     :size="getCompSize(size)"
     :style="{
@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, inject } from 'vue';
 import { ElSwitch } from 'element-plus';
 import { SwitchProps } from './type';
 import { getCompSize, handleExpose } from '../../utils';
@@ -27,6 +27,7 @@ const props = withDefaults(defineProps<SwitchProps>(), {
   switchOffColor: ''
 });
 
+const _styleModule = inject('_styleModule', '');
 const kSwitchRef = ref();
 const instance: any = {};
 handleExpose(instance, kSwitchRef, 'KSwitch');

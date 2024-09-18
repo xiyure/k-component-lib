@@ -1,7 +1,7 @@
 <template>
   <el-date-picker
     ref="datePickerRef"
-    :class="['k-date-picker', $styleModule]"
+    :class="['k-date-picker', _styleModule]"
     v-bind="$attrs"
     :type="type"
     :shortcuts="customShortcuts"
@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, getCurrentInstance, computed } from 'vue';
+import { ref, getCurrentInstance, computed, inject } from 'vue';
 import { ElDatePicker } from 'element-plus';
 import { DatePicker } from './type';
 import { getCompSize, handleExpose } from '../../utils';
@@ -28,6 +28,7 @@ const props = withDefaults(defineProps<DatePicker>(), {
   showDefaultShortcuts: true
 });
 
+const _styleModule = inject('_styleModule', '');
 const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
 const t = _global?.$t;
 const datePickerRef = ref<any>(null);

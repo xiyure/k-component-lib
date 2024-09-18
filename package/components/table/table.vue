@@ -1,7 +1,7 @@
 <template>
   <vxe-table
     ref="vxeTableRef"
-    :class="['k-table', $styleModule, {'drag_table': showDragColumn}]"
+    :class="['k-table', _styleModule, {'drag_table': showDragColumn}]"
     :data="data"
     v-bind="$attrs"
   >
@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, provide, computed, getCurrentInstance, onUnmounted, nextTick } from 'vue';
+import { ref, provide, computed, getCurrentInstance, onUnmounted, nextTick, inject } from 'vue';
 import { VxeColumnProps, VxeTableInstance } from 'vxe-table';
 import Sortable from 'sortablejs';
 import { IconDrag } from 'ksw-vue-icon';
@@ -74,6 +74,7 @@ const props = withDefaults(defineProps<KTableProps>(), {
   showDragColumn: false
 });
 
+const _styleModule = inject('_styleModule', '');
 const slots = defineSlots();
 const id = genRandomStr(8);
 // 事件管理

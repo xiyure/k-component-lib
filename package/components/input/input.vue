@@ -7,7 +7,7 @@
         'k-input-has-prepend': slots.prepend,
         'k-input-has-append': slots.append
       },
-      $styleModule
+      _styleModule
     ]"
     v-bind="$attrs"
     :prefix-icon="iconLeft ?? prefixIcon"
@@ -33,7 +33,7 @@
   </el-input>
 </template>
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, inject } from 'vue';
 import { ElInput } from 'element-plus';
 import { InputProps } from './type.d';
 import { getCompSize, handleExpose } from '../../utils';
@@ -52,6 +52,7 @@ const props = withDefaults(defineProps<InputProps>(), {
   suffixIcon: undefined,
 });
 
+const _styleModule = inject('_styleModule', '');
 const slots = defineSlots(); // 具名插槽
 const prependSlot = slots.prepend?.();
 const prependSlotType = prependSlot?.[0]?.type;

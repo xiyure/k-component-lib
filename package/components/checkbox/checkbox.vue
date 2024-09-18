@@ -1,7 +1,7 @@
 <template>
   <el-checkbox
     ref="kCheckboxRef"
-    :class="['k-checkbox', $styleModule]"
+    :class="['k-checkbox', _styleModule]"
     v-bind="$attrs"
     :label="label"
     :size="getCompSize(size)"
@@ -26,6 +26,7 @@ defineOptions({
 });
 
 const fillColor = inject('_fillColor', ref(''));
+const _styleModule = inject('_styleModule', '');
 
 const props = withDefaults(defineProps<CheckboxProps>(), {
   strict: false,

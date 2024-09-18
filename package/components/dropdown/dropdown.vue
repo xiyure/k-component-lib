@@ -1,7 +1,7 @@
 <template>
   <el-dropdown
     ref="kDropDownRef"
-    :class="['k-dropdown', $styleModule]"
+    :class="['k-dropdown', _styleModule]"
     v-bind="$attrs"
     :size="getCompSize(size)"
   >
@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, inject } from 'vue';
 import { ElDropdown } from 'element-plus';
 import { DropDownProps } from './type';
 import { getCompSize, handleExpose } from '../../utils';
@@ -26,6 +26,7 @@ defineOptions({
   name: 'KDropdown'
 });
 
+const _styleModule = inject('_styleModule', '');
 const props = withDefaults(defineProps<DropDownProps>(), {});
 const kDropDownRef = ref();
 

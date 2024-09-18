@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="['k-view', 'text-base', $styleModule]"
+    :class="['k-view', 'text-base', _styleModule]"
     :style="{
       width: props.width + (typeof props.width === 'number' ? 'px' : '')
     }"
@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onUnmounted, watch, provide, getCurrentInstance } from 'vue';
+import { ref, onUnmounted, watch, provide, getCurrentInstance, inject } from 'vue';
 import { IconRefresh } from 'ksw-vue-icon';
 import { ViewProps } from './type';
 import { genRandomStr } from '../../utils';
@@ -37,6 +37,7 @@ const props = withDefaults(defineProps<ViewProps>(), {
   width: '200px'
 });
 
+const _styleModule = inject('_styleModule', '');
 const id = genRandomStr(8);
 const emitter = getCurrentInstance()?.appContext.app.config.globalProperties.__emitter__;
 emitter.on('change-active-view', id, handleChange.bind(this));

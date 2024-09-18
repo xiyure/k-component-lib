@@ -2,7 +2,7 @@
   <el-step
     v-if="!stepsProps.capsule"
     ref="KStepRef"
-    :class="['k-step', $styleModule]"
+    :class="['k-step', _styleModule]"
     v-bind="$attrs"
     :title="title"
     :description="description"
@@ -13,7 +13,7 @@
       <slot :name="name" v-bind="data"></slot>
     </template>
   </el-step>
-  <div v-else :id="id" :class="['k-step__capsule-box', $styleModule]">
+  <div v-else :id="id" :class="['k-step__capsule-box', _styleModule]">
     <k-popover
       :show-after="500"
       :disabled="!props.description"
@@ -49,6 +49,7 @@ const props = withDefaults(defineProps<StepProps>(), {
 });
 const stepsProps:any = inject('stepProps');
 const stepsInfo:any = inject('stepsInfo');
+const _styleModule = inject('_styleModule', '');
 const id = genRandomStr(8);
 const key = stepsInfo.value.find(item => item.name === props.title)?.key ?? '';
 const DEFAULT_STATUS_COLOR = {
