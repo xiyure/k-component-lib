@@ -1,5 +1,4 @@
 import { defineConfig } from 'vitepress';
-import { genApiDoc } from './plugin/api-doc.config';
 import { applyPlugins } from './plugin/md-demo-plugin';
 import nav from './configs/nav';
 import sidebar from './configs/sidebar';
@@ -83,20 +82,6 @@ export default defineConfig({
         // disableDetailedView: true,
         detailedView: true,
       },
-    },
-  },
-
-  vite: {
-    plugins: [genApiDoc()],
-    server: {
-      host: '0.0.0.0',
-      port: 12581,
-    },
-    optimizeDeps: {
-      exclude: ['@nolebase/vitepress-plugin-enhanced-readabilities/client'],
-    },
-    ssr: {
-      noExternal: ['ksw-vue-icon', '@ksware/ksw-ux', 'vue-i18n', '@nolebase/*'],
     },
   },
 });
