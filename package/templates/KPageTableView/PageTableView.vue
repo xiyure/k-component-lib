@@ -16,7 +16,9 @@
       :refresh="viewBusRefresh"
       @refresh="() => console.log('@refresh')"
     >
-      <template #extra-foot>extra-body</template>
+      <template #extra-body>
+        <slot name="extra-viewBus-body"></slot>
+      </template>
     </KPageViewBus>
 
     <!-- right -->
