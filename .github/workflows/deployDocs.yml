@@ -5,7 +5,7 @@ on:
       - dev
     paths:
       - 'docs/**'
-
+      - '.github/workflows/deployDocs.yml'
   # 允许你从 Actions 选项卡手动运行此工作流程
   workflow_dispatch:
 
@@ -88,7 +88,7 @@ jobs:
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_PORT: ${{ secrets.REMOTE_PORT }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: ${{ secrets.REMOTE_TARGET }}
+          TARGET: ${{ secrets.TARGET }}
           EXCLUDE: "/dist/, /docs/.vitepress/dist/, /node_modules/"
           SCRIPT_BEFORE: |
             whoami
