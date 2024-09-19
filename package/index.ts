@@ -22,6 +22,22 @@ type optionsType = {
   ElementPlusOptions?: any;
   styleModule?: string;
 };
+
+// 组件和模板添加install方法
+for (const name in components) {
+  const comp = components[name];
+  comp.install = function (app :any) {
+    app.component(comp.name, comp);
+  }
+}
+for (const name in templates) {
+  const tmpl = templates[name];
+  tmpl.install = function (app :any) {
+    app.component(tmpl.name, tmpl);
+  }
+}
+
+// install方法
 const install = (app: any, options?: optionsType) => {
   // 国际化
   const messages = { zh, en };
