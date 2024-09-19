@@ -334,6 +334,9 @@ function filter(data?: any[]) {
       });
     } 
     return filterData.value.every(item => {
+      if (remoteFieldMap.has(item.key)) {
+        return true;
+      }
       const targetColumn = flatColumns.value?.find(col => col[props.filterKey] === item.key);
       if (!targetColumn && !targetColumn[props.filterKey]) {
         return false;
