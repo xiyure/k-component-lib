@@ -3,21 +3,16 @@ import DefaultTheme from 'vitepress/theme';
 import KUI from '@ksware/ksw-ux';
 import '@ksware/ksw-ux/kingsware-ui/style.css';
 import 'vitepress-theme-demoblock/dist/theme/styles/index.css';
-import {
-  AntDesignContainer,
-  ElementPlusContainer,
-  NaiveUIContainer,
-} from '@vitepress-demo-preview/component';
-import '@vitepress-demo-preview/component/dist/style.css';
+import { Container } from '../plugin/container/index'
 import './style.css';
-import '../../styles/index.css';
 import 'overlayscrollbars/overlayscrollbars.css';
 import { OverlayScrollbars } from 'overlayscrollbars';
 import {
   NolebaseEnhancedReadabilitiesMenu,
   NolebaseEnhancedReadabilitiesScreenMenu,
+  InjectionKey
 } from '@nolebase/vitepress-plugin-enhanced-readabilities/client';
-
+import type { Options } from '@nolebase/vitepress-plugin-enhanced-readabilities/client';
 import '@nolebase/vitepress-plugin-enhanced-readabilities/client/style.css';
 
 export default {
@@ -34,7 +29,17 @@ export default {
     // inject Third-party libraries
     ctx.app.use(KUI);
     DefaultTheme.enhanceApp(ctx);
-    ctx.app.component('demo-preview', ElementPlusContainer);
+    ctx.app.component('demo-preview', Container);
+    ctx.app.provide(InjectionKey, { 
+      // 配置
+      layoutSwitch: {
+        disableAnimation: false,
+        defaultMode: 1,
+      },
+      spotlight: {
+        defaultToggle: true,
+      }
+    } as Options)
   },
   setup() {
     onMounted(() => {

@@ -1,3 +1,5 @@
+@import './tailwind.css';
+
 :root {
   /* #646cff */
   --vp-c-brand-1: hsl(237, 100%, 70%);
@@ -37,4 +39,8 @@ html.dark {
 }
 .el-popper.is-light {
   color: #0c61c9 !important;
+}
+
+.VPNolebaseEnhancedReadabilitiesSpotlightHoverBlock {
+  border: none
 }

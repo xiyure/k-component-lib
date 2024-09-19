@@ -20,11 +20,7 @@ demo-preview=../example/button/main.vue
 
 secondary 按钮提供了五种不同的样式。
 
-:::preview
-
-demo-preview=../example/button/secondary.vue
-
-:::
+<preview path="../example/button/secondary.vue"></preview>
 
 ## API
 

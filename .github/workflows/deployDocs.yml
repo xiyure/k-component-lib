@@ -46,10 +46,10 @@ jobs:
         run: |
           cd docs
           npm run build
-      - name: Upload pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: docs/.vitepress/dist
+      # - name: Upload pages artifact
+      #   uses: actions/upload-pages-artifact@v3
+      #   with:
+      #     path: docs/.vitepress/dist
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -57,18 +57,18 @@ jobs:
           path: docs/.vitepress/dist
 
   # 部署 GitHub Pages
-  deploy-github-pages:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    needs: build
-    runs-on: ubuntu-latest
-    name: Deploy
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-        continue-on-error: true  # 即使失败，也继续下一个步骤
+  # deploy-github-pages:
+  #   environment:
+  #     name: github-pages
+  #     url: ${{ steps.deployment.outputs.page_url }}
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   name: Deploy
+  #   steps:
+  #     - name: Deploy to GitHub Pages
+  #       id: deployment
+  #       uses: actions/deploy-pages@v4
+  #       continue-on-error: true  # 即使失败，也继续下一个步骤
 
   # 部署到 Centos 服务器
   deploy-centos:
