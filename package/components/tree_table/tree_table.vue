@@ -21,7 +21,10 @@
           <span
             v-if="filterConditionInfo?.conditionList?.length && tableFilterRef?.[0]?.clearFilter"
             class="filter-reset"
-            @click="clearAdvancedFilter"
+            @click="() => {
+              clearAdvancedFilter();
+              emits('advanced-filter-clear');
+            }"
           >
             · {{ $t('reset') }}
           </span>
@@ -69,9 +72,14 @@
               :size="compSize"
               children-field="group"
               filter-key="field"
+              :remote="advancedFilterConfig?.remote ?? false"
               :default-condition="
                 advancedFilterConfig?.defaultCondition ?? filterConditionInfo"
               @confirm="refreshAdvancedFilter"
+              @clear="() => {
+                clearAdvancedFilter();
+                emits('advanced-filter-clear');
+              }"
             >
               <template #reference="{ hasConfigCondition }">
                 <k-button v-ksw_tooltip="$t('advancedFilter_c')" :size="compSize">
@@ -286,7 +294,9 @@ const emits = defineEmits([
   'checkbox-change',
   'checkbox-all',
   'drag-end',
-  'sort-change'
+  'sort-change',
+  'advanced-filter-confirm',
+  'advanced-filter-clear'
 ]);
 const xTree = ref();
 // 列配置
@@ -713,7 +723,7 @@ function sortTableHeader(fieldList: string[]) {
   setData(columns.value);
   flatColumns.value = treeDataToArray(columns.value, 'group');
 }
-function refreshAdvancedFilter(conditionInfo: any, newTableData: any[]) {
+function refreshAdvancedFilter(conditionInfo: any, newTableData: any[], isEmit = true) {
   filterConditionInfo.value = conditionInfo;
   newFilterData.value = newTableData;
   if (props.useTree) {
@@ -725,6 +735,9 @@ function refreshAdvancedFilter(conditionInfo: any, newTableData: any[]) {
     isFilterStatus = true;
   } else {
     isFilterStatus = false;
+  }
+  if (isEmit) {
+    emits('advanced-filter-confirm', { conditionInfo, tableData: newTableData });
   }
 }
 function filter(searchStr: string) {
@@ -754,17 +767,21 @@ function cellClick({ row, rowid }) {
 }
 function dragEnd(data: any[]) {
   emits('drag-end', {
-    newData:data,
+    newData: data,
     oldData: xeTableData.value,
   });
 }
 
 // 刷新高级筛选的表格数据
 function advancedFilter(data: any[] | undefined) {
-  tableFilterRef.value?.[0]?.filter(data);
+  const { conditionInfo, tableData } = tableFilterRef.value?.[0]?.filter(data);
+  refreshAdvancedFilter(conditionInfo, tableData, false);
+  return { conditionInfo, tableData };
 }
 function clearAdvancedFilter() {
-  tableFilterRef.value?.[0]?.clearFilter();
+  const { conditionInfo, tableData } = tableFilterRef.value?.[0]?.clearFilter();
+  refreshAdvancedFilter(conditionInfo, tableData, false);
+  return { conditionInfo, tableData };
 }
 function loadData(data: any[]) {
   if (!Array.isArray(data)) {

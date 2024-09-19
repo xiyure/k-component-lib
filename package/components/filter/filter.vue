@@ -34,7 +34,10 @@
           </span>
           <span
             :class="props.size === 'sm' ? 'text-sm' : 'text-base'"
-            @click="clearFilter"
+            @click="() => {
+              clearFilter();
+              emits('clear');
+            }"
           >
             <IconClearDate />{{ $t('clearAll') }}
           </span>
@@ -145,7 +148,7 @@
               <k-option :label="$t('anyOne')" :value="0"></k-option>
               <k-option :label="$t('all')" :value="1"></k-option>
             </k-select>
-            <k-button :size="props.size" main @click="filter">{{ $t('query') }}</k-button>
+            <k-button :size="props.size" main @click="query">{{ $t('query') }}</k-button>
           </div>
         </div>
       </div>
@@ -190,7 +193,7 @@ type IFilterDataType = {
 };
 
 const _styleModule = inject('_styleModule', '');
-const emits = defineEmits(['confirm']);
+const emits = defineEmits(['confirm', 'clear']);
 const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
 const t = _global?.$t;
 const filterData = ref<IFilterDataType[]>([]);
@@ -285,10 +288,14 @@ function clearFilter(isFilter:boolean = true) {
   filterData.value.length = 0;
   addCondition();
   if (isFilter) {
-    filter();
+    return filter();
   }
+  return {};
 }
-
+function query() {
+  const { conditionInfo, tableData } = filter();
+  emits('confirm', conditionInfo, tableData ?? []);
+}
 function filter(data?: any[]) {
   const sourceData = Array.isArray(data) ? data : props.data;
   const disabledLogicTypes = ['empty', 'nonEmpty'];
@@ -306,13 +313,19 @@ function filter(data?: any[]) {
     conditionList,
     filterRule: filterRule.value
   };
-  if (conditionList.length === 0) {
-    emits('confirm', conditionInfo, sourceData);
-    return; 
+  if (conditionList.length === 0 || props.remote === true) {
+    return {
+      conditionInfo,
+      tableData: sourceData
+    }; 
   }
-  const newData = sourceData?.filter(dataItem => {
+  const remoteFieldMap = getRemoteFieldMap();
+  const newData = sourceData?.filter((dataItem: any) => {
     if (filterRule.value === 0) {
       return filterData.value.some(item => {
+        if (remoteFieldMap.has(item.key)) {
+          return true;
+        }
         const targetColumn = flatColumns.value?.find(col => col[props.filterKey] === item.key);
         if (!targetColumn || !targetColumn[props.filterKey]) {
           return false;
@@ -328,7 +341,16 @@ function filter(data?: any[]) {
       return item.handler?.(dataItem[targetColumn[props.filterKey]], item.value);
     });
   });
-  emits('confirm', conditionInfo, newData ?? []);
+  return {
+    conditionInfo,
+    tableData: newData ?? []
+  };
+}
+function getRemoteFieldMap() {
+  if (!Array.isArray(props.remote)) {
+    return new Map();
+  }
+  return new Map(props.remote.map((item: any, index: number) => [item, index]));
 }
 function changeCondition(index:number) {
   const targetItem = filterData.value[index];

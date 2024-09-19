@@ -219,7 +219,7 @@ export function handleExpose(instance: any, ref: any, compName: string) {
       if (typeof ref.value[methodsName] === 'function') {
         instance[methodsName] = ref.value[methodsName].bind(ref.value);
       } else {
-        instance[methodsName] = computed(() => ref.value ? ref.value[methodsName] : undefined);
+        instance[methodsName] = computed(() => (ref.value ? ref.value[methodsName] : undefined));
       }
     }
   });

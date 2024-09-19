@@ -28,13 +28,13 @@ for (const name in components) {
   const comp = components[name];
   comp.install = function (app :any) {
     app.component(comp.name, comp);
-  }
+  };
 }
 for (const name in templates) {
   const tmpl = templates[name];
   tmpl.install = function (app :any) {
     app.component(tmpl.name, tmpl);
-  }
+  };
 }
 
 // install方法

@@ -83,6 +83,7 @@ export interface TreeTableProps {
     filterColumns?: FilterColumnType[]
     filterAll?: boolean
     exclude?: string[],
+    remote?: boolean | string[]
     defaultCondition?: {
       conditionList?: any[]
       filterRule?: number

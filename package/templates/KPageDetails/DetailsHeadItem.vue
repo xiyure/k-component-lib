@@ -18,6 +18,7 @@
 <script setup>
 import { ref, reactive } from 'vue';
 import { KTag } from '../../components';
+
 const props = defineProps({
   label: {
     type: String,

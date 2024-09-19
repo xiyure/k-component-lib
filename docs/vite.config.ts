@@ -1,5 +1,5 @@
-import { defineConfig } from "vite";
-import { genApiDoc } from "./.vitepress/plugin/api-doc.config";
+import { defineConfig } from 'vite';
+import { genApiDoc } from './.vitepress/plugin/api-doc.config';
 
 export default defineConfig({
   plugins: [
@@ -11,11 +11,11 @@ export default defineConfig({
   },
   optimizeDeps: {
     exclude: [
-      "@nolebase/vitepress-plugin-enhanced-readabilities/client",
-      "vitepress",
+      '@nolebase/vitepress-plugin-enhanced-readabilities/client',
+      'vitepress',
     ],
   },
   ssr: {
-    noExternal: ["ksw-vue-icon", "@ksware/ksw-ux", "vue-i18n", "@nolebase/*"],
+    noExternal: ['ksw-vue-icon', '@ksware/ksw-ux', 'vue-i18n', '@nolebase/*'],
   },
 });

@@ -10,4 +10,5 @@ export interface FilterProps {
     conditionList?: any[]
     filterRule?: number
   }
+  remote?: boolean | string[]
 }

@@ -52,6 +52,7 @@
 import { ref, reactive } from 'vue';
 import { KPageViewBus } from '../index.ts';
 import { KTooltip } from '../../components';
+
 const props = defineProps({
   showViewBus: {
     type: Boolean,

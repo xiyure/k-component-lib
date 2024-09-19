@@ -46,10 +46,10 @@
           </slot>
         </div>
 
-        <div class="KPageViewBus-body pt-3" v-if="$slots['extra-body']">
+        <div v-if="$slots['extra-body']" class="KPageViewBus-body pt-3">
           <slot name="extra-body"></slot>
         </div>
-        <div class="KPageViewBus-foot pt-3" v-if="$slots['extra-foot']">
+        <div v-if="$slots['extra-foot']" class="KPageViewBus-foot pt-3">
           <slot name="extra-foot"></slot>
         </div>
       </div>
@@ -60,6 +60,7 @@
 <script setup>
 import { ref } from 'vue';
 import { KTooltip } from '../../components';
+
 const tips = ref(false);
 const drawerStatus = ref(false);
 const props = defineProps({

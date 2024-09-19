@@ -47,6 +47,7 @@
 
 <script setup>
 import DetailsHeadItem from './DetailsHeadItem.vue';
+
 const props = defineProps({
   icon: {
     type: String,

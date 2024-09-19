@@ -50,7 +50,6 @@ defineOptions({
   name: 'KButton',
 });
 
-
 const props = withDefaults(defineProps<ButtonProps>(), {
   type: '',
   size: 'base',
