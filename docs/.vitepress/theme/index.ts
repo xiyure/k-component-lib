@@ -3,17 +3,19 @@ import DefaultTheme from 'vitepress/theme';
 import KUI from '@ksware/ksw-ux';
 import '@ksware/ksw-ux/kingsware-ui/style.css';
 import 'vitepress-theme-demoblock/dist/theme/styles/index.css';
-import { Container } from '../plugin/container/index'
+import { Container } from '../plugin/container/index';
 import './style.css';
 import 'overlayscrollbars/overlayscrollbars.css';
 import { OverlayScrollbars } from 'overlayscrollbars';
 import {
   NolebaseEnhancedReadabilitiesMenu,
   NolebaseEnhancedReadabilitiesScreenMenu,
-  InjectionKey
+  InjectionKey,
 } from '@nolebase/vitepress-plugin-enhanced-readabilities/client';
 import type { Options } from '@nolebase/vitepress-plugin-enhanced-readabilities/client';
 import '@nolebase/vitepress-plugin-enhanced-readabilities/client/style.css';
+import { KswIcon } from 'ksw-vue-icon';
+import 'ksw-vue-icon/styles/icon.css';
 
 export default {
   ...DefaultTheme,
@@ -28,9 +30,10 @@ export default {
   enhanceApp(ctx) {
     // inject Third-party libraries
     ctx.app.use(KUI);
+    ctx.app.use(KswIcon);
     DefaultTheme.enhanceApp(ctx);
     ctx.app.component('demo-preview', Container);
-    ctx.app.provide(InjectionKey, { 
+    ctx.app.provide(InjectionKey, {
       // 配置
       layoutSwitch: {
         disableAnimation: false,
@@ -38,8 +41,8 @@ export default {
       },
       spotlight: {
         defaultToggle: true,
-      }
-    } as Options)
+      },
+    } as Options);
   },
   setup() {
     onMounted(() => {

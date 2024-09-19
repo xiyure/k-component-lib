@@ -12,6 +12,7 @@
   "devDependencies": {
     "@nolebase/vitepress-plugin-enhanced-readabilities": "^2.5.0",
     "@vitepress-demo-preview/plugin": "^1.2.3",
+    "@vue/compiler-core": "^3.5.6",
     "autoprefixer": "^10.4.20",
     "fs-extra": "^11.2.0",
     "gray-matter": "^4.0.3",
@@ -26,6 +27,7 @@
     "vitepress-theme-demoblock": "^3.0.7"
   },
   "dependencies": {
-    "@ksware/ksw-ux": "^0.0.44"
+    "@ksware/ksw-ux": "^0.0.44",
+    "ksw-vue-icon": "^2.2.25"
   }
 }
