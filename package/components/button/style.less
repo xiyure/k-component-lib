@@ -226,7 +226,9 @@
   }
 
   // text style
-  &.el-button--text {
+  &.el-button--text,
+  &.is-link {
+    padding: 0 0;
     // bg
     --k-button-bg-color-text: transparent;
     --k-button-bg-color-text--hover: thansparent;
@@ -245,6 +247,8 @@
     --k-button-border-color-text--active: transparent;
     --k-button-border-color-text--disabled: transparent;
     --k-button-border-color-text--loading: transparent;
+    padding-left: 0;
+    padding-right: 0;
     background: var(--k-button-bg-color-text);
     color: var(--k-button-content-color-text);
     border-color: var(--k-button-border-color-text);
@@ -341,7 +345,8 @@
       --k-button-border-color-secondary--loading: var(--k-theme-info-300);
       --k-button-focus: rgba(var(--k-theme-info-rgb), 0.2);
     }
-    &.el-button--text {
+    &.el-button--text,
+    &.is-link {
       // bg
       // content
       --k-button-content-color-text: var(--k-theme-info);
@@ -383,7 +388,8 @@
       --k-button-border-color-secondary--loading: var(--k-theme-success-300);
       --k-button-focus: rgba(var(--k-theme-success-rgb), 0.2);
     }
-    &.el-button--text {
+    &.el-button--text,
+    &.is-link {
       // bg
       // content
       --k-button-content-color-text: var(--k-theme-success);
@@ -425,7 +431,8 @@
       --k-button-border-color-secondary--loading: var(--k-theme-warning-300);
       --k-button-focus: rgba(var(--k-theme-warning-rgb), 0.2);
     }
-    &.el-button--text {
+    &.el-button--text,
+    &.is-link {
       // bg
       // content
       --k-button-content-color-text: var(--k-theme-warning);
@@ -467,7 +474,8 @@
       --k-button-border-color-secondary--loading: var(--k-theme-danger-300);
       --k-button-focus: rgba(var(--k-theme-danger-rgb), 0.2);
     }
-    &.el-button--text {
+    &.el-button--text,
+    &.is-link {
       // bg
       // content
       --k-button-content-color-text: var(--k-theme-danger);
@@ -480,7 +488,7 @@
   }
 }
 .el-button-group,
-.ButtonGroup {
+.k-button-group {
   display: inline-flex;
   .k-button,
   .el-button,

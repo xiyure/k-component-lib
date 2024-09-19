@@ -1,6 +1,6 @@
 export interface CheckboxGroupProps {
   size?: 'lg' | 'base' | 'sm' | '';
-  color?: string;
+  color?: string | '';
 }
 
 export interface CheckboxProps {

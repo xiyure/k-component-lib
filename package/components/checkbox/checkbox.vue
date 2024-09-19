@@ -2,9 +2,10 @@
   <el-checkbox
     ref="kCheckboxRef"
     class="k-checkbox"
+    :class="[getSizeClass]"
+    :id="id"
     v-bind="$attrs"
     :label="label"
-    :size="getCompSize(size)"
     @click="handleClickLabel"
   >
     <slot>
@@ -16,35 +17,91 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick, inject } from 'vue';
+import { ref, watch, nextTick, computed } from 'vue';
 import { ElCheckbox } from 'element-plus';
 import { CheckboxProps } from './type';
-import { getCompSize, isValidColor, handleExpose } from '../../utils/index';
+import { handleExpose, genRandomStr, GetColorLevelNew } from '../../utils/index';
 
 defineOptions({
   name: 'KCheckbox',
 });
 
-const fillColor = inject('_fillColor', ref(''));
-
 const props = withDefaults(defineProps<CheckboxProps>(), {
   strict: false,
+  color: '',
 });
 const kCheckboxRef = ref();
 
+const id = genRandomStr(8);
+
+const color = ref(props.color);
+// watch props.color 变化, 更新颜色变量
+
+// 获取 dom
+const el = ref();
+const parent = ref();
+// 等待 dom 更新
+nextTick(() => {
+  el.value = document.getElementById(id);
+});
 watch(
-  () => [props.color, fillColor.value],
-  () => {
-    let color = '#2882FF';
-    if (isValidColor(props.color)) {
-      color = props.color as string;
-    } else if (isValidColor(fillColor.value)) {
-      color = fillColor.value;
+  () => props.color,
+  (newVal) => {
+    color.value = newVal; // 更新 ref
+    const getColorS = GetColorLevelNew(newVal).colorLevel;
+    if (newVal) {
+      // const hexColor = newVal;
+      // const { lightColor } = GetColorLevel(hexColor);
+
+      // 等待 dom 更新
+      nextTick(() => {
+        if (el.value?.style) {
+          // 添加一个 css 颜色变量
+          // el.value?.style.setProperty('--radio-color-checked', hexColor);
+          // el.value?.style.setProperty('--radio-color-hover', lightColor);
+
+          // const classList = el.value?.classList;
+          // console.log(classList);
+
+          // 获取 el.value 的父节点
+          parent.value = el.value?.parentNode?.parentNode;
+          // console.log(parent.value);
+
+          const rbgValue = getColorS['--k-oklch-500'].match(/\(([^)]+)\)/)[1]; // 获取 rbg 值, 用于设置 focus 样式
+
+          // text
+          parent.value?.style.setProperty(
+            '--checkbox-text-color--hover',
+            getColorS['--k-oklch-400'],
+          );
+          parent.value?.style.setProperty(
+            '--checkbox-text-color--checked',
+            getColorS['--k-oklch-500'],
+          );
+          // border
+          parent.value?.style.setProperty(
+            '--checkbox__inner__border-color--hover',
+            getColorS['--k-oklch-400'],
+          );
+          parent.value?.style.setProperty(
+            '--checkbox__inner__border-color--checked',
+            getColorS['--k-oklch-500'],
+          );
+          // bg
+          parent.value?.style.setProperty(
+            '--checkbox__inner__bg-color--hover',
+            getColorS['--k-oklch-400'],
+          );
+          parent.value?.style.setProperty(
+            '--checkbox__inner__bg-color--checked',
+            getColorS['--k-oklch-500'],
+          );
+
+          // border
+          parent.value?.style.setProperty('--checkbox-color--focus', `rgba(${rbgValue}, 0.2)`);
+        }
+      });
     }
-    nextTick(() => {
-      const element = kCheckboxRef.value.$el;
-      element.style.setProperty('--checkbox-bgColor', color);
-    });
   },
   { immediate: true },
 );
@@ -58,6 +115,8 @@ function handleClickLabel(e) {
     e.preventDefault();
   }
 }
+
+const getSizeClass = computed(() => (props.size ? `k-checkbox--${props.size}` : ''));
 
 const instance: any = {};
 handleExpose(instance, kCheckboxRef, 'KCheckbox');

@@ -82,6 +82,23 @@ watch(
             '--radio__inner__ball-color--checked',
             getColorS['--k-oklch-500'],
           );
+          // button
+          el.value?.style.setProperty(
+            '--radio__button__border-color--hover',
+            getColorS['--k-oklch-400'],
+          );
+          el.value?.style.setProperty(
+            '--radio__button__text-color--hover',
+            getColorS['--k-oklch-400'],
+          );
+          el.value?.style.setProperty(
+            '--radio__button__bg-color--checked',
+            getColorS['--k-oklch-500'],
+          );
+          el.value?.style.setProperty(
+            '--radio__button__border-color--checked',
+            getColorS['--k-oklch-500'],
+          );
           el.value?.style.setProperty('--radio-color--focus', `rgba(${rbgValue}, 0.2)`);
         }
       });

@@ -88,5 +88,5 @@ export {
   KDropdown,
   KDropdownItem,
   KTreeTransfer,
-  KTreeSelect
+  KTreeSelect,
 };

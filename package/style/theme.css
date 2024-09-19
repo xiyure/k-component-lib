@@ -268,4 +268,18 @@
   --k-theme-radio__button-rounded--sm: var(--k-theme-button-size-rounded--sm);
   --k-theme-radio__button-rounded--base: var(--k-theme-button-size-rounded--base);
   --k-theme-radio__button-rounded--lg: var(--k-theme-button-size-rounded--lg);
+
+  /* checkbox */
+  --k-theme-checkbox-size-height--sm: var(--k-theme-button-size-height--sm);
+  --k-theme-checkbox-size-height--base: var(--k-theme-button-size-height--base);
+  --k-theme-checkbox-size-height--lg: var(--k-theme-button-size-height--lg);
+  --k-theme-checkbox-size-gap--sm: var(--k-size-1);
+  --k-theme-checkbox-size-gap--base: var(--k-size-1);
+  --k-theme-checkbox-size-gap--lg: var(--k-size-1);
+  --k-theme-checkbox__inner-size--sm: var(--k-size-3);
+  --k-theme-checkbox__inner-size--base: var(--k-size-3);
+  --k-theme-checkbox__inner-size--lg: var(--k-size-4);
+  --k-theme-checkbox__inner-rounded--sm: 0.125rem;
+  --k-theme-checkbox__inner-rounded--base: 0.125rem;
+  --k-theme-checkbox__inner-rounded--lg: 0.25rem;
 }

@@ -43,13 +43,7 @@ import { computed, ref, nextTick, watch } from 'vue';
 import { ElButton } from 'element-plus';
 import { IconLoading } from 'ksw-vue-icon';
 import { ButtonProps } from './type.d';
-import {
-  isValidColor,
-  GetColorLevel,
-  genRandomStr,
-  handleExpose,
-  GetColorLevelNew,
-} from '../../utils';
+import { genRandomStr, handleExpose, GetColorLevelNew } from '../../utils';
 
 defineOptions({
   name: 'KButton',
@@ -174,7 +168,7 @@ watch(
               );
               el.value?.style.setProperty('--k-button-focus', `rgba(${rbgValue}, 0.2)`);
               break;
-            case classList?.contains('el-button--text'):
+            case classList?.contains('el-button--text') || classList?.contains('is-link'):
               // console.log('text');
               el.value?.style.setProperty(
                 '--k-button-content-color-text',
