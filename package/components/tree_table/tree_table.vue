@@ -790,6 +790,9 @@ function loadData(data: any[]) {
   xeTableData.value = setTableData(data);
   advancedFilter(data);
 }
+function getAdvancedCondition() {
+  return tableFilterRef.value?.[0]?.getConditionInfo();
+}
 function onSortChange(data: any) {
   const fieldRules = tableInstance.value.getSortColumns();
   sortChange(fieldRules);
@@ -809,6 +812,7 @@ const customMethods = {
   filter,
   advancedFilter,
   clearAdvancedFilter,
+  getAdvancedCondition,
   getRowById,
   loadData,
   ..._methods,

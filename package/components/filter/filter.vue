@@ -298,22 +298,8 @@ function query() {
 }
 function filter(data?: any[]) {
   const sourceData = Array.isArray(data) ? data : props.data;
-  const disabledLogicTypes = ['empty', 'nonEmpty'];
-  const conditionList = filterData.value
-  .filter(item => item.key && item.logic && (isValid(item.value) || disabledLogicTypes.includes(item.logic)))
-  .map(item => ({
-    title: item.title.join(' - '),
-    logic: t?.(item.logic),
-    key: item.key,
-    showValue: item.showValue,
-    value: item.value,
-    handler: item.handler
-  }));
-  const conditionInfo = {
-    conditionList,
-    filterRule: filterRule.value
-  };
-  if (conditionList.length === 0 || props.remote === true) {
+  const conditionInfo = getConditionInfo();
+  if (conditionInfo.conditionList.length === 0 || props.remote === true) {
     return {
       conditionInfo,
       tableData: sourceData
@@ -348,6 +334,23 @@ function filter(data?: any[]) {
     conditionInfo,
     tableData: newData ?? []
   };
+}
+function getConditionInfo() {
+  const disabledLogicTypes = ['empty', 'nonEmpty'];
+  const conditionList = filterData.value
+  .filter(item => item.key && item.logic && (isValid(item.value) || disabledLogicTypes.includes(item.logic)))
+  .map(item => ({
+    title: item.title.join(' - '),
+    logic: t?.(item.logic),
+    key: item.key,
+    showValue: item.showValue,
+    value: item.value,
+    handler: item.handler
+  }));
+  return {
+    conditionList,
+    filterRule: filterRule.value
+  }
 }
 function getRemoteFieldMap() {
   if (!Array.isArray(props.remote)) {
@@ -496,7 +499,7 @@ function updateValue(dataItem:IFilterDataType, uiType:string, options?:any[]) {
   }
 }
 
-defineExpose({ filter, clearFilter });
+defineExpose({ filter, clearFilter, getConditionInfo });
 </script>
 
 <style>

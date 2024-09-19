@@ -138,8 +138,8 @@
       "displayName": "advancedFilterConfig",
       "type": "object",
       "description": "高级筛选配置",
-      "defaultValue": "advancedFilterConfigType",
-      "tip": ""
+      "defaultValue": "",
+      "tip": "advancedFilterConfig"
     },
     {
       "displayName": "paginationConfig",
@@ -257,6 +257,11 @@
         "type": "any[]"
       },
       {
+        "displayName": "remote",
+        "description": "启用远程筛选， 为true时所有条件将通过远程接口进行查询， 也可以为数组，指定远程筛选的列",
+        "type": "boolean | string[]"
+      },
+      {
         "displayName": "filterColumns",
         "description": "自定义列筛选条件",
         "type": "object",
@@ -368,6 +373,18 @@
       "description": "用于showDragColumn=true, 拖拽结束时触发",
       "type": "Function",
       "tip": "({ newData, oldData }) => void"
+    },
+    {
+      "displayName": "advanced-filter-confirm",
+      "description": "确认高级筛选条件时触发",
+      "type": "Function",
+      "tip": "({conditionInfo, tableData}) => void"
+    },
+    {
+      "displayName": "advanced-filter-clear",
+      "description": "清除高级筛选条件时触发",
+      "type": "Function",
+      "tip": "() => void"
     }
   ],
   "slots": [
@@ -429,6 +446,12 @@
       "description": "清除高级筛选条件",
       "type": "Function",
       "tip": "() => void"
+    },
+    {
+      "displayName": "getAdvancedCondition",
+      "description": "获取高级筛选条件",
+      "type": "Function",
+      "tip": "() => { conditionList, filterRule }"
     }
   ]
 }

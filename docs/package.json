@@ -26,6 +26,6 @@
     "vitepress-theme-demoblock": "^3.0.7"
   },
   "dependencies": {
-    "@ksware/ksw-ux": "^0.0.42"
+    "@ksware/ksw-ux": "^0.0.44"
   }
 }
