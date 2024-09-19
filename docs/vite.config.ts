@@ -1,5 +1,7 @@
 import { defineConfig } from 'vite';
 import { genApiDoc } from './.vitepress/plugin/api-doc.config';
+import tailwindcss from 'tailwindcss';
+import autoprefixer from 'autoprefixer';
 
 export default defineConfig({
   plugins: [
@@ -8,6 +10,11 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 12581,
+  },
+  css: {
+    postcss: {
+      plugins: [tailwindcss, autoprefixer]
+    }
   },
   optimizeDeps: {
     exclude: [

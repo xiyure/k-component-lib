@@ -2,7 +2,9 @@ import { defineConfig } from 'vite';
 import _path from 'path';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
-import dts from 'vite-plugin-dts'
+import dts from 'vite-plugin-dts';
+import autoprefixer from 'autoprefixer';
+import tailwindcss from 'tailwindcss';
 
 // https://vitejs.dev/config/
 const name = 'kingsware-ui';
@@ -50,6 +52,11 @@ export default defineConfig({
     alias: {
       '@': _path.resolve(__dirname, './package'),
     },
+  },
+  css: {
+    postcss: {
+      plugins: [tailwindcss, autoprefixer]
+    }
   },
   server: {
     host: '0.0.0.0',
