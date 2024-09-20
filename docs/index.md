@@ -14,19 +14,19 @@ hero:
       text: API 文档
       link: /api
   image:
-    src: /assets/home.png
+    src: /home.png
 
 features:
   - icon: 
-      src: /assets/designValues.svg
+      src: /designValues.svg
     title: 设计价值观
     details: 确定性、意义感、生长性、自然
   - icon:
-      src: /assets/designGuidelines.svg
+      src: /designGuidelines.svg
     title: 设计指引
     details: 全局样式、设计模式
   - icon: 
-      src: /assets/componentLibrary.svg
+      src: /componentLibrary.svg
     title: 组件库
     details: KSW Design of Vue
 ---
