@@ -51,7 +51,7 @@
               v-model="item.title"
               :teleported="false"
               :size="props.size"
-              :options="column"
+              :options="options"
               :props="{
                 label: 'title',
                 value: 'title',
@@ -102,6 +102,7 @@
                 :type="item.dateType"
                 :teleported="false"
                 :size="props.size"
+                :value-format="props.formatter"
                 clearable
                 :disabled="disabledDatePicker(item)"
                 @change="(val: any) => item.showValue = val"
@@ -157,7 +158,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, getCurrentInstance, inject } from 'vue';
+import { ref, computed, getCurrentInstance, inject, onMounted } from 'vue';
 import { IconClose, IconClearDate, IconAdd, IconFilter, IconFilterFill } from 'ksw-vue-icon';
 import { cloneDeep } from 'lodash-es';
 import { FilterProps } from './type';
@@ -173,13 +174,6 @@ defineOptions({
   name: 'KFilter'
 });
 
-const props = withDefaults(defineProps<FilterProps>(), {
-  border: true,
-  size: 'base',
-  filterKey: 'title',
-  childrenField: 'children',
-  data: []
-});
 type IFilterDataType = {
   title: string[],
   logic: string,
@@ -192,6 +186,23 @@ type IFilterDataType = {
   _allowSelectLogic?: boolean,
 };
 
+const props = withDefaults(defineProps<FilterProps>(), {
+  border: true,
+  size: 'base',
+  filterKey: 'title',
+  childrenField: 'children',
+  data: () => []
+});
+
+onMounted(() => {
+  const deprecatedFields = ['column'];
+  deprecatedFields.forEach((field: string) => {
+    if (props[field]) {
+      console.warn(`[KFilter] The "${field}" field is deprecated, please use "options" instead.`);
+    }
+  });
+});
+
 const _styleModule = inject('_styleModule', '');
 const emits = defineEmits(['confirm', 'clear']);
 const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
@@ -199,7 +210,7 @@ const t = _global?.$t;
 const filterData = ref<IFilterDataType[]>([]);
 const filterRule = ref(0);
 
-const flatColumns = computed(() => treeDataToArray(cloneDeep(props.column), 'group'));
+const flatColumns = computed(() => treeDataToArray(cloneDeep(props.options), 'group'));
 const instance = computed(() => function (value: any) {
   const matchInstance:any = flatColumns.value?.find(item => item[props.filterKey] === value);
   return matchInstance;
@@ -368,7 +379,7 @@ function changeCondition(index:number) {
     targetItem.showValue = '';
     return;
   }
-  let columns: any[] = props.column ?? [];
+  let columns: any[] = props.options ?? [];
   let columnItem: any = null;
   for (const title of titles) {
     columnItem = columns?.find(item => item.title === title);

@@ -71,7 +71,9 @@ const install = (app: any, options?: optionsType) => {
   }
   // 全局事件管理，用于多级组件之间的通信
   app.config.globalProperties.__emitter__ = new Emitter();
+  // i18n
   app.config.globalProperties.$t = i18n.global.t;
+  // styleModule
   app.provide('_styleModule', options?.styleModule ?? '');
 };
 

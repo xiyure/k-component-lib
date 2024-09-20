@@ -63,11 +63,12 @@
             <k-filter
               ref="tableFilterRef"
               :data="xeTableData"
-              :column="filterColumns"
+              :options="filterColumns"
               :size="compSize"
               children-field="group"
               filter-key="field"
               :remote="advancedFilterConfig?.remote ?? false"
+              :formatter="advancedFilterConfig?.dateFormat ?? 'YYYY-MM-DD HH:mm:ss'"
               :default-condition="
                 advancedFilterConfig?.defaultCondition ?? filterConditionInfo"
               @confirm="refreshAdvancedFilter"
@@ -196,7 +197,7 @@
       <!-- 批量操作 -->
       <div v-if="showBatchOperation && checkedDataSize > 0" v-ksw_drag class="batch-operate">
         <k-operate
-          :data-size="checkedDataSize"
+          :total="checkedDataSize"
           :data="batchOperations"
           @close="closeBatchOperation"
         />
@@ -824,6 +825,13 @@ function getRowById(id: string | number) {
   const targetRow = xeTableData.value.find((item: any) => item[rowConfig.value.keyField] === id);
   return targetRow ?? null;
 }
+// vxe-table行数据中dom被销毁时会导致tooltip无法关闭，这里提供手动销毁tooltip方法给予外部调用
+function disposeRowTooltip() {
+  const tooltip = document.querySelector('.vxe-table--tooltip-wrapper');
+  if (tooltip) {
+    tooltip?.remove();
+  }
+}
 
 const customMethods = {
   tableInstance,
@@ -833,6 +841,7 @@ const customMethods = {
   getAdvancedCondition,
   getRowById,
   loadData,
+  disposeRowTooltip,
   ..._methods,
   ..._checkboxMethods
 };

@@ -1,7 +1,7 @@
 export interface FilterProps {
-  modelValue?: any
-  data?: any,
+  data?: any[],
   column?: any[]
+  options?: any[]
   border?: boolean
   size?: 'base' | 'sm'
   childrenField?: string
@@ -11,4 +11,5 @@ export interface FilterProps {
     filterRule?: number
   }
   remote?: boolean | string[]
+  formatter?: string
 }

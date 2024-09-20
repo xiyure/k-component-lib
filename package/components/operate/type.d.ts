@@ -1,6 +1,6 @@
 export interface OperateProps {
   data?: any
   max?: number
-  dataSize?: number
+  total?: number
   hideOnClick?: boolean
 }

@@ -262,6 +262,12 @@
         "type": "boolean | string[]"
       },
       {
+        "displayName": "dateFormat",
+        "description": "日期格式",
+        "type": "string",
+        "defaultValue": "YYYY-MM-DD HH:mm:ss"
+      },
+      {
         "displayName": "filterColumns",
         "description": "自定义列筛选条件",
         "type": "object",
@@ -461,6 +467,12 @@
       "description": "获取高级筛选条件",
       "type": "Function",
       "tip": "() => { conditionList, filterRule }"
+    },
+    {
+      "displayName": "disposeRowTooltip",
+      "description": "销毁单元格溢出行的文字提示",
+      "type": "Function",
+      "tip": "() => void"
     }
   ]
 }

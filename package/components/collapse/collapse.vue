@@ -22,7 +22,7 @@ defineOptions({
 const _styleModule = inject('_styleModule', '');
 const kCollapseRef = ref(null);
 
-const instance: any = {};;
+const instance: any = {};
 defineExpose(getExposeProxy(instance, kCollapseRef));
 </script>
 

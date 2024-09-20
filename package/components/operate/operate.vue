@@ -1,6 +1,6 @@
 <template>
-  <div v-if="Number.isInteger(dataSize) && dataSize > 0" :class="['k-operate', _styleModule]">
-    <span class="k-operate__header">{{ dataSize || '-' }}</span>
+  <div v-if="Number.isInteger(total) && total > 0" :class="['k-operate', _styleModule]">
+    <span class="k-operate__header">{{ total || '-' }}</span>
     <div class="k-operate__content">
       <ul class="k-operate__list">
         <li class="list-header">{{ $t('batchOperation') }}:</li>
@@ -53,7 +53,7 @@ defineOptions({
 const props = withDefaults(defineProps<OperateProps>(), {
   data: [],
   max: 5,
-  dataSize: 0,
+  total: 0,
   hideOnClick: true
 });
 
@@ -77,7 +77,7 @@ watch(() => [props.data, props.max], () => {
   }
 }, { immediate: true, deep: true });
 
-const emits = defineEmits(['close', 'update:ModelValue']);
+const emits = defineEmits(['close']);
 
 function handler(item: any) {
   const { disabled, handler } = item;
@@ -89,7 +89,6 @@ function handler(item: any) {
   }
 }
 function handleClose() {
-  emits('update:ModelValue', false);
   emits('close');
 }
 
