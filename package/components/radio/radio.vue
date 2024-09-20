@@ -16,7 +16,8 @@
 import { ref, computed, onMounted, watch, nextTick, inject } from 'vue';
 import { ElRadio } from 'element-plus';
 import { RadioProps } from './type.d';
-import { isValidColor, GetColorLevel, genRandomStr, getExposeProxy } from '../../utils';
+import { GetColorLevelNew, genRandomStr, getExposeProxy } from '../../utils';
+import { colors } from './const';
 
 defineOptions({
   name: 'KRadio',
@@ -49,16 +50,24 @@ watch(
   () => props.color,
   (newVal) => {
     color.value = newVal; // 更新 ref
-    if (newVal && isValidColor(newVal as string)) {
-      const hexColor = newVal;
-      const { lightColor } = GetColorLevel(hexColor);
+    const getColorS = GetColorLevelNew(newVal).colorLevel;
+    if (newVal) {
+      // const hexColor = newVal;
+      // const { lightColor } = GetColorLevel(hexColor);
 
       // 等待 dom 更新
       nextTick(() => {
         if (el.value?.style) {
           // 添加一个 css 颜色变量
-          el.value?.style.setProperty('--radio-color-checked', hexColor);
-          el.value?.style.setProperty('--radio-color-hover', lightColor);
+
+          const rbgValue = getColorS['--k-oklch-500'].match(/\(([^)]+)\)/)[1]; // 获取 rbg 值, 用于设置 focus 样式
+          el.value?.style.setProperty('--radio-color--focus', `rgba(${rbgValue}, 0.2)`);
+          colors.forEach((item) => {
+            el.value?.style.setProperty(
+              `--radio${item.name}`,
+              getColorS[`--k-oklch-${item.value}`],
+            );
+          });
         }
       });
     }

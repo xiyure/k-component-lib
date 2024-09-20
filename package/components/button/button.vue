@@ -18,7 +18,7 @@
       getElTypeColor,
       getSizeClass,
       getBtnBase,
-      _styleModule
+      _styleModule,
     ]"
     :loading="loading"
     :loading-icon="loadingIcon"
@@ -29,7 +29,7 @@
       <component :is="props.iconLeft" v-if="props.iconLeft" />
     </slot>
     <label v-if="props.value && props.icon === false">{{ props.value }}</label>
-    <label v-else>
+    <label v-else-if="$slots.default">
       <slot class="slot-content"></slot>
     </label>
     <slot name="iconRight" class="icon-right">
@@ -44,7 +44,8 @@ import { computed, ref, nextTick, watch, inject } from 'vue';
 import { ElButton } from 'element-plus';
 import { IconLoading } from 'ksw-vue-icon';
 import { ButtonProps } from './type.d';
-import { isValidColor, GetColorLevel, genRandomStr, getExposeProxy } from '../../utils';
+import { genRandomStr, getExposeProxy, GetColorLevelNew } from '../../utils';
+import { btnTypes } from './const';
 
 defineOptions({
   name: 'KButton',
@@ -69,6 +70,7 @@ const props = withDefaults(defineProps<ButtonProps>(), {
 const _styleModule = inject('_styleModule', '');
 const id = genRandomStr(8);
 const buttonRef = ref();
+
 const color = ref(props.color);
 
 const el = ref();
@@ -83,17 +85,27 @@ watch(
   () => props.color,
   (newVal) => {
     color.value = newVal; // 更新 ref
-    if (newVal && isValidColor(newVal as string)) {
-      const hexColor = newVal;
-      const { lightColor, darkColor, loadingColor } = GetColorLevel(hexColor);
+    const getColorS = GetColorLevelNew(newVal).colorLevel;
+    if (newVal) {
       nextTick(() => {
         if (el.value?.style) {
-          // 添加一个 css 颜色变量
-          el.value?.style.setProperty('--k-button-color', hexColor);
-          el.value?.style.setProperty('--k-button-hover-color', lightColor);
-          el.value?.style.setProperty('--k-button-active-color', darkColor);
-          el.value?.style.setProperty('--k-button-icon-color', hexColor);
-          el.value?.style.setProperty('--k-button-loading-color', loadingColor);
+          const classList = el.value?.classList;
+          const rbgValue = getColorS['--k-oklch-500'].match(/\(([^)]+)\)/)[1]; // 获取 rbg 值, 用于设置 focus 样式
+
+          for (const item of btnTypes) {
+            const btnType = `el-button--${item.type}`;
+            if (classList?.contains(btnType)) {
+              item.vars.forEach((item) => {
+                el.value?.style.setProperty(
+                  `--k-button-${item.name}`,
+                  getColorS[`--k-oklch-${item.value}`],
+                );
+              });
+            }
+          }
+
+          // focus
+          el.value?.style.setProperty('--k-button-focus', `rgba(${rbgValue}, 0.2)`);
         }
       });
     }
