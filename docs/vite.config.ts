@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
-import { genApiDoc } from './.vitepress/plugin/api-doc.config';
 import tailwindcss from 'tailwindcss';
 import autoprefixer from 'autoprefixer';
+import { genApiDoc } from './.vitepress/plugin/api-doc.config';
 
 export default defineConfig({
   plugins: [

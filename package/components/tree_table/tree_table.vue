@@ -35,11 +35,6 @@
           <template v-if="widget.slot && $slots[widget.slot]">
             <slot :name="widget.slot"></slot>
           </template>
-          <template v-else-if="widget.widget">
-            <component
-              :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
-            />
-          </template>
           <template v-else-if="widget.id === 'search'">
             <k-input
               v-model="searchStr"
@@ -82,10 +77,18 @@
               }"
             >
               <template #reference="{ hasConfigCondition }">
-                <k-button v-ksw_tooltip="$t('advancedFilter_c')" :size="compSize">
-                  <IconFilter v-if="!hasConfigCondition" />
-                  <IconFilterFill v-else color="#2882FF" />
-                </k-button>
+                <div v-ksw_tooltip="$t('advancedFilter_c')"> 
+                  <component
+                    :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
+                    v-if="widget.widget"
+                  />
+                  <slot v-else name="_filterTrigger" :is-filter="hasConfigCondition">
+                    <k-button :size="compSize">
+                      <IconFilter v-if="!hasConfigCondition" />
+                      <IconFilterFill v-else color="#2882FF" />
+                    </k-button>
+                  </slot>
+                </div>
               </template>
             </k-filter>
           </template>
@@ -93,9 +96,17 @@
             <!-- 穿梭框 -->
             <k-popover trigger="click" width="auto" :teleported="false">
               <template #reference>
-                <k-button v-ksw_tooltip="$t('columnHeaderController')" :size="compSize">
-                  <IconSetting />
-                </k-button>
+                <div v-ksw_tooltip="$t('columnHeaderController')">
+                  <component
+                    :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
+                    v-if="widget.widget"
+                  />
+                  <slot v-else name="_transferTrigger">
+                    <k-button :size="compSize">
+                      <IconSetting />
+                    </k-button>
+                  </slot>
+                </div>
               </template>
               <k-transfer
                 v-model="selectData"
@@ -107,6 +118,11 @@
                 @sort="sortTableHeader"
               ></k-transfer>
             </k-popover>
+          </template>
+          <template v-else-if="widget.widget">
+            <component
+              :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
+            />
           </template>
         </template>
       </div>
@@ -774,12 +790,14 @@ function dragEnd(data: any[]) {
 
 // 刷新高级筛选的表格数据
 function advancedFilter(data: any[] | undefined) {
-  const { conditionInfo, tableData } = tableFilterRef.value?.[0]?.filter(data);
+  const advancedFilterObj = tableFilterRef.value?.[0]?.filter?.(data);
+  const { conditionInfo, tableData } = advancedFilterObj ?? {};
   refreshAdvancedFilter(conditionInfo, tableData, false);
   return { conditionInfo, tableData };
 }
 function clearAdvancedFilter() {
-  const { conditionInfo, tableData } = tableFilterRef.value?.[0]?.clearFilter();
+  const advancedFilterObj = tableFilterRef.value?.[0]?.clearFilter?.();
+  const { conditionInfo, tableData } = advancedFilterObj ?? {};
   refreshAdvancedFilter(conditionInfo, tableData, false);
   return { conditionInfo, tableData };
 }

@@ -49,7 +49,6 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
 import { KPageViewBus } from '../index.ts';
 import { KTooltip } from '../../components';
 

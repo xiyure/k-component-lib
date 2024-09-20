@@ -62,7 +62,8 @@ const props = defineProps({
     default: '',
   },
   abstract: {
-    type: Object,
+    type: Array,
+    default: () => []
   },
 });
 </script>

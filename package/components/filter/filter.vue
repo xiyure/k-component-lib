@@ -350,7 +350,7 @@ function getConditionInfo() {
   return {
     conditionList,
     filterRule: filterRule.value
-  }
+  };
 }
 function getRemoteFieldMap() {
   if (!Array.isArray(props.remote)) {

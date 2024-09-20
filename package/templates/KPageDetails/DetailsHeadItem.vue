@@ -16,7 +16,6 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
 import { KTag } from '../../components';
 
 const props = defineProps({
@@ -29,7 +28,5 @@ const props = defineProps({
     default: '',
   },
 });
-
-console.log(typeof props.value, props.value);
 </script>
 <style scoped></style>

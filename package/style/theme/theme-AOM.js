@@ -1,11 +1,4 @@
 import colors from 'tailwindcss/colors';
-// 示例, 修改tailwindcss默认颜色
-// colors.gray[300] = '#ff5500';
-
-const colors2 = require('tailwindcss/colors');
-// console.log(colors2);
-
-const defaultTheme = require('tailwindcss/defaultTheme');
 
 const themes = {
   padding: {

@@ -228,7 +228,7 @@ export function handleExpose(instance: any, ref: any, compName: string) {
 // 获取组件实例的expose方法（proxy模式）
 export function getExposeProxy(instance: any, source: any) {
   const proxy = new Proxy(instance, {
-    get(target, key, _receiver) {
+    get(target, key) {
       if (Object.hasOwnProperty.call(target, key)) {
         return target[key];
       } 

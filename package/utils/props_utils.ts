@@ -5,7 +5,11 @@ const cacheStringFunction = fn => {
   const cache = Object.create(null);
   return str => {
     const hit = cache[str];
-    return hit || (cache[str] = fn(str));
+    if (hit) {
+      return hit;
+    }
+    cache[str] = fn(str);
+    return cache[str];
   };
 };
 const camelizeRE = /-(\w)/g;
@@ -116,7 +120,7 @@ export function getStyle(ele: any, camel?: boolean) {
   } else if (camel && style) {
     // 驼峰化
     const res = {};
-    Object.keys(style).forEach(k => (res[camelize(k)] = style[k]));
+    Object.keys(style).forEach(k => { res[camelize(k)] = style[k]; });
     return res;
   }
   return style;

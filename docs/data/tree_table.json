@@ -421,6 +421,15 @@
       "displayName": "description",
       "description": "自定义表格数据描述内容",
       "parameters": "{ total, conditionInfo }"
+    },
+    {
+      "displayName": "_filterTrigger",
+      "description": "自定义高级筛选触发按钮",
+      "parameters": "{ isFilter }"
+    },
+    {
+      "displayName": "_transferTrigger",
+      "description": "自定义列头控制穿梭框触发按钮"
     }
   ],
   "methods": [
