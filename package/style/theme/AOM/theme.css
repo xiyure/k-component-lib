@@ -1,0 +1,285 @@
+@import './variable.css';
+
+:root {
+  /*
+   * 主题色 theme color🎨 
+   */
+  /* primary */
+  --k-theme-primary: var(--k-blue-500);
+  --k-theme-primary-50: var(--k-blue-50);
+  --k-theme-primary-100: var(--k-blue-100);
+  --k-theme-primary-200: var(--k-blue-200);
+  --k-theme-primary-300: var(--k-blue-300);
+  --k-theme-primary-400: var(--k-blue-400);
+  --k-theme-primary-500: var(--k-blue-500);
+  --k-theme-primary-600: var(--k-blue-600);
+  --k-theme-primary-700: var(--k-blue-700);
+  --k-theme-primary-800: var(--k-blue-800);
+  --k-theme-primary-900: var(--k-blue-900);
+  --k-theme-primary-950: var(--k-blue-950);
+  --k-theme-primary-hover: var(--k-blue-400);
+  --k-theme-primary-active: var(--k-blue-600);
+  --k-theme-primary-focus: var(--k-blue-100);
+  /* primary-rgb */
+  --k-theme-primary: rgb(var(--k-blue-rgb-500));
+  --k-theme-primary-50: rgb(var(--k-blue-rgb-50));
+  --k-theme-primary-100: rgb(var(--k-blue-rgb-100));
+  --k-theme-primary-200: rgb(var(--k-blue-rgb-200));
+  --k-theme-primary-300: rgb(var(--k-blue-rgb-300));
+  --k-theme-primary-400: rgb(var(--k-blue-rgb-400));
+  --k-theme-primary-500: rgb(var(--k-blue-rgb-500));
+  --k-theme-primary-600: rgb(var(--k-blue-rgb-600));
+  --k-theme-primary-700: rgb(var(--k-blue-rgb-700));
+  --k-theme-primary-800: rgb(var(--k-blue-rgb-800));
+  --k-theme-primary-900: rgb(var(--k-blue-rgb-900));
+  --k-theme-primary-950: rgb(var(--k-blue-rgb-950));
+  --k-theme-primary--hover: rgb(var(--k-blue-rgb-400));
+  --k-theme-primary--active: rgb(var(--k-blue-rgb-600));
+  --k-theme-primary--focus: rgb(var(--k-blue-rgb-100));
+  --k-theme-primary-rgb: var(--k-blue-rgb-500);
+
+  /* info */
+  --k-theme-info: var(--k-slate-500);
+  --k-theme-info-50: var(--k-slate-50);
+  --k-theme-info-100: var(--k-slate-100);
+  --k-theme-info-200: var(--k-slate-200);
+  --k-theme-info-300: var(--k-slate-300);
+  --k-theme-info-400: var(--k-slate-400);
+  --k-theme-info-500: var(--k-slate-500);
+  --k-theme-info-600: var(--k-slate-600);
+  --k-theme-info-700: var(--k-slate-700);
+  --k-theme-info-800: var(--k-slate-800);
+  --k-theme-info-900: var(--k-slate-900);
+  --k-theme-info-950: var(--k-slate-950);
+  --k-theme-info--hover: var(--k-slate-400);
+  --k-theme-info--active: var(--k-slate-600);
+  --k-theme-info--focus: var(--k-slate-100);
+  /* info-rgb */
+  --k-theme-info: rgb(var(--k-slate-rgb-500));
+  --k-theme-info-50: rgb(var(--k-slate-rgb-50));
+  --k-theme-info-100: rgb(var(--k-slate-rgb-100));
+  --k-theme-info-200: rgb(var(--k-slate-rgb-200));
+  --k-theme-info-300: rgb(var(--k-slate-rgb-300));
+  --k-theme-info-400: rgb(var(--k-slate-rgb-400));
+  --k-theme-info-500: rgb(var(--k-slate-rgb-500));
+  --k-theme-info-600: rgb(var(--k-slate-rgb-600));
+  --k-theme-info-700: rgb(var(--k-slate-rgb-700));
+  --k-theme-info-800: rgb(var(--k-slate-rgb-800));
+  --k-theme-info-900: rgb(var(--k-slate-rgb-900));
+  --k-theme-info-950: rgb(var(--k-slate-rgb-950));
+  --k-theme-info--hover: rgb(var(--k-slate-rgb-400));
+  --k-theme-info--active: rgb(var(--k-slate-rgb-600));
+  --k-theme-info--focus: rgb(var(--k-slate-rgb-100));
+  --k-theme-info-rgb: var(--k-slate-rgb-500);
+
+  /* success */
+  --k-theme-success: var(--k-green-500);
+  --k-theme-success-50: var(--k-green-50);
+  --k-theme-success-100: var(--k-green-100);
+  --k-theme-success-200: var(--k-green-200);
+  --k-theme-success-300: var(--k-green-300);
+  --k-theme-success-400: var(--k-green-400);
+  --k-theme-success-500: var(--k-green-500);
+  --k-theme-success-600: var(--k-green-600);
+  --k-theme-success-700: var(--k-green-700);
+  --k-theme-success-800: var(--k-green-800);
+  --k-theme-success-900: var(--k-green-900);
+  --k-theme-success-950: var(--k-green-950);
+  --k-theme-success--hover: var(--k-green-400);
+  --k-theme-success--active: var(--k-green-600);
+  --k-theme-success--focus: var(--k-green-100);
+  /* success-rgb */
+  --k-theme-success: rgb(var(--k-green-rgb-500));
+  --k-theme-success-50: rgb(var(--k-green-rgb-50));
+  --k-theme-success-100: rgb(var(--k-green-rgb-100));
+  --k-theme-success-200: rgb(var(--k-green-rgb-200));
+  --k-theme-success-300: rgb(var(--k-green-rgb-300));
+  --k-theme-success-400: rgb(var(--k-green-rgb-400));
+  --k-theme-success-500: rgb(var(--k-green-rgb-500));
+  --k-theme-success-600: rgb(var(--k-green-rgb-600));
+  --k-theme-success-700: rgb(var(--k-green-rgb-700));
+  --k-theme-success-800: rgb(var(--k-green-rgb-800));
+  --k-theme-success-900: rgb(var(--k-green-rgb-900));
+  --k-theme-success-950: rgb(var(--k-green-rgb-950));
+  --k-theme-success--hover: rgb(var(--k-green-rgb-400));
+  --k-theme-success--active: rgb(var(--k-green-rgb-600));
+  --k-theme-success--focus: rgb(var(--k-green-rgb-100));
+  --k-theme-success-rgb: var(--k-green-rgb-500);
+
+  /* warning */
+  --k-theme-warning: var(--k-orange-500);
+  --k-theme-warning-50: var(--k-orange-50);
+  --k-theme-warning-100: var(--k-orange-100);
+  --k-theme-warning-200: var(--k-orange-200);
+  --k-theme-warning-300: var(--k-orange-300);
+  --k-theme-warning-400: var(--k-orange-400);
+  --k-theme-warning-500: var(--k-orange-500);
+  --k-theme-warning-600: var(--k-orange-600);
+  --k-theme-warning-700: var(--k-orange-700);
+  --k-theme-warning-800: var(--k-orange-800);
+  --k-theme-warning-900: var(--k-orange-900);
+  --k-theme-warning-950: var(--k-orange-950);
+  --k-theme-warning--hover: var(--k-orange-400);
+  --k-theme-warning--active: var(--k-orange-600);
+  --k-theme-warning--focus: var(--k-orange-100);
+  /* warning-rgb */
+  --k-theme-warning: rgb(var(--k-orange-rgb-500));
+  --k-theme-warning-50: rgb(var(--k-orange-rgb-50));
+  --k-theme-warning-100: rgb(var(--k-orange-rgb-100));
+  --k-theme-warning-200: rgb(var(--k-orange-rgb-200));
+  --k-theme-warning-300: rgb(var(--k-orange-rgb-300));
+  --k-theme-warning-400: rgb(var(--k-orange-rgb-400));
+  --k-theme-warning-500: rgb(var(--k-orange-rgb-500));
+  --k-theme-warning-600: rgb(var(--k-orange-rgb-600));
+  --k-theme-warning-700: rgb(var(--k-orange-rgb-700));
+  --k-theme-warning-800: rgb(var(--k-orange-rgb-800));
+  --k-theme-warning-900: rgb(var(--k-orange-rgb-900));
+  --k-theme-warning-950: rgb(var(--k-orange-rgb-950));
+  --k-theme-warning--hover: rgb(var(--k-orange-rgb-400));
+  --k-theme-warning--active: rgb(var(--k-orange-rgb-600));
+  --k-theme-warning--focus: rgb(var(--k-orange-rgb-100));
+  --k-theme-warning-rgb: var(--k-orange-rgb-500);
+
+  /* danger */
+  --k-theme-danger: var(--k-red-500);
+  --k-theme-danger-50: var(--k-red-50);
+  --k-theme-danger-100: var(--k-red-100);
+  --k-theme-danger-200: var(--k-red-200);
+  --k-theme-danger-300: var(--k-red-300);
+  --k-theme-danger-400: var(--k-red-400);
+  --k-theme-danger-500: var(--k-red-500);
+  --k-theme-danger-600: var(--k-red-600);
+  --k-theme-danger-700: var(--k-red-700);
+  --k-theme-danger-800: var(--k-red-800);
+  --k-theme-danger-900: var(--k-red-900);
+  --k-theme-danger-950: var(--k-red-950);
+  --k-theme-danger--hover: var(--k-red-400);
+  --k-theme-danger--active: var(--k-red-600);
+  --k-theme-danger--focus: var(--k-red-100);
+  /* danger-rgb */
+  --k-theme-danger: rgb(var(--k-red-rgb-500));
+  --k-theme-danger-50: rgb(var(--k-red-rgb-50));
+  --k-theme-danger-100: rgb(var(--k-red-rgb-100));
+  --k-theme-danger-200: rgb(var(--k-red-rgb-200));
+  --k-theme-danger-300: rgb(var(--k-red-rgb-300));
+  --k-theme-danger-400: rgb(var(--k-red-rgb-400));
+  --k-theme-danger-500: rgb(var(--k-red-rgb-500));
+  --k-theme-danger-600: rgb(var(--k-red-rgb-600));
+  --k-theme-danger-700: rgb(var(--k-red-rgb-700));
+  --k-theme-danger-800: rgb(var(--k-red-rgb-800));
+  --k-theme-danger-900: rgb(var(--k-red-rgb-900));
+  --k-theme-danger-950: rgb(var(--k-red-rgb-950));
+  --k-theme-danger--hover: rgb(var(--k-red-rgb-400));
+  --k-theme-danger--active: rgb(var(--k-red-rgb-600));
+  --k-theme-danger--focus: rgb(var(--k-red-rgb-100));
+  --k-theme-danger-rgb: var(--k-red-rgb-500);
+
+  /* captured */
+  --k-theme-captured: var(--k-amber-500);
+  --k-theme-captured-50: var(--k-amber-50);
+  --k-theme-captured-100: var(--k-amber-100);
+  --k-theme-captured-200: var(--k-amber-200);
+  --k-theme-captured-300: var(--k-amber-300);
+  --k-theme-captured-400: var(--k-amber-400);
+  --k-theme-captured-500: var(--k-amber-500);
+  --k-theme-captured-600: var(--k-amber-600);
+  --k-theme-captured-700: var(--k-amber-700);
+  --k-theme-captured-800: var(--k-amber-800);
+  --k-theme-captured-900: var(--k-amber-900);
+  --k-theme-captured-950: var(--k-amber-950);
+  --k-theme-captured--hover: var(--k-amber-400);
+  --k-theme-captured--active: var(--k-amber-600);
+  --k-theme-captured--focus: var(--k-amber-100);
+  /* captured-rgb */
+  --k-theme-captured: rgb(var(--k-amber-rgb-500));
+  --k-theme-captured-50: rgb(var(--k-amber-rgb-50));
+  --k-theme-captured-100: rgb(var(--k-amber-rgb-100));
+  --k-theme-captured-200: rgb(var(--k-amber-rgb-200));
+  --k-theme-captured-300: rgb(var(--k-amber-rgb-300));
+  --k-theme-captured-400: rgb(var(--k-amber-rgb-400));
+  --k-theme-captured-500: rgb(var(--k-amber-rgb-500));
+  --k-theme-captured-600: rgb(var(--k-amber-rgb-600));
+  --k-theme-captured-700: rgb(var(--k-amber-rgb-700));
+  --k-theme-captured-800: rgb(var(--k-amber-rgb-800));
+  --k-theme-captured-900: rgb(var(--k-amber-rgb-900));
+  --k-theme-captured-950: rgb(var(--k-amber-rgb-950));
+  --k-theme-captured--hover: rgb(var(--k-amber-rgb-400));
+  --k-theme-captured--active: rgb(var(--k-amber-rgb-600));
+  --k-theme-captured--focus: rgb(var(--k-amber-rgb-100));
+  --k-theme-captured-rgb: var(--k-amber-rgb-500);
+
+  /* theme */
+  --k-theme: var(--k-theme-primary);
+  --k-theme--bg: #e5f1f9;
+  --k-theme--frontColor: #fff;
+  --k-theme--backColor: var(--k-gray-900);
+  /* theme-rgb */
+  --k-theme: rgb(var(--k-theme-primary-rgb));
+  --k-theme--bg: rgb(229, 241, 249);
+  --k-theme--frontColor: rgb(255, 255, 255);
+  --k-theme--backColor: rgb(var(--k-gray-rgb-900));
+  /* 文字色 theme text color */
+  --k-theme-text--heavy: var(--k-gray-900);
+  --k-theme-text--normal: var(--k-gray-700);
+  --k-theme-text--light: var(--k-theme-info);
+  /* 描边色 theme border color */
+  --k-theme-border--heavy: var(--k-gray-300);
+  --k-theme-border--normal: var(--k-gray-200);
+  --k-theme-border--light: var(--k-gray-100);
+
+  /* 组件焦点状态 */
+  --k-theme-focue-style: var(--k-shadow-focue-size) rgba(var(--k-theme-primary-rgb), 0.2);
+  --k-theme-focue-size: 0 0 0 0.125rem;
+
+  /* ---------------------------------------------------------------------------------------- */
+  /* 
+   *组件变量 component variable 
+   */
+  /* button */
+  --k-theme-button-size-height--sm: var(--k-size-6);
+  --k-theme-button-size-height--base: var(--k-size-8);
+  --k-theme-button-size-height--lg: var(--k-size-10);
+  --k-theme-button-size-padding--sm: 0 var(--k-size-2);
+  --k-theme-button-size-padding--base: 0 var(--k-size-3);
+  --k-theme-button-size-padding--lg: 0 var(--k-size-4);
+  --k-theme-button-size-gap--sm: var(--k-size-1);
+  --k-theme-button-size-gap--base: var(--k-size-1);
+  --k-theme-button-size-gap--lg: var(--k-size-1);
+  --k-theme-button-size-rounded--sm: var(--k-rounded-sm);
+  --k-theme-button-size-rounded--base: var(--k-rounded-base);
+  --k-theme-button-size-rounded--lg: var(--k-rounded-lg);
+
+  /* radio */
+  --k-theme-radio-size-height--sm: var(--k-theme-button-size-height--sm);
+  --k-theme-radio-size-height--base: var(--k-theme-button-size-height--base);
+  --k-theme-radio-size-height--lg: var(--k-theme-button-size-height--lg);
+  --k-theme-radio-size-gap--sm: var(--k-size-1);
+  --k-theme-radio-size-gap--base: var(--k-size-1);
+  --k-theme-radio-size-gap--lg: var(--k-size-1);
+  --k-theme-radio__inner-size--sm: var(--k-size-3);
+  --k-theme-radio__inner-size--base: var(--k-size-3);
+  --k-theme-radio__inner-size--lg: var(--k-size-4);
+  --k-theme-radio__ball-size--sm: calc(var(--k-theme-radio__inner-size--sm) * 0.635);
+  --k-theme-radio__ball-size--base: calc(var(--k-theme-radio__inner-size--base) * 0.635);
+  --k-theme-radio__ball-size--lg: calc(var(--k-theme-radio__inner-size--lg) * 0.635);
+  --k-theme-radio__button-size-padding--sm: var(--k-theme-button-size-padding--sm);
+  --k-theme-radio__button-size-padding--base: var(--k-theme-button-size-padding--base);
+  --k-theme-radio__button-size-padding--lg: var(--k-theme-button-size-padding--lg);
+  --k-theme-radio__button-rounded--sm: var(--k-theme-button-size-rounded--sm);
+  --k-theme-radio__button-rounded--base: var(--k-theme-button-size-rounded--base);
+  --k-theme-radio__button-rounded--lg: var(--k-theme-button-size-rounded--lg);
+
+  /* checkbox */
+  --k-theme-checkbox-size-height--sm: var(--k-theme-button-size-height--sm);
+  --k-theme-checkbox-size-height--base: var(--k-theme-button-size-height--base);
+  --k-theme-checkbox-size-height--lg: var(--k-theme-button-size-height--lg);
+  --k-theme-checkbox-size-gap--sm: var(--k-size-1);
+  --k-theme-checkbox-size-gap--base: var(--k-size-1);
+  --k-theme-checkbox-size-gap--lg: var(--k-size-1);
+  --k-theme-checkbox__inner-size--sm: var(--k-size-3);
+  --k-theme-checkbox__inner-size--base: var(--k-size-3);
+  --k-theme-checkbox__inner-size--lg: var(--k-size-4);
+  --k-theme-checkbox__inner-rounded--sm: 0.125rem;
+  --k-theme-checkbox__inner-rounded--base: 0.125rem;
+  --k-theme-checkbox__inner-rounded--lg: 0.25rem;
+}
