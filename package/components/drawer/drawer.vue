@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue';
 import { ElDrawer } from 'element-plus';
-import { handleExpose } from '../../utils';
+import { getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KDrawer'
@@ -21,9 +21,9 @@ defineOptions({
 
 const _styleModule = inject('_styleModule', '');
 const KDrawerRef = ref<any>(null);
+
 const instance: any = {};
-handleExpose(instance, KDrawerRef, 'KDrawer');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, KDrawerRef));
 </script>
 
 <style lang="less">

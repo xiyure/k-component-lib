@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue';
 import { ElPopover } from 'element-plus';
-import { handleExpose } from '../../utils';
+import { getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KPopover'
@@ -21,9 +21,9 @@ defineOptions({
 
 const _styleModule = inject('_styleModule', '');
 const KPopoverRef = ref(null);
+
 const instance: any = {};
-handleExpose(instance, KPopoverRef, 'KPopover');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, KPopoverRef));
 </script>
 
 <style lang="less">

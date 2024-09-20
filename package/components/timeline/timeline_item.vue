@@ -26,7 +26,7 @@
 import { ref, computed, onMounted, watch, nextTick, inject } from 'vue';
 import { ElTimelineItem } from 'element-plus';
 import { TimelineItemProps } from './type';
-import { genRandomStr, handleExpose } from '../../utils';
+import { genRandomStr, getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KTimelineItem'
@@ -71,9 +71,9 @@ function getTimelineType(type: string) {
 }
 
 const KTimelineItemRef = ref(null);
+
 const instance: any = {};
-handleExpose(instance, KTimelineItemRef, 'KTimelineItem');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, KTimelineItemRef));
 </script>
 
 <style lang="less">

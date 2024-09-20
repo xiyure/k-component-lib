@@ -20,7 +20,7 @@
 import { ref, inject } from 'vue';
 import { ElDropdown } from 'element-plus';
 import { DropDownProps } from './type';
-import { getCompSize, handleExpose } from '../../utils';
+import { getCompSize, getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KDropdown'
@@ -31,8 +31,7 @@ const props = withDefaults(defineProps<DropDownProps>(), {});
 const kDropDownRef = ref();
 
 const instance: any = {};
-handleExpose(instance, kDropDownRef, 'KDropdown');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, kDropDownRef));
 
 </script>
 

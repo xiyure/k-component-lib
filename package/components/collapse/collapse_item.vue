@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue';
 import { ElCollapseItem } from 'element-plus';
-import { handleExpose } from '../../utils/index';
+import { getExposeProxy } from '../../utils/index';
 
 defineOptions({
   name: 'KCollapseItem'
@@ -22,8 +22,7 @@ defineOptions({
 const _styleModule = inject('_styleModule', '');
 const kCollapseItemRef = ref(null);
 const instance: any = {};
-handleExpose(instance, kCollapseItemRef, 'KCollapseItem');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, kCollapseItemRef));
 </script>
 
 <style lang="less">

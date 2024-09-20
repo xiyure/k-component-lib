@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue';
 import { ElDropdownItem } from 'element-plus';
-import { handleExpose } from '../../utils';
+import { getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KDropDownItem'
@@ -15,9 +15,9 @@ defineOptions({
 
 const _styleModule = inject('_styleModule', '');
 const kDropDownItemRef = ref(null);
+
 const instance: any = {};
-handleExpose(instance, kDropDownItemRef, 'KDropDownItem');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, kDropDownItemRef));
 </script>
 
 <style lang="less">

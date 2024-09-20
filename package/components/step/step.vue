@@ -36,7 +36,7 @@ import { ref, watch, inject, nextTick } from 'vue';
 import { ElStep } from 'element-plus';
 import { StepProps } from './type';
 import { KPopover } from '../popover';
-import { genRandomStr, handleExpose } from '../../utils';
+import { genRandomStr, getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KStep'
@@ -116,9 +116,9 @@ function getProcessStatus(type:string) {
 }
 
 const KStepRef = ref(null);
+
 const instance: any = {};
-handleExpose(instance, KStepRef, 'KStep');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, KStepRef));
 </script>
 
 <style lang="less">

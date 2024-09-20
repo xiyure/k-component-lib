@@ -44,7 +44,7 @@ import { computed, ref, nextTick, watch, inject } from 'vue';
 import { ElButton } from 'element-plus';
 import { IconLoading } from 'ksw-vue-icon';
 import { ButtonProps } from './type.d';
-import { isValidColor, GetColorLevel, genRandomStr, handleExpose } from '../../utils';
+import { isValidColor, GetColorLevel, genRandomStr, getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KButton',
@@ -134,8 +134,7 @@ const getBtnBase = computed(() => {
 });
 
 const instance: any = {};
-handleExpose(instance, buttonRef, 'KButton');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, buttonRef));
 </script>
 
 <style lang="less">

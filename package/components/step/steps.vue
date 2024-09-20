@@ -22,7 +22,7 @@
 import { ref, watch, provide, nextTick, useSlots, inject } from 'vue';
 import { ElSteps } from 'element-plus';
 import { StepsProps } from './type';
-import { genRandomStr, handleExpose } from '../../utils';
+import { genRandomStr, getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KSteps'
@@ -80,9 +80,9 @@ provide('stepProps', props);
 provide('stepsInfo', steps);
 
 const KStepsRef = ref(null);
+
 const instance: any = {};
-handleExpose(instance, KStepsRef, 'KSteps');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, KStepsRef));
 </script>
 
 <style lang="less">

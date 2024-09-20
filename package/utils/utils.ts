@@ -1,5 +1,6 @@
-import { computed, nextTick, isRef } from 'vue';
-import COMPONENT_EXPOSE_METHODS from './el_expose_methods';
+import { isRef } from 'vue';
+
+type RGB = [number, number, number];
 
 // 获取随机字符串
 export function genRandomStr(bit:number) {
@@ -41,7 +42,7 @@ export function isValidColor(strColor:string | undefined) {
 // 获取色阶
 export function GetColorLevel(hex:any) {
   // 1. 将16进制颜色代码转换为RGB
-  function hexToRgb(h:any) {
+  function hexToRgb(h: any): RGB {
     const bigint = parseInt(h.slice(1), 16);
     const r = (bigint >> 16) & 255;
     const g = (bigint >> 8) & 255;
@@ -49,14 +50,14 @@ export function GetColorLevel(hex:any) {
     return [r, g, b];
   }
   // 2. 将RGB颜色值转换为16进制
-  function rgbToHex(r:number, g:number, b:number) {
+  function rgbToHex([r, g, b]: RGB) {
     return (
       `#${ 
       ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`
     );
   }
   // 3. 调整亮度
-  function adjustBrightness([r, g, b], factor:number) {
+  function adjustBrightness([r, g, b]: RGB, factor: number): RGB {
     return [
       Math.min(255, Math.max(0, Math.round(r * factor))),
       Math.min(255, Math.max(0, Math.round(g * factor))),
@@ -64,7 +65,7 @@ export function GetColorLevel(hex:any) {
     ];
   }
 
-  function adjustBrightnessLoading([r, g, b], factor:number) {
+  function adjustBrightnessLoading([r, g, b]: RGB, factor: number): RGB {
     return [
       Math.min(255, Math.max(0, Math.round(r * factor) + 25)),
       Math.min(255, Math.max(0, Math.round(g * factor) + 25)),
@@ -75,9 +76,9 @@ export function GetColorLevel(hex:any) {
   const rgb = hexToRgb(hex);
   const lightFactor = 1.2; // 调浅亮度因子
   const darkFactor = 0.8; // 调暗亮度因子
-  const lightColor = rgbToHex(...adjustBrightness(rgb, lightFactor));
-  const darkColor = rgbToHex(...adjustBrightness(rgb, darkFactor));
-  const loadingColor = rgbToHex(...adjustBrightnessLoading(rgb, 1.4));
+  const lightColor = rgbToHex(adjustBrightness(rgb, lightFactor));
+  const darkColor = rgbToHex(adjustBrightness(rgb, darkFactor));
+  const loadingColor = rgbToHex(adjustBrightnessLoading(rgb, 1.4));
 
   return {
     lightColor,
@@ -203,26 +204,6 @@ export function resetTreeData(treeData: any[], childrenField: string, targetData
     }
   }
   return treeData;
-}
-
-// 获取组件实例的expose方法
-export function handleExpose(instance: any, ref: any, compName: string) {
-  nextTick(() => {
-    if (!ref || !ref.value) {
-      return;
-    }
-    const exposeMethods = COMPONENT_EXPOSE_METHODS[compName] ?? [];
-    for (const methodsName of exposeMethods) {
-      if (instance[methodsName]) {
-        continue;
-      }
-      if (typeof ref.value[methodsName] === 'function') {
-        instance[methodsName] = ref.value[methodsName].bind(ref.value);
-      } else {
-        instance[methodsName] = computed(() => (ref.value ? ref.value[methodsName] : undefined));
-      }
-    }
-  });
 }
 
 // 获取组件实例的expose方法（proxy模式）

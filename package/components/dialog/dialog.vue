@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue';
 import { ElDialog } from 'element-plus';
-import { handleExpose } from '../../utils';
+import { getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KDialog'
@@ -21,9 +21,9 @@ defineOptions({
 
 const _styleModule = inject('_styleModule', '');
 const kDialogRef = ref<any>();
+
 const instance: any = {};
-handleExpose(instance, kDialogRef, 'KDialog');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, kDialogRef));
 </script>
 
 <style lang="less">

@@ -17,7 +17,7 @@
 import { ref, getCurrentInstance, computed, inject } from 'vue';
 import { ElDatePicker } from 'element-plus';
 import { DatePicker } from './type';
-import { getCompSize, handleExpose } from '../../utils';
+import { getCompSize, getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KDatePicker'
@@ -131,8 +131,7 @@ function getCurYearRange() {
 }
 
 const instance: any = {};
-handleExpose(instance, datePickerRef, 'KDatePicker');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, datePickerRef));
 
 </script>
 

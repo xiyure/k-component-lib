@@ -13,7 +13,7 @@
 import { ref, computed, inject } from 'vue';
 import { ElTimeline } from 'element-plus';
 import { TimelineProps } from './type';
-import { handleExpose } from '../../utils';
+import { getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KTimeline'
@@ -27,9 +27,9 @@ const _styleModule = inject('_styleModule', '');
 const isHideLine = computed(() => !props.showLine);
 
 const KTimelineRef = ref(null);
+
 const instance: any = {};
-handleExpose(instance, KTimelineRef, 'KTimeline');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, KTimelineRef));
 </script>
 
 <style lang="less">

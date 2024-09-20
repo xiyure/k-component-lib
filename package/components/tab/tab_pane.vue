@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { ref, computed, useSlots, inject } from 'vue';
 import { ElTabPane } from 'element-plus';
-import { handleExpose } from '../../utils';
+import { getExposeProxy } from '../../utils';
 import { KTooltip } from '../tooltip';
 
 defineOptions({
@@ -69,9 +69,9 @@ function hideToolTip() {
   timer && clearTimeout(timer);
   isOverflow.value = false;
 }
+
 const instance: any = {};
-handleExpose(instance, KTabPaneRef, 'KTabPane');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, KTabPaneRef));
 </script>
 
 <style lang="less">

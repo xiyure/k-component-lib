@@ -19,7 +19,7 @@
 import { ref, watch, nextTick, inject } from 'vue';
 import { ElCheckbox } from 'element-plus';
 import { CheckboxProps } from './type';
-import { getCompSize, isValidColor, handleExpose } from '../../utils/index';
+import { getCompSize, isValidColor, getExposeProxy } from '../../utils/index';
 
 defineOptions({
   name: 'KCheckbox',
@@ -61,8 +61,7 @@ function handleClickLabel(e) {
 }
 
 const instance: any = {};
-handleExpose(instance, kCheckboxRef, 'KCheckbox');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, kCheckboxRef));
 </script>
 
 <style lang="less">

@@ -45,7 +45,7 @@
 import { ref, computed, inject } from 'vue';
 import { ElTag } from 'element-plus';
 import { TagProps } from './type';
-import { getCompSize, isValidColor, handleExpose } from '../../utils';
+import { getCompSize, isValidColor, getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KTag',
@@ -88,9 +88,9 @@ const tagAttrs = computed(() => {
 });
 
 const KTagRef = ref(null);
+
 const instance: any = {};
-handleExpose(instance, KTagRef, 'KTag');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, KTagRef));
 </script>
 
 <style lang="less">

@@ -15,7 +15,7 @@
 import { ref, inject } from 'vue';
 import { ElCascader } from 'element-plus';
 import { CascaderProps } from './type';
-import { getCompSize, handleExpose } from '../../utils';
+import { getCompSize, getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KCascader'
@@ -29,8 +29,7 @@ const _styleModule = inject('_styleModule', '');
 const cascaderRef = ref<any>(null);
 
 const instance: any = {};
-handleExpose(instance, cascaderRef, 'KCascader');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, cascaderRef));
 </script>
 
 <style lang="less">

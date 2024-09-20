@@ -15,7 +15,7 @@
 import { ref, onMounted, onUnmounted, inject } from 'vue';
 import { ElForm } from 'element-plus';
 import { FormProps } from './type';
-import { getCompSize, handleExpose } from '../../utils';
+import { getCompSize, getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KForm'
@@ -70,8 +70,7 @@ function onKeyDown(event:any) {
 }
 
 const instance: any = {};
-handleExpose(instance, KFormRef, 'KForm');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, KFormRef));
 
 </script>
 

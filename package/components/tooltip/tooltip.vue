@@ -25,7 +25,7 @@ import { watch, ref, computed } from 'vue';
 import { IconTips } from 'ksw-vue-icon';
 import { ElTooltip } from 'element-plus';
 import { TooltipProps } from './type';
-import { isValidColor, handleExpose } from '../../utils';
+import { isValidColor, getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KTooltip',
@@ -73,8 +73,7 @@ watch(
 
 // expose instance
 const instance: any = {};
-handleExpose(instance, tooltipRef, 'KTooltip');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, tooltipRef));
 </script>
 
 <style>

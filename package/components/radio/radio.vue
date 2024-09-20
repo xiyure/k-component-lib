@@ -16,7 +16,7 @@
 import { ref, computed, onMounted, watch, nextTick, inject } from 'vue';
 import { ElRadio } from 'element-plus';
 import { RadioProps } from './type.d';
-import { isValidColor, GetColorLevel, genRandomStr, handleExpose } from '../../utils';
+import { isValidColor, GetColorLevel, genRandomStr, getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KRadio',
@@ -69,8 +69,7 @@ watch(
 const getSizeClass = computed(() => (props.size ? `k-radio--${props.size}` : ''));
 
 const instance: any = {};
-handleExpose(instance, kRadioRef, 'KRadio');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, kRadioRef));
 </script>
 
 <style lang="less">

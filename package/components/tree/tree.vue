@@ -27,7 +27,7 @@ import { IconSearch } from 'ksw-vue-icon';
 import { TreeProps } from './type';
 import { KInput } from '../input';
 import { KButton } from '../button';
-import { handleExpose } from '../../utils';
+import { getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KTree'
@@ -54,8 +54,7 @@ function filter(query: string) {
 }
 
 const instance: any = { filter };
-handleExpose(instance, KTreeRef, 'KTree');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, KTreeRef));
 </script>
 
 <style lang="less">

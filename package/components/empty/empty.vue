@@ -19,7 +19,7 @@ import { ref, inject } from 'vue';
 import { ElEmpty } from 'element-plus';
 // @ts-expect-error 引入本地静态图片资源
 import empty from '../../assets/svg/empty.svg';
-import { handleExpose } from '../../utils';
+import { getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KEmpty'
@@ -27,9 +27,9 @@ defineOptions({
 
 const _styleModule = inject('_styleModule', '');
 const KEmptyRef = ref(null);
+
 const instance: any = {};
-handleExpose(instance, KEmptyRef, 'KEmpty');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, KEmptyRef));
 </script>
 
 <style lang="less">

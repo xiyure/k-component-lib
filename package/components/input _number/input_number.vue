@@ -15,7 +15,7 @@
 import { ref, inject } from 'vue';
 import { ElInputNumber } from 'element-plus';
 import { InputNumberProps } from './type';
-import { getCompSize, handleExpose } from '../../utils';
+import { getCompSize, getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KInputNumber'
@@ -27,8 +27,7 @@ const _styleModule = inject('_styleModule', '');
 const inputNumberRef = ref<HTMLElement | null>(null);
 
 const instance: any = {};
-handleExpose(instance, inputNumberRef, 'KInputNumber');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, inputNumberRef));
 </script>
 
 <style lang="less">

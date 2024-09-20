@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue';
 import { ElBadge } from 'element-plus';
-import { handleExpose } from '../../utils';
+import { getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KBadge'
@@ -20,8 +20,7 @@ const badgeRef = ref(null);
 
 // expose instance
 const instance: any = {};
-handleExpose(instance, badgeRef, 'KBadge');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, badgeRef));
 </script>
 
 <style lang="less">

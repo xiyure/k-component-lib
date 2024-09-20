@@ -13,7 +13,7 @@
 import { ref, watch, provide, inject } from 'vue';
 import { ElCheckboxGroup } from 'element-plus';
 import { CheckboxGroupProps } from './type';
-import { getCompSize, handleExpose } from '../../utils/index';
+import { getCompSize, getExposeProxy } from '../../utils/index';
 
 defineOptions({
   name: 'KCheckboxGroup',
@@ -38,8 +38,7 @@ provide('useCheckboxGroup', true);
 provide('_fillColor', fillColor);
 
 const instance: any = {};
-handleExpose(instance, kCheckboxGroupRef, 'KCheckboxGroup');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, kCheckboxGroupRef));
 </script>
 
 <style lang="less">

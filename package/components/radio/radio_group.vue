@@ -16,7 +16,7 @@
 import { ref, computed, watch, provide, inject } from 'vue';
 import { ElRadioGroup } from 'element-plus';
 import { RadioGroupProps } from './type.d';
-import { getCompSize, handleExpose } from '../../utils';
+import { getCompSize, getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KRadioGroup'
@@ -46,9 +46,9 @@ watch(
 provide('_fillColor', fillColor);
 
 const KRadioGroupRef = ref(null);
+
 const instance: any = {};
-handleExpose(instance, KRadioGroupRef, 'KRadioGroup');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, KRadioGroupRef));
 </script>
 
 <style lang="less">

@@ -36,7 +36,7 @@
 import { ref, computed, inject } from 'vue';
 import { ElInput } from 'element-plus';
 import { InputProps } from './type.d';
-import { getCompSize, handleExpose } from '../../utils';
+import { getCompSize, getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KInput',
@@ -74,9 +74,9 @@ const slotClass = computed(() => (slot) => {
 });
 
 const inputRef = ref<any>(null);
+
 const instance: any = {};
-handleExpose(instance, inputRef, 'KInput');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, inputRef));
 </script>
 
 <style lang="less">

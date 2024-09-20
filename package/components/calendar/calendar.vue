@@ -49,7 +49,7 @@ import { IconArrowLeft, IconArrowRight } from 'ksw-vue-icon';
 import { CalendarProps } from './type';
 import { lunarMonth, lunarDay } from './const';
 import { KCheckbox } from '../checkbox';
-import { handleExpose } from '../../utils';
+import { getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KCalendar'
@@ -99,8 +99,7 @@ const instance: any = {
   jumpDate,
   handleLunar
 };
-handleExpose(instance, kCalendarRef, 'KCalendar');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, kCalendarRef));
 </script>
 
 <style lang="less">

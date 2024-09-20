@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { nextTick, ref, inject } from 'vue';
 import { ElTreeSelect } from 'element-plus';
-import { handleExpose } from '../../utils';
+import { getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KTreeSelect',
@@ -41,9 +41,9 @@ const handleNodeClick = async (data: any, node: any) => {
 };
 
 const KTreeSelectRef = ref();
+
 const instance: any = {};
-handleExpose(instance, KTreeSelectRef, 'KTreeSelect');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, KTreeSelectRef));
 </script>
 
 <style lang="less">

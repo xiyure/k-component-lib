@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue';
 import { ElOption } from 'element-plus';
-import { handleExpose } from '../../utils';
+import { getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KOption'
@@ -21,9 +21,9 @@ defineOptions({
 
 const _styleModule = inject('_styleModule', '');
 const KOptionRef = ref(null);
+
 const instance: any = {};
-handleExpose(instance, KOptionRef, 'KOption');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, KOptionRef));
 
 </script>
 

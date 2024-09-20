@@ -87,7 +87,7 @@ import { ElUpload, ElProgress, UploadFile, UploadRawFile } from 'element-plus';
 
 import { IconEmptyBox, IconWarning, IconCheck, IconDelete, IconFile } from 'ksw-vue-icon';
 import { UploadProps } from './type';
-import { handleExpose } from '../../utils';
+import { getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KUpload'
@@ -135,8 +135,7 @@ function selectFile() {
 }
 
 const instance: any = { submit, selectFile, handleRemove };
-handleExpose(instance, KUploadRef, 'KUpload');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, KUploadRef));
 </script>
 
 <style lang="less">

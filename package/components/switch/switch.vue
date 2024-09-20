@@ -15,7 +15,7 @@
 import { ref, inject } from 'vue';
 import { ElSwitch } from 'element-plus';
 import { SwitchProps } from './type';
-import { getCompSize, handleExpose } from '../../utils';
+import { getCompSize, getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KSwitch'
@@ -29,9 +29,9 @@ const props = withDefaults(defineProps<SwitchProps>(), {
 
 const _styleModule = inject('_styleModule', '');
 const kSwitchRef = ref();
+
 const instance: any = {};
-handleExpose(instance, kSwitchRef, 'KSwitch');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, kSwitchRef));
 
 </script>
 

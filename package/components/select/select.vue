@@ -13,7 +13,7 @@
 import { ref, inject } from 'vue';
 import { ElSelect } from 'element-plus';
 import { SelectInputProps } from './type';
-import { getCompSize, handleExpose } from '../../utils';
+import { getCompSize, getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KSelect',
@@ -25,9 +25,9 @@ const props = withDefaults(defineProps<SelectInputProps>(), {
 
 const _styleModule = inject('_styleModule', '');
 const inputRef = ref<any>(null);
+
 const instance: any = {};
-handleExpose(instance, inputRef, 'KSelect');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, inputRef));
 </script>
 
 <style lang="less">

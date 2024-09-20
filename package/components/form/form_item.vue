@@ -15,7 +15,7 @@
 import { ref, inject } from 'vue';
 import { ElFormItem } from 'element-plus';
 import { FormItemProps } from './type';
-import { getCompSize, handleExpose } from '../../utils';
+import { getCompSize, getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KFormItem'
@@ -27,9 +27,9 @@ const props = withDefaults(defineProps<FormItemProps>(), {
 
 const _styleModule = inject('_styleModule', '');
 const KFormItemRef = ref<any>(null);
+
 const instance: any = {};
-handleExpose(instance, KFormItemRef, 'KFormItem');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, KFormItemRef));
 </script>
 
 <style lang="less">

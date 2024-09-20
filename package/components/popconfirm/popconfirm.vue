@@ -17,7 +17,7 @@ import { ref, inject } from 'vue';
 import { ElPopconfirm } from 'element-plus';
 import { IconClear } from 'ksw-vue-icon';
 import { PopconfirmProps } from './type';
-import { handleExpose } from '../../utils';
+import { getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KPopconfirm'
@@ -29,9 +29,9 @@ const props = withDefaults(defineProps<PopconfirmProps>(), {
 
 const _styleModule = inject('_styleModule', '');
 const KPopconfirmRef = ref(null);
+
 const instance: any = {};
-handleExpose(instance, KPopconfirmRef, 'KPopconfirm');
-defineExpose(instance);
+defineExpose(getExposeProxy(instance, KPopconfirmRef));
 </script>
 
 <style lang="less">
