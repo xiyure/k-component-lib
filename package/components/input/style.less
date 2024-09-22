@@ -1,6 +1,8 @@
 @import '../../style/variable.css';
 @import '../../style/general.less';
-@import '../../style/global.less';
+@import '../../style/theme/AOM/theme.css';
+
+// @TODO 还不支持 size 控制插槽中的组件 size
 
 .k-input.el-input,
 .el-textarea {
@@ -8,11 +10,11 @@
   .init-style();
 
   --bg-color: #fff;
-  --height: 2rem;
-  --border-radius: var(--k-rounded-base);
-  --border-color--normal: var(--k-gray-200);
-  --border-color--hover: var(--k-blue-400);
-  --border-color--checked: var(--k-blue-500);
+  --height: var(--k-theme-input-size-height--base);
+  --border-radius: var(--k-theme-input-rounded--base);
+  --border-color--normal: var(--k-theme-input-border-color--normal);
+  --border-color--hover: var(--k-theme-input-border-color--hover);
+  --border-color--checked: var(--k-theme-input-border-color--checked);
   --input-offset: 0;
 
   cursor: text;
@@ -108,6 +110,7 @@
       .k-input-slot--string,
       .k-input-slot--htmlTag {
         .text-base();
+        height: var(--height);
         color: var(--k-status-info);
         background-color: var(--k-gray-50);
         padding: 0.3125rem 0.625rem;
@@ -116,6 +119,7 @@
         user-select: all;
       }
       .k-input-slot--component {
+        height: var(--height);
         .k-button {
           margin: 0;
           // border: 1px solid var(--border-color--normal);
@@ -202,17 +206,23 @@
         .k-button,
         .el-button,
         .k-select,
-        .el-select {
+        .el-select,
+        .k-button-group,
+        .el-button-group {
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
+          .el-button + .el-button {
+            border-top-right-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
+          }
         }
       }
     }
   }
 
   &.el-input--small {
-    --height: 1.5rem;
-    --border-radius: var(--k-rounded-sm);
+    --height: var(--k-theme-input-size-height--sm);
+    --border-radius: var(--k-theme-input-rounded--sm);
     .el-input__wrapper {
       --height: 1.5rem;
       padding: 0.25rem 0.625rem;
@@ -247,6 +257,15 @@
             padding: 0.1875rem 0.625rem;
           }
         }
+      }
+    }
+  }
+  &.el-input--large {
+    --height: var(--k-theme-input-size-height--lg);
+    --border-radius: var(--k-theme-input-rounded--lg);
+    .el-input__wrapper {
+      .el-input__inner {
+        .text-lg();
       }
     }
   }

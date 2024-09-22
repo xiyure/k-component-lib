@@ -282,4 +282,14 @@
   --k-theme-checkbox__inner-rounded--sm: 0.125rem;
   --k-theme-checkbox__inner-rounded--base: 0.125rem;
   --k-theme-checkbox__inner-rounded--lg: 0.25rem;
+
+  /* input */
+  --k-theme-input-size-height--sm: var(--k-theme-button-size-height--sm);
+  --k-theme-input-size-height--base: var(--k-theme-button-size-height--base);
+  --k-theme-input-size-height--lg: var(--k-theme-button-size-height--lg);
+  --k-theme-input-rounded--sm: var(--k-theme-button-size-rounded--sm);
+  --k-theme-input-rounded--base: var(--k-theme-button-size-rounded--base);
+  --k-theme-input-rounded--lg: var(--k-theme-button-size-rounded--lg);
+  --k-theme-input-border-color--normal: var(--k-theme-border--normal);
+  --k-theme-input-border-color--hover: var(--k-theme-primary-400);
 }
