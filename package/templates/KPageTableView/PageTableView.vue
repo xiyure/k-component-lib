@@ -14,7 +14,7 @@
       :title="viewBusTitle"
       :info="viewBusInfo"
       :refresh="viewBusRefresh"
-      @refresh="() => console.log('@refresh')"
+      @refresh="emitEvent('refresh')"
     >
       <template #extra-body>
         <slot name="extra-viewBus-body"></slot>
@@ -82,5 +82,8 @@ const props = defineProps({
     default: '页面描述信息',
   },
 });
+
+// 自定义事件
+const emitEvent = defineEmits(['refresh']);
 </script>
 <style scoped></style>

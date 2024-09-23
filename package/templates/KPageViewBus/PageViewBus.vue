@@ -18,7 +18,7 @@
       <div
         class="drawer-btn w-5 h-5 border rounded-full flex justify-center items-center text-sm bg-white text-gray-400 hover:text-blue-400 hover:font-bold hover:border-blue-400"
       >
-        <IconArrowRight class="text-gray-400"></IconArrowRight>
+        <IconArrowLeft class="text-gray-400"></IconArrowLeft>
       </div>
     </div>
     <div class="KPageViewBus-content w-56">
