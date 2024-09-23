@@ -18,11 +18,21 @@ demo-preview=../example/treeTable/base.vue
 
 通过advanced-filter-config属性配置高级筛选功能，例如可自定义筛选条件、显示内容和指定筛选列。
 
-<!-- :::preview
+:::preview
 
 demo-preview=../example/treeTable/advancedScreening.vue
 
-::: -->
+:::
+
+## 自动生成序号
+
+type: 'seq' 自动生成序号
+
+:::preview
+
+demo-preview=../example/treeTable/autoGenerateIndex.vue
+
+:::
 
 ## API
 

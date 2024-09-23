@@ -20,8 +20,7 @@
 </template>
 
 <script lang="tsx" setup>
-import { ref, reactive } from 'vue';
-import { KTreeTable, KTag } from '@components';
+import { ref } from 'vue';
 
 let treeTableData = ref([
   { id: 100001, parentId: null, name: 'Test1', type: 'mp3', sizes: 1024, date: '2020-08-01' },

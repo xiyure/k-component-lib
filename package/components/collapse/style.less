@@ -1,21 +1,45 @@
 @import '../../style/variable.less';
 @import '../../style/global.less';
+@import '../../style/theme/AOM/theme.css';
 
-.k-collapse {
-  .el-collapse {
-    border: none !important;
-  }
-  .el-collapse-item__header, .el-collapse-item__content {
+.el-collapse,
+.k-collapse,
+.el-collapse.k-collapse {
+  border: none;
+  .el-collapse-item__header,
+  .el-collapse-item__content {
     font-size: inherit;
   }
+  // .el-collapse-item__header {
+  //   height: 38px;
+  //   border-radius: 8px;
+  // }
+  // .el-collapse-item__header {
+  //   padding-left: 8px;
+  // }
+  // .el-collapse-item__content {
+  //   padding-bottom: 10px;
+  // }
+  // .el-collapse-item {
+  //   border: none;
+  // }
+
   .el-collapse-item__header {
-    height: 38px;
-    border-radius: 8px;
+    height: var(--k-theme-collapse-size-height);
+    background: var(--k-theme-collapse-bg-color--normal);
+    border-top: none;
+    padding: 0 16px;
+    border-radius: var(--k-theme-collapse-rounded);
+    display: flex;
+    justify-content: start;
+
+    &:is-left {
+      justify-content: flex-start;
+    }
   }
-  .el-collapse-item__header {
-    padding-left: 8px;
-  }
-  .el-collapse-item__content {
-    padding-bottom: 10px;
+
+  .el-collapse-item__wrap {
+    border: none;
+    padding: 8px 16px;
   }
 }

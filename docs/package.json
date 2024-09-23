@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@ksware/ksw-ux": "^0.0.44",
+    "@vitejs/plugin-vue-jsx": "^4.0.1",
     "ksw-vue-icon": "^2.2.25"
   }
 }

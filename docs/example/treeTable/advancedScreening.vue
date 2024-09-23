@@ -25,7 +25,6 @@
           },
         ],
       }"
-      border
     ></k-tree-table>
   </div>
 </template>
