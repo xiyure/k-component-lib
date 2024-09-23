@@ -121,7 +121,18 @@ onUnmounted(() => {
 });
 function rowDrop() {
   const $table = vxeTableRef.value;
-  sortable = Sortable.create($table?.$el.querySelector('.body--wrapper>.vxe-table--body tbody'), {
+  if (!$table || !$table.$el) {
+    console.error('Table element is not available.');
+    return;
+  }
+
+  const tbodyElement = $table.$el.querySelector('.body--wrapper > .vxe-table--body tbody');
+  if (!tbodyElement) {
+    console.error('Tbody element not found.');
+    return;
+  }
+
+  sortable = Sortable.create(tbodyElement, {
     handle: '.__column-drag-icon',
     onEnd: (sortableEvent) => {
       const targetTrElem = sortableEvent.item;
@@ -134,7 +145,7 @@ function rowDrop() {
       const curRowIndex = props.data?.findIndex(row => row.id === selfRow.id) as number;
       const curRow = props.data?.splice(curRowIndex, 1)[0];
       if (prevTrElem) {
-      // 移动到节点
+        // 移动到节点
         const prevRowNode = vxeTableRef.value?.getRowNode(prevTrElem);
         if (!prevRowNode) {
           return;
@@ -143,11 +154,11 @@ function rowDrop() {
         const prevRowIndex = props.data?.findIndex(row => row.id === prevRow.id) as number;
         const prevParentRow = vxeTableRef.value?.getRowById(prevRow.parentId);
         if (vxeTableRef.value?.isTreeExpandByRow(prevRow)) {
-        // 移动到当前的子节点
+          // 移动到当前的子节点
           curRow.parentId = prevRow.id;
           props.data?.splice(prevRowIndex + 1, 0, curRow);
         } else if (vxeTableRef.value?.isTreeExpandByRow(prevParentRow)) {
-        // 移动到相邻节点
+          // 移动到相邻节点
           curRow.parentId = prevRow.parentId ?? null;
           props.data?.splice(prevRowIndex + 1, 0, curRow);
         } else {
@@ -156,7 +167,7 @@ function rowDrop() {
           props.data?.splice(prevRowIndex + 1, 0, curRow);
         }
       } else {
-      // 移动到第一行
+        // 移动到第一行
         curRow.parentId = null;
         props.data?.unshift(curRow);
       }
