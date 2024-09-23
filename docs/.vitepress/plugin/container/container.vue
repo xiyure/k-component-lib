@@ -59,8 +59,8 @@
 <template>
   <!-- <ClientOnly></ClientOnly> -->
   <div :class="[ns.e('ant-design__container')]">
-    <section :class="[ns.bem('preview')]">
-      <slot> </slot>
+    <section :class=" [ns.bem('preview')]" class="vp-raw bg-grid-slate-100 bg-slate-50">
+      <slot></slot>
     </section>
     <section :class="[ns.bem('description')]">
       <div v-if="props.title" :class="[ns.bem('description', 'title')]">
@@ -119,9 +119,10 @@
 .vitepress-demo-preview__ant-design__container > .vitepress-demo-preview-preview {
   padding: 20px 20px 30px 20px;
 
-  & > p {
-    margin: 0;
-    padding: 0;
+  p {
+    all: initial;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 }
 
@@ -183,5 +184,10 @@
 .vitepress-demo-preview__ant-design__container > .vitepress-demo-preview-source {
   overflow: hidden;
   transition: all 0.3s ease-in-out;
+}
+
+.bg-grid-slate-100 {
+  background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='%23f1f5f9'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
+  /* background-image: repeating-linear-gradient(45deg, var(--fallback-b1, oklch(100% 0 0)), var(--fallback-b1, oklch(100% 0 0)) 13px, var(--fallback-b2, oklch(96.1151% 0 0)) 13px, var(--fallback-b2, oklch(96.1151% 0 0)) 14px); */
 }
 </style>
