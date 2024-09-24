@@ -476,6 +476,7 @@ watch(
   () => {
     clearCheckedData();
     xeTableData.value = setTableData(props.data);
+    advancedFilter();
   },
   { immediate: true }
 );
@@ -790,13 +791,15 @@ function dragEnd(data: any[]) {
 }
 
 // 刷新高级筛选的表格数据
-function advancedFilter(data: any[] | undefined) {
+async function advancedFilter(data?: any[] | undefined) {
+  await nextTick();
   const advancedFilterObj = tableFilterRef.value?.[0]?.filter?.(data);
   const { conditionInfo, tableData } = advancedFilterObj ?? {};
   refreshAdvancedFilter(conditionInfo, tableData, false);
-  return { conditionInfo, tableData };
+  return{ conditionInfo, tableData };
 }
-function clearAdvancedFilter() {
+async function clearAdvancedFilter() {
+  await nextTick();
   const advancedFilterObj = tableFilterRef.value?.[0]?.clearFilter?.();
   const { conditionInfo, tableData } = advancedFilterObj ?? {};
   refreshAdvancedFilter(conditionInfo, tableData, false);

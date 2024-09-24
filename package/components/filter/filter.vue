@@ -145,7 +145,11 @@
             <span
               class="select-label"
             >{{ $t('aboveCondition') }}：</span>
-            <k-select v-model="filterRule" :size="props.size" :teleported="false">
+            <k-select
+              v-model="filterRule"
+              :size="props.size"
+              :disabled="remote === true || (Array.isArray(props.remote) && Boolean(props.remote.length))"
+              :teleported="false">
               <k-option :label="$t('anyOne')" :value="0"></k-option>
               <k-option :label="$t('all')" :value="1"></k-option>
             </k-select>
@@ -158,7 +162,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, getCurrentInstance, inject, onMounted } from 'vue';
+import { ref, computed, getCurrentInstance, inject, onMounted, watch } from 'vue';
 import { IconClose, IconClearDate, IconAdd, IconFilter, IconFilterFill } from 'ksw-vue-icon';
 import { cloneDeep } from 'lodash-es';
 import { FilterProps } from './type';
@@ -210,6 +214,13 @@ const t = _global?.$t;
 const filterData = ref<IFilterDataType[]>([]);
 const filterRule = ref(0);
 
+watch(() => props.remote, () => {
+  if (props.remote === true
+    || (Array.isArray(props.remote) && Boolean(props.remote.length))
+  ) {
+    filterRule.value = 1;
+  }
+})
 const flatColumns = computed(() => treeDataToArray(cloneDeep(props.options), 'group'));
 const instance = computed(() => function (value: any) {
   const matchInstance:any = flatColumns.value?.find(item => item[props.filterKey] === value);
@@ -319,7 +330,7 @@ function filter(data?: any[]) {
   const remoteFieldMap = getRemoteFieldMap();
   const newData = sourceData?.filter((dataItem: any) => {
     if (filterRule.value === 0) {
-      return filterData.value.some(item => {
+      return conditionInfo.conditionList.some(item => {
         if (remoteFieldMap.has(item.key)) {
           return true;
         }
@@ -330,12 +341,12 @@ function filter(data?: any[]) {
         return item.handler?.(dataItem[targetColumn[props.filterKey]], item.value);
       });
     } 
-    return filterData.value.every(item => {
+    return conditionInfo.conditionList.every(item => {
       if (remoteFieldMap.has(item.key)) {
         return true;
       }
       const targetColumn = flatColumns.value?.find(col => col[props.filterKey] === item.key);
-      if (!targetColumn && !targetColumn[props.filterKey]) {
+      if (!targetColumn || !targetColumn[props.filterKey]) {
         return false;
       }
       return item.handler?.(dataItem[targetColumn[props.filterKey]], item.value);
@@ -435,7 +446,7 @@ function changeDateLogic(item:IFilterDataType) {
 }
 function changeDateRange(item:IFilterDataType) {
   setDatePickerType(item);
-  let dateValue:any = item.value;
+  let dateValue:any = Array.isArray(item.value) ? '' : item.value;
   switch (item.dateRange) {
     case 'range': dateValue = ['', '']; break;
     case 'today': dateValue = getTargetDay(0); break;
