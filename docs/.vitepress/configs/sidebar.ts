@@ -1,12 +1,13 @@
 import { generateSidebar } from 'vitepress-sidebar';
 
 const baseSidebarOptions = {
-  documentRootPath: '/',
+  documentRootPath: '/docs',
   useTitleFromFileHeading: true,
   useTitleFromFrontmatter: true,
   useFolderTitleFromIndexFile: true,
   useFolderLinkFromIndexFile: true,
   folderLinkNotIncludesFileName: true,
+  // debugPrint: true,
 };
 
 const apiSidebarOptions = {
@@ -23,34 +24,39 @@ const componentsSidebarOptions = {
 
 const docsSidebarOptions = {
   ...baseSidebarOptions,
-  scanStartPath: 'docs',
-  resolvePath: '/docs/',
-  manualSortFileNameByPriority: [
-    "introduce.md",
-  ]
+  scanStartPath: 'components',
+  resolvePath: '/components/',
+  basePath: '/components/'
+  // manualSortFileNameByPriority: [
+  //   "introduce.md",
+  // ]
 };
-
+console.log(generateSidebar(docsSidebarOptions));
 export default {
-  '/api/': {
-    base: '/api/',
-    items: [
-      {
-        text: 'Api',
-        items: generateSidebar(apiSidebarOptions),
-      },
-    ],
-  },
+  // '/api/': {
+  //   base: '/api/',
+  //   items: [
+  //     {
+  //       text: 'Api',
+  //       items: generateSidebar(apiSidebarOptions),
+  //     },
+  //   ],
+  // },
+  // '/components/': {
+  //   base: '/components/',
+  //   items: [
+  //     {
+  //       text: '通用',
+  //       items: generateSidebar(componentsSidebarOptions),
+  //     },
+  //     {
+  //       text: '通用3',
+  //       items: generateSidebar(componentsSidebarOptions),
+  //     },
+  //   ],
+  // },
   '/components/': {
     base: '/components/',
-    items: [
-      {
-        text: '通用',
-        items: generateSidebar(componentsSidebarOptions),
-      },
-    ],
-  },
-  '/docs/': {
-    base: '/docs/',
     items: [
       {
         text: '如何使用',
@@ -59,3 +65,4 @@ export default {
     ],
   },
 };
+

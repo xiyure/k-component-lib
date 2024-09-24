@@ -2,7 +2,7 @@ import { defineConfig } from 'vitepress';
 import { applyPlugins } from './plugin/md-demo-plugin';
 import nav from './configs/nav';
 import sidebar from './configs/sidebar';
-import { containerPreview, componentPreview } from '@vitepress-demo-preview/plugin';
+// import { containerPreview, componentPreview } from '@vitepress-demo-preview/plugin';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -26,8 +26,8 @@ export default defineConfig({
 
   markdown: {
     config: (md) => {
-      md.use(containerPreview);
-      md.use(componentPreview);
+      // md.use(containerPreview);
+      // md.use(componentPreview);
       md.use(applyPlugins);
     },
     image: {
@@ -35,7 +35,9 @@ export default defineConfig({
     }
   },
   cleanUrls: true,
-
+  rewrites: {
+    'docs/components/:page': 'components/:page'
+  },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav,

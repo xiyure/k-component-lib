@@ -65,4 +65,4 @@ size 提供三个尺寸: sm、base(def)、lg 。
 
 ## API
 
-<API src="../data/button.json" lang="zh"></API>
+<!-- <API src="../data/button.json" lang="zh"></API> -->

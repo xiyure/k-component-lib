@@ -1,6 +1,6 @@
 export default [
-  { text: '文档', link: '/docs/introduce', activeMatch: '^/docs/' },
-  { text: '组件', link: '/components/button', activeMatch: '^/components/' },
+  { text: '文档', link: '/components/button', activeMatch: '^/docs/' },
+  { text: '组件', link: '/docs/components/button', activeMatch: '^/components/' },
   { text: 'API 参考', link: '/api/' },
   {
     text: "图标库",
