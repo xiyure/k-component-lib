@@ -59,7 +59,7 @@
 <template>
   <!-- <ClientOnly></ClientOnly> -->
   <div :class="[ns.e('ant-design__container')]">
-    <section :class=" [ns.bem('preview')]" class="vp-raw bg-grid-slate-100 bg-slate-50">
+    <section :class=" [ns.bem('preview')]" class="vp-raw bg-grid-slate-100">
       <slot></slot>
     </section>
     <section :class="[ns.bem('description')]">
@@ -187,7 +187,11 @@
 }
 
 .bg-grid-slate-100 {
-  background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='%23f1f5f9'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
-  /* background-image: repeating-linear-gradient(45deg, var(--fallback-b1, oklch(100% 0 0)), var(--fallback-b1, oklch(100% 0 0)) 13px, var(--fallback-b2, oklch(96.1151% 0 0)) 13px, var(--fallback-b2, oklch(96.1151% 0 0)) 14px); */
+  background-color: var(--vp-code-block-bg);
+  background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(241 245 249)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
+}
+
+:root.dark .bg-grid-slate-100 {
+  background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(51 65 85 / 0.25)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
 }
 </style>
