@@ -34,7 +34,7 @@
               </KTooltip>
             </div>
           </div>
-          <slot name="extra-head">
+          <slot name="head">
             <KButton
               v-if="props.refresh"
               text
@@ -46,11 +46,11 @@
           </slot>
         </div>
 
-        <div v-if="$slots['extra-body']" class="KPageViewBus-body pt-3">
-          <slot name="extra-main"></slot>
+        <div class="KPageViewBus-main pt-3">
+          <slot></slot>
         </div>
-        <div v-if="$slots['extra-foot']" class="KPageViewBus-foot pt-3">
-          <slot name="extra-foot"></slot>
+        <div v-if="$slots['foot']" class="KPageViewBus-foot pt-3">
+          <slot name="foot"></slot>
         </div>
       </div>
     </div>

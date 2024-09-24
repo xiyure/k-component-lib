@@ -16,8 +16,13 @@
       :refresh="viewBusRefresh"
       @refresh="emitEvent('refresh')"
     >
-      <template #extra-main>
-        <slot name="extra-aside"></slot>
+      <template #head>
+        <slot name="aside-toolbar"></slot>
+      </template>
+
+      <slot name="aside"></slot>
+      <template #foot>
+        <slot name="aside-foot"></slot>
       </template>
     </KPageViewBus>
 
@@ -33,26 +38,30 @@
             <component :is="icon" size="24" />
           </div>
           <p class="KPageHead-title">{{ pageTitle }}</p>
-          <div v-if="props.info" class="KPageHead-info">
-            <KTooltip :content="pageInfo" @hide="() => (tips = false)">
+          <div v-if="pageIcon" class="KPageHead-info pl-1">
+            <KTooltip :content="pageIcon" @hide="() => (tips = false)">
               <IconTips v-show="tips" color="#4193f2" size="16"></IconTips>
             </KTooltip>
           </div>
         </div>
+
         <div>
-          <slot name="extra-head-btn"></slot>
+          <slot name="toolbar"></slot>
         </div>
       </div>
       <div id="KPageBody" class="KPageBody h-full">
-        <slot name="extra-main"></slot>
+        <slot></slot>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="tsx" setup>
+import { ref } from 'vue';
 import { KPageViewBus } from '../index.ts';
 import { KTooltip } from '../../components';
+
+const tips = ref(false);
 
 const props = defineProps({
   showViewBus: {

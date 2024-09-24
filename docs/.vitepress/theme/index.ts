@@ -3,7 +3,7 @@ import DefaultTheme from 'vitepress/theme';
 import '@ksware/ksw-ux/kingsware-ui/style.css';
 import 'vitepress-theme-demoblock/dist/theme/styles/index.css';
 import { Container } from '../plugin/container/index';
-import './style.css';
+import './style.less';
 import './tailwind.css';
 import 'overlayscrollbars/overlayscrollbars.css';
 import { OverlayScrollbars } from 'overlayscrollbars';
