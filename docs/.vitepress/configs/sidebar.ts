@@ -7,32 +7,57 @@ const baseSidebarOptions = {
   useFolderTitleFromIndexFile: true,
   useFolderLinkFromIndexFile: true,
   folderLinkNotIncludesFileName: true,
-  // debugPrint: true,
+  sortMenusByFrontmatterDate: true, // 启用日期排序
+  sortMenusOrderByDescending: true, // 升序
 };
 
-const apiSidebarOptions = {
+const KnowledgeSidebarOptions = {
   ...baseSidebarOptions,
-  scanStartPath: 'api',
-  resolvePath: '/api/',
+  scanStartPath: '/docs/知识库/',
+  resolvePath: '/docs/知识库/',
 };
 
-const componentsSidebarOptions = {
+// const apiSidebarOptions = {
+//   ...baseSidebarOptions,
+//   scanStartPath: 'api',
+//   resolvePath: '/api/',
+// };
+
+const componentsGeneralSidebarOptions = {
   ...baseSidebarOptions,
-  scanStartPath: 'components',
-  resolvePath: '/components/',
+  scanStartPath: '/docs/components',
+  resolvePath: '/docs/components',
 };
 
-const docsSidebarOptions = {
-  ...baseSidebarOptions,
-  scanStartPath: 'components',
-  resolvePath: '/components/',
-  basePath: '/components/'
-  // manualSortFileNameByPriority: [
-  //   "introduce.md",
-  // ]
-};
-console.log(generateSidebar(docsSidebarOptions));
+// const docsSidebarOptions = {
+//   ...baseSidebarOptions,
+//   scanStartPath: 'docs',
+//   resolvePath: '/docs/',
+//   manualSortFileNameByPriority: [
+//     "introduce.md",
+//   ]
+// };
+
 export default {
+  '/docs/知识库/': {
+    base: '/',
+    items: [
+      {
+        text: '知识库',
+        items: generateSidebar(KnowledgeSidebarOptions),
+      },
+    ],
+  },
+  '/docs/components/': {
+    base: '/',
+    items: [
+      {
+        text: '组件文档',
+        items: generateSidebar(componentsGeneralSidebarOptions),
+      },
+    ],
+  },
+
   // '/api/': {
   //   base: '/api/',
   //   items: [
@@ -42,27 +67,13 @@ export default {
   //     },
   //   ],
   // },
-  // '/components/': {
-  //   base: '/components/',
+  // '/docs/': {
+  //   base: '/docs/',
   //   items: [
   //     {
-  //       text: '通用',
-  //       items: generateSidebar(componentsSidebarOptions),
-  //     },
-  //     {
-  //       text: '通用3',
-  //       items: generateSidebar(componentsSidebarOptions),
+  //       text: '如何使用',
+  //       items: generateSidebar(docsSidebarOptions),
   //     },
   //   ],
   // },
-  '/components/': {
-    base: '/components/',
-    items: [
-      {
-        text: '如何使用',
-        items: generateSidebar(docsSidebarOptions),
-      },
-    ],
-  },
 };
-

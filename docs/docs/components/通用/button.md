@@ -21,11 +21,11 @@ title: Button 按钮
 - icon按钮
   > 一般用于节省空间的情景。
 
-<preview path="../example/button/def.vue"></preview>
+<preview path="../../example/button/def.vue"></preview>
 
 ## disabled
 
-<preview path="../example/button/btnDisabled.vue"></preview>
+<preview path="../../example/button/btnDisabled.vue"></preview>
 
 ## 彩色图标
 
@@ -35,7 +35,7 @@ title: Button 按钮
 
 使用 type, 此 api 参数兼容 el 预设, 如: primary, success, info, warning, danger
 
-<preview path="../example/button/elType.vue"></preview>
+<preview path="../../example/button/elType.vue"></preview>
 
 ### 方式 2, color
 
@@ -45,24 +45,24 @@ title: Button 按钮
 - css 预设颜色: red
 - el, type 颜色: primary...
 
-<preview path="../example/button/btnColor.vue"></preview>
+<preview path="../../example/button/btnColor.vue"></preview>
 
 ## 左右图标插槽
 
 ### 方式一, api
 
-<preview path="../example/button/btnIcon.vue"></preview>
+<preview path="../../example/button/btnIcon.vue"></preview>
 
 ### 方式二, 插槽
 
-<preview path="../example/button/btnIcon2.vue"></preview>
+<preview path="../../example/button/btnIcon2.vue"></preview>
 
 ## 不同尺寸(size)
 
 size 提供三个尺寸: sm、base(def)、lg 。
 
-<preview path="../example/button/btnSize.vue"></preview>
+<preview path="../../example/button/btnSize.vue"></preview>
 
 ## API
 
-<!-- <API src="../data/button.json" lang="zh"></API> -->
+<!-- <API src="../../data/button.json" lang="zh"></API> -->
