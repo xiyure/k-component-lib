@@ -1,4 +1,4 @@
-@import '../../style/variable.less';
+@import '../../style/variable.css';
 @import '../../style/global.less';
 
 .k-calendar {
@@ -13,7 +13,7 @@
     .k-calendar__header-left {
       display: flex;
       justify-content: flex-start;
-      &>* {
+      & > * {
         margin-left: 10px;
         vertical-align: middle;
       }
@@ -24,17 +24,17 @@
     }
   }
   ::-webkit-scrollbar {
-    width: 5px; 
+    width: 5px;
     height: 5px;
   }
   ::-webkit-scrollbar-track {
     background: #f1f1f1;
   }
   ::-webkit-scrollbar-thumb {
-    background: @k-blue-400;
+    background: var(--k-blue-400);
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: @k-status-primary;
+    background: var(--k-theme-primary);
   }
 }
 .k-calendar__item {
@@ -47,7 +47,7 @@
     justify-content: space-between;
   }
   .k-calendar__schedule {
-    height:  100%;
+    height: 100%;
     margin-top: 5px;
     overflow-y: hidden;
     ul {

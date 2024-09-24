@@ -1,8 +1,8 @@
-@import '../../style/variable.less';
+@import '../../style/variable.css';
 
 @message-text-color: #000;
-@message-bg-color: #FFF;
-@message-border-color: #FFF;
+@message-bg-color: #fff;
+@message-border-color: #fff;
 
 .el-message {
   box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.16);
@@ -12,7 +12,7 @@
   border: 1px @message-border-color solid;
   background-color: @message-bg-color;
   .el-message__icon {
-    color: @k-status-success;
+    color: var(--k-theme-success);
   }
   .el-message__content {
     color: @message-text-color;
@@ -23,7 +23,7 @@
   border: 1px @message-border-color solid;
   background-color: @message-bg-color;
   .el-message__icon {
-    color: @k-status-danger;
+    color: var(--k-theme-danger);
   }
   .el-message__content {
     color: @message-text-color;
@@ -34,7 +34,7 @@
   border: 1px @message-border-color solid;
   background-color: @message-bg-color;
   .el-message__icon {
-    color: @k-status-warning;
+    color: var(--k-theme-warning);
   }
   .el-message__content {
     color: @message-text-color;
@@ -45,7 +45,7 @@
   border: 1px @message-border-color solid;
   background-color: @message-bg-color;
   .el-message__icon {
-    color: @k-status-primary;
+    color: var(--k-theme-primary);
   }
   .el-message__content {
     color: @message-text-color;

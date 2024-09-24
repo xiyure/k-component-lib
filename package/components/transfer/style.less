@@ -1,4 +1,4 @@
-@import '../../style/variable.less';
+@import '../../style/variable.css';
 @import '../../style/global.less';
 
 .k-transfer {
@@ -9,7 +9,7 @@
   .el-transfer {
     display: flex;
     .el-transfer-panel {
-      background-color: @k-gray-50;
+      background-color: var(--k-gray-50);
       .el-transfer-panel__filter {
         display: none;
       }
@@ -19,14 +19,14 @@
       .el-transfer-panel__header {
         height: 32px;
         padding-left: 10px;
-        background-color: @k-gray-50;
+        background-color: var(--k-gray-50);
         .transfer-restore__text {
           flex-shrink: 0;
           padding-right: 5px;
-          color: @k-status-primary;
+          color: var(--k-theme-primary);
           cursor: pointer;
           &:active {
-            color: @k-blue-600;
+            color: var(--k-blue-600);
           }
         }
       }
@@ -39,15 +39,16 @@
         margin-right: 0;
         padding-left: 0;
         padding: 2px 0;
-        border-bottom: 1px @k-gray-100 solid;
-        background-color: @k-theme-light;
+        border-bottom: 1px --k-gray-100 solid;
+        background-color: var(--k-theme-light);
         &:hover {
-          background-color: @k-gray-50;
+          background-color: var(--k-gray-50);
         }
         &:active {
-          background-color: @k-blue-50;
+          background-color: var(--k-blue-50);
         }
-        .el-checkbox__input, .el-checkbox__label {
+        .el-checkbox__input,
+        .el-checkbox__label {
           width: auto;
           margin-left: 10px;
         }
@@ -61,17 +62,18 @@
       .el-transfer__button {
         width: auto;
         padding: 8px 10px;
-        border: 1px @k-gray-200 solid;
+        border: 1px --k-gray-200 solid;
         overflow: hidden;
         color: #000;
-        background-color: @k-theme-light;
+        background-color: var(--k-theme-light);
         &:nth-child(2) {
           margin: 10px 0 0 0;
         }
         &:disabled {
-          background-color: @k-gray-100;
+          background-color: var(--k-gray-100);
         }
-        .k-transfer__left-arrow, .k-transfer__right-arrow {
+        .k-transfer__left-arrow,
+        .k-transfer__right-arrow {
           width: 16px;
           height: 16px;
         }
@@ -92,20 +94,20 @@
       }
     }
   }
-  .el-transfer .el-transfer-panel:first-child .k-transfer-sort{
+  .el-transfer .el-transfer-panel:first-child .k-transfer-sort {
     display: none;
   }
   ::-webkit-scrollbar {
-    width: 5px; 
+    width: 5px;
     height: 5px;
   }
   ::-webkit-scrollbar-track {
     background: #f1f1f1;
   }
   ::-webkit-scrollbar-thumb {
-    background: @k-gray-200;
+    background: var(--k-gray-200);
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: @k-gray-300;
+    background: var(--k-gray-300);
   }
 }

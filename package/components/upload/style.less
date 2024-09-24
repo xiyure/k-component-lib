@@ -1,4 +1,4 @@
-@import '../../style/variable.less';
+@import '../../style/variable.css';
 @import '../../style/global.less';
 
 .k-upload {
@@ -42,8 +42,8 @@
 }
 .k-dragger {
   .el-upload--text {
-    border: 1px @k-status-primary dashed;
-    background-color: #FFF;
+    border: 1px --k-theme-primary dashed;
+    background-color: #fff;
     padding: 20px 0;
     .el-upload__tip {
       width: 100%;
@@ -73,10 +73,10 @@
       display: flex;
       margin-left: 10px;
       .default-success-icon {
-        color: @k-status-success;
+        color: var(--k-theme-success);
       }
       .default-fail-icon {
-        color: @k-status-danger;
+        color: var(--k-theme-danger);
       }
     }
     .remove-file {
@@ -95,11 +95,11 @@
     display: flex;
     margin-left: 10px;
     .default-remove-icon {
-      color: @k-status-warning;
+      color: var(--k-theme-warning);
     }
   }
   .remove-file:hover {
-    color: @k-status-primary;
+    color: var(--k-theme-primary);
     cursor: pointer;
   }
   .status-icon {

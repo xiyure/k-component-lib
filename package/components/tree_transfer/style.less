@@ -1,4 +1,4 @@
-@import '../../style/variable.less';
+@import '../../style/variable.css';
 @import '../../style/global.less';
 
 .k-tree-transfer {
@@ -33,7 +33,7 @@
       overflow: hidden;
     }
     .tree-transfer__cell-label {
-     margin-right: 8px;
+      margin-right: 8px;
     }
   }
   .k-transfer-content__left,
@@ -42,7 +42,7 @@
   }
   .k-transfer-content {
     flex-grow: 1;
-    background-color: #F5F5F5;
+    background-color: #f5f5f5;
     .k-transfer-title {
       padding-left: 10px;
     }
@@ -51,7 +51,7 @@
       justify-content: flex-start;
       align-items: center;
     }
-    .k-transfer__list{
+    .k-transfer__list {
       overflow: auto;
       height: 300px;
       border-radius: 4px;
@@ -69,7 +69,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .k-transfer__operate{
+  .k-transfer__operate {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -82,11 +82,11 @@
       }
     }
   }
-  .el-checkbox__input.is-disabled .el-checkbox__inner{
+  .el-checkbox__input.is-disabled .el-checkbox__inner {
     display: none;
   }
   .el-tree__empty-block {
-    background-color: #F5F5F5;
+    background-color: #f5f5f5;
   }
   .column-body {
     display: flex;
@@ -103,7 +103,7 @@
       .column-close {
         cursor: pointer;
         &:hover {
-          color: @k-status-primary;
+          color: var(--k-theme-primary);
         }
         svg {
           width: 13px;
@@ -121,10 +121,10 @@
   display: flex;
   justify-content: space-between;
   .clear-data {
-    color: @k-status-primary;
+    color: var(--k-theme-primary);
     cursor: pointer;
     &:hover {
-      color: @k-blue-400;
+      color: var(--k-blue-400);
     }
   }
 }

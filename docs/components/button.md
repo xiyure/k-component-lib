@@ -21,11 +21,11 @@ title: Button 按钮
 - icon按钮
   > 一般用于节省空间的情景。
 
-:::preview
+<preview path="../example/button/def.vue"></preview>
 
-demo-preview=../example/button/def.vue
+## disabled
 
-:::
+<preview path="../example/button/btnDisabled.vue"></preview>
 
 ## 彩色图标
 
@@ -45,11 +45,23 @@ demo-preview=../example/button/def.vue
 - css 预设颜色: red
 - el, type 颜色: primary...
 
-:::preview
+<preview path="../example/button/btnColor.vue"></preview>
 
-demo-preview=../example/button/btnColor.vue
+## 左右图标插槽
 
-:::
+### 方式一, api
+
+<preview path="../example/button/btnIcon.vue"></preview>
+
+### 方式二, 插槽
+
+<preview path="../example/button/btnIcon2.vue"></preview>
+
+## 不同尺寸(size)
+
+size 提供三个尺寸: sm、base(def)、lg 。
+
+<preview path="../example/button/btnSize.vue"></preview>
 
 ## API
 

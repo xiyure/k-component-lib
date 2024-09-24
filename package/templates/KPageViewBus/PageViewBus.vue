@@ -47,7 +47,7 @@
         </div>
 
         <div v-if="$slots['extra-body']" class="KPageViewBus-body pt-3">
-          <slot name="extra-body"></slot>
+          <slot name="extra-main"></slot>
         </div>
         <div v-if="$slots['extra-foot']" class="KPageViewBus-foot pt-3">
           <slot name="extra-foot"></slot>

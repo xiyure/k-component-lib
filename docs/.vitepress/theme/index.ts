@@ -1,6 +1,5 @@
 import { h, onMounted } from 'vue';
 import DefaultTheme from 'vitepress/theme';
-import KUI from '@ksware/ksw-ux';
 import '@ksware/ksw-ux/kingsware-ui/style.css';
 import 'vitepress-theme-demoblock/dist/theme/styles/index.css';
 import { Container } from '../plugin/container/index';
@@ -15,8 +14,23 @@ import {
 } from '@nolebase/vitepress-plugin-enhanced-readabilities/client';
 import type { Options } from '@nolebase/vitepress-plugin-enhanced-readabilities/client';
 import '@nolebase/vitepress-plugin-enhanced-readabilities/client/style.css';
+import DocTitle from '../components/DocTitle.vue';
 import { KswIcon } from 'ksw-vue-icon';
-import 'ksw-vue-icon/styles/icon.css';
+/*
+ *  npm
+ */
+// import KUI from '@ksware/ksw-ux';
+// import 'ksw-vue-icon/styles/icon.css';
+/*
+ *  本地 build
+ */
+// import KUI from '../../../kingsware-ui/index';
+// import '../../../kingsware-ui/style.css';
+/*
+ *  源码
+ */
+import KUI from '../../../package/index';
+// import '../../../package/style';
 
 export default {
   ...DefaultTheme,
@@ -34,6 +48,7 @@ export default {
     ctx.app.use(KswIcon);
     DefaultTheme.enhanceApp(ctx);
     ctx.app.component('demo-preview', Container);
+    ctx.app.component('DocTitle', DocTitle);
     ctx.app.provide(InjectionKey, {
       // 配置
       layoutSwitch: {

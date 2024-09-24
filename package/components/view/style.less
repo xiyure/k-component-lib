@@ -1,9 +1,9 @@
-@import '../../style/variable.less';
+@import '../../style/variable.css';
 @import '../../style/global.less';
 
 .k-view {
   padding: 10px;
-  border: 1px #EAE8EB solid;
+  border: 1px #eae8eb solid;
   .k-view__header {
     display: flex;
     justify-content: space-between;
@@ -11,32 +11,33 @@
     border-bottom: 1px #705e7a solid;
     .view-fresh {
       &:hover {
-        color: @k-status-primary;
+        color: var(--k-theme-primary);
         cursor: pointer;
       }
     }
   }
-  .k-view__special-data, .k-view__custom-data {
+  .k-view__special-data,
+  .k-view__custom-data {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
   .k-view__special-data {
-    border-bottom: 1px #EAE8EB solid;
+    border-bottom: 1px #eae8eb solid;
     margin-top: 10px;
     .k-view-item-remove {
       display: none;
     }
-    .k-view-item[data-custom=true]{
+    .k-view-item[data-custom='true'] {
       display: none;
     }
   }
   .k-view__custom-data {
-    .k-view-item[data-custom=false]{
+    .k-view-item[data-custom='false'] {
       display: none;
     }
     .custom-table-box {
-      color: #6B7280;
+      color: #6b7280;
       margin: 10px 0;
     }
   }
@@ -47,11 +48,11 @@
   padding: 5px;
   border-radius: 4px;
   &:hover {
-    background-color: @k-blue-100;
+    background-color: var(--k-blue-100);
     cursor: pointer;
   }
   .k-view-item__other {
-    color: #736F78;
+    color: #736f78;
     .k-view-item-remove {
       width: 100%;
       height: 100%;
@@ -60,14 +61,14 @@
         vertical-align: middle;
       }
       &:hover {
-        color: @k-status-primary;
+        color: var(--k-theme-primary);
         cursor: pointer;
       }
     }
   }
 }
 .k-view-active {
-  background-color: @k-blue-100;
+  background-color: var(--k-blue-100);
 }
 .k-view-item.k-view-disabled {
   cursor: no-drop;
@@ -75,7 +76,8 @@
   &:hover {
     background-color: transparent;
   }
-  .k-view-item__label, .k-view-item__other {
-    color: @k-gray-300 !important;
+  .k-view-item__label,
+  .k-view-item__other {
+    color: var(--k-gray-300) !important;
   }
 }

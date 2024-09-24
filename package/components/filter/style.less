@@ -1,4 +1,4 @@
-@import '../../style/variable.less';
+@import '../../style/variable.css';
 @import '../../style/global.less';
 
 .k-filer {
@@ -10,14 +10,16 @@
 .k-filter__content {
   width: fit-content;
   padding: 10px;
-  .k-select, .k-input, .k-date-picker {
+  .k-select,
+  .k-input,
+  .k-date-picker {
     border-radius: 8px;
   }
   .k-filter__header {
     display: flex;
     justify-content: space-between;
     span:nth-child(2) {
-      color: @k-status-primary;
+      color: var(--k-theme-primary);
       cursor: pointer;
     }
   }
@@ -26,17 +28,21 @@
     align-items: center;
     margin-top: 10px;
     .k-filter__condition {
-      .k-select, .k-input, .k-cascader {
+      .k-select,
+      .k-input,
+      .k-cascader {
         width: 120px;
       }
     }
     .k-filter__logic {
-      .k-select, .k-input {
+      .k-select,
+      .k-input {
         width: 120px;
       }
     }
     .k-filter__value {
-      .k-select, .k-input {
+      .k-select,
+      .k-input {
         width: 200px;
       }
       .k-filter__date-box {
@@ -47,13 +53,15 @@
         }
       }
     }
-    .k-filter__logic, .k-filter__value, .close-icon {
+    .k-filter__logic,
+    .k-filter__value,
+    .close-icon {
       margin-left: 10px;
     }
     .close-icon {
       cursor: pointer;
       &:hover {
-        color: @k-theme-default;
+        color: var(--k-theme-default);
       }
     }
   }
@@ -63,7 +71,7 @@
     align-items: center;
     margin-top: 10px;
     .k-filer__operate-left {
-      color: @k-status-primary;
+      color: var(--k-theme-primary);
       cursor: pointer;
       span:nth-child(2) {
         margin-left: 20px;
@@ -82,7 +90,8 @@
       }
     }
   }
-  .k-filer__operate-left, .k-filter__header {
+  .k-filer__operate-left,
+  .k-filter__header {
     svg {
       margin-right: 3px;
     }

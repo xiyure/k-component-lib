@@ -16,8 +16,8 @@
       :refresh="viewBusRefresh"
       @refresh="emitEvent('refresh')"
     >
-      <template #extra-body>
-        <slot name="extra-viewBus-body"></slot>
+      <template #extra-main>
+        <slot name="extra-aside"></slot>
       </template>
     </KPageViewBus>
 
@@ -40,11 +40,11 @@
           </div>
         </div>
         <div>
-          <slot name="extra-page-head-btn"></slot>
+          <slot name="extra-head-btn"></slot>
         </div>
       </div>
       <div id="KPageBody" class="KPageBody h-full">
-        <slot name="extra-page-body"></slot>
+        <slot name="extra-main"></slot>
       </div>
     </div>
   </div>

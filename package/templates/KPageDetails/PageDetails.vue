@@ -42,7 +42,7 @@
       </div>
     </div>
 
-    <slot name="extra-body"></slot>
+    <slot name="extra-main"></slot>
   </div>
 </template>
 
