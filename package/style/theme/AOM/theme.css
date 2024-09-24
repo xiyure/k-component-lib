@@ -292,6 +292,7 @@
   --k-theme-input-rounded--lg: var(--k-theme-button-size-rounded--lg);
   --k-theme-input-border-color--normal: var(--k-theme-border--normal);
   --k-theme-input-border-color--hover: var(--k-theme-primary-400);
+  --k-theme-input-border-color--active: var(--k-theme-primary-500);
 
   /* collapse */
   --k-theme-collapse-size-height: var(--k-theme-button-size-height--base);

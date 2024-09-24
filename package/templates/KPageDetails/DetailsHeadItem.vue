@@ -10,7 +10,7 @@
     <p class="titel text-base text-gray-400 text-nowrap">{{ label }}:</p>
     <p class="value text-base text-normal">
       <span v-if="typeof value === 'string'">{{ value }}</span>
-      <KTag v-else-if="typeof value === 'object'" :size="value.size">{{ value.value }}</KTag>
+      <component :is="render"></component>
     </p>
   </div>
 </template>
@@ -26,6 +26,9 @@ const props = defineProps({
   value: {
     type: String || Object,
     default: '',
+  },
+  render: {
+    type: Function,
   },
 });
 </script>

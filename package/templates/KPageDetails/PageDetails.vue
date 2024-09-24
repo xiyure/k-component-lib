@@ -35,6 +35,7 @@
               :key="item.label"
               :label="item.label"
               :value="item.value"
+              :render="item.render"
             ></DetailsHeadItem>
           </div>
         </slot>
@@ -46,6 +47,7 @@
 </template>
 
 <script setup>
+import { render } from 'vue';
 import DetailsHeadItem from './DetailsHeadItem.vue';
 
 const props = defineProps({
@@ -63,7 +65,7 @@ const props = defineProps({
   },
   abstract: {
     type: Array,
-    default: () => []
+    default: () => [],
   },
 });
 </script>
