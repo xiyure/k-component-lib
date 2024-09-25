@@ -1,6 +1,5 @@
 <template>
   <div>
-    123
     <k-button>默认按钮</k-button>
     <k-button main>主要按钮</k-button>
     <k-button secondary>次要按钮</k-button>

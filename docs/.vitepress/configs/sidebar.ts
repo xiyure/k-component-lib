@@ -1,4 +1,3 @@
-import { text } from 'stream/consumers';
 import { generateSidebar } from 'vitepress-sidebar';
 
 const baseSidebarOptions = {
@@ -6,10 +5,14 @@ const baseSidebarOptions = {
   useTitleFromFileHeading: true,
   useTitleFromFrontmatter: true,
   useFolderTitleFromIndexFile: true,
-  useFolderLinkFromIndexFile: true,
-  folderLinkNotIncludesFileName: true,
+  useFolderLinkFromIndexFile: false,
+  convertSameNameSubFileToGroupIndexPage: true,
+  // folderLinkNotIncludesFileName: true,
+  underscoreToSpace: true, // _转为空格
+  capitalizeFirst: true, //首字母强制大写
   sortMenusByFrontmatterDate: true, // 启用日期排序
   sortMenusOrderByDescending: false, // 升序
+  collapsed: false, // 升序
   // debugPrint: true,
 };
 
@@ -70,15 +73,15 @@ export default {
     base: '/docs/components/',
     items: generateSidebar(componentsGeneralSidebarOptions),
   },
-  '/docs/templates/': {
-    base: '/docs/templates/',
-    items: [
-      {
-        text: '模板文档',
-        items: generateSidebar(templatesGeneralSidebarOptions),
-      },
-    ],
-  },
+  // '/docs/templates/': {
+  //   base: '/docs/templates/',
+  //   items: [
+  //     {
+  //       text: '模板文档',
+  //       items: generateSidebar(templatesGeneralSidebarOptions),
+  //     },
+  //   ],
+  // },
   // '/docs/templates/': {
   //   base: '/',
   //   items: [

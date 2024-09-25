@@ -246,8 +246,9 @@ function genApiDoc() {
         return null;
       }
       const { data: frontmatter, content } = matter(code);
-      const projectDir = dirname(__dirname);
-      const baseDir = join(dirname(projectDir), 'components')
+      const mdFilePath = id; // 获取当前文件路径
+      const baseDir = dirname(mdFilePath)
+
       const blocks = md.parse(content, {}).map((i: any) => i.content);
       const replacedBlocks: any = [];
       for (const block of blocks) {
