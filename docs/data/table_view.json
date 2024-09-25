@@ -1,5 +1,5 @@
 {
-  "name": "Button",
+  "name": "table_view",
   "props": [
     {
       "displayName": "show-view-bus",
