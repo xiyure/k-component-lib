@@ -19,13 +19,13 @@ import { KswIcon } from 'ksw-vue-icon';
 /*
  *  npm
  */
-// import KUI from '@ksware/ksw-ux';
-// import 'ksw-vue-icon/styles/icon.css';
+import KUI from '@ksware/ksw-ux';
+import 'ksw-vue-icon/styles/icon.css';
 /*
  *  本地 build
  */
-import KUI from '../../../kingsware-ui/index';
-import '../../../kingsware-ui/style.css';
+// import KUI from '../../../kingsware-ui/index';
+// import '../../../kingsware-ui/style.css';
 /*
  *  源码
  */
