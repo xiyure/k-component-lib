@@ -1,7 +1,7 @@
 import path from 'path';
 import { defineConfig } from 'vite';
-import { genApiDoc } from './.vitepress/plugin/api-doc.config';
 import vueJsx from '@vitejs/plugin-vue-jsx';
+import { genApiDoc } from './.vitepress/plugin/api-doc.config';
 
 export default defineConfig({
   plugins: [genApiDoc(), vueJsx()],

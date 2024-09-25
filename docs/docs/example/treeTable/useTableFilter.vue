@@ -12,7 +12,10 @@
   </SBExamplePanel>
   <br />
   <div :style="{ height: '300px' }">
-    <k-tree-table :data="tableData" :column="column7" :show-page="false" border></k-tree-table>
+    <k-tree-table
+      :data="tableData" :column="column7" :show-page="false"
+      border
+    ></k-tree-table>
   </div>
 </template>
 

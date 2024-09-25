@@ -255,3 +255,42 @@ export function multiFieldSort(data: any[], fields: SortFields[]) {
     return 0; // 如果所有字段都相等，则返回 0
   });
 }
+
+export function formatter(date: Date | Date[], formatter: any) {
+  if (typeof formatter !== 'string') {
+    return date;
+  }
+  const dateList = Array.isArray(date) ? date : [date];
+  const result: any[] = [];
+  for (const dateItem of dateList) {
+    if (dateItem instanceof Date === false) {
+      result.push(dateItem);
+      continue;
+    }
+    const y = dateItem.getFullYear();
+    const m = dateItem.getMonth() + 1;
+    const d = dateItem.getDate();
+    const h = dateItem.getHours();
+    const minute = dateItem.getMinutes();
+    const second = dateItem.getSeconds();
+    const formatStr = formatter.replace('YYYY', padZero(y, 4))
+    .replace('MM', padZero(m, 2))
+    .replace('DD', padZero(d, 2))
+    .replace('HH', padZero(h, 2))
+    .replace('mm', padZero(minute, 2))
+    .replace('ss', padZero(second, 2));
+    result.push(formatStr);
+  }
+  if (result.length === 1) {
+    return result[0];
+  }
+  return result;
+}
+
+export function padZero(num: number, length: number) {
+  let str = `${num}`;
+  while (str.length < length) {
+    str = `0${str}`;
+  }
+  return str;
+}

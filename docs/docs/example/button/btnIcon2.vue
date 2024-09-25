@@ -1,12 +1,12 @@
 <template>
   <div>
-    <k-button iconLeft="IconAdd">
+    <k-button icon-left="IconAdd">
       <template #iconLeft>
         <IconAdd />
       </template>
       左侧 icon
     </k-button>
-    <k-button iconLeft="IconAdd">
+    <k-button icon-left="IconAdd">
       右侧 icon
       <template #iconRight>
         <IconArrowBottom />

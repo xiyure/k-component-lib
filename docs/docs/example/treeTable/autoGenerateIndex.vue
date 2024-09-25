@@ -22,7 +22,7 @@
 <script lang="tsx" setup>
 import { ref } from 'vue';
 
-let treeTableData = ref([
+const treeTableData = ref([
   { id: 100001, parentId: null, name: 'Test1', type: 'mp3', sizes: 1024, date: '2020-08-01' },
   {
     id: 10050,

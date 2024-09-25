@@ -102,10 +102,11 @@
                 :type="item.dateType"
                 :teleported="false"
                 :size="props.size"
-                :value-format="props.formatter"
                 clearable
                 :disabled="disabledDatePicker(item)"
-                @change="(val: any) => item.showValue = val"
+                @change="(val: any) => {
+                  dateChange(val, item);
+                }"
               />
             </div>
             <k-select
@@ -149,7 +150,8 @@
               v-model="filterRule"
               :size="props.size"
               :disabled="remote === true || (Array.isArray(props.remote) && Boolean(props.remote.length))"
-              :teleported="false">
+              :teleported="false"
+            >
               <k-option :label="$t('anyOne')" :value="0"></k-option>
               <k-option :label="$t('all')" :value="1"></k-option>
             </k-select>
@@ -172,7 +174,7 @@ import { KButton } from '../button';
 import { KPopover } from '../popover';
 import { KCascader } from '../cascader';
 import { dateTypeOptions, logicOptions } from './data';
-import { treeDataToArray, isValid } from '../../utils';
+import { treeDataToArray, isValid, formatter } from '../../utils';
 
 defineOptions({
   name: 'KFilter'
@@ -215,12 +217,12 @@ const filterData = ref<IFilterDataType[]>([]);
 const filterRule = ref(0);
 
 watch(() => props.remote, () => {
-  if (props.remote === true
-    || (Array.isArray(props.remote) && Boolean(props.remote.length))
+  if (props.remote === true ||
+    (Array.isArray(props.remote) && Boolean(props.remote.length))
   ) {
     filterRule.value = 1;
   }
-})
+});
 const flatColumns = computed(() => treeDataToArray(cloneDeep(props.options), 'group'));
 const instance = computed(() => function (value: any) {
   const matchInstance:any = flatColumns.value?.find(item => item[props.filterKey] === value);
@@ -453,31 +455,39 @@ function changeDateRange(item:IFilterDataType) {
     case 'tomorrow': dateValue = getTargetDay(1); break;
     case 'yesterday': dateValue = getTargetDay(-1); break;
     case 'current-week':
-      dateValue = [getTargetDay(-getWeekDay() + 1), getTargetDay(7 - getWeekDay())]; break;
+      dateValue = [getTargetDay(-getWeekDay() + 1), getTargetDay(7 - getWeekDay(), true)]; break;
     case 'last-week':
-      dateValue = [getTargetDay(-getWeekDay() - 6), getTargetDay(-getWeekDay())]; break;
+      dateValue = [getTargetDay(-getWeekDay() - 6), getTargetDay(-getWeekDay(), true)]; break;
     case 'current-month':
-      dateValue = [getTargetDay(-getDateDay() + 1), getTargetDay(getCurMonthDayCount() - getDateDay())]; break;
+      dateValue = [getTargetDay(-getDateDay() + 1), getTargetDay(getCurMonthDayCount() - getDateDay(), true)]; break;
     case 'last-month':
-      dateValue = [getTargetDay(-getDateDay() - getCurMonthDayCount() + 1), getTargetDay(-getDateDay())]; break;
-    case 'past-seven-days': dateValue = [getTargetDay(-7), getTargetDay(0)]; break;
-    case 'past-thirty-days': dateValue = [getTargetDay(-30), getTargetDay(0)]; break;
+      dateValue = [getTargetDay(-getDateDay() - getCurMonthDayCount(true) + 1), getTargetDay(-getDateDay(), true)]; break;
+    case 'past-seven-days': dateValue = [getTargetDay(-7), getTargetDay(-1, true)]; break;
+    case 'past-thirty-days': dateValue = [getTargetDay(-30), getTargetDay(-1, true)]; break;
   }
   const targetRanges = ['current-week', 'last-week', 'current-month', 'last-month'];
   if (item.dateType === 'datetime' && targetRanges.includes(item.dateRange as string)) {
     item.value = dateValue[0];
-    item.showValue = dateValue[0];
+    item.showValue = formatter(dateValue[0], props.formatter);
   } else {
     item.value = dateValue;
-    item.showValue = dateValue;
+    if (Array.isArray(dateValue)) {
+      item.showValue = formatter(dateValue, props.formatter).join(' - ');
+    } else {
+      item.showValue = formatter(dateValue, props.formatter);
+    }
   }
 }
 // 日期推导
-function getTargetDay(index:number) {
+function getTargetDay(index:number, isEnd = false) {
   const currentDate = new Date();
   const targetDate = new Date(currentDate);
   targetDate.setDate(targetDate.getDate() + index);
-  targetDate.setHours(0, 0, 0, 0);
+  if (isEnd) {
+    targetDate.setHours(23, 59, 59, 0);
+  } else {
+    targetDate.setHours(0, 0, 0, 0);
+  }
   return targetDate;
 }
 function getWeekDay() {
@@ -486,8 +496,9 @@ function getWeekDay() {
 function getDateDay() {
   return new Date().getDate();
 }
-function getCurMonthDayCount() {
-  const month = new Date().getMonth() + 1;
+function getCurMonthDayCount(isPre = false) {
+  const currentMonth = new Date().getMonth() + 1;
+  const month = isPre ? currentMonth - 1 : currentMonth;
   const bigMonth = [1, 3, 5, 7, 8, 10, 12];
   const smallMonth = [4, 6, 9, 11];
   if (bigMonth.includes(month)) {
@@ -519,6 +530,10 @@ function updateValue(dataItem:IFilterDataType, uiType:string, options?:any[]) {
     const targetOption = options?.find(item => item.value === dataItem.value);
     dataItem.showValue = targetOption?.label ?? '';
   }
+}
+function dateChange(val: any, item: any) {
+  const formatterData = formatter(val, props.formatter);
+  item.showValue = Array.isArray(formatterData) ? formatterData.join(' - ') : formatterData;
 }
 
 defineExpose({ filter, clearFilter, getConditionInfo });

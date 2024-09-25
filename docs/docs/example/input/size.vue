@@ -65,8 +65,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-const input1 = ref('')
-const input2 = ref('')
-const input3 = ref('')
+import { ref } from 'vue';
+
+const input1 = ref('');
+const input2 = ref('');
+const input3 = ref('');
 </script>

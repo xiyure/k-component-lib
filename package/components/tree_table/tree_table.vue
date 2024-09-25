@@ -796,7 +796,7 @@ async function advancedFilter(data?: any[] | undefined) {
   const advancedFilterObj = tableFilterRef.value?.[0]?.filter?.(data);
   const { conditionInfo, tableData } = advancedFilterObj ?? {};
   refreshAdvancedFilter(conditionInfo, tableData, false);
-  return{ conditionInfo, tableData };
+  return { conditionInfo, tableData };
 }
 async function clearAdvancedFilter() {
   await nextTick();

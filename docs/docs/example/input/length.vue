@@ -19,7 +19,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-const text = ref('')
-const textarea = ref('')
+import { ref } from 'vue';
+
+const text = ref('');
+const textarea = ref('');
 </script>

@@ -62,10 +62,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { Search } from '@element-plus/icons-vue'
-const input1 = ref('')
-const input2 = ref('')
-const input3 = ref('')
-const select = ref('')
+import { ref } from 'vue';
+import { Search } from '@element-plus/icons-vue';
+
+const input1 = ref('');
+const input2 = ref('');
+const input3 = ref('');
+const select = ref('');
 </script>

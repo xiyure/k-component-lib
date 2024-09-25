@@ -1,13 +1,13 @@
 <template>
   <div style="height: 500px">
     <KPageTableView
-      showViewBus
-      viewBusTitle="视图"
-      viewBusInfo="描述信息"
-      viewBusRefresh
-      pageIcon="IconAomMenuAOMRZColor"
-      pageTitle="用户管理"
-      pageInfo="用户管理页面描述信息"
+      show-view-bus
+      view-bus-title="视图"
+      view-bus-info="描述信息"
+      view-bus-refresh
+      page-icon="IconAomMenuAOMRZColor"
+      page-title="用户管理"
+      page-info="用户管理页面描述信息"
     >
       <template #aside>视图的内容插槽</template>
       <template #aside-toolbar>
