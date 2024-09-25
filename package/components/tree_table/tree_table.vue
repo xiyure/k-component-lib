@@ -792,6 +792,9 @@ function dragEnd(data: any[]) {
 
 // 刷新高级筛选的表格数据
 async function advancedFilter(data?: any[] | undefined) {
+  if (!tableFilterRef.value) {
+    return;
+  }
   await nextTick();
   const advancedFilterObj = tableFilterRef.value?.[0]?.filter?.(data);
   const { conditionInfo, tableData } = advancedFilterObj ?? {};
@@ -799,6 +802,9 @@ async function advancedFilter(data?: any[] | undefined) {
   return { conditionInfo, tableData };
 }
 async function clearAdvancedFilter() {
+  if (!tableFilterRef.value) {
+    return;
+  }
   await nextTick();
   const advancedFilterObj = tableFilterRef.value?.[0]?.clearFilter?.();
   const { conditionInfo, tableData } = advancedFilterObj ?? {};
