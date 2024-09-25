@@ -36,7 +36,7 @@ export default defineConfig({
   },
   cleanUrls: true,
   rewrites: {
-    // 'docs/:folder/:category/:category2/:name': ':folder/:category/:category2/:name',
+    // 'docs/(.*)': '(.*)',
   },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config

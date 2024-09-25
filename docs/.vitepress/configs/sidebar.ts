@@ -1,21 +1,21 @@
 import { generateSidebar } from 'vitepress-sidebar';
 
 const baseSidebarOptions = {
-  documentRootPath: '/',
+  documentRootPath: 'docs',
   useTitleFromFileHeading: true,
   useTitleFromFrontmatter: true,
   useFolderTitleFromIndexFile: true,
   useFolderLinkFromIndexFile: true,
   folderLinkNotIncludesFileName: true,
   sortMenusByFrontmatterDate: true, // 启用日期排序
-  sortMenusOrderByDescending: true, // 升序
+  sortMenusOrderByDescending: false, // 升序
   // debugPrint: true,
 };
 
 const KnowledgeSidebarOptions = {
   ...baseSidebarOptions,
-  scanStartPath: '/docs/知识库/',
-  resolvePath: '/docs/知识库/',
+  scanStartPath: '/docs/knowledge/',
+  resolvePath: '/docs/knowledge/',
 };
 
 // const apiSidebarOptions = {
@@ -26,8 +26,8 @@ const KnowledgeSidebarOptions = {
 
 const componentsGeneralSidebarOptions = {
   ...baseSidebarOptions,
-  scanStartPath: '/docs/components',
-  resolvePath: '/docs/components',
+  scanStartPath: 'components',
+  resolvePath: '/components/',
 };
 
 const templatesGeneralSidebarOptions = {
@@ -46,33 +46,38 @@ const templatesGeneralSidebarOptions = {
 // };
 
 export default {
-  '/知识库/': {
-    base: '/',
-    items: [
-      {
-        text: '知识库',
-        items: generateSidebar(KnowledgeSidebarOptions),
-      },
-    ],
+  // '/knowledge/': {
+  //   base: '/',
+  //   items: [
+  //     {
+  //       text: '知识库',
+  //       items: generateSidebar(KnowledgeSidebarOptions),
+  //     },
+  //   ],
+  // },
+  // '/docs/components/': {
+  //   base: '/',
+  //   items: [
+  //     {
+  //       text: '组件文档',
+  //       items: generateSidebar(componentsGeneralSidebarOptions),
+  //     },
+  //   ],
+  // },
+
+  '/docs/components/': {
+    base: '/docs/components/',
+    items: generateSidebar(componentsGeneralSidebarOptions),
   },
-  '/components/': {
-    base: '/',
-    items: [
-      {
-        text: '组件文档',
-        items: generateSidebar(componentsGeneralSidebarOptions),
-      },
-    ],
-  },
-  '/templates/': {
-    base: '/',
-    items: [
-      {
-        text: '模板文档',
-        items: generateSidebar(templatesGeneralSidebarOptions),
-      },
-    ],
-  },
+  // '/docs/templates/': {
+  //   base: '/',
+  //   items: [
+  //     {
+  //       text: '模板文档',
+  //       items: generateSidebar(templatesGeneralSidebarOptions),
+  //     },
+  //   ],
+  // },
   // '/api/': {
   //   base: '/api/',
   //   items: [

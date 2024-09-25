@@ -24,12 +24,12 @@ import { KswIcon } from 'ksw-vue-icon';
 /*
  *  本地 build
  */
-// import KUI from '../../../kingsware-ui/index';
-// import '../../../kingsware-ui/style.css';
+import KUI from '../../../kingsware-ui/index';
+import '../../../kingsware-ui/style.css';
 /*
  *  源码
  */
-import KUI from '../../../package/index';
+// import KUI from '../../../package/index';
 // import '../../../package/style';
 
 export default {

@@ -15,6 +15,7 @@ import zh from './internal/zh';
 import en from './internal/en';
 import { Emitter } from './utils';
 import './style/tailwind.css';
+import './style/theme/AOM/theme.css';
 
 type optionsType = {
   locale?: 'zh' | 'en';
@@ -26,13 +27,13 @@ type optionsType = {
 // 组件和模板添加install方法
 for (const name in components) {
   const comp = components[name];
-  comp.install = function (app :any) {
+  comp.install = function (app: any) {
     app.component(comp.name, comp);
   };
 }
 for (const name in templates) {
   const tmpl = templates[name];
-  tmpl.install = function (app :any) {
+  tmpl.install = function (app: any) {
     app.component(tmpl.name, tmpl);
   };
 }

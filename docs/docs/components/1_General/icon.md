@@ -1,3 +1,8 @@
+---
+title: Icon 图标
+date: 2021-03-12
+---
+
 # Icon 图标
 
 [Ksw vue icon](https://sengoku-f.github.io/KSW-vue-icon/) 图标库是一个通过技术驱动矢量图标样式的图标库产品，可以实现根据单一SVG源文件导出为 Vue3 组件代码，打通 Design to Code 链路，实现产品、研发、设计师一站式对接，使用更高效。
@@ -25,6 +30,7 @@ pnpm install -D ksw-vue-icon
 ```sh [bun]
 bun add -D ksw-vue-icon
 ```
+
 :::
 
 ### 按需引用图标
@@ -70,6 +76,7 @@ Vue.use(KswIcon)
 <IconLoading />
 
 <!-- ::: details 点我查看代码 -->
+
 ```js:line-numbers
 import {
   IconSearch,
@@ -86,8 +93,8 @@ import {
 <IconArrowTop :rotate="180" />
 <IconLoading />
 ```
-<!-- ::: -->
 
+<!-- ::: -->
 
 ### SVG Script
 
@@ -98,6 +105,7 @@ import {
 <IconCalendarColor :size="128" />
 
 ::: details 点我查看代码
+
 ```html:line-numbers {3-22}
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" onload="init()" aria-hidden="true"
   viewBox="0 0 24 24">
@@ -106,10 +114,10 @@ import {
       try {
           var time = new Date();
           var locale = "zh-cn";
-          
+
           var DD = time.getDate();
           var MMM = time.toLocaleString(locale, { month: "short" }).toUpperCase();
-          
+
           document.querySelectorAll("[data-id-feda7348='day']").forEach(function(elem) {
               elem.textContent = DD;
           });
@@ -138,6 +146,7 @@ import {
     style="font-size: 12px; fill: rgb(38, 38, 38); text-anchor: middle; dominant-baseline: middle;">5</text>
 </svg>
 ```
+
 :::
 
 ## 图标列表
@@ -150,14 +159,13 @@ import {
 <!-- <IconsItem /> -->
 
 ## API
-| 参数	 | 说明  | 类型  | 默认值 |
-| ------------------ | --- | --- | --- |
-| **size** | 图标的大小，宽高相同 | `number` &#124; `string` |  `1em` |
-| **color** |  图标的颜色，默认为当前颜色 | `string` &#124; `string[]` |  `currentColor` |
-| **rotate** | 图标旋转角度（IE9 无效） | `number` | `-` |
-| **spin** |  给图标加旋转动画 | `boolean` | `false` |
 
-
+| 参数       | 说明                       | 类型                       | 默认值         |
+| ---------- | -------------------------- | -------------------------- | -------------- |
+| **size**   | 图标的大小，宽高相同       | `number` &#124; `string`   | `1em`          |
+| **color**  | 图标的颜色，默认为当前颜色 | `string` &#124; `string[]` | `currentColor` |
+| **rotate** | 图标旋转角度（IE9 无效）   | `number`                   | `-`            |
+| **spin**   | 给图标加旋转动画           | `boolean`                  | `false`        |
 
 <script setup>
 // import { IconCalendarColor, IconSearch, IconSettingFill, IconRefresh, IconArrowTop, IconLoading } from "ksw-vue-icon";
