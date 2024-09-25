@@ -1,7 +1,7 @@
 import { generateSidebar } from 'vitepress-sidebar';
 
 const baseSidebarOptions = {
-  documentRootPath: '/docs',
+  documentRootPath: '/',
   useTitleFromFileHeading: true,
   useTitleFromFrontmatter: true,
   useFolderTitleFromIndexFile: true,
@@ -9,6 +9,7 @@ const baseSidebarOptions = {
   folderLinkNotIncludesFileName: true,
   sortMenusByFrontmatterDate: true, // 启用日期排序
   sortMenusOrderByDescending: true, // 升序
+  // debugPrint: true,
 };
 
 const KnowledgeSidebarOptions = {
@@ -29,6 +30,12 @@ const componentsGeneralSidebarOptions = {
   resolvePath: '/docs/components',
 };
 
+const templatesGeneralSidebarOptions = {
+  ...baseSidebarOptions,
+  scanStartPath: '/docs/templates',
+  resolvePath: '/docs/templates',
+};
+
 // const docsSidebarOptions = {
 //   ...baseSidebarOptions,
 //   scanStartPath: 'docs',
@@ -39,7 +46,7 @@ const componentsGeneralSidebarOptions = {
 // };
 
 export default {
-  '/docs/知识库/': {
+  '/知识库/': {
     base: '/',
     items: [
       {
@@ -48,7 +55,7 @@ export default {
       },
     ],
   },
-  '/docs/components/': {
+  '/components/': {
     base: '/',
     items: [
       {
@@ -57,7 +64,15 @@ export default {
       },
     ],
   },
-
+  '/templates/': {
+    base: '/',
+    items: [
+      {
+        text: '模板文档',
+        items: generateSidebar(templatesGeneralSidebarOptions),
+      },
+    ],
+  },
   // '/api/': {
   //   base: '/api/',
   //   items: [
