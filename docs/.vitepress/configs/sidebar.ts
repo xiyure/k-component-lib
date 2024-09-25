@@ -1,3 +1,4 @@
+import { text } from 'stream/consumers';
 import { generateSidebar } from 'vitepress-sidebar';
 
 const baseSidebarOptions = {
@@ -32,8 +33,8 @@ const componentsGeneralSidebarOptions = {
 
 const templatesGeneralSidebarOptions = {
   ...baseSidebarOptions,
-  scanStartPath: '/docs/templates',
-  resolvePath: '/docs/templates',
+  scanStartPath: 'templates',
+  resolvePath: '/templates/',
 };
 
 // const docsSidebarOptions = {
@@ -68,6 +69,15 @@ export default {
   '/docs/components/': {
     base: '/docs/components/',
     items: generateSidebar(componentsGeneralSidebarOptions),
+  },
+  '/docs/templates/': {
+    base: '/docs/templates/',
+    items: [
+      {
+        text: '模板文档',
+        items: generateSidebar(templatesGeneralSidebarOptions),
+      },
+    ],
   },
   // '/docs/templates/': {
   //   base: '/',
