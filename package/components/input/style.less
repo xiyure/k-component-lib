@@ -4,6 +4,8 @@
 
 // @TODO 还不支持 size 控制插槽中的组件 size
 
+.k-input,
+.el-input,
 .k-input.el-input,
 .el-textarea {
   // 所有样式设置为unset
@@ -29,6 +31,7 @@
     padding: 0.375rem 0.75rem;
     border-radius: var(--border-radius);
     border: var(--border-color--normal) 1px solid;
+    background: var(--bg-color);
 
     .el-input__inner {
       .init-style();
@@ -38,7 +41,7 @@
       caret-color: var(--border-color--checked);
     }
     .el-input__inner::placeholder {
-      color: var(--k-gray-300);
+      color: var(--k-theme-input-placeholder-color);
     }
     &:hover {
       .init-style();
@@ -66,6 +69,7 @@
       border: var(--border-color--normal) 1px solid;
       background: var(--k-gray-50);
       box-shadow: unset;
+
       .el-input__inner {
         cursor: not-allowed;
       }

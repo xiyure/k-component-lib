@@ -19,8 +19,8 @@ import { KswIcon } from 'ksw-vue-icon';
 /*
  *  npm
  */
-import KUI from '@ksware/ksw-ux';
-import '@ksware/ksw-ux/kingsware-ui/style.css';
+// import KUI from '@ksware/ksw-ux';
+// import '@ksware/ksw-ux/kingsware-ui/style.css';
 /*
  *  本地 build
  */
@@ -29,8 +29,8 @@ import '@ksware/ksw-ux/kingsware-ui/style.css';
 /*
  *  源码
  */
-// import KUI from '../../../package/index';
-// import '../../../package/style/theme/AOM/theme.css';
+import KUI from '../../../package/index';
+import '../../../package/style/theme/AOM/theme.css';
 
 export default {
   ...DefaultTheme,
