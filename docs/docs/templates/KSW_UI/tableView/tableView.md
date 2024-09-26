@@ -6,7 +6,7 @@ title: TableView 表格视图
 
 ## 布局
 
-![alt text](assets/TableView/image.png)
+![alt text](assets/tableView/image.png)
 
 ## 示例
 
