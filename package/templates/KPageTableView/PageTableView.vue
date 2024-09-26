@@ -12,7 +12,7 @@
     <KPageViewBus
       v-if="showAside"
       :title="asideTitle"
-      :info="asideInfo"
+      :info="asideDescriptions"
       :refresh="asideRefresh"
       @refresh="emitEvent('refresh')"
     >
@@ -39,7 +39,7 @@
           </div>
           <p class="KPageHead-title">{{ pageTitle }}</p>
           <div v-if="pageIcon" class="KPageHead-info pl-1">
-            <KTooltip :content="pageIcon" @hide="() => (tips = false)">
+            <KTooltip :content="pageDescriptions" @hide="() => (tips = false)">
               <IconTips v-show="tips" color="#4193f2" size="16"></IconTips>
             </KTooltip>
           </div>
@@ -57,7 +57,7 @@
 
 <script lang="tsx" setup>
 import { ref } from 'vue';
-import { KPageViewBus } from '../index.ts';
+import { KPageViewBus } from '../KPageViewBus';
 import { KTooltip } from '../../components';
 
 const tips = ref(false);
@@ -65,13 +65,13 @@ const tips = ref(false);
 const props = defineProps({
   showAside: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   asideTitle: {
     type: String,
     default: 'viewBus',
   },
-  asideInfo: {
+  asideDescriptions: {
     type: String,
     default: 'viewBusInfo',
   },
@@ -87,11 +87,13 @@ const props = defineProps({
     type: String,
     default: '页面标题',
   },
-  pageInfo: {
+  pageDescriptions: {
     type: String,
     default: '页面描述信息',
   },
 });
+
+console.log('@', props.asideShow);
 
 // 正则判断 props.pageIcon 中是否是图片链接
 const isImgUrl = /.(jpg|jpeg|png|gif|svg)$/;
