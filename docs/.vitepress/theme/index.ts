@@ -20,7 +20,7 @@ import { KswIcon } from 'ksw-vue-icon';
  *  npm
  */
 import KUI from '@ksware/ksw-ux';
-import 'ksw-vue-icon/styles/icon.css';
+import '@ksware/ksw-ux/kingsware-ui/style.css';
 /*
  *  本地 build
  */
