@@ -2,8 +2,8 @@ import { generateSidebar } from 'vitepress-sidebar';
 
 const baseSidebarOptions = {
   documentRootPath: 'docs',
-  useTitleFromFileHeading: true,
-  useTitleFromFrontmatter: true,
+  useTitleFromFileHeading: true, // 启用后，会从文件头部的 title 标签获取标题
+  useTitleFromFrontmatter: true, // 启用后，会从 frontmatter 中获取标题
   useFolderTitleFromIndexFile: true,
   useFolderLinkFromIndexFile: false, // 启用后，会将文件夹的名称作为链接，而不是文件夹下面的 index.md 文件
   convertSameNameSubFileToGroupIndexPage: true,
@@ -11,15 +11,17 @@ const baseSidebarOptions = {
   underscoreToSpace: true, // _转为空格
   capitalizeFirst: true, //首字母强制大写
   sortMenusByFrontmatterDate: true, // 启用日期排序
-  sortMenusOrderByDescending: false, // 升序
-  collapsed: false, // 升序
+  // sortMenusOrderByDescending: true, // 升序
+  collapsed: false, // 文件夹折叠
   // debugPrint: true,
 };
 
 const KnowledgeSidebarOptions = {
   ...baseSidebarOptions,
-  scanStartPath: '/docs/knowledge/',
-  resolvePath: '/docs/knowledge/',
+  scanStartPath: 'knowledge',
+  resolvePath: '/knowledge/',
+  sortMenusByFrontmatterDate: true, // 启用日期排序
+  sortMenusOrderByDescending: true, // 升序
 };
 
 // const apiSidebarOptions = {
@@ -32,6 +34,7 @@ const componentsGeneralSidebarOptions = {
   ...baseSidebarOptions,
   scanStartPath: 'components',
   resolvePath: '/components/',
+  manualSortFileNameByPriority: ['General', 'Navigation'], // 手动排序
 };
 
 const templatesGeneralSidebarOptions = {
@@ -68,6 +71,10 @@ export default {
   //     },
   //   ],
   // },
+  '/docs/knowledge/': {
+    base: '/docs/knowledge/',
+    items: generateSidebar(KnowledgeSidebarOptions),
+  },
   '/docs/components/': {
     base: '/docs/components/',
     items: generateSidebar(componentsGeneralSidebarOptions),

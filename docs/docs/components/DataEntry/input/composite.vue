@@ -51,6 +51,24 @@
       </template>
     </KInput>
   </div>
+
+  <div class="mt-4">
+    <KInput
+      v-model="input3"
+      style="max-width: 600px"
+      placeholder="请输入..."
+      class="input-with-select"
+    >
+      <template #append>
+        <KButtonGroup>
+          <KButton main>运行</KButton>
+          <KButton color="primary" main>
+            <IconArrowBottom />
+          </KButton>
+        </KButtonGroup>
+      </template>
+    </KInput>
+  </div>
 </template>
 
 <script setup lang="ts">

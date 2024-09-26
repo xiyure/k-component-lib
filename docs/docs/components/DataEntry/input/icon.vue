@@ -1,31 +1,23 @@
 <template>
-  <div class="flex gap-4 mb-4">
-    <span>使用属性</span>
+  <DocTitle>使用属性</DocTitle>
+  <div class="flex gap-2">
     <KInput
       v-model="input1"
       style="width: 240px"
       placeholder="选择日期"
       suffix-icon="IconCalendarColor"
     />
-    <KInput
-      v-model="input2"
-      style="width: 240px"
-      placeholder="搜索..."
-      prefix-icon="IconSearch"
-    />
+    <KInput v-model="input2" style="width: 240px" placeholder="搜索..." prefix-icon="IconSearch" />
   </div>
-  <div class="flex gap-4">
-    <span>使用插槽</span>
+
+  <DocTitle>使用插槽</DocTitle>
+  <div class="flex gap-2">
     <KInput v-model="input3" style="width: 240px" placeholder="选择日期">
       <template #suffix>
         <IconCalendarColor />
       </template>
     </KInput>
-    <KInput
-      v-model="input4"
-      style="width: 240px"
-      placeholder="搜索..."
-    >
+    <KInput v-model="input4" style="width: 240px" placeholder="搜索...">
       <template #prefix>
         <IconSearch />
       </template>

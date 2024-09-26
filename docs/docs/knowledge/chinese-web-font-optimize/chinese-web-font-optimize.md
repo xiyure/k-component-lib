@@ -1,7 +1,11 @@
+---
+title: 网页中文字体加载速度优化
+date: 2020-08-13 10:30:00
+---
+
 # 网页中文字体加载速度优化
 
 在 Web 项目中，选择合适的字体能够显著提升用户体验。然而，由于中文字体文件通常较大，并且往往需要加载多种字重，如果无差别地加载所有字体文件，必然会导致加载时间过长，极大影响首屏显示速度。本文将简要介绍几种优化字体加载的方案，并讨论如何选择最合适的方案。
-
 
 ## 全量加载字体
 
@@ -37,23 +41,28 @@
 
 ```html
 <head>
-    <!-- 预加载字体 -->
-    <link rel="preload" href="/fonts/AlibabaPuHuiTi.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-    <style>
-        @font-face {
-            font-family: 'AlibabaPuHuiTi';
-            src: url('/fonts/AlibabaPuHuiTi.woff2') format('woff2');
-            font-display: swap; /* 保证字体加载期间使用备用字体 */
-        }
-        body {
-            font-family: 'AlibabaPuHuiTi', sans-serif;
-        }
-    </style>
+  <!-- 预加载字体 -->
+  <link
+    rel="preload"
+    href="/fonts/AlibabaPuHuiTi.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+  <style>
+    @font-face {
+      font-family: 'AlibabaPuHuiTi';
+      src: url('/fonts/AlibabaPuHuiTi.woff2') format('woff2');
+      font-display: swap; /* 保证字体加载期间使用备用字体 */
+    }
+    body {
+      font-family: 'AlibabaPuHuiTi', sans-serif;
+    }
+  </style>
 </head>
 ```
 
 通过这些优化技巧，可以在不得不使用全量加载字体的情况下，尽可能减少对首屏性能的负面影响。
-
 
 ## 部分加载字体
 
@@ -117,8 +126,7 @@
 
 切片字体的核心功能依赖于 `unicode-range` 和 `woff2` 格式。`unicode-range` 用于在 `@font-face` 定义中指定特定字符范围，如果页面中未使用该范围内的字符，则不会下载相应的字体；而一旦使用至少一个字符，则会下载相应的字体切片。支持这两项功能的浏览器通常也支持 `HTTP/2`，后者可以实现多个小文件的同时传输，从而进一步优化加载速度。
 
-> [!TIP]
-> `unicode-range` 的用途可以看一下这篇文章 [CSS unicode-range特定字符使用font-face自定义字体](https://www.zhangxinxu.com/wordpress/2016/11/css-unicode-range-character-font-face/)
+> [!TIP] > `unicode-range` 的用途可以看一下这篇文章 [CSS unicode-range特定字符使用font-face自定义字体](https://www.zhangxinxu.com/wordpress/2016/11/css-unicode-range-character-font-face/)
 
 针对韩文字体，团队做了进一步的优化：
 
@@ -127,7 +135,6 @@
 这种策略使得下载的字节数比之前的最佳策略又减少了 38%。
 
 最终，团队将这种切片字体策略应用到了 CJK 字体中，并针对不同语言调整了字符集大小和切片数量。
-
 
 > [!IMPORTANT] 总结
 > 简而言之，`unicode-range` 设置了 `@font-face` 定义的字体所应该应用的特定字符范围。如果页面中未使用该范围内的任何字符，则不会下载对应的字体；如果使用了，则仅下载包含相关字符的字体切片。这种方法大大提高了字体加载效率，尤其适用于像 CJK 这样字符数量庞大的语言。
@@ -144,7 +151,7 @@
 
 :::
 
-我们直接使用[在线字体分包器](https://chinese-font.netlify.app/online-split/) 来处理: 
+我们直接使用[在线字体分包器](https://chinese-font.netlify.app/online-split/) 来处理:
 
 ![在线字体分包](在线字体分包.jpg)
 
