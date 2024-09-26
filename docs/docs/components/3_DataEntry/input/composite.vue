@@ -1,19 +1,11 @@
 <template>
   <div>
-    <KInput
-      v-model="input1"
-      style="max-width: 600px"
-      placeholder="请输入..."
-    >
+    <KInput v-model="input1" style="max-width: 600px" placeholder="请输入...">
       <template #prepend>Http://</template>
     </KInput>
   </div>
   <div class="mt-4">
-    <KInput
-      v-model="input2"
-      style="max-width: 600px"
-      placeholder="请输入..."
-    >
+    <KInput v-model="input2" style="max-width: 600px" placeholder="请输入...">
       <template #append>.com</template>
     </KInput>
   </div>
