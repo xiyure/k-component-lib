@@ -10,10 +10,10 @@
     <!-- left -->
     <!-- no-refresh -->
     <KPageViewBus
-      v-if="showViewBus"
-      :title="viewBusTitle"
-      :info="viewBusInfo"
-      :refresh="viewBusRefresh"
+      v-if="showAside"
+      :title="asideTitle"
+      :info="asideInfo"
+      :refresh="asideRefresh"
       @refresh="emitEvent('refresh')"
     >
       <template #head>
@@ -44,7 +44,6 @@
             </KTooltip>
           </div>
         </div>
-
         <div>
           <slot name="toolbar"></slot>
         </div>
@@ -64,19 +63,19 @@ import { KTooltip } from '../../components';
 const tips = ref(false);
 
 const props = defineProps({
-  showViewBus: {
+  showAside: {
     type: Boolean,
     default: false,
   },
-  viewBusTitle: {
+  asideTitle: {
     type: String,
     default: 'viewBus',
   },
-  viewBusInfo: {
+  asideInfo: {
     type: String,
     default: 'viewBusInfo',
   },
-  viewBusRefresh: {
+  asideRefresh: {
     type: Boolean,
     default: false,
   },
