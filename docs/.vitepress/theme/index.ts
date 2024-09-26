@@ -14,8 +14,6 @@ import {
 } from '@nolebase/vitepress-plugin-enhanced-readabilities/client';
 import type { Options } from '@nolebase/vitepress-plugin-enhanced-readabilities/client';
 import '@nolebase/vitepress-plugin-enhanced-readabilities/client/style.css';
-import VxeTable from 'vxe-table';
-import VxeUI, { VxeGlobalConfig } from 'vxe-pc-ui';
 import DocTitle from '../components/DocTitle.vue';
 import { KswIcon } from 'ksw-vue-icon';
 /*
@@ -48,7 +46,6 @@ export default {
     // inject Third-party libraries
     ctx.app.use(KUI);
     ctx.app.use(KswIcon);
-    ctx.app.use(VxeTable).use(VxeUI);
     DefaultTheme.enhanceApp(ctx);
     ctx.app.component('demo-preview', Container);
     ctx.app.component('DocTitle', DocTitle);
