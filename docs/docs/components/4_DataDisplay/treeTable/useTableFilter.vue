@@ -6,7 +6,6 @@
 
 <script lang="tsx" setup>
 import { ref, reactive } from 'vue';
-import { KTreeTable } from '@components';
 
 const tableData = reactive([
   { id: 1, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
