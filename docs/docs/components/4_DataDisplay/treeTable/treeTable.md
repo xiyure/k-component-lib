@@ -63,9 +63,36 @@ empty（\*\*folder为true时使用，表示文件夹为空）等属性。
 
 ## 搜索功能
 
-表格搜索功能默认使用模糊匹配，可以通过search-config属性配置，strict属性设置为true时，则使用精确匹配，
-如需自定义搜索方法，则使用searchMethod属性，该属性接收一个函数，函数参数为当前表格数据和搜索关键字。
+表格搜索功能默认使用模糊匹配，可以通过search-config属性配置，strict属性设置为true时，则使用精确匹配，如需自定义搜索方法，则使用searchMethod属性，该属性接收一个函数，函数参数为当前表格数据和搜索关键字。
 
 <preview path="./searchFunction.vue"></preview>
+
+## 树形表格
+
+1.设置参数use-tree为true时启用树形表格(传入的数据需为扁平化的树形结构数组);
+
+2.设置参数tree-config配置树形结构，参考vxe-table实现;
+
+3.需要再某列配置中设置treeNode属性为true，表示该列为树形结构的节点列。
+
+<preview path="./useTableFilter.vue"></preview>
+
+## 表格排序
+
+1.在列配置中配置sortable属性为true，表示该列可排序;
+
+2.可以通过快捷入口和列菜单栏进行排序。
+
+<preview path="./useTableSort.vue"></preview>
+
+## 树形表格
+
+1.设置参数use-tree为true时启用树形表格(传入的数据需为扁平化的树形结构数组);
+
+2.设置参数tree-config配置树形结构，参考vxe-table实现;
+
+3.需要再某列配置中设置treeNode属性为true，表示该列为树形结构的节点列。
+
+<preview path="./useTreeTable.vue"></preview>
 
 <API src="./data.json" lang="zh"></API>

@@ -1,14 +1,4 @@
 <template>
-  <SBExamplePanel label="注释" open>
-    <p>
-      表格排序:
-      <br />
-      1.在列配置中配置sortable属性为true，表示该列可排序
-      <br />
-      2.可以通过快捷入口和列菜单栏进行排序
-    </p>
-  </SBExamplePanel>
-  <br />
   <div :style="{ height: '300px' }">
     <k-tree-table
       :data="tableData"
