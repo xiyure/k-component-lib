@@ -122,13 +122,13 @@ onUnmounted(() => {
 function rowDrop() {
   const $table = vxeTableRef.value;
   if (!$table || !$table.$el) {
-    console.error('Table element is not available.');
+    // console.error('Table element is not available.');
     return;
   }
 
   const tbodyElement = $table.$el.querySelector('.body--wrapper > .vxe-table--body tbody');
   if (!tbodyElement) {
-    console.error('Tbody element not found.');
+    // console.error('Tbody element not found.');
     return;
   }
 
