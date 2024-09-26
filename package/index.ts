@@ -23,7 +23,6 @@ type optionsType = {
   ElementPlusOptions?: any;
   styleModule?: string;
 };
-
 // 组件和模板添加install方法
 for (const name in components) {
   const comp = components[name];
@@ -40,16 +39,29 @@ for (const name in templates) {
 
 // install方法
 const install = (app: any, options?: optionsType) => {
-  // 国际化
-  const messages = { zh, en };
-  const i18n = createI18n({
-    locale: options?.locale === 'en' ? 'en' : 'zh',
-    messages,
-  });
+  handleProjectStyle(options?.styleModule)
   app.use(ElementPlus, {
     ...options?.ElementPlusOptions,
     locale: options?.locale === 'en' ? enLocal : zhLocal,
   });
+  // 国际化
+  registerInternal(app, options);
+  // 组件注册
+  registerComponent(app);
+  app.use(VxeTable).use(VxeUI);
+  // 设置vxe-table全局配置
+  VxeUI.setConfig(options?.vxeGlobalConfig ?? {});
+  // 自定义指令注册
+  for (const name in directives) {
+    app.directive(`ksw_${name}`, directives[name]);
+  }
+  // 全局事件管理，用于多级组件之间的通信
+  app.config.globalProperties.__emitter__ = new Emitter();
+  // styleModule
+  app.provide('_styleModule', options?.styleModule ?? '');
+};
+
+function registerComponent(app: any) {
   // 组件注册
   for (const name in components) {
     app.component(name, components[name]);
@@ -62,21 +74,30 @@ const install = (app: any, options?: optionsType) => {
   for (const name in originComponents) {
     app.component(name, originComponents[name]);
   }
-  app.use(VxeTable).use(VxeUI);
-  // 设置vxe-table全局配置
-  VxeUI.setConfig(options?.vxeGlobalConfig ?? {});
+}
+
+function registerInternal(app: any, options?: optionsType) {
+  const messages = { zh, en };
+  const i18n = createI18n({
+    locale: options?.locale === 'en' ? 'en' : 'zh',
+    messages,
+  });
   app.use(i18n);
-  // 自定义指令注册
-  for (const name in directives) {
-    app.directive(`ksw_${name}`, directives[name]);
-  }
-  // 全局事件管理，用于多级组件之间的通信
-  app.config.globalProperties.__emitter__ = new Emitter();
   // i18n
   app.config.globalProperties.$t = i18n.global.t;
-  // styleModule
-  app.provide('_styleModule', options?.styleModule ?? '');
-};
+}
+
+function handleProjectStyle(styleModule: string | undefined) {
+  const projectList = ['AOM'];
+  let projectName = 'AOM';
+  if (typeof styleModule === 'string' && projectList.includes(styleModule)) {
+    projectName = styleModule;
+  } else if (styleModule !== undefined) {
+    console.warn(`'styleModule' expected to be ${projectList.map(name => `'${name}'`).join(' or ')}, but got '${styleModule}'.`);
+  }
+  // 项目样式导入
+  import(`./style/theme/${projectName}/theme.css`);
+}
 
 export * from './components';
 export * from './templates';
