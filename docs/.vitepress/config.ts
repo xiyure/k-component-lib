@@ -2,7 +2,7 @@ import { defineConfig } from 'vitepress';
 import { applyPlugins } from './plugin/md-demo-plugin';
 import nav from './configs/nav';
 import sidebar from './configs/sidebar';
-import { containerPreview, componentPreview } from '@vitepress-demo-preview/plugin';
+import { containerPreview, componentPreview } from '../.vitepress/plugin/demo-preview.mjs';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
