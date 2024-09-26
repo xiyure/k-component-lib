@@ -1,33 +1,13 @@
 <template>
-  <!-- 搜索功能 -->
-  <!-- 表格搜索功能默认使用模糊匹配，可以通过search-config属性配置，strict属性设置为true时，则使用精确匹配，
-      如需自定义搜索方法，则使用searchMethod属性，该属性接收一个函数，函数参数为当前表格数据和搜索关键字
-  -->
-  <SBExamplePanel label="注释" open>
-    <p>
-      搜索功能:
-      <br />
-      表格搜索功能默认使用模糊匹配，可以通过search-config属性配置，strict属性设置为true时，则使用精确匹配，
-      如需自定义搜索方法，则使用searchMethod属性，该属性接收一个函数，函数参数为当前表格数据和搜索关键字。
-    </p>
-  </SBExamplePanel>
-  <br />
   <div :style="{ height: '300px' }">
-    <k-tree-table
-      :data="tableData"
-      :column="column"
-      :show-page="false"
-      :search-config="{
-        strict: true,
-      }"
-      border
-    ></k-tree-table>
+    <k-tree-table :data="tableData" :column="column4" :show-page="false" border>
+      <template #name="{ row, column }">kingsware-{{ row.name }}</template>
+    </k-tree-table>
   </div>
 </template>
 
 <script lang="tsx" setup>
 import { ref, reactive } from 'vue';
-import { KTreeTable, KTag } from '@components';
 
 const tableData = reactive([
   { id: 1, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
@@ -48,63 +28,42 @@ const tableData = reactive([
   { id: 16, name: 'Test16', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
 ]);
 
-const column = ref([
-  {
-    type: 'checkbox',
-    width: '50',
-  },
+const column4 = ref([
   {
     title: 'Id',
     field: 'id',
-    width: '50',
-    sortable: true,
+    width: '100',
     dataType: 'number',
   },
   {
     title: 'Name',
     field: 'name',
-    sortable: true,
-    cellRender: {},
-    render: ({ row, column }) => {
-      return (
-        <span style={{ color: 'red' }}>
-          <k-tag point>标签</k-tag>
-        </span>
-      );
-    },
-    dataType: 'string',
   },
   {
     title: 'Role',
     field: 'role',
-    showIcon: true,
-    dataType: 'string',
-    formatter: ({ cellValue, row, column }) => {
-      return `${cellValue}-${row.id}-${column.field}`;
-    },
-    align: 'center',
   },
   {
     title: 'Sex',
     field: 'sex',
-    dataType: 'string',
-    formatter: ({ cellValue, row, column }) => {
-      return cellValue === 'Man' ? '男' : '女';
+    render: ({ row, column }) => {
+      if (row.sex === 'Man') {
+        return <span style={{ color: 'green' }}>男</span>;
+      } else if (row.sex === 'Women') {
+        return <span style={{ color: 'red' }}>女</span>;
+      } else {
+        return <span style={{ color: 'black' }}>未知</span>;
+      }
     },
-    align: 'left',
   },
   {
     title: 'Age',
     field: 'age',
     dataType: 'number',
-    showIcon: true,
-    __folder: true,
-    align: 'right',
   },
   {
     title: 'Address',
     field: 'address',
-    dataType: 'string',
   },
 ]);
 </script>

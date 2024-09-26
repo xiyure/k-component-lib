@@ -32,7 +32,7 @@ import 'ksw-vue-icon/styles/icon.css';
  *  源码
  */
 // import KUI from '../../../package/index';
-// import '../../../package/style';
+// import '../../../package/style/theme/AOM/theme.css';
 
 export default {
   ...DefaultTheme,

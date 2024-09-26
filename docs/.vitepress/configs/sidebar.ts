@@ -5,7 +5,7 @@ const baseSidebarOptions = {
   useTitleFromFileHeading: true,
   useTitleFromFrontmatter: true,
   useFolderTitleFromIndexFile: true,
-  useFolderLinkFromIndexFile: false,
+  useFolderLinkFromIndexFile: false, // 启用后，会将文件夹的名称作为链接，而不是文件夹下面的 index.md 文件
   convertSameNameSubFileToGroupIndexPage: true,
   // folderLinkNotIncludesFileName: true,
   underscoreToSpace: true, // _转为空格
@@ -68,10 +68,13 @@ export default {
   //     },
   //   ],
   // },
-
   '/docs/components/': {
     base: '/docs/components/',
     items: generateSidebar(componentsGeneralSidebarOptions),
+  },
+  '/docs/templates/': {
+    base: '/docs/templates/',
+    items: generateSidebar(templatesGeneralSidebarOptions),
   },
   // '/docs/templates/': {
   //   base: '/docs/templates/',

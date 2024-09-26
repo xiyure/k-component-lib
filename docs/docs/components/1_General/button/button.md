@@ -22,7 +22,7 @@ date: 2021-03-11
 - icon按钮
   > 一般用于节省空间的情景。
 
-<preview path="./basic.vue"></preview>
+<preview path="./def.vue"></preview>
 
 ## disabled
 
@@ -66,4 +66,4 @@ size 提供三个尺寸: sm、base(def)、lg 。
 
 ## API
 
-<API src="./button.json" lang="zh"></API>
+<API src="./data.json" lang="zh"></API>

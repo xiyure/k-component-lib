@@ -6,7 +6,6 @@
 
 <script lang="tsx" setup>
 import { ref, reactive } from 'vue';
-import { KTreeTable } from '../../../kswux-ant/package/index.ts';
 
 const column1 = ref([
   {

@@ -1,23 +1,10 @@
 <template>
-  <!-- 可编辑单元格 -->
-  <!-- 通过edit-config属性设置单元格可编辑，trigger属性设置触发编辑的方式，可选值有click、dblclick，默认为click，
-      需要再列配置中设置editRender参数和renderEdit参数用于自定义配置编辑状态下所展示的内容
-  -->
-  <SBExamplePanel label="注释" open>
-    <p>
-      可编辑单元格:
-      <br />
-      通过edit-config属性设置单元格可编辑，trigger属性设置触发编辑的方式，可选值有click、dblclick，默认为click，
-      需要再列配置中设置editRender参数和renderEdit参数用于自定义配置编辑状态下所展示的内容
-    </p>
-  </SBExamplePanel>
-  <br />
   <div :style="{ height: '300px' }">
     <k-tree-table
       :data="tableData"
-      :column="column3"
+      :column="column2"
       :show-page="false"
-      :edit-config="{ trigger: 'dblclick', mode: 'cell' }"
+      align="center"
       border
     ></k-tree-table>
   </div>
@@ -45,7 +32,7 @@ const tableData = reactive([
   { id: 16, name: 'Test16', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
 ]);
 
-const column3 = ref([
+const column2 = ref([
   {
     title: 'Id',
     field: 'id',
@@ -55,10 +42,6 @@ const column3 = ref([
   {
     title: 'Name',
     field: 'name',
-    editRender: {},
-    renderEdit: ({ row, column }) => {
-      return <input type='text' v-model={row[column.field]} />;
-    },
   },
   {
     title: 'Role',

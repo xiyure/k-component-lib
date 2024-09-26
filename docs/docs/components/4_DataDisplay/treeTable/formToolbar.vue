@@ -1,24 +1,4 @@
 <template>
-  <!-- 自定义表格工具栏 -->
-  <!-- 1.表格工具栏内置了高级筛选(filter)、刷新(refresh)、搜索框(search)、表头控制器功能(transfer)，
-      通过widgets参数进行配置，widgets数组允许写入字符串和对象类型，传入内置功能的关键字(filter、refresh、search、transfer)时，
-      表示使用内置的功能组件，传入其他字符串时，则该字符串会被当做插槽名渲染，也可以传入对象自定义渲染，
-      格式为{id：xxx, widget: () => VNode | Component }, 表格默认展示搜索框和高级筛选，
-      2.widgets传入空数组时或者使用show-filter:false和show-search:false属性时，则不展示
-  -->
-  <SBExamplePanel label="注释" open>
-    <p>
-      自定义表格工具栏:
-      <br />
-      1.表格工具栏内置了高级筛选(filter)、刷新(refresh)、搜索框(search)、表头控制器功能(transfer)，
-      通过widgets参数进行配置，widgets数组允许写入字符串和对象类型，传入内置功能的关键字(filter、refresh、search、transfer)时，
-      表示使用内置的功能组件，传入其他字符串时，则该字符串会被当做插槽名渲染，也可以传入对象自定义渲染，
-      格式为{id：xxx, widget: () => VNode | Component }, 表格默认展示搜索框和高级筛选。
-      <br />
-      2.widgets传入空数组时或者使用show-filter:false和show-search:false属性时，则不展示。
-    </p>
-  </SBExamplePanel>
-  <br />
   <div :style="{ height: '300px' }">
     <k-tree-table :data="tableData" :column="column" :show-page="false" :widgets="widgets" border>
       <template #custom1>custom1插槽</template>
@@ -28,7 +8,6 @@
 
 <script lang="tsx" setup>
 import { ref, reactive } from 'vue';
-import { KTreeTable, KTag } from '@components';
 
 const widgets = ref([
   'search',

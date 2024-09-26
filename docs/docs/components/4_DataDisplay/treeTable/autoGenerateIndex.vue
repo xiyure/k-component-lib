@@ -1,12 +1,4 @@
 <template>
-  <SBExamplePanel label="注释" open>
-    <p>
-      自动生成序号:
-      <br />
-      type: 'seq' 自动生成序号
-    </p>
-  </SBExamplePanel>
-  <br />
   <div :style="{ height: '300px' }">
     <k-tree-table
       :data="treeTableData"

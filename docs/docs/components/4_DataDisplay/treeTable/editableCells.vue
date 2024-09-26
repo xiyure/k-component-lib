@@ -1,23 +1,10 @@
 <template>
-  <!-- 单元格布局 -->
-  <!-- 通过align属性设置单元格的对齐方式，可选值有left、center、right，默认为left，
-      也可以在列配置中设置align属性，优先级高于align属性
-  -->
-  <SBExamplePanel label="注释" open>
-    <p>
-      单元格布局:
-      <br />
-      通过align属性设置单元格的对齐方式，可选值有left、center、right，默认为left，
-      也可以在列配置中设置align属性，优先级高于align属性
-    </p>
-  </SBExamplePanel>
-  <br />
   <div :style="{ height: '300px' }">
     <k-tree-table
       :data="tableData"
-      :column="column2"
+      :column="column3"
       :show-page="false"
-      align="center"
+      :edit-config="{ trigger: 'dblclick', mode: 'cell' }"
       border
     ></k-tree-table>
   </div>
@@ -45,7 +32,7 @@ const tableData = reactive([
   { id: 16, name: 'Test16', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
 ]);
 
-const column2 = ref([
+const column3 = ref([
   {
     title: 'Id',
     field: 'id',
@@ -55,6 +42,10 @@ const column2 = ref([
   {
     title: 'Name',
     field: 'name',
+    editRender: {},
+    renderEdit: ({ row, column }) => {
+      return <input type='text' v-model={row[column.field]} />;
+    },
   },
   {
     title: 'Role',
