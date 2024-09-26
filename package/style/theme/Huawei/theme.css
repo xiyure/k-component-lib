@@ -239,7 +239,7 @@
   /* button */
   --k-theme-button-size-height--sm: var(--k-size-6);
   --k-theme-button-size-height--base: var(--k-size-8);
-  --k-theme-button-size-height--lg: var(--k-size-80);
+  --k-theme-button-size-height--lg: var(--k-size-10);
   --k-theme-button-size-padding--sm: 0 var(--k-size-2);
   --k-theme-button-size-padding--base: 0 var(--k-size-3);
   --k-theme-button-size-padding--lg: 0 var(--k-size-4);
