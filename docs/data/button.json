@@ -83,7 +83,7 @@
   "slots": [
     {
       "displayName": "default",
-      "description": "自定义默认内容"
+      "description": "默认插槽内容"
     },
     {
 

@@ -27,7 +27,7 @@
     "vitepress-theme-demoblock": "^3.0.7"
   },
   "dependencies": {
-    "@ksware/ksw-ux": "latest",
+    "@ksware/ksw-ux": "^0.0.48",
     "@vitejs/plugin-vue-jsx": "^4.0.1",
     "ksw-vue-icon": "^2.2.25"
   }

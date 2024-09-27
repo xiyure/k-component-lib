@@ -1,0 +1,34 @@
+{
+  "name": "Option",
+  "props": [
+    {
+      "displayName": "value",
+      "type": "string | number | boolean | object",
+      "description": "选项的值",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "label",
+      "type": "string | number",
+      "description": "选项的标签，若不设置则默认与value相同",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "disabled",
+      "type": "boolean",
+      "description": "是否禁用该选项",
+      "defaultValue": "false"
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "default",
+      "description": "默认插槽内容",
+      "parameters": ""
+    }
+  ],
+  "methods": []
+}

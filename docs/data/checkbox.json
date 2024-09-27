@@ -1,0 +1,106 @@
+{
+  "name": "Checkbox",
+  "props": [
+    {
+      "displayName": "model-value/v-model",
+      "type": "string | number | boolean",
+      "description": "选中项绑定值",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "value",
+      "type": "string | number | boolean | object",
+      "description": "选中状态的值（只有在checkbox-group或者绑定对象类型为array时有效）",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "label",
+      "type": "string | number | boolean | object",
+      "description": "选中状态的值，只有在绑定对象类型为array时有效。如果没有value， label则作为value使用",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "true-value",
+      "type": "string | number",
+      "description": "选中时的值",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "false-value",
+      "type": "string | number",
+      "description": "未选中时的值",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "size",
+      "type": "enum",
+      "description": "checkbox尺寸",
+      "defaultValue": "base",
+      "tip": "'base' | 'sm'"
+    },
+    {
+      "displayName": "disabled",
+      "type": "boolean",
+      "description": "是否禁用",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "border",
+      "type": "boolean",
+      "description": "是否显示边框",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "checked",
+      "type": "boolean",
+      "description": "是否勾选",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "indeterminate",
+      "type": "boolean",
+      "description": "是否半选",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "strict",
+      "type": "boolean",
+      "description": "是否开启严格模式，为true时只有点击复选框时才能选中",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "color",
+      "type": "string",
+      "description": "自定义填充颜色",
+      "defaultValue": "#2882FF",
+      "tip": ""
+    },
+    {
+      "displayName": "name",
+      "type": "string",
+      "description": "原生name属性",
+      "tip": ""
+    }
+  ],
+  "events": [
+    {
+      "displayName": "change",
+      "description": "当绑定值变化时触发的事件",
+      "type": "Function",
+      "tip": "(value: string | number | boolean) => void"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "default",
+      "description": "默认插槽内容",
+      "parameters": ""
+    }
+  ],
+  "methods": []
+}

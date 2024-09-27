@@ -30,7 +30,7 @@
     {
       "displayName": "size",
       "type": "enum",
-      "description": "表格尺寸",
+      "description": "尺寸",
       "defaultValue": "base",
       "tip": "'base' | 'sm'"
     },
