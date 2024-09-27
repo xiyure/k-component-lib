@@ -1,8 +1,8 @@
 ---
-title: tooltips 气泡框
+title: filter 过滤器
 ---
 
-# tooltips 气泡框
+# filter 过滤器
 
 ## 适用
 
@@ -14,4 +14,4 @@ title: tooltips 气泡框
 
 ## API
 
-<!-- <API src="./data.json" lang="zh"></API> -->
+<API src="./data.json" lang="zh"></API>

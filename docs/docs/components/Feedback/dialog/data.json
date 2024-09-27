@@ -1,5 +1,5 @@
 {
-  "name": "Dialog",
+  "name": "",
   "props": [
     {
       "displayName": "model-value/v-model",

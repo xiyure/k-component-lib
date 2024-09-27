@@ -1,5 +1,5 @@
 {
-  "name": "Button",
+  "name": "",
   "props": [
     {
       "displayName": "type",
@@ -86,12 +86,10 @@
       "description": "默认插槽内容"
     },
     {
-
       "displayName": "loading",
       "description": "自定义加载中组件"
     },
     {
-
       "displayName": "icon",
       "description": "自定义图标组件"
     }

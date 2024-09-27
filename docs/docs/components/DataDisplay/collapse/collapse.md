@@ -1,8 +1,8 @@
 ---
-title: form 表单
+title: collapse 折叠面板
 ---
 
-# form 表单
+# collapse 折叠面板
 
 ## 适用
 
