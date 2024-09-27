@@ -53,24 +53,6 @@ const templatesGeneralSidebarOptions = {
 // };
 
 export default {
-  // '/knowledge/': {
-  //   base: '/',
-  //   items: [
-  //     {
-  //       text: '知识库',
-  //       items: generateSidebar(KnowledgeSidebarOptions),
-  //     },
-  //   ],
-  // },
-  // '/docs/components/': {
-  //   base: '/',
-  //   items: [
-  //     {
-  //       text: '组件文档',
-  //       items: generateSidebar(componentsGeneralSidebarOptions),
-  //     },
-  //   ],
-  // },
   '/docs/knowledge/': {
     base: '/docs/knowledge/',
     items: generateSidebar(KnowledgeSidebarOptions),
@@ -83,40 +65,4 @@ export default {
     base: '/docs/templates/',
     items: generateSidebar(templatesGeneralSidebarOptions),
   },
-  // '/docs/templates/': {
-  //   base: '/docs/templates/',
-  //   items: [
-  //     {
-  //       text: '模板文档',
-  //       items: generateSidebar(templatesGeneralSidebarOptions),
-  //     },
-  //   ],
-  // },
-  // '/docs/templates/': {
-  //   base: '/',
-  //   items: [
-  //     {
-  //       text: '模板文档',
-  //       items: generateSidebar(templatesGeneralSidebarOptions),
-  //     },
-  //   ],
-  // },
-  // '/api/': {
-  //   base: '/api/',
-  //   items: [
-  //     {
-  //       text: 'Api',
-  //       items: generateSidebar(apiSidebarOptions),
-  //     },
-  //   ],
-  // },
-  // '/docs/': {
-  //   base: '/docs/',
-  //   items: [
-  //     {
-  //       text: '如何使用',
-  //       items: generateSidebar(docsSidebarOptions),
-  //     },
-  //   ],
-  // },
 };
