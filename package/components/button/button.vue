@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, nextTick, watch, inject } from 'vue';
+import { computed, ref, watch, inject, onMounted } from 'vue';
 import { ElButton } from 'element-plus';
 import { IconLoading } from 'ksw-vue-icon';
 import { ButtonProps } from './type.d';
@@ -73,13 +73,6 @@ const buttonRef = ref();
 
 const color = ref(props.color);
 
-const el = ref();
-nextTick(() => {
-  if (typeof window !== 'undefined') {
-    el.value = document.getElementById(id);
-  }
-});
-
 // watch props.color 变化, 更新颜色变量
 watch(
   () => props.color,
@@ -87,16 +80,16 @@ watch(
     color.value = newVal; // 更新 ref
     const getColorS = GetColorLevelNew(newVal).colorLevel;
     if (newVal) {
-      nextTick(() => {
-        if (el.value?.style) {
-          const classList = el.value?.classList;
+      onMounted(() => {
+        if (buttonRef.value.$el?.style) {
+          const classList = buttonRef.value.$el?.classList;
           const rbgValue = getColorS['--k-oklch-500'].match(/\(([^)]+)\)/)[1]; // 获取 rbg 值, 用于设置 focus 样式
 
           for (const item of btnTypes) {
             const btnType = `el-button--${item.type}`;
             if (classList?.contains(btnType)) {
               item.vars.forEach((item) => {
-                el.value?.style.setProperty(
+                buttonRef.value.$el?.style.setProperty(
                   `--k-button-${item.name}`,
                   getColorS[`--k-oklch-${item.value}`],
                 );
@@ -105,7 +98,7 @@ watch(
           }
 
           // focus
-          el.value?.style.setProperty('--k-button-focus', `rgba(${rbgValue}, 0.2)`);
+          buttonRef.value.$el?.style.setProperty('--k-button-focus', `rgba(${rbgValue}, 0.2)`);
         }
       });
     }
