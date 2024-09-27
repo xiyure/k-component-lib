@@ -1,5 +1,5 @@
 <template>
-  <el-input
+  <k-input
     v-model="input"
     style="width: 240px"
     placeholder="请输入..."

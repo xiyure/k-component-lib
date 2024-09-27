@@ -15,6 +15,7 @@ import type { Options } from '@nolebase/vitepress-plugin-enhanced-readabilities/
 import '@nolebase/vitepress-plugin-enhanced-readabilities/client/style.css';
 import DocTitle from '../components/DocTitle.vue';
 import { KswIcon } from 'ksw-vue-icon';
+import 'ksw-vue-icon/styles/icon.css';
 /*
  *  npm
  */
