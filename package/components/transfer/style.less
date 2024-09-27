@@ -53,6 +53,47 @@
           margin-left: 10px;
         }
       }
+      .el-transfer-panel__body {
+        .el-transfer-panel__list.el-checkbox-group {
+          display: flex;
+          flex-direction: column;
+          .el-transfer-panel__item {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            display: flex !important;
+            align-items: center;
+            padding: 0 0.625rem;
+            .el-checkbox__input {
+              position: unset;
+              margin: 0;
+            }
+            .el-checkbox__label {
+              margin: 0;
+              padding: 0;
+              flex: 1;
+              height: 2rem;
+              .k-transfer-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                .k-transfer-label {
+                }
+                .k-transfer-sort {
+                  height: 100%;
+
+                  padding: 0;
+                  margin: 0;
+                  display: flex;
+                  .ksw-icon.ksw-icon-Drag {
+                    margin: 0;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
     .el-transfer__buttons {
       display: flex;
