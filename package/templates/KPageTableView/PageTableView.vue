@@ -6,7 +6,10 @@
 * @version V3.0.0
 !-->
 <template>
-  <div id="KPageTableView" class="KPageTableView w-full h-full bg-white rounded flex">
+  <div
+    id="KPageTableView"
+    class="KPageTableView bbm w-full h-full bg-white rounded flex text-gray-700"
+  >
     <!-- left -->
     <!-- no-refresh -->
     <KPageViewBus

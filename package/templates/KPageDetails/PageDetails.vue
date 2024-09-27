@@ -8,27 +8,27 @@
 <template>
   <div id="KPageDetails" class="KPageDetails h-full flex-1" style="min-width: 0">
     <div
-      class="KPageDetailsHead-content w-full flex flex-col bg-white rounded overflow-hidden mb-3"
+      class="KPageDetailsHead-content w-full flex flex-col bg-white rounded overflow-hidden mb-3 shadow-sm"
     >
       <!-- head -->
       <div class="extra-head px-6 py-2 border-b border-gray-200">
         <slot name="extra-head">
           <div class="w-full flex justify-between items-center">
-            <div class="extra-head-title">
-              <slot name="extra-head-title">
+            <div class="head-title">
+              <slot name="head-title">
                 <div class="flex items-center gap-1 h-8">
                   <component :is="icon" v-if="icon" size="24" />
                   <span>{{ title }}</span>
                 </div>
               </slot>
             </div>
-            <div class="extra-head-btn"><slot name="extra-head-btn"></slot></div>
+            <div class="head-toolbar"><slot name="head-toolbar"></slot></div>
           </div>
         </slot>
       </div>
       <!-- body -->
       <div class="extra-head-body px-6 py-3">
-        <slot name="extra-head-body">
+        <slot name="head-abstract">
           <div class="flex gap-16 overflow-auto scrollbar-hide">
             <DetailsHeadItem
               v-for="item in props.abstract"
@@ -42,7 +42,9 @@
       </div>
     </div>
 
-    <slot name="extra-main"></slot>
+    <div class="shadow-sm">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
@@ -51,15 +53,15 @@ import { render } from 'vue';
 import DetailsHeadItem from './DetailsHeadItem.vue';
 
 const props = defineProps({
-  icon: {
+  pageIcon: {
     type: String,
     default: '',
   },
-  title: {
+  pageTitle: {
     type: String,
     default: '标题',
   },
-  info: {
+  pageDescriptions: {
     type: String,
     default: '',
   },

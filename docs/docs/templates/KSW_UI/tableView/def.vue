@@ -1,7 +1,7 @@
 <template>
   <div style="height: 500px">
     <KPageTableView
-      asideShow
+      show-aside
       aside-title="视图"
       aside-descriptions="描述信息"
       aside-refresh

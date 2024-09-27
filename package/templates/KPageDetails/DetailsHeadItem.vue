@@ -16,8 +16,6 @@
 </template>
 
 <script setup>
-import { KTag } from '../../components';
-
 const props = defineProps({
   label: {
     type: String,
