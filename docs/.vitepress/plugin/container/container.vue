@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<DemoBlockProps>(), {
 
 const ns = useNameSpace();
 const { isCodeFold, setCodeFold } = useCodeFold();
-const { copyContent, clickCopy } = useCodeCopy();
+const { clickCopy } = useCodeCopy();
 
 const sourceCode = ref(decodeURIComponent(props.code));
 const showSourceCode = ref(decodeURIComponent(props.showCode));
@@ -58,30 +58,18 @@ watch(isCodeFold, () => {
 
 <template>
   <!-- <ClientOnly></ClientOnly> -->
-  <div :class="[ns.e('ant-design__container')]">
-    <section :class="[ns.bem('preview')]" class="vp-raw bg-grid-slate-100">
+  <div :class="[ns.e('element-plus__container')]">
+    <section :class="[ns.bem('preview')]">
       <slot></slot>
     </section>
     <section :class="[ns.bem('description')]">
-      <div v-if="props.title" :class="[ns.bem('description', 'title')]">
-        {{ title }}
-      </div>
-      <div
-        v-if="props.description"
-        :class="[ns.bem('description', 'content')]"
-        v-html="description"
-      ></div>
-      <div
-        v-if="props.description || (!props.title && !props.description)"
-        :class="[ns.bem('description', 'split-line')]"
-      ></div>
+      <div :class="[ns.bem('description', 'split-line')]"></div>
       <div :class="[ns.bem('description', 'handle-btn')]">
+        <CodeCopy @click="clickCodeCopy" />
         <CodeClose v-if="!isCodeFold" @click="setCodeFold(true)" />
         <CodeOpen v-else @click="setCodeFold(false)" />
-        <CodeCopy @click="clickCodeCopy" />
       </div>
     </section>
-
     <section :class="[ns.bem('source')]" ref="sourceCodeArea">
       <div v-html="showSourceCode" class="language-vue"></div>
     </section>
@@ -91,42 +79,44 @@ watch(isCodeFold, () => {
 <style src="./various.css"></style>
 
 <style scoped>
-/* .vitepress-demo-preview__ant-design__container > * {
+/* .vitepress-demo-preview__element-plus__container > * {
   font-size: 14px;
 } */
 
-.vitepress-demo-preview__ant-design__container div[class*='language-'] {
-  margin-top: 0;
-  margin-bottom: 0;
-  border-radius: 0;
-  background-color: var(--vp-code-block-bg);
-  border-top: 1px dashed var(--component-preview-border);
+.vitepress-demo-preview__element-plus__container {
+  div[class*='language-'] {
+    margin-top: 0;
+    margin-bottom: 0;
+    border-radius: 0;
+    background-color: var(--vp-code-block-bg);
+    border-top: 1px dashed var(--component-preview-border);
+  }
 }
 
-.vitepress-demo-preview__ant-design__container {
+.vitepress-demo-preview__element-plus__container {
   width: 100%;
   border-radius: 8px;
   border: 1px solid var(--component-preview-border);
   /* box-shadow: 0px 0px 10px var(--component-preview-border); */
   margin: 10px 0;
   overflow: hidden;
-}
-.vitepress-demo-preview__ant-design__container > .vitepress-demo-preview-preview,
-.vitepress-demo-preview__ant-design__container > .vitepress-demo-preview-description,
-.vitepress-demo-preview__ant-design__container > .vitepress-demo-preview-source {
-  width: 100%;
+
+  .vitepress-demo-preview-preview,
+  .vitepress-demo-preview-description,
+  .vitepress-demo-preview-source {
+    width: 100%;
+  }
 }
 
-.vitepress-demo-preview__ant-design__container > .vitepress-demo-preview-preview {
+.vitepress-demo-preview__element-plus__container > .vitepress-demo-preview-preview {
   padding: 20px 20px 30px 20px;
-}
-.vitepress-demo-preview__ant-design__container > .vitepress-demo-preview-preview > p {
-  all: initial;
-  margin: 0 !important;
-  padding: 0 !important;
+  & > p {
+    margin: 0;
+    padding: 0;
+  }
 }
 
-.vitepress-demo-preview__ant-design__container > .vitepress-demo-preview-description {
+.vitepress-demo-preview__element-plus__container > .vitepress-demo-preview-description {
   .vitepress-demo-preview-description__title {
     width: 100%;
     position: relative;
@@ -162,10 +152,11 @@ watch(isCodeFold, () => {
   .vitepress-demo-preview-description__handle-btn {
     padding-top: 10px;
     padding-bottom: 10px;
+    padding-right: 20px;
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
 
     svg {
       width: 16px;
@@ -181,17 +172,8 @@ watch(isCodeFold, () => {
   }
 }
 
-.vitepress-demo-preview__ant-design__container > .vitepress-demo-preview-source {
+.vitepress-demo-preview__element-plus__container > .vitepress-demo-preview-source {
   overflow: hidden;
   transition: all 0.3s ease-in-out;
-}
-
-.bg-grid-slate-100 {
-  background-color: var(--vp-code-block-bg);
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(241 245 249)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
-}
-
-:root.dark .bg-grid-slate-100 {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(51 65 85 / 0.25)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
 }
 </style>
