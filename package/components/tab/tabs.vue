@@ -88,7 +88,7 @@ onUnmounted(() => {
 });
 
 nextTick(() => {
-  tabsElem = KTabsRef.value.$el;
+  tabsElem = KTabsRef?.value?.$el;
   translateElem = tabsElem?.querySelector('.el-tabs__nav');
   addTabElem = tabsElem?.querySelector('.el-tabs__new-tab');
   tabPaneDoms = tabsElem?.querySelectorAll('.el-tabs__item');
