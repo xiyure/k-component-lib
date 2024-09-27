@@ -65,7 +65,7 @@ const tips = ref(false);
 const props = defineProps({
   showAside: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   asideTitle: {
     type: String,
