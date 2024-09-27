@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@ksware/ksw-ux':
-    specifier: latest
-    version: 0.0.50(chinese-lunar-calendar@1.0.1)(element-plus@2.8.3)(ksw-vue-icon@2.2.29)(lodash-es@4.17.21)(sortablejs@1.15.3)(vue-i18n@9.14.1)(vue@3.5.9)(vxe-pc-ui@4.2.7)(vxe-table@4.7.83)
+    specifier: ^0.0.51
+    version: 0.0.51(chinese-lunar-calendar@1.0.1)(element-plus@2.8.3)(ksw-vue-icon@2.2.29)(lodash-es@4.17.21)(sortablejs@1.15.3)(vue-i18n@9.14.1)(vue@3.5.9)(vxe-pc-ui@4.2.7)(vxe-table@4.7.83)
   '@vitejs/plugin-vue-jsx':
     specifier: ^4.0.1
     version: 4.0.1(vite@5.4.8)(vue@3.5.9)
@@ -877,8 +877,8 @@ packages:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  /@ksware/ksw-ux@0.0.50(chinese-lunar-calendar@1.0.1)(element-plus@2.8.3)(ksw-vue-icon@2.2.29)(lodash-es@4.17.21)(sortablejs@1.15.3)(vue-i18n@9.14.1)(vue@3.5.9)(vxe-pc-ui@4.2.7)(vxe-table@4.7.83):
-    resolution: {integrity: sha512-MguwvDK8+pvm5RM8CR2Njc6umqpO2VmFy0xz8u0VGefW8C1mflXmp3zJxMTcxDyq26fmu9ZKDqidYr0w/t5ECQ==}
+  /@ksware/ksw-ux@0.0.51(chinese-lunar-calendar@1.0.1)(element-plus@2.8.3)(ksw-vue-icon@2.2.29)(lodash-es@4.17.21)(sortablejs@1.15.3)(vue-i18n@9.14.1)(vue@3.5.9)(vxe-pc-ui@4.2.7)(vxe-table@4.7.83):
+    resolution: {integrity: sha512-hPgnKoGbUv7tSGfC+tH0CUtOlQL9P/Ma4F3BOg3ji7DuN11mso6PhEzZVMzWfCL8whmTorTDsDvdPES9gGMvxQ==}
     peerDependencies:
       chinese-lunar-calendar: ^1.0.1
       element-plus: ^2.8.0
