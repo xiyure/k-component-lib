@@ -17,8 +17,8 @@
             <div class="head-title">
               <slot name="head-title">
                 <div class="flex items-center gap-1 h-8">
-                  <component :is="icon" v-if="icon" size="24" />
-                  <span>{{ title }}</span>
+                  <component :is="pageIcon" v-if="pageIcon" size="24" />
+                  <span>{{ pageTitle }}</span>
                 </div>
               </slot>
             </div>
