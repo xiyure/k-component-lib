@@ -5,6 +5,7 @@
       page-title="功能详情页"
       page-descriptions="这里是功能详情页的描述信息"
       :abstract="abstract"
+      class="h-full bg-blue flex flex-col"
     >
       <template #head-toolbar>
         <KButton main>保存</KButton>
@@ -12,13 +13,15 @@
       </template>
       <template #head-abstract></template>
 
-      <div class="KPageDetailsBody w-full flex flex-col bg-white rounded mt-3">默认插槽</div>
+      <!-- 默认插槽 -->
+      <div class="KPageDetailsBody w-full flex flex-col bg-white rounded mt-3 flex-1">默认插槽</div>
     </KPageDetails>
   </div>
 </template>
 
 <script lang="tsx" setup>
-import { values } from 'lodash-es';
+import { ref } from 'vue';
+
 const abstract = [
   {
     label: '姓名',
@@ -44,5 +47,7 @@ const abstract = [
     },
   },
 ];
+
+const activeName = ref('first');
 </script>
 <style lang="less"></style>
