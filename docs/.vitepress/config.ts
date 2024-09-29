@@ -3,6 +3,7 @@ import { applyPlugins } from './plugin/md-demo-plugin';
 import nav from './configs/nav';
 import sidebar from './configs/sidebar';
 import { containerPreview, componentPreview } from '../.vitepress/plugin/demo-preview.mjs';
+import { generateRewrites, sidebarRewrites } from './plugin/rewritePath'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -37,12 +38,15 @@ export default defineConfig({
   cleanUrls: true,
   rewrites: {
     // 'docs/(.*)': '(.*)',
+    ...generateRewrites()
   },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav,
 
-    sidebar,
+    sidebar: {
+      ...sidebarRewrites(sidebar)
+    },
 
     socialLinks: [{ icon: 'github', link: 'https://github.com/xiyure/k-component-lib' }],
 

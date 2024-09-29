@@ -1,6 +1,5 @@
 import { h, onMounted } from 'vue';
 import DefaultTheme from 'vitepress/theme';
-import '@ksware/ksw-ux/kingsware-ui/style.css';
 import 'vitepress-theme-demoblock/dist/theme/styles/index.css';
 import { Container } from '../plugin/container/index';
 import './style.less';
@@ -15,7 +14,7 @@ import type { Options } from '@nolebase/vitepress-plugin-enhanced-readabilities/
 import '@nolebase/vitepress-plugin-enhanced-readabilities/client/style.css';
 import DocTitle from '../components/DocTitle.vue';
 import { KswIcon } from 'ksw-vue-icon';
-import 'ksw-vue-icon/styles/icon.css';
+// import 'ksw-vue-icon/styles/icon.css'; // index 中已经引用 不需要重复引用
 /*
  *  npm
  */
@@ -30,7 +29,7 @@ import 'ksw-vue-icon/styles/icon.css';
  *  源码
  */
 import KUI from '../../../package/index';
-import '../../../package/style/theme/AOM/theme.css';
+// import '../../../package/style/theme/AOM/theme.css'; // index 中已经引用 不需要重复引用
 
 export default {
   ...DefaultTheme,
@@ -62,9 +61,22 @@ export default {
   },
   setup() {
     onMounted(() => {
-      OverlayScrollbars(document.body, {
-        // 这里可以设置 OverlayScrollbars 的选项
-        // scrollbars: { theme: 'os-theme-dark' },
+      // 选择所有具有滚动条的元素
+      const scrollableElements = document.querySelectorAll('body, aside, pre');
+
+      // 对每个元素初始化 OverlayScrollbars
+      scrollableElements.forEach(element => {
+        OverlayScrollbars(element, {
+          // 这里可以设置 OverlayScrollbars 的选项
+          update: {
+            elementEvents: [['img', 'load'], ['ul[id="localsearch-list"]', 'load']],
+          },
+          scrollbars: {
+            // theme: 'os-theme-dark',
+            autoHide: 'move',  // 是否在某个用户操作之后自动隐藏可见的滚动条。有效值为：'never'、'scroll'和'leave', 'move'
+            autoHideSuspend: false,  //暂停自动隐藏功能，直到执行第一次滚动交互。
+          },
+        });
       });
     });
   },

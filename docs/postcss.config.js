@@ -2,7 +2,6 @@ import { postcssIsolateStyles } from 'vitepress';
 import tailwindcss from 'tailwindcss';
 import autoprefixer from 'autoprefixer';
 
-console.log('PostCSS config loaded');
 export default {
   plugins: [
     postcssIsolateStyles({
