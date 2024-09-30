@@ -1,6 +1,5 @@
 import { h, onMounted } from 'vue';
 import DefaultTheme from 'vitepress/theme';
-import 'vitepress-theme-demoblock/dist/theme/styles/index.css';
 import { Container } from '../plugin/container/index';
 import './style.less';
 import 'overlayscrollbars/overlayscrollbars.css';
@@ -43,9 +42,9 @@ export default {
   },
   enhanceApp(ctx) {
     // inject Third-party libraries
+    // DefaultTheme.enhanceApp(ctx);
     ctx.app.use(KUI);
     ctx.app.use(KswIcon);
-    DefaultTheme.enhanceApp(ctx);
     ctx.app.component('demo-preview', Container);
     ctx.app.component('DocTitle', DocTitle);
     ctx.app.provide(InjectionKey, {

@@ -2,13 +2,46 @@ import path from 'path';
 import { defineConfig } from 'vite';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import { genApiDoc } from './.vitepress/plugin/api-doc.config';
+import { chunkSplitPlugin } from 'vite-plugin-chunk-split';
 
 export default defineConfig({
-  plugins: [genApiDoc(), vueJsx()],
+  // esbuild: {
+  //   minifySyntax: false,
+  //   minifyWhitespace: false,
+  //   minifyIdentifiers: false,
+  // },
+  plugins: [
+    genApiDoc(),
+    vueJsx(),
+    chunkSplitPlugin({
+      strategy: 'default',
+      customSplitting: {
+        theme: [/theme\/index/],
+        elementPlus: ['element-plus'],
+        vxeTable: [/vxe-table/],
+        vxePcUi: [/vxe-pc-ui/],
+        'ksw-ux': [/package\/(components|templates|utils|style|interface|element-plus.ts)/, /vue-i18n/],
+        'ksw-icon': [/ksw-vue-icon/],
+        // '@nolebase': [/@nolebase/],
+      },
+    }),
+  ],
   server: {
     host: '0.0.0.0',
     port: 12581,
   },
+  // build: {
+  //   rollupOptions: {
+  //     output: {
+        // manualChunks(id) {
+        //   if (id.includes('package/components')) {
+        //     console.log(id);
+        //     return id.toString().split('package/')[1].split('/')[0].toString();
+        //   }
+        // },
+  //     },
+  //   },
+  // },
   resolve: {
     alias: {
       '@api': path.resolve(__dirname, './api'),

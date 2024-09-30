@@ -1,9 +1,8 @@
 import { defineConfig } from 'vitepress';
-import { applyPlugins } from './plugin/md-demo-plugin';
 import nav from './configs/nav';
 import sidebar from './configs/sidebar';
-import { containerPreview, componentPreview } from '../.vitepress/plugin/demo-preview.mjs';
 import { generateRewrites, sidebarRewrites } from './plugin/rewritePath'
+import { containerPreview, componentPreview } from '../.vitepress/plugin/demo-preview.mjs';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -29,7 +28,6 @@ export default defineConfig({
     config: (md) => {
       md.use(containerPreview);
       md.use(componentPreview);
-      md.use(applyPlugins);
     },
     image: {
       lazyLoading: true,

@@ -59,7 +59,7 @@ watch(isCodeFold, () => {
 <template>
   <!-- <ClientOnly></ClientOnly> -->
   <div :class="[ns.e('element-plus__container')]">
-    <section :class="[ns.bem('preview')]">
+    <section class="vp-raw" :class="[ns.bem('preview')]">
       <slot></slot>
     </section>
     <section :class="[ns.bem('description')]">
@@ -176,4 +176,14 @@ watch(isCodeFold, () => {
   overflow: hidden;
   transition: all 0.3s ease-in-out;
 }
+
+.bg-grid-slate-100 {
+  background-color: var(--vp-code-block-bg);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(241 245 249)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
+}
+
+:root.dark .bg-grid-slate-100 {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(51 65 85 / 0.25)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
+}
+
 </style>
