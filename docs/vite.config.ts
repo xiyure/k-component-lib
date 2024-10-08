@@ -3,6 +3,8 @@ import { defineConfig } from 'vite';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import { genApiDoc } from './.vitepress/plugin/api-doc.config';
 import { chunkSplitPlugin } from 'vite-plugin-chunk-split';
+import { GitChangelog, GitChangelogMarkdownSection } from '@nolebase/vitepress-plugin-git-changelog/vite'
+
 
 export default defineConfig({
   // esbuild: {
@@ -24,6 +26,15 @@ export default defineConfig({
         'ksw-icon': [/ksw-vue-icon/],
         // '@nolebase': [/@nolebase/],
       },
+    }),
+    GitChangelog({ 
+      repoURL: () => 'https://github.com/xiyure/k-component-lib', 
+    }), 
+    GitChangelogMarkdownSection({ 
+      sections: { 
+        disableChangelog: true, 
+        disableContributors: false, 
+      }, 
     }),
   ],
   server: {

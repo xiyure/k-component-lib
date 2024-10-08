@@ -43,9 +43,11 @@ const color = ref(props.color);
 const el = ref();
 const parent = ref();
 // 等待 dom 更新
-nextTick(() => {
-  el.value = document.getElementById(id);
-});
+if (typeof window !== 'undefined') {
+  nextTick(() => {
+    el.value = document?.getElementById(id);
+  });
+}
 watch(
   () => props.color,
   (newVal) => {

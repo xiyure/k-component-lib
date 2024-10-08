@@ -11,6 +11,8 @@ import {
 } from '@nolebase/vitepress-plugin-enhanced-readabilities/client';
 import type { Options } from '@nolebase/vitepress-plugin-enhanced-readabilities/client';
 import '@nolebase/vitepress-plugin-enhanced-readabilities/client/style.css';
+import { NolebaseGitChangelogPlugin } from '@nolebase/vitepress-plugin-git-changelog/client'
+import '@nolebase/vitepress-plugin-git-changelog/client/style.css'
 import DocTitle from '../components/DocTitle.vue';
 import { KswIcon } from 'ksw-vue-icon';
 // import 'ksw-vue-icon/styles/icon.css'; // index 中已经引用 不需要重复引用
@@ -45,6 +47,7 @@ export default {
     // DefaultTheme.enhanceApp(ctx);
     ctx.app.use(KUI);
     ctx.app.use(KswIcon);
+    ctx.app.use(NolebaseGitChangelogPlugin)  
     ctx.app.component('demo-preview', Container);
     ctx.app.component('DocTitle', DocTitle);
     ctx.app.provide(InjectionKey, {
