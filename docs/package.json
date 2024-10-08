@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@ksware/ksw-ux": "^0.0.51",
-    "@vitejs/plugin-vue-jsx": "^4.0.1"
+    "@vitejs/plugin-vue-jsx": "^4.0.1",
+    "glob": "^11.0.0"
   }
 }
