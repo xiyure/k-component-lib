@@ -21,8 +21,8 @@
         <IconArrowLeft class="text-gray-400"></IconArrowLeft>
       </div>
     </div>
-    <div class="KPageViewBus-content w-56">
-      <div class="KPageViewBus-content--drawer w-56">
+    <div class="KPageViewBus-content w-56 h-full">
+      <div class="KPageViewBus-content--drawer w-56 h-full flex flex-col">
         <div
           class="KPageViewBus-head flex justify-between items-center py-4 border-b border-gray-200 box-border"
         >
@@ -46,7 +46,7 @@
           </slot>
         </div>
 
-        <div class="KPageViewBus-main pt-3">
+        <div class="KPageViewBus-main pt-3 h-full flex">
           <slot></slot>
         </div>
         <div v-if="$slots['foot']" class="KPageViewBus-foot pt-3">

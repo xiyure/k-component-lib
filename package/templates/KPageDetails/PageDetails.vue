@@ -8,7 +8,7 @@
 <template>
   <div id="KPageDetails" class="KPageDetails h-full flex-1" style="min-width: 0">
     <div
-      class="KPageDetailsHead-content w-full flex flex-col bg-white rounded overflow-hidden mb-3 shadow-sm"
+      class="KPageDetailsHead-content w-full flex flex-col bg-white rounded overflow-hidden mb-2 shadow-sm"
     >
       <!-- head -->
       <div class="extra-head px-6 py-2 border-b border-gray-200">
@@ -42,7 +42,7 @@
       </div>
     </div>
 
-    <div class="shadow-sm">
+    <div class="shadow-sm flex-1">
       <slot></slot>
     </div>
   </div>
