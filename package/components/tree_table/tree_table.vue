@@ -450,9 +450,6 @@ const showTableData = computed(() => {
 });
 // 表格数据量
 const dataLength = computed(() => {
-  if (filterConditionInfo.value?.conditionList?.length) {
-    return newFilterData.value.length;
-  }
   const { isRemotePaging, total } = paginationConfig.value;
   if (isPaging.value && (isRemotePaging || props.isServerPaging)) {
     return total;
@@ -549,7 +546,7 @@ function filterTableData() {
   // 当表格数据为树时，筛选后的数据应展示完整的子树
   if (props.useTree) {
     const { rowField } = getTreeConfigField();
-    tableDataMap = new Map(xeTableData.value.map((item) => [item[rowField], item]));
+    tableDataMap = new Map(xeTableData.value.map((item: any) => [item[rowField], item]));
     handleTreeData(tableData);
     tableData = sortFunc([...treeDataMap.values()], xeTableData.value, rowField);
   } else {
