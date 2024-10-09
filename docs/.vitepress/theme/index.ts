@@ -30,7 +30,11 @@ import { KswIcon } from 'ksw-vue-icon';
  *  源码
  */
 import KUI from '../../../package/index';
+<<<<<<< Updated upstream
 // import '../../../package/style/theme/AOM/theme.css'; // index 中已经引用 不需要重复引用
+=======
+import '../../../package/style/theme/AOM/theme.css';
+>>>>>>> Stashed changes
 
 export default {
   ...DefaultTheme,
