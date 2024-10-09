@@ -11,8 +11,8 @@ import {
 } from '@nolebase/vitepress-plugin-enhanced-readabilities/client';
 import type { Options } from '@nolebase/vitepress-plugin-enhanced-readabilities/client';
 import '@nolebase/vitepress-plugin-enhanced-readabilities/client/style.css';
-import { NolebaseGitChangelogPlugin } from '@nolebase/vitepress-plugin-git-changelog/client'
-import '@nolebase/vitepress-plugin-git-changelog/client/style.css'
+import { NolebaseGitChangelogPlugin } from '@nolebase/vitepress-plugin-git-changelog/client';
+import '@nolebase/vitepress-plugin-git-changelog/client/style.css';
 import DocTitle from '../components/DocTitle.vue';
 import { KswIcon } from 'ksw-vue-icon';
 // import 'ksw-vue-icon/styles/icon.css'; // index 中已经引用 不需要重复引用
@@ -30,11 +30,7 @@ import { KswIcon } from 'ksw-vue-icon';
  *  源码
  */
 import KUI from '../../../package/index';
-<<<<<<< Updated upstream
-// import '../../../package/style/theme/AOM/theme.css'; // index 中已经引用 不需要重复引用
-=======
 import '../../../package/style/theme/AOM/theme.css';
->>>>>>> Stashed changes
 
 export default {
   ...DefaultTheme,
@@ -51,7 +47,7 @@ export default {
     // DefaultTheme.enhanceApp(ctx);
     ctx.app.use(KUI);
     ctx.app.use(KswIcon);
-    ctx.app.use(NolebaseGitChangelogPlugin)  
+    ctx.app.use(NolebaseGitChangelogPlugin);
     ctx.app.component('demo-preview', Container);
     ctx.app.component('DocTitle', DocTitle);
     ctx.app.provide(InjectionKey, {
@@ -71,16 +67,19 @@ export default {
       const scrollableElements = document.querySelectorAll('body, aside, pre');
 
       // 对每个元素初始化 OverlayScrollbars
-      scrollableElements.forEach(element => {
+      scrollableElements.forEach((element) => {
         OverlayScrollbars(element, {
           // 这里可以设置 OverlayScrollbars 的选项
           update: {
-            elementEvents: [['img', 'load'], ['ul[id="localsearch-list"]', 'load']],
+            elementEvents: [
+              ['img', 'load'],
+              ['ul[id="localsearch-list"]', 'load'],
+            ],
           },
           scrollbars: {
             // theme: 'os-theme-dark',
-            autoHide: 'move',  // 是否在某个用户操作之后自动隐藏可见的滚动条。有效值为：'never'、'scroll'和'leave', 'move'
-            autoHideSuspend: false,  //暂停自动隐藏功能，直到执行第一次滚动交互。
+            autoHide: 'move', // 是否在某个用户操作之后自动隐藏可见的滚动条。有效值为：'never'、'scroll'和'leave', 'move'
+            autoHideSuspend: false, //暂停自动隐藏功能，直到执行第一次滚动交互。
           },
         });
       });

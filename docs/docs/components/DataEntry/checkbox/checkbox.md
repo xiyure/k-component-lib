@@ -75,8 +75,4 @@ title: checkbox 多选框
 ## API
 
 <API src="./data.json" lang="zh"></API>
-<<<<<<< Updated upstream
-
 <API src="./data2.json" lang="zh"></API>
-=======
->>>>>>> Stashed changes
