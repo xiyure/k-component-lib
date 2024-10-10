@@ -99,10 +99,12 @@ watch(() => [props.color, props.status], (newValue) => {
 }, { immediate: true, deep: true });
 
 function setStepColor(color: string) {
+  if (typeof window !== 'undefined') {
   nextTick(() => {
     const element = document.getElementById(id);
     element?.style?.setProperty('--default-bgColor', color);
   });
+}
 }
 
 function getProcessStatus(type:string) {

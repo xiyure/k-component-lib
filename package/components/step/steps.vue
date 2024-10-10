@@ -57,13 +57,15 @@ watch(() => props.height, (newValue) => {
   if (!newValue) {
     return;
   }
-  nextTick(() => {
-    const stepBoxHeight = typeof newValue === 'number' ?
-      `${newValue}px` :
-      newValue;
-    const element = document.getElementById(id);
-    element?.style.setProperty('--height', stepBoxHeight);
-  });
+  if (typeof window !== 'undefined') {
+    nextTick(() => {
+      const stepBoxHeight = typeof newValue === 'number' ?
+        `${newValue}px` :
+        newValue;
+      const element = document.getElementById(id);
+      element?.style.setProperty('--height', stepBoxHeight);
+    });
+  }
 }, { immediate: true });
 
 function getProcessStatus(type:string) {
