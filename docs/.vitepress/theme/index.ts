@@ -2,6 +2,7 @@ import { h, onMounted } from 'vue';
 import DefaultTheme from 'vitepress/theme';
 import { Container } from '../plugin/container/index';
 import './style.less';
+// import './tailwind.css'; // index 中已经引用 不需要重复引用
 import 'overlayscrollbars/overlayscrollbars.css';
 import { OverlayScrollbars } from 'overlayscrollbars';
 import {
@@ -30,7 +31,7 @@ import { KswIcon } from 'ksw-vue-icon';
  *  源码
  */
 import KUI from '../../../package/index';
-import '../../../package/style/theme/AOM/theme.css';
+// import '../../../package/style/theme/AOM/theme.css'; // index 中已经引用 不需要重复引用
 
 export default {
   ...DefaultTheme,
@@ -64,7 +65,7 @@ export default {
   setup() {
     onMounted(() => {
       // 选择所有具有滚动条的元素
-      const scrollableElements = document.querySelectorAll('body, aside, pre');
+      const scrollableElements = document.querySelectorAll('body, aside, pre, div[class="vxe-table--body-wrapper body--wrapper"]');
 
       // 对每个元素初始化 OverlayScrollbars
       scrollableElements.forEach((element) => {
