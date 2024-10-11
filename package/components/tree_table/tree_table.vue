@@ -829,7 +829,12 @@ function getRowById(id: string | number) {
     return row;
   }
   const targetRow = xeTableData.value.find((item: any) => item[rowConfig.value.keyField] === id);
-  return targetRow ?? null;
+  if (targetRow) {
+    return targetRow;
+  }
+  const tempRecords = tableInstance.value.getInsertRecords();
+  const tempRow = tempRecords.find((item: any) => item[rowConfig.value.keyField] === id);
+  return tempRow ?? null;
 }
 // vxe-table行数据中dom被销毁时会导致tooltip无法关闭，这里提供手动销毁tooltip方法给予外部调用
 function disposeRowTooltip() {
