@@ -406,6 +406,8 @@ const tableInstance = computed(() => {
 const headerText = computed(() => {
   let text = '';
   if (filterConditionInfo.value?.conditionList?.length) {
+    const { filterRule } = filterConditionInfo.value;
+    text += filterRule === 0 ? t?.('anyOne') : t?.('all');
     filterConditionInfo.value.conditionList.forEach((item: any, index: number) => {
       const point = props.useTree && index === 0 ? '' : '·';
       text += `  ${point} ${item.title} ${item.logic} ${item.showValue}`;
@@ -541,7 +543,7 @@ function filterTableData() {
     if (strict === true) {
       return cellLabel === searchKey;
     }
-    return String(cellLabel).toLowerCase().search(searchKey.toLowerCase()) !== -1;
+    return String(cellLabel).toLowerCase().indexOf(searchKey.toLowerCase()) !== -1;
   })) as any;
   // 当表格数据为树时，筛选后的数据应展示完整的子树
   if (props.useTree) {

@@ -149,7 +149,7 @@
             <k-select
               v-model="filterRule"
               :size="props.size"
-              :disabled="remote === true || (Array.isArray(props.remote) && Boolean(props.remote.length))"
+              :disabled="disableChangeMode"
               :teleported="false"
             >
               <k-option :label="$t('anyOne')" :value="0"></k-option>
@@ -216,13 +216,6 @@ const t = _global?.$t;
 const filterData = ref<IFilterDataType[]>([]);
 const filterRule = ref(0);
 
-watch(() => props.remote, () => {
-  if (props.remote === true ||
-    (Array.isArray(props.remote) && Boolean(props.remote.length))
-  ) {
-    filterRule.value = 1;
-  }
-});
 const flatColumns = computed(() => treeDataToArray(cloneDeep(props.options), 'group'));
 const instance = computed(() => function (value: any) {
   const matchInstance:any = flatColumns.value?.find(item => item[props.filterKey] === value);
@@ -253,6 +246,16 @@ const disabledDatePicker = computed(() => function (item:IFilterDataType) {
   const notDisabledDateRanges = ['date', 'range'];
   return disabledInput.value(item) || !notDisabledDateRanges.includes(item.dateRange as string);
 });
+const disableChangeMode = computed(() => {
+  const fields = filterData.value.map(item => item.key);
+  return props.remote === true || (Array.isArray(props.remote) && props.remote.some((field: string) => fields.includes(field)));
+});
+
+watch(() => disableChangeMode.value, (newValue: boolean) => {
+  if (newValue) {
+    filterRule.value = 1;
+  }
+}, { immediate: true});
 
 initData();
 function initData() {
