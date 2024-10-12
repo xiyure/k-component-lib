@@ -1,13 +1,13 @@
 {
-  "name": "@ksware/ksw-ux",
+  "name": "ksw-ux",
   "private": false,
-  "version": "0.0.53",
+  "version": "0.0.41",
   "description": "Kingsware Component Library",
   "main": "kingsware-ui/index.umd.js",
   "module": "kingsware-ui/index.js",
   "style": "kingsware-ui/style.css",
   "type": "module",
-  "types": "kingsware-ui/index.d.ts",
+  "types": "kingsware-ui/components.d.ts",
   "files": [
     "kingsware-ui/*"
   ],
@@ -52,7 +52,7 @@
     "tailwindcss": "^3.4.10",
     "typescript": "^5.4.5",
     "vite": "^5.2.0",
-    "vite-plugin-dts": "^3.9.1",
+    "vite-plugin-dts": "^4.2.3",
     "vue-tsc": "^2.0.6"
   },
   "author": "zhj",

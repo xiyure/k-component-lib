@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import fs from 'fs';
 import _path from 'path';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
@@ -13,8 +14,12 @@ export default defineConfig({
     vue(),
     vueJsx(),
     dts({
-      include: ['./package'],
-      tsconfigPath: 'tsconfig.json'
+      tsconfigPath: "tsconfig.json",
+      include: ['package/components'],
+    }),
+    copyFile({
+      src: _path.resolve(__dirname, 'package/components.d.ts'),
+      dest: _path.resolve(__dirname, `${name}/components.d.ts`)
     })
   ],
   build: {
@@ -63,3 +68,26 @@ export default defineConfig({
     port: 12580
   }
 });
+
+type copyFilePluginType = {
+  src: string,
+  dest: string
+}
+// 将文件直接复制到打包后的目录下
+function copyFile({src, dest}:copyFilePluginType) {
+  return {
+    name: 'copy-file-plugin',
+    closeBundle() {
+      try {
+        fs.copyFile(src, dest, (err) => {
+          if (!err) {
+            console.log('successfully');
+          }
+        });
+      } catch (error) {
+        console.error(error);
+      }
+      
+    },
+  };
+}
