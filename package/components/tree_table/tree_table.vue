@@ -138,6 +138,7 @@
         :row-config="rowConfig"
         :sort-config="sortConfig"
         :tree-config="treeConfig"
+        :seq-config="seqConfig"
         :checkbox-config="checkboxConfig"
         :edit-config="editConfig"
         :column-config="columnConfig"
@@ -296,6 +297,15 @@ const defaultEditConfig = {
   trigger: 'click',
   mode: 'cell',
 };
+const defaultSeqConfig = {
+  seqMethod: ({ rowIndex }) => {
+    if (isPaging.value) {
+      const { pageSize, currentPage } = paginationConfig.value;
+      return (currentPage - 1) * pageSize + rowIndex;
+    }
+    return rowIndex;
+  }
+}
 
 const defaultScrollY = { enabled: true };
 const defaultColumnConfig = { resizable: true };
@@ -438,6 +448,7 @@ const rowConfig = computed(() => Object.assign(defaultRowConfig, props.rowConfig
 const editConfig = computed(() => Object.assign(defaultEditConfig, props.editConfig || {}));
 const scrollY = computed(() => Object.assign(defaultScrollY, props.scrollY || {}));
 const columnConfig = computed(() => Object.assign(defaultColumnConfig, props.columnConfig || {}));
+const seqConfig = computed(() => Object.assign(defaultSeqConfig, props.seqConfig || {}));
 // 是否分页
 const isPaging = computed(() => props.showPage && !props.useTree);
 

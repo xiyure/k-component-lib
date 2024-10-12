@@ -47,6 +47,7 @@ export interface TreeTableProps {
   data?: any[]
   size?: string
   sortConfig?: object
+  seqConfig?: object
   rowConfig?: any
   editConfig?: object
   scrollY?: object
