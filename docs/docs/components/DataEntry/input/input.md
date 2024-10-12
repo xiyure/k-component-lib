@@ -32,7 +32,7 @@ title: Input 输入框
 
 <preview path="./password.vue"></preview>
 
-### 带图标的输入框​
+### 带图标的输入框
 
 带有图标标记输入类型
 
@@ -40,7 +40,7 @@ title: Input 输入框
 
 <preview path="./icon.vue"></preview>
 
-### 文本域​
+### 文本域
 
 用于输入多行文本信息可缩放的输入框。 添加 `type="textarea"` 属性来将 `input` 元素转换为原生的 `textarea` 元素。
 
@@ -48,7 +48,7 @@ title: Input 输入框
 
 <preview path="./textarea.vue"></preview>
 
-### 自适应文本域​
+### 自适应文本域
 
 设置文字输入类型的 `autosize` 属性使得根据内容自动调整的高度。 你可以给 `autosize` 提供一个包含有最大和最小高度的对象，让输入框自动调整。
 
@@ -68,7 +68,7 @@ title: Input 输入框
 
 <preview path="./size.vue"></preview>
 
-### 输入长度限制​
+### 输入长度限制
 
 使用 `maxlength` 和 `minlength` 属性, 来控制输入内容的最大字数和最小字数。 "字符数"使用JavaScript字符串长度来衡量。 为文本或文本输入类型设置 `maxlength` prop可以限制输入值的长度。 允许你通过设置 `show-word-limit` 到 `true` 来显示剩余字数。
 

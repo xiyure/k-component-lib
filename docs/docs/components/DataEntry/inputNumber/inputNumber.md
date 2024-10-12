@@ -21,7 +21,7 @@ title: Input Number 数字输入框
 
 <preview path="./disabled.vue"></preview>
 
-### 步进​
+### 步进
 
 允许定义递增递减的步进控制
 
@@ -29,13 +29,13 @@ title: Input Number 数字输入框
 
 <preview path="./step.vue"></preview>
 
-### 严格步进​
+### 严格步进
 
 `step-strictly` 属性接受一个 `Boolean`。 如果这个属性被设置为 `true`，则只能输入步进的倍数。
 
 <preview path="./stepStrictly.vue"></preview>
 
-### 精度​
+### 精度
 
 设置 `precision` 属性可以控制数值精度，接收一个 `Number`。
 
@@ -44,20 +44,20 @@ title: Input Number 数字输入框
 > [!TIP]
 > `precision` 的值必须是一个非负整数，并且不能小于 `step` 的小数位数。
 
-### 不同的输入框尺寸​
+### 不同的输入框尺寸
 
 使用 `size` 属性额外配置尺寸，可选的尺寸大小为：`large` 或 `small`
 
 <preview path="./size.vue"></preview>
 
-### 按钮位置​
+### 按钮位置
 
 设置 `controls-position` 属性可以控制按钮位置。
 
 <preview path="./controlsPosition.vue"></preview>
 
 ### 自定义图标
-​
+
 使用 `decrease-icon` 和 `increase-icon` 设置自定义图标。
 
 <preview path="./decreaseIcon.vue"></preview>

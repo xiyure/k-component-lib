@@ -14,7 +14,7 @@ title: Steps 步骤条
 
 <preview path="./basic.vue"></preview>
 
-## 含状态的步骤条​
+## 含状态的步骤条
 
 每一步骤显示出该步骤的状态。
 
@@ -22,19 +22,19 @@ title: Steps 步骤条
 
 <preview path="./withStatus.vue"></preview>
 
-## 居中的步骤条​
+## 居中的步骤条
 
 标题和描述可以居中。
 
 <preview path="./centered.vue"></preview>
 
-## 带描述的步骤栏​
+## 带描述的步骤栏
 
 每一步都有描述。
 
 <preview path="./withDescription.vue"></preview>
 
-## 带图标的步骤条​
+## 带图标的步骤条
 
 可以在步骤栏中使用各种自定义图标。
 
@@ -42,7 +42,7 @@ title: Steps 步骤条
 
 <preview path="./withIcon.vue"></preview>
 
-## 垂直的步骤条​
+## 垂直的步骤条
 
 垂直方向的步骤条。
 
@@ -50,7 +50,7 @@ title: Steps 步骤条
 
 <preview path="./vertical.vue"></preview>
 
-## 简洁风格的步骤条​
+## 简洁风格的步骤条
 
 设置 `simple` 可应用简洁风格，该条件下 `align-center` / `description` / `direction` / `space` 都将失效。
 

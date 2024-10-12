@@ -14,7 +14,7 @@ Tabs 组件提供了选项卡功能， 默认选中第一个标签页，你也�
 
 <preview path="./basic.vue"></preview>
 
-## 卡片风格的标签​
+## 卡片风格的标签
 
 你可以设置具有卡片风格的标签。
 
@@ -30,7 +30,7 @@ Tabs 组件提供了选项卡功能， 默认选中第一个标签页，你也�
 
 <preview path="./borderCard.vue"></preview>
 
-## 标签位置的设置​
+## 标签位置的设置
 
 可以通过 `tab-position` 设置标签的位置
 
@@ -38,7 +38,7 @@ Tabs 组件提供了选项卡功能， 默认选中第一个标签页，你也�
 
 <preview path="./tabPosition.vue"></preview>
 
-## 自定义标签页的内容​
+## 自定义标签页的内容
 
 可以通过具名插槽来实现自定义标签页的内容
 
@@ -55,6 +55,6 @@ Tabs 组件提供了选项卡功能， 默认选中第一个标签页，你也�
 
 <preview path="./customizedAddButtonIcon.vue"></preview> -->
 
-## 增加标签页触发器自定义​
+## 增加标签页触发器自定义
 
 <preview path="./customizedTrigger.vue"></preview>
