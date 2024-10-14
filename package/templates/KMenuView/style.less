@@ -1,0 +1,18 @@
+@import '../../style/variable.css';
+@import '../../style/general.less';
+
+.k-layout-container {
+  display: flex;
+  height: 100%;
+  .k-layout-aside {
+    height: 100%;
+  }
+  .k-layout-content {
+    .k-layout-header, .k-layout-footer {
+      height: 60px;
+    }
+    .k-layout-main {
+      height: calc(100% - 120px);
+    }
+  }
+}

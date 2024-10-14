@@ -4,5 +4,11 @@ import { KPageViewBus } from './KPageViewBus';
 import { KPageDetails } from './KPageDetails';
 // KPageTableView, 表格模板
 import { KPageTableView } from './KPageTableView';
+import { KMenuView } from './KMenuView';
 
-export { KPageViewBus, KPageDetails, KPageTableView };
+export {
+  KPageViewBus,
+  KPageDetails,
+  KPageTableView,
+  KMenuView
+};
