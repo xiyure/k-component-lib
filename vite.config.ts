@@ -16,10 +16,6 @@ export default defineConfig({
     dts({
       tsconfigPath: "tsconfig.json",
       include: ['package/components'],
-    }),
-    copyFile({
-      src: _path.resolve(__dirname, 'package/components.d.ts'),
-      dest: _path.resolve(__dirname, `${name}/components.d.ts`)
     })
   ],
   build: {
