@@ -6,11 +6,11 @@
       v-bind="subMenuAttrs(subMenu)"
     >
       <template #title>
+        <el-icon v-if="subMenu.icon">
+          <component :is="subMenu.icon" />
+        </el-icon>
         <slot :name="`${subMenu.index}-title`">
-          <span class="k-menu-item__title">
-            <component :is="subMenu.icon" />
-            {{ subMenu.title }}
-          </span>
+          <span class="k-menu-item__title">{{ subMenu.title }}</span>
         </slot>
       </template>
       <sub-menu :options="subMenu.children">
@@ -20,10 +20,12 @@
       </sub-menu>
     </el-sub-menu>
     <el-menu-item v-else :index="subMenu.index" :disabled="subMenu.disabled" :route="subMenu.route">
+      <el-icon v-if="subMenu.icon">
+        <component :is="subMenu.icon" />
+      </el-icon>
       <template #title>
         <slot :name="`${subMenu.index}-title`">
           <span class="k-menu-item__title">
-            <component :is="subMenu.icon" />
             {{ subMenu.title }}
           </span>
         </slot>

@@ -1,9 +1,7 @@
 <template>
-  <!-- <Test /> -->
-  <Test2 />
+  <Test />
 </template>
 <script setup lang="ts">
-// import Test from './view/index.vue';
-import Test2 from './view/index2.vue';
+import Test from './view/index.vue';
 </script>
 <style scoped></style>

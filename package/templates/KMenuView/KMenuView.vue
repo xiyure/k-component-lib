@@ -41,6 +41,7 @@
 import { ref } from 'vue';
 import { menuViewProps } from './type';
 import SubMenu from './subMenu.vue';
+import { IconLeftMenuDisplay } from 'ksw-vue-icon';
 
 defineOptions({
   name: 'KMenuView',
