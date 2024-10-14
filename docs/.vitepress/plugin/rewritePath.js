@@ -8,14 +8,17 @@ function generateRewrites() {
   const moFiles = globSync('docs/**/*.md');
   
   moFiles.forEach(file => {
-    const fileName = path.basename(file, '.md'); // 获取文件名（不带扩展名）
-    const dirName = path.basename(path.dirname(file)); // 获取所在目录名
+    // 将路径转换为 POSIX 格式, 兼容 windows
+    const posixFile = file.split(path.sep).join(path.posix.sep);
+    
+    const fileName = path.posix.basename(posixFile, '.md'); // 获取文件名（不带扩展名）
+    const dirName = path.posix.basename(path.posix.dirname(posixFile)); // 获取所在目录名
     
     // 检查文件名和目录名是否相同
     if (fileName.toLowerCase() === dirName.toLowerCase()) {
-      const relativePath = path.relative('docs', file);
-      const rewritePath = `${path.dirname(file)}.md`;
-      rewrites[file] = rewritePath;
+      const relativePath = path.posix.relative('docs', posixFile);
+      const rewritePath = `${path.posix.dirname(posixFile)}.md`;
+      rewrites[posixFile] = rewritePath;
     }
   });
   // console.log(rewrites);
