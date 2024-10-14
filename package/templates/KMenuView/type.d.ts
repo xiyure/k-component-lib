@@ -1,10 +1,11 @@
 import { Component } from "vue"
 
 export interface optionItem {
-  key?: any
+  index?: any
   title?: string
   icon?: string | Component
   disabled?: boolean
+  route?: object
   children?: optionItem[]
 }
 export interface menuViewProps {
@@ -14,7 +15,4 @@ export interface menuViewProps {
 
 export interface subMenuProps {
   options: optionItem[]
-  index: any
-  disabled?: boolean
-  title?: string
 }

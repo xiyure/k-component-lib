@@ -1,25 +1,26 @@
 <template>
-  <el-sub-menu :disabled="props.disabled" :index="props.index">
-    <template #title>
-       {{ props.title }}
-      </template>
-    <el-menu-item
-      v-for="subMenu in options"
-      :index="subMenu.key"
-      :disabled="subMenu.disabled"
-    >
-      <template #title>
-        <slot :name="`${subMenu.key}-title`">{{ subMenu.title }}</slot>
-      </template>
-      <sub-menu
+   <template  v-for="subMenu in options">
+      <el-sub-menu
         v-if="Array.isArray(subMenu.children) && subMenu.children.length > 0"
+        v-bind="subMenu"
         :options="subMenu.children"
-        :index="subMenu.key"
+      >
+        <template #title>
+          <slot :name="`${subMenu.index}-title`">{{ subMenu.title }}</slot>
+        </template>
+        <sub-menu :options="subMenu.children"></sub-menu>
+      </el-sub-menu>
+      <el-menu-item
+        v-else
+        :index="subMenu.index"
         :disabled="subMenu.disabled"
-        :title="subMenu.title"
-      />
-    </el-menu-item>
-  </el-sub-menu>
+        :route="subMenu.route"
+      >
+        <template #title>
+          <slot :name="`${subMenu.index}-title`">{{ subMenu.title }}</slot>
+        </template>
+      </el-menu-item>
+    </template>
 </template>
 
 <script lang="ts" setup>

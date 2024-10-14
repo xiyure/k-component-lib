@@ -2,27 +2,9 @@
   <div class="k-layout-container">
     <div class="k-layout-aside">
       <el-menu
-        default-active="option3"
-        :collapse="isCollapse"
+        v-bind="$attrs"
       >
-        <template  v-for="subMenu in options">
-          <sub-menu
-            v-if="Array.isArray(subMenu.children) && subMenu.children.length > 0"
-            :options="subMenu.children"
-            :index="subMenu.key"
-            :title="subMenu.title"
-            :disabled="subMenu.disabled"
-          />
-          <el-menu-item
-            v-else
-            :index="subMenu.key"
-            :disabled="subMenu.disabled"
-          >
-            <template #title>
-              <slot :name="`${subMenu.key}-title`">{{ subMenu.title }}</slot>
-            </template>
-          </el-menu-item>
-        </template>
+        <sub-menu :options="options"></sub-menu>
       </el-menu>
     </div>
     <div class="k-layout-content">
@@ -40,7 +22,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import { menuViewProps } from './type';
 import SubMenu from './subMenu.vue'
 
@@ -48,9 +29,9 @@ defineOptions({
   name: 'KMenuView',
 });
 
-const props = withDefaults(defineProps<menuViewProps>(), {});
-
-const isCollapse = ref(false);
+const props = withDefaults(defineProps<menuViewProps>(), {
+  options: () => []
+});
 </script>
 <style lang="less">
 @import './style.less';
