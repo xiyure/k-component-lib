@@ -39,7 +39,7 @@ for (const name in templates) {
 
 // install方法
 const install = (app: any, options?: optionsType) => {
-  handleProjectStyle(options?.styleModule)
+  handleProjectStyle(options?.styleModule);
   app.use(ElementPlus, {
     ...options?.ElementPlusOptions,
     locale: options?.locale === 'en' ? enLocal : zhLocal,
@@ -88,12 +88,14 @@ function registerInternal(app: any, options?: optionsType) {
 }
 
 function handleProjectStyle(styleModule: string | undefined) {
-  const projectList = ['AOM'];
+  const projectList = ['AOM', 'GFAOM'];
   let projectName = 'AOM';
   if (typeof styleModule === 'string' && projectList.includes(styleModule)) {
     projectName = styleModule;
   } else if (styleModule !== undefined) {
-    console.warn(`'styleModule' expected to be ${projectList.map(name => `'${name}'`).join(' or ')}, but got '${styleModule}'.`);
+    console.warn(
+      `'styleModule' expected to be ${projectList.map((name) => `'${name}'`).join(' or ')}, but got '${styleModule}'.`,
+    );
   }
   // 项目样式导入
   import(`./style/theme/${projectName}/theme.css`);

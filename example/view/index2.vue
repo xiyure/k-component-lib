@@ -8,6 +8,20 @@
 <template>
   <div class="h-screen w-full">
     <k-menu-view :options="viewOptions">
+      <template #app-logo>
+        <div
+          class="ant-pro-sider-logo text-white text-xl flex gap-1 items-center"
+          style="transition: all 0.3s ease-in-out"
+        >
+          <img
+            src="../../public/vite.svg"
+            alt=""
+            class="w-6 h-6"
+            style="transition: all 0.3s ease-in-out"
+          />
+          <span class="text-nowrap" style="transition: all 0.3s ease-in-out">Ant Design Pro</span>
+        </div>
+      </template>
       <template #header>
         <div class="bg-red-500">Header</div>
       </template>

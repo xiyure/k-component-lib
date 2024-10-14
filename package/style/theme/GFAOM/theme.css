@@ -1,7 +1,7 @@
 @import '../../variable.css';
 
 :root {
-  --k-theme-test: blue;
+  --k-theme-test: red;
   /*
    * 主题色 theme color🎨 
    */
@@ -294,7 +294,6 @@
   --k-theme-input-border-color--normal: var(--k-theme-border--normal);
   --k-theme-input-border-color--hover: var(--k-theme-primary-400);
   --k-theme-input-border-color--active: var(--k-theme-primary-500);
-  --k-theme-input-placeholder-color: var(--k-gray-400);
 
   /* collapse */
   --k-theme-collapse-size-height: var(--k-theme-button-size-height--base);
