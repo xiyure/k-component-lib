@@ -2,7 +2,11 @@
   <div class="k-layout-container">
     <div class="k-layout-aside">
       <el-menu v-bind="$attrs">
-        <sub-menu :options="options"></sub-menu>
+        <sub-menu :options="options">
+          <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+            <slot :name="name" v-bind="data"></slot>
+          </template>
+        </sub-menu>
       </el-menu>
     </div>
     <div class="k-layout-content w-full">
