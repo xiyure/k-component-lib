@@ -37,3 +37,9 @@ title: Radio 单选框
 只需要把 `k-radio` 元素换成 `k-radio-button` 元素即可， 此外，还提供了 size 属性用来控制单选框的大小。
 
 <preview path="./buttonStyle.vue"></preview>
+
+## API
+
+<API src="./data.json" lang="zh"></API>
+
+<API src="./data2.json" lang="zh"></API>
