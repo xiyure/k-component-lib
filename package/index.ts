@@ -16,6 +16,7 @@ import en from './internal/en';
 import { Emitter } from './utils';
 import './style/tailwind.css';
 import './style/theme/AOM/theme.css';
+import 'overlayscrollbars/styles/overlayscrollbars.css'; // 引入overlayscrollbars样式
 
 type optionsType = {
   locale?: 'zh' | 'en';
