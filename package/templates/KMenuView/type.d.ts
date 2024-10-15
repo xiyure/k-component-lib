@@ -11,6 +11,8 @@ export interface optionItem {
 export interface menuViewProps {
   options?: optionItem[]
   active?: number
+  showCollapse?: boolean
+  collapse?: boolean
 }
 
 export interface subMenuProps {

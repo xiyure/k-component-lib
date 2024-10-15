@@ -9,7 +9,7 @@ import 'ksw-vue-icon/styles/icon.css';
 import { createI18n } from 'vue-i18n';
 import * as components from './components';
 import * as templates from './templates';
-import originComponents from './element-plus';
+import * as originComponents from './element-plus';
 import * as directives from './directives';
 import zh from './internal/zh';
 import en from './internal/en';
@@ -102,5 +102,6 @@ function handleProjectStyle(styleModule: string | undefined) {
 }
 
 export * from './components';
+export * from './element-plus'
 export * from './templates';
 export default install;

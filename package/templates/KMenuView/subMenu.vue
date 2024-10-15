@@ -13,13 +13,18 @@
           <span class="k-menu-item__title">{{ subMenu.title }}</span>
         </slot>
       </template>
-      <sub-menu :options="subMenu.children">
+      <sub-menu :options="subMenu.children" @click="handleClick">
         <template v-for="(_, name) in $slots" :key="name" #[name]="data">
           <slot :name="name" v-bind="data"></slot>
         </template>
       </sub-menu>
     </el-sub-menu>
-    <el-menu-item v-else :index="subMenu.index" :disabled="subMenu.disabled" :route="subMenu.route">
+    <el-menu-item
+      v-else :index="subMenu.index"
+      :disabled="subMenu.disabled"
+      :route="subMenu.route"
+      @click="handleClick"
+    >
       <el-icon v-if="subMenu.icon">
         <component :is="subMenu.icon" />
       </el-icon>
@@ -37,11 +42,13 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { optionItem, subMenuProps } from './type';
+import { MenuItemRegistered } from 'element-plus';
 
 defineOptions({
   name: 'SubMenu',
 });
 const props = defineProps<subMenuProps>();
+const emits = defineEmits(['click']);
 
 const subMenuAttrs = computed(() => {
   return (obj: optionItem) => {
@@ -49,4 +56,8 @@ const subMenuAttrs = computed(() => {
     return rest;
   };
 });
+
+const handleClick = (menuItem: MenuItemRegistered) => {
+  emits('click', menuItem);
+}
 </script>

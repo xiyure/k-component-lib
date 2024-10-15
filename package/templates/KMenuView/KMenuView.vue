@@ -1,15 +1,15 @@
 <template>
   <div class="k-layout-container">
-    <div class="k-layout-aside" :class="{ 'is-collapse': isCollapse }">
+    <div class="k-layout-aside" :class="{ 'is-collapse': useCollapse }">
       <div
         class="logo-box h-12 flex justify-start items-center p-4"
-        :class="{ 'is-collapse': isCollapse }"
+        :class="{ 'is-collapse': useCollapse }"
         v-if="$slots['app-logo']"
       >
         <slot name="app-logo"></slot>
       </div>
-      <el-menu v-bind="$attrs" :collapse="isCollapse">
-        <sub-menu :options="options">
+      <el-menu v-bind="$attrs" :collapse="useCollapse">
+        <sub-menu :options="options" @click="handleClick">
           <template v-for="(_, name) in $slots" :key="name" #[name]="data">
             <slot :name="name" v-bind="data"></slot>
           </template>
@@ -20,8 +20,12 @@
       <div
         class="k-layout-header bg-white h-12 px-4 flex w-full justify-between items-center border-b"
       >
-        <KButton text @click="isCollapse = !isCollapse">
-          <IconLeftMenuDisplay :class="{ 'rotate-180': !isCollapse }" color="black" size="20" />
+        <KButton
+          v-if="props.showCollapse && props.collapse === undefined"
+          text
+          @click="isCollapse = !isCollapse"
+        >
+          <IconLeftMenuDisplay :class="{ 'rotate-180': !useCollapse }" color="black" size="20" />
         </KButton>
         <slot name="header"></slot>
       </div>
@@ -38,10 +42,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { menuViewProps } from './type';
 import SubMenu from './subMenu.vue';
 import { IconLeftMenuDisplay } from 'ksw-vue-icon';
+import { MenuItemRegistered } from 'element-plus';
+import { KButton } from '../../components/button'
 
 defineOptions({
   name: 'KMenuView',
@@ -49,10 +55,45 @@ defineOptions({
 
 const props = withDefaults(defineProps<menuViewProps>(), {
   options: () => [],
+  showCollapse: true,
+  collapse: undefined
 });
+const emits = defineEmits(['click']);
+
+const useCollapse = computed(() => {
+  if (props.collapse !== undefined) {
+    return props.collapse;
+  }
+  return isCollapse.value;
+})
 
 const isCollapse = ref(false);
+
+const handleClick = (menuItem: MenuItemRegistered) => {
+  emits('click', menuItem);
+}
+const collapse = () => {
+  if (props.collapse !== undefined) {
+    return;
+  }
+  isCollapse.value = true;
+}
+const expand = () => {
+  if (props.collapse !== undefined) {
+    return;
+  }
+  isCollapse.value = false;
+}
+const toggleCollapse = () => {
+  if (props.collapse !== undefined) {
+    return;
+  }
+  isCollapse.value = !isCollapse.value;
+}
+
+defineExpose({ collapse, expand, toggleCollapse })
 </script>
+
 <style lang="less">
 @import './style.less';
 </style>
