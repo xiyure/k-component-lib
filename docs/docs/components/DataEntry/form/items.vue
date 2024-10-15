@@ -49,10 +49,10 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
-import type { FormInstance } from '@ksware/ksw-ux'
+import { reactive, ref } from 'vue';
+import type { FormInstance } from '@ksware/ksw-ux';
 
-const formRef = ref<FormInstance>()
+const formRef = ref<FormInstance>();
 const dynamicValidateForm = reactive<{
   domains: DomainItem[]
   email: string
@@ -64,7 +64,7 @@ const dynamicValidateForm = reactive<{
     },
   ],
   email: '',
-})
+});
 
 interface DomainItem {
   key: number
@@ -72,32 +72,32 @@ interface DomainItem {
 }
 
 const removeDomain = (item: DomainItem) => {
-  const index = dynamicValidateForm.domains.indexOf(item)
+  const index = dynamicValidateForm.domains.indexOf(item);
   if (index !== -1) {
-    dynamicValidateForm.domains.splice(index, 1)
+    dynamicValidateForm.domains.splice(index, 1);
   }
-}
+};
 
 const addDomain = () => {
   dynamicValidateForm.domains.push({
     key: Date.now(),
     value: '',
-  })
-}
+  });
+};
 
 const submitForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
+  if (!formEl) return;
   formEl.validate((valid) => {
     if (valid) {
-      console.log('submit!')
+      console.log('submit!');
     } else {
-      console.log('error submit!')
+      console.log('error submit!');
     }
-  })
-}
+  });
+};
 
 const resetForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
-  formEl.resetFields()
-}
+  if (!formEl) return;
+  formEl.resetFields();
+};
 </script>

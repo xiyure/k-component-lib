@@ -36,14 +36,14 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
-import type { FormItemProps, FormProps } from '@ksware/ksw-ux'
+import { reactive, ref } from 'vue';
+import type { FormItemProps, FormProps } from '@ksware/ksw-ux';
 
-const labelPosition = ref<FormProps['labelPosition']>('right')
-const itemLabelPosition = ref<FormItemProps['labelPosition']>('')
+const labelPosition = ref<FormProps['labelPosition']>('right');
+const itemLabelPosition = ref<FormItemProps['labelPosition']>('');
 const formLabelAlign = reactive({
   name: '',
   region: '',
   type: '',
-})
+});
 </script>

@@ -255,7 +255,7 @@ watch(() => disableChangeMode.value, (newValue: boolean) => {
   if (newValue) {
     filterRule.value = 1;
   }
-}, { immediate: true});
+}, { immediate: true });
 
 initData();
 function initData() {

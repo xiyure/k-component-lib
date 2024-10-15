@@ -75,13 +75,13 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
-import type { ComponentSize, FormProps } from '@ksware/ksw-ux'
+import { reactive, ref } from 'vue';
+import type { ComponentSize, FormProps } from '@ksware/ksw-ux';
 
 type MyComponentSize = 'lg' | 'base' | 'sm';
 
-const size = ref<MyComponentSize>('base')
-const labelPosition = ref<FormProps['labelPosition']>('right')
+const size = ref<MyComponentSize>('base');
+const labelPosition = ref<FormProps['labelPosition']>('right');
 
 const sizeForm = reactive({
   name: '',
@@ -92,10 +92,10 @@ const sizeForm = reactive({
   type: [],
   resource: '',
   desc: '',
-})
+});
 
 function onSubmit() {
-  console.log('submit!')
+  console.log('submit!');
 }
 </script>
 

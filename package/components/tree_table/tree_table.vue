@@ -305,7 +305,7 @@ const defaultSeqConfig = {
     }
     return rowIndex;
   }
-}
+};
 
 const defaultScrollY = { enabled: true };
 const defaultColumnConfig = { resizable: true };

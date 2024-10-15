@@ -4,10 +4,10 @@
       <k-input-number v-model="num" />
       <k-input-number v-model="num">
         <template #decrease-icon>
-            <IconArrowBottom />
+          <IconArrowBottom />
         </template>
         <template #increase-icon>
-            <IconArrowTop />
+          <IconArrowTop />
         </template>
       </k-input-number>
     </k-space>
@@ -15,10 +15,10 @@
       <k-input-number v-model="num" controls-position="right" />
       <k-input-number v-model="num" controls-position="right">
         <template #decrease-icon>
-            <IconAdd />
+          <IconAdd />
         </template>
         <template #increase-icon>
-            <IconAdd />
+          <IconAdd />
         </template>
       </k-input-number>
     </k-space>
@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const num = ref(1)
+const num = ref(1);
 </script>

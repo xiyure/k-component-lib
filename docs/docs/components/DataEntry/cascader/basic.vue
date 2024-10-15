@@ -15,17 +15,17 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const value = ref([])
+const value = ref([]);
 
 const props = {
   expandTrigger: 'hover' as const,
-}
+};
 
 const handleChange = (value) => {
-  console.log(value)
-}
+  console.log(value);
+};
 
 const options = [
   {
@@ -294,5 +294,5 @@ const options = [
       },
     ],
   },
-]
+];
 </script>

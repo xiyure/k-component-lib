@@ -28,17 +28,17 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue'
+import { reactive } from 'vue';
 
 const formInline = reactive({
   user: '',
   region: '',
   date: '',
-})
+});
 
 const onSubmit = () => {
-  console.log('submit!')
-}
+  console.log('submit!');
+};
 </script>
 
 <style>

@@ -103,6 +103,7 @@ export {
   KFooter,
   KHeader,
   KIcon,
+  KImage,
   KImageViewer,
   KInfiniteScroll,
   KLink,
@@ -139,4 +140,4 @@ export {
   KTour,
   KTourStep,
   KWatermark
-}
+};

@@ -12,12 +12,12 @@
 <script lang="ts" setup>
 const props1 = {
   checkStrictly: true,
-}
+};
 
 const props2 = {
   multiple: true,
   checkStrictly: true,
-}
+};
 
 const options = [
   {
@@ -286,5 +286,5 @@ const options = [
       },
     ],
   },
-]
+];
 </script>

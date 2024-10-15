@@ -4,7 +4,7 @@
       <k-collapse-item name="1">
         <template #title>
           Consistency
-            <IconQuestion />
+          <IconQuestion />
         </template>
         <div>
           Consistent with real life: in line with the process and logic of real

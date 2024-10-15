@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const radio = ref('selected and disabled')
+const radio = ref('selected and disabled');
 </script>

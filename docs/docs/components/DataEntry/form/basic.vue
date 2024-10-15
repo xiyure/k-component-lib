@@ -65,7 +65,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue'
+import { reactive } from 'vue';
 
 // do not use same name with ref
 const form = reactive({
@@ -77,9 +77,9 @@ const form = reactive({
   type: [],
   resource: '',
   desc: '',
-})
+});
 
 const onSubmit = () => {
-  console.log('submit!')
-}
+  console.log('submit!');
+};
 </script>

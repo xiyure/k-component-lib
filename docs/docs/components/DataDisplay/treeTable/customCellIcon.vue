@@ -1,6 +1,9 @@
 <template>
   <div :style="{ height: '300px' }">
-    <k-tree-table :data="tableData1" :column="column5" :show-page="false" border></k-tree-table>
+    <k-tree-table
+      :data="tableData1" :column="column5" :show-page="false"
+      border
+    ></k-tree-table>
   </div>
 </template>
 

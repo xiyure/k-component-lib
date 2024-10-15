@@ -92,8 +92,8 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
-import type { ComponentSize, FormInstance, FormRules } from '@ksware/ksw-ux'
+import { reactive, ref } from 'vue';
+import type { ComponentSize, FormInstance, FormRules } from '@ksware/ksw-ux';
 
 interface RuleForm {
   name: string
@@ -108,8 +108,8 @@ interface RuleForm {
   desc: string
 }
 
-const formSize = ref<ComponentSize>('default')
-const ruleFormRef = ref<FormInstance>()
+const formSize = ref<ComponentSize>('default');
+const ruleFormRef = ref<FormInstance>();
 const ruleForm = reactive<RuleForm>({
   name: 'Hello',
   region: '',
@@ -121,9 +121,9 @@ const ruleForm = reactive<RuleForm>({
   type: [],
   resource: '',
   desc: '',
-})
+});
 
-const locationOptions = ['Home', 'Company', 'School']
+const locationOptions = ['Home', 'Company', 'School'];
 
 const rules = reactive<FormRules<RuleForm>>({
   name: [
@@ -185,26 +185,26 @@ const rules = reactive<FormRules<RuleForm>>({
   desc: [
     { required: true, message: 'Please input activity form', trigger: 'blur' },
   ],
-})
+});
 
 const submitForm = async (formEl: FormInstance | undefined) => {
-  if (!formEl) return
+  if (!formEl) return;
   await formEl.validate((valid, fields) => {
     if (valid) {
-      console.log('submit!')
+      console.log('submit!');
     } else {
-      console.log('error submit!', fields)
+      console.log('error submit!', fields);
     }
-  })
-}
+  });
+};
 
 const resetForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
-  formEl.resetFields()
-}
+  if (!formEl) return;
+  formEl.resetFields();
+};
 
 const options = Array.from({ length: 10000 }).map((_, idx) => ({
   value: `${idx + 1}`,
   label: `${idx + 1}`,
-}))
+}));
 </script>

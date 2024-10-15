@@ -15,10 +15,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import type { TabsInstance } from '@ksware/ksw-ux'
+import { ref } from 'vue';
+import type { TabsInstance } from '@ksware/ksw-ux';
 
-const tabPosition = ref<TabsInstance['tabPosition']>('left')
+const tabPosition = ref<TabsInstance['tabPosition']>('left');
 </script>
 
 <style>

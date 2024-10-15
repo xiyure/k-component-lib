@@ -11,7 +11,10 @@
     <k-step title="Step 3" icon="IconMenuCollect" />
   </k-steps>
 
-  <k-steps style="max-width: 600px" :active="1" finish-status="success" simple>
+  <k-steps
+    style="max-width: 600px" :active="1" finish-status="success"
+    simple
+  >
     <k-step title="Step 1" />
     <k-step title="Step 2" />
     <k-step title="Step 3" />

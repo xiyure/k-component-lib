@@ -5,7 +5,10 @@
   </div>
   <div class="m-4">
     <p>折叠标签</p>
-    <k-cascader :options="options" :props="props" collapse-tags clearable />
+    <k-cascader
+      :options="options" :props="props" collapse-tags
+      clearable
+    />
   </div>
   <div class="m-4">
     <p>折叠标签工具提示</p>
@@ -31,7 +34,7 @@
 </template>
 
 <script lang="ts" setup>
-const props = { multiple: true }
+const props = { multiple: true };
 
 const options = [
   {
@@ -115,5 +118,5 @@ const options = [
       },
     ],
   },
-]
+];
 </script>

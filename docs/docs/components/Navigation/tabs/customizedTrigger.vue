@@ -1,6 +1,6 @@
 <template>
   <div style="margin-bottom: 20px">
-    <k-button size="small" @click="addTab(editableTabsValue)" main>
+    <k-button size="small" main @click="addTab(editableTabsValue)">
       添加标签
     </k-button>
   </div>
@@ -23,10 +23,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-let tabIndex = 2
-const editableTabsValue = ref('2')
+let tabIndex = 2;
+const editableTabsValue = ref('2');
 const editableTabs = ref([
   {
     title: 'Tab 1',
@@ -38,34 +38,34 @@ const editableTabs = ref([
     name: '2',
     content: 'Tab 2 content',
   },
-])
+]);
 
 const addTab = (targetName: string) => {
-  const newTabName = `${++tabIndex}`
+  const newTabName = `${++tabIndex}`;
   editableTabs.value.push({
     title: 'New Tab',
     name: newTabName,
     content: 'New Tab content',
-  })
-  editableTabsValue.value = newTabName
-}
+  });
+  editableTabsValue.value = newTabName;
+};
 const removeTab = (targetName: string) => {
-  const tabs = editableTabs.value
-  let activeName = editableTabsValue.value
+  const tabs = editableTabs.value;
+  let activeName = editableTabsValue.value;
   if (activeName === targetName) {
     tabs.forEach((tab, index) => {
       if (tab.name === targetName) {
-        const nextTab = tabs[index + 1] || tabs[index - 1]
+        const nextTab = tabs[index + 1] || tabs[index - 1];
         if (nextTab) {
-          activeName = nextTab.name
+          activeName = nextTab.name;
         }
       }
-    })
+    });
   }
 
-  editableTabsValue.value = activeName
-  editableTabs.value = tabs.filter((tab) => tab.name !== targetName)
-}
+  editableTabsValue.value = activeName;
+  editableTabs.value = tabs.filter((tab) => tab.name !== targetName);
+};
 </script>
 
 <style>

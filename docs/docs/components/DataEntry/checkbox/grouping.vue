@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const checkList = ref(['Value selected and disabled', 'Value A'])
+const checkList = ref(['Value selected and disabled', 'Value A']);
 </script>

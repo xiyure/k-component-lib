@@ -35,12 +35,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-const checkboxGroup1 = ref(['Shanghai'])
-const checkboxGroup2 = ref(['Shanghai'])
-const checkboxGroup3 = ref(['Shanghai'])
-const checkboxGroup4 = ref(['Shanghai'])
-const cities = ['Shanghai', 'Beijing', 'Guangzhou', 'Shenzhen']
+import { ref } from 'vue';
+
+const checkboxGroup1 = ref(['Shanghai']);
+const checkboxGroup2 = ref(['Shanghai']);
+const checkboxGroup3 = ref(['Shanghai']);
+const checkboxGroup4 = ref(['Shanghai']);
+const cities = ['Shanghai', 'Beijing', 'Guangzhou', 'Shenzhen'];
 </script>
 
 <style scoped>

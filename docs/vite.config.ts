@@ -1,10 +1,9 @@
 import path from 'path';
 import { defineConfig } from 'vite';
 import vueJsx from '@vitejs/plugin-vue-jsx';
-import { genApiDoc } from './.vitepress/plugin/api-doc.config';
 import { chunkSplitPlugin } from 'vite-plugin-chunk-split';
-import { GitChangelog, GitChangelogMarkdownSection } from '@nolebase/vitepress-plugin-git-changelog/vite'
-
+import { GitChangelog, GitChangelogMarkdownSection } from '@nolebase/vitepress-plugin-git-changelog/vite';
+import { genApiDoc } from './.vitepress/plugin/api-doc.config';
 
 export default defineConfig({
   // esbuild: {
@@ -44,12 +43,12 @@ export default defineConfig({
   // build: {
   //   rollupOptions: {
   //     output: {
-        // manualChunks(id) {
-        //   if (id.includes('package/components')) {
-        //     console.log(id);
-        //     return id.toString().split('package/')[1].split('/')[0].toString();
-        //   }
-        // },
+  // manualChunks(id) {
+  //   if (id.includes('package/components')) {
+  //     console.log(id);
+  //     return id.toString().split('package/')[1].split('/')[0].toString();
+  //   }
+  // },
   //     },
   //   },
   // },

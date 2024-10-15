@@ -2,9 +2,9 @@
   <div class="k-layout-container">
     <div class="k-layout-aside" :class="{ 'is-collapse': useCollapse }">
       <div
+        v-if="$slots['app-logo']"
         class="logo-box h-12 flex justify-start items-center p-4"
         :class="{ 'is-collapse': useCollapse }"
-        v-if="$slots['app-logo']"
       >
         <slot name="app-logo"></slot>
       </div>
@@ -43,11 +43,11 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { menuViewProps } from './type';
-import SubMenu from './subMenu.vue';
 import { IconLeftMenuDisplay } from 'ksw-vue-icon';
 import { MenuItemRegistered } from 'element-plus';
-import { KButton } from '../../components/button'
+import { menuViewProps } from './type';
+import SubMenu from './subMenu.vue';
+import { KButton } from '../../components/button';
 
 defineOptions({
   name: 'KMenuView',
@@ -65,33 +65,33 @@ const useCollapse = computed(() => {
     return props.collapse;
   }
   return isCollapse.value;
-})
+});
 
 const isCollapse = ref(false);
 
 const handleClick = (menuItem: MenuItemRegistered) => {
   emits('click', menuItem);
-}
+};
 const collapse = () => {
   if (props.collapse !== undefined) {
     return;
   }
   isCollapse.value = true;
-}
+};
 const expand = () => {
   if (props.collapse !== undefined) {
     return;
   }
   isCollapse.value = false;
-}
+};
 const toggleCollapse = () => {
   if (props.collapse !== undefined) {
     return;
   }
   isCollapse.value = !isCollapse.value;
-}
+};
 
-defineExpose({ collapse, expand, toggleCollapse })
+defineExpose({ collapse, expand, toggleCollapse });
 </script>
 
 <style lang="less">

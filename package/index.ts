@@ -102,6 +102,6 @@ function handleProjectStyle(styleModule: string | undefined) {
 }
 
 export * from './components';
-export * from './element-plus'
+export * from './element-plus';
 export * from './templates';
 export default install;

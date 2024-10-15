@@ -5,15 +5,15 @@
     <k-step title="Step 3" />
   </k-steps>
 
-  <k-button style="margin-top: 12px" @click="next" main>下一步</k-button>
+  <k-button style="margin-top: 12px" main @click="next">下一步</k-button>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const active = ref(0)
+const active = ref(0);
 
 const next = () => {
-  if (active.value++ > 2) active.value = 0
-}
+  if (active.value++ > 2) active.value = 0;
+};
 </script>

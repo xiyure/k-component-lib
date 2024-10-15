@@ -31,74 +31,72 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
-import type { FormInstance, FormRules } from '@ksware/ksw-ux'
+import { reactive, ref } from 'vue';
+import type { FormInstance, FormRules } from '@ksware/ksw-ux';
 
-const ruleFormRef = ref<FormInstance>()
+const ruleFormRef = ref<FormInstance>();
 
 const checkAge = (rule: any, value: any, callback: any) => {
   if (!value) {
-    return callback(new Error('Please input the age'))
+    return callback(new Error('Please input the age'));
   }
   setTimeout(() => {
     if (!Number.isInteger(value)) {
-      callback(new Error('Please input digits'))
+      callback(new Error('Please input digits'));
+    } else if (value < 18) {
+      callback(new Error('Age must be greater than 18'));
     } else {
-      if (value < 18) {
-        callback(new Error('Age must be greater than 18'))
-      } else {
-        callback()
-      }
+      callback();
     }
-  }, 1000)
-}
+  }, 1000);
+};
 
 const validatePass = (rule: any, value: any, callback: any) => {
   if (value === '') {
-    callback(new Error('Please input the password'))
+    callback(new Error('Please input the password'));
   } else {
     if (ruleForm.checkPass !== '') {
-      if (!ruleFormRef.value) return
-      ruleFormRef.value.validateField('checkPass')
+      if (!ruleFormRef.value) return;
+      ruleFormRef.value.validateField('checkPass');
     }
-    callback()
+    callback();
   }
-}
+};
 const validatePass2 = (rule: any, value: any, callback: any) => {
   if (value === '') {
-    callback(new Error('Please input the password again'))
+    callback(new Error('Please input the password again'));
   } else if (value !== ruleForm.pass) {
-    callback(new Error("Two inputs don't match!"))
+    callback(new Error('Two inputs don\'t match!'));
   } else {
-    callback()
+    callback();
   }
-}
+};
 
 const ruleForm = reactive({
   pass: '',
   checkPass: '',
   age: '',
-})
+});
 
 const rules = reactive<FormRules<typeof ruleForm>>({
   pass: [{ validator: validatePass, trigger: 'blur' }],
   checkPass: [{ validator: validatePass2, trigger: 'blur' }],
   age: [{ validator: checkAge, trigger: 'blur' }],
-})
+});
 
 const submitForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
+  if (!formEl) return;
   formEl.validate((valid) => {
     if (valid) {
-      console.log('submit!')
+      console.log('submit!');
     } else {
-      console.log('error submit!')
+      console.log('error submit!');
     }
-  })
-}
+  });
+};
 
 const resetForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
-  formEl.resetFields()
-}
+  if (!formEl) return;
+  formEl.resetFields();
+};
 </script>

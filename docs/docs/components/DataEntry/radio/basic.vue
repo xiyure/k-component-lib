@@ -20,9 +20,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const radio1 = ref('1')
-const radio2 = ref('1')
-const radio3 = ref('1')
+const radio1 = ref('1');
+const radio2 = ref('1');
+const radio3 = ref('1');
 </script>

@@ -21,7 +21,7 @@
 <script lang="ts" setup>
 const props = {
   multiple: true,
-}
+};
 
 const options = [
   {
@@ -290,5 +290,5 @@ const options = [
       },
     ],
   },
-]
+];
 </script>

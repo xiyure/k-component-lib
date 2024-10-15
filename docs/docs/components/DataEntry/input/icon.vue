@@ -7,7 +7,10 @@
       placeholder="选择日期"
       suffix-icon="IconCalendarColor"
     />
-    <KInput v-model="input2" style="width: 240px" placeholder="搜索..." prefix-icon="IconSearch" />
+    <KInput
+      v-model="input2" style="width: 240px" placeholder="搜索..."
+      prefix-icon="IconSearch"
+    />
   </div>
 
   <DocTitle>使用插槽</DocTitle>

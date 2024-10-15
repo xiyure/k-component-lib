@@ -25,10 +25,10 @@
   />
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const num = ref(1)
+const num = ref(1);
 const handleChange = (value: number) => {
-  console.log(value)
-}
+  console.log(value);
+};
 </script>

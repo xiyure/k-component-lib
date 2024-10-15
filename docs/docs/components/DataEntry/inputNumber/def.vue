@@ -1,12 +1,15 @@
 <template>
-  <k-input-number v-model="num" :min="1" :max="10" @change="handleChange" />
+  <k-input-number
+    v-model="num" :min="1" :max="10"
+    @change="handleChange"
+  />
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const num = ref(1)
+const num = ref(1);
 const handleChange = (value: number) => {
-  console.log(value)
-}
+  console.log(value);
+};
 </script>

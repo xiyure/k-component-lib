@@ -269,5 +269,5 @@ const options = [
       },
     ],
   },
-]
+];
 </script>

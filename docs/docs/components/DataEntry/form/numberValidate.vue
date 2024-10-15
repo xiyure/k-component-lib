@@ -28,28 +28,28 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
-import type { FormInstance } from '@ksware/ksw-ux'
+import { reactive, ref } from 'vue';
+import type { FormInstance } from '@ksware/ksw-ux';
 
-const formRef = ref<FormInstance>()
+const formRef = ref<FormInstance>();
 
 const numberValidateForm = reactive({
   age: '',
-})
+});
 
 const submitForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
+  if (!formEl) return;
   formEl.validate((valid) => {
     if (valid) {
-      console.log('submit!')
+      console.log('submit!');
     } else {
-      console.log('error submit!')
+      console.log('error submit!');
     }
-  })
-}
+  });
+};
 
 const resetForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
-  formEl.resetFields()
-}
+  if (!formEl) return;
+  formEl.resetFields();
+};
 </script>
