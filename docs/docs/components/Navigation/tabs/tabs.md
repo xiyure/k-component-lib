@@ -58,3 +58,9 @@ Tabs 组件提供了选项卡功能， 默认选中第一个标签页，你也�
 ## 增加标签页触发器自定义
 
 <preview path="./customizedTrigger.vue"></preview>
+
+## API
+
+<API src="./_tabs.json" lang="zh"></API>
+
+<API src="./tab_item.json" lang="zh"></API>

@@ -6,7 +6,7 @@
     :closable="props.closable"
   >
     <template #label>
-      <k-tooltip :content="labelText" :visible="isOverflow">
+      <k-tooltip :content="labelText" :visible="isOverflow && Boolean(labelText)">
         <span
           :class="props.closable ? 'k-tab-item-closeable' : ''"
           @mouseenter="handleMouseEnter"
@@ -49,7 +49,7 @@ const isOverflow = ref(false);
 const labelText = computed(() => {
   if (slots.label) {
     const labelSlotContent = slots.label?.()?.[0]?.children ?? '';
-    return typeof labelSlotContent === 'string'? labelSlotContent : '';
+    return typeof labelSlotContent === 'string'? labelSlotContent : null;
   }
   return props.label;
 });

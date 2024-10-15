@@ -22,17 +22,29 @@
     display: none;
   }
   .el-tabs__item {
-    max-width: 10rem;
+    max-width: 14rem;
 
-    span {
-      padding-left: 1rem;
-      padding-right: 1rem;
-      display: inline-block;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+    .el-tooltip__trigger {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      span:first-child {
+        padding-left: 1rem;
+      }
+      span:last-child {
+        padding-right: 1rem;
+        display: inline-block;
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      span + span {
+        margin-left: 0.25rem;
+      }
     }
-
     .k-tab-item-closeable {
       padding-right: 0;
     }
