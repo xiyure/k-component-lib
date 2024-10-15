@@ -22,7 +22,7 @@
         </el-menu>
       </OverlayScrollbarsComponent>
     </div>
-    <div class="k-layout-content w-full h-screen overflow-hidden flex flex-col">
+    <div class="k-layout-content h-screen overflow-hidden flex flex-col flex-1">
       <div
         class="k-layout-header bg-white h-12 px-4 flex w-full justify-between items-center border-b"
       >
