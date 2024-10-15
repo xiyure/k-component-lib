@@ -2,7 +2,6 @@
   <template v-for="subMenu in props.options">
     <el-sub-menu
       v-if="Array.isArray(subMenu.children) && subMenu.children.length > 0"
-      :key="subMenu.index"
       :index="subMenu.index"
       v-bind="subMenuAttrs(subMenu)"
     >
@@ -21,7 +20,7 @@
       </sub-menu>
     </el-sub-menu>
     <el-menu-item
-      v-else :key="subMenu.index + genRandomStr(4)"
+      v-else
       :index="subMenu.index"
       :disabled="subMenu.disabled"
       :route="subMenu.route"
