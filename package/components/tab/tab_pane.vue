@@ -49,7 +49,7 @@ const isOverflow = ref(false);
 const labelText = computed(() => {
   if (slots.label) {
     const labelSlotContent = slots.label?.()?.[0]?.children ?? '';
-    return labelSlotContent;
+    return typeof labelSlotContent === 'string'? labelSlotContent : '';
   }
   return props.label;
 });

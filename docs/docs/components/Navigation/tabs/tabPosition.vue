@@ -1,9 +1,9 @@
 <template>
   <k-radio-group v-model="tabPosition" style="margin-bottom: 30px">
-    <k-radio-button value="top">top</k-radio-button>
-    <k-radio-button value="right">right</k-radio-button>
-    <k-radio-button value="bottom">bottom</k-radio-button>
-    <k-radio-button value="left">left</k-radio-button>
+    <k-radio value="top">top</k-radio>
+    <k-radio value="right">right</k-radio>
+    <k-radio value="bottom">bottom</k-radio>
+    <k-radio value="left">left</k-radio>
   </k-radio-group>
 
   <k-tabs :tab-position="tabPosition" style="height: 200px" class="demo-tabs">
@@ -16,9 +16,8 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import type { TabsInstance } from '@ksware/ksw-ux';
 
-const tabPosition = ref<TabsInstance['tabPosition']>('left');
+const tabPosition = ref('left');
 </script>
 
 <style>

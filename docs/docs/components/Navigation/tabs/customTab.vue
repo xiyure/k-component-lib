@@ -15,6 +15,10 @@
   </k-tabs>
 </template>
 
+<script lang="ts" setup>
+import { IconCalendarColor } from 'ksw-vue-icon';
+
+</script>
 <style>
 .demo-tabs > .el-tabs__content {
   padding: 32px;
