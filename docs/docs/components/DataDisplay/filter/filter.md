@@ -10,7 +10,7 @@ title: filter 过滤器
 
 ## 示例
 
-<!-- <preview path="./def.vue"></preview> -->
+<!-- <preview path="./def.vue" /> -->
 
 ## API
 

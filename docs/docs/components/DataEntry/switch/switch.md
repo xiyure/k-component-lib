@@ -10,7 +10,7 @@ title: switch 开关
 
 ## 示例
 
-<!-- <preview path="./def.vue"></preview> -->
+<!-- <preview path="./def.vue" /> -->
 
 ## API
 

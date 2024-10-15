@@ -10,6 +10,6 @@ title: TableView 表格视图
 
 ## 示例
 
-<preview path="./def.vue"></preview>
+<preview path="./def.vue" />
 
 <API src="./data.json" lang="zh"></API>

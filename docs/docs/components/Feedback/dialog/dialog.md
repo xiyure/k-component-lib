@@ -12,7 +12,7 @@ title: dialog 对话框
 
 ## 示例
 
-<!-- <preview path="./def.vue"></preview> -->
+<!-- <preview path="./def.vue" /> -->
 
 ## API
 

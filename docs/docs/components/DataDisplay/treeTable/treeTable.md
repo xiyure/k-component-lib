@@ -6,25 +6,25 @@ title: treeTable 树表格
 
 ## 基础用法
 
-<preview path="./def.vue"></preview>
+<preview path="./def.vue" />
 
 ## 高级筛选
 
 通过advanced-filter-config属性配置高级筛选功能，例如可自定义筛选条件、显示内容和指定筛选列。
 
-<preview path="./advancedScreening.vue"></preview>
+<preview path="./advancedScreening.vue" />
 
 ## 自动生成序号
 
 type: 'seq' 自动生成序号
 
-<preview path="./autoGenerateIndex.vue"></preview>
+<preview path="./autoGenerateIndex.vue" />
 
 ## 单元格布局
 
 通过align属性设置单元格的对齐方式，可选值有left、center、right，默认为left，也可以在列配置中设置align属性，优先级高于align属性
 
-<preview path="./cellLayout.vue"></preview>
+<preview path="./cellLayout.vue" />
 
 ## 单元格图标
 
@@ -35,19 +35,19 @@ type: 'seq' 自动生成序号
 3.在行数据中设置iconStyle属性即可，包含color（颜色）、size（大小）、indent（图标与文字距离）、
 empty（\*\*folder为true时使用，表示文件夹为空）等属性。
 
-<preview path="./customCellIcon.vue"></preview>
+<preview path="./customCellIcon.vue" />
 
 ## 自定义渲染
 
 表格通过具名插槽(插槽名为field字段)和列配置中的render函数自定义渲染单元格内容，已如下表格name和sex列为例。
 
-<preview path="./customRender.vue"></preview>
+<preview path="./customRender.vue" />
 
 ## 可编辑单元格
 
 通过edit-config属性设置单元格可编辑，trigger属性设置触发编辑的方式，可选值有click、dblclick，默认为click，需要再列配置中设置editRender参数和renderEdit参数用于自定义配置编辑状态下所展示的内容。
 
-<preview path="./editableCells.vue"></preview>
+<preview path="./editableCells.vue" />
 
 ## 自定义表格工具栏
 
@@ -55,17 +55,17 @@ empty（\*\*folder为true时使用，表示文件夹为空）等属性。
 
 2.widgets传入空数组时或者使用show-filter:false和show-search:false属性时，则不展示。
 
-<preview path="./formToolbar.vue"></preview>
+<preview path="./formToolbar.vue" />
 
 ## 多级表头
 
-<preview path="./multiHeader.vue"></preview>
+<preview path="./multiHeader.vue" />
 
 ## 搜索功能
 
 表格搜索功能默认使用模糊匹配，可以通过search-config属性配置，strict属性设置为true时，则使用精确匹配，如需自定义搜索方法，则使用searchMethod属性，该属性接收一个函数，函数参数为当前表格数据和搜索关键字。
 
-<preview path="./searchFunction.vue"></preview>
+<preview path="./searchFunction.vue" />
 
 ## 树形表格
 
@@ -75,7 +75,7 @@ empty（\*\*folder为true时使用，表示文件夹为空）等属性。
 
 3.需要再某列配置中设置treeNode属性为true，表示该列为树形结构的节点列。
 
-<preview path="./useTableFilter.vue"></preview>
+<preview path="./useTableFilter.vue" />
 
 ## 表格排序
 
@@ -83,7 +83,7 @@ empty（\*\*folder为true时使用，表示文件夹为空）等属性。
 
 2.可以通过快捷入口和列菜单栏进行排序。
 
-<preview path="./useTableSort.vue"></preview>
+<preview path="./useTableSort.vue" />
 
 ## 树形表格
 
@@ -93,6 +93,6 @@ empty（\*\*folder为true时使用，表示文件夹为空）等属性。
 
 3.需要再某列配置中设置treeNode属性为true，表示该列为树形结构的节点列。
 
-<preview path="./useTreeTable.vue"></preview>
+<preview path="./useTreeTable.vue" />
 
 <API src="./data.json" lang="zh"></API>
