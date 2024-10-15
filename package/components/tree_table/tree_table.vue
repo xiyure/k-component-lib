@@ -299,11 +299,12 @@ const defaultEditConfig = {
 };
 const defaultSeqConfig = {
   seqMethod: ({ rowIndex }) => {
+    const startIndex = props.seqConfig?.startIndex ?? 0;
     if (isPaging.value) {
       const { pageSize, currentPage } = paginationConfig.value;
-      return (currentPage - 1) * pageSize + rowIndex;
+      return (currentPage - 1) * pageSize + rowIndex + startIndex;
     }
-    return rowIndex;
+    return rowIndex + startIndex;
   }
 };
 

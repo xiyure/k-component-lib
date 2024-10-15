@@ -43,11 +43,16 @@ export interface PaginationConfigType {
   isRemotePaging?: boolean
 }
 
+export interface seqConfigType {
+  seqMethod?: (row: any) => string | number
+  startIndex?: number
+}
+
 export interface TreeTableProps {
   data?: any[]
   size?: string
   sortConfig?: object
-  seqConfig?: object
+  seqConfig?: seqConfigType
   rowConfig?: any
   editConfig?: object
   scrollY?: object
