@@ -108,4 +108,4 @@ title: Cascader 级联选择器
 
 ## API
 
-🚧 施工中
+<API src="./cascader.json" lang="zh"></API>
