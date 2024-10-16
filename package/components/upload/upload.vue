@@ -2,18 +2,14 @@
   <div :class="['k-upload', _styleModule, {'k-dragger': props.drag}]">
     <el-upload
       ref="KUploadRef"
-      v-model:file-list="fileList"
       v-bind="$attrs"
-      :on-change="handleChange"
-      :disabled="disabled"
+      :on-preview="handlePreview"
       :auto-upload="autoUpload"
+      :disabled="disabled"
       :drag="drag"
-      :success-icon="successIcon"
-      :fail-icon="failIcon"
-      :remove-icon="removeIcon"
     >
       <template #trigger>
-        <slot name="default">
+        <slot name="trigger">
           <div v-if="props.drag" class="default-sign">
             <IconEmptyBox color="#2882ff" />
             {{ $t('uploadDragSign') }}
@@ -43,7 +39,7 @@
         <slot name="file">
           <div class="file-list">
             <div>
-              <a @click="handlePreview">
+              <a @click="handlePreview(file)">
                 <span class="header-icon"><IconFile /></span>
                 <span
                   :title="file.name"
@@ -61,14 +57,17 @@
             </div>
             <div class="status-icon-box">
               <span class="status-icon">
-                <IconCheck v-if="!props.successIcon && file.status === 'success'" class="default-success-icon" />
-                <IconWarning v-else-if="!props.failIcon && file.status === 'fail'" class="default-fail-icon" />
-                <props.successIcon v-else-if="props.successIcon && file.status === 'success'" />
-                <props.failIcon v-else-if="props.failIcon && file.status === 'fail'" />
+                <component
+                  :is="statusIcon(file.status)"
+                  :color="file.status === 'success' ? '#22c55e' : '#ef4444'"
+                />
               </span>
               <span class="remove-file">
-                <props.removeIcon v-if="props.removeIcon" @click="handleRemove(file)" />
-                <IconDelete v-else class="default-remove-icon" @click="handleRemove(file)" />
+                <component
+                  :is="props.removeIcon ?? IconDelete"
+                  color="#f97316"
+                  @click="handleRemove(file)"
+                />
               </span>
             </div>
           </div>
@@ -82,7 +81,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, inject } from 'vue';
+import { ref, inject, computed } from 'vue';
 import { ElUpload, ElProgress, UploadFile, UploadRawFile } from 'element-plus';
 
 import { IconEmptyBox, IconWarning, IconCheck, IconDelete, IconFile } from 'ksw-vue-icon';
@@ -96,20 +95,20 @@ defineOptions({
 const props = withDefaults(defineProps<UploadProps>(), {});
 
 const _styleModule = inject('_styleModule', '');
-const emits = defineEmits(['update:modelValue']);
-
 const KUploadRef = ref<any>(null);
-const fileList = ref(props.modelValue || []);
 
-watch(() => props.modelValue, (newValue) => {
-  fileList.value = newValue as UploadFile[];
-});
-watch(() => fileList.value, (newValue) => {
-  if (!props.modelValue) {
-    return;
+const statusIcon = computed(() => (status: string) => {
+  if (status === 'success' && props.successIcon) {
+    return props.successIcon;
+  } else if (status === 'success') {
+    return IconCheck;
+  } else if (status === 'fail' && props.failIcon) {
+    return props.failIcon;
+  } else if (status === 'fail') {
+    return IconWarning;
   }
-  emits('update:modelValue', newValue);
-});
+})
+
 function submit(e:Event) {
   e && e.stopPropagation();
   e && e.preventDefault();
@@ -118,17 +117,8 @@ function submit(e:Event) {
 function handleRemove(file: UploadFile, rawFile?: UploadRawFile) {
   KUploadRef.value?.handleRemove(file, rawFile);
 }
-function handlePreview() {}
-function handleChange(uploadFile:UploadFile, uploadFiles:UploadFile[]) {
-  const { onChange } = props;
-  onChange?.(uploadFile, uploadFiles);
-  const { uid, status } = uploadFile;
-  const targetFileItem = fileList.value.find(file => file.uid === uid);
-  if (!targetFileItem) {
-    fileList.value.push(uploadFile);
-  } else {
-    targetFileItem.status = status;
-  }
+function handlePreview(file: UploadFile) {
+  props.onPreview?.(file);
 }
 function selectFile() {
   KUploadRef.value.$el.querySelector('input').click();
