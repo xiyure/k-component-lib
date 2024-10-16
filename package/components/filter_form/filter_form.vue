@@ -78,7 +78,7 @@
       </slot>
     </k-form-item>
 
-    <div class="filtr-btns flex gap-2" ref="filtrBtns">
+    <div class="filtr-btns flex" ref="filtrBtns">
       <slot name="action">
         <k-button :size="compSize()" @click="reset">{{ $t('reset') }}</k-button>
         <k-button :size="compSize()" @click="search" main>{{ $t('query') }}</k-button>

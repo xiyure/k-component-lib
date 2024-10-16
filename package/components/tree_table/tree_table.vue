@@ -21,10 +21,12 @@
           <span
             v-if="filterConditionInfo?.conditionList?.length && tableFilterRef?.[0]?.clearFilter"
             class="filter-reset"
-            @click="() => {
-              clearAdvancedFilter();
-              emits('advanced-filter-clear');
-            }"
+            @click="
+              () => {
+                clearAdvancedFilter();
+                emits('advanced-filter-clear');
+              }
+            "
           >
             · {{ $t('reset') }}
           </span>
@@ -69,16 +71,17 @@
               filter-key="field"
               :remote="advancedFilterConfig?.remote ?? false"
               :formatter="advancedFilterConfig?.dateFormat ?? 'YYYY-MM-DD HH:mm:ss'"
-              :default-condition="
-                advancedFilterConfig?.defaultCondition ?? filterConditionInfo"
+              :default-condition="advancedFilterConfig?.defaultCondition ?? filterConditionInfo"
               @confirm="refreshAdvancedFilter"
-              @clear="() => {
-                clearAdvancedFilter();
-                emits('advanced-filter-clear');
-              }"
+              @clear="
+                () => {
+                  clearAdvancedFilter();
+                  emits('advanced-filter-clear');
+                }
+              "
             >
               <template #reference="{ hasConfigCondition }">
-                <div v-ksw_tooltip="$t('advancedFilter_c')"> 
+                <div v-ksw_tooltip="$t('advancedFilter_c')">
                   <component
                     :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
                     v-if="widget.widget"
@@ -197,11 +200,7 @@
       </k-table>
       <!-- 批量操作 -->
       <div v-if="showBatchOperation && checkedDataSize > 0" v-ksw_drag class="batch-operate">
-        <k-operate
-          :total="checkedDataSize"
-          :data="batchOperations"
-          @close="closeBatchOperation"
-        />
+        <k-operate :total="checkedDataSize" :data="batchOperations" @close="closeBatchOperation" />
       </div>
     </div>
     <div v-if="isPaging" class="pagination-box">
@@ -235,7 +234,13 @@ import { KTable } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
 import { TreeTableProps, columnConfigType } from './type';
-import { genRandomStr, treeDataToArray, getValidTreeData, resetTreeData, getExposeProxy } from '../../utils';
+import {
+  genRandomStr,
+  treeDataToArray,
+  getValidTreeData,
+  resetTreeData,
+  getExposeProxy,
+} from '../../utils';
 import { useMethods, useCheckbox } from './hooks';
 
 defineOptions({
@@ -299,13 +304,13 @@ const defaultEditConfig = {
 };
 const defaultSeqConfig = {
   seqMethod: ({ rowIndex }) => {
-    const startIndex = props.seqConfig?.startIndex ?? 0;
+    const startIndex = props.seqConfig?.startIndex ?? 1;
     if (isPaging.value) {
       const { pageSize, currentPage } = paginationConfig.value;
       return (currentPage - 1) * pageSize + rowIndex + startIndex;
     }
     return rowIndex + startIndex;
-  }
+  },
 };
 
 const defaultScrollY = { enabled: true };
@@ -324,7 +329,7 @@ const emits = defineEmits([
   'drag-end',
   'sort-change',
   'advanced-filter-confirm',
-  'advanced-filter-clear'
+  'advanced-filter-clear',
 ]);
 const xTree = ref();
 // 列配置
@@ -399,10 +404,12 @@ const filterColumns = computed(() => {
   const validColumns = getValidTreeData(
     cloneDeep(columns.value),
     'group',
-    (dataItem) => !dataItem.type &&
-      dataItem.title && dataItem.field &&
+    (dataItem) =>
+      !dataItem.type &&
+      dataItem.title &&
+      dataItem.field &&
       (filterAll !== false || dataItem.visible !== false) &&
-      !exclude.includes(dataItem.field)
+      !exclude.includes(dataItem.field),
   );
   if (filterColumns) {
     return resetTreeData(validColumns, 'group', filterColumns, 'field');
@@ -474,13 +481,14 @@ const dataLength = computed(() => {
 const compSize = computed(() => (props.size === 'mini' ? 'sm' : undefined));
 
 const { setTableData, sortChange, _methods } = useMethods(props);
-const { checkedDataSize,
+const {
+  checkedDataSize,
   checkboxConfig,
   closeBatchOperation,
   checkBoxChange,
   checkboxAll,
   clearCheckedData,
-  _checkboxMethods
+  _checkboxMethods,
 } = useCheckbox(tableInstance, showTableData, props);
 watch(
   [() => props.data, () => props.data?.length],
@@ -489,7 +497,7 @@ watch(
     xeTableData.value = setTableData(props.data);
     advancedFilter();
   },
-  { immediate: true }
+  { immediate: true },
 );
 watch(
   () => props.paginationConfig,
@@ -503,7 +511,7 @@ watch(
   () => {
     columns.value = props.column.map((col) => {
       const visible = col.visible !== false;
-      return { ...(cloneDeep(col)), visible };
+      return { ...cloneDeep(col), visible };
     });
     // 列配置更新时需要初始化表头控制器的数据
     initTransfer();
@@ -513,29 +521,33 @@ watch(
 );
 
 let isFilterStatus = false;
-watch(() => showTableData.value?.length, () => {
-  if (!props.useTree) {
-    return;
-  }
-  nextTick(() => {
-    if (query.value.trim() || isFilterStatus) {
-      isFilterStatus = false;
-      const maxLength = showTableData.value.length > 500 ? 500 : showTableData.value.length;
-      const expandRows = showTableData.value.slice(0, maxLength);
-      tableInstance.value?.setTreeExpand(expandRows, true);
-    } else {
-      tableInstance.value?.clearTreeExpand();
+watch(
+  () => showTableData.value?.length,
+  () => {
+    if (!props.useTree) {
+      return;
     }
-  });
-}, { immediate: true });
+    nextTick(() => {
+      if (query.value.trim() || isFilterStatus) {
+        isFilterStatus = false;
+        const maxLength = showTableData.value.length > 500 ? 500 : showTableData.value.length;
+        const expandRows = showTableData.value.slice(0, maxLength);
+        tableInstance.value?.setTreeExpand(expandRows, true);
+      } else {
+        tableInstance.value?.clearTreeExpand();
+      }
+    });
+  },
+  { immediate: true },
+);
 
 // 表格内容搜索
 let tableDataMap: Map<string | number, any> = new Map();
 const treeDataMap: Map<string | number, any> = new Map();
 function filterTableData() {
-  const filterData = filterConditionInfo.value?.conditionList?.length ?
-    newFilterData.value :
-    xeTableData.value;
+  const filterData = filterConditionInfo.value?.conditionList?.length
+    ? newFilterData.value
+    : xeTableData.value;
   const { strict, searchMethod } = props.searchConfig ?? {};
   const searchKey = query.value.trim().replace(/\\/g, '\\\\');
   if (props.isRemoteQuery || props.searchConfig?.isRemoteQuery) {
@@ -550,13 +562,15 @@ function filterTableData() {
   }
   const visibleColumns = flatColumns.value.filter((col: columnConfigType) => col.visible !== false);
   const fieldList = visibleColumns.map((col: columnConfigType) => col.field || '');
-  let tableData = filterData.filter((dataItem: any) => fieldList.some((field: string) => {
-    const cellLabel = tableInstance.value.getCellLabel(dataItem, field);
-    if (strict === true) {
-      return cellLabel === searchKey;
-    }
-    return String(cellLabel).toLowerCase().indexOf(searchKey.toLowerCase()) !== -1;
-  })) as any;
+  let tableData = filterData.filter((dataItem: any) =>
+    fieldList.some((field: string) => {
+      const cellLabel = tableInstance.value.getCellLabel(dataItem, field);
+      if (strict === true) {
+        return cellLabel === searchKey;
+      }
+      return String(cellLabel).toLowerCase().indexOf(searchKey.toLowerCase()) !== -1;
+    }),
+  ) as any;
   // 当表格数据为树时，筛选后的数据应展示完整的子树
   if (props.useTree) {
     const { rowField } = getTreeConfigField();
@@ -611,7 +625,9 @@ function getParentNode(dataItem: any, parentField: string, rowField: string) {
 // 筛选后的数据与用户输入数据的顺序保持一致
 function sortFunc(targetData: any[], sortData: any, key: string | number) {
   const sortKeyList = sortData.map((item: any) => item[key]);
-  return targetData.sort((a, b) => (sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1));
+  return targetData.sort((a, b) =>
+    sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1,
+  );
 }
 // 分页相关
 function changePageSize(pageSize: number) {
@@ -705,22 +721,22 @@ function updateColumn(ids: string[]) {
 function initTransfer() {
   flatColumns.value = treeDataToArray(columns.value, 'group');
   originData.value = flatColumns.value
-  .map((item: columnConfigType) => {
-    if (item.title && item.field) {
-      return {
-        label: item.title,
-        key: item.field,
-      };
-    }
-    return null;
-  })
-  .filter((item: columnConfigType) => item);
+    .map((item: columnConfigType) => {
+      if (item.title && item.field) {
+        return {
+          label: item.title,
+          key: item.field,
+        };
+      }
+      return null;
+    })
+    .filter((item: columnConfigType) => item);
   selectData.value = flatColumns.value
-  .filter((col: columnConfigType) => col.visible !== false)
-  .map((item: columnConfigType) => ({
-    label: item.title,
-    key: item.field,
-  }));
+    .filter((col: columnConfigType) => col.visible !== false)
+    .map((item: columnConfigType) => ({
+      label: item.title,
+      key: item.field,
+    }));
   defaultHeader.value = selectData.value.map((item: columnConfigType) => item.key);
 }
 function hideColumn(column: columnConfigType) {
@@ -730,11 +746,11 @@ function hideColumn(column: columnConfigType) {
   const columnItem = flatColumns.value.find((item) => item.field === column.field);
   columnItem.visible = false;
   selectData.value = flatColumns.value
-  .filter((col) => col.visible !== false)
-  .map((item: any) => ({
-    label: item.title,
-    key: item.field,
-  }));
+    .filter((col) => col.visible !== false)
+    .map((item: any) => ({
+      label: item.title,
+      key: item.field,
+    }));
 }
 function sortTableHeader(fieldList: string[]) {
   const map = new Map(flatColumns.value.map((v: columnConfigType) => [v.field, v]));
@@ -868,7 +884,7 @@ const customMethods = {
   loadData,
   disposeRowTooltip,
   ..._methods,
-  ..._checkboxMethods
+  ..._checkboxMethods,
 };
 
 defineExpose(getExposeProxy(customMethods, tableInstance));
