@@ -5,17 +5,19 @@
     v-bind="$attrs"
     @node-click="handleNodeClick"
   >
-    <template v-if="$slots.empty" #empty>
-      <slot name="empty"></slot>
+    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+      <slot :name="name" v-bind="data"></slot>
     </template>
-    <template #default="{ data }">
-      <span>
-        <component
-          :is="data.icon ?? 'IconFlowNested'"
-          :class="!data.children?.length ? 'tree-item-icon--noChildren' : ''"
-        />
-        {{ data.label }}
-      </span>
+    <template #default="defaultData">
+      <slot v-bind="defaultData">
+        <span>
+          <component
+            :is="defaultData.data.icon ?? 'IconFlowNested'"
+            :class="!defaultData.data.children?.length ? 'tree-item-icon--noChildren' : ''"
+          />
+          {{ defaultData.data.label }}
+        </span>
+      </slot>
     </template>
   </el-tree-select>
 </template>

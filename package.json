@@ -1,7 +1,7 @@
 {
   "name": "@ksware/ksw-ux",
   "private": false,
-  "version": "0.0.62",
+  "version": "0.0.63",
   "description": "Kingsware Component Library",
   "main": "kingsware-ui/index.umd.js",
   "module": "kingsware-ui/index.js",
