@@ -1,7 +1,7 @@
 export interface FormProps {
-  size?: '' | 'large' | 'base' | 'small'
+  size?: '' | 'lg' | 'base' | 'sm'
 }
 
 export interface FormItemProps {
-  size?: '' | 'large' | 'base' | 'small'
+  size?: '' | 'lg' | 'base' | 'sm'
 }
