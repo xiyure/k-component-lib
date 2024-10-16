@@ -1,10 +1,11 @@
 <template>
   <k-form
     ref="KFormRef"
-    class="filtr-items"
+    class="filtr-items1"
     :model="formData"
     :size="size"
     :class="['k-form', _styleModule]"
+    :style="`grid-template-columns:repeat(${columns},minmax(0, 1fr))`"
   >
     <k-form-item
       v-for="item in items"
@@ -78,7 +79,11 @@
       </slot>
     </k-form-item>
 
-    <div class="filtr-btns flex" ref="filtrBtns">
+    <div
+      class="filtr-btns flex"
+      ref="filtrBtns"
+      :style="`grid-column: ${columns} / ${columns + 1}; `"
+    >
       <slot name="action">
         <k-button :size="compSize()" @click="reset">{{ $t('reset') }}</k-button>
         <k-button :size="compSize()" @click="search" main>{{ $t('query') }}</k-button>
@@ -127,6 +132,7 @@ const _styleModule = inject('_styleModule', '');
 const props = withDefaults(defineProps<FilterFormProps>(), {
   items: () => [],
   size: 'base',
+  columns: 3,
 });
 
 const emits = defineEmits(['search', 'reset', 'change']);
@@ -179,15 +185,24 @@ const instance: any = { reset, getFormData, search };
 defineExpose(getExposeProxy(instance, KFormRef));
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 @import './style.less';
 
-.filtr-items {
+.el-form-item {
+  margin-bottom: 0;
+  height: fit-content;
+}
+
+.filtr-items1 {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-column-gap: 1rem;
-  // grid-auto-rows: 1fr;
+  column-gap: 1.5rem;
+  row-gap: 0.75rem;
+  grid-auto-rows: auto;
+
+  // grid row 高度取决于内容
+  // grid-auto-rows: 2rem;
   overflow: hidden;
   height: 2rem;
   transition: all 0.3s ease-in-out;
@@ -200,9 +215,9 @@ defineExpose(getExposeProxy(instance, KFormRef));
 .filtr-btns {
   // width: 30%;
   // 让元素在第一行 最后一个
-  grid-column: 3 / 4;
   grid-row: 1 / 2;
   justify-self: end;
+  align-self: center;
   &.is-expand {
     grid-row: unset;
   }

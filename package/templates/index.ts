@@ -5,10 +5,7 @@ import { KPageDetails } from './KPageDetails';
 // KPageTableView, 表格模板
 import { KPageTableView } from './KPageTableView';
 import { KMenuView } from './KMenuView';
+// GFPageDetails
+import { GFPageDetails } from './GFAOM';
 
-export {
-  KPageViewBus,
-  KPageDetails,
-  KPageTableView,
-  KMenuView
-};
+export { KPageViewBus, KPageDetails, KPageTableView, KMenuView, GFPageDetails };
