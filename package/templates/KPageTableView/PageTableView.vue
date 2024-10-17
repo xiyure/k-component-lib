@@ -96,8 +96,6 @@ const props = defineProps({
   },
 });
 
-console.log('@', props.asideShow);
-
 // 正则判断 props.pageIcon 中是否是图片链接
 const isImgUrl = /.(jpg|jpeg|png|gif|svg)$/;
 

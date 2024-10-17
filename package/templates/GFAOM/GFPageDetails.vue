@@ -79,8 +79,6 @@ const props = defineProps({
     default: () => [],
   },
 });
-
-console.log(props.abstract);
 </script>
 <style lang="less">
 @import './style.less';

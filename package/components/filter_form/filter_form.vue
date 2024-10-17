@@ -118,8 +118,6 @@ const handleExpandBtnText = ref('展开');
 const handleExpandBtnIcon = ref('IconArrowBottom');
 
 const handleExpand = () => {
-  console.log(1, KFormRef.value.$el);
-
   filtrBtns?.value.classList.toggle('is-expand');
   KFormRef?.value.$el.classList.toggle('is-expand');
   handleExpandBtnText.value = handleExpandBtnText.value === '展开' ? '收起' : '展开';
