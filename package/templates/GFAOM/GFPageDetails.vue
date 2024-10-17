@@ -47,7 +47,7 @@
       </div>
     </div>
 
-    <div class="shadow-sm flex-1">
+    <div class="GFPageDetails-slot--default flex-1">
       <slot></slot>
     </div>
   </div>
@@ -82,6 +82,6 @@ const props = defineProps({
 
 console.log(props.abstract);
 </script>
-<style lang="less" scoped>
-// @import './style.less';
+<style lang="less">
+@import './style.less';
 </style>

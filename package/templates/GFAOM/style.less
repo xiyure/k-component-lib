@@ -1,5 +1,23 @@
 @import '../../style/variable.css';
 @import '../../style/general.less';
 
-.GFPageHead {
+.GFPageDetails {
+}
+.GFPageDetails-slot--default {
+  .el-tabs {
+    .el-tabs__header {
+      background-color: #fff;
+      margin-bottom: 1.5rem;
+      .el-tabs__nav-wrap {
+        padding: 0 2.5rem;
+        border-bottom: unset;
+        &::after {
+          background-color: #fff !important;
+        }
+      }
+    }
+    .el-tabs__content {
+      padding: 0 2.5rem;
+    }
+  }
 }
