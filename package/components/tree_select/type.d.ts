@@ -1,7 +1,11 @@
-import { Component } from 'vue';
+import { Component, CSSProperties } from 'vue';
 
 export interface TreeSelectProps {
-  icon?: Component;
-  expandIcon?: Component;
-  collapseIcon?: Component;
+  name?: string
+  icon?: string;
+  expandIcon?: string;
+  collapseIcon?: string;
+  debounce?: number;
+  className?: string | ((nodeItem: any) => string)
+  nodeStyle?: CSSProperties | ((nodeItem: any) => CSSProperties)
 }

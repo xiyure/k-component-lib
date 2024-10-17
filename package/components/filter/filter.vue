@@ -11,6 +11,9 @@
       width="auto"
       :teleported="false"
       placement="bottom-end"
+      :popper-class="popperClassName"
+      @before-enter="() => popperClassName = 'k-filter-popper__enter'"
+      @before-leave="() => popperClassName = 'k-filter-popper__leave'"
     >
       <template #reference>
         <slot name="reference" :has-config-condition="hasConfigCondition">
@@ -209,6 +212,8 @@ onMounted(() => {
   });
 });
 
+// 控制popper的显示/隐藏动画
+const popperClassName = ref('');
 const _styleModule = inject('_styleModule', '');
 const emits = defineEmits(['confirm', 'clear']);
 const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
