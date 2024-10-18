@@ -1,74 +1,31 @@
 <template>
-  <div class="k-pagination">
-    <el-pagination
-      v-bind="attrs"
-      :page-size="pageSize"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      @change="handleChange"
-      @prev-click="handlePrevClick"
-      @next-click="handlenNextClick"
-    />
-  </div>
+  <el-pagination
+    ref="KPaginationRef"
+    :class="['k-pagination', _styleModule]"
+    v-bind="$attrs"
+    :size="getCompSize(props.size)"
+  />
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { IPaginationProps } from '../../interface/index';
+import { ref, inject } from 'vue';
+import { ElPagination } from 'element-plus';
+import { getCompSize, getExposeProxy } from '../../utils';
+import { PaginationProps } from './type.d';
 
 defineOptions({
   name: 'KPagination'
 });
 
-const props = withDefaults(defineProps<IPaginationProps>(), {
-  pageSize: 10,
-  background: true,
-  layout: 'total, prev, pager, next, sizes, jumper'
+const props = withDefaults(defineProps<PaginationProps>(), {
+  size: 'base'
 });
 
-const emits = defineEmits([
-  'size-change',
-  'current-change',
-  'change', 
-  'prev-click',
-  'next-click'
-]);
+const _styleModule = inject('_styleModule', '');
+const KPaginationRef = ref(null);
 
-const pageSize = ref(props.pageSize);
-
-const attrs = computed(() => ({
-  ...getSizeAttrs(),
-  ...getOriginAttrs(),
-}));
-
-const getSizeAttrs = ():object => ({
-  small: props.size === 'sm',
-});
-const getOriginAttrs = () => ({
-  total: props.total,
-  pageSizes: props.pageSizes,
-  disabled: props.disabled,
-  background: props.background,
-  layout: props.layout
-});
-
-const handleChange = (pageNum: number) => {
-  emits('change', pageNum);
-};
-const handleCurrentChange = (pageNum: number) => {
-  emits('size-change', pageNum);
-};
-const handleSizeChange = (pageNum: number) => {
-  pageSize.value = pageNum;
-  emits('current-change', pageNum);
-};
-const handlePrevClick = (pageNum: number) => {
-  emits('prev-click', pageNum);
-};
-const handlenNextClick = (pageNum: number) => {
-  emits('next-click', pageNum);
-};
-
+const instance: any = {};
+defineExpose(getExposeProxy(instance, KPaginationRef));
 </script>
 
 <style lang="less">

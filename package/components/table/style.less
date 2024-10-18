@@ -1,0 +1,103 @@
+@import '../../style/variable.css';
+@import '../../style/global.less';
+
+.k-table-column__header {
+  display: flex;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  .k-table-column__title {
+    width: 100%;
+    margin-right: 5px;
+  }
+  .k-table-column__operate {
+    display: flex;
+    justify-content: flex-start;
+    gap: 5px;
+    .k-table-column__tooltip,
+    .k-table-column__more {
+      cursor: pointer;
+      &:hover {
+        color: var(--k-theme-primary);
+      }
+    }
+    .k-table-column__sort {
+      display: flex;
+      align-items: center;
+      margin-right: 6px;
+      cursor: pointer;
+      .icon-asc,
+      .icon-desc {
+        width: 0.5em;
+        height: 0.6em;
+        color: #c0c4cc;
+        &:hover {
+          color: #606266;
+        }
+      }
+    }
+    .sort-icon__vertical {
+      flex-direction: column;
+    }
+    .sort-icon__horizontal {
+      flex-direction: row;
+    }
+    .k-table-column__filter {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    .more-menu-item {
+      width: 100%;
+    }
+  }
+}
+.k-table {
+  .vxe-cell--sort,
+  .vxe-cell--filter,
+  .vxe-table--filter-wrapper,
+  .vxe-cell--edit-icon,
+  .vxe-table--tooltip-wrapper {
+    display: none !important;
+  }
+  .vxe-cell--checkbox.is--disabled {
+    .vxe-checkbox--icon {
+      background-image: linear-gradient(--k-gray-100, --k-gray-100);
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 80% 80%;
+    }
+  }
+  &.drag_table {
+    .vxe-table--header {
+      th:first-child {
+        > .is--line,
+        .vxe-resizable {
+          display: none;
+        }
+      }
+    }
+  }
+  .vxe-loading {
+    display: none;
+  }
+}
+.expand-icon {
+  &:hover {
+    color: var(--k-theme-primary);
+  }
+}
+.k-column__header-dialog {
+  .header-dialog__buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+    .k-button:nth-child(1) {
+      margin-right: 10px;
+    }
+  }
+}
+.disabled {
+  color: var(--k-gray-200);
+  cursor: no-drop !important;
+}

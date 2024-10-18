@@ -1,28 +1,30 @@
 <template>
-  <div class="k-option">
-    <el-option
-      v-bind="attrs"
-    >
-      <slot></slot>
-    </el-option>
-  </div>
+  <el-option
+    ref="KOptionRef"
+    :class="['k-option', _styleModule]"
+    v-bind="$attrs"
+  >
+    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+      <slot :name="name" v-bind="data"></slot>
+    </template>
+  </el-option>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { IOptionProps } from '../../interface';
+import { ref, inject } from 'vue';
+import { ElOption } from 'element-plus';
+import { getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KOption'
 });
 
-const props = withDefaults(defineProps<IOptionProps>(), {});
+const _styleModule = inject('_styleModule', '');
+const KOptionRef = ref(null);
 
-const attrs = computed(() => ({
-  value: props.value,
-  label: props.label,
-  disabled: props.disabled
-}));
+const instance: any = {};
+defineExpose(getExposeProxy(instance, KOptionRef));
+
 </script>
 
 <style lang="less">

@@ -1,76 +1,96 @@
 <template>
-  <div class="k-tag">
+  <div :class="['k-tag', _styleModule]">
     <el-tag
-      v-if="props.type === 'block'"
+      v-if="!point"
+      ref="KTagRef"
       class="k-tag__block"
-      v-bind="attrs"
-      disable-transitions
+      v-bind="$attrs"
+      :color="fillColor"
+      :size="getCompSize(size)"
+      :style="{
+        borderColor: fillColor,
+      }"
     >
       <span
         :style="{
-          width: '100%',
-          color: props.textColor || '#FFF'
+          color: tagTextColor,
         }"
       >
-        <slot></slot>
+        <slot>{{ props.text }}</slot>
       </span>
     </el-tag>
-    <div v-else-if="props.type === 'point'" class="k-tag__point">
+    <div v-else class="k-tag__point">
       <div
         class="k-tag__sign"
         :style="{
-          backgroundColor: props.color,
+          backgroundColor: fillColor,
           width: tagAttrs?.width,
-          height: tagAttrs?.height
+          height: tagAttrs?.height,
         }"
       ></div>
       <div
         class="k-tag__content"
         :style="{
-          color: props.textColor || props.color,
-          fontSize: tagAttrs?.fontSize
+          color: tagTextColor,
+          fontSize: tagAttrs?.fontSize,
         }"
       >
-        <slot></slot>
+        <slot>{{ props.text }}</slot>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { ITagProps } from '../../interface/index';
+import { ref, computed, inject } from 'vue';
+import { ElTag } from 'element-plus';
+import { TagProps } from './type';
+import { getCompSize, isValidColor, getExposeProxy } from '../../utils';
 
 defineOptions({
-  name: 'KTag'
+  name: 'KTag',
 });
 
-const props = withDefaults(defineProps<ITagProps>(), {
-  type: 'block',
-  color: '#4091FF'
+const props = withDefaults(defineProps<TagProps>(), {
+  point: false,
+  type: 'primary',
+  text: undefined,
 });
 
-const attrs = computed(() => ({
-  color: props.color,
-  round: props.round,
-  size: props.size === 'sm' ? 'small' : 'default'
-}));
+const _styleModule = inject('_styleModule', '');
+const defaultColor = {
+  primary: '#2882FF',
+  success: '#22C55E',
+  danger: '#EF4444',
+  warning: '#F97316',
+  info: '#6B7280',
+};
 
+const fillColor = computed(() => (isValidColor(props.color) ? props.color : defaultColor[props.type]));
+const tagTextColor = computed(() => {
+  const color = props.point ? fillColor.value : '#FFF';
+  return isValidColor(props.textColor) ? props.textColor : color;
+});
 const tagAttrs = computed(() => {
   let sizeAttr = {
-    width: '12px',
-    height: '12px',
-    fontSize: '16px'
+    width: '0.75rem',
+    height: '0.75rem',
+    fontSize: '0.875rem',
   };
   if (props.size === 'sm') {
     sizeAttr = {
-      width: '8px',
-      height: '8px',
-      fontSize: '13px'
+      width: '0.5rem',
+      height: '0.5rem',
+      fontSize: '0.75rem',
     };
   }
   return sizeAttr;
 });
+
+const KTagRef = ref(null);
+
+const instance: any = {};
+defineExpose(getExposeProxy(instance, KTagRef));
 </script>
 
 <style lang="less">

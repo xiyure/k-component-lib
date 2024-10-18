@@ -20,14 +20,19 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
-    "suppressImplicitAnyIndexErrors": true,
     "ignoreDeprecations": "5.0",
     "types": ["node"],
     "baseUrl": ".",
     "paths": {
       "@/*":["./package"]
     },
+    "declaration": true
   },
-  "include": ["example/**/*.ts", "example/**/*.tsx", "example/**/*.vue"],
+  "include": [
+    "packages/**/*.ts",
+    "packages/**/*.d.ts",
+    "packages/**/*.tsx",
+    "packages/**/*.vue"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

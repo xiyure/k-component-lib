@@ -1,4 +1,11 @@
+@import '../../style/variable.css';
+@import '../../style/general.less';
+@import '../../style/global.less';
+
 .k-tag {
+  width: fit-content;
+  display: inline-flex;
+  .text-base();
   .k-tag__point {
     display: flex;
     justify-content: flex-start;
@@ -6,6 +13,14 @@
     .k-tag__sign {
       margin-right: 5px;
       border-radius: 50% 50%;
+    }
+  }
+  .el-tag__content {
+    .text-base();
+  }
+  .el-tag--small {
+    .el-tag__content {
+      .text-sm();
     }
   }
 }

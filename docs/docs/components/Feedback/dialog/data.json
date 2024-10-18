@@ -1,0 +1,229 @@
+{
+  "name": "",
+  "props": [
+    {
+      "displayName": "model-value/v-model",
+      "type": "boolean",
+      "description": "是否显示Dialog",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "title",
+      "type": "string",
+      "description": "Dialog对话框的标题",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "width",
+      "type": "string | number",
+      "description": "对话框的宽度",
+      "defaultValue": "50%",
+      "tip": ""
+    },
+    {
+      "displayName": "fullscreen",
+      "type": "boolean",
+      "description": "是否全屏显示Dialog",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "top",
+      "type": "string",
+      "description": "dialog CSS中的margin-top值",
+      "defaultValue": "15vh",
+      "tip": ""
+    },
+    {
+      "displayName": "modal",
+      "type": "boolean",
+      "description": "是否显示遮罩层",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "modal-class",
+      "type": "string",
+      "description": "自定义遮罩层类名",
+      "defaultValue": "''",
+      "tip": ""
+    },
+    {
+      "displayName": "append-to-body",
+      "type": "boolean",
+      "description": "Dialog自身是否插入至body元素上。嵌套的Dialog必须指定该属性并赋值为 true",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "append-to",
+      "type": "string | HTMLElement",
+      "description": "Dialog挂载到哪个DOM元素，将覆盖append-to-body",
+      "defaultValue": "body",
+      "tip": ""
+    },
+    {
+      "displayName": "lock-scroll",
+      "type": "boolean",
+      "description": "是否在Dialog出现时将body滚动锁定",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "open-delay",
+      "type": "number",
+      "description": "延迟打开Dialog，单位为毫秒",
+      "defaultValue": "0",
+      "tip": ""
+    },
+    {
+      "displayName": "close-delay",
+      "type": "number",
+      "description": "延迟关闭Dialog，单位为毫秒",
+      "defaultValue": "0",
+      "tip": ""
+    },
+    {
+      "displayName": "close-on-click-modal",
+      "type": "boolean",
+      "description": "是否可以通过点击遮罩层关闭Dialog",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "close-on-press-escape",
+      "type": "boolean",
+      "description": "是否可以通过按下ESC关闭Dialog",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "show-close",
+      "type": "boolean",
+      "description": "是否显示右上角的关闭按钮",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "before-close",
+      "type": "Function",
+      "description": "关闭前的回调，会暂停Dialog的关闭，回调函数内执行done参数方法的时候才是真正关闭对话框的时候",
+      "defaultValue": "",
+      "tip": "(done: DoneFn) => void"
+    },
+    {
+      "displayName": "draggable",
+      "type": "boolean",
+      "description": "是否可以通过拖动Dialog进行位置调整",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "overflow",
+      "type": "boolean",
+      "description": "拖动范围可以超出可视区",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "center",
+      "type": "boolean",
+      "description": "是否将Dialog的内容居中",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "align-center",
+      "type": "boolean",
+      "description": "是否水平垂直对齐对话框",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "destroy-on-close",
+      "type": "boolean",
+      "description": "是否在Dialog关闭时销毁其中的元素",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "close-icon",
+      "type": "string | Component",
+      "description": "自定义关闭图标",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "z-index",
+      "type": "number",
+      "description": "和原生的CSS的z-index相同，改变z轴的顺序",
+      "defaultValue": "",
+      "tip": ""
+    }
+  ],
+  "events": [
+    {
+      "displayName": "open",
+      "description": "Dialog打开的回调",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "opened",
+      "description": "Dialog打开动画结束时的回调",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "close",
+      "description": "Dialog关闭的回调",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "closed",
+      "description": "Dialog关闭动画结束时的回调",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "open-auto-focus",
+      "description": "输入焦点聚焦在Dialog内容时的回调",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "close-auto-focus",
+      "description": "输入焦点失去时Dialog内容的回调",
+      "type": "Function",
+      "tip": "() => void"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "default",
+      "description": "Dialog的内容",
+      "parameters": ""
+    },
+    {
+      "displayName": "header",
+      "description": "对话框标题的内容，会替换标题部分，但不会移除关闭按钮",
+      "parameters": ""
+    },
+    {
+      "displayName": "footer",
+      "description": "Dialog按钮操作区的内容",
+      "parameters": ""
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "resetPosition",
+      "description": "重置Dialog位置",
+      "type": "Function",
+      "tip": "() => void"
+    }
+  ]
+}

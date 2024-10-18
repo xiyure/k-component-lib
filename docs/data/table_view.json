@@ -1,0 +1,74 @@
+{
+  "name": "table_view",
+  "props": [
+    {
+      "displayName": "show-view-bus",
+      "type": "boolean",
+      "description": "是否显示视图",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "view-bus-title",
+      "type": "string",
+      "description": "视图标题名称",
+      "defaultValue": "视图"
+    },
+    {
+      "displayName": "view-bus-info",
+      "type": "string",
+      "description": " hover 视图标题显示的说明",
+      "defaultValue": "描述信息"
+    },
+    {
+      "displayName": "view-bus-refresh",
+      "type": "boolean",
+      "description": "是否显示刷新按钮",
+      "defaultValue": "fasle"
+    },
+    {
+      "displayName": "page-icon",
+      "type": "string | url",
+      "description": "页面图标",
+      "defaultValue": "null"
+    },
+    {
+      "displayName": "page-title",
+      "type": "string",
+      "description": "页面标题",
+      "defaultValue": "标题"
+    },
+    {
+      "displayName": "page-info",
+      "type": "string",
+      "description": "hover 页面标题显示的说明",
+      "defaultValue": "描述信息"
+    }
+  ],
+  "events": [
+    {
+      "displayName": "refresh",
+      "description": "刷新按钮",
+      "type": "Function",
+      "tip": "() => void"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "aside",
+      "description": "视图中的插槽"
+    },
+    {
+      "displayName": "aside-toolbar",
+      "description": "视图的工具栏, 默认是刷新按钮"
+    },
+    {
+      "displayName": "toolbar",
+      "description": "页面的工具栏"
+    },
+    {
+      "displayName": "toolbar",
+      "description": "页面的工具栏"
+    }
+  ],
+  "methods": []
+}

@@ -1,71 +1,77 @@
 <template>
-  <div class="k-upload" :class="{'k-dragger': props.drag}">
+  <div :class="['k-upload', _styleModule, {'k-dragger': props.drag}]">
     <el-upload
       ref="KUploadRef"
-      v-model:file-list="fileList"
-      v-bind="attrs"
-      :on-change="handleChange"
+      v-bind="$attrs"
+      :on-preview="handlePreview"
+      :auto-upload="autoUpload"
+      :disabled="disabled"
+      :drag="drag"
     >
       <template #trigger>
-        <slot name="default">
+        <slot name="trigger">
           <div v-if="props.drag" class="default-sign">
             <IconEmptyBox color="#2882ff" />
-            单击或拖拽文件到此处上传
+            {{ $t('uploadDragSign') }}
           </div>
           <div v-else class="default-upload-btn" @click.stop>
             <k-button
-              type="secondary"
+              secondary
+              :icon-left="autoUpload ? 'IconUpload': ''"
               @click="selectFile"
             >
-              <IconUpload v-if="props.autoUpload" />
-              {{ props.autoUpload ? '上传文件' : '选择文件' }}
+              {{ props.autoUpload ? $t('uploadFile') : $t('selectFile') }}
             </k-button>
             <k-button
               v-if="!props.autoUpload"
-              type="main"
+              main
               class="main-btn"
               :disabled="props.disabled"
+              icon-left="IconUpload"
               @click="submit"
             >
-              <IconUpload />
-              上传文件
+              {{ $t('uploadFile') }}
             </k-button>
           </div>
         </slot>
       </template>
       <template #file="{ file }">
-        <div v-if="!slots.file" class="file-list">
-          <div>
-            <a @click="handlePreview">
-              <span class="header-icon"><IconFile /></span>
-              <span
-                :title="file.name"
-              >
-                {{ file.name }}
+        <slot name="file">
+          <div class="file-list">
+            <div>
+              <a @click="handlePreview(file)">
+                <span class="header-icon"><IconFile /></span>
+                <span
+                  :title="file.name"
+                >
+                  {{ file.name }}
+                </span>
+              </a>
+              <el-progress
+                v-if="file.status === 'uploading'"
+                :type="'line'"
+                :stroke-width="2"
+                :percentage="Number(file.percentage)"
+                :style="'margin-top: 0.5rem'"
+              />
+            </div>
+            <div class="status-icon-box">
+              <span class="status-icon">
+                <component
+                  :is="statusIcon(file.status)"
+                  :color="file.status === 'success' ? '#22c55e' : '#ef4444'"
+                />
               </span>
-            </a>
-            <el-progress
-              v-if="file.status === 'uploading'"
-              :type="'line'"
-              :stroke-width="2"
-              :percentage="Number(file.percentage)"
-              :style="'margin-top: 0.5rem'"
-            />
+              <span class="remove-file">
+                <component
+                  :is="props.removeIcon ?? IconDelete"
+                  color="#f97316"
+                  @click="handleRemove(file)"
+                />
+              </span>
+            </div>
           </div>
-          <div class="status-icon-box">
-            <span class="status-icon">
-              <IconCheck v-if="!props.successIcon && file.status === 'success'" class="default-success-icon" />
-              <IconWarning v-else-if="!props.failIcon && file.status === 'fail'" class="default-fail-icon" />
-              <props.successIcon v-else-if="props.successIcon && file.status === 'success'" />
-              <props.failIcon v-else-if="props.failIcon && file.status === 'fail'" />
-            </span>
-            <span class="remove-file">
-              <props.removeIcon v-if="props.removeIcon" @click="handleRemove(file)" />
-              <IconDelete v-else class="default-remove-icon" @click="handleRemove(file)" />
-            </span>
-          </div>
-        </div>
-        <slot v-else name="file"></slot>
+        </slot>
       </template>
       <div class="el-upload__tip">
         <slot name="tip"></slot>
@@ -75,111 +81,51 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
-import { UploadFile, UploadRawFile, UploadStatus } from 'element-plus';
-import { IconEmptyBox, IconWarning, IconCheck, IconDelete, IconFile, IconUpload } from 'ksw-vue-icon';
-import { IUpload } from '../../interface/index';
+import { ref, inject, computed } from 'vue';
+import { ElUpload, ElProgress, UploadFile, UploadRawFile } from 'element-plus';
+
+import { IconEmptyBox, IconWarning, IconCheck, IconDelete, IconFile } from 'ksw-vue-icon';
+import { UploadProps } from './type';
+import { getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KUpload'
 });
 
-const props = withDefaults(defineProps<IUpload>(), {
-  method: 'post',
-  showFileList: true,
-  name: 'file',
-  listType: 'text',
-  autoUpload: true,
-  disabled: false
-});
+const props = withDefaults(defineProps<UploadProps>(), {});
 
-const emits = defineEmits(['update:modelValue']);
-
-const slots = defineSlots();
-
+const _styleModule = inject('_styleModule', '');
 const KUploadRef = ref<any>(null);
-const fileList = ref(props.modelValue || []);
 
-const attrs = computed(() => ({
-  action: props.action,
-  headers: props.headers,
-  method: props.method,
-  multiple: props.multiple,
-  data: props.data,
-  showFileList: props.showFileList,
-  withCredentials: props.withCredentials,
-  accept: props.accept,
-  name: props.name,
-  crossorigin: props.crossorigin,
-  onPreview: props.onPreview,
-  onRemove: props.onRemove,
-  onSuccess: props.onSuccess,
-  onError: props.onError,
-  onProgress: props.onProgress,
-  onChange: props.onChange,
-  onExceed: props.onExceed,
-  beforeUpload: props.beforeUpload,
-  beforeRemove: props.beforeRemove,
-  autoUpload: props.autoUpload,
-  listType: props.listType,
-  disabled: props.disabled,
-  limit: props.limit,
-  httpRequest: props.httpRequest,
-  removeIcon: props.removeIcon,
-  successIcon: props.successIcon,
-  failIcon: props.failIcon
-}));
-
-watch(() => props.modelValue, (newValue) => {
-  fileList.value = newValue as UploadFile[];
-});
-watch(() => fileList.value, (newValue) => {
-  if (!props.modelValue) {
-    return;
+const statusIcon = computed(() => (status: string) => {
+  if (status === 'success' && props.successIcon) {
+    return props.successIcon;
+  } else if (status === 'success') {
+    return IconCheck;
+  } else if (status === 'fail' && props.failIcon) {
+    return props.failIcon;
+  } else if (status === 'fail') {
+    return IconWarning;
   }
-  emits('update:modelValue', newValue);
-});
-function abort(file: UploadFile) {
-  KUploadRef.value?.abort(file);
-}
+})
+
 function submit(e:Event) {
   e && e.stopPropagation();
   e && e.preventDefault();
   KUploadRef.value?.submit();
 }
-function clearFiles(file: UploadStatus) {
-  KUploadRef.value?.clearFiles(file);
-}
-function handleStart(file: UploadRawFile) {
-  KUploadRef.value?.handleStart(file);
-}
 function handleRemove(file: UploadFile, rawFile?: UploadRawFile) {
   KUploadRef.value?.handleRemove(file, rawFile);
 }
-function handlePreview() {}
-function handleChange(uploadFile:UploadFile, uploadFiles:UploadFile[]) {
-  const { onChange } = props;
-  onChange?.(uploadFile, uploadFiles);
-  const { uid, status } = uploadFile;
-  const targetFileItem = fileList.value.find(file => file.uid === uid);
-  if (!targetFileItem) {
-    fileList.value.push(uploadFile);
-  } else {
-    targetFileItem.status = status;
-  }
+function handlePreview(file: UploadFile) {
+  props.onPreview?.(file);
 }
 function selectFile() {
   KUploadRef.value.$el.querySelector('input').click();
 }
 
-defineExpose({ 
-  abort,
-  submit,
-  clearFiles,
-  selectFile,
-  handleStart,
-  handleRemove
-});
+const instance: any = { submit, selectFile, handleRemove };
+defineExpose(getExposeProxy(instance, KUploadRef));
 </script>
 
 <style lang="less">
