@@ -13,7 +13,7 @@
         class="flex-1"
         :options="{ scrollbars: { autoHide: 'scroll', theme: 'os-theme-light' } }"
       >
-        <el-menu v-bind="$attrs" :collapse="useCollapse">
+        <el-menu v-bind="$attrs" :collapse="useCollapse" @select="handleSelect">
           <sub-menu :options="options" @click="handleClick">
             <template v-for="(_, name) in $slots" :key="name" #[name]="data">
               <slot :name="name" v-bind="data"></slot>
@@ -69,7 +69,7 @@ const props = withDefaults(defineProps<menuViewProps>(), {
   showCollapse: true,
   collapse: undefined,
 });
-const emits = defineEmits(['click']);
+const emits = defineEmits(['click', 'select']);
 
 const useCollapse = computed(() => {
   if (props.collapse !== undefined) {
@@ -101,6 +101,9 @@ const toggleCollapse = () => {
   }
   isCollapse.value = !isCollapse.value;
 };
+const handleSelect = (data: any) => {
+  emits('select', data);
+}
 
 defineExpose({ collapse, expand, toggleCollapse });
 </script>

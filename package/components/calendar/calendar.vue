@@ -15,27 +15,29 @@
         </div>
       </slot>
     </template>
-    <template #date-cell="{ data }">
-      <div class="k-calendar__item">
-        <div class="k-calendar__date">
-          <span class="k-calendar__solar">{{ data.date.getDate() }}</span>
-          <span v-show="isShowLunar" class="k-calendar__lunar">{{ lunarDate(data.date).lunarDate_zh }}</span>
-        </div>
-        <slot name="schedule" :date="data.date">
-          <div class="k-calendar__schedule">
-            <ul>
-              <li
-                v-for="item in scheduleContent(data.date)"
-                :key="item"
-                ref="scheduleItemRef"
-                class="k-calendar__schedule-item"
-              >
-                {{ item }}
-              </li>
-            </ul>
+    <template #date-cell="cellData">
+      <slot name="date-cell" v-bind="cellData">
+        <div class="k-calendar__item">
+          <div class="k-calendar__date">
+            <span class="k-calendar__solar">{{ cellData.data.date.getDate() }}</span>
+            <span v-show="isShowLunar" class="k-calendar__lunar">{{ lunarDate(cellData.data.date).lunarDate_zh }}</span>
           </div>
-        </slot>
-      </div>
+          <slot name="schedule" :date="cellData.data.date">
+            <div class="k-calendar__schedule">
+              <ul>
+                <li
+                  v-for="item in scheduleContent(cellData.data.date)"
+                  :key="item"
+                  ref="scheduleItemRef"
+                  class="k-calendar__schedule-item"
+                >
+                  {{ item }}
+                </li>
+              </ul>
+            </div>
+          </slot>
+        </div>
+      </slot>
     </template>
   </el-calendar>
 </template>
