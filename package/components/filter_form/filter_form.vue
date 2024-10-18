@@ -18,19 +18,13 @@
         <template v-if="typeof item.render === 'function'">
           <component :is="item.render(formData)"></component>
         </template>
-        <!-- input类型 -->
-        <k-input
-          v-else-if="item.type === 'input'"
-          v-model="formData[item.prop]"
-          v-bind="item.attrs"
-          :size="compSize(item.attrs)"
-        ></k-input>
         <!-- select类型 -->
         <k-select
           v-else-if="item.type === 'select'"
           v-model="formData[item.prop]"
           v-bind="item.attrs"
           :size="compSize(item.attrs)"
+          :placeholder="item.attrs?.placeholder ?? '请选择'"
         >
           <k-option v-for="option in item.options" v-bind="option" :key="option"></k-option>
         </k-select>
@@ -76,6 +70,14 @@
             :size="compSize(item.attrs)"
           ></k-date-picker>
         </template>
+        <!-- input类型 -->
+        <k-input
+          v-else
+          v-model="formData[item.prop]"
+          v-bind="item.attrs"
+          :placeholder="item.attrs?.placeholder ?? '请输入'"
+          :size="compSize(item.attrs)"
+        ></k-input>
       </slot>
     </k-form-item>
 
