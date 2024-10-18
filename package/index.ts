@@ -57,7 +57,7 @@ const install = (app: any, options?: optionsType) => {
     app.directive(`ksw_${name}`, directives[name]);
   }
   // 全局事件管理，用于多级组件之间的通信
-  app.config.globalProperties.__emitter__ = new Emitter();
+  app.provide('_emitter', new Emitter());
   // styleModule
   app.provide('_styleModule', options?.styleModule ?? '');
 };
@@ -85,7 +85,7 @@ function registerInternal(app: any, options?: optionsType) {
   });
   app.use(i18n);
   // i18n
-  app.config.globalProperties.$t = i18n.global.t;
+  app.provide('$t', i18n.global.t);
 }
 
 function handleProjectStyle(styleModule: string | undefined) {

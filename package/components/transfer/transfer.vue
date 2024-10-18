@@ -46,9 +46,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, getCurrentInstance, inject } from 'vue';
+import { ref, computed, watch, onMounted, inject } from 'vue';
 import { ElTransfer, TransferKey, TransferDirection } from 'element-plus';
-
+import { VueI18nTranslation } from 'vue-i18n';
 import { IconSearch, IconDrag } from 'ksw-vue-icon';
 import { TransferProps } from './type';
 import { KInput } from '../input';
@@ -79,7 +79,7 @@ const emits = defineEmits([
 ]);
 
 const _styleModule = inject('_styleModule', '');
-const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
+const t = inject<VueI18nTranslation>('$t');
 const modelValue:any = ref([]);
 const searchStr = ref('');
 const sourceData = ref<any>(props.data || []);
@@ -98,7 +98,7 @@ const defaultPropsConfig = computed(() => ({ label: 'label',
   ...props.props }));
 
 const filterablePlaceholder = computed(() => props.filterablePlaceholder ??
-  _global?.$t('searchHeaderName'));
+  t?.('searchHeaderName'));
 
 watch(() => [props.modelValue, props.matchKey], () => {
   if (!Array.isArray(props.modelValue)) {
@@ -154,7 +154,7 @@ function extendContent() {
   // 在第三方组件中添加自定义文本
   const transferHeader = transferBox.querySelectorAll('.el-transfer-panel__header')[1];
   const label = document.createElement('label');
-  label.innerHTML = _global?.$t('restoreDefault') as string;
+  label.innerHTML = t?.('restoreDefault') as string;
   label.classList.add('transfer-restore__text');
   label.addEventListener('click', () => {
     resetTransferData();

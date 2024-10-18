@@ -167,7 +167,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, getCurrentInstance, inject, onMounted, watch } from 'vue';
+import { ref, computed, inject, onMounted, watch } from 'vue';
+import { VueI18nTranslation } from 'vue-i18n';
 import { IconClose, IconClearDate, IconAdd, IconFilter, IconFilterFill } from 'ksw-vue-icon';
 import { cloneDeep } from 'lodash-es';
 import { FilterProps } from './type';
@@ -216,8 +217,7 @@ onMounted(() => {
 const popperClassName = ref('');
 const _styleModule = inject('_styleModule', '');
 const emits = defineEmits(['confirm', 'clear']);
-const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
-const t = _global?.$t;
+const t = inject<VueI18nTranslation>('$t');
 const filterData = ref<IFilterDataType[]>([]);
 const filterRule = ref(0);
 

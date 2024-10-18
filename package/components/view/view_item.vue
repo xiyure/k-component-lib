@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, getCurrentInstance } from 'vue';
+import { inject } from 'vue';
 import { ElDropdown, ElDropdownMenu, ElDropdownItem } from 'element-plus';
 import { IconMore } from 'ksw-vue-icon';
 import { ViewItemProps } from './type';
@@ -52,7 +52,7 @@ const props = withDefaults(defineProps<ViewItemProps>(), {
 const activeView:any = inject('activeView');
 const pid = inject('viewId');
 const _styleModule = inject('_styleModule', '');
-const emitter = getCurrentInstance()?.appContext.app.config.globalProperties.__emitter__;
+const emitter = inject('_emitter') as any;
 
 function handleCommand(command:string) {
   switch (command) {
@@ -63,7 +63,7 @@ function handleChange() {
   if (props.disabled || activeView.value === props.value) {
     return;
   }
-  emitter.emit('change-active-view', pid, props.value);
+  emitter.emit('change', pid, props.value);
 }
 function handleRemove(value:any) {
   emitter.emit('remove', pid, value);

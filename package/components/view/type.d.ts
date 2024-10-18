@@ -1,6 +1,5 @@
 export interface ViewProps {
   modelValue: string
-  width?: number | string
 }
 export interface ViewItemProps {
   value: any,

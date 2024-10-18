@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, provide, computed, getCurrentInstance, onUnmounted, nextTick, inject } from 'vue';
+import { ref, provide, computed, onUnmounted, nextTick, inject } from 'vue';
 import { VxeColumnProps, VxeTableInstance } from 'vxe-table';
 import Sortable from 'sortablejs';
 import { IconDrag } from 'ksw-vue-icon';
@@ -78,7 +78,7 @@ const _styleModule = inject('_styleModule', '');
 const slots = defineSlots();
 const id = genRandomStr(8);
 // 事件管理
-const emitter = getCurrentInstance()?.appContext.app.config.globalProperties.__emitter__;
+const emitter = inject('_emitter') as any;
 for (const key in eventMap) {
   const { name, callback } = eventMap[key];
   emitter.on(name, id, callback);

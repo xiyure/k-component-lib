@@ -5,21 +5,23 @@
         <slot name="header">{{ $t('view') }}</slot>
       </div>
       <span class="view-fresh" @click="handleFresh">
-        <IconRefresh />
+        <slot name="refresh"><IconRefresh /></slot>
       </span>
     </div>
     <div :id="specialViewId" class="k-view__special-data">
       <slot></slot>
     </div>
     <div :id="customViewId" class="k-view__custom-data text-base">
-      <span class="custom-table-box">{{ $t('customView') }}</span>
+      <slot name="custom-header">
+        <span class="custom-table-box">{{ $t('customView') }}</span>
+      </slot>
       <slot></slot>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onUnmounted, watch, provide, getCurrentInstance, inject } from 'vue';
+import { ref, onUnmounted, watch, provide, inject } from 'vue';
 import { IconRefresh } from 'ksw-vue-icon';
 import { ViewProps } from './type';
 import { genRandomStr } from '../../utils';
@@ -28,14 +30,12 @@ defineOptions({
   name: 'KView',
 });
 
-const props = withDefaults(defineProps<ViewProps>(), {
-  width: '200px',
-});
+const props = withDefaults(defineProps<ViewProps>(), {});
 
 const _styleModule = inject('_styleModule', '');
+const emitter = inject('_emitter') as any;
 const id = genRandomStr(8);
-const emitter = getCurrentInstance()?.appContext.app.config.globalProperties.__emitter__;
-emitter.on('change-active-view', id, handleChange.bind(this));
+emitter.on('change', id, handleChange.bind(this));
 emitter.on('remove', id, handleRemove.bind(this));
 emitter.on('drag-start', id, onDragStart.bind(this));
 emitter.on('drag-drop', id, onDrop.bind(this));
@@ -45,7 +45,7 @@ const specialViewId = genRandomStr(8);
 const customViewId = genRandomStr(8);
 
 onUnmounted(() => {
-  emitter.on('change-active-view', id);
+  emitter.on('change', id);
   emitter.on('remove', id);
   emitter.on('drag-start', id);
   emitter.on('drag-drop', id);

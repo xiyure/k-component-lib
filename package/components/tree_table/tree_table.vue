@@ -166,12 +166,7 @@
             emits('checkbox-all', data);
           }
         "
-        @hide-column="
-          (data) => {
-            hideColumn(data);
-            emits('hide-column', data);
-          }
-        "
+        @hide-column="hideColumn"
         @cell-click="
           (data) => {
             cellClick(data);
@@ -220,8 +215,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, getCurrentInstance, inject } from 'vue';
+import { ref, computed, watch, nextTick, inject, provide } from 'vue';
 import VXETable from 'vxe-table';
+import { VueI18nTranslation } from 'vue-i18n';
 import { IconSearch, IconSetting, IconRefresh, IconFilter, IconFilterFill } from 'ksw-vue-icon';
 import { cloneDeep } from 'lodash-es';
 import KColumnGroup from './column_group';
@@ -266,8 +262,7 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
 
 const _styleModule = inject('_styleModule', '');
 const slots = defineSlots();
-const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
-const t = _global?.$t;
+const t = inject<VueI18nTranslation>('$t');
 const DEFAULT_PAGES = [25, 50, 80, 100, 150];
 const DEFAULT_WIDGETS = new Map([
   ['search', 'search'],
@@ -443,6 +438,13 @@ const tableHeight = computed(() => {
   const headerHeight = isShowHeader ? (props.size === 'mini' ? 34 : 42) : 0;
   const pageHeight = isPaging.value ? (props.size === 'mini' ? 34 : 42) : 0;
   return `calc(100% - ${headerHeight}px - ${pageHeight}px)`;
+});
+const __showTransfer = computed(() => {
+  const toolbarNames = widgets.value.map((item) => item.id);
+  if (props.showHeaderTools && toolbarNames.includes('transfer')) {
+    return true;
+  }
+  return false;
 });
 // 合并用户与表格默认配置
 const treeConfig = computed(() => {
@@ -740,17 +742,18 @@ function initTransfer() {
   defaultHeader.value = selectData.value.map((item: columnConfigType) => item.key);
 }
 function hideColumn(column: columnConfigType) {
-  if (!props.showHeaderTools || !widgets.value?.includes('transfer')) {
+  if (!__showTransfer.value) {
     return;
   }
-  const columnItem = flatColumns.value.find((item) => item.field === column.field);
+  const columnItem = flatColumns.value.find((item: columnConfigType) => item.field === column.field);
   columnItem.visible = false;
   selectData.value = flatColumns.value
-    .filter((col) => col.visible !== false)
+    .filter((col: columnConfigType) => col.visible !== false)
     .map((item: any) => ({
       label: item.title,
       key: item.field,
     }));
+  emits('hide-column', column);
 }
 function sortTableHeader(fieldList: string[]) {
   const map = new Map(flatColumns.value.map((v: columnConfigType) => [v.field, v]));
@@ -874,6 +877,7 @@ function disposeRowTooltip() {
   }
 }
 
+provide('__showTransfer', __showTransfer);
 const customMethods = {
   tableInstance,
   filter,

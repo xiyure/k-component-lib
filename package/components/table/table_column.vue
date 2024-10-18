@@ -120,6 +120,7 @@
           <!-- 列头菜单栏 -->
           <span v-if="isShowColumnMenu" class="k-table-column__more">
             <k-popover
+              ref="popoverRef"
               trigger="click"
               :show-arrow="false"
               placement="bottom-start"
@@ -193,7 +194,7 @@
                   <IconFold class="menu-item-icon" />
                   {{ $t('retract') }}
                 </li>
-                <li class="more-menu-item" @click="hideColumn(headerSlotProps.column)">
+                <li class="more-menu-item" v-if="showTransfer" @click="hideColumn(headerSlotProps.column)">
                   <IconHide class="menu-item-icon" />
                   {{ $t('hide') }}
                 </li>
@@ -249,7 +250,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, ref, watch, getCurrentInstance, computed } from 'vue';
+import { inject, ref, watch, computed, ComputedRef } from 'vue';
 import { VxeColumnProps } from 'vxe-table';
 import {
   IconTips,
@@ -279,6 +280,7 @@ defineOptions({
 });
 
 const tableInstance:any = inject('tableInstance');
+const showTransfer = inject<ComputedRef>('__showTransfer', computed(() => false));
 const pid = inject('tableId');
 const filterPanelConfig: any = inject('filterPanelConfig');
 const showColumnMenuParent = inject('showColumnMenu', false);
@@ -287,13 +289,14 @@ const props = withDefaults(defineProps<TableColumnProps>(), {
 });
 const slots = defineSlots();
 
+const popoverRef = ref();
 const isExpandColumn = ref(false);
 const oldWidth = ref<number | string>('');
 const colDesc = ref('');
 const dialogVisible = ref(false);
 const textareaContent = ref('');
 const filterPanelVisible = ref(false);
-const emitter = getCurrentInstance()?.appContext.app.config.globalProperties.__emitter__;
+const emitter = inject('_emitter') as any;
 
 watch(() => props.desc, (newValue) => {
   if (!newValue) {
@@ -371,6 +374,7 @@ function addDescription(column:VxeColumnProps) {
 // 列隐藏
 function hideColumn(column: VxeColumnProps) {
   emitter?.emit('hide-column', pid, column);
+  popoverRef.value?.hide();
 }
 // 筛选表格数据
 async function setFilter(column: string | VxeColumnProps, options: any) {

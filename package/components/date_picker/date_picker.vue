@@ -14,8 +14,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, getCurrentInstance, computed, inject } from 'vue';
+import { ref, computed, inject } from 'vue';
 import { ElDatePicker } from 'element-plus';
+import { VueI18nTranslation } from 'vue-i18n';
 import { DatePicker } from './type';
 import { getCompSize, getExposeProxy } from '../../utils';
 
@@ -29,8 +30,7 @@ const props = withDefaults(defineProps<DatePicker>(), {
 });
 
 const _styleModule = inject('_styleModule', '');
-const _global = getCurrentInstance()?.appContext.app.config.globalProperties;
-const t = _global?.$t;
+const t = inject<VueI18nTranslation>('$t');
 const datePickerRef = ref<any>(null);
 const defaultDateRange = [
   {
