@@ -1,10 +1,5 @@
 <template>
-  <div
-    :class="['k-view', 'text-base', _styleModule]"
-    :style="{
-      width: props.width + (typeof props.width === 'number' ? 'px' : '')
-    }"
-  >
+  <div :class="['k-view', 'text-base', _styleModule]">
     <div class="k-view__header">
       <div class="view-title text-base font-bold">
         <slot name="header">{{ $t('view') }}</slot>
@@ -30,11 +25,11 @@ import { ViewProps } from './type';
 import { genRandomStr } from '../../utils';
 
 defineOptions({
-  name: 'KView'
+  name: 'KView',
 });
 
 const props = withDefaults(defineProps<ViewProps>(), {
-  width: '200px'
+  width: '200px',
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -55,27 +50,30 @@ onUnmounted(() => {
   emitter.on('drag-start', id);
   emitter.on('drag-drop', id);
 });
-watch(() => props.modelValue, (newValue) => {
-  activeView.value = newValue;
-});
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    activeView.value = newValue;
+  },
+);
 
 function handleFresh() {
   emits('refresh');
 }
-function handleChange(value:any) {
+function handleChange(value: any) {
   emits('update:modelValue', value);
   emits('change', value);
 }
-function handleRemove(value:any) {
+function handleRemove(value: any) {
   emits('remove', value);
 }
-let dragElement:any = null;
-let isCustom:boolean = false;
-function onDragStart(elem:HTMLElement, isCustomItem:boolean) {
+let dragElement: any = null;
+let isCustom: boolean = false;
+function onDragStart(elem: HTMLElement, isCustomItem: boolean) {
   dragElement = elem;
   isCustom = isCustomItem;
 }
-function onDrop(elem:HTMLElement) {
+function onDrop(elem: HTMLElement) {
   if (!dragElement && dragElement === elem) {
     return;
   }
@@ -92,7 +90,7 @@ function onDrop(elem:HTMLElement) {
   dragElement = null;
   isCustom = false;
 }
-function isChildElement(parentElem:HTMLElement | null, element:HTMLElement) {
+function isChildElement(parentElem: HTMLElement | null, element: HTMLElement) {
   if (!parentElem || !element) {
     return false;
   }
