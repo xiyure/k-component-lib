@@ -1,7 +1,6 @@
 import { VNode } from 'vue';
-import type { FormItemProps } from 'element-plus';
 
-interface filterFormItem {
+export interface filterFormItem {
   label?: string
   prop: string
   value: any;

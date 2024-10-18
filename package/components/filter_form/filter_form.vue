@@ -83,7 +83,7 @@
 
     <div
       class="filtr-btns flex"
-      ref="filtrBtns"
+      ref="filterBtn"
       :style="`grid-column: ${columns} / ${columns + 1}; `"
     >
       <slot name="action">
@@ -113,19 +113,11 @@ defineOptions({
   name: 'KFilterForm',
 });
 
-const filtrBtns = ref();
+const filterBtn = ref();
 const KFormRef = ref();
 
 const handleExpandBtnText = ref('展开');
 const handleExpandBtnIcon = ref('IconArrowBottom');
-
-const handleExpand = () => {
-  filtrBtns?.value.classList.toggle('is-expand');
-  KFormRef?.value.$el.classList.toggle('is-expand');
-  handleExpandBtnText.value = handleExpandBtnText.value === '展开' ? '收起' : '展开';
-  handleExpandBtnIcon.value =
-    handleExpandBtnIcon.value === 'IconArrowBottom' ? 'IconArrowTop' : 'IconArrowBottom';
-};
 
 const DEFAULT_SIZES = ['base', 'sm'];
 const _styleModule = inject('_styleModule', '');
@@ -137,6 +129,7 @@ const props = withDefaults(defineProps<FilterFormProps>(), {
 
 const emits = defineEmits(['search', 'reset', 'change']);
 const formData = ref({});
+let preItems = {};
 
 const compSize = computed(() => (attrs: any = {}) => {
   const { size } = attrs;
@@ -149,13 +142,22 @@ const compSize = computed(() => (attrs: any = {}) => {
 watch(
   () => props.items,
   () => {
-    props.items.forEach((item: any) => {
-      formData.value[item.prop] = item.value;
+    preItems = {};
+  }
+);
+watch(
+  () => props.items,
+  () => {
+    props.items?.forEach((item: any) => {
+      const { prop, value } = item;
+      if (value !== preItems[prop]) {
+        formData.value[prop] = value;
+        preItems[prop] = value;
+      }
     });
   },
   { deep: true, immediate: true },
 );
-
 watch(
   () => formData.value,
   (newValue: any) => {
@@ -164,6 +166,13 @@ watch(
   { deep: true },
 );
 
+function handleExpand() {
+  filterBtn?.value.classList.toggle('is-expand');
+  KFormRef?.value.$el.classList.toggle('is-expand');
+  handleExpandBtnText.value = handleExpandBtnText.value === '展开' ? '收起' : '展开';
+  handleExpandBtnIcon.value =
+    handleExpandBtnIcon.value === 'IconArrowBottom' ? 'IconArrowTop' : 'IconArrowBottom';
+};
 function search() {
   emits('search', formData.value);
 }
