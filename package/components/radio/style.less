@@ -173,6 +173,10 @@
       color: var(--radio-text-color--disabled);
     }
   }
+
+  & + .k-radio.el-radio {
+    margin-left: 1rem;
+  }
 }
 
 @keyframes radioChecked {
@@ -197,8 +201,7 @@
 
   &.k-radio-group--button {
     gap: 0;
-    .k-radio,
-    .el-radio {
+    .k-radio.el-radio {
       height: var(--k-theme-radio-size-height--base);
       border-width: var(--k-size-px);
       border-style: solid;

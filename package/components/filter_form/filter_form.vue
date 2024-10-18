@@ -191,6 +191,8 @@ defineExpose(getExposeProxy(instance, KFormRef));
 .el-form-item {
   margin-bottom: 0;
   height: fit-content;
+
+  padding: 2px 0;
 }
 
 .filtr-items1 {
@@ -204,7 +206,7 @@ defineExpose(getExposeProxy(instance, KFormRef));
   // grid row 高度取决于内容
   // grid-auto-rows: 2rem;
   overflow: hidden;
-  height: 2rem;
+  height: calc(2rem + 2px * 2);
   transition: all 0.3s ease-in-out;
   &.is-expand {
     height: auto;

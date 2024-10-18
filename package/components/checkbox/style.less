@@ -1,8 +1,7 @@
 @import '../../style/variable.css';
 @import '../../style/general.less';
 
-.el-checkbox,
-.k-checkbox {
+.el-checkbox.k-checkbox {
   .init-style();
   .text-base();
   // size ??
@@ -193,13 +192,17 @@
       .text-lg();
     }
   }
+  & + .el-checkbox.k-checkbox {
+    margin-left: 1rem;
+    // margin-right: 1.25rem;
+  }
 }
 
 .el-checkbox-group,
 .k-checkbox-group {
   display: flex;
   .el-checkbox.k-checkbox + .el-checkbox.k-checkbox {
-    margin-left: 0.75rem;
+    margin-left: 1rem;
   }
 }
 
