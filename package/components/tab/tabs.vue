@@ -37,33 +37,19 @@ import { ElTabs } from 'element-plus';
 import { IconMore } from 'ksw-vue-icon';
 import TabDropdownMenu from './tab_dropdown_menu';
 import { flattenChildren, isValidElement, camelize, getExposeProxy } from '../../utils';
+import { TabsProps } from './type'
 
 defineOptions({
   name: 'KTabs'
 });
 
-const props = defineProps({
-  modelValue: {
-    type: String,
-    default: undefined,
-  },
-  tabPosition: {
-    type: String,
-    default: 'top',
-  },
-  editable: {
-    type: Boolean,
-    default: false,
-  },
-  addable: {
-    type: Boolean,
-    default: false,
-  },
-  maxWidth: {
-    type: String,
-    default: undefined,
-  }
-});
+const props = withDefaults(defineProps<TabsProps>(), {
+  modelValue: undefined,
+  tabPosition: 'top',
+  editable: false,
+  addable: false,
+  maxWidth: undefined
+})
 
 const _styleModule = inject('_styleModule', '');
 const activeName = ref<string | undefined>(undefined);

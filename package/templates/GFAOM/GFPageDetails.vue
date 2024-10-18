@@ -17,8 +17,8 @@
             <div class="head-title">
               <slot name="head-title">
                 <div class="flex items-center gap-1 h-8">
-                  <component :is="pageIcon" v-if="pageIcon" size="24" />
-                  <span class="text-2xl font-bold">{{ pageTitle }}</span>
+                  <component :is="icon" v-if="icon" size="24" />
+                  <span class="text-2xl font-bold">{{ title }}</span>
                 </div>
               </slot>
             </div>
@@ -48,37 +48,47 @@
     </div>
 
     <div class="GFPageDetails-slot--default flex-1">
-      <slot></slot>
+      <slot name="detail">
+        <k-tabs v-model="activeName" v-bind="tabsConfig">
+          <k-tab-pane
+            v-for="item in tabs"
+            :key="item.name"
+            v-bind="item"
+          >
+            <template v-if="$slots[`${item.name}-label`]" #label>
+              <slot :name="`${item.name}-label`"></slot>
+            </template>
+            <slot :name="item.name"></slot>
+        </k-tab-pane>
+        </k-tabs>
+      </slot>
     </div>
   </div>
 </template>
 
-<script setup>
-import { render } from 'vue';
+<script lang="ts" setup>
+import { ref } from 'vue';
+import { KTabs, KTabPane } from '../../components/tab';
 import DetailsHeadItem from './DetailsHeadItem.vue';
+import { GFPageDetailProps } from './type';
 
-const props = defineProps({
-  pageIcon: {
-    type: String,
-    default: '',
-  },
-  pageTitle: {
-    type: String,
-    default: '标题',
-  },
-  pageDescriptions: {
-    type: String,
-    default: '',
-  },
-  columns: {
-    type: Number,
-    default: 3,
-  },
-  abstract: {
-    type: Array,
-    default: () => [],
-  },
+const props = withDefaults(defineProps<GFPageDetailProps>(), {
+  icon: '',
+  title: '标题',
+  description: '',
+  columns: 3,
+  abstract: () =>[],
+  tabs: () => []
 });
+
+const defaultActiveName = props.tabsConfig?.defaultActive;
+const activeName = ref((defaultActiveName ?? props.tabs[0].name));
+
+function toggleActiveTab(name: string) {
+  activeName.value = name;
+}
+
+defineExpose({ toggleActiveTab })
 </script>
 <style lang="less">
 @import './style.less';
