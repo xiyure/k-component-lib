@@ -1,0 +1,234 @@
+{
+  "name": "Tooltip",
+  "props": [
+    {
+      "displayName": "type",
+      "type": "enum",
+      "description": "tooltip类型",
+      "defaultValue": "",
+      "tip": "'normal' | 'primary' | 'danger' | 'warning'"
+    },
+    {
+      "displayName": "content",
+      "type": "string",
+      "description": "tooltip内容",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "raw-content",
+      "type": "boolean",
+      "description": "content中的内容是否作为HTML字符串处理",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "placement",
+      "type": "enum",
+      "description": "tooltip位置",
+      "defaultValue": "bottom",
+      "tip": "'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'"
+    },
+    {
+      "displayName": "visible/v-model:visible",
+      "type": "boolean",
+      "description": "tooltip是否可见",
+      "defaultValue": "''",
+      "tip": ""
+    },
+    {
+      "displayName": "disabled",
+      "type": "boolean",
+      "description": "tooltip是否禁用",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "offset",
+      "type": "number",
+      "description": "tooltip位置偏移量",
+      "defaultValue": "12",
+      "tip": ""
+    },
+    {
+      "displayName": "transition",
+      "type": "string",
+      "description": "动画名称",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "show-after",
+      "type": "number",
+      "description": "tooltip显示延迟时间，单位为毫秒",
+      "defaultValue": "0",
+      "tip": ""
+    },
+    {
+      "displayName": "hide-after",
+      "type": "number",
+      "description": "tooltip隐藏延迟时间，单位为毫秒",
+      "defaultValue": "200",
+      "tip": ""
+    },
+    {
+      "displayName": "show-arrow",
+      "type": "boolean",
+      "description": "是否显示箭头",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "auto-close",
+      "type": "number",
+      "description": "tooltip出现后自动隐藏延时，单位毫秒",
+      "defaultValue": "0",
+      "tip": ""
+    },
+    {
+      "displayName": "validate-on-rule-change",
+      "type": "boolean",
+      "description": "是否在 rules属性改变后立即触发一次验证",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "color",
+      "type": "string",
+      "description": "tooltip填充色",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "textColor",
+      "type": "string",
+      "description": "tooltip文字颜色",
+      "defaultValue": "#FFF"
+    },
+    {
+      "displayName": "scroll-to-error",
+      "type": "boolean",
+      "description": "当校验失败时，滚动到第一个错误表单项",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "popper-style",
+      "type": "CSSProperties",
+      "description": "popper样式",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "popper-class",
+      "type": "string",
+      "description": "popper类名",
+      "defaultValue": "''",
+      "tip": ""
+    },
+    {
+      "displayName": "enterable",
+      "type": "boolean",
+      "description": "鼠标是否可进入到tooltip中",
+      "defaultValue": "true"
+    },
+    {
+      "displayName": "teleported",
+      "type": "boolean",
+      "description": "是否使用teleport。设置成true则会被追加到append-to的位置",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "trigger",
+      "type": "enum",
+      "description": "触发方式",
+      "defaultValue": "hover",
+      "tip": "'hover' | 'click' | 'focus' | 'context-menu'"
+    },
+    {
+      "displayName": "virtual-triggering",
+      "type": "boolean",
+      "description": "是否使用虚拟触发",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "virtual-ref",
+      "type": "HTMLElement",
+      "description": "虚拟触发的元素",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "trigger-keys",
+      "type": "array",
+      "description": "当鼠标点击或者聚焦在触发元素上时， 可以定义一组键盘按键并且通过它们来控制Tooltip的显示",
+      "defaultValue": "['Enter','Space']",
+      "tip": ""
+    },
+    {
+      "displayName": "persistent",
+      "type": "boolean",
+      "description": "当 tooltip组件长时间不触发且persistent属性设置为false时, popconfirm将会被删除",
+      "defaultValue": "",
+      "tip": ""
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "default",
+      "description": "Tooltip触发 & 引用的元素",
+      "parameters": ""
+    },
+    {
+      "displayName": "content",
+      "description": "自定义内容",
+      "parameters": ""
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "popperRef",
+      "description": "element的el-popper组件实例",
+      "type": "object",
+      "tip": ""
+    },
+    {
+      "displayName": "contentRef",
+      "description": "element的el-tooltip-content组件实例",
+      "type": "object",
+      "tip": ""
+    },
+    {
+      "displayName": "isFocusInsideContent",
+      "description": "验证当前焦点事件是否在el-tooltip-content中触发",
+      "type": "Function",
+      "tip": "() => boolean | undefined"
+    },
+    {
+      "displayName": "updatePopper",
+      "description": "更新el-popper组件实例",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "onOpen",
+      "description": "onOpen方法控制el-tooltip显示状态",
+      "type": "Function",
+      "tip": "(event?: Event | undefined) => void"
+    },
+    {
+      "displayName": "onClose",
+      "description": "onClose方法控制el-tooltip显示状态",
+      "type": "Function",
+      "tip": "(event?: Event | undefined) => void"
+    },
+    {
+      "displayName": "hide",
+      "description": "隐藏tooltip",
+      "type": "Function",
+      "tip": "(event?: Event | undefined) => void"
+    }
+  ]
+}

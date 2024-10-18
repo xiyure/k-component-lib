@@ -1,17 +1,20 @@
 <template>
-  <div :id="id" class="k-transfer">
-    <div class="k-transfer_seacher">
+  <div :id="id" :class="['k-transfer', _styleModule]">
+    <div class="k-transfer_searcher">
       <k-input
+        v-if="filterable"
         v-model="searchStr"
         :placeholder="filterablePlaceholder"
-        :prefix-icon="Search"
+        :prefix-icon="IconSearch"
+        :size="size"
       ></k-input>
     </div>
     <el-transfer
       ref="kTransferRef"
       v-model="modelValue"
-      v-bind="attrs"
+      v-bind="$attrs"
       :data="sourceData"
+      :props="props.props"
       :format="{
         noChecked: ' ',
         hasChecked: ' ',
@@ -21,35 +24,48 @@
       @left-check-change="handleLeftCheckChange"
       @right-check-change="handleRightCheckChange"
     >
-      <template #left-footer>
-        <slot name="left-footer">
-        </slot>
-      </template>
-      <template #right-footer>
-        <slot name="right-footer">
-        </slot>
+      <template #default="{ option }">
+        <div
+          class="k-transfer-item"
+          :draggable="modelValue.includes(option[defaultPropsConfig.key])"
+          @dragstart="handleDragStart(option)"
+          @dragenter="handleDragenter($event,option)"
+          @dragend="handleDrop()"
+        >
+          <span class="k-transfer-label">{{ option[defaultPropsConfig.label] }}</span>
+          <span
+            id="draggable"
+            class="k-transfer-sort"
+          >
+            <IconDrag />
+          </span>
+        </div>
       </template>
     </el-transfer>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue';
-import { TransferKey, TransferDirection } from 'element-plus';
-import { Search } from '@element-plus/icons-vue';
-import { ITransferProps } from '../../interface/index';
+import { ref, computed, watch, onMounted, inject } from 'vue';
+import { ElTransfer, TransferKey, TransferDirection } from 'element-plus';
+import { VueI18nTranslation } from 'vue-i18n';
+import { IconSearch, IconDrag } from 'ksw-vue-icon';
+import { TransferProps } from './type';
 import { KInput } from '../input';
-import { genRandomStr } from '../../utils/index';
+import { genRandomStr, getExposeProxy } from '../../utils/index';
+// @ts-expect-error 引入本地静态图片资源
 import ArrowToLeft from '../../assets/svg/arrow-to-left.svg';
+// @ts-expect-error 引入本地静态图片资源
 import ArrowToRight from '../../assets/svg/arrow-to-right.svg';
 
 defineOptions({
   name: 'KTransfer'
 });
 
-const props = withDefaults(defineProps<ITransferProps>(), {
+const props = withDefaults(defineProps<TransferProps>(), {
   matchKey: 'label',
-  defautKey: []
+  filterable: true,
+  size: 'base'
 });
 
 const emits = defineEmits([
@@ -58,8 +74,12 @@ const emits = defineEmits([
   'left-check-change',
   'right-check-change',
   'input',
+  'reset',
+  'sort'
 ]);
 
+const _styleModule = inject('_styleModule', '');
+const t = inject<VueI18nTranslation>('$t');
 const modelValue:any = ref([]);
 const searchStr = ref('');
 const sourceData = ref<any>(props.data || []);
@@ -72,26 +92,13 @@ onMounted(() => {
   extendContent();
 });
 
-const attrs = computed(() => ({
-  data: props.data,
-  format: props.format,
-  targetOrder: props.targetOrder,
-  titles: props.titles ?? ['待选字段', '已选字段'],
-  buttonTexts: props.buttonTexts,
-  renderContent: props.renderContent,
-  filterablePlaceholder: props.filterablePlaceholder,
-  props: props.props,
-  leftDefaultChecked: props.leftDefaultChecked,
-  rightDefaultChecked: props.rightDefaultChecked,
-  filterMethod: props.filterMethod
-}));
-
 const defaultPropsConfig = computed(() => ({ label: 'label',
   key: 'key',
   disabled: 'disabled',
   ...props.props }));
 
-const filterablePlaceholder = computed(() => props.filterablePlaceholder ?? '搜索表头名称');
+const filterablePlaceholder = computed(() => props.filterablePlaceholder ??
+  t?.('searchHeaderName'));
 
 watch(() => [props.modelValue, props.matchKey], () => {
   if (!Array.isArray(props.modelValue)) {
@@ -99,7 +106,7 @@ watch(() => [props.modelValue, props.matchKey], () => {
   }
   modelValue.value = [];
   props.modelValue.forEach(valueItem => {
-    const targetData = sourceData.value.find((item:object) => item[props.matchKey] === valueItem[props.matchKey]);
+    const targetData = props.data.find((item:object) => item[props.matchKey] === valueItem[props.matchKey]);
     if (targetData) {
       const { key } = defaultPropsConfig.value;
       modelValue.value.push(targetData[key]);
@@ -132,6 +139,11 @@ function handleLeftCheckChange(value: TransferKey[], movedKeys?: TransferKey[]) 
 function handleRightCheckChange(value: TransferKey[], movedKeys?: TransferKey[]) {
   emits('right-check-change', value, movedKeys);
 }
+function handleSort() {
+  const { key } = defaultPropsConfig.value;
+  const newData = props.data.filter(item => modelValue.value.includes(item[key])).map(item => item[key]);
+  emits('sort', newData);
+}
 function extendContent() {
   transferBox = document.getElementById(id);
   if (transferBox === null) {
@@ -142,7 +154,7 @@ function extendContent() {
   // 在第三方组件中添加自定义文本
   const transferHeader = transferBox.querySelectorAll('.el-transfer-panel__header')[1];
   const label = document.createElement('label');
-  label.innerHTML = '恢复默认';
+  label.innerHTML = t?.('restoreDefault') as string;
   label.classList.add('transfer-restore__text');
   label.addEventListener('click', () => {
     resetTransferData();
@@ -150,13 +162,17 @@ function extendContent() {
   transferHeader.appendChild(label);
   // 替换第三方组件内部图标
   const transButton = transferBox.querySelectorAll('.el-transfer__button');
-  transButton[0].innerHTML = `<img class="k-transfer__left-arrow" src="${ ArrowToLeft }" />`;
-  transButton[1].innerHTML = `<img class="k-transfer__right-arrow" src="${ ArrowToRight }" />`;
+  transButton[0].innerHTML = `<img class="k-transfer__left-arrow" src="${ArrowToLeft}" />`;
+  transButton[1].innerHTML = `<img class="k-transfer__right-arrow" src="${ArrowToRight}" />`;
 }
 function resetTransferData() {
+  if (!Array.isArray(props.defaultKeys)) {
+    return;
+  }
   const { key } = defaultPropsConfig.value;
   const newModelValue = props.data.filter(item => props.defaultKeys?.includes(item[key]));
   emits('update:modelValue', newModelValue);
+  emits('reset', [...props.defaultKeys]);
 }
 function getNewModelValue(value:Array<any>) {
   const newModelValue:number[] = [];
@@ -169,6 +185,42 @@ function getNewModelValue(value:Array<any>) {
   }
   return newModelValue;
 }
+
+// 拖拽排序
+let dragTarget = null; // 拖拽项
+let dragIndex = -1; // 拖拽项在源数据中的索引
+let targetOption: any = null;// 拖动过程中停放目标
+const handleDragStart = (option) => {
+  const { key } = getPropsConfig();
+  dragTarget = option;
+  dragIndex = props.data.findIndex(item => item[key] === option[key]);
+};
+
+const handleDragenter = (event, option) => {
+  event.preventDefault();
+  if (!dragTarget || !option) return;
+  targetOption = option;
+};
+
+const handleDrop = () => {
+  const { key } = getPropsConfig();
+  const targetIndex = props.data.findIndex(item => item[key] === targetOption[key]);
+  const newIndex = targetIndex;
+  const [removedIndex] = props.data.splice(dragIndex, 1);
+  props.data.splice(newIndex, 0, removedIndex);
+  dragTarget = null;
+  targetOption = null;
+  dragIndex = -1;
+  handleSort();
+};
+function getPropsConfig() {
+  return defaultPropsConfig.value;
+}
+
+const kTransferRef = ref(null);
+
+const instance: any = {};
+defineExpose(getExposeProxy(instance, kTransferRef));
 </script>
 
 <style lang="less">

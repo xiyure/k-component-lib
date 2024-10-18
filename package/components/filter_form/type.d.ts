@@ -1,0 +1,18 @@
+import { VNode } from 'vue';
+
+export interface filterFormItem {
+  label?: string
+  prop: string
+  value: any;
+  type: 'input' | 'select' | 'date' | 'checkbox' | 'radio' | 'cascader' | 'tree-select';
+  attrs?: any;
+  render?: (item: any) => VNode | Comment;
+  options?: any[]
+  column?: number
+}
+
+export interface FilterFormProps {
+  items?: filterFormItem[]
+  size?: 'base' | 'sm' | undefined;
+  columns?: number
+}

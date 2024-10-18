@@ -1,0 +1,27 @@
+{
+  "name": "OptionGroup",
+  "props": [
+    {
+      "displayName": "label",
+      "type": "string",
+      "description": "分组的名称",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "disabled",
+      "type": "boolean",
+      "description": "是否将该分组下所有选项置为禁用",
+      "defaultValue": "false"
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "default",
+      "description": "默认插槽内容",
+      "parameters": ""
+    }
+  ],
+  "methods": []
+}

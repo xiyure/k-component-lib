@@ -1,0 +1,126 @@
+@import '../../style/variable.css';
+@import '../../style/global.less';
+
+.k-filer {
+  width: fit-content;
+}
+.k-filter__trigger-icon {
+  cursor: pointer;
+}
+.k-filter__content {
+  width: fit-content;
+  padding: 10px;
+  .k-select,
+  .k-input,
+  .k-date-picker {
+    border-radius: 8px;
+  }
+  .k-filter__header {
+    display: flex;
+    justify-content: space-between;
+    span:nth-child(2) {
+      color: var(--k-theme-primary);
+      cursor: pointer;
+    }
+  }
+  .k-filter__item {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    .k-filter__condition {
+      .k-select,
+      .k-input,
+      .k-cascader {
+        width: 120px;
+      }
+    }
+    .k-filter__logic {
+      .k-select,
+      .k-input {
+        width: 120px;
+      }
+    }
+    .k-filter__value {
+      .k-select,
+      .k-input {
+        width: 200px;
+      }
+      .k-filter__date-box {
+        display: flex;
+        .k-select {
+          width: 150px;
+          margin-right: 10px;
+        }
+      }
+    }
+    .k-filter__logic,
+    .k-filter__value,
+    .close-icon {
+      margin-left: 10px;
+    }
+    .close-icon {
+      cursor: pointer;
+      &:hover {
+        color: var(--k-theme-default);
+      }
+    }
+  }
+  .k-filter__operate {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    .k-filer__operate-left {
+      color: var(--k-theme-primary);
+      cursor: pointer;
+      span:nth-child(2) {
+        margin-left: 20px;
+      }
+    }
+    .k-filer__operate-right {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      .select-label {
+        line-height: 32px;
+      }
+      .k-select {
+        width: 130px;
+        margin-right: 10px;
+      }
+    }
+  }
+  .k-filer__operate-left,
+  .k-filter__header {
+    svg {
+      margin-right: 3px;
+    }
+  }
+}
+.k-filter-custom {
+  width: fit-content !important;
+}
+.k-filter-popper__enter {
+  animation: popper-fade-in 0.2s ease-out;
+}
+.k-filter-popper__leave {
+  animation: popper-fade-out 0.2s ease-out;
+}
+
+@keyframes popper-fade-in {
+  from {
+    transform: translateY(-4px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes popper-fade-out {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-4px);
+  }
+}

@@ -1,90 +1,37 @@
 <template>
-  <div class="k-popconfirm">
-    <el-popconfirm
-      v-bind="attrs"
-      cancel-button-type="default"
-      @confirm="handleConfirm"
-      @cancel="handleCancel"
-      @show="handleShow"
-      @hide="handleHide"
-    >
-      <slot></slot>
-      <template #reference> 
-        <slot name="reference"></slot>
-      </template>
-    </el-popconfirm>
-  </div>
+  <el-popconfirm
+    ref="KPopconfirmRef"
+    :class="['k-popconfirm', _styleModule]"
+    v-bind="$attrs"
+    :icon="props.icon"
+    cancel-button-type="default"
+  >
+    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+      <slot :name="name" v-bind="data"></slot>
+    </template>
+  </el-popconfirm>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, inject } from 'vue';
+import { ElPopconfirm } from 'element-plus';
 import { IconClear } from 'ksw-vue-icon';
-import { IPopconfirmProps } from '../../interface/index';
+import { PopconfirmProps } from './type';
+import { getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KPopconfirm'
 });
 
-const props = withDefaults(defineProps<IPopconfirmProps>(), {
-  trigger: 'click',
-  width: 150,
-  placement: 'bottom',
-  showArrow: true,
-  hideAfter: 200,
-  teleported: true,
-  persistent: true,
-  visible: undefined,
-  icon: IconClear,
-  iconColor: 'red'
+const props = withDefaults(defineProps<PopconfirmProps>(), {
+  icon: IconClear
 });
 
-const emits = defineEmits(['confirm', 'cancel', 'show', 'hide']);
+const _styleModule = inject('_styleModule', '');
+const KPopconfirmRef = ref(null);
 
-const attrs = computed(() => {
-  const tempObj = {} as any;
-  if (props.visible !== undefined) {
-    tempObj.visible = props.visible;
-  }
-  return Object.assign(getOriginAttrs(), tempObj);
-});
-
-const getOriginAttrs = () => ({
-  trigger: props.trigger,
-  title: props.title,
-  icon: props.icon,
-  iconColor: props.iconColor,
-  hideIcon: props.hideIcon,
-  confirmButtonText: props.confirmButtonText,
-  cancelButtonText: props.cancelButtonText,
-  confirmButtonType: props.confirmButtonType,
-  cancelButtonType: props.cancelButtonType,
-  width: props.width,
-  placement: props.placement,
-  disabled: props.disabled,
-  offset: props.offset,
-  transition: props.transition,
-  popperOptions: props.popperOptions,
-  showArrow: props.showArrow,
-  popperClass: props.popperClass,
-  popperStyle: props.popperStyle,
-  showAfter: props.showAfter,
-  hideAfter: props.hideAfter,
-  autoClose: props.autoClose,
-  teleported: props.teleported,
-  persistent: props.persistent
-});
-function handleConfirm() {
-  emits('confirm');
-}
-function handleCancel() {
-  emits('cancel');
-}
-function handleShow() {
-  emits('show');
-}
-function handleHide() {
-  emits('hide');
-}
+const instance: any = {};
+defineExpose(getExposeProxy(instance, KPopconfirmRef));
 </script>
 
 <style lang="less">

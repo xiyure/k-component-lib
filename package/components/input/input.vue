@@ -1,151 +1,82 @@
 <template>
-  <div class="k-input">
-    <el-input
-      ref="inputRef"
-      v-model="inputValue"
-      v-bind="attrs"
-      :style="{
-        width: props.width
-      }"
-      @input="handleInputEvent"
-      @change="handleChangeEvent"
-      @focus="handleFocusEvent"
-      @blur="handleBlurEvent"
-      @clear="handleClearEvent"
-    >
-      <template
-        v-if="slots.prepend"
-        #prepend
-      >
+  <el-input
+    ref="inputRef"
+    :class="[
+      'k-input',
+      {
+        'k-input-has-prepend': slots.prepend,
+        'k-input-has-append': slots.append
+      },
+      _styleModule
+    ]"
+    v-bind="$attrs"
+    :prefix-icon="iconLeft ?? prefixIcon"
+    :suffix-icon="iconRight ?? suffixIcon"
+    :size="getCompSize(props.size)"
+  >
+    <template v-if="slots.prepend" #prepend>
+      <div :class="slotClass(prependSlotType)">
         <slot name="prepend"></slot>
-      </template>
-      <template
-        v-if="slots.append"
-        #append
-      >
+      </div>
+    </template>
+    <template #prefix>
+      <slot name="prefix"></slot>
+    </template>
+    <template #suffix>
+      <slot name="suffix"></slot>
+    </template>
+    <template v-if="slots.append" #append>
+      <div :class="slotClass(appendSlotType)">
         <slot name="append"></slot>
-      </template>
-      <template
-        v-if="slots.prefix"
-        #prefix
-      >
-        <slot name="prefix"></slot>
-      </template>
-      <template
-        v-if="slots.suffix"
-        #suffix
-      >
-        <slot name="suffix"></slot>
-      </template>
-    </el-input>
-  </div>
+      </div>
+    </template>
+  </el-input>
 </template>
-
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
-import { IInputProps } from '../../interface/index';
+import { ref, computed, inject } from 'vue';
+import { ElInput } from 'element-plus';
+import { InputProps } from './type.d';
+import { getCompSize, getExposeProxy } from '../../utils';
 
 defineOptions({
-  name: 'KInput'
+  name: 'KInput',
 });
 
-type InputValue = string | number;
-
-const props = withDefaults(defineProps<IInputProps>(), {
-  modelValue: '',
-  disabled: false,
-  clearable: false,
-  readonly: false,
-  showWordLimit: false,
-  autosize: false,
-  showPassword: false,
+const props = withDefaults(defineProps<InputProps>(), {
+  size: 'base',
+  iconLeft: undefined,
+  iconRight: undefined,
+  prepend: undefined,
+  append: undefined,
+  prefixIcon: undefined,
+  suffixIcon: undefined,
 });
 
-const slots = defineSlots<{
-  default?: any,
-  prepend?: any,
-  append?: any,
-  prefix?: any,
-  suffix?: any
-}>();
+const _styleModule = inject('_styleModule', '');
+const slots = defineSlots(); // 具名插槽
+const prependSlot = slots.prepend?.();
+const prependSlotType = prependSlot?.[0]?.type;
 
-const emit = defineEmits(['update:modelValue', 'input', 'blur', 'change', 'clear', 'focus']);
+const appendSlot = slots.append?.();
+const appendSlotType = appendSlot?.[0]?.type;
 
-const inputValue = ref<InputValue>('');
+const slotClass = computed(() => (slot) => {
+  switch (typeof slot) {
+    case 'string':
+      return 'k-input-slot--htmlTag';
+    case 'object':
+      return 'k-input-slot--component';
+    case 'symbol':
+      return 'k-input-slot--string';
+    default:
+      return '';
+  }
+});
+
 const inputRef = ref<any>(null);
 
-const attrs = computed(() => ({
-  ...getSizeAttrs(),
-  ...getOriginAttrs(),
-}));
-
-watch(() => props.modelValue, (newValue) => {
-  inputValue.value = newValue;
-}, { immediate: true });
-
-const getSizeAttrs = ():object => ({
-  size: props.size === 'sm' ? 'small' : '',
-});
-
-const getOriginAttrs = () => ({
-  id: props.id,
-  name: props.name,
-  label: props.label,
-  type: props.type,
-  disabled: props.disabled,
-  placeholder: props.placeholder,
-  readonly: props.readonly,
-  clearable: props.clearable,
-  prefixIcon: props.prefixIcon,
-  suffixIcon: props.suffixIcon,
-  showWordLimit: props.showWordLimit,
-  autosize: props.autosize,
-  rows: props.rows,
-  showPassword: props.showPassword,
-  maxLength: props.maxlength,
-  minLength: props.minlength,
-});
-const handleInputEvent = () => {
-  emit('update:modelValue', inputValue.value);
-  emit('input', inputValue.value);
-};
-const handleBlurEvent = () => {
-  emit('blur');
-};
-const handleFocusEvent = () => {
-  emit('focus');
-};
-const handleChangeEvent = (value:InputValue) => {
-  emit('change', value);
-};
-const handleClearEvent = () => {
-  emit('update:modelValue', '');
-  emit('clear', '');
-  emit('input', '');
-  emit('change', '');
-};
-const focus = () => {
-  inputRef.value?.focus();
-};
-const blur = () => {
-  inputRef.value?.blur();
-};
-const select = () => {
-  inputRef.value?.select();
-};
-const clear = () => {
-  inputRef.value?.clear();
-};
-const resizeTextarea = () => {
-  inputRef.value?.resizeTextarea();
-};
-defineExpose({
-  focus,
-  blur,
-  select,
-  clear,
-  resizeTextarea,
-});
+const instance: any = {};
+defineExpose(getExposeProxy(instance, inputRef));
 </script>
 
 <style lang="less">
