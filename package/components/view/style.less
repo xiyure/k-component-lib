@@ -4,10 +4,49 @@
 .k-view {
   display: flex;
   width: 100%;
+  height: 100%;
+  .k-view-nav {
+    width: 15rem;
+    transition: all 0.125s ease-in-out;
+    &.is-collapse {
+      transition: all 0.125s ease-in-out;
+      width: 2rem;
+    }
+
+    .showViewBtn {
+      --size: 1.5rem;
+      --padding: 0.5rem;
+      position: absolute;
+      width: 1.5rem;
+      height: 1.5rem;
+      padding: 0.5rem;
+      background-color: #fff;
+      border: 1px solid var(--k-gray-200);
+      cursor: pointer;
+
+      right: calc((var(--padding) + var(--size)) / 2 * -1 + var(--size) / 8);
+      top: 2.125rem;
+
+      .ksw-icon {
+        transition: all 0.125s ease-in-out;
+        &.is-collapse {
+          transition: all 0.125s ease-in-out;
+          transform: rotate(180deg);
+        }
+      }
+
+      &:hover {
+        color: var(--k-theme-primary);
+        border-color: var(--k-theme-primary);
+        box-shadow: 0px 1px 4px 2px rgba(0, 0, 0, 0.08);
+      }
+    }
+  }
   .k-view-aside {
     padding: 10px;
-    width: 200px;
     min-width: 200px;
+    position: relative;
+    transition: all 0.125s ease-in-out;
   }
   .k-view__header {
     display: flex;
@@ -52,6 +91,8 @@
   }
   .k-view-item__other {
     color: #736f78;
+    display: flex;
+    align-items: center;
     .k-view-item-remove {
       width: 100%;
       height: 100%;

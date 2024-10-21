@@ -1,46 +1,54 @@
 <template>
   <div :class="['k-view', 'text-base', _styleModule]">
-    <div class="k-view-aside">
-      <div class="k-view__header">
-        <div class="view-title text-base font-bold">
-          <slot name="header">{{ $t('view') }}</slot>
+    <div
+      class="k-view-nav p-2 h-full border-r border-gray-200 relative flex-shrink-0"
+      :class="{ 'is-collapse': isCollapse }"
+    >
+      <div class="showViewBtn flex justify-center items-center rounded-full" @click="toggle">
+        <IconArrowRight :class="{ 'is-collapse': !isCollapse }" />
+      </div>
+      <div class="k-view-aside" :style="{ display: isCollapse ? 'none' : 'block' }">
+        <div class="k-view__header">
+          <div class="view-title text-base font-bold">
+            <slot name="header">{{ $t('view') }}</slot>
+          </div>
+          <span class="view-fresh" @click="handleFresh">
+            <slot name="refresh"><IconRefresh /></slot>
+          </span>
         </div>
-        <span class="view-fresh" @click="handleFresh">
-          <slot name="refresh"><IconRefresh /></slot>
-        </span>
-      </div>
-      <div :id="specialViewId" class="k-view__special-data">
-        <k-view-item
-          v-for="item in specialData"
-          :key="item.value"
-          v-bind="item"
-          @change="handleChange"
-          @remove="handleRemove"
-          @_drag-start="onDragStart"
-          @_drag-drop="onDrop"
-        >
-          <template v-if="$slots.label" #label>
-            <slot name="label" :data="item"></slot>
-          </template>
-        </k-view-item>
-      </div>
-      <div  :id="customViewId" class="k-view__custom-data text-base">
-        <slot name="custom-header">
-          <span class="custom-table-box">{{ $t('customView') }}</span>
-        </slot>
-        <k-view-item
-          v-for="item in customData"
-          :key="item.value"
-          v-bind="item"
-          @change="handleChange"
-          @remove="handleRemove"
-          @_drag-start="onDragStart"
-          @_drag-drop="onDrop"
-        >
-          <template v-if="$slots.label" #label>
-            <slot name="label" :data="item"></slot>
-          </template>
-        </k-view-item>
+        <div :id="specialViewId" class="k-view__special-data">
+          <k-view-item
+            v-for="item in specialData"
+            :key="item.value"
+            v-bind="item"
+            @change="handleChange"
+            @remove="handleRemove"
+            @_drag-start="onDragStart"
+            @_drag-drop="onDrop"
+          >
+            <template v-if="$slots.label" #label>
+              <slot name="label" :data="item"></slot>
+            </template>
+          </k-view-item>
+        </div>
+        <div :id="customViewId" class="k-view__custom-data text-base">
+          <slot name="custom-header">
+            <span class="custom-table-box">{{ $t('customView') }}</span>
+          </slot>
+          <k-view-item
+            v-for="item in customData"
+            :key="item.value"
+            v-bind="item"
+            @change="handleChange"
+            @remove="handleRemove"
+            @_drag-start="onDragStart"
+            @_drag-drop="onDrop"
+          >
+            <template v-if="$slots.label" #label>
+              <slot name="label" :data="item"></slot>
+            </template>
+          </k-view-item>
+        </div>
       </div>
     </div>
     <div class="k-view-content">
@@ -85,11 +93,11 @@ function handleRemove(data: ViewItemProps) {
 }
 // 拖拽排序
 const dragElement: {
-  element: HTMLElement | null
-  data: ViewItemProps | null
+  element: HTMLElement | null;
+  data: ViewItemProps | null;
 } = {
   element: null,
-  data: null
+  data: null,
 };
 let isCustom: boolean = false;
 const specialViewId = genRandomStr(8);
@@ -100,7 +108,7 @@ function onDragStart(elem: HTMLElement, data: ViewItemProps) {
   isCustom = data.custom ?? false;
 }
 function onDrop(elem: HTMLElement) {
-  if (!dragElement.element && dragElement.element === elem) {
+  if (!dragElement.element || dragElement.element === elem) {
     return;
   }
   const targetParentId = isCustom ? customViewId : specialViewId;
@@ -125,9 +133,10 @@ function isChildElement(parentElem: HTMLElement | null, element: HTMLElement) {
   return parentElem.contains(element);
 }
 
-const showViewBtn = ref(true);
+// 控制显示
+const isCollapse = ref(true);
 function toggle() {
-  showViewBtn.value = !showViewBtn.value;
+  isCollapse.value = !isCollapse.value;
 }
 
 provide('activeView', active);
