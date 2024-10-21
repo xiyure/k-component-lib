@@ -144,6 +144,7 @@
           height: 100%;
         }
         .el-select.k-select {
+          margin: 0;
           .el-select__wrapper {
             box-shadow: unset;
             border: 1px solid var(--border-color--normal);
@@ -276,13 +277,14 @@
     box-shadow: unset;
     border: 1px solid var(--border-color--normal);
     border-radius: var(--border-radius);
-  }
-  .el-textarea__inner:hover {
-    border: 1px solid var(--border-color--hover);
-  }
-  .el-textarea__inner:focus {
-    border: 1px solid var(--border-color--checked);
-    box-shadow: 0 0 0 2px rgba(40, 130, 255, 0.1);
+    &:hover {
+      box-shadow: unset;
+      border: 1px solid var(--border-color--hover);
+    }
+    &:focus {
+      border: 1px solid var(--k-theme-input-border-color--active);
+      box-shadow: 0 0 0 2px rgba(40, 130, 255, 0.1);
+    }
   }
 
   &.el-input--small {

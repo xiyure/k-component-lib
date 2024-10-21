@@ -132,12 +132,12 @@
   --k-theme-border--normal: var(--k-gray-200);
   --k-theme-border--light: var(--k-gray-100);
   /* status */
-  --k-status-primary: var(var(--k-theme-primary));
-  --k-status-info: var(var(--k-theme-info));
-  --k-status-success: var(var(--k-theme-success));
-  --k-status-warning: var(var(--k-theme-warning));
-  --k-status-danger: var(var(--k-theme-danger));
-  --k-status-captured: var(var(--k-theme-captured));
+  --k-status-primary: var(--k-theme-primary);
+  --k-status-info: var(--k-theme-info);
+  --k-status-success: var(--k-theme-success);
+  --k-status-warning: var(--k-theme-warning);
+  --k-status-danger: var(--k-theme-danger);
+  --k-status-captured: var(--k-theme-captured);
 
   /* 组件焦点状态 */
   --k-theme-focue-style: var(--k-shadow-focue-size) rgba(var(--k-theme-primary-rgb), 0.2);

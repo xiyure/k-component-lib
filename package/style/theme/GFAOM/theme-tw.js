@@ -109,6 +109,15 @@ const themes = {
     normal: '#38363c',
     borderColorNormal: colors.gray[300],
   },
+  // screens
+  screens: {
+    xs: '1280px',
+    sm: '1440px',
+    base: '1920px',
+    lg: '2560px',
+    xl: '3008px',
+    '2xl': '3840px',
+  },
   extend: {},
 };
 
