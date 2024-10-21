@@ -1,0 +1,84 @@
+{
+  "name": "Steps",
+  "props": [
+    {
+      "displayName": "space",
+      "type": "string | number",
+      "description": "每个step的间距，不填写将自适应间距，支持百分比。",
+      "defaultValue": "''",
+      "tip": ""
+    },
+    {
+      "displayName": "direction",
+      "type": "enum",
+      "description": "步骤条显示方向",
+      "defaultValue": "horizontal",
+      "tip": "'vertical' | 'horizontal'"
+    },
+    {
+      "displayName": "cancel-button-text",
+      "type": "string",
+      "description": "取消按钮文字",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "active",
+      "type": "number",
+      "description": "设置当前激活步骤",
+      "defaultValue": "0",
+      "tip": ""
+    },
+    {
+      "displayName": "process-status",
+      "type": "enum",
+      "description": "设置步骤条当前状态",
+      "defaultValue": "finish",
+      "tip": "'wait' | 'process' | 'finish' | 'error' | 'success'"
+    },
+    {
+      "displayName": "icon",
+      "type": "string | Component",
+      "description": "自定义图标",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "align-center",
+      "type": "boolean",
+      "description": "是否居中显示",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "simple",
+      "type": "boolean",
+      "description": "是否简洁风格",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "capsule",
+      "type": "boolean",
+      "description": "是否显示胶囊型步骤条",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "height",
+      "type": "string | number",
+      "description": "capsule为true时有效，步骤条高度",
+      "defaultValue": "",
+      "tip": ""
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "default",
+      "description": "默认插槽，用于放置KStep子标签",
+      "parameters": ""
+    }
+  ],
+  "methods": []
+}

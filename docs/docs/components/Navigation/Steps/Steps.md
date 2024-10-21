@@ -55,3 +55,9 @@ title: Steps 步骤条
 设置 `simple` 可应用简洁风格，该条件下 `align-center` / `description` / `direction` / `space` 都将失效。
 
 <preview path="./simple.vue" />
+
+## API
+
+<API src="./steps.json" lang="zh"></API>
+
+<API src="./step.json" lang="zh"></API>

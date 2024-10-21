@@ -73,3 +73,7 @@ title: Input 输入框
 使用 `maxlength` 和 `minlength` 属性, 来控制输入内容的最大字数和最小字数。 "字符数"使用JavaScript字符串长度来衡量。 为文本或文本输入类型设置 `maxlength` prop可以限制输入值的长度。 允许你通过设置 `show-word-limit` 到 `true` 来显示剩余字数。
 
 <preview path="./length.vue" />
+
+## API
+
+<API src="./input.json" lang="zh"></API>

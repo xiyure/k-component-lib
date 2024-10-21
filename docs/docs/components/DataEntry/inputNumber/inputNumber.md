@@ -67,3 +67,7 @@ title: Input Number 数字输入框
 使用前缀和标名后缀。
 
 <preview path="./prefixSuffix.vue" />
+
+## API
+
+<API src="./inputNumber.json" lang="zh"></API>

@@ -95,4 +95,4 @@ empty（\*\*folder为true时使用，表示文件夹为空）等属性。
 
 <preview path="./useTreeTable.vue" />
 
-<API src="./data.json" lang="zh"></API>
+<API src="./table.json" lang="zh"></API>

@@ -297,7 +297,7 @@ function escapeParams(params: any) {
     displayName: escapeCharacter(displayName),
     description: escapeCharacter(description),
     type: escapeCharacter(type),
-    defaultValue: escapeCharacter(defaultValue) || '-',
+    defaultValue: escapeCharacter(defaultValue + '') || '-',
     tip: escapeCharacter(genTooltip(tip ?? parameters)),
     parameters: parameters ? 'object' : '-' 
   }

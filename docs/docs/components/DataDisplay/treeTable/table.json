@@ -154,6 +154,13 @@
       "description": "搜索配置",
       "defaultValue": "",
       "tip": "searchConfigType"
+    },
+    {
+      "displayName": "seq-config",
+      "type": "object",
+      "description": "搜索配置",
+      "defaultValue": "",
+      "tip": "seqConfigType"
     }
   ],
   "subProps": {
@@ -310,6 +317,21 @@
         "displayName": "isRemotePaging",
         "description": "是否服务端分页",
         "type": "boolean"
+      }
+    ],
+    "seqConfigType": [
+      {
+        "displayName": "startIndex",
+        "type": "number",
+        "description": "序号起始值",
+        "defaultValue": "1"
+      },
+      {
+        "displayName": "seqMethod",
+        "type": "Function",
+        "description": "自定义序号方法",
+        "defaultValue": "",
+        "tip": "({ row, rowIndex, column, columnIndex }) => number"
       }
     ]
   },
