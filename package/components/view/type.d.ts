@@ -1,10 +1,11 @@
 export interface ViewProps {
-  modelValue: string
+  defaultActive?: string | number
+  data?: any[]
 }
 export interface ViewItemProps {
   value: any,
   label?: string
   count?: number | string
   disabled?: boolean,
-  isCustom?: boolean
+  custom?: boolean
 }

@@ -8,7 +8,6 @@
         'k-view-disabled': props.disabled
       }
     ]"
-    :data-custom="Boolean(props.isCustom)"
     draggable="true"
     @dragstart="handleDragStart"
     @dragover="handleDragOver"
@@ -41,42 +40,41 @@ import { IconMore } from 'ksw-vue-icon';
 import { ViewItemProps } from './type';
 
 defineOptions({
-  name: 'KView'
+  name: 'KViewItem'
 });
 
 const props = withDefaults(defineProps<ViewItemProps>(), {
   label: '',
   count: 0
 });
+const emits = defineEmits(['change','remove', '_drag-start', '_drag-drop'])
 
 const activeView:any = inject('activeView');
-const pid = inject('viewId');
 const _styleModule = inject('_styleModule', '');
-const emitter = inject('_emitter') as any;
 
 function handleCommand(command:string) {
   switch (command) {
-    case 'remove': handleRemove(props.value);
+    case 'remove': handleRemove();
   }
 }
 function handleChange() {
   if (props.disabled || activeView.value === props.value) {
     return;
   }
-  emitter.emit('change', pid, props.value);
+  emits('change', props);
 }
-function handleRemove(value:any) {
-  emitter.emit('remove', pid, value);
+function handleRemove() {
+  emits('remove', props);
 }
 // 拖拽
 function handleDragStart(e:Event) {
-  emitter.emit('drag-start', pid, e.currentTarget, props.isCustom);
+  emits('_drag-start', e.currentTarget, props);
 }
 function handleDragOver(e:Event) {
   e.preventDefault();
 }
 function handleDrop(e:Event) {
-  emitter.emit('drag-drop', pid, e.currentTarget);
+  emits('_drag-drop', e.currentTarget);
 }
 
 </script>
