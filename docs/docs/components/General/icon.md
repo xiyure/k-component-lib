@@ -151,12 +151,7 @@ import {
 
 ## 图标列表
 
-::: warning
-🚧 施工中
-很抱歉，图标列表还在施工中
-:::
-
-<!-- <IconsItem /> -->
+<iframe class="iframe-container" src="https://sengoku-f.github.io/KSW-vue-icon/iframe" />
 
 ## API
 
@@ -167,15 +162,18 @@ import {
 | **rotate** | 图标旋转角度（IE9 无效）   | `number`                   | `-`            |
 | **spin**   | 给图标加旋转动画           | `boolean`                  | `false`        |
 
-<script setup>
-// import { IconCalendarColor, IconSearch, IconSettingFill, IconRefresh, IconArrowTop, IconLoading } from "ksw-vue-icon";
-// import IconsItem from '../../src/components/IconsItem.vue'
-</script>
 
 <style scoped>
 h2{
   display: flex;
   align-items: center;
   gap: 0.25rem;
+}
+
+.iframe-container {
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  width: 100%;
+  height: 82vh;
 }
 </style>
