@@ -68,7 +68,9 @@ defineOptions({
   name: 'KView',
 });
 
-const props = withDefaults(defineProps<ViewProps>(), {});
+const props = withDefaults(defineProps<ViewProps>(), {
+  draggable: false
+});
 const emits = defineEmits(['refresh', 'change', 'remove', 'drag']);
 
 const _styleModule = inject('_styleModule', '');
@@ -140,6 +142,7 @@ function toggle() {
 }
 
 provide('activeView', active);
+provide('parentProps', props);
 </script>
 
 <style lang="less">

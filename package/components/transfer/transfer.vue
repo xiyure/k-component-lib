@@ -27,17 +27,13 @@
       <template #default="{ option }">
         <div
           class="k-transfer-item"
-          :draggable="modelValue.includes(option[defaultPropsConfig.key])"
-          @dragstart="handleDragStart(option)"
-          @dragenter="handleDragenter($event,option)"
-          @dragend="handleDrop()"
         >
           <span class="k-transfer-label">{{ option[defaultPropsConfig.label] }}</span>
           <span
             id="draggable"
             class="k-transfer-sort"
           >
-            <IconDrag />
+            <IconDrag v-if="modelValue.includes(option[defaultPropsConfig.key])" />
           </span>
         </div>
       </template>
@@ -46,10 +42,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, inject } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted, inject } from 'vue';
 import { ElTransfer, TransferKey, TransferDirection } from 'element-plus';
 import { VueI18nTranslation } from 'vue-i18n';
 import { IconSearch, IconDrag } from 'ksw-vue-icon';
+import Sortable, { SortableEvent } from 'sortablejs';
 import { TransferProps } from './type';
 import { KInput } from '../input';
 import { genRandomStr, getExposeProxy } from '../../utils/index';
@@ -90,8 +87,11 @@ const id = genRandomStr(8);
 onMounted(() => {
   // 根据需求扩展页面内容
   extendContent();
+  initSortable();
 });
-
+onUnmounted(() => {
+  sortable?.destroy();
+});
 const defaultPropsConfig = computed(() => ({ label: 'label',
   key: 'key',
   disabled: 'disabled',
@@ -139,11 +139,6 @@ function handleLeftCheckChange(value: TransferKey[], movedKeys?: TransferKey[]) 
 function handleRightCheckChange(value: TransferKey[], movedKeys?: TransferKey[]) {
   emits('right-check-change', value, movedKeys);
 }
-function handleSort() {
-  const { key } = defaultPropsConfig.value;
-  const newData = props.data.filter(item => modelValue.value.includes(item[key])).map(item => item[key]);
-  emits('sort', newData);
-}
 function extendContent() {
   transferBox = document.getElementById(id);
   if (transferBox === null) {
@@ -187,38 +182,26 @@ function getNewModelValue(value:Array<any>) {
 }
 
 // 拖拽排序
-let dragTarget = null; // 拖拽项
-let dragIndex = -1; // 拖拽项在源数据中的索引
-let targetOption: any = null;// 拖动过程中停放目标
-const handleDragStart = (option) => {
-  const { key } = getPropsConfig();
-  dragTarget = option;
-  dragIndex = props.data.findIndex(item => item[key] === option[key]);
-};
-
-const handleDragenter = (event, option) => {
-  event.preventDefault();
-  if (!dragTarget || !option) return;
-  targetOption = option;
-};
-
-const handleDrop = () => {
-  const { key } = getPropsConfig();
-  const targetIndex = props.data.findIndex(item => item[key] === targetOption[key]);
-  const newIndex = targetIndex;
-  const [removedIndex] = props.data.splice(dragIndex, 1);
-  props.data.splice(newIndex, 0, removedIndex);
-  dragTarget = null;
-  targetOption = null;
-  dragIndex = -1;
-  handleSort();
-};
-function getPropsConfig() {
-  return defaultPropsConfig.value;
+let sortable: any = null;
+function initSortable() {
+  const dragElem = document.getElementById(id)?.querySelectorAll('.el-transfer-panel__list')?.[1] as HTMLElement;
+  if (!dragElem) {
+    return;
+  }
+  sortable = new Sortable(dragElem, {
+    handle: '.k-transfer-sort',
+    animation: 150,
+    onEnd: (sortableEvent: SortableEvent) => {
+      const { newIndex, oldIndex } = sortableEvent;
+      modelValue.value.splice(newIndex, 0, modelValue.value.splice(oldIndex, 1)[0]);
+      const newModelValue:number[] = getNewModelValue(modelValue.value);
+      emits('update:modelValue', newModelValue);
+      emits('sort', modelValue.value);
+    }
+  })
 }
 
 const kTransferRef = ref(null);
-
 const instance: any = {};
 defineExpose(getExposeProxy(instance, kTransferRef));
 </script>

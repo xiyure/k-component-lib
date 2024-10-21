@@ -1,6 +1,7 @@
 export interface ViewProps {
   defaultActive?: string | number
   data?: any[]
+  draggable?: boolean
 }
 export interface ViewItemProps {
   value: any,

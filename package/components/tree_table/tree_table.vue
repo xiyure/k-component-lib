@@ -710,12 +710,10 @@ function getTreeConfigField() {
 }
 function updateColumn(ids: string[]) {
   flatColumns.value.forEach((col: columnConfigType) => {
-    if (!col.type) {
-      if (ids.includes(col.field as string)) {
-        col.visible = true;
-      } else {
-        col.visible = false;
-      }
+    if (ids.includes(col.field as string)) {
+      col.visible = true;
+    } else {
+      col.visible = false;
     }
   });
 }

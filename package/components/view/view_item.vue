@@ -8,7 +8,7 @@
         'k-view-disabled': props.disabled
       }
     ]"
-    draggable="true"
+    :draggable="parentProps.draggable"
     @dragstart="handleDragStart"
     @dragover="handleDragOver"
     @drop="handleDrop"
@@ -51,6 +51,7 @@ const emits = defineEmits(['change','remove', '_drag-start', '_drag-drop'])
 
 const activeView:any = inject('activeView');
 const _styleModule = inject('_styleModule', '');
+const parentProps = inject<any>('parentProps', {});
 
 function handleCommand(command:string) {
   switch (command) {
@@ -68,12 +69,21 @@ function handleRemove() {
 }
 // 拖拽
 function handleDragStart(e:Event) {
+  if (!parentProps.draggable) {
+    return;
+  }
   emits('_drag-start', e.currentTarget, props);
 }
 function handleDragOver(e:Event) {
+  if (!parentProps.draggable) {
+    return;
+  }
   e.preventDefault();
 }
 function handleDrop(e:Event) {
+  if (!parentProps.draggable) {
+    return;
+  }
   emits('_drag-drop', e.currentTarget);
 }
 
