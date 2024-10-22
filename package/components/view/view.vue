@@ -2,12 +2,12 @@
   <div :class="['k-view', 'text-base', _styleModule]">
     <div
       class="k-view-nav p-2 h-full border-r border-gray-200 relative flex-shrink-0"
-      :class="{ 'is-collapse': isCollapse }"
+      :class="{ 'is-collapse': viewCollapse }"
     >
-      <div class="showViewBtn flex justify-center items-center rounded-full" @click="toggle">
-        <IconArrowRight :class="{ 'is-collapse': !isCollapse }" />
+      <div class="showViewBtn flex justify-center items-center rounded-full" @click="handleViewVisible">
+        <IconArrowRight :class="{ 'is-collapse': !viewCollapse }" />
       </div>
-      <div class="k-view-aside" :style="{ display: isCollapse ? 'none' : 'block' }">
+      <div class="k-view-aside" :style="{ display: viewCollapse ? 'none' : 'block' }">
         <div class="k-view__header">
           <div class="view-title text-base font-bold">
             <slot name="header">{{ $t('view') }}</slot>
@@ -69,9 +69,10 @@ defineOptions({
 });
 
 const props = withDefaults(defineProps<ViewProps>(), {
-  draggable: false
+  draggable: false,
+  collapse: false
 });
-const emits = defineEmits(['refresh', 'change', 'remove', 'drag']);
+const emits = defineEmits(['refresh', 'change', 'remove', 'drag', 'visible']);
 
 const _styleModule = inject('_styleModule', '');
 const active = ref(props.defaultActive ?? props.data?.[0]?.value ?? '');
@@ -136,13 +137,38 @@ function isChildElement(parentElem: HTMLElement | null, element: HTMLElement) {
 }
 
 // 控制显示
-const isCollapse = ref(true);
+const viewCollapse = ref(props.collapse);
+
+function handleViewVisible() {
+  toggle();
+  emits('visible', !viewCollapse.value);
+}
 function toggle() {
-  isCollapse.value = !isCollapse.value;
+  viewCollapse.value = !viewCollapse.value;
+}
+function expand() {
+  viewCollapse.value = false;
+}
+function collapse() {
+  viewCollapse.value = true;
+}
+function isExpand() {
+  return !viewCollapse.value;
+}
+function isCollapse() {
+  return viewCollapse.value;
 }
 
 provide('activeView', active);
 provide('parentProps', props);
+
+defineExpose({
+  expand,
+  collapse,
+  toggle,
+  isExpand,
+  isCollapse
+});
 </script>
 
 <style lang="less">

@@ -79,9 +79,10 @@ const _styleModule = inject('_styleModule', '');
 const t = inject<VueI18nTranslation>('$t');
 const modelValue:any = ref([]);
 const searchStr = ref('');
-const sourceData = ref<any>(props.data || []);
+const sourceData = ref<any>([]);
 let transferBox:HTMLElement | null = null;
 let filterInput:any = [];
+let defaultSourceKeys: string[] = [];
 const id = genRandomStr(8);
 
 onMounted(() => {
@@ -118,10 +119,12 @@ watch(() => [props.modelValue, props.matchKey], () => {
 watch(() => props.data, (newValue) => {
   if (newValue) {
     sourceData.value = newValue;
+    defaultSourceKeys = sourceData.value.map((item: TransferKey) => item[defaultPropsConfig.value.key]);
     return;
   }
   sourceData.value = [];
-});
+  defaultSourceKeys.length = 0;
+}, { immediate: true });
 watch(() => searchStr.value, (newValue) => {
   for (let i = 0; i < filterInput.length; i++) {
     filterInput[i].value = newValue;
@@ -168,8 +171,12 @@ function resetTransferData() {
   }
   const { key } = defaultPropsConfig.value;
   const newModelValue = props.data.filter(item => props.defaultKeys?.includes(item[key]));
+  sourceData.value.sort((a: TransferKey, b: TransferKey) =>
+    defaultSourceKeys.indexOf(a[key]) - defaultSourceKeys.indexOf(b[key])
+  );
   emits('update:modelValue', newModelValue);
   emits('reset', [...props.defaultKeys]);
+  emits('sort', sourceData.value);
 }
 function getNewModelValue(value:Array<any>) {
   const newModelValue:number[] = [];
@@ -207,8 +214,15 @@ function initSortable() {
   })
 }
 
+function getTransferData() {
+  return {
+    sourceData: sourceData.value,
+    selectData: getNewModelValue(modelValue.value)
+  };
+}
+
 const kTransferRef = ref(null);
-const instance: any = {};
+const instance: any = { getTransferData };
 defineExpose(getExposeProxy(instance, kTransferRef));
 </script>
 

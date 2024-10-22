@@ -110,3 +110,10 @@ export interface Store {
   sortData: any[]
   filterData: any[]
 }
+
+export interface TableHeaderControl {
+  label: string
+  key: string
+  visible?: boolean
+  disabled?: boolean
+}

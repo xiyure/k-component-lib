@@ -113,6 +113,7 @@
                 </div>
               </template>
               <k-transfer
+                ref="tableTransferRef"
                 v-model="selectData"
                 :data="originData"
                 :default-keys="defaultHeader"
@@ -229,7 +230,7 @@ import { KOperate } from '../operate';
 import { KTable } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
-import { TreeTableProps, columnConfigType } from './type';
+import { TreeTableProps, columnConfigType, TableHeaderControl } from './type';
 import {
   genRandomStr,
   treeDataToArray,
@@ -327,6 +328,7 @@ const emits = defineEmits([
   'advanced-filter-clear',
 ]);
 const xTree = ref();
+const tableTransferRef = ref();
 // 列配置
 const columns = ref<any>([]);
 const flatColumns = ref<any>([]);
@@ -875,6 +877,32 @@ function disposeRowTooltip() {
     tooltip?.remove();
   }
 }
+function getHeaderControllerData() {
+  const { sourceData = [], selectData = [] } = tableTransferRef.value?.[0]?.getTransferData?.() ?? [];
+  const selectSet = new Set(selectData.map((item: TableHeaderControl) => item.key));
+  const newTransferData = sourceData.map((item: TableHeaderControl) => {
+    return {
+      label: item.label,
+      key: item.key,
+      visible: selectSet.has(item.key),
+      disabled: item.disabled ?? false
+    }
+  });
+  return newTransferData;
+}
+function setHeaderControllerData(transferData: TableHeaderControl[]) {
+  transferData.forEach((item: TableHeaderControl) => {
+    const column = flatColumns.value.find((col: columnConfigType) => col.field === item.key);
+    if (item.visible) {
+      column.visible = true;
+    } else {
+      column.visible = false;
+    }
+  });
+  originData.value = transferData;
+  selectData.value = transferData.filter((item: TableHeaderControl) => item.visible !== false);
+  sortTableHeader(transferData);
+}
 
 provide('__showTransfer', __showTransfer);
 const customMethods = {
@@ -886,6 +914,8 @@ const customMethods = {
   getRowById,
   loadData,
   disposeRowTooltip,
+  getHeaderControllerData,
+  setHeaderControllerData,
   ..._methods,
   ..._checkboxMethods,
 };
