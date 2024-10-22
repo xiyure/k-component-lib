@@ -129,19 +129,19 @@ export class Emitter {
 }
 
 // 较大长度数组依据较小长度数组排序
-export function sortBySmallerList(targetData, sourceData) {
-  const indexMap = new Map(targetData.map((v, i) => [v.id, i]));
-  const dataMap = new Map(targetData.map((v) => [v.id, v]));
+export function sortBySmallerList(targetData: any[], sourceData: string[], key: string = 'id') {
+  const indexMap = new Map(targetData.map((v, i) => [v[key], i]));
+  const dataMap = new Map(targetData.map((v) => [v[key], v]));
   const indexList: any = [];
   const newSourceData: any = [];
   for (const v of sourceData) {
-    const index: any = indexMap.get(v);
+    const index: number = indexMap.get(v) ?? -1;
     if (index >= 0) {
       indexList.push(index);
       newSourceData.push(v);
     }
   }
-  indexList.sort((a, b) => a - b);
+  indexList.sort((a: number, b: number) => a - b);
   for (const index in indexList) {
     indexMap.set(newSourceData[index], indexList[index]);
   }

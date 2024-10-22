@@ -753,7 +753,8 @@ function hideColumn(column: columnConfigType) {
     }));
   emits('hide-column', column);
 }
-function sortTableHeader(fieldList: string[]) {
+function sortTableHeader(fieldList: {label: string, key: string}[]) {
+  let keyIndex = 0;
   const map = new Map(flatColumns.value.map((v: columnConfigType) => [v.field, v]));
   const setData = (columns: columnConfigType) => {
     for (const key in columns) {
@@ -761,7 +762,7 @@ function sortTableHeader(fieldList: string[]) {
       if (Array.isArray(col.group) && col.group.length > 0) {
         setData(col.group);
       } else {
-        const field = fieldList.shift();
+        const field = fieldList[keyIndex++]?.key;
         columns[key] = map.get(field);
       }
     }

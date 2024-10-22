@@ -49,7 +49,7 @@ import { IconSearch, IconDrag } from 'ksw-vue-icon';
 import Sortable, { SortableEvent } from 'sortablejs';
 import { TransferProps } from './type';
 import { KInput } from '../input';
-import { genRandomStr, getExposeProxy } from '../../utils/index';
+import { genRandomStr, getExposeProxy, sortBySmallerList } from '../../utils';
 // @ts-expect-error 引入本地静态图片资源
 import ArrowToLeft from '../../assets/svg/arrow-to-left.svg';
 // @ts-expect-error 引入本地静态图片资源
@@ -95,10 +95,12 @@ onUnmounted(() => {
 const defaultPropsConfig = computed(() => ({ label: 'label',
   key: 'key',
   disabled: 'disabled',
-  ...props.props }));
+  ...props.props
+}));
 
 const filterablePlaceholder = computed(() => props.filterablePlaceholder ??
-  t?.('searchHeaderName'));
+  t?.('searchHeaderName')
+);
 
 watch(() => [props.modelValue, props.matchKey], () => {
   if (!Array.isArray(props.modelValue)) {
@@ -193,10 +195,14 @@ function initSortable() {
     animation: 150,
     onEnd: (sortableEvent: SortableEvent) => {
       const { newIndex, oldIndex } = sortableEvent;
+      if (newIndex === oldIndex || newIndex === undefined || oldIndex === undefined) {
+        return;
+      }
       modelValue.value.splice(newIndex, 0, modelValue.value.splice(oldIndex, 1)[0]);
+      sourceData.value = sortBySmallerList(sourceData.value, modelValue.value, 'key');
       const newModelValue:number[] = getNewModelValue(modelValue.value);
       emits('update:modelValue', newModelValue);
-      emits('sort', modelValue.value);
+      emits('sort', sourceData.value);
     }
   })
 }

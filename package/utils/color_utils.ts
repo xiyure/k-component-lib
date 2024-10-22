@@ -1,7 +1,7 @@
 // culori
 import { parse, converter } from 'culori';
 
-export function GetColorLevelNew(color: any) {
+export function GetColorLevelNew(color: string) {
   // 预设状态颜色
   const presetColors = {
     primary: '#3b82f6',
@@ -75,7 +75,6 @@ export function GetColorLevelNew(color: any) {
   } else {
     ('请输入正确颜色值');
   }
-  // console.log(colorLevel);
 
   return {
     colorLevel,
