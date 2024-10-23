@@ -18,11 +18,11 @@ import { FormItemProps } from './type';
 import { getCompSize, getExposeProxy } from '../../utils';
 
 defineOptions({
-  name: 'KFormItem'
+  name: 'KFormItem',
 });
 
 const props = withDefaults(defineProps<FormItemProps>(), {
-  size: 'base'
+  size: 'base',
 });
 
 const _styleModule = inject('_styleModule', '');

@@ -1,5 +1,4 @@
 <template>
-  <!-- getSizeClass, -->
   <el-button
     :id="id"
     ref="buttonRef"
@@ -53,7 +52,6 @@ defineOptions({
 
 const props = withDefaults(defineProps<ButtonProps>(), {
   type: '',
-  size: 'base',
   value: '',
   disabled: false,
   loading: false,
@@ -68,6 +66,7 @@ const props = withDefaults(defineProps<ButtonProps>(), {
 });
 
 const _styleModule = inject('_styleModule', '');
+
 const id = genRandomStr(8);
 const buttonRef = ref();
 
@@ -114,7 +113,15 @@ const getElTypeColor = computed(() => {
   return '';
 });
 
-const getSizeClass = computed(() => (props.size ? `el-button--${props.size}` : ''));
+const __size__ = inject(
+  '__size__',
+  computed(() => 'base'),
+);
+
+const getSizeClass = computed(() => {
+  const size = props.size ?? __size__.value;
+  return size ? `el-button--${size}` : '';
+});
 
 const getBtnBase = computed(() => {
   // props.type 中包含 primary, success, info, warning, danger 时, 返回 true

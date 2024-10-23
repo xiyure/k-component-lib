@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch, nextTick, inject } from 'vue';
+import { ref, computed, watch, nextTick, inject } from 'vue';
 import { ElRadio } from 'element-plus';
 import { RadioProps } from './type.d';
 import { GetColorLevelNew, genRandomStr, getExposeProxy } from '../../utils';
@@ -24,7 +24,6 @@ defineOptions({
 });
 
 const props = withDefaults(defineProps<RadioProps>(), {
-  size: 'base',
   color: '',
   button: false,
 });
@@ -32,11 +31,12 @@ const props = withDefaults(defineProps<RadioProps>(), {
 const _styleModule = inject('_styleModule', '');
 const id = genRandomStr(8);
 const color = ref(props.color);
-
-// const fillColor = inject('_fillColor', ref(''));
 const kRadioRef = ref();
 
-onMounted(() => {});
+const __size__ = inject(
+  '__size__',
+  computed(() => 'base'),
+);
 
 // 获取 dom
 const el = ref();
@@ -77,7 +77,10 @@ watch(
   { immediate: true },
 );
 
-const getSizeClass = computed(() => (props.size ? `k-radio--${props.size}` : ''));
+const getSizeClass = computed(() => {
+  const size = props.size ?? __size__.value;
+  return size ? `k-radio--${size}` : '';
+});
 
 const instance: any = {};
 defineExpose(getExposeProxy(instance, kRadioRef));

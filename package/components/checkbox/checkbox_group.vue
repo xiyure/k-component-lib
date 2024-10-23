@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, provide, inject } from 'vue';
+import { ref, watch, provide, inject, computed } from 'vue';
 import { ElCheckboxGroup } from 'element-plus';
 import { CheckboxGroupProps } from './type';
 import { getCompSize, getExposeProxy } from '../../utils/index';
@@ -34,8 +34,17 @@ watch(
   },
 );
 
+const injectSize = inject(
+  '__size__',
+  computed(() => 'base'),
+);
+
 provide('useCheckboxGroup', true);
 provide('_fillColor', fillColor);
+provide(
+  '__size__',
+  computed(() => props.size ?? injectSize.value),
+);
 
 const instance: any = {};
 defineExpose(getExposeProxy(instance, kCheckboxGroupRef));

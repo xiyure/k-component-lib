@@ -36,6 +36,11 @@ const kCheckboxRef = ref();
 
 const id = genRandomStr(8);
 
+const __size__ = inject(
+  '__size__',
+  computed(() => 'base'),
+);
+
 const color = ref(props.color);
 // watch props.color 变化, 更新颜色变量
 
@@ -89,7 +94,10 @@ function handleClickLabel(e) {
   }
 }
 
-const getSizeClass = computed(() => (props.size ? `k-checkbox--${props.size}` : ''));
+const getSizeClass = computed(() => {
+  const size = props.size ?? __size__.value;
+  return size ? `k-checkbox--${size}` : '';
+});
 
 const instance: any = {};
 defineExpose(getExposeProxy(instance, kCheckboxRef));

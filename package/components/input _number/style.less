@@ -1,14 +1,56 @@
-@import '../../style/global.less';
+@import '../../style/variable.css';
+@import '../../style/general.less';
 
 .k-input-number {
+  --border-radius: var(--k-theme-select-rounded--base);
+  overflow: hidden;
+  box-sizing: border-box;
   .el-input-number__increase,
   .el-input-number__decrease {
     svg {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 50%;
-      height: auto;
+      // display: flex;
+      // justify-content: center;
+      // align-items: center;
     }
+    &:hover {
+      & ~ .el-input:not(.is-disabled) > .el-input__wrapper {
+        box-shadow: unset;
+      }
+      & ~ .el-input.el-input--default > .el-input__wrapper {
+        box-shadow: var(--k-theme-focue-style);
+        border: 1px solid var(--k-theme-input-border-color--active);
+      }
+    }
+  }
+  .el-input-number__increase {
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+  }
+  .el-input-number__decrease {
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+  }
+  .el-input__wrapper {
+    // z-index: 1;
+
+    .el-input__inner {
+      text-align: center;
+    }
+    :hover {
+      z-index: unset;
+      .el-input__inner {
+        text-align: center;
+      }
+    }
+    &.is-focus {
+      z-index: unset;
+      .el-input__inner {
+        text-align: center;
+      }
+    }
+  }
+
+  &.el-input-number--large {
+    --border-radius: var(--k-theme-select-rounded--lg);
   }
 }

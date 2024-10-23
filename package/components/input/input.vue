@@ -5,14 +5,14 @@
       'k-input',
       {
         'k-input-has-prepend': slots.prepend,
-        'k-input-has-append': slots.append
+        'k-input-has-append': slots.append,
       },
-      _styleModule
+      _styleModule,
     ]"
     v-bind="$attrs"
     :prefix-icon="iconLeft ?? prefixIcon"
     :suffix-icon="iconRight ?? suffixIcon"
-    :size="getCompSize(props.size)"
+    :size="getCompSize(props.size ?? injectSize)"
   >
     <template v-if="slots.prepend" #prepend>
       <div :class="slotClass(prependSlotType)">
@@ -33,7 +33,7 @@
   </el-input>
 </template>
 <script setup lang="ts">
-import { ref, computed, inject } from 'vue';
+import { ref, computed, inject, provide } from 'vue';
 import { ElInput } from 'element-plus';
 import { InputProps } from './type.d';
 import { getCompSize, getExposeProxy } from '../../utils';
@@ -43,7 +43,6 @@ defineOptions({
 });
 
 const props = withDefaults(defineProps<InputProps>(), {
-  size: 'base',
   iconLeft: undefined,
   iconRight: undefined,
   prepend: undefined,
@@ -72,6 +71,16 @@ const slotClass = computed(() => (slot) => {
       return '';
   }
 });
+
+const injectSize = inject(
+  '__size__',
+  computed(() => 'base'),
+);
+
+provide(
+  '__size__',
+  computed(() => props.size ?? injectSize.value),
+);
 
 const inputRef = ref<any>(null);
 

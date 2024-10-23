@@ -63,6 +63,7 @@ import { ref, computed, provide, inject } from 'vue';
 import { IconRefresh } from 'ksw-vue-icon';
 import { ViewProps, ViewItemProps } from './type';
 import { genRandomStr } from '../../utils';
+import { IconArrowRight } from 'ksw-vue-icon';
 
 defineOptions({
   name: 'KView',

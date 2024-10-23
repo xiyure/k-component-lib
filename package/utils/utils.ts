@@ -3,11 +3,11 @@ import { isRef } from 'vue';
 type RGB = [number, number, number];
 
 // 获取随机字符串
-export function genRandomStr(bit:number) {
+export function genRandomStr(bit: number) {
   let result = '';
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   const charactersLength = characters.length;
-    
+
   for (let i = 0; i < bit; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
@@ -19,18 +19,23 @@ export function isValid(value: any): boolean {
 }
 
 // 组件size参数转换
-export function getCompSize(size:string | undefined) {
+export function getCompSize(size: string | undefined) {
   switch (size) {
-    case 'sm': return 'small';
-    case 'lg': return 'large';
-    case 'default': return 'default';
-    case 'base': return 'default';
-    default: return '';
+    case 'sm':
+      return 'small';
+    case 'lg':
+      return 'large';
+    case 'default':
+      return 'default';
+    case 'base':
+      return 'default';
+    default:
+      return 'default';
   }
 }
 
 // 判断css颜色值是否合法
-export function isValidColor(strColor:string | undefined) {
+export function isValidColor(strColor: string | undefined) {
   if (!strColor) {
     return false;
   }
@@ -40,7 +45,7 @@ export function isValidColor(strColor:string | undefined) {
 }
 
 // 获取色阶
-export function GetColorLevel(hex:any) {
+export function GetColorLevel(hex: any) {
   // 1. 将16进制颜色代码转换为RGB
   function hexToRgb(h: any): RGB {
     const bigint = parseInt(h.slice(1), 16);
@@ -51,10 +56,7 @@ export function GetColorLevel(hex:any) {
   }
   // 2. 将RGB颜色值转换为16进制
   function rgbToHex([r, g, b]: RGB) {
-    return (
-      `#${ 
-      ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`
-    );
+    return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`;
   }
   // 3. 调整亮度
   function adjustBrightness([r, g, b]: RGB, factor: number): RGB {
@@ -83,7 +85,7 @@ export function GetColorLevel(hex:any) {
   return {
     lightColor,
     darkColor,
-    loadingColor
+    loadingColor,
   };
 }
 
@@ -95,7 +97,7 @@ export class Emitter {
     this.events = new Map();
   }
 
-  on(eventName:string, id: string, callback:() => any) {
+  on(eventName: string, id: string, callback: () => any) {
     const eventItem = this.events.get(id);
     if (!eventItem) {
       this.events.set(id, { [eventName]: callback });
@@ -106,7 +108,7 @@ export class Emitter {
     }
   }
 
-  emit(eventName:string, id: string, ...arg:any[]) {
+  emit(eventName: string, id: string, ...arg: any[]) {
     const func = this.events.get(id)?.[eventName];
     if (typeof func !== 'function') {
       return;
@@ -172,7 +174,11 @@ export function treeDataToArray(treeData: any[] | undefined, childrenField: stri
   return result;
 }
 
-export function getValidTreeData(treeData: any[], childrenField: string, filterCallback: (item: any) => boolean) {
+export function getValidTreeData(
+  treeData: any[],
+  childrenField: string,
+  filterCallback: (item: any) => boolean,
+) {
   if (!Array.isArray(treeData) || treeData.length === 0) {
     return [];
   }
@@ -191,7 +197,12 @@ export function getValidTreeData(treeData: any[], childrenField: string, filterC
 }
 
 // Array => Tree
-export function resetTreeData(treeData: any[], childrenField: string, targetData: any[], key: string) {
+export function resetTreeData(
+  treeData: any[],
+  childrenField: string,
+  targetData: any[],
+  key: string,
+) {
   const dataMap = new Map(targetData.map((v) => [v[key], v]));
   for (let i = 0; i < treeData.length; i++) {
     const item = treeData[i];
@@ -212,13 +223,13 @@ export function getExposeProxy(instance: any, source: any) {
     get(target, key) {
       if (Object.hasOwnProperty.call(target, key)) {
         return target[key];
-      } 
+      }
       return source.value?.[key];
     },
     has(_target, key) {
       const sourceInstance = isRef(source) ? source.value : source;
       return Reflect.has(instance, key) || Reflect.has(sourceInstance, key);
-    }
+    },
   });
   return proxy;
 }
@@ -226,16 +237,16 @@ export function getExposeProxy(instance: any, source: any) {
 type SortFields = {
   field: string;
   order: 'asc' | 'desc' | null;
-}
+};
 // 多字段排序
 export function multiFieldSort(data: any[], fields: SortFields[]) {
   return data.sort((a, b) => {
     for (let i = 0; i < fields.length; i++) {
       const { field, order } = fields[i];
-      
+
       // 比较 a 和 b 当前字段的值
       let result = 0;
-      
+
       if (typeof a[field] === 'string') {
         result = a[field].localeCompare(b[field]);
       } else {
@@ -273,12 +284,13 @@ export function formatter(date: Date | Date[], formatter: any) {
     const h = dateItem.getHours();
     const minute = dateItem.getMinutes();
     const second = dateItem.getSeconds();
-    const formatStr = formatter.replace('YYYY', padZero(y, 4))
-    .replace('MM', padZero(m, 2))
-    .replace('DD', padZero(d, 2))
-    .replace('HH', padZero(h, 2))
-    .replace('mm', padZero(minute, 2))
-    .replace('ss', padZero(second, 2));
+    const formatStr = formatter
+      .replace('YYYY', padZero(y, 4))
+      .replace('MM', padZero(m, 2))
+      .replace('DD', padZero(d, 2))
+      .replace('HH', padZero(h, 2))
+      .replace('mm', padZero(minute, 2))
+      .replace('ss', padZero(second, 2));
     result.push(formatStr);
   }
   if (result.length === 1) {

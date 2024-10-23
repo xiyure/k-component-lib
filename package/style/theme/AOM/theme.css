@@ -140,8 +140,8 @@
   --k-status-captured: var(--k-theme-captured);
 
   /* 组件焦点状态 */
-  --k-theme-focue-style: var(--k-shadow-focue-size) rgba(var(--k-theme-primary-rgb), 0.2);
   --k-theme-focue-size: 0 0 0 0.125rem;
+  --k-theme-focue-style: 0 0 0 0.125rem rgba(var(--k-theme-primary-rgb), 0.2);
 
   /* ---------------------------------------------------------------------------------------- */
   /* 
@@ -180,6 +180,7 @@
   --k-theme-radio__button-rounded--sm: var(--k-theme-button-size-rounded--sm);
   --k-theme-radio__button-rounded--base: var(--k-theme-button-size-rounded--base);
   --k-theme-radio__button-rounded--lg: var(--k-theme-button-size-rounded--lg);
+  --k-theme-radio__label-color: var(--k-theme-info);
 
   /* checkbox */
   --k-theme-checkbox-size-height--sm: var(--k-theme-button-size-height--sm);
@@ -194,11 +195,15 @@
   --k-theme-checkbox__inner-rounded--sm: 0.125rem;
   --k-theme-checkbox__inner-rounded--base: 0.125rem;
   --k-theme-checkbox__inner-rounded--lg: 0.25rem;
+  --k-theme-checkbox__label-color: var(--k-theme-info);
 
   /* input */
   --k-theme-input-size-height--sm: var(--k-theme-button-size-height--sm);
   --k-theme-input-size-height--base: var(--k-theme-button-size-height--base);
   --k-theme-input-size-height--lg: var(--k-theme-button-size-height--lg);
+  --k-theme-input-size-padding--sm: var(--k-theme-button-size-padding--sm);
+  --k-theme-input-size-padding--base: var(--k-theme-button-size-padding--base);
+  --k-theme-input-size-padding--lg: var(--k-theme-button-size-padding--lg);
   --k-theme-input-rounded--sm: var(--k-theme-button-size-rounded--sm);
   --k-theme-input-rounded--base: var(--k-theme-button-size-rounded--base);
   --k-theme-input-rounded--lg: var(--k-theme-button-size-rounded--lg);
@@ -211,4 +216,22 @@
   --k-theme-collapse-size-height: var(--k-theme-button-size-height--base);
   --k-theme-collapse-bg-color--normal: var(--k-gray-100);
   --k-theme-collapse-rounded: var(--k-rounded-base);
+
+  /* select */
+  --k-theme-select-size-height--sm: var(--k-theme-button-size-height--sm);
+  --k-theme-select-size-height--base: var(--k-theme-button-size-height--base);
+  --k-theme-select-size-height--lg: var(--k-theme-button-size-height--lg);
+  --k-theme-select-size-padding--sm: var(--k-theme-button-size-padding--sm);
+  --k-theme-select-size-padding--base: var(--k-theme-button-size-padding--base);
+  --k-theme-select-size-padding--lg: var(--k-theme-button-size-padding--lg);
+  --k-theme-select-rounded--sm: var(--k-theme-button-size-rounded--sm);
+  --k-theme-select-rounded--base: var(--k-theme-button-size-rounded--base);
+  --k-theme-select-rounded--lg: var(--k-theme-button-size-rounded--lg);
+  --k-theme-select-border-color--normal: var(--k-theme-border--normal);
+  --k-theme-select-border-color--hover: var(--k-theme-input-border-color--hover);
+  --k-theme-select-border-color--active: var(--k-theme-input-border-color--active);
+  --k-theme-select-placeholder-color: var(--k-theme-input-placeholder-color);
+
+  /* el-form */
+  --k-theme-form-item__label-color: var(--k-theme-info);
 }

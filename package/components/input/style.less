@@ -13,6 +13,7 @@
 
   --bg-color: #fff;
   --height: var(--k-theme-input-size-height--base);
+  --padding: var(--k-theme-input-size-padding--base);
   --border-radius: var(--k-theme-input-rounded--base);
   --border-color--normal: var(--k-theme-input-border-color--normal);
   --border-color--hover: var(--k-theme-input-border-color--hover);
@@ -28,7 +29,7 @@
     .init-style();
     cursor: text;
     height: var(--height);
-    padding: 0.375rem 0.75rem;
+    padding: var(--padding);
     border-radius: var(--border-radius);
     border: var(--border-color--normal) 1px solid;
     background: var(--bg-color);
@@ -46,14 +47,16 @@
     &:hover {
       .init-style();
       height: var(--height);
-      padding: 0.375rem 0.75rem;
+      padding: var(--padding);
+      background-color: #fff;
       border-radius: var(--border-radius);
       border: var(--border-color--hover) 1px solid;
     }
     &.is-focus {
       .init-style();
       height: var(--height);
-      padding: 0.375rem 0.75rem;
+      padding: var(--padding);
+      background-color: #fff;
       border-radius: var(--border-radius);
       border: var(--k-theme-input-border-color--active) 1px solid;
       box-shadow: 0 0 0 2px rgba(40, 130, 255, 0.1);
@@ -127,10 +130,11 @@
         .k-button {
           margin: 0;
           // border: 1px solid var(--border-color--normal);
+          padding-top: 2px;
         }
         .k-button--base,
         .el-button--icon {
-          display: inline-flex;
+          // display: inline-flex;
           border: 1px solid var(--border-color--normal);
           &:hover:not(.is-disabled) {
             background: var(--k-gray-50);
@@ -224,50 +228,36 @@
   &.el-input--small {
     --height: var(--k-theme-input-size-height--sm);
     --border-radius: var(--k-theme-input-rounded--sm);
+    --padding: var(--k-theme-input-size-padding--sm);
     .el-input__wrapper {
-      --height: 1.5rem;
-      padding: 0.25rem 0.625rem;
       .el-input__inner {
         .text-sm();
       }
     }
     .el-input-group__prepend,
     .el-input-group__append {
-      --height: 1.5rem;
       .k-input-slot--string,
       .k-input-slot--htmlTag {
         .text-sm();
-        padding: 0.1875rem 0.625rem;
+        display: flex;
+        align-items: center;
+        padding: var(--padding);
       }
       .k-input-slot--component {
-        .k-button,
-        .el-button {
-          .text-sm();
-          padding: 0.1875rem 0.625rem;
-          height: var(--height);
-          &.el-button--icon {
-          }
-        }
-        .k-select,
-        .el-select {
-          height: 1.5rem;
-          .el-select__wrapper {
-            .text-sm();
-            min-height: unset;
-            height: 1.5rem;
-            padding: 0.1875rem 0.625rem;
-          }
-        }
       }
     }
   }
   &.el-input--large {
     --height: var(--k-theme-input-size-height--lg);
     --border-radius: var(--k-theme-input-rounded--lg);
+    --padding: var(--k-theme-input-size-padding--lg);
     .el-input__wrapper {
       .el-input__inner {
         .text-lg();
       }
+    }
+    .el-textarea__inner {
+      .text-lg();
     }
   }
 

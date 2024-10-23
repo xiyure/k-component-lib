@@ -7,7 +7,7 @@
     :class="['k-form', _styleModule]"
     :style="`grid-template-columns:repeat(${columns},minmax(0, 1fr))`"
   >
-    <template  v-for="item in items" :key="item.prop">
+    <template v-for="item in items" :key="item.prop">
       <k-form-item
         v-if="compVisible(item)"
         :key="item.prop"
@@ -73,13 +73,13 @@
           </template>
           <!-- input类型 -->
           <template v-else>
-              <k-input
-                v-if="compVisible(item)"
-                v-model="formData[item.prop]"
-                v-bind="item.attrs"
-                :placeholder="item.attrs?.placeholder ?? $t('pleaseInput')"
-                :size="compSize(item.attrs)"
-              ></k-input>
+            <k-input
+              v-if="compVisible(item)"
+              v-model="formData[item.prop]"
+              v-bind="item.attrs"
+              :placeholder="item.attrs?.placeholder ?? $t('pleaseInput')"
+              :size="compSize(item.attrs)"
+            ></k-input>
           </template>
         </slot>
       </k-form-item>
@@ -123,7 +123,7 @@ const props = withDefaults(defineProps<FilterFormProps>(), {
   size: 'base',
   columns: 3,
   collapse: true,
-  reserve: false
+  reserve: false,
 });
 const emits = defineEmits(['search', 'reset', 'change']);
 
@@ -155,18 +155,18 @@ const compVisible = computed(() => {
       visible = visible(formData.value);
     }
     if (visible === false && item.prop && !props.reserve) {
-      const formItem = props.items.find(v => v.prop === item.prop);
+      const formItem = props.items.find((v) => v.prop === item.prop);
       formData.value[item.prop] = formItem?.value;
     }
     return visible;
-  }
+  };
 });
 
 watch(
   () => props.items,
   () => {
     preItems = {};
-  }
+  },
 );
 watch(
   () => props.items,
@@ -193,7 +193,7 @@ function toggle() {
   filterBtn?.value.classList.toggle('is-expand');
   KFormRef?.value.$el.classList.toggle('is-expand');
   isCollapse.value = !isCollapse.value;
-};
+}
 function expand() {
   filterBtn?.value.classList.add('is-expand');
   KFormRef?.value.$el.classList.add('is-expand');

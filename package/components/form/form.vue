@@ -12,27 +12,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, inject } from 'vue';
+import { ref, onMounted, onUnmounted, inject, provide, computed } from 'vue';
 import { ElForm } from 'element-plus';
 import { FormProps } from './type';
 import { getCompSize, getExposeProxy } from '../../utils';
 
 defineOptions({
-  name: 'KForm'
+  name: 'KForm',
 });
 
 const props = withDefaults(defineProps<FormProps>(), {
-  size: 'base'
+  size: 'base',
 });
 
 const _styleModule = inject('_styleModule', '');
 const KFormRef = ref<any>(null);
-let inputDoms:HTMLInputElement[];
+let inputDoms: HTMLInputElement[];
 
 onMounted(() => {
   inputDoms = KFormRef.value?.$el.querySelectorAll('input');
   const targetType = ['text', 'password', 'number'];
-  inputDoms = Array.from(inputDoms).filter(item => targetType.includes(item.type));
+  inputDoms = Array.from(inputDoms).filter((item) => targetType.includes(item.type));
   inputDoms.forEach((item, index) => {
     item.setAttribute('data-index', index.toString());
   });
@@ -43,7 +43,7 @@ onUnmounted(() => {
   KFormRef.value?.$el.removeEventListener('keydown', onKeyDown);
 });
 
-function onKeyDown(event:any) {
+function onKeyDown(event: any) {
   const index = event.target.getAttribute('data-index');
   let nextIndex = parseInt(index);
   if (Number.isNaN(nextIndex) || nextIndex < 0 || nextIndex >= inputDoms.length) {
@@ -72,6 +72,10 @@ function onKeyDown(event:any) {
 const instance: any = {};
 defineExpose(getExposeProxy(instance, KFormRef));
 
+provide(
+  '__size__',
+  computed(() => props.size),
+);
 </script>
 
 <style lang="less">
