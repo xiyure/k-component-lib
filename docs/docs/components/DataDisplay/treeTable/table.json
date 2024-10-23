@@ -161,6 +161,13 @@
       "description": "搜索配置",
       "defaultValue": "",
       "tip": "seqConfigType"
+    },
+    {
+      "displayName": "simple",
+      "type": "boolean",
+      "description": "是否开启简易模式，该模式下只保留表格主体与搜索功能，其他功能均隐藏，搜索功能也可以通过show-search-input参数控制显示/隐藏",
+      "defaultValue": "false",
+      "tip": ""
     }
   ],
   "subProps": {

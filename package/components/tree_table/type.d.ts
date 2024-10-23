@@ -103,6 +103,7 @@ export interface TreeTableProps {
   }
   style?: object
   class?: string
+  simple?: boolean
 }
 
 export interface Store {

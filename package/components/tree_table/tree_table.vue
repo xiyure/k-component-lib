@@ -1,7 +1,17 @@
 <template>
   <div :class="['k-tree-table', props.class, _styleModule]" :style="{ height: height, ...style }">
+    <div v-if="simple && showSearchInput" class="k-tree-table__header-pure">
+      <k-input
+        v-model="searchStr"
+        :suffix-icon="IconSearch"
+        :placeholder="$t('searchTable')"
+        clearable
+        :size="compSize"
+        @change="filter"
+      />
+    </div>
     <div
-      v-if="showHeaderTools"
+      v-else-if="showHeaderTools && !simple"
       class="k-tree-table__header"
       :style="{
         justifyContent: showDescription ? 'space-between' : 'flex-end',
@@ -100,7 +110,7 @@
             <!-- 穿梭框 -->
             <k-popover trigger="click" width="auto" :teleported="false">
               <template #reference>
-                <div v-ksw_tooltip="$t('columnHeaderController')">
+                <div v-ksw_tooltip="$t('columnHeaderController')" class="text-sm">
                   <component
                     :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
                     v-if="widget.widget"
@@ -462,7 +472,7 @@ const scrollY = computed(() => Object.assign(defaultScrollY, props.scrollY || {}
 const columnConfig = computed(() => Object.assign(defaultColumnConfig, props.columnConfig || {}));
 const seqConfig = computed(() => Object.assign(defaultSeqConfig, props.seqConfig || {}));
 // 是否分页
-const isPaging = computed(() => props.showPage && !props.useTree);
+const isPaging = computed(() => props.showPage && !props.useTree && !props.simple);
 
 // 页面展示的表格数据
 const visibleData = computed(() => filterTableData());
