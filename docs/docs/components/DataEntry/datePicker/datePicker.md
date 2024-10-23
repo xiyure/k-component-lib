@@ -121,4 +121,4 @@ interface DateCell {
 
 ## API
 
-🚧 施工中
+<API src="./date_picker.json" lang="zh"></API>

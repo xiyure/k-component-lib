@@ -67,7 +67,8 @@ import {
   ElTimePicker as KTimePicker,
   ElTour as KTour,
   ElTourStep as KTourStep,
-  ElWatermark as KWatermark
+  ElWatermark as KWatermark,
+  ElRadioButton as KRadioButton
 } from 'element-plus';
 
 export {
@@ -139,5 +140,6 @@ export {
   KTimePicker,
   KTour,
   KTourStep,
-  KWatermark
+  KWatermark,
+  KRadioButton
 };

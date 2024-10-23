@@ -70,6 +70,6 @@ title: Form 表单
 
 ## API
 
-<API src="./data.json" lang="zh"></API>
+<API src="./form.json" lang="zh"></API>
 
-<API src="./data2.json" lang="zh"></API>
+<API src="./form_item.json" lang="zh"></API>

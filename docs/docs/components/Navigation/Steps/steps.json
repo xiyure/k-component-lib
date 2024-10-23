@@ -16,13 +16,6 @@
       "tip": "'vertical' | 'horizontal'"
     },
     {
-      "displayName": "cancel-button-text",
-      "type": "string",
-      "description": "取消按钮文字",
-      "defaultValue": "",
-      "tip": ""
-    },
-    {
       "displayName": "active",
       "type": "number",
       "description": "设置当前激活步骤",
