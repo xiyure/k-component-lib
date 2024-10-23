@@ -7,80 +7,83 @@
     :class="['k-form', _styleModule]"
     :style="`grid-template-columns:repeat(${columns},minmax(0, 1fr))`"
   >
-    <k-form-item
-      v-for="item in items"
-      :key="item.prop"
-      v-bind="item"
-      :style="`grid-column: span ${item.column}`"
-    >
-      <slot :name="item.prop" :form-data="formData">
-        <!-- 自定义render -->
-        <template v-if="typeof item.render === 'function'">
-          <component :is="item.render(formData)"></component>
-        </template>
-        <!-- select类型 -->
-        <k-select
-          v-else-if="item.type === 'select'"
-          v-model="formData[item.prop]"
-          v-bind="item.attrs"
-          :size="compSize(item.attrs)"
-          :placeholder="item.attrs?.placeholder ?? '请选择'"
-        >
-          <k-option v-for="option in item.options" v-bind="option" :key="option"></k-option>
-        </k-select>
-        <!-- radio类型 -->
-        <template v-else-if="item.type === 'radio'">
-          <k-radio-group
+    <template  v-for="item in items" :key="item.prop">
+      <k-form-item
+        v-if="compVisible(item)"
+        :key="item.prop"
+        v-bind="item"
+        :style="`grid-column: span ${item.column}`"
+      >
+        <slot :name="item.prop" :form-data="formData">
+          <!-- 自定义render -->
+          <template v-if="typeof item.render === 'function'">
+            <component :is="item.render(formData)"></component>
+          </template>
+          <!-- select类型 -->
+          <k-select
+            v-else-if="item.type === 'select'"
             v-model="formData[item.prop]"
             v-bind="item.attrs"
             :size="compSize(item.attrs)"
+            :placeholder="item.attrs?.placeholder ?? $t('pleaseSelect')"
           >
-            <k-radio v-for="option in item.options" v-bind="option" :key="option"></k-radio>
-          </k-radio-group>
-        </template>
-        <!-- checkbox类型 -->
-        <template v-else-if="item.type === 'checkbox'">
-          <k-checkbox-group
-            v-if="Array.isArray(item.value)"
-            v-model="formData[item.prop]"
-            v-bind="item.attrs"
-            :size="compSize(item.attrs)"
-          >
+            <k-option v-for="option in item.options" v-bind="option" :key="option"></k-option>
+          </k-select>
+          <!-- radio类型 -->
+          <template v-else-if="item.type === 'radio'">
+            <k-radio-group
+              v-model="formData[item.prop]"
+              v-bind="item.attrs"
+              :size="compSize(item.attrs)"
+            >
+              <k-radio v-for="option in item.options" v-bind="option" :key="option"></k-radio>
+            </k-radio-group>
+          </template>
+          <!-- checkbox类型 -->
+          <template v-else-if="item.type === 'checkbox'">
+            <k-checkbox-group
+              v-if="Array.isArray(item.value)"
+              v-model="formData[item.prop]"
+              v-bind="item.attrs"
+              :size="compSize(item.attrs)"
+            >
+              <k-checkbox
+                v-for="option in item.options"
+                v-bind="option"
+                :key="option"
+                :size="compSize(item.attrs)"
+              ></k-checkbox>
+            </k-checkbox-group>
             <k-checkbox
+              v-else
               v-for="option in item.options"
               v-bind="option"
               :key="option"
+              v-model="formData[item.prop]"
               :size="compSize(item.attrs)"
             ></k-checkbox>
-          </k-checkbox-group>
-          <k-checkbox
-            v-else
-            v-for="option in item.options"
-            v-bind="option"
-            :key="option"
-            v-model="formData[item.prop]"
-            :size="compSize(item.attrs)"
-          ></k-checkbox>
-        </template>
-        <!-- date类型 -->
-        <template v-else-if="item.type === 'date'">
-          <k-date-picker
-            v-model="formData[item.prop]"
-            v-bind="item.attrs"
-            :size="compSize(item.attrs)"
-          ></k-date-picker>
-        </template>
-        <!-- input类型 -->
-        <k-input
-          v-else
-          v-model="formData[item.prop]"
-          v-bind="item.attrs"
-          :placeholder="item.attrs?.placeholder ?? '请输入'"
-          :size="compSize(item.attrs)"
-        ></k-input>
-      </slot>
-    </k-form-item>
-
+          </template>
+          <!-- date类型 -->
+          <template v-else-if="item.type === 'date'">
+            <k-date-picker
+              v-model="formData[item.prop]"
+              v-bind="item.attrs"
+              :size="compSize(item.attrs)"
+            ></k-date-picker>
+          </template>
+          <!-- input类型 -->
+          <template v-else>
+              <k-input
+                v-if="compVisible(item)"
+                v-model="formData[item.prop]"
+                v-bind="item.attrs"
+                :placeholder="item.attrs?.placeholder ?? $t('pleaseInput')"
+                :size="compSize(item.attrs)"
+              ></k-input>
+          </template>
+        </slot>
+      </k-form-item>
+    </template>
     <div
       class="filtr-btns flex"
       ref="filterBtn"
@@ -89,8 +92,8 @@
       <slot name="action">
         <k-button :size="compSize()" @click="reset">{{ $t('reset') }}</k-button>
         <k-button :size="compSize()" @click="search" main>{{ $t('query') }}</k-button>
-        <KButton text :iconRight="handleExpandBtnIcon" @click="handleExpand">
-          {{ handleExpandBtnText }}
+        <KButton text :iconRight="isCollapse ? 'IconArrowBottom' : 'IconArrowTop'" @click="handleExpand">
+          {{ isCollapse ? $t('expand') : $t('collapse') }}
         </KButton>
       </slot>
     </div>
@@ -106,18 +109,12 @@ import { KCheckbox, KCheckboxGroup } from '../checkbox';
 import { KDatePicker } from '../date_picker';
 import { KButton } from '../button';
 import { KForm, KFormItem } from '../form';
-import { FilterFormProps } from './type';
+import { FilterFormProps, filterFormItem } from './type';
 import { getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KFilterForm',
 });
-
-const filterBtn = ref();
-const KFormRef = ref();
-
-const handleExpandBtnText = ref('展开');
-const handleExpandBtnIcon = ref('IconArrowBottom');
 
 const DEFAULT_SIZES = ['base', 'sm'];
 const _styleModule = inject('_styleModule', '');
@@ -125,11 +122,15 @@ const props = withDefaults(defineProps<FilterFormProps>(), {
   items: () => [],
   size: 'base',
   columns: 3,
+  reserve: false
 });
-
 const emits = defineEmits(['search', 'reset', 'change']);
+
 const formData = ref({});
 let preItems = {};
+const filterBtn = ref();
+const KFormRef = ref();
+const isCollapse = ref(true);
 
 const compSize = computed(() => (attrs: any = {}) => {
   const { size } = attrs;
@@ -137,6 +138,20 @@ const compSize = computed(() => (attrs: any = {}) => {
     return size;
   }
   return props.size;
+});
+
+const compVisible = computed(() => {
+  return (item: filterFormItem) => {
+    let visible = item.visible ?? true;
+    if (typeof visible === 'function') {
+      visible = visible(formData.value);
+    }
+    if (visible === false && item.prop && !props.reserve) {
+      const formItem = props.items.find(v => v.prop === item.prop);
+      formData.value[item.prop] = formItem?.value;
+    }
+    return visible;
+  }
 });
 
 watch(
@@ -169,9 +184,7 @@ watch(
 function handleExpand() {
   filterBtn?.value.classList.toggle('is-expand');
   KFormRef?.value.$el.classList.toggle('is-expand');
-  handleExpandBtnText.value = handleExpandBtnText.value === '展开' ? '收起' : '展开';
-  handleExpandBtnIcon.value =
-    handleExpandBtnIcon.value === 'IconArrowBottom' ? 'IconArrowTop' : 'IconArrowBottom';
+  isCollapse.value = !isCollapse.value;
 };
 function search() {
   emits('search', formData.value);

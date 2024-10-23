@@ -104,10 +104,10 @@ const filterablePlaceholder = computed(() => props.filterablePlaceholder ??
 );
 
 watch(() => [props.modelValue, props.matchKey], () => {
-  if (!Array.isArray(props.modelValue)) {
-    return [];
-  }
   modelValue.value = [];
+  if (!Array.isArray(props.modelValue)) {
+    return;
+  }
   props.modelValue.forEach(valueItem => {
     const targetData = props.data.find((item:object) => item[props.matchKey] === valueItem[props.matchKey]);
     if (targetData) {
@@ -118,8 +118,12 @@ watch(() => [props.modelValue, props.matchKey], () => {
 }, { immediate: true });
 watch(() => props.data, (newValue) => {
   if (newValue) {
+    if (!Array.isArray(newValue)) {
+      sourceData.value = [];
+      defaultSourceKeys.length = 0;
+    }
     sourceData.value = newValue;
-    defaultSourceKeys = sourceData.value.map((item: TransferKey) => item[defaultPropsConfig.value.key]);
+    defaultSourceKeys = sourceData.value.map((item: any) => item[defaultPropsConfig.value.key]);
     return;
   }
   sourceData.value = [];
@@ -171,7 +175,7 @@ function resetTransferData() {
   }
   const { key } = defaultPropsConfig.value;
   const newModelValue = props.data.filter(item => props.defaultKeys?.includes(item[key]));
-  sourceData.value.sort((a: TransferKey, b: TransferKey) =>
+  sourceData.value.sort((a: any, b: any) =>
     defaultSourceKeys.indexOf(a[key]) - defaultSourceKeys.indexOf(b[key])
   );
   emits('update:modelValue', newModelValue);

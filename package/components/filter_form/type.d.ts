@@ -9,10 +9,12 @@ export interface filterFormItem {
   render?: (item: any) => VNode | Comment;
   options?: any[]
   column?: number
+  visible?: boolean | (((item: any) => boolean))
 }
 
 export interface FilterFormProps {
   items?: filterFormItem[]
   size?: 'base' | 'sm' | undefined;
   columns?: number
+  reserve?: boolean
 }

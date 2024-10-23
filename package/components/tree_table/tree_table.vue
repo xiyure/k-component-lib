@@ -756,6 +756,9 @@ function hideColumn(column: columnConfigType) {
   emits('hide-column', column);
 }
 function sortTableHeader(fieldList: {label: string, key: string}[]) {
+  if (!Array.isArray(fieldList)) {
+    return;
+  }
   let keyIndex = 0;
   const map = new Map(flatColumns.value.map((v: columnConfigType) => [v.field, v]));
   const setData = (columns: columnConfigType) => {
@@ -765,7 +768,7 @@ function sortTableHeader(fieldList: {label: string, key: string}[]) {
         setData(col.group);
       } else {
         const field = fieldList[keyIndex++]?.key;
-        columns[key] = map.get(field);
+        columns[key] = map.get(field) ?? columns[key];
       }
     }
   };
@@ -891,7 +894,7 @@ function getHeaderControllerData() {
   return newTransferData;
 }
 function setHeaderControllerData(transferData: TableHeaderControl[]) {
-  transferData.forEach((item: TableHeaderControl) => {
+  transferData.forEach?.((item: TableHeaderControl) => {
     const column = flatColumns.value.find((col: columnConfigType) => col.field === item.key);
     if (item.visible) {
       column.visible = true;
@@ -899,8 +902,15 @@ function setHeaderControllerData(transferData: TableHeaderControl[]) {
       column.visible = false;
     }
   });
-  originData.value = transferData;
-  selectData.value = transferData.filter((item: TableHeaderControl) => item.visible !== false);
+  originData.value = transferData.map?.((item: TableHeaderControl) => {
+    return {
+      label: item.label ?? '',
+      key: item.key ?? `_${genRandomStr(8)}`,
+      disabled: item.disabled ?? false,
+      visible: item.visible !== false
+    }
+  }) ?? [];
+  selectData.value = originData.value.filter((item: TableHeaderControl) => item.visible !== false);
   sortTableHeader(transferData);
 }
 
