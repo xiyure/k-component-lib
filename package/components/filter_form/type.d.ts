@@ -16,5 +16,6 @@ export interface FilterFormProps {
   items?: filterFormItem[]
   size?: 'base' | 'sm' | undefined;
   columns?: number
+  collapse?: boolean
   reserve?: boolean
 }

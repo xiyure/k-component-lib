@@ -92,7 +92,7 @@
       <slot name="action">
         <k-button :size="compSize()" @click="reset">{{ $t('reset') }}</k-button>
         <k-button :size="compSize()" @click="search" main>{{ $t('query') }}</k-button>
-        <KButton text :iconRight="isCollapse ? 'IconArrowBottom' : 'IconArrowTop'" @click="handleExpand">
+        <KButton text :iconRight="isCollapse ? 'IconArrowBottom' : 'IconArrowTop'" @click="toggle">
           {{ isCollapse ? $t('expand') : $t('collapse') }}
         </KButton>
       </slot>
@@ -101,7 +101,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, computed, watch } from 'vue';
+import { ref, inject, computed, watch, onMounted } from 'vue';
 import { KInput } from '../input';
 import { KSelect, KOption } from '../select';
 import { KRadio, KRadioGroup } from '../radio';
@@ -122,6 +122,7 @@ const props = withDefaults(defineProps<FilterFormProps>(), {
   items: () => [],
   size: 'base',
   columns: 3,
+  collapse: true,
   reserve: false
 });
 const emits = defineEmits(['search', 'reset', 'change']);
@@ -130,7 +131,14 @@ const formData = ref({});
 let preItems = {};
 const filterBtn = ref();
 const KFormRef = ref();
-const isCollapse = ref(true);
+const isCollapse = ref(props.collapse);
+
+onMounted(() => {
+  if (!props.collapse) {
+    expand();
+    return;
+  }
+});
 
 const compSize = computed(() => (attrs: any = {}) => {
   const { size } = attrs;
@@ -181,11 +189,21 @@ watch(
   { deep: true },
 );
 
-function handleExpand() {
+function toggle() {
   filterBtn?.value.classList.toggle('is-expand');
   KFormRef?.value.$el.classList.toggle('is-expand');
   isCollapse.value = !isCollapse.value;
 };
+function expand() {
+  filterBtn?.value.classList.add('is-expand');
+  KFormRef?.value.$el.classList.add('is-expand');
+  isCollapse.value = false;
+}
+function collapse() {
+  filterBtn?.value.classList.remove('is-expand');
+  KFormRef?.value.$el.classList.remove('is-expand');
+  isCollapse.value = true;
+}
 function search() {
   emits('search', formData.value);
 }
@@ -203,7 +221,7 @@ function getFormData() {
 }
 
 // expose instance
-const instance: any = { reset, getFormData, search };
+const instance: any = { reset, getFormData, search, toggle, expand, collapse };
 defineExpose(getExposeProxy(instance, KFormRef));
 </script>
 
