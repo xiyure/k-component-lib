@@ -62,8 +62,7 @@ title: Input Number 数字输入框
 
 <preview path="./decreaseIcon.vue" />
 
-### 带前缀和后缀 <Badge type="tip" text="^1.9.0" />
-
+### 带前缀和后缀
 使用前缀和标名后缀。
 
 <preview path="./prefixSuffix.vue" />

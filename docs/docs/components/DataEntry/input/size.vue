@@ -30,7 +30,7 @@
       v-model="input2"
       style="width: 240px"
       placeholder="请输入..."
-      :suffix-icon="IconSearch"
+      suffix-icon="IconSearch"
     />
     <KInput
       v-model="input3"

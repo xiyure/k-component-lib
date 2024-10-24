@@ -34,7 +34,6 @@ const injectSize = inject(
   computed(() => 'base'),
 );
 
-console.log(injectSize.value, getCompSize(injectSize.value));
 </script>
 
 <style lang="less">

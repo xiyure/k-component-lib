@@ -54,9 +54,6 @@
     <k-form-item label="Instant delivery" prop="delivery">
       <k-switch v-model="ruleForm.delivery" />
     </k-form-item>
-    <k-form-item label="Activity location" prop="location">
-      <k-segmented v-model="ruleForm.location" :options="locationOptions" />
-    </k-form-item>
     <k-form-item label="Activity type" prop="type">
       <k-checkbox-group v-model="ruleForm.type">
         <k-checkbox value="Online activities" name="type">
@@ -93,7 +90,7 @@
 
 <script lang="ts" setup>
 import { reactive, ref } from 'vue';
-import type { ComponentSize, FormInstance, FormRules } from '@ksware/ksw-ux';
+import type { ComponentSize, FormInstance, FormRules } from 'element-plus';
 
 interface RuleForm {
   name: string

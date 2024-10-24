@@ -68,7 +68,8 @@ import {
   ElTour as KTour,
   ElTourStep as KTourStep,
   ElWatermark as KWatermark,
-  ElRadioButton as KRadioButton
+  ElRadioButton as KRadioButton,
+  ElCheckboxButton as KCheckboxButton
 } from 'element-plus';
 
 export {
@@ -141,5 +142,6 @@ export {
   KTour,
   KTourStep,
   KWatermark,
-  KRadioButton
+  KRadioButton,
+  KCheckboxButton
 };

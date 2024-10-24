@@ -76,7 +76,7 @@
 
 <script lang="ts" setup>
 import { reactive, ref } from 'vue';
-import type { ComponentSize, FormProps } from '@ksware/ksw-ux';
+import type { FormProps } from 'element-plus';
 
 type MyComponentSize = 'lg' | 'base' | 'sm';
 
