@@ -1,6 +1,6 @@
 import { KButton } from './button';
 import { KInput } from './input';
-import { KInputNumber } from './input _number';
+import { KInputNumber } from './input_number';
 import { KRadio, KRadioGroup } from './radio';
 import { KCheckbox, KCheckboxGroup } from './checkbox';
 import { KSwitch } from './switch';
@@ -90,5 +90,5 @@ export {
   KDropdownItem,
   KTreeTransfer,
   KTreeSelect,
-  KFilterForm
+  KFilterForm,
 };

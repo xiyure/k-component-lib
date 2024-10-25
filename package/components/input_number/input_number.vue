@@ -33,7 +33,6 @@ const injectSize = inject(
   '__size__',
   computed(() => 'base'),
 );
-
 </script>
 
 <style lang="less">
