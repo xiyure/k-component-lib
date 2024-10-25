@@ -1,0 +1,36 @@
+@import '../../style/variable.css';
+@import '../../style/general.less';
+
+.k-button-container {
+  display: flex;
+  .container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 100% !important;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .k-button-more {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    width: 30px;
+    height: 2.5rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    z-index: 2;
+    cursor: pointer;
+
+    .k-dropdown {
+      .k-button-more-trigger {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+      }
+    }
+  }
+}
