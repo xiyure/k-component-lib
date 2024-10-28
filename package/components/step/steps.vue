@@ -7,6 +7,7 @@
       :process-status="getProcessStatus(processStatus)"
       :finish-status="getProcessStatus(finishStatus)"
       :active="active"
+      :class="[{ 'k-steps--ant': useAntStyle }]"
     >
       <template v-for="(_, name) in $slots" :key="name" #[name]="data">
         <slot :name="name" v-bind="data"></slot>
@@ -25,12 +26,13 @@ import { StepsProps } from './type';
 import { genRandomStr, getExposeProxy } from '../../utils';
 
 defineOptions({
-  name: 'KSteps'
+  name: 'KSteps',
 });
 
 const props = withDefaults(defineProps<StepsProps>(), {
   processStatus: 'finish',
-  finishStatus: 'success'
+  finishStatus: 'success',
+  useAntStyle: false,
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -39,42 +41,51 @@ const slots = useSlots();
 
 if (props.capsule) {
   const children = slots.default?.()[0].children ?? [];
-  steps.value = (children as any[]).map(item => {
-    if (item.type && item.type.name === 'KStep') {
-      return {
-        key: item.key,
-        name: item.props?.title
-      };
-    }
-    return null;
-  }).filter(item => item);
+  steps.value = (children as any[])
+    .map((item) => {
+      if (item.type && item.type.name === 'KStep') {
+        return {
+          key: item.key,
+          name: item.props?.title,
+        };
+      }
+      return null;
+    })
+    .filter((item) => item);
 }
 
 const id = genRandomStr(8);
 
 // 高度监听
-watch(() => props.height, (newValue) => {
-  if (!newValue) {
-    return;
-  }
-  if (typeof window !== 'undefined') {
-    nextTick(() => {
-      const stepBoxHeight = typeof newValue === 'number' ?
-        `${newValue}px` :
-        newValue;
-      const element = document.getElementById(id);
-      element?.style.setProperty('--height', stepBoxHeight);
-    });
-  }
-}, { immediate: true });
+watch(
+  () => props.height,
+  (newValue) => {
+    if (!newValue) {
+      return;
+    }
+    if (typeof window !== 'undefined') {
+      nextTick(() => {
+        const stepBoxHeight = typeof newValue === 'number' ? `${newValue}px` : newValue;
+        const element = document.getElementById(id);
+        element?.style.setProperty('--height', stepBoxHeight);
+      });
+    }
+  },
+  { immediate: true },
+);
 
-function getProcessStatus(type:string) {
+function getProcessStatus(type: string) {
   switch (type) {
-    case 'primary': return 'finish';
-    case 'wait': return 'wait';
-    case 'success': return 'success';
-    case 'error': return 'error';
-    default: return 'finish';
+    case 'primary':
+      return 'finish';
+    case 'wait':
+      return 'wait';
+    case 'success':
+      return 'success';
+    case 'error':
+      return 'error';
+    default:
+      return 'finish';
   }
 }
 
