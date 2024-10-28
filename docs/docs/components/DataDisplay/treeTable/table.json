@@ -167,7 +167,8 @@
       "type": "boolean",
       "description": "是否开启简易模式，该模式下只保留表格主体与搜索功能，其他功能均隐藏，搜索功能也可以通过show-search-input参数控制显示/隐藏",
       "defaultValue": "false",
-      "tip": ""
+      "tip": "",
+      "version": "0.0.67"
     }
   ],
   "subProps": {
@@ -507,13 +508,15 @@
       "displayName": "getHeaderControllerData",
       "description": "获取表头控制器数据",
       "type": "Function",
-      "tip": "() => TableHeaderControl[]"
+      "tip": "() => TableHeaderControl[]",
+      "version": "0.0.67"
     },
     {
       "displayName": "setHeaderControllerData",
       "description": "设置表头控制器数据",
       "type": "Function",
-      "tip": "(headerData: TableHeaderControl[]) => void"
+      "tip": "(headerData: TableHeaderControl[]) => void",
+      "version": "0.0.67"
     }
   ]
 }
