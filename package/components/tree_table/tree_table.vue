@@ -89,6 +89,8 @@
                   emits('advanced-filter-clear');
                 }
               "
+              @show="advancedFilterShow"
+              @hide="advancedFilterHide"
             >
               <template #reference="{ hasConfigCondition }">
                 <div v-ksw_tooltip="$t('advancedFilter_c')">
@@ -108,7 +110,13 @@
           </template>
           <template v-else-if="widget.id === 'transfer'">
             <!-- 穿梭框 -->
-            <k-popover trigger="click" width="auto" :teleported="false">
+            <k-popover
+              trigger="click"
+              width="auto"
+              :teleported="false"
+              @show="transferShow"
+              @hide="transferHide"
+            >
               <template #reference>
                 <div v-ksw_tooltip="$t('columnHeaderController')" class="text-sm">
                   <component
@@ -525,7 +533,8 @@ watch(
   () => {
     columns.value = props.column.map((col) => {
       const visible = col.visible !== false;
-      return { ...cloneDeep(col), visible };
+      const field = col.field ?? `_table_column_${col.type ?? ''}`;
+      return { ...cloneDeep(col), visible, field };
     });
     // 列配置更新时需要初始化表头控制器的数据
     initTransfer();
@@ -749,6 +758,12 @@ function initTransfer() {
       label: item.title,
       key: item.field,
     }));
+  const defaultTransferData = typeof props.defaultTransferData === 'function'
+   ? props.defaultTransferData()
+    : props.defaultTransferData;
+  if (defaultTransferData) {
+    setHeaderControllerData(defaultTransferData);
+  }
   defaultHeader.value = selectData.value.map((item: columnConfigType) => item.key);
 }
 function hideColumn(column: columnConfigType) {
@@ -771,20 +786,31 @@ function sortTableHeader(fieldList: {label: string, key: string}[]) {
   }
   let keyIndex = 0;
   const map = new Map(flatColumns.value.map((v: columnConfigType) => [v.field, v]));
-  const setData = (columns: columnConfigType) => {
-    for (const key in columns) {
-      const col = columns[key];
+  const setData = (columns: columnConfigType[]) => {
+    for (const [index, col] of columns.entries()) {
       if (Array.isArray(col.group) && col.group.length > 0) {
         setData(col.group);
       } else {
         const field = fieldList[keyIndex++]?.key;
-        columns[key] = map.get(field) ?? columns[key];
+        columns[index] = map.get(field) ?? {};
       }
     }
   };
   setData(columns.value);
   flatColumns.value = treeDataToArray(columns.value, 'group');
 }
+function transferShow() {
+  if (typeof props.onTransferShow === 'function') {
+    props.onTransferShow();
+  }
+}
+function transferHide() {
+  if (typeof props.onTransferHide === 'function') {
+    const transferData = getHeaderControllerData();
+    props.onTransferHide(transferData);
+  }
+}
+// 高级筛选相关方法
 function refreshAdvancedFilter(conditionInfo: any, newTableData: any[], isEmit = true) {
   filterConditionInfo.value = conditionInfo;
   newFilterData.value = newTableData;
@@ -804,6 +830,18 @@ function refreshAdvancedFilter(conditionInfo: any, newTableData: any[], isEmit =
 }
 function filter(searchStr: string) {
   query.value = searchStr ?? '';
+}
+function advancedFilterShow() {
+  if (typeof props.onAdvancedFilterShow === 'function') {
+    props.onAdvancedFilterShow();
+  }
+}
+function advancedFilterHide() {
+  if (typeof props.onAdvancedFilterHide === 'function') {
+    const conditionInfo = getAdvancedCondition();
+    const filterData = newFilterData.value;
+    props.onAdvancedFilterHide({conditionInfo, filterData});
+  }
 }
 // 行高亮
 let isHighlight = false;
@@ -890,7 +928,7 @@ function disposeRowTooltip() {
     tooltip?.remove();
   }
 }
-function getHeaderControllerData() {
+function getHeaderControllerData(): TableHeaderControl[] {
   const { sourceData = [], selectData = [] } = tableTransferRef.value?.[0]?.getTransferData?.() ?? [];
   const selectSet = new Set(selectData.map((item: TableHeaderControl) => item.key));
   const newTransferData = sourceData.map((item: TableHeaderControl) => {
@@ -906,6 +944,9 @@ function getHeaderControllerData() {
 function setHeaderControllerData(transferData: TableHeaderControl[]) {
   transferData.forEach?.((item: TableHeaderControl) => {
     const column = flatColumns.value.find((col: columnConfigType) => col.field === item.key);
+    if (!column) {
+      return;
+    }
     if (item.visible) {
       column.visible = true;
     } else {

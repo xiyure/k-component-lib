@@ -1,4 +1,4 @@
-import { Component, VNode } from 'vue';
+import { Component, VNode, CSSProperties } from 'vue';
 import { VxeColgroupProps, VxeColumnProps } from 'vxe-table';
 
 export interface columnConfigType extends VxeColumnProps {
@@ -101,9 +101,14 @@ export interface TreeTableProps {
     searchMethod?: (key: string | number, data: any[]) => any[]
     isRemoteQuery?: boolean
   }
-  style?: object
+  style?: CSSProperties
   class?: string
   simple?: boolean
+  defaultTransferData?: (() => TableHeaderControl[]) | TableHeaderControl[]
+  onTransferShow?: () => void
+  onTransferHide?: (transferData: TableHeaderControl[]) => void
+  onAdvancedFilterShow?: () => void
+  onAdvancedFilterHide?: (filterData: any) => void
 }
 
 export interface Store {

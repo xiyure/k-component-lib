@@ -14,6 +14,8 @@
       :popper-class="popperClassName"
       @before-enter="() => popperClassName = 'k-filter-popper__enter'"
       @before-leave="() => popperClassName = 'k-filter-popper__leave'"
+      @show="handleShow"
+      @hide="handleHide"
     >
       <template #reference>
         <slot name="reference" :has-config-condition="hasConfigCondition">
@@ -216,7 +218,7 @@ onMounted(() => {
 // 控制popper的显示/隐藏动画
 const popperClassName = ref('');
 const _styleModule = inject('_styleModule', '');
-const emits = defineEmits(['confirm', 'clear']);
+const emits = defineEmits(['confirm', 'clear', 'show', 'hide']);
 const t = inject<VueI18nTranslation>('$t');
 const filterData = ref<IFilterDataType[]>([]);
 const filterRule = ref(0);
@@ -542,6 +544,12 @@ function updateValue(dataItem:IFilterDataType, uiType:string, options?:any[]) {
 function dateChange(val: any, item: any) {
   const formatterData = formatter(val, props.formatter);
   item.showValue = Array.isArray(formatterData) ? formatterData.join(' - ') : formatterData;
+}
+function handleShow() {
+  emits('show');
+}
+function handleHide() {
+  emits('hide');
 }
 
 defineExpose({ filter, clearFilter, getConditionInfo });
