@@ -1,4 +1,4 @@
-import { VNode } from 'vue';
+import { VNode, Component } from 'vue';
 
 export interface filterFormItem {
   label?: string;
@@ -6,7 +6,7 @@ export interface filterFormItem {
   value: any;
   type: 'input' | 'select' | 'date' | 'checkbox' | 'radio' | 'cascader' | 'tree-select';
   attrs?: any;
-  render?: (item: any) => VNode | Comment;
+  render?: (item: any) => VNode | Component;
   options?: any[];
   column?: number;
   visible?: boolean | ((item: any) => boolean);
