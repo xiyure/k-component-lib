@@ -1,7 +1,8 @@
 import { defineConfig } from 'vitepress';
 import nav from './configs/nav';
-import { generateRewrites, sidebarRewrites } from './plugin/rewritePath'
+import { generateRewrites, sidebarRewrites } from './plugin/rewritePath';
 import { containerPreview, componentPreview } from '../.vitepress/plugin/demo-preview';
+import { fileURLToPath, URL } from 'node:url';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -22,7 +23,6 @@ export default defineConfig({
     ],
     ['meta', { property: 'og:site_name', content: 'KSW Design' }],
   ],
-
   markdown: {
     config: (md) => {
       md.use(containerPreview);
@@ -35,14 +35,14 @@ export default defineConfig({
   cleanUrls: true,
   rewrites: {
     // 'docs/(.*)': '(.*)',
-    ...generateRewrites()
+    ...generateRewrites(),
   },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav,
 
     sidebar: {
-      ...sidebarRewrites()
+      ...sidebarRewrites(),
     },
 
     socialLinks: [{ icon: 'github', link: 'https://github.com/xiyure/k-component-lib' }],
@@ -89,6 +89,17 @@ export default defineConfig({
         // disableDetailedView: true,
         detailedView: true,
       },
+    },
+  },
+  vite: {
+    plugins: [],
+    resolve: {
+      alias: [
+        {
+          find: /^.*\/VPHome\.vue$/,
+          replacement: fileURLToPath(new URL('./templates/CVPHome.vue', import.meta.url)),
+        },
+      ],
     },
   },
 });

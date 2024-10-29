@@ -44,3 +44,24 @@ html.dark {
 div.VPLocalNav.has-sidebar > div > div > div > div.outline {
   outline-style: none;
 }
+
+// 重写样式
+.VPNav {
+  .VPNavBar {
+    &.home.top,
+    &.has-sidebar.top {
+      .wrapper {
+        .container {
+          .title {
+            transition: unset;
+          }
+          .content {
+            // background: #000;
+            padding-left: max(32px, var(--vp-sidebar-width));
+            transition: unset;
+          }
+        }
+      }
+    }
+  }
+}
