@@ -1,5 +1,6 @@
 import path from "path";
 import { globSync } from "glob";
+import sidebar from '../configs/sidebar';
 
 function generateRewrites() {
   const rewrites = {};
@@ -16,9 +17,14 @@ function generateRewrites() {
     
     // 检查文件名和目录名是否相同
     if (fileName.toLowerCase() === dirName.toLowerCase()) {
+      // 生成重写路径，去掉该目录
       const relativePath = path.posix.relative('docs', posixFile);
-      const rewritePath = `${path.posix.dirname(posixFile)}.md`;
+      const rewritePath = `${path.posix.dirname(relativePath)}.md`;
       rewrites[posixFile] = rewritePath;
+    } else {
+      // 否则，保持原有的相对路径
+      const relativePath = path.posix.relative('docs', posixFile);
+      rewrites[posixFile] = relativePath;
     }
   });
   // console.log(rewrites);
@@ -26,7 +32,7 @@ function generateRewrites() {
   return rewrites;
 }
 
-function sidebarRewrites(sidebar) {
+function sidebarRewrites() {
   function processItems(items) {
     items.forEach(item => {
       if (item.link) {
@@ -50,13 +56,25 @@ function sidebarRewrites(sidebar) {
       }
     });
   }
+  const newSidebar = {};
 
   for (const [key, value] of Object.entries(sidebar)) {
     // console.log(`处理基路径: ${value.base}`);
+    if (key.startsWith('/docs')) {
+      // 去除键中的 '/docs' 前缀
+      const newKey = key.replace(/^\/docs/, '');
+      // 去除base路径中的 '/docs'
+      const newValue = { ...value, base: value.base.replace(/^\/docs/, '') };
+      // 将处理后的键和值添加到新的对象中
+      newSidebar[newKey] = newValue;
+    } else {
+      // 如果键不包含 '/docs'，则直接复制到新对象中
+      newSidebar[key] = value;
+    }
     processItems(value.items);
   }
-  // console.log(JSON.stringify(sidebar, null, 2));
-  return sidebar; // 返回修改后的 sidebar
+  // console.log(JSON.stringify(newSidebar, null, 2));
+  return newSidebar; // 返回修改后的 sidebar
 }
 
 export { generateRewrites, sidebarRewrites };

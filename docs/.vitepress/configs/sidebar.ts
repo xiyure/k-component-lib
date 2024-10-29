@@ -53,16 +53,16 @@ const templatesGeneralSidebarOptions = {
 // };
 
 export default {
-  '/docs/knowledge/': {
-    base: '/docs/knowledge/',
+  '/knowledge/': {
+    base: '/knowledge/',
     items: generateSidebar(KnowledgeSidebarOptions),
   },
-  '/docs/components/': {
-    base: '/docs/components/',
+  '/components/': {
+    base: '/components/',
     items: generateSidebar(componentsGeneralSidebarOptions),
   },
-  '/docs/templates/': {
-    base: '/docs/templates/',
+  '/templates/': {
+    base: '/templates/',
     items: generateSidebar(templatesGeneralSidebarOptions),
   },
 };

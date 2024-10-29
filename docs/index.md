@@ -9,7 +9,7 @@ hero:
   actions:
     - theme: brand
       text: 快速开始
-      link: /docs/components/General/button
+      link: /components/General/button
     - theme: alt
       text: API 文档
       link: /api

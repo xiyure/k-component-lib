@@ -1,14 +1,14 @@
 export default [
-  { text: '文档', link: '/docs/knowledge/introduce', activeMatch: '^/docs/knowledge' },
+  { text: '文档', link: '/knowledge/introduce', activeMatch: '^/knowledge' },
   {
     text: '组件',
-    link: '/docs/components/General/button',
-    activeMatch: '^/docs/components/',
+    link: '/components/General/button',
+    activeMatch: '^/components/',
   },
   {
     text: '模板',
-    link: '/docs/templates/KSW_UI/tableView',
-    activeMatch: '^/docs/templates/',
+    link: '/templates/KSW_UI/tableView',
+    activeMatch: '^/templates/',
   },
   // { text: 'API 参考', link: '/api/' },
   {

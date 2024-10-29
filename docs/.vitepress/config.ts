@@ -1,6 +1,5 @@
 import { defineConfig } from 'vitepress';
 import nav from './configs/nav';
-import sidebar from './configs/sidebar';
 import { generateRewrites, sidebarRewrites } from './plugin/rewritePath'
 import { containerPreview, componentPreview } from '../.vitepress/plugin/demo-preview';
 
@@ -43,7 +42,7 @@ export default defineConfig({
     nav,
 
     sidebar: {
-      ...sidebarRewrites(sidebar)
+      ...sidebarRewrites()
     },
 
     socialLinks: [{ icon: 'github', link: 'https://github.com/xiyure/k-component-lib' }],
