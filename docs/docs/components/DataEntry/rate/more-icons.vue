@@ -13,3 +13,4 @@ import { ChatDotRound, ChatLineRound, ChatRound } from '@element-plus/icons-vue'
 
 const value = ref();
 const icons = [ChatRound, ChatLineRound, ChatDotRound];
+</script>
