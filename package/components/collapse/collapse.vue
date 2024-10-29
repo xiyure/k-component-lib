@@ -12,21 +12,19 @@ import { ElCollapse } from 'element-plus';
 import { getExposeProxy } from '../../utils/index';
 
 defineOptions({
-  name: 'KCollapse',
+  name: 'KCollapse'
 });
 
 const props = defineProps({
   block: {
     type: Boolean,
-    default: false,
-  },
+    default: false
+  }
 });
-
-console.log(props.block);
 
 provide(
   '__isBlock__',
-  computed(() => props.block),
+  computed(() => props.block)
 );
 
 const _styleModule = inject('_styleModule', '');

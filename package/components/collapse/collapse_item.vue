@@ -16,22 +16,20 @@ import { ElCollapseItem } from 'element-plus';
 import { getExposeProxy } from '../../utils/index';
 
 defineOptions({
-  name: 'KCollapseItem',
+  name: 'KCollapseItem'
 });
 
 const props = defineProps({
   block: {
-    type: Boolean,
-  },
+    type: Boolean
+  }
 });
 
 const _styleModule = inject('_styleModule', '');
 const injectIsBlock = inject(
   '__isBlock__',
-  computed(() => props.block),
+  computed(() => props.block)
 );
-
-console.log(injectIsBlock.value);
 
 const kCollapseItemRef = ref(null);
 const instance: any = {};
