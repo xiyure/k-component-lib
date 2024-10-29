@@ -5,7 +5,7 @@
     v-bind="$attrs"
     :type="type"
     :shortcuts="customShortcuts"
-    :size="getCompSize(props.size)"
+    :size="getCompSize(props.size ?? __size__)"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
       <slot :name="name" v-bind="data"></slot>
@@ -21,12 +21,11 @@ import { DatePicker } from './type';
 import { getCompSize, getExposeProxy } from '../../utils';
 
 defineOptions({
-  name: 'KDatePicker'
+  name: 'KDatePicker',
 });
 
 const props = withDefaults(defineProps<DatePicker>(), {
-  size: 'base',
-  showDefaultShortcuts: true
+  showDefaultShortcuts: true,
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -35,41 +34,44 @@ const datePickerRef = ref<any>(null);
 const defaultDateRange = [
   {
     text: t?.('within7days'),
-    value: () => getTargetDay(-7)
+    value: () => getTargetDay(-7),
   },
   {
     text: t?.('within15days'),
-    value: () => getTargetDay(-15)
+    value: () => getTargetDay(-15),
   },
   {
     text: t?.('curMonth'),
-    value: getCurMonthRange()
+    value: getCurMonthRange(),
   },
   {
     text: t?.('curQuarter'),
-    value: getCurQuarterRange()
+    value: getCurQuarterRange(),
   },
   {
     text: t?.('curYear'),
-    value: getCurYearRange()
-  }
+    value: getCurYearRange(),
+  },
 ];
 
 const customShortcuts = computed(() => {
-  if ((props.type === 'daterange' || props.type === 'datetimerange') && props.showDefaultShortcuts) {
+  if (
+    (props.type === 'daterange' || props.type === 'datetimerange') &&
+    props.showDefaultShortcuts
+  ) {
     return [...defaultDateRange, ...(props.shortcuts || [])];
-  } 
+  }
   return props.shortcuts;
 });
 
 // 获取目标日期范围
-function getTargetDay(index:number) {
+function getTargetDay(index: number) {
   const currentDate = new Date();
   const targetDate = new Date();
   targetDate.setDate(targetDate.getDate() + index);
   if (index > 0) {
     return [currentDate, targetDate];
-  } 
+  }
   return [targetDate, currentDate];
 }
 // 获取本月日期范围
@@ -104,7 +106,7 @@ function getCurQuarterRange() {
   const startDate = new Date();
   const endDate = new Date();
   const month = startDate.getMonth();
-  const curQuarter = Math.floor((month / 3));
+  const curQuarter = Math.floor(month / 3);
   startDate.setMonth(curQuarter * 3);
   startDate.setDate(1);
   startDate.setHours(0, 0, 0, 0);
@@ -133,6 +135,10 @@ function getCurYearRange() {
 const instance: any = {};
 defineExpose(getExposeProxy(instance, datePickerRef));
 
+const __size__ = inject(
+  '__size__',
+  computed(() => 'base'),
+);
 </script>
 
 <style lang="less">

@@ -143,6 +143,9 @@
   --k-theme-focue-size: 0 0 0 0.125rem;
   --k-theme-focue-style: 0 0 0 0.125rem rgba(var(--k-theme-primary-rgb), 0.2);
 
+  /* 动画 */
+  --k-theme-transition-normal: 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+
   /* ---------------------------------------------------------------------------------------- */
   /* 
    *组件变量 component variable 
@@ -211,6 +214,7 @@
   --k-theme-input-border-color--hover: var(--k-theme-primary-400);
   --k-theme-input-border-color--active: var(--k-theme-primary-500);
   --k-theme-input-placeholder-color: var(--k-gray-400);
+  --k-theme-input-bg-color--disabled: var(--k-gray-50);
 
   /* collapse */
   --k-theme-collapse-size-height: var(--k-theme-button-size-height--base);
