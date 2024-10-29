@@ -1,7 +1,7 @@
 <template>
   <el-tree-select
-    :name="name ?? randomName"
     ref="KTreeSelectRef"
+    :name="name ?? randomName"
     :class="['k-tree-select', _styleModule]"
     v-bind="$attrs"
     @input="handleInput"
@@ -21,14 +21,14 @@
     <template #default="defaultData">
       <slot v-bind="defaultData">
         <span
-        :style="typeof props.nodeStyle === 'function'
-          ? props.nodeStyle(defaultData)
-          : props.nodeStyle"
-        :class=" typeof props.className === 'function'
-          ? props.className(defaultData)
-          : props.className"
+          :style="typeof props.nodeStyle === 'function'
+            ? props.nodeStyle(defaultData)
+            : props.nodeStyle"
+          :class=" typeof props.className === 'function'
+            ? props.className(defaultData)
+            : props.className"
         >
-          <component defaultData.data.icon
+          <component
             :is="nodeIcon(defaultData)"
             :class="[
               {'tree-item-icon--noChildren': defaultData.node.isLeaf},
@@ -40,7 +40,7 @@
       </slot>
     </template>
     <template #empty>
-      <slot name="empty" :query="query" >
+      <slot name="empty" :query="query">
         未找到'{{ query.value }}'相关内容
       </slot>
     </template>
@@ -55,7 +55,7 @@ import { TreeSelectProps } from './type';
 import { getExposeProxy, genRandomStr } from '../../utils';
 
 defineOptions({
-  name: 'KTreeSelect',
+  name: 'KTreeSelect'
 });
 
 const customSlots = ['empty', 'default'];
@@ -63,13 +63,13 @@ const _styleModule = inject('_styleModule', '');
 const props = withDefaults(defineProps<TreeSelectProps>(), {
   expandIcon: 'IconFolderOpen',
   collapseIcon: 'IconFlowNested',
-  debounce: 500,
+  debounce: 500
 });
 const emits = defineEmits(['input', 'blur']);
 
 const KTreeSelectRef = ref();
 const query = ref({
-  value: '',
+  value: ''
 });
 const randomName = genRandomStr(8);
 
@@ -85,17 +85,16 @@ const nodeIcon = computed(() => (nodeItem: any) => {
     return props.expandIcon ?? 'IconFolderOpen';
   }
   return props.collapseIcon ?? 'IconFlowNested';
-})
+});
 
 const handleInput = (event: Event) => {
   const setQuery = () => {
     const input = KTreeSelectRef.value.$el.querySelector(`[name="${props.name ?? randomName}"]`);
     query.value.value = input.value;
-  }
+  };
   debounce(setQuery, props.debounce)();
-  emits('input', event)
-}
-
+  emits('input', event);
+};
 
 const instance: any = {};
 defineExpose(getExposeProxy(instance, KTreeSelectRef));

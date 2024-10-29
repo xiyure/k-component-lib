@@ -12,9 +12,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { IconCheck } from 'ksw-vue-icon'
+import { ref } from 'vue';
+import { IconCheck } from 'ksw-vue-icon';
 
-const value1 = ref(true)
-const value2 = ref(true)
+const value1 = ref(true);
+const value2 = ref(true);
 </script>

@@ -22,8 +22,8 @@ const tableData1 = reactive([
     icon: 'IconAdd',
     iconStyle: {
       size: 16,
-      color: 'red',
-    },
+      color: 'red'
+    }
   },
   {
     id: 2,
@@ -32,7 +32,7 @@ const tableData1 = reactive([
     sex: 'Women',
     age: 42,
     address: 'Guangzhou',
-    __folder: true,
+    __folder: true
   },
   {
     id: 3,
@@ -40,7 +40,7 @@ const tableData1 = reactive([
     role: 'PM',
     sex: 'Man',
     age: 32,
-    address: 'Shanghai',
+    address: 'Shanghai'
   },
   {
     id: 4,
@@ -48,7 +48,7 @@ const tableData1 = reactive([
     role: 'Designer',
     sex: 'Women',
     age: 18,
-    address: 'Shanghai',
+    address: 'Shanghai'
   },
   {
     id: 5,
@@ -56,7 +56,7 @@ const tableData1 = reactive([
     role: 'Develop',
     sex: 'Man',
     age: 39,
-    address: 'test abc',
+    address: 'test abc'
   },
   {
     id: 6,
@@ -64,7 +64,7 @@ const tableData1 = reactive([
     role: 'Test',
     sex: 'Women',
     age: 22,
-    address: 'Guangzhou',
+    address: 'Guangzhou'
   },
   { id: 7, name: 'Test7', role: 'PM', sex: 'Man', age: 9, address: 'Shanghai' },
   {
@@ -73,7 +73,7 @@ const tableData1 = reactive([
     role: 'Designer',
     sex: 'Women',
     age: 24,
-    address: 'Shanghai',
+    address: 'Shanghai'
   },
   {
     id: 9,
@@ -81,7 +81,7 @@ const tableData1 = reactive([
     role: 'Develop',
     sex: 'Man',
     age: 28,
-    address: 'test abc',
+    address: 'test abc'
   },
   {
     id: 10,
@@ -89,7 +89,7 @@ const tableData1 = reactive([
     role: 'Test',
     sex: 'Women',
     age: 42,
-    address: 'Guangzhou',
+    address: 'Guangzhou'
   },
   {
     id: 11,
@@ -97,7 +97,7 @@ const tableData1 = reactive([
     role: 'PM',
     sex: 'Man',
     age: 32,
-    address: 'Shanghai',
+    address: 'Shanghai'
   },
   {
     id: 12,
@@ -105,7 +105,7 @@ const tableData1 = reactive([
     role: 'Designer',
     sex: 'Women',
     age: 18,
-    address: 'Shanghai',
+    address: 'Shanghai'
   },
   {
     id: 13,
@@ -113,7 +113,7 @@ const tableData1 = reactive([
     role: 'Develop',
     sex: 'Man',
     age: 39,
-    address: 'test abc',
+    address: 'test abc'
   },
   {
     id: 14,
@@ -121,7 +121,7 @@ const tableData1 = reactive([
     role: 'Test',
     sex: 'Women',
     age: 22,
-    address: 'Guangzhou',
+    address: 'Guangzhou'
   },
   {
     id: 15,
@@ -129,7 +129,7 @@ const tableData1 = reactive([
     role: 'PM',
     sex: 'Man',
     age: 9,
-    address: 'Shanghai',
+    address: 'Shanghai'
   },
   {
     id: 16,
@@ -137,8 +137,8 @@ const tableData1 = reactive([
     role: 'Designer',
     sex: 'Women',
     age: 24,
-    address: 'Shanghai',
-  },
+    address: 'Shanghai'
+  }
 ]);
 
 const column5 = ref([
@@ -146,30 +146,30 @@ const column5 = ref([
     title: 'Id',
     field: 'id',
     width: '100',
-    dataType: 'number',
+    dataType: 'number'
   },
   {
     title: 'Name',
     field: 'name',
-    showIcon: true,
+    showIcon: true
   },
   {
     title: 'Role',
-    field: 'role',
+    field: 'role'
   },
   {
     title: 'Sex',
-    field: 'sex',
+    field: 'sex'
   },
   {
     title: 'Age',
     field: 'age',
-    dataType: 'number',
+    dataType: 'number'
   },
   {
     title: 'Address',
-    field: 'address',
-  },
+    field: 'address'
+  }
 ]);
 </script>
 <style scoped></style>

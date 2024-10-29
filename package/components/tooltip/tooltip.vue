@@ -28,20 +28,20 @@ import { TooltipProps } from './type';
 import { isValidColor, getExposeProxy } from '../../utils';
 
 defineOptions({
-  name: 'KTooltip',
+  name: 'KTooltip'
 });
 
 const INNER_TYPE_COLOR = {
   normal: '#000',
   danger: '#ef4444',
   warning: '#f97316',
-  primary: '#2882ff',
+  primary: '#2882ff'
 };
 const props = withDefaults(defineProps<TooltipProps>(), {
   type: undefined,
   color: '',
   textColor: '#FFF',
-  iconSize: '15px',
+  iconSize: '15px'
 });
 
 const tooltipRef = ref<any>(null);
@@ -53,7 +53,7 @@ const _popperStyle = computed(() => {
     color: props.textColor,
     backgroundColor: fillColor.value,
     borderColor: fillColor.value,
-    ...popperStyle,
+    ...popperStyle
   };
 });
 
@@ -68,7 +68,7 @@ watch(
       fillColor.value = undefined;
     }
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 // expose instance

@@ -1,6 +1,6 @@
 <template>
   <div style="margin-bottom: 20px">
-    <k-button size="small" main @click="addTab(editableTabsValue)">
+    <k-button size="small" main @click="addTab">
       添加标签
     </k-button>
   </div>
@@ -31,21 +31,21 @@ const editableTabs = ref([
   {
     title: 'Tab 1',
     name: '1',
-    content: 'Tab 1 content',
+    content: 'Tab 1 content'
   },
   {
     title: 'Tab 2',
     name: '2',
-    content: 'Tab 2 content',
-  },
+    content: 'Tab 2 content'
+  }
 ]);
 
-const addTab = (targetName: string) => {
+const addTab = () => {
   const newTabName = `${++tabIndex}`;
   editableTabs.value.push({
     title: 'New Tab',
     name: newTabName,
-    content: 'New Tab content',
+    content: 'New Tab content'
   });
   editableTabsValue.value = newTabName;
 };

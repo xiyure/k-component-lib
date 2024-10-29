@@ -100,14 +100,14 @@ const KUploadRef = ref<any>(null);
 const statusIcon = computed(() => (status: string) => {
   if (status === 'success' && props.successIcon) {
     return props.successIcon;
-  } else if (status === 'success') {
+  } if (status === 'success') {
     return IconCheck;
-  } else if (status === 'fail' && props.failIcon) {
+  } if (status === 'fail' && props.failIcon) {
     return props.failIcon;
-  } else if (status === 'fail') {
+  } if (status === 'fail') {
     return IconWarning;
   }
-})
+});
 
 function submit(e:Event) {
   e && e.stopPropagation();

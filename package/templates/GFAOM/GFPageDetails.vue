@@ -59,7 +59,7 @@
               <slot :name="`${item.name}-label`"></slot>
             </template>
             <slot :name="item.name"></slot>
-        </k-tab-pane>
+          </k-tab-pane>
         </k-tabs>
       </slot>
     </div>
@@ -77,7 +77,7 @@ const props = withDefaults(defineProps<GFPageDetailProps>(), {
   title: '标题',
   description: '',
   columns: 3,
-  abstract: () =>[],
+  abstract: () => [],
   tabs: () => []
 });
 
@@ -88,7 +88,7 @@ function toggleActiveTab(name: string) {
   activeName.value = name;
 }
 
-defineExpose({ toggleActiveTab })
+defineExpose({ toggleActiveTab });
 </script>
 <style lang="less">
 @import './style.less';

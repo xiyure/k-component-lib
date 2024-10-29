@@ -6,7 +6,7 @@ export default {
   darkMode: 'class',
   content: ['./example/**/*.{vue,js,ts,md}', './package/**/*.{js,ts,vue,md}'],
   theme: {
-    extend: AOM,
+    extend: AOM
   },
-  plugins: [],
+  plugins: []
 };

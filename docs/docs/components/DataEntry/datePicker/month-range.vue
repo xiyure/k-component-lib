@@ -26,34 +26,34 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const value1 = ref('')
-const value2 = ref('')
+const value1 = ref('');
+const value2 = ref('');
 
 const shortcuts = [
   {
     text: 'This month',
-    value: [new Date(), new Date()],
+    value: [new Date(), new Date()]
   },
   {
     text: 'This year',
     value: () => {
-      const end = new Date()
-      const start = new Date(new Date().getFullYear(), 0)
-      return [start, end]
-    },
+      const end = new Date();
+      const start = new Date(new Date().getFullYear(), 0);
+      return [start, end];
+    }
   },
   {
     text: 'Last 6 months',
     value: () => {
-      const end = new Date()
-      const start = new Date()
-      start.setMonth(start.getMonth() - 6)
-      return [start, end]
-    },
-  },
-]
+      const end = new Date();
+      const start = new Date();
+      start.setMonth(start.getMonth() - 6);
+      return [start, end];
+    }
+  }
+];
 </script>
 <style scoped>
 .demo-date-picker {

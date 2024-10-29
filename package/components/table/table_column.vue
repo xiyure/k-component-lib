@@ -194,7 +194,7 @@
                   <IconFold class="menu-item-icon" />
                   {{ $t('retract') }}
                 </li>
-                <li class="more-menu-item" v-if="showTransfer" @click="hideColumn(headerSlotProps.column)">
+                <li v-if="showTransfer" class="more-menu-item" @click="hideColumn(headerSlotProps.column)">
                   <IconHide class="menu-item-icon" />
                   {{ $t('hide') }}
                 </li>

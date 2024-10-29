@@ -18,9 +18,10 @@
 import { ref, provide, onMounted, onUnmounted } from 'vue';
 import { DetailsProps } from './type';
 import KDetailsItem from './DetailsItem.vue';
+
 const props = withDefaults(defineProps<DetailsProps>(), {
   direction: 'vertical',
-  showLine: false,
+  showLine: false
 });
 
 const RefKDetails = ref();
@@ -43,7 +44,7 @@ function computeMaxColumn() {
   let count = 1;
   const gridTemplateColumns = getComputedStyle(RefKDetails.value).gridTemplateColumns.split(' ');
   for (let i = 1; i < gridTemplateColumns.length; i++) {
-    let abs = Math.abs(parseInt(gridTemplateColumns[i]) - parseInt(gridTemplateColumns[i - 1]));
+    const abs = Math.abs(parseInt(gridTemplateColumns[i]) - parseInt(gridTemplateColumns[i - 1]));
     if (abs > 2) {
       maxColumn.value = count;
       break;

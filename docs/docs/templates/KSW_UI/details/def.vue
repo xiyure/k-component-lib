@@ -20,34 +20,30 @@
 </template>
 
 <script lang="tsx" setup>
-import { ref } from 'vue';
+import { KTag } from '@ksware/ksw-ux';
 
 const abstract = [
   {
     label: '姓名',
-    value: '张三',
+    value: '张三'
   },
   {
     label: '年龄',
-    value: '25',
+    value: '25'
   },
   {
     label: '性别',
-    value: '男',
+    value: '男'
   },
   {
     label: '职业',
-    render: () => {
-      return (
-        <div class='flex flex-wrap gap-2'>
-          <KTag>前端开发</KTag>
-          <KTag>后端开发</KTag>
-        </div>
-      );
-    },
-  },
+    render: () => (
+      <div class='flex flex-wrap gap-2'>
+        <KTag>前端开发</KTag>
+        <KTag>后端开发</KTag>
+      </div>
+    )
+  }
 ];
-
-const activeName = ref('first');
 </script>
 <style lang="less"></style>

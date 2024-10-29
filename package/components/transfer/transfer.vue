@@ -100,8 +100,7 @@ const defaultPropsConfig = computed(() => ({ label: 'label',
 }));
 
 const filterablePlaceholder = computed(() => props.filterablePlaceholder ??
-  t?.('searchHeaderName')
-);
+  t?.('searchHeaderName'));
 
 watch(() => [props.modelValue, props.matchKey], () => {
   modelValue.value = [];
@@ -175,9 +174,7 @@ function resetTransferData() {
   }
   const { key } = defaultPropsConfig.value;
   const newModelValue = props.data.filter(item => props.defaultKeys?.includes(item[key]));
-  sourceData.value.sort((a: any, b: any) =>
-    defaultSourceKeys.indexOf(a[key]) - defaultSourceKeys.indexOf(b[key])
-  );
+  sourceData.value.sort((a: any, b: any) => defaultSourceKeys.indexOf(a[key]) - defaultSourceKeys.indexOf(b[key]));
   emits('update:modelValue', newModelValue);
   emits('reset', [...props.defaultKeys]);
   emits('sort', sourceData.value);
@@ -215,7 +212,7 @@ function initSortable() {
       emits('update:modelValue', newModelValue);
       emits('sort', sourceData.value);
     }
-  })
+  });
 }
 
 function getTransferData() {

@@ -13,15 +13,15 @@
 </template>
 
 <script lang="ts" setup>
-import { h, ref, shallowRef } from 'vue'
+import { h, ref, shallowRef } from 'vue';
 
-const value1 = ref('')
+const value1 = ref('');
 
 const customPrefix = shallowRef({
   render() {
-    return h('p', 'pre')
-  },
-})
+    return h('p', 'pre');
+  }
+});
 </script>
 <style scoped>
 .demo-date-picker {

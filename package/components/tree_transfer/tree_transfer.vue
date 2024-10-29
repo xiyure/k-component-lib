@@ -357,7 +357,7 @@ function checkMethod(data: any) {
 }
 
 defineExpose({
-  clearData,
+  clearData
 });
 </script>
 

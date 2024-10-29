@@ -11,12 +11,12 @@
 
 <script lang="ts" setup>
 const props1 = {
-  checkStrictly: true,
+  checkStrictly: true
 };
 
 const props2 = {
   multiple: true,
-  checkStrictly: true,
+  checkStrictly: true
 };
 
 const options = [
@@ -30,21 +30,21 @@ const options = [
         children: [
           {
             value: 'consistency',
-            label: 'Consistency',
+            label: 'Consistency'
           },
           {
             value: 'feedback',
-            label: 'Feedback',
+            label: 'Feedback'
           },
           {
             value: 'efficiency',
-            label: 'Efficiency',
+            label: 'Efficiency'
           },
           {
             value: 'controllability',
-            label: 'Controllability',
-          },
-        ],
+            label: 'Controllability'
+          }
+        ]
       },
       {
         value: 'navigation',
@@ -52,15 +52,15 @@ const options = [
         children: [
           {
             value: 'side nav',
-            label: 'Side Navigation',
+            label: 'Side Navigation'
           },
           {
             value: 'top nav',
-            label: 'Top Navigation',
-          },
-        ],
-      },
-    ],
+            label: 'Top Navigation'
+          }
+        ]
+      }
+    ]
   },
   {
     value: 'component',
@@ -72,25 +72,25 @@ const options = [
         children: [
           {
             value: 'layout',
-            label: 'Layout',
+            label: 'Layout'
           },
           {
             value: 'color',
-            label: 'Color',
+            label: 'Color'
           },
           {
             value: 'typography',
-            label: 'Typography',
+            label: 'Typography'
           },
           {
             value: 'icon',
-            label: 'Icon',
+            label: 'Icon'
           },
           {
             value: 'button',
-            label: 'Button',
-          },
-        ],
+            label: 'Button'
+          }
+        ]
       },
       {
         value: 'form',
@@ -98,61 +98,61 @@ const options = [
         children: [
           {
             value: 'radio',
-            label: 'Radio',
+            label: 'Radio'
           },
           {
             value: 'checkbox',
-            label: 'Checkbox',
+            label: 'Checkbox'
           },
           {
             value: 'input',
-            label: 'Input',
+            label: 'Input'
           },
           {
             value: 'input-number',
-            label: 'InputNumber',
+            label: 'InputNumber'
           },
           {
             value: 'select',
-            label: 'Select',
+            label: 'Select'
           },
           {
             value: 'cascader',
-            label: 'Cascader',
+            label: 'Cascader'
           },
           {
             value: 'switch',
-            label: 'Switch',
+            label: 'Switch'
           },
           {
             value: 'slider',
-            label: 'Slider',
+            label: 'Slider'
           },
           {
             value: 'time-picker',
-            label: 'TimePicker',
+            label: 'TimePicker'
           },
           {
             value: 'date-picker',
-            label: 'DatePicker',
+            label: 'DatePicker'
           },
           {
             value: 'datetime-picker',
-            label: 'DateTimePicker',
+            label: 'DateTimePicker'
           },
           {
             value: 'upload',
-            label: 'Upload',
+            label: 'Upload'
           },
           {
             value: 'rate',
-            label: 'Rate',
+            label: 'Rate'
           },
           {
             value: 'form',
-            label: 'Form',
-          },
-        ],
+            label: 'Form'
+          }
+        ]
       },
       {
         value: 'data',
@@ -160,29 +160,29 @@ const options = [
         children: [
           {
             value: 'table',
-            label: 'Table',
+            label: 'Table'
           },
           {
             value: 'tag',
-            label: 'Tag',
+            label: 'Tag'
           },
           {
             value: 'progress',
-            label: 'Progress',
+            label: 'Progress'
           },
           {
             value: 'tree',
-            label: 'Tree',
+            label: 'Tree'
           },
           {
             value: 'pagination',
-            label: 'Pagination',
+            label: 'Pagination'
           },
           {
             value: 'badge',
-            label: 'Badge',
-          },
-        ],
+            label: 'Badge'
+          }
+        ]
       },
       {
         value: 'notice',
@@ -190,25 +190,25 @@ const options = [
         children: [
           {
             value: 'alert',
-            label: 'Alert',
+            label: 'Alert'
           },
           {
             value: 'loading',
-            label: 'Loading',
+            label: 'Loading'
           },
           {
             value: 'message',
-            label: 'Message',
+            label: 'Message'
           },
           {
             value: 'message-box',
-            label: 'MessageBox',
+            label: 'MessageBox'
           },
           {
             value: 'notification',
-            label: 'Notification',
-          },
-        ],
+            label: 'Notification'
+          }
+        ]
       },
       {
         value: 'navigation',
@@ -216,25 +216,25 @@ const options = [
         children: [
           {
             value: 'menu',
-            label: 'Menu',
+            label: 'Menu'
           },
           {
             value: 'tabs',
-            label: 'Tabs',
+            label: 'Tabs'
           },
           {
             value: 'breadcrumb',
-            label: 'Breadcrumb',
+            label: 'Breadcrumb'
           },
           {
             value: 'dropdown',
-            label: 'Dropdown',
+            label: 'Dropdown'
           },
           {
             value: 'steps',
-            label: 'Steps',
-          },
-        ],
+            label: 'Steps'
+          }
+        ]
       },
       {
         value: 'others',
@@ -242,31 +242,31 @@ const options = [
         children: [
           {
             value: 'dialog',
-            label: 'Dialog',
+            label: 'Dialog'
           },
           {
             value: 'tooltip',
-            label: 'Tooltip',
+            label: 'Tooltip'
           },
           {
             value: 'popover',
-            label: 'Popover',
+            label: 'Popover'
           },
           {
             value: 'card',
-            label: 'Card',
+            label: 'Card'
           },
           {
             value: 'carousel',
-            label: 'Carousel',
+            label: 'Carousel'
           },
           {
             value: 'collapse',
-            label: 'Collapse',
-          },
-        ],
-      },
-    ],
+            label: 'Collapse'
+          }
+        ]
+      }
+    ]
   },
   {
     value: 'resource',
@@ -274,17 +274,17 @@ const options = [
     children: [
       {
         value: 'axure',
-        label: 'Axure Components',
+        label: 'Axure Components'
       },
       {
         value: 'sketch',
-        label: 'Sketch Templates',
+        label: 'Sketch Templates'
       },
       {
         value: 'docs',
-        label: 'Design Documentation',
-      },
-    ],
-  },
+        label: 'Design Documentation'
+      }
+    ]
+  }
 ];
 </script>

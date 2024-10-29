@@ -26,7 +26,7 @@ const tableData = reactive([
   { id: 13, name: 'Test13', role: 'Develop', sex: 'Man', age: 39, address: 'test abc' },
   { id: 14, name: 'Test14', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
   { id: 15, name: 'Test15', role: 'PM', sex: 'Man', age: 9, address: 'Shanghai' },
-  { id: 16, name: 'Test16', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
+  { id: 16, name: 'Test16', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' }
 ]);
 
 // 列筛选配置示例
@@ -36,16 +36,16 @@ const column7 = ref([
     field: 'id',
     width: '100',
     dataType: 'number',
-    showColumnMenu: true,
+    showColumnMenu: true
   },
   {
     title: 'Name',
     field: 'name',
-    showIcon: true,
+    showIcon: true
   },
   {
     title: 'Role',
-    field: 'role',
+    field: 'role'
   },
   {
     title: 'Sex',
@@ -53,18 +53,18 @@ const column7 = ref([
     showColumnMenu: true,
     filters: [
       { label: '男', value: 'Man' },
-      { label: '女', value: 'Women' },
-    ],
+      { label: '女', value: 'Women' }
+    ]
   },
   {
     title: 'Age',
     field: 'age',
-    dataType: 'number',
+    dataType: 'number'
   },
   {
     title: 'Address',
-    field: 'address',
-  },
+    field: 'address'
+  }
 ]);
 </script>
 <style scoped></style>

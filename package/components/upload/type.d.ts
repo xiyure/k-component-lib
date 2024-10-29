@@ -1,4 +1,4 @@
-import { UploadFile, UploadFiles } from 'element-plus';
+import { UploadFile } from 'element-plus';
 
 export interface UploadProps {
   drag?: boolean

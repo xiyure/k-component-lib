@@ -27,14 +27,14 @@ import { RadioGroupProps } from './type.d';
 import { getCompSize, getExposeProxy } from '../../utils';
 
 defineOptions({
-  name: 'KRadioGroup',
+  name: 'KRadioGroup'
 });
 
 const props = withDefaults(defineProps<RadioGroupProps>(), {
   row: true,
   column: false,
   size: 'base',
-  button: false,
+  button: false
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -47,7 +47,7 @@ watch(
   () => props.color,
   (newValue) => {
     fillColor.value = newValue;
-  },
+  }
 );
 
 provide('_fillColor', fillColor);

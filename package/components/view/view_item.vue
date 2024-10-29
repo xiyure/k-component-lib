@@ -47,7 +47,7 @@ const props = withDefaults(defineProps<ViewItemProps>(), {
   label: '',
   count: 0
 });
-const emits = defineEmits(['change','remove', '_drag-start', '_drag-drop'])
+const emits = defineEmits(['change', 'remove', '_drag-start', '_drag-drop']);
 
 const activeView:any = inject('activeView');
 const _styleModule = inject('_styleModule', '');

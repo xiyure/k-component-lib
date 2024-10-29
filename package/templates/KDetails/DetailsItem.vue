@@ -20,23 +20,23 @@
     <p class="titel text-base text-gray-400 text-nowrap leading-6">{{ label }}:</p>
     <p class="value text-base text-normal min-h-6 flex items-center leading-6">
       <span v-if="typeof value === 'string'">{{ value }}</span>
-      <component :is="render"></component>
+      <component :is="typeof render === 'function' ? render() : render"></component>
     </p>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, inject, computed, ComputedRef } from 'vue';
+import { inject, computed, ComputedRef } from 'vue';
 import { DetailsItemProps, DetailsProps } from './type';
 
 const props = withDefaults(defineProps<DetailsItemProps>(), {
   column: 1,
-  showLine: undefined,
+  showLine: undefined
 });
 
 const injectMaxColumn = inject<ComputedRef>(
   '__maxColumn__',
-  computed(() => props.column),
+  computed(() => props.column)
 );
 const __parentProps__ = inject<DetailsProps>('__parentProps__', props);
 

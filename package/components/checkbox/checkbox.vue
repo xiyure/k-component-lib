@@ -25,12 +25,12 @@ import { getCompSize, getExposeProxy, genRandomStr, GetColorLevelNew } from '../
 import { colors } from './const';
 
 defineOptions({
-  name: 'KCheckbox',
+  name: 'KCheckbox'
 });
 const _styleModule = inject('_styleModule', '');
 const props = withDefaults(defineProps<CheckboxProps>(), {
   strict: false,
-  color: '',
+  color: ''
 });
 const kCheckboxRef = ref();
 
@@ -38,7 +38,7 @@ const id = genRandomStr(8);
 
 const __size__ = inject(
   '__size__',
-  computed(() => 'base'),
+  computed(() => 'base')
 );
 
 const color = ref(props.color);
@@ -74,14 +74,14 @@ watch(
           colors.forEach((item) => {
             parent.value?.style.setProperty(
               `--checkbox${item.name}`,
-              getColorS[`--k-oklch-${item.value}`],
+              getColorS[`--k-oklch-${item.value}`]
             );
           });
         }
       });
     }
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 function handleClickLabel(e) {

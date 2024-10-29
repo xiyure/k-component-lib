@@ -44,6 +44,6 @@ const itemLabelPosition = ref<FormItemProps['labelPosition']>('');
 const formLabelAlign = reactive({
   name: '',
   region: '',
-  type: '',
+  type: ''
 });
 </script>

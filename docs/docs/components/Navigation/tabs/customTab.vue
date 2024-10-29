@@ -1,12 +1,12 @@
 <template>
   <k-tabs type="border-card" class="demo-tabs">
     <k-tab-pane>
-      <!-- <template #label>
+      <template #label>
         <span class="custom-tabs-label">
           <IconCalendarColor />
           <span>Route</span>
         </span>
-      </template> -->
+      </template>
       Route
     </k-tab-pane>
     <k-tab-pane label="Config">Config</k-tab-pane>

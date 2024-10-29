@@ -63,7 +63,7 @@ export function GetColorLevel(hex: any) {
     return [
       Math.min(255, Math.max(0, Math.round(r * factor))),
       Math.min(255, Math.max(0, Math.round(g * factor))),
-      Math.min(255, Math.max(0, Math.round(b * factor))),
+      Math.min(255, Math.max(0, Math.round(b * factor)))
     ];
   }
 
@@ -71,7 +71,7 @@ export function GetColorLevel(hex: any) {
     return [
       Math.min(255, Math.max(0, Math.round(r * factor) + 25)),
       Math.min(255, Math.max(0, Math.round(g * factor) + 25)),
-      Math.min(255, Math.max(0, Math.round(b * factor) + 25)),
+      Math.min(255, Math.max(0, Math.round(b * factor) + 25))
     ];
   }
 
@@ -85,7 +85,7 @@ export function GetColorLevel(hex: any) {
   return {
     lightColor,
     darkColor,
-    loadingColor,
+    loadingColor
   };
 }
 
@@ -177,7 +177,7 @@ export function treeDataToArray(treeData: any[] | undefined, childrenField: stri
 export function getValidTreeData(
   treeData: any[],
   childrenField: string,
-  filterCallback: (item: any) => boolean,
+  filterCallback: (item: any) => boolean
 ) {
   if (!Array.isArray(treeData) || treeData.length === 0) {
     return [];
@@ -201,7 +201,7 @@ export function resetTreeData(
   treeData: any[],
   childrenField: string,
   targetData: any[],
-  key: string,
+  key: string
 ) {
   const dataMap = new Map(targetData.map((v) => [v[key], v]));
   for (let i = 0; i < treeData.length; i++) {
@@ -229,7 +229,7 @@ export function getExposeProxy(instance: any, source: any) {
     has(_target, key) {
       const sourceInstance = isRef(source) ? source.value : source;
       return Reflect.has(instance, key) || Reflect.has(sourceInstance, key);
-    },
+    }
   });
   return proxy;
 }
@@ -285,12 +285,12 @@ export function formatter(date: Date | Date[], formatter: any) {
     const minute = dateItem.getMinutes();
     const second = dateItem.getSeconds();
     const formatStr = formatter
-      .replace('YYYY', padZero(y, 4))
-      .replace('MM', padZero(m, 2))
-      .replace('DD', padZero(d, 2))
-      .replace('HH', padZero(h, 2))
-      .replace('mm', padZero(minute, 2))
-      .replace('ss', padZero(second, 2));
+    .replace('YYYY', padZero(y, 4))
+    .replace('MM', padZero(m, 2))
+    .replace('DD', padZero(d, 2))
+    .replace('HH', padZero(h, 2))
+    .replace('mm', padZero(minute, 2))
+    .replace('ss', padZero(second, 2));
     result.push(formatStr);
   }
   if (result.length === 1) {

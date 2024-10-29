@@ -26,7 +26,7 @@ const loadAll = () => [
   { value: 'mint-ui', link: 'https://github.com/ElemeFE/mint-ui' },
   { value: 'vuex', link: 'https://github.com/vuejs/vuex' },
   { value: 'vue-router', link: 'https://github.com/vuejs/vue-router' },
-  { value: 'babel', link: 'https://github.com/babel/babel' },
+  { value: 'babel', link: 'https://github.com/babel/babel' }
 ];
 
 let timeout: ReturnType<typeof setTimeout>;

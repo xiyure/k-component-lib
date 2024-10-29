@@ -1,60 +1,31 @@
 <template>
   <div :style="{ height: '300px' }">
-    <k-tree-table :data="tableData" :column="columnPro" :show-page="false" border></k-tree-table>
+    <k-tree-table
+      :data="tableData" :column="columnPro" :show-page="false"
+      border
+    ></k-tree-table>
   </div>
 </template>
 
 <script lang="tsx" setup>
-import { ref, reactive } from 'vue';
-
-const column1 = ref([
-  {
-    title: 'Id',
-    field: 'id',
-    width: '100',
-    dataType: 'number',
-  },
-  {
-    title: 'Name',
-    field: 'name',
-  },
-  {
-    title: 'Role',
-    field: 'role',
-  },
-  {
-    title: 'Sex',
-    field: 'sex',
-  },
-  {
-    title: 'Age',
-    field: 'age',
-    dataType: 'number',
-  },
-  {
-    title: 'Address',
-    field: 'address',
-  },
-]);
+import { reactive } from 'vue';
 
 const columnPro = [
   {
     title: 'Id',
     field: 'id',
     width: '50px',
-    dataType: 'number',
+    dataType: 'number'
   },
   {
     title: 'Name',
     field: 'name',
-    render: ({ row }) => {
-      return <span style={{ color: 'green' }}>{row.name}</span>;
-    },
+    render: ({ row }) => <span style={{ color: 'green' }}>{row.name}</span>
   },
   {
     title: 'Role',
     field: 'role',
-    dataType: 'string',
+    dataType: 'string'
   },
   {
     title: 'Other1',
@@ -69,25 +40,23 @@ const columnPro = [
             field: 'age',
             dataType: 'number',
             showIcon: true,
-            __folder: true,
+            __folder: true
           },
           {
             title: 'Sex',
             field: 'sex',
             dataType: 'string',
-            render: ({ row }) => {
-              return <span style={{ color: 'red' }}>{row.sex}</span>;
-            },
-          },
-        ],
+            render: ({ row }) => <span style={{ color: 'red' }}>{row.sex}</span>
+          }
+        ]
       },
       {
         title: 'Address',
         field: 'address',
-        dataType: 'string',
-      },
-    ],
-  },
+        dataType: 'string'
+      }
+    ]
+  }
 ];
 const tableData = reactive([
   {
@@ -101,8 +70,8 @@ const tableData = reactive([
     iconStyle: {
       empty: false,
       color: '#f60',
-      size: 20,
-    },
+      size: 20
+    }
   },
   {
     id: 2,
@@ -115,8 +84,8 @@ const tableData = reactive([
     iconStyle: {
       empty: false,
       color: '#f60',
-      size: 16,
-    },
+      size: 16
+    }
   },
   {
     id: 3,
@@ -129,8 +98,8 @@ const tableData = reactive([
     iconStyle: {
       empty: false,
       color: '#f60',
-      size: 16,
-    },
+      size: 16
+    }
   },
   { id: 4, name: 'Test4', role: 'Designer', sex: 'Women', age: 18, address: 'Shanghai' },
   { id: 5, name: 'Test5', role: 'Develop', sex: 'Man', age: 39, address: 'test abc' },
@@ -144,7 +113,7 @@ const tableData = reactive([
   { id: 13, name: 'Test5', role: 'Develop', sex: 'Man', age: 39, address: 'test abc' },
   { id: 14, name: 'Test6', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
   { id: 15, name: 'Test7', role: 'PM', sex: 'Man', age: 9, address: 'Shanghai' },
-  { id: 16, name: 'Test8', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
+  { id: 16, name: 'Test8', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' }
 ]);
 </script>
 <style scoped></style>

@@ -48,13 +48,13 @@ import { TagProps } from './type';
 import { getCompSize, isValidColor, getExposeProxy } from '../../utils';
 
 defineOptions({
-  name: 'KTag',
+  name: 'KTag'
 });
 
 const props = withDefaults(defineProps<TagProps>(), {
   point: false,
   type: 'primary',
-  text: undefined,
+  text: undefined
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -63,7 +63,7 @@ const defaultColor = {
   success: '#22C55E',
   danger: '#EF4444',
   warning: '#F97316',
-  info: '#6B7280',
+  info: '#6B7280'
 };
 
 const fillColor = computed(() => (isValidColor(props.color) ? props.color : defaultColor[props.type]));
@@ -75,13 +75,13 @@ const tagAttrs = computed(() => {
   let sizeAttr = {
     width: '0.75rem',
     height: '0.75rem',
-    fontSize: '0.875rem',
+    fontSize: '0.875rem'
   };
   if (props.size === 'sm') {
     sizeAttr = {
       width: '0.5rem',
       height: '0.5rem',
-      fontSize: '0.75rem',
+      fontSize: '0.75rem'
     };
   }
   return sizeAttr;

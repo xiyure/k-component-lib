@@ -18,11 +18,11 @@ import { FormProps } from './type';
 import { getCompSize, getExposeProxy } from '../../utils';
 
 defineOptions({
-  name: 'KForm',
+  name: 'KForm'
 });
 
 const props = withDefaults(defineProps<FormProps>(), {
-  size: 'base',
+  size: 'base'
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -74,7 +74,7 @@ defineExpose(getExposeProxy(instance, KFormRef));
 
 provide(
   '__size__',
-  computed(() => props.size),
+  computed(() => props.size)
 );
 </script>
 

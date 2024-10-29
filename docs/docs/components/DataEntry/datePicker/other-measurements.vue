@@ -58,14 +58,14 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const value1 = ref('')
-const value2 = ref('')
-const value3 = ref('')
-const value4 = ref('')
-const value5 = ref('')
-const value6 = ref('')
+const value1 = ref('');
+const value2 = ref('');
+const value3 = ref('');
+const value4 = ref('');
+const value5 = ref('');
+const value6 = ref('');
 </script>
 <style scoped>
 .demo-date-picker {

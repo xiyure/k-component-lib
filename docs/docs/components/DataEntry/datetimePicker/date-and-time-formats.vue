@@ -36,11 +36,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const value1 = ref('')
-const value2 = ref('')
-const value3 = ref('')
+const value1 = ref('');
+const value2 = ref('');
+const value3 = ref('');
 </script>
 <style scoped>
 .demo-datetime-picker {

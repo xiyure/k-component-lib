@@ -57,8 +57,8 @@
                 ></k-checkbox>
               </k-checkbox-group>
               <k-checkbox
-                v-else
                 v-for="option in item.options"
+                v-else
                 v-bind="option"
                 :key="option"
                 v-model="formData[item.prop]"
@@ -87,17 +87,17 @@
         </k-form-item>
       </template>
       <div
-        class="bbm flex w-full h-8 is-expand"
         ref="bbm"
+        class="bbm flex w-full h-8 is-expand"
         :style="`grid-column: ${columns} / ${columns + 1}; `"
       ></div>
-      <div class="filtr-btns flex bg-white" ref="filterBtn">
+      <div ref="filterBtn" class="filtr-btns flex bg-white">
         <slot name="action">
           <k-button :size="compSize()" @click="reset">{{ $t('reset') }}</k-button>
-          <k-button :size="compSize()" @click="search" main>{{ $t('query') }}</k-button>
+          <k-button :size="compSize()" main @click="search">{{ $t('query') }}</k-button>
           <KButton
             text
-            :iconRight="isCollapse ? 'IconArrowBottom' : 'IconArrowTop'"
+            :icon-right="isCollapse ? 'IconArrowBottom' : 'IconArrowTop'"
             @click="toggle"
           >
             {{ isCollapse ? $t('expand') : $t('collapse') }}
@@ -121,7 +121,7 @@ import { FilterFormProps, filterFormItem } from './type';
 import { getExposeProxy } from '../../utils';
 
 defineOptions({
-  name: 'KFilterForm',
+  name: 'KFilterForm'
 });
 
 const DEFAULT_SIZES = ['base', 'sm'];
@@ -132,7 +132,7 @@ const props = withDefaults(defineProps<FilterFormProps>(), {
   columns: 3,
   collapse: true,
   reserve: false,
-  visible: false,
+  visible: false
 });
 const emits = defineEmits(['search', 'reset', 'change']);
 
@@ -150,7 +150,7 @@ onMounted(() => {
     return;
   }
   // 获取KFormRef的高度
-  const height = KFormRef.value?.$el.clientHeight + 2;
+  const height = (KFormRef.value?.$el.clientHeight ?? 0) + 2;
   vvn?.value.style.setProperty('--expandHeight', `${height}px`);
 
   setTimeout(() => {
@@ -172,27 +172,23 @@ const compSize = computed(() => (attrs: any = {}) => {
   return props.size;
 });
 
-const compVisible = computed(() => {
-  return (item: filterFormItem) => {
-    let visible = item.visible ?? true;
-    if (typeof visible === 'function') {
-      visible = visible(formData.value);
-    }
-    if (visible === false && item.prop && !props.reserve) {
-      const formItem = props.items.find((v) => v.prop === item.prop);
-      formData.value[item.prop] = formItem?.value;
-    }
-    return visible;
-  };
+const compVisible = computed(() => (item: filterFormItem) => {
+  let visible = item.visible ?? true;
+  if (typeof visible === 'function') {
+    visible = visible(formData.value);
+  }
+  if (visible === false && item.prop && !props.reserve) {
+    const formItem = props.items.find((v) => v.prop === item.prop);
+    formData.value[item.prop] = formItem?.value;
+  }
+  return visible;
 });
-
-// let preVisibleCout = totalVisible();
 
 watch(
   () => props.items,
   () => {
     preItems = {};
-  },
+  }
 );
 watch(
   () => props.items,
@@ -205,7 +201,7 @@ watch(
       }
     });
   },
-  { deep: true, immediate: true },
+  { deep: true, immediate: true }
 );
 watch(
   () => formData.value,
@@ -213,10 +209,9 @@ watch(
     emits('change', newValue);
 
     setTimeout(() => {
-      // console.log('@', height, topNew);
       const topNew = bbm.value.offsetTop;
       filterBtn?.value.style.setProperty('--top-new', `${topNew}px`);
-      const height = KFormRef.value?.$el.clientHeight + 2;
+      const height = (KFormRef.value?.$el.clientHeight ?? 0) + 2;
       vvn?.value.style.setProperty('--expandHeight', `${height}px`);
     }, 100);
 
@@ -242,7 +237,7 @@ watch(
     // }
     // preVisibleCout = visibleCout;
   },
-  { deep: true },
+  { deep: true }
 );
 
 // function totalVisible() {

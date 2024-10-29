@@ -49,26 +49,25 @@
 </template>
 
 <script setup>
-import { render } from 'vue';
 import DetailsHeadItem from './DetailsHeadItem.vue';
 
 const props = defineProps({
   pageIcon: {
     type: String,
-    default: '',
+    default: ''
   },
   pageTitle: {
     type: String,
-    default: '标题',
+    default: '标题'
   },
   pageDescriptions: {
     type: String,
-    default: '',
+    default: ''
   },
   abstract: {
     type: Array,
-    default: () => [],
-  },
+    default: () => []
+  }
 });
 </script>
 <style lang="less" scoped>

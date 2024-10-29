@@ -19,7 +19,7 @@ import { SelectInputProps } from './type';
 import { getCompSize, getExposeProxy } from '../../utils';
 
 defineOptions({
-  name: 'KSelect',
+  name: 'KSelect'
 });
 
 const props = withDefaults(defineProps<SelectInputProps>(), {});
@@ -27,7 +27,7 @@ const props = withDefaults(defineProps<SelectInputProps>(), {});
 const _styleModule = inject('_styleModule', '');
 const __size__ = inject(
   '__size__',
-  computed(() => 'base'),
+  computed(() => 'base')
 );
 
 const inputRef = ref<any>(null);

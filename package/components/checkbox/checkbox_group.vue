@@ -16,11 +16,11 @@ import { CheckboxGroupProps } from './type';
 import { getCompSize, getExposeProxy } from '../../utils/index';
 
 defineOptions({
-  name: 'KCheckboxGroup',
+  name: 'KCheckboxGroup'
 });
 
 const props = withDefaults(defineProps<CheckboxGroupProps>(), {
-  color: '#409eff',
+  color: '#409eff'
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -31,19 +31,19 @@ watch(
   () => props.color,
   (newValue) => {
     fillColor.value = newValue;
-  },
+  }
 );
 
 const injectSize = inject(
   '__size__',
-  computed(() => 'base'),
+  computed(() => 'base')
 );
 
 provide('useCheckboxGroup', true);
 provide('_fillColor', fillColor);
 provide(
   '__size__',
-  computed(() => props.size ?? injectSize.value),
+  computed(() => props.size ?? injectSize.value)
 );
 
 const instance: any = {};

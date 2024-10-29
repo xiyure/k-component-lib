@@ -44,10 +44,9 @@
 import { computed } from 'vue';
 import { MenuItemRegistered } from 'element-plus';
 import { optionItem, subMenuProps } from './type';
-import { genRandomStr } from '../../utils';
 
 defineOptions({
-  name: 'SubMenu',
+  name: 'SubMenu'
 });
 const props = defineProps<subMenuProps>();
 const emits = defineEmits(['click']);

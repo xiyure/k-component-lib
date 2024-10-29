@@ -1,7 +1,10 @@
 <template>
   <div :style="{ height: '300px' }">
-    <k-tree-table :data="tableData" :column="column4" :show-page="false" border>
-      <template #name="{ row, column }">kingsware-{{ row.name }}</template>
+    <k-tree-table
+      :data="tableData" :column="column4" :show-page="false"
+      border
+    >
+      <template #name="{ row }">kingsware-{{ row.name }}</template>
     </k-tree-table>
   </div>
 </template>
@@ -25,7 +28,7 @@ const tableData = reactive([
   { id: 13, name: 'Test13', role: 'Develop', sex: 'Man', age: 39, address: 'test abc' },
   { id: 14, name: 'Test14', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
   { id: 15, name: 'Test15', role: 'PM', sex: 'Man', age: 9, address: 'Shanghai' },
-  { id: 16, name: 'Test16', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
+  { id: 16, name: 'Test16', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' }
 ]);
 
 const column4 = ref([
@@ -33,38 +36,37 @@ const column4 = ref([
     title: 'Id',
     field: 'id',
     width: '100',
-    dataType: 'number',
+    dataType: 'number'
   },
   {
     title: 'Name',
-    field: 'name',
+    field: 'name'
   },
   {
     title: 'Role',
-    field: 'role',
+    field: 'role'
   },
   {
     title: 'Sex',
     field: 'sex',
-    render: ({ row, column }) => {
+    render: ({ row }) => {
       if (row.sex === 'Man') {
         return <span style={{ color: 'green' }}>男</span>;
-      } else if (row.sex === 'Women') {
+      } if (row.sex === 'Women') {
         return <span style={{ color: 'red' }}>女</span>;
-      } else {
-        return <span style={{ color: 'black' }}>未知</span>;
-      }
-    },
+      } 
+      return <span style={{ color: 'black' }}>未知</span>;
+    }
   },
   {
     title: 'Age',
     field: 'age',
-    dataType: 'number',
+    dataType: 'number'
   },
   {
     title: 'Address',
-    field: 'address',
-  },
+    field: 'address'
+  }
 ]);
 </script>
 <style scoped></style>

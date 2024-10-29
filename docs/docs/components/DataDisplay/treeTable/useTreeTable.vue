@@ -23,7 +23,7 @@ const treeTableData = ref([
     name: 'Test2',
     type: 'mp4',
     sizes: null,
-    date: '2021-04-01',
+    date: '2021-04-01'
   },
   {
     id: 24300,
@@ -32,7 +32,7 @@ const treeTableData = ref([
     name: 'Test3',
     type: 'avi',
     sizes: 1024,
-    date: '2020-03-01',
+    date: '2020-03-01'
   },
   { id: 20045, parentId: 24300, name: 'Test4', type: 'html', sizes: 600, date: '2021-04-01' },
   { id: 10053, parentId: 24300, name: 'Test5', type: 'avi', sizes: null, date: '2021-04-01' },
@@ -48,7 +48,7 @@ const treeTableData = ref([
   { id: 23682, parentId: 23688, name: 'Test15', type: 'js', sizes: 1024, date: '2021-06-01' },
   { id: 24555, parentId: null, name: 'Test16', type: 'avi', sizes: 224, date: '2020-10-01' },
   { id: 24566, parentId: 24555, name: 'Test17', type: 'js', sizes: 1024, date: '2021-06-01' },
-  { id: 24577, parentId: 24555, name: 'Test18', type: 'js', sizes: 1024, date: '2021-06-01' },
+  { id: 24577, parentId: 24555, name: 'Test18', type: 'js', sizes: 1024, date: '2021-06-01' }
 ]);
 
 // 列排序配置示例
@@ -58,25 +58,25 @@ const treeColumn = [
     field: 'id',
     width: '100px',
     treeNode: true,
-    dataType: 'number',
+    dataType: 'number'
   },
   {
     title: 'Name',
     field: 'name',
-    dataType: 'string',
+    dataType: 'string'
   },
   {
     title: 'Type',
-    field: 'type',
+    field: 'type'
   },
   {
     title: 'Size',
-    field: 'sizes',
+    field: 'sizes'
   },
   {
     title: 'Date',
-    field: 'date',
-  },
+    field: 'date'
+  }
 ];
 </script>
 <style scoped></style>

@@ -15,29 +15,29 @@ const column1 = ref([
     title: 'Id',
     field: 'id',
     width: '100',
-    dataType: 'number',
+    dataType: 'number'
   },
   {
     title: 'Name',
-    field: 'name',
+    field: 'name'
   },
   {
     title: 'Role',
-    field: 'role',
+    field: 'role'
   },
   {
     title: 'Sex',
-    field: 'sex',
+    field: 'sex'
   },
   {
     title: 'Age',
     field: 'age',
-    dataType: 'number',
+    dataType: 'number'
   },
   {
     title: 'Address',
-    field: 'address',
-  },
+    field: 'address'
+  }
 ]);
 const tableData = reactive([
   {
@@ -51,8 +51,8 @@ const tableData = reactive([
     iconStyle: {
       empty: false,
       color: '#f60',
-      size: 20,
-    },
+      size: 20
+    }
   },
   {
     id: 2,
@@ -65,8 +65,8 @@ const tableData = reactive([
     iconStyle: {
       empty: false,
       color: '#f60',
-      size: 16,
-    },
+      size: 16
+    }
   },
   {
     id: 3,
@@ -79,8 +79,8 @@ const tableData = reactive([
     iconStyle: {
       empty: false,
       color: '#f60',
-      size: 16,
-    },
+      size: 16
+    }
   },
   { id: 4, name: 'Test4', role: 'Designer', sex: 'Women', age: 18, address: 'Shanghai' },
   { id: 5, name: 'Test5', role: 'Develop', sex: 'Man', age: 39, address: 'test abc' },
@@ -94,7 +94,7 @@ const tableData = reactive([
   { id: 13, name: 'Test5', role: 'Develop', sex: 'Man', age: 39, address: 'test abc' },
   { id: 14, name: 'Test6', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
   { id: 15, name: 'Test7', role: 'PM', sex: 'Man', age: 9, address: 'Shanghai' },
-  { id: 16, name: 'Test8', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
+  { id: 16, name: 'Test8', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' }
 ]);
 </script>
 <style scoped></style>

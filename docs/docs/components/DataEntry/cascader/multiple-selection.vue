@@ -47,8 +47,8 @@ const options = [
         children: [
           { value: 3, label: 'Beijing' },
           { value: 4, label: 'Shanghai' },
-          { value: 5, label: 'Hangzhou' },
-        ],
+          { value: 5, label: 'Hangzhou' }
+        ]
       },
       {
         value: 6,
@@ -56,8 +56,8 @@ const options = [
         children: [
           { value: 7, label: 'Tokyo' },
           { value: 8, label: 'Osaka' },
-          { value: 9, label: 'Kyoto' },
-        ],
+          { value: 9, label: 'Kyoto' }
+        ]
       },
       {
         value: 10,
@@ -65,10 +65,10 @@ const options = [
         children: [
           { value: 11, label: 'Seoul' },
           { value: 12, label: 'Busan' },
-          { value: 13, label: 'Taegu' },
-        ],
-      },
-    ],
+          { value: 13, label: 'Taegu' }
+        ]
+      }
+    ]
   },
   {
     value: 14,
@@ -80,8 +80,8 @@ const options = [
         children: [
           { value: 16, label: 'Paris' },
           { value: 17, label: 'Marseille' },
-          { value: 18, label: 'Lyon' },
-        ],
+          { value: 18, label: 'Lyon' }
+        ]
       },
       {
         value: 19,
@@ -89,10 +89,10 @@ const options = [
         children: [
           { value: 20, label: 'London' },
           { value: 21, label: 'Birmingham' },
-          { value: 22, label: 'Manchester' },
-        ],
-      },
-    ],
+          { value: 22, label: 'Manchester' }
+        ]
+      }
+    ]
   },
   {
     value: 23,
@@ -104,8 +104,8 @@ const options = [
         children: [
           { value: 25, label: 'New York' },
           { value: 26, label: 'Los Angeles' },
-          { value: 27, label: 'Washington' },
-        ],
+          { value: 27, label: 'Washington' }
+        ]
       },
       {
         value: 28,
@@ -113,10 +113,10 @@ const options = [
         children: [
           { value: 29, label: 'Toronto' },
           { value: 30, label: 'Montreal' },
-          { value: 31, label: 'Ottawa' },
-        ],
-      },
-    ],
-  },
+          { value: 31, label: 'Ottawa' }
+        ]
+      }
+    ]
+  }
 ];
 </script>

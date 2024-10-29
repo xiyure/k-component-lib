@@ -29,7 +29,7 @@ const tableData = reactive([
   { id: 13, name: 'Test13', role: 'Develop', sex: 'Man', age: 39, address: 'test abc' },
   { id: 14, name: 'Test14', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
   { id: 15, name: 'Test15', role: 'PM', sex: 'Man', age: 9, address: 'Shanghai' },
-  { id: 16, name: 'Test16', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
+  { id: 16, name: 'Test16', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' }
 ]);
 
 // 列排序配置示例
@@ -40,30 +40,30 @@ const column6 = ref([
     width: '100',
     dataType: 'number',
     sortable: true,
-    showColumnMenu: true,
+    showColumnMenu: true
   },
   {
     title: 'Name',
     field: 'name',
-    showIcon: true,
+    showIcon: true
   },
   {
     title: 'Role',
-    field: 'role',
+    field: 'role'
   },
   {
     title: 'Sex',
-    field: 'sex',
+    field: 'sex'
   },
   {
     title: 'Age',
     field: 'age',
-    dataType: 'number',
+    dataType: 'number'
   },
   {
     title: 'Address',
-    field: 'address',
-  },
+    field: 'address'
+  }
 ]);
 </script>
 <style scoped></style>

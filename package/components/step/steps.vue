@@ -26,13 +26,13 @@ import { StepsProps } from './type';
 import { genRandomStr, getExposeProxy } from '../../utils';
 
 defineOptions({
-  name: 'KSteps',
+  name: 'KSteps'
 });
 
 const props = withDefaults(defineProps<StepsProps>(), {
   processStatus: 'finish',
   finishStatus: 'success',
-  useAntStyle: false,
+  useAntStyle: false
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -42,16 +42,16 @@ const slots = useSlots();
 if (props.capsule) {
   const children = slots.default?.()[0].children ?? [];
   steps.value = (children as any[])
-    .map((item) => {
-      if (item.type && item.type.name === 'KStep') {
-        return {
-          key: item.key,
-          name: item.props?.title,
-        };
-      }
-      return null;
-    })
-    .filter((item) => item);
+  .map((item) => {
+    if (item.type && item.type.name === 'KStep') {
+      return {
+        key: item.key,
+        name: item.props?.title
+      };
+    }
+    return null;
+  })
+  .filter((item) => item);
 }
 
 const id = genRandomStr(8);
@@ -71,7 +71,7 @@ watch(
       });
     }
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 function getProcessStatus(type: string) {

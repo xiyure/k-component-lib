@@ -117,71 +117,69 @@ const ruleForm = reactive<RuleForm>({
   location: '',
   type: [],
   resource: '',
-  desc: '',
+  desc: ''
 });
-
-const locationOptions = ['Home', 'Company', 'School'];
 
 const rules = reactive<FormRules<RuleForm>>({
   name: [
     { required: true, message: 'Please input Activity name', trigger: 'blur' },
-    { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' },
+    { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' }
   ],
   region: [
     {
       required: true,
       message: 'Please select Activity zone',
-      trigger: 'change',
-    },
+      trigger: 'change'
+    }
   ],
   count: [
     {
       required: true,
       message: 'Please select Activity count',
-      trigger: 'change',
-    },
+      trigger: 'change'
+    }
   ],
   date1: [
     {
       type: 'date',
       required: true,
       message: 'Please pick a date',
-      trigger: 'change',
-    },
+      trigger: 'change'
+    }
   ],
   date2: [
     {
       type: 'date',
       required: true,
       message: 'Please pick a time',
-      trigger: 'change',
-    },
+      trigger: 'change'
+    }
   ],
   location: [
     {
       required: true,
       message: 'Please select a location',
-      trigger: 'change',
-    },
+      trigger: 'change'
+    }
   ],
   type: [
     {
       type: 'array',
       required: true,
       message: 'Please select at least one activity type',
-      trigger: 'change',
-    },
+      trigger: 'change'
+    }
   ],
   resource: [
     {
       required: true,
       message: 'Please select activity resource',
-      trigger: 'change',
-    },
+      trigger: 'change'
+    }
   ],
   desc: [
-    { required: true, message: 'Please input activity form', trigger: 'blur' },
-  ],
+    { required: true, message: 'Please input activity form', trigger: 'blur' }
+  ]
 });
 
 const submitForm = async (formEl: FormInstance | undefined) => {
@@ -202,6 +200,6 @@ const resetForm = (formEl: FormInstance | undefined) => {
 
 const options = Array.from({ length: 10000 }).map((_, idx) => ({
   value: `${idx + 1}`,
-  label: `${idx + 1}`,
+  label: `${idx + 1}`
 }));
 </script>

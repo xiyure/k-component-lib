@@ -1,6 +1,9 @@
 <template>
   <div :style="{ height: '300px' }">
-    <k-tree-table :data="tableData" :column="column" :show-page="false" :widgets="widgets" border>
+    <k-tree-table
+      :data="tableData" :column="column" :show-page="false"
+      :widgets="widgets" border
+    >
       <template #custom1>custom1插槽</template>
     </k-tree-table>
   </div>
@@ -8,6 +11,7 @@
 
 <script lang="tsx" setup>
 import { ref, reactive } from 'vue';
+import { KButton } from '@ksware/ksw-ux';
 
 const widgets = ref([
   'search',
@@ -17,10 +21,8 @@ const widgets = ref([
   'custom1',
   {
     id: 'custom2',
-    widget: () => {
-      return <KButton>自定义按钮</KButton>;
-    },
-  },
+    widget: () => <KButton>自定义按钮</KButton>
+  }
 ]);
 
 const tableData = reactive([
@@ -39,53 +41,47 @@ const tableData = reactive([
   { id: 13, name: 'Test13', role: 'Develop', sex: 'Man', age: 39, address: 'test abc' },
   { id: 14, name: 'Test14', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
   { id: 15, name: 'Test15', role: 'PM', sex: 'Man', age: 9, address: 'Shanghai' },
-  { id: 16, name: 'Test16', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
+  { id: 16, name: 'Test16', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' }
 ]);
 
 const column = ref([
   {
     type: 'checkbox',
-    width: '50',
+    width: '50'
   },
   {
     title: 'Id',
     field: 'id',
     width: '50',
     sortable: true,
-    dataType: 'number',
+    dataType: 'number'
   },
   {
     title: 'Name',
     field: 'name',
     sortable: true,
     cellRender: {},
-    render: ({ row, column }) => {
-      return (
-        <span style={{ color: 'red' }}>
-          <k-tag point>标签</k-tag>
-        </span>
-      );
-    },
-    dataType: 'string',
+    render: () => (
+      <span style={{ color: 'red' }}>
+        <k-tag point>标签</k-tag>
+      </span>
+    ),
+    dataType: 'string'
   },
   {
     title: 'Role',
     field: 'role',
     showIcon: true,
     dataType: 'string',
-    formatter: ({ cellValue, row, column }) => {
-      return `${cellValue}-${row.id}-${column.field}`;
-    },
-    align: 'center',
+    formatter: ({ cellValue, row, column }) => `${cellValue}-${row.id}-${column.field}`,
+    align: 'center'
   },
   {
     title: 'Sex',
     field: 'sex',
     dataType: 'string',
-    formatter: ({ cellValue, row, column }) => {
-      return cellValue === 'Man' ? '男' : '女';
-    },
-    align: 'left',
+    formatter: ({ cellValue }) => (cellValue === 'Man' ? '男' : '女'),
+    align: 'left'
   },
   {
     title: 'Age',
@@ -93,13 +89,13 @@ const column = ref([
     dataType: 'number',
     showIcon: true,
     __folder: true,
-    align: 'right',
+    align: 'right'
   },
   {
     title: 'Address',
     field: 'address',
-    dataType: 'string',
-  },
+    dataType: 'string'
+  }
 ]);
 </script>
 <style scoped></style>

@@ -1,6 +1,6 @@
 <template>
-  <div class="k-button-container" ref="box">
-    <div class="container" ref="container">
+  <div ref="box" class="k-button-container">
+    <div ref="container" class="container">
       <slot></slot>
     </div>
     <div

@@ -36,13 +36,13 @@ import { KPopover } from '../popover';
 import { genRandomStr, getExposeProxy } from '../../utils';
 
 defineOptions({
-  name: 'KStep',
+  name: 'KStep'
 });
 
 const props = withDefaults(defineProps<StepProps>(), {
   title: '',
   description: '',
-  status: '',
+  status: ''
 });
 const stepsProps: any = inject('stepProps');
 const stepsInfo: any = inject('stepsInfo');
@@ -53,7 +53,7 @@ const DEFAULT_STATUS_COLOR = {
   primary: '#2882FF',
   success: '#22C55E',
   error: '#EF4444',
-  wait: '#EAE8EB',
+  wait: '#EAE8EB'
 };
 
 watch(
@@ -66,14 +66,14 @@ watch(
     let color: string = '';
     if (newValue === key) {
       const processStatus = getProcessStatus(stepsProps.processStatus);
-      color = typeKeys.includes(processStatus)
-        ? DEFAULT_STATUS_COLOR[processStatus]
-        : DEFAULT_STATUS_COLOR.primary;
+      color = typeKeys.includes(processStatus) ?
+        DEFAULT_STATUS_COLOR[processStatus] :
+        DEFAULT_STATUS_COLOR.primary;
     } else if (newValue > key) {
       const finishStatus = getProcessStatus(stepsProps.finishStatus);
-      color = typeKeys.includes(finishStatus)
-        ? DEFAULT_STATUS_COLOR[finishStatus]
-        : DEFAULT_STATUS_COLOR.success;
+      color = typeKeys.includes(finishStatus) ?
+        DEFAULT_STATUS_COLOR[finishStatus] :
+        DEFAULT_STATUS_COLOR.success;
     } else {
       color = DEFAULT_STATUS_COLOR.wait;
     }
@@ -82,7 +82,7 @@ watch(
     }
     setStepColor(color);
   },
-  { immediate: true },
+  { immediate: true }
 );
 watch(
   () => [props.color, props.status],
@@ -100,7 +100,7 @@ watch(
     }
     setStepColor(newColor);
   },
-  { immediate: true, deep: true },
+  { immediate: true, deep: true }
 );
 
 function setStepColor(color: string) {

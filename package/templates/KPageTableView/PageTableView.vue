@@ -68,41 +68,41 @@ const tips = ref(false);
 const props = defineProps({
   showAside: {
     type: Boolean,
-    default: false,
+    default: false
   },
   asideTitle: {
     type: String,
-    default: 'viewBus',
+    default: 'viewBus'
   },
   asideDescriptions: {
     type: String,
-    default: 'viewBusInfo',
+    default: 'viewBusInfo'
   },
   asideRefresh: {
     type: Boolean,
-    default: false,
+    default: false
   },
   pageIcon: {
     type: String,
-    default: '',
+    default: ''
   },
   pageTitle: {
     type: String,
-    default: '页面标题',
+    default: '页面标题'
   },
   pageDescriptions: {
     type: String,
-    default: '页面描述信息',
-  },
+    default: '页面描述信息'
+  }
 });
 
 // 正则判断 props.pageIcon 中是否是图片链接
 const isImgUrl = /.(jpg|jpeg|png|gif|svg)$/;
 
 // 判断 props.pageIcon 是否是图片链接
-const icon = isImgUrl.test(props.pageIcon)
-  ? () => <img src={props.pageIcon} alt='icon' class='KPageHead-icon' />
-  : props.pageIcon;
+const icon = isImgUrl.test(props.pageIcon) ?
+  () => <img src={props.pageIcon} alt='icon' class='KPageHead-icon' /> :
+  props.pageIcon;
 
 // 自定义事件
 const emitEvent = defineEmits(['refresh']);

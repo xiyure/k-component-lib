@@ -30,13 +30,13 @@ const editableTabs = ref([
   {
     title: 'Tab 1',
     name: '1',
-    content: 'Tab 1 content',
+    content: 'Tab 1 content'
   },
   {
     title: 'Tab 2',
     name: '2',
-    content: 'Tab 2 content',
-  },
+    content: 'Tab 2 content'
+  }
 ]);
 
 const handleTabsEdit = (
@@ -48,7 +48,7 @@ const handleTabsEdit = (
     editableTabs.value.push({
       title: 'New Tab',
       name: newTabName,
-      content: 'New Tab content',
+      content: 'New Tab content'
     });
     editableTabsValue.value = newTabName;
   } else if (action === 'remove') {

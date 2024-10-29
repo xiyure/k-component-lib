@@ -39,7 +39,7 @@ import { InputProps } from './type.d';
 import { getCompSize, getExposeProxy } from '../../utils';
 
 defineOptions({
-  name: 'KInput',
+  name: 'KInput'
 });
 
 const props = withDefaults(defineProps<InputProps>(), {
@@ -48,7 +48,7 @@ const props = withDefaults(defineProps<InputProps>(), {
   prepend: undefined,
   append: undefined,
   prefixIcon: undefined,
-  suffixIcon: undefined,
+  suffixIcon: undefined
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -74,12 +74,12 @@ const slotClass = computed(() => (slot) => {
 
 const injectSize = inject(
   '__size__',
-  computed(() => 'base'),
+  computed(() => 'base')
 );
 
 provide(
   '__size__',
-  computed(() => props.size ?? injectSize.value),
+  computed(() => props.size ?? injectSize.value)
 );
 
 const inputRef = ref<any>(null);

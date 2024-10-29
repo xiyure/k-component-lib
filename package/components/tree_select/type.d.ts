@@ -1,4 +1,4 @@
-import { Component, CSSProperties } from 'vue';
+import { CSSProperties } from 'vue';
 
 export interface TreeSelectProps {
   name?: string

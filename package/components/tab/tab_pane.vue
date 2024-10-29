@@ -27,18 +27,18 @@ import { getExposeProxy } from '../../utils';
 import { KTooltip } from '../tooltip';
 
 defineOptions({
-  name: 'KTabPane',
+  name: 'KTabPane'
 });
 
 const props = defineProps({
   closable: {
     type: Boolean,
-    default: false,
+    default: false
   },
   label: {
     type: String,
-    default: '',
-  },
+    default: ''
+  }
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -49,7 +49,7 @@ const isOverflow = ref(false);
 const labelText = computed(() => {
   if (slots.label) {
     const labelSlotContent = slots.label?.()?.[0]?.children ?? '';
-    return typeof labelSlotContent === 'string'? labelSlotContent : null;
+    return typeof labelSlotContent === 'string' ? labelSlotContent : null;
   }
   return props.label;
 });

@@ -33,42 +33,42 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const size = ref<'base' | 'lg' | 'sm'>('base')
+const size = ref<'base' | 'lg' | 'sm'>('base');
 
-const value1 = ref('')
-const value2 = ref('')
+const value1 = ref('');
+const value2 = ref('');
 
 const shortcuts = [
   {
     text: 'Last week',
     value: () => {
-      const end = new Date()
-      const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-      return [start, end]
-    },
+      const end = new Date();
+      const start = new Date();
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+      return [start, end];
+    }
   },
   {
     text: 'Last month',
     value: () => {
-      const end = new Date()
-      const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-      return [start, end]
-    },
+      const end = new Date();
+      const start = new Date();
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+      return [start, end];
+    }
   },
   {
     text: 'Last 3 months',
     value: () => {
-      const end = new Date()
-      const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-      return [start, end]
-    },
-  },
-]
+      const end = new Date();
+      const start = new Date();
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+      return [start, end];
+    }
+  }
+];
 </script>
 
 <style scoped>

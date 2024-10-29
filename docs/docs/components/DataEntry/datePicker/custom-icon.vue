@@ -18,11 +18,7 @@
           </template>
           <template #prev-year>
             <k-icon>
-              <svg
-                viewBox="0 0 20 20"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+              <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">
                 <g stroke-width="1" fill-rule="evenodd">
                   <g fill="currentColor">
                     <path
@@ -35,11 +31,7 @@
           </template>
           <template #next-year>
             <k-icon>
-              <svg
-                viewBox="0 0 20 20"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+              <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">
                 <g stroke-width="1" fill-rule="evenodd">
                   <g fill="currentColor">
                     <path
@@ -72,11 +64,7 @@
           </template>
           <template #prev-year>
             <k-icon>
-              <svg
-                viewBox="0 0 20 20"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+              <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">
                 <g stroke-width="1" fill-rule="evenodd">
                   <g fill="currentColor">
                     <path
@@ -89,11 +77,7 @@
           </template>
           <template #next-year>
             <k-icon>
-              <svg
-                viewBox="0 0 20 20"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+              <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">
                 <g stroke-width="1" fill-rule="evenodd">
                   <g fill="currentColor">
                     <path
@@ -128,11 +112,7 @@
           </template>
           <template #prev-year>
             <k-icon>
-              <svg
-                viewBox="0 0 20 20"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+              <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">
                 <g stroke-width="1" fill-rule="evenodd">
                   <g fill="currentColor">
                     <path
@@ -145,11 +125,7 @@
           </template>
           <template #next-year>
             <k-icon>
-              <svg
-                viewBox="0 0 20 20"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+              <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">
                 <g stroke-width="1" fill-rule="evenodd">
                   <g fill="currentColor">
                     <path
@@ -174,11 +150,7 @@
         >
           <template #prev-year>
             <k-icon>
-              <svg
-                viewBox="0 0 20 20"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+              <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">
                 <g stroke-width="1" fill-rule="evenodd">
                   <g fill="currentColor">
                     <path
@@ -191,11 +163,7 @@
           </template>
           <template #next-year>
             <k-icon>
-              <svg
-                viewBox="0 0 20 20"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+              <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">
                 <g stroke-width="1" fill-rule="evenodd">
                   <g fill="currentColor">
                     <path
@@ -213,12 +181,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const value1 = ref('')
-const value2 = ref('')
-const value3 = ref('')
-const value4 = ref('')
+const value1 = ref('');
+const value2 = ref('');
+const value3 = ref('');
+const value4 = ref('');
 </script>
 
 <style scoped>

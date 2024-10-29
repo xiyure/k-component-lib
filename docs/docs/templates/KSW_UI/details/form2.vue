@@ -18,7 +18,7 @@
         <k-tabs v-model="activeName" class="demo-tabs flex" @tab-click="handleClick">
           <k-tab-pane label="User" name="first" class="flex">
             <div class="w-full grid grid-cols-2 gap-4 px-6 py-4 2xl:grid-cols-3">
-              <div class="item flex" v-for="item in abstract" :key="item.label">
+              <div v-for="item in abstract" :key="item.label" class="item flex">
                 <span
                   class="label inline-block text-right w-32 text-nowrap overflow-hidden text-ellipsis text-gray-400"
                 >
@@ -42,31 +42,30 @@
 
 <script lang="tsx" setup>
 import { ref } from 'vue';
+import { KTag } from '@ksware/ksw-ux';
 
 const abstract = [
   {
     label: '姓名',
-    value: '张三',
+    value: '张三'
   },
   {
     label: '年龄',
-    value: '25',
+    value: '25'
   },
   {
     label: '性别',
-    value: '男',
+    value: '男'
   },
   {
     label: '职业',
-    render: () => {
-      return (
-        <div class='flex flex-wrap gap-2'>
-          <KTag>前端开发</KTag>
-          <KTag>后端开发</KTag>
-        </div>
-      );
-    },
-  },
+    render: () => (
+      <div class='flex flex-wrap gap-2'>
+        <KTag>前端开发</KTag>
+        <KTag>后端开发</KTag>
+      </div>
+    )
+  }
 ];
 
 const activeName = ref('first');

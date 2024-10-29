@@ -34,7 +34,7 @@ import type { FormInstance } from '@ksware/ksw-ux';
 const formRef = ref<FormInstance>();
 
 const numberValidateForm = reactive({
-  age: '',
+  age: ''
 });
 
 const submitForm = (formEl: FormInstance | undefined) => {

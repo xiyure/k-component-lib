@@ -20,12 +20,12 @@ import { GetColorLevelNew, genRandomStr, getExposeProxy } from '../../utils';
 import { colors } from './const';
 
 defineOptions({
-  name: 'KRadio',
+  name: 'KRadio'
 });
 
 const props = withDefaults(defineProps<RadioProps>(), {
   color: '',
-  button: false,
+  button: false
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -35,7 +35,7 @@ const kRadioRef = ref();
 
 const __size__ = inject(
   '__size__',
-  computed(() => 'base'),
+  computed(() => 'base')
 );
 
 // 获取 dom
@@ -67,14 +67,14 @@ watch(
           colors.forEach((item) => {
             el.value?.style.setProperty(
               `--radio${item.name}`,
-              getColorS[`--k-oklch-${item.value}`],
+              getColorS[`--k-oklch-${item.value}`]
             );
           });
         }
       });
     }
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 const getSizeClass = computed(() => {

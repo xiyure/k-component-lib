@@ -32,11 +32,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const value = ref('2021-10-29')
-const month = ref('')
-const year = ref('')
+const value = ref('2021-10-29');
+const month = ref('');
+const year = ref('');
 const holidays = [
   '2021-10-01',
   '2021-10-02',
@@ -44,12 +44,10 @@ const holidays = [
   '2021-10-04',
   '2021-10-05',
   '2021-10-06',
-  '2021-10-07',
-]
+  '2021-10-07'
+];
 
-const isHoliday = ({ dayjs }) => {
-  return holidays.includes(dayjs.format('YYYY-MM-DD'))
-}
+const isHoliday = ({ dayjs }) => holidays.includes(dayjs.format('YYYY-MM-DD'));
 </script>
 
 <style scoped>

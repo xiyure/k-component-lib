@@ -91,7 +91,7 @@ const sizeForm = reactive({
   delivery: false,
   type: [],
   resource: '',
-  desc: '',
+  desc: ''
 });
 
 function onSubmit() {

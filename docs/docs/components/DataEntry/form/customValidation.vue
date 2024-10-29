@@ -75,13 +75,13 @@ const validatePass2 = (rule: any, value: any, callback: any) => {
 const ruleForm = reactive({
   pass: '',
   checkPass: '',
-  age: '',
+  age: ''
 });
 
 const rules = reactive<FormRules<typeof ruleForm>>({
   pass: [{ validator: validatePass, trigger: 'blur' }],
   checkPass: [{ validator: validatePass2, trigger: 'blur' }],
-  age: [{ validator: checkAge, trigger: 'blur' }],
+  age: [{ validator: checkAge, trigger: 'blur' }]
 });
 
 const submitForm = (formEl: FormInstance | undefined) => {

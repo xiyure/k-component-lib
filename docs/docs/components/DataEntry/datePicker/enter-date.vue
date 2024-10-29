@@ -29,39 +29,37 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const size = ref<'base' | 'lg' | 'sm'>('base')
+const size = ref<'base' | 'lg' | 'sm'>('base');
 
-const value1 = ref('')
-const value2 = ref('')
+const value1 = ref('');
+const value2 = ref('');
 
 const shortcuts = [
   {
     text: '今天',
-    value: new Date(),
+    value: new Date()
   },
   {
     text: '昨天',
     value: () => {
-      const date = new Date()
-      date.setTime(date.getTime() - 3600 * 1000 * 24)
-      return date
-    },
+      const date = new Date();
+      date.setTime(date.getTime() - 3600 * 1000 * 24);
+      return date;
+    }
   },
   {
     text: '一周前',
     value: () => {
-      const date = new Date()
-      date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
-      return date
-    },
-  },
-]
+      const date = new Date();
+      date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+      return date;
+    }
+  }
+];
 
-const disabledDate = (time: Date) => {
-  return time.getTime() > Date.now()
-}
+const disabledDate = (time: Date) => time.getTime() > Date.now();
 </script>
 
 <style scoped>

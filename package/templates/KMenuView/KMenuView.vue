@@ -56,18 +56,18 @@
 import { ref, computed } from 'vue';
 import { IconLeftMenuDisplay } from 'ksw-vue-icon';
 import { MenuItemRegistered } from 'element-plus';
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue';
 import { menuViewProps } from './type';
 import SubMenu from './subMenu.vue';
-import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue';
 
 defineOptions({
-  name: 'KMenuView',
+  name: 'KMenuView'
 });
 
 const props = withDefaults(defineProps<menuViewProps>(), {
   options: () => [],
   showCollapse: true,
-  collapse: undefined,
+  collapse: undefined
 });
 const emits = defineEmits(['click', 'select']);
 
@@ -103,7 +103,7 @@ const toggleCollapse = () => {
 };
 const handleSelect = (data: any) => {
   emits('select', data);
-}
+};
 
 defineExpose({ collapse, expand, toggleCollapse });
 </script>

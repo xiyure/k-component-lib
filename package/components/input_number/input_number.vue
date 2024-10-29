@@ -18,7 +18,7 @@ import { InputNumberProps } from './type';
 import { getCompSize, getExposeProxy } from '../../utils';
 
 defineOptions({
-  name: 'KInputNumber',
+  name: 'KInputNumber'
 });
 
 const props = withDefaults(defineProps<InputNumberProps>(), {});
@@ -31,7 +31,7 @@ defineExpose(getExposeProxy(instance, inputNumberRef));
 
 const injectSize = inject(
   '__size__',
-  computed(() => 'base'),
+  computed(() => 'base')
 );
 </script>
 

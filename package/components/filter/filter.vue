@@ -2,8 +2,8 @@
   <div
     :class="[
       'k-filter',
-      {'text-sm': props.size ==='sm', 'text-base': props.size !== 'sm'},
-      _styleModule
+      { 'text-sm': props.size === 'sm', 'text-base': props.size !== 'sm' },
+      _styleModule,
     ]"
   >
     <k-popover
@@ -12,8 +12,8 @@
       :teleported="false"
       placement="bottom-end"
       :popper-class="popperClassName"
-      @before-enter="() => popperClassName = 'k-filter-popper__enter'"
-      @before-leave="() => popperClassName = 'k-filter-popper__leave'"
+      @before-enter="() => (popperClassName = 'k-filter-popper__enter')"
+      @before-leave="() => (popperClassName = 'k-filter-popper__leave')"
       @show="handleShow"
       @hide="handleHide"
     >
@@ -31,24 +31,26 @@
       </template>
       <div class="k-filter__content">
         <div class="k-filter__header">
-          <span
-            :class="props.size === 'sm' ? 'text-base' : 'text-lg'"
-            class="font-bold"
-          >
+          <span :class="props.size === 'sm' ? 'text-base' : 'text-lg'" class="font-bold">
             {{ $t('advancedFilter') }}
           </span>
           <span
             :class="props.size === 'sm' ? 'text-sm' : 'text-base'"
-            @click="() => {
-              clearFilter();
-              emits('clear');
-            }"
+            @click="
+              () => {
+                clearFilter();
+                emits('clear');
+              }
+            "
           >
-            <IconClearDate />{{ $t('clearAll') }}
+            <IconClearDate />
+            {{ $t('clearAll') }}
           </span>
         </div>
         <div
-          v-for="item, index in filterData" :key="index" :title="item.title?.join('/')"
+          v-for="(item, index) in filterData"
+          :key="index"
+          :title="item.title?.join('/')"
           class="k-filter__item"
         >
           <div class="k-filter__condition">
@@ -60,12 +62,11 @@
               :props="{
                 label: 'title',
                 value: 'title',
-                children: props.childrenField
+                children: props.childrenField,
               }"
               clearable
               @change="changeCondition(index)"
-            >
-            </k-cascader>
+            ></k-cascader>
           </div>
           <div class="k-filter__logic">
             <k-select
@@ -99,7 +100,10 @@
                   :key="logicItem.value"
                   :label="$t(logicItem.label)"
                   :value="logicItem.value"
-                  :disabled="(item.logic === 'after' || item.logic === 'before') && logicItem.value === 'range'"
+                  :disabled="
+                    (item.logic === 'after' || item.logic === 'before') &&
+                      logicItem.value === 'range'
+                  "
                 />
               </k-select>
               <k-date-picker
@@ -109,9 +113,11 @@
                 :size="props.size"
                 clearable
                 :disabled="disabledDatePicker(item)"
-                @change="(val: any) => {
-                  dateChange(val, item);
-                }"
+                @change="
+                  (val: any) => {
+                    dateChange(val, item);
+                  }
+                "
               />
             </div>
             <k-select
@@ -143,14 +149,13 @@
         </div>
         <div class="k-filter__operate" :class="props.size === 'sm' ? 'text-sm' : 'text-base'">
           <div class="k-filer__operate-left">
-            <span
-              @click="addCondition"
-            ><IconAdd />{{ $t('addCondition') }}</span>
+            <span @click="addCondition">
+              <IconAdd />
+              {{ $t('addCondition') }}
+            </span>
           </div>
           <div class="k-filer__operate-right">
-            <span
-              class="select-label"
-            >{{ $t('aboveCondition') }}：</span>
+            <span class="select-label">{{ $t('aboveCondition') }}：</span>
             <k-select
               v-model="filterRule"
               :size="props.size"
@@ -187,15 +192,15 @@ defineOptions({
 });
 
 type IFilterDataType = {
-  title: string[],
-  logic: string,
-  value: any,
-  showValue: any
-  key: any,
-  dateRange?: string,
-  dateType?: string,
-  handler: ((a: any, b: any) => boolean) | null,
-  _allowSelectLogic?: boolean,
+  title: string[];
+  logic: string;
+  value: any;
+  showValue: any;
+  key: any;
+  dateRange?: string;
+  dateType?: string;
+  handler: ((a: any, b: any) => boolean) | null;
+  _allowSelectLogic?: boolean;
 };
 
 const props = withDefaults(defineProps<FilterProps>(), {
@@ -224,45 +229,64 @@ const filterData = ref<IFilterDataType[]>([]);
 const filterRule = ref(0);
 
 const flatColumns = computed(() => treeDataToArray(cloneDeep(props.options), 'group'));
-const instance = computed(() => function (value: any) {
-  const matchInstance:any = flatColumns.value?.find(item => item[props.filterKey] === value);
-  return matchInstance;
-});
-const conditionList = computed(() => function (item: any) {
-  const columnItem = flatColumns.value?.find(col => col[props.filterKey] === item.key);
-  const type = columnItem?.dataType || 'string';
-  return logicOptions.find(item => item.type === type);
-});
+const instance = computed(
+  () => function (value: any) {
+    const matchInstance: any = flatColumns.value?.find((item) => item[props.filterKey] === value);
+    return matchInstance;
+  }
+);
+const conditionList = computed(
+  () => function (item: any) {
+    const columnItem = flatColumns.value?.find((col) => col[props.filterKey] === item.key);
+    const type = columnItem?.dataType || 'string';
+    return logicOptions.find((item) => item.type === type);
+  }
+);
 
-const dateLogicList = computed(() => function (item:IFilterDataType) {
-  if (item.logic === 'equal') {
-    return dateTypeOptions;
-  } 
-  const hideLogicList = ['past-seven-days', 'past-thirty-days'];
-  return dateTypeOptions.filter((item) => !hideLogicList.includes(item.value));
-});
+const dateLogicList = computed(
+  () => function (item: IFilterDataType) {
+    if (item.logic === 'equal') {
+      return dateTypeOptions;
+    }
+    const hideLogicList = ['past-seven-days', 'past-thirty-days'];
+    return dateTypeOptions.filter((item) => !hideLogicList.includes(item.value));
+  }
+);
 
-const hasConfigCondition = computed(() => filterData.value.some(item => item.key && item.logic && (item.value || ['empty', 'nonEmpty'].includes(item.logic))));
+const hasConfigCondition = computed(() => filterData.value.some(
+  (item) => item.key && item.logic && (item.value || ['empty', 'nonEmpty'].includes(item.logic))
+));
 
 // 日期禁用
-const disabledInput = computed(() => function (item:IFilterDataType) {
-  const disabledLogicTypes = ['empty', 'nonEmpty'];
-  return !item.logic || disabledLogicTypes.includes(item.logic);
-}); 
-const disabledDatePicker = computed(() => function (item:IFilterDataType) {
-  const notDisabledDateRanges = ['date', 'range'];
-  return disabledInput.value(item) || !notDisabledDateRanges.includes(item.dateRange as string);
-});
+const disabledInput = computed(
+  () => function (item: IFilterDataType) {
+    const disabledLogicTypes = ['empty', 'nonEmpty'];
+    return !item.logic || disabledLogicTypes.includes(item.logic);
+  }
+);
+const disabledDatePicker = computed(
+  () => function (item: IFilterDataType) {
+    const notDisabledDateRanges = ['date', 'range'];
+    return disabledInput.value(item) || !notDisabledDateRanges.includes(item.dateRange as string);
+  }
+);
 const disableChangeMode = computed(() => {
-  const fields = filterData.value.map(item => item.key);
-  return props.remote === true || (Array.isArray(props.remote) && props.remote.some((field: string) => fields.includes(field)));
+  const fields = filterData.value.map((item) => item.key);
+  return (
+    props.remote === true ||
+    (Array.isArray(props.remote) && props.remote.some((field: string) => fields.includes(field)))
+  );
 });
 
-watch(() => disableChangeMode.value, (newValue: boolean) => {
-  if (newValue) {
-    filterRule.value = 1;
-  }
-}, { immediate: true });
+watch(
+  () => disableChangeMode.value,
+  (newValue: boolean) => {
+    if (newValue) {
+      filterRule.value = 1;
+    }
+  },
+  { immediate: true }
+);
 
 initData();
 function initData() {
@@ -284,7 +308,7 @@ function initData() {
     v.showValue = showValue;
     v.key = key;
     v.handler = handler;
-    const columnItem = flatColumns.value?.find(col => col[props.filterKey] === key);
+    const columnItem = flatColumns.value?.find((col) => col[props.filterKey] === key);
     v._allowSelectLogic = Boolean(!columnItem.options?.length);
     if (columnItem.dataType === 'date' && !Array.isArray(value)) {
       v.dateRange = 'date';
@@ -305,20 +329,20 @@ function addCondition() {
     key: '',
     handler: null,
     dateRange: 'date',
-    dateType: 'datetime',
+    dateType: 'datetime'
   };
   filterData.value.push(addItem);
 }
 
 // 移除条件
-function removeConditionItem(index:number) {
+function removeConditionItem(index: number) {
   if (index === 0 && filterData.value.length === 1) {
     clearFilter(false);
     return;
   }
   filterData.value.splice(index, 1);
 }
-function clearFilter(isFilter:boolean = true) {
+function clearFilter(isFilter: boolean = true) {
   filterData.value.length = 0;
   addCondition();
   if (isFilter) {
@@ -337,27 +361,27 @@ function filter(data?: any[]) {
     return {
       conditionInfo,
       tableData: sourceData
-    }; 
+    };
   }
   const remoteFieldMap = getRemoteFieldMap();
   const newData = sourceData?.filter((dataItem: any) => {
     if (filterRule.value === 0) {
-      return conditionInfo.conditionList.some(item => {
+      return conditionInfo.conditionList.some((item) => {
         if (remoteFieldMap.has(item.key)) {
           return true;
         }
-        const targetColumn = flatColumns.value?.find(col => col[props.filterKey] === item.key);
+        const targetColumn = flatColumns.value?.find((col) => col[props.filterKey] === item.key);
         if (!targetColumn || !targetColumn[props.filterKey]) {
           return false;
         }
         return item.handler?.(dataItem[targetColumn[props.filterKey]], item.value);
       });
-    } 
-    return conditionInfo.conditionList.every(item => {
+    }
+    return conditionInfo.conditionList.every((item) => {
       if (remoteFieldMap.has(item.key)) {
         return true;
       }
-      const targetColumn = flatColumns.value?.find(col => col[props.filterKey] === item.key);
+      const targetColumn = flatColumns.value?.find((col) => col[props.filterKey] === item.key);
       if (!targetColumn || !targetColumn[props.filterKey]) {
         return false;
       }
@@ -372,8 +396,10 @@ function filter(data?: any[]) {
 function getConditionInfo() {
   const disabledLogicTypes = ['empty', 'nonEmpty'];
   const conditionList = filterData.value
-  .filter(item => item.key && item.logic && (isValid(item.value) || disabledLogicTypes.includes(item.logic)))
-  .map(item => ({
+  .filter(
+    (item) => item.key && item.logic && (isValid(item.value) || disabledLogicTypes.includes(item.logic))
+  )
+  .map((item) => ({
     title: item.title.join(' - '),
     logic: t?.(item.logic),
     key: item.key,
@@ -392,7 +418,7 @@ function getRemoteFieldMap() {
   }
   return new Map(props.remote.map((item: any, index: number) => [item, index]));
 }
-function changeCondition(index:number) {
+function changeCondition(index: number) {
   const targetItem = filterData.value[index];
   const titles = targetItem.title ?? [];
   if (titles.length === 0) {
@@ -405,14 +431,16 @@ function changeCondition(index:number) {
   let columns: any[] = props.options ?? [];
   let columnItem: any = null;
   for (const title of titles) {
-    columnItem = columns?.find(item => item.title === title);
+    columnItem = columns?.find((item) => item.title === title);
     columns = columnItem?.group ?? [];
   }
   targetItem.key = columnItem?.[props.filterKey];
   targetItem.logic = 'equal';
-  const logicOptionItem = logicOptions.find(item => item.type === (columnItem.dataType || 'string'));
+  const logicOptionItem = logicOptions.find(
+    (item) => item.type === (columnItem.dataType || 'string')
+  );
   if (logicOptionItem) {
-    const logicItem = logicOptionItem.logicList.find(item => item.logic === 'equal');
+    const logicItem = logicOptionItem.logicList.find((item) => item.logic === 'equal');
     targetItem.handler = logicItem?.handler as any;
   }
   if (columnItem?.options?.length) {
@@ -426,15 +454,15 @@ function changeCondition(index:number) {
   }
 }
 function changeLogic(dataItem) {
-  if ((dataItem.logic === 'after' ||
-    dataItem.logic === 'before') &&
+  if (
+    (dataItem.logic === 'after' || dataItem.logic === 'before') &&
     dataItem.dateType === 'datetimerange'
   ) {
     dataItem.dateType = 'datetime';
     dataItem.dateRange = 'date';
   }
   const type = instance.value(dataItem.key)?.dataType ?? 'string';
-  const logicOptionItem = logicOptions.find(item => item.type === type);
+  const logicOptionItem = logicOptions.find((item) => item.type === type);
   if (!logicOptionItem) {
     return;
   }
@@ -442,13 +470,13 @@ function changeLogic(dataItem) {
     dataItem.value = '';
     dataItem.showValue = '';
   }
-  const logicItem = logicOptionItem.logicList.find(item => item.logic === dataItem.logic);
+  const logicItem = logicOptionItem.logicList.find((item) => item.logic === dataItem.logic);
   dataItem.handler = logicItem?.handler;
   if (type === 'date') {
     changeDateLogic(dataItem);
   }
 }
-function changeDateLogic(item:IFilterDataType) {
+function changeDateLogic(item: IFilterDataType) {
   if (disabledInput.value(item)) {
     item.value = '';
     item.showValue = '';
@@ -456,24 +484,46 @@ function changeDateLogic(item:IFilterDataType) {
   }
   changeDateRange(item);
 }
-function changeDateRange(item:IFilterDataType) {
+function changeDateRange(item: IFilterDataType) {
   setDatePickerType(item);
-  let dateValue:any = Array.isArray(item.value) ? '' : item.value;
+  let dateValue: any = Array.isArray(item.value) ? '' : item.value;
   switch (item.dateRange) {
-    case 'range': dateValue = ['', '']; break;
-    case 'today': dateValue = getTargetDay(0); break;
-    case 'tomorrow': dateValue = getTargetDay(1); break;
-    case 'yesterday': dateValue = getTargetDay(-1); break;
+    case 'range':
+      dateValue = ['', ''];
+      break;
+    case 'today':
+      dateValue = getTargetDay(0);
+      break;
+    case 'tomorrow':
+      dateValue = getTargetDay(1);
+      break;
+    case 'yesterday':
+      dateValue = getTargetDay(-1);
+      break;
     case 'current-week':
-      dateValue = [getTargetDay(-getWeekDay() + 1), getTargetDay(7 - getWeekDay(), true)]; break;
+      dateValue = [getTargetDay(-getWeekDay() + 1), getTargetDay(7 - getWeekDay(), true)];
+      break;
     case 'last-week':
-      dateValue = [getTargetDay(-getWeekDay() - 6), getTargetDay(-getWeekDay(), true)]; break;
+      dateValue = [getTargetDay(-getWeekDay() - 6), getTargetDay(-getWeekDay(), true)];
+      break;
     case 'current-month':
-      dateValue = [getTargetDay(-getDateDay() + 1), getTargetDay(getCurMonthDayCount() - getDateDay(), true)]; break;
+      dateValue = [
+        getTargetDay(-getDateDay() + 1),
+        getTargetDay(getCurMonthDayCount() - getDateDay(), true)
+      ];
+      break;
     case 'last-month':
-      dateValue = [getTargetDay(-getDateDay() - getCurMonthDayCount(true) + 1), getTargetDay(-getDateDay(), true)]; break;
-    case 'past-seven-days': dateValue = [getTargetDay(-7), getTargetDay(-1, true)]; break;
-    case 'past-thirty-days': dateValue = [getTargetDay(-30), getTargetDay(-1, true)]; break;
+      dateValue = [
+        getTargetDay(-getDateDay() - getCurMonthDayCount(true) + 1),
+        getTargetDay(-getDateDay(), true)
+      ];
+      break;
+    case 'past-seven-days':
+      dateValue = [getTargetDay(-7), getTargetDay(-1, true)];
+      break;
+    case 'past-thirty-days':
+      dateValue = [getTargetDay(-30), getTargetDay(-1, true)];
+      break;
   }
   const targetRanges = ['current-week', 'last-week', 'current-month', 'last-month'];
   if (item.dateType === 'datetime' && targetRanges.includes(item.dateRange as string)) {
@@ -489,7 +539,7 @@ function changeDateRange(item:IFilterDataType) {
   }
 }
 // 日期推导
-function getTargetDay(index:number, isEnd = false) {
+function getTargetDay(index: number, isEnd = false) {
   const currentDate = new Date();
   const targetDate = new Date(currentDate);
   targetDate.setDate(targetDate.getDate() + index);
@@ -524,7 +574,7 @@ function getCurMonthDayCount(isPre = false) {
   return 28;
 }
 // 设置日期选择器的类型（日期 or 时间段）
-function setDatePickerType(item:IFilterDataType) {
+function setDatePickerType(item: IFilterDataType) {
   if (item.logic === 'equal') {
     const dateArray = ['date', 'today', 'tomorrow', 'yesterday'];
     item.dateType = dateArray.includes(item.dateRange as string) ? 'datetime' : 'datetimerange';
@@ -533,11 +583,11 @@ function setDatePickerType(item:IFilterDataType) {
     item.dateType = !dateArray.includes(item.dateRange as string) ? 'datetime' : 'datetimerange';
   }
 }
-function updateValue(dataItem:IFilterDataType, uiType:string, options?:any[]) {
+function updateValue(dataItem: IFilterDataType, uiType: string, options?: any[]) {
   if (uiType === 'input') {
     dataItem.showValue = dataItem.value;
   } else if (uiType === 'select') {
-    const targetOption = options?.find(item => item.value === dataItem.value);
+    const targetOption = options?.find((item) => item.value === dataItem.value);
     dataItem.showValue = targetOption?.label ?? '';
   }
 }

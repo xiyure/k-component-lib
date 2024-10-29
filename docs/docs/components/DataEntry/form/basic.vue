@@ -76,7 +76,7 @@ const form = reactive({
   delivery: false,
   type: [],
   resource: '',
-  desc: '',
+  desc: ''
 });
 
 const onSubmit = () => {

@@ -60,13 +60,12 @@
 
 <script setup lang="ts">
 import { ref, computed, provide, inject } from 'vue';
-import { IconRefresh } from 'ksw-vue-icon';
+import { IconRefresh, IconArrowRight } from 'ksw-vue-icon';
 import { ViewProps, ViewItemProps } from './type';
 import { genRandomStr } from '../../utils';
-import { IconArrowRight } from 'ksw-vue-icon';
 
 defineOptions({
-  name: 'KView',
+  name: 'KView'
 });
 
 const props = withDefaults(defineProps<ViewProps>(), {
@@ -78,12 +77,8 @@ const emits = defineEmits(['refresh', 'change', 'remove', 'drag', 'visible']);
 const _styleModule = inject('_styleModule', '');
 const active = ref(props.defaultActive ?? props.data?.[0]?.value ?? '');
 
-const specialData = computed(() => {
-  return props.data?.filter((item) => !Boolean(item.custom));
-});
-const customData = computed(() => {
-  return props.data?.filter((item) => Boolean(item.custom));
-});
+const specialData = computed(() => props.data?.filter((item) => !item.custom));
+const customData = computed(() => props.data?.filter((item) => Boolean(item.custom)));
 
 function handleFresh() {
   emits('refresh');
@@ -101,7 +96,7 @@ const dragElement: {
   data: ViewItemProps | null;
 } = {
   element: null,
-  data: null,
+  data: null
 };
 let isCustom: boolean = false;
 const specialViewId = genRandomStr(8);

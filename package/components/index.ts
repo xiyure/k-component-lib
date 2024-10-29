@@ -92,5 +92,5 @@ export {
   KDropdownItem,
   KTreeTransfer,
   KTreeSelect,
-  KFilterForm,
+  KFilterForm
 };

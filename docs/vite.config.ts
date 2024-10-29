@@ -22,23 +22,23 @@ export default defineConfig({
         vxeTable: [/vxe-table/],
         vxePcUi: [/vxe-pc-ui/],
         'ksw-ux': [/package\/(components|templates|utils|style|interface|element-plus.ts)/, /vue-i18n/],
-        'ksw-icon': [/ksw-vue-icon/],
+        'ksw-icon': [/ksw-vue-icon/]
         // '@nolebase': [/@nolebase/],
-      },
+      }
     }),
     GitChangelog({ 
-      repoURL: () => 'https://github.com/xiyure/k-component-lib', 
+      repoURL: () => 'https://github.com/xiyure/k-component-lib' 
     }), 
     GitChangelogMarkdownSection({ 
       sections: { 
         disableChangelog: true, 
-        disableContributors: false, 
-      }, 
-    }),
+        disableContributors: false 
+      } 
+    })
   ],
   server: {
     host: '0.0.0.0',
-    port: 12581,
+    port: 12581
   },
   // build: {
   //   rollupOptions: {
@@ -59,13 +59,13 @@ export default defineConfig({
       '@components': path.resolve(__dirname, './components'),
       '@data': path.resolve(__dirname, './data'),
       '@docs': path.resolve(__dirname, './docs'),
-      '@example': path.resolve(__dirname, './example'),
-    },
+      '@example': path.resolve(__dirname, './example')
+    }
   },
   optimizeDeps: {
-    exclude: ['@nolebase/vitepress-plugin-enhanced-readabilities/client', 'vitepress'],
+    exclude: ['@nolebase/vitepress-plugin-enhanced-readabilities/client', 'vitepress']
   },
   ssr: {
-    noExternal: ['ksw-vue-icon', '@ksware/ksw-ux', 'vue-i18n', '@nolebase/*'],
-  },
+    noExternal: ['ksw-vue-icon', '@ksware/ksw-ux', 'vue-i18n', '@nolebase/*']
+  }
 });

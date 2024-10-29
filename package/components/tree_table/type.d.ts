@@ -104,7 +104,7 @@ export interface TreeTableProps {
   style?: CSSProperties
   class?: string
   simple?: boolean
-  defaultTransferData?: (() => TableHeaderControl[]) | TableHeaderControl[]
+  defaultTransferData?: (() => TableHeaderControl[] | Promise<TableHeaderControl[]>) | TableHeaderControl[]
   onTransferShow?: () => void
   onTransferHide?: (transferData: TableHeaderControl[]) => void
   onAdvancedFilterShow?: () => void

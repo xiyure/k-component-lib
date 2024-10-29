@@ -3,7 +3,7 @@ import { VNode, Component } from 'vue';
 export interface DetailsItemProps {
   label?: string;
   value?: string | object;
-  render?: (item: any) => VNode | Component;
+  render?: () => VNode | Component;
   showLine?: boolean;
   column?: number;
   direction?: 'horizontal' | 'vertical';

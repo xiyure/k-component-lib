@@ -7,6 +7,10 @@ module.exports = {
   extends: ['plugin:@typescript-eslint/recommended', 'plugin:vue/vue3-recommended', 'airbnb-base'],
   parserOptions: {
     parser: '@typescript-eslint/parser',
+    ecmaFeatures:{
+      jsx:true,
+      tsx: true
+    },
     ecmaVersion: 2020,
   },
   rules: {
@@ -17,7 +21,7 @@ module.exports = {
     'array-element-newline': ['error', 'consistent'], // 强制数组元素间出现换行
     indent: ['error', 2, { MemberExpression: 0, SwitchCase: 1, ignoredNodes: ['TemplateLiteral'] }], // 强制使用一致的缩进
     quotes: ['error', 'single'],
-    'comma-dangle': ['error', 'only-multiline'],
+    'comma-dangle': ['error', 'never'],
     'object-curly-spacing': ['error', 'always'],
     'max-len': ['error', 120],
     'no-new': 'off',
@@ -64,6 +68,7 @@ module.exports = {
     'vue/html-indent': ['error', 2],
     'vue/html-self-closing': 'off',
     'vue/singleline-html-element-content-newline': 'off',
+    'vue/multi-word-component-names': 'off',
     'vue/max-attributes-per-line': [
       'error',
       {

@@ -8,6 +8,6 @@ export default {
       includeFiles: [/vp-doc\.css/, /base\.css/]
     }),
     tailwindcss(),
-    autoprefixer(),
-  ],
+    autoprefixer()
+  ]
 };

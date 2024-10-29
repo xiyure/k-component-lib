@@ -33,7 +33,7 @@ import { reactive } from 'vue';
 const formInline = reactive({
   user: '',
   region: '',
-  date: '',
+  date: ''
 });
 
 const onSubmit = () => {

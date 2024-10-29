@@ -113,13 +113,13 @@ import { computed, inject } from 'vue';
 import { ResultProps } from './type.d';
 
 defineOptions({
-  name: 'KResult',
+  name: 'KResult'
 });
 
 const props = withDefaults(defineProps<ResultProps>(), {
   status: '',
   title: '',
-  subTitle: '',
+  subTitle: ''
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -146,7 +146,7 @@ const statusMessage = computed(() => {
       return {
         title:
           '未知状态, 请在组件中正确使用 status / title / subTitle 属性, 或 #icon / #extra 插槽',
-        color: '#ff4d4f',
+        color: '#ff4d4f'
       };
   }
 });
