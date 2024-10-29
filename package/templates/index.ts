@@ -17,5 +17,5 @@ export {
   KDetails,
   KPageTableView,
   KMenuView,
-  GFPageDetails
+  GFPageDetails,
 };

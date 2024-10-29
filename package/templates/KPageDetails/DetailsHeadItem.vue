@@ -10,26 +10,25 @@
     <p class="titel text-base text-gray-400 text-nowrap">{{ props.label }}:</p>
     <p class="value text-base text-normal">
       <span v-if="typeof value === 'string'">{{ value }}</span>
-      <component :is="typeof render === 'function'? render() : render"></component>
+      <component :is="typeof render === 'function' ? render() : render"></component>
     </p>
   </div>
 </template>
 
 <script setup>
-
 const props = defineProps({
   label: {
     type: String,
-    default: ''
+    default: '',
   },
   value: {
     type: String || Object,
-    default: ''
+    default: '',
   },
   render: {
     type: Function,
-    default: () => null
-  }
+    default: () => null,
+  },
 });
 </script>
 <style scoped></style>

@@ -31,12 +31,12 @@ import { DetailsItemProps, DetailsProps } from './type';
 
 const props = withDefaults(defineProps<DetailsItemProps>(), {
   column: 1,
-  showLine: undefined
+  showLine: undefined,
 });
 
 const injectMaxColumn = inject<ComputedRef>(
   '__maxColumn__',
-  computed(() => props.column)
+  computed(() => props.column),
 );
 const __parentProps__ = inject<DetailsProps>('__parentProps__', props);
 
