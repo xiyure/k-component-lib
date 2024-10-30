@@ -1,4 +1,3 @@
-import Color from 'element-plus/es/components/color-picker/src/utils/color';
 import { Component } from 'vue';
 
 export interface ButtonProps {
@@ -53,5 +52,5 @@ export interface ButtonProps {
   /**
    *  十六进制颜色: 例如 #ff5500
    */
-  color?: Color | string;
+  color?: string;
 }
