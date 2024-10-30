@@ -350,6 +350,34 @@
         </template>
       </k-step>
     </k-steps>
+    <k-steps :active="active" align-center :height="30">
+      <k-step
+        v-for="(item, index) in stepStatus"
+        :key="index"
+        :title="item.title"
+        :description="item.description"
+        :status="item.status"
+        :color="item.color"
+        :icon="item.icon"
+      >
+        <template v-if="item.text !== undefined" #title>
+          <span :style="{ display: 'flex', alignItems: 'center' }">
+            <span v-if="item.text">{{ item.text }}</span>
+            <component
+              :style="{
+                width: '20px',
+                height: '20px',
+                backgroundColor: item.color,
+                marginRight: '5px',
+              }"
+              v-else
+              :is="item.icon"
+            />
+            <span>{{ item.title }}</span>
+          </span>
+        </template>
+      </k-step>
+    </k-steps>
     <k-button main :style="{ marginTop: '10px' }" @click="nextStep(5)">next</k-button>
     <hr />
     <p>Collapse Component</p>

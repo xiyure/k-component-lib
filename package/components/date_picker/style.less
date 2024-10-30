@@ -46,8 +46,18 @@
 }
 
 .el-date-editor.el-date-editor--datetime.k-date-picker.el-tooltip__trigger {
+  --paddingt: var(--k-theme-input-size-padding--base);
+  .el-input__wrapper {
+    padding: var(--k-theme-input-size-padding--base);
+  }
   .el-input__wrapper:hover,
   .el-input__wrapper.is-focus {
-    padding-left: calc(1rem - 1px);
+    padding: var(--k-theme-input-size-padding--base);
+  }
+  &.el-input--large {
+    --paddingt: var(--k-theme-input-size-padding--lg);
+  }
+  &.el-input--small {
+    --paddingt: var(--k-theme-input-size-padding--sm);
   }
 }
