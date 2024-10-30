@@ -1,7 +1,7 @@
 <template>
   <el-form-item
     ref="KFormItemRef"
-    :class="['k-form-item', _styleModule]"
+    :class="['k-form-item', _styleModule, { 'k-form-item--colon': injectShowColon }]"
     v-bind="$attrs"
     :size="getCompSize(props.size)"
   >
@@ -12,17 +12,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from 'vue';
+import { ref, inject, computed } from 'vue';
 import { ElFormItem } from 'element-plus';
 import { FormItemProps } from './type';
 import { getCompSize, getExposeProxy } from '../../utils';
 
 defineOptions({
-  name: 'KFormItem'
+  name: 'KFormItem',
 });
 
 const props = withDefaults(defineProps<FormItemProps>(), {
-  size: 'base'
+  size: 'base',
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -30,6 +30,11 @@ const KFormItemRef = ref<any>(null);
 
 const instance: any = {};
 defineExpose(getExposeProxy(instance, KFormItemRef));
+
+const injectShowColon = inject(
+  '__showColon__',
+  computed(() => false),
+);
 </script>
 
 <style lang="less">
