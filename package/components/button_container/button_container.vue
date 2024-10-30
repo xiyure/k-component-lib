@@ -1,12 +1,12 @@
 <template>
-  <div ref="box" class="k-button-container">
+  <div ref="box" :class="['k-button-container', styleModule]">
     <div ref="container" class="container">
       <slot></slot>
     </div>
     <div
       class="k-button-more"
       :style="{
-        opacity: hideTabs.length > 0? 1 : 0,
+        opacity: hideTabs.length > 0 ? 1 : 0,
       }"
     >
       <Dropdown
@@ -35,14 +35,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onBeforeUnmount, inject } from 'vue';
 import { ButtonContainerProps } from './type';
 import Dropdown from './dropdown_menu';
-import { flattenChildren, isValidElement, camelize } from '../../utils';
+import { flattenChildren, isValidElement, camelize, genRandomStr } from '../../utils';
 
 defineOptions(({
   name: 'KButtonContainer'
 }));
+
+const elementObserver = inject<any>('__elementObserver');
+const styleModule = inject('_styleModule', '');
 
 const props = withDefaults(defineProps<ButtonContainerProps>(), {
   trigger: 'click',
@@ -57,17 +60,21 @@ const slots = defineSlots();
 const container = ref();
 const box = ref();
 const buttons = parseBtnList(flattenChildren(slots.default?.()));
-const hideTabs = ref<any[]>([]);
-let buttonsElem: any;
+const hideTabs = ref<HTMLElement[]>([]);
+let buttonsElem: HTMLElement[];
+const key = `_${genRandomStr(8)}`
 
 // 可视区域发生变化时，下拉列表也随之更新
 onMounted(() => {
   buttonsElem = container.value?.querySelectorAll('.k-button');
+  box.value.setAttribute('data-observer-key', key);
   getHideBtnList();
-  window.addEventListener('resize', getHideBtnList);
+  elementObserver.observe(box.value, getHideBtnList);
 });
-onUnmounted(() => {
-  window.removeEventListener('resize', getHideBtnList);
+onBeforeUnmount(() => {
+  if (box.value) {
+    elementObserver?.unobserve?.(box.value);
+  }
 });
 
 function parseBtnList(children: any[]): any[] {
@@ -90,24 +97,28 @@ function parseBtnList(children: any[]): any[] {
   .filter(btn => btn);
 }
 
-function isElementInContainerView(el: any) {
+function isElementInContainerView(el: HTMLElement) {
   const elRect = el.getBoundingClientRect();
   const containerRect = container.value?.getBoundingClientRect();
+  if (!containerRect) {
+    return true;
+  }
   return elRect.left >= containerRect.left && elRect.right <= containerRect.right;
 }
 function getHideBtnList() {
-  setTimeout(() => {
-    const res: any[] = [];
-    if (!buttons) {
-      return [];
+  const res: HTMLElement[] = [];
+  if (!buttons) {
+    return [];
+  }
+  buttonsElem?.forEach((item: HTMLElement, index: number) => {
+    if (!isElementInContainerView(item) && buttons[index]) {
+      item.style.opacity = '0';
+      res.push(buttons[index]);
+    } else {
+      item.style.opacity = '1';
     }
-    buttonsElem?.forEach((item: any, index: number) => {
-      if (!isElementInContainerView(item) && buttons[index]) {
-        res.push(buttons[index]);
-      }
-    });
-    hideTabs.value = res;
   });
+  hideTabs.value = res;
 }
 </script>
 

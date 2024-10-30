@@ -13,10 +13,8 @@ import * as originComponents from './element-plus';
 import * as directives from './directives';
 import zh from './internal/zh';
 import en from './internal/en';
-import { Emitter } from './utils';
+import { Emitter, ElementObserver } from './utils';
 import './style/tailwind.css';
-// import './style/theme/AOM/theme.css';
-// import './style/theme/GFAOM/theme.css';
 import 'overlayscrollbars/styles/overlayscrollbars.css'; // 引入overlayscrollbars样式
 
 type optionsType = {
@@ -58,6 +56,7 @@ const install = (app: any, options?: optionsType) => {
     app.directive(`ksw_${name}`, directives[name]);
   }
   // 全局事件管理，用于多级组件之间的通信
+  app.provide('__elementObserver', new ElementObserver());
   app.provide('_emitter', new Emitter());
   // styleModule
   app.provide('_styleModule', options?.styleModule ?? '');
