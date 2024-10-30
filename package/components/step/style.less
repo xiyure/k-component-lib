@@ -68,6 +68,7 @@
 .el-steps.k-steps--ant {
   .el-step {
     position: relative;
+    height: 2rem;
     .el-step__head {
       display: flex;
       align-items: center;
@@ -115,17 +116,20 @@
     .el-step__main {
       width: fit-content;
 
-      position: absolute;
-      top: 50%;
-      left: 2rem;
-      transform: translateY(-50%);
+      position: relative;
+      top: -50%;
+      left: 0;
       background: #fff;
+
+      transform: translate(2rem, -50%);
       padding-left: 0.5rem;
       padding-right: 1rem;
+      margin-right: 1rem;
 
       display: inline-flex;
       white-space: nowrap;
       .el-step__title {
+        padding: 0;
         &.is-wait {
           color: var(--k-gray-400);
         }
