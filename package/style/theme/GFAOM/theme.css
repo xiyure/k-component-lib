@@ -1,5 +1,5 @@
 @import '../../variable.css';
-
+@import './custom.less';
 :root {
   --k-theme-test: red;
   /*
@@ -21,7 +21,7 @@
   --k-theme-primary--hover: rgb(var(--k-blue-rgb-400));
   --k-theme-primary--active: rgb(var(--k-blue-rgb-600));
   --k-theme-primary--focus: rgb(var(--k-blue-rgb-100));
-  --k-theme-primary-rgb: rgb(22, 119, 255);
+  --k-theme-primary-rgb: 22, 119, 255;
 
   /* info-rgb */
   --k-theme-info: rgb(var(--k-slate-rgb-500));
