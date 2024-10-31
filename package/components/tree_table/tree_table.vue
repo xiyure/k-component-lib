@@ -6,7 +6,7 @@
       _styleModule,
       { 'tree-table-use-ant-style': useAntStyle },
     ]"
-    :style="{ height: height, ...style }"
+    :style="{ height: adaptive ? 'fit-content' :  height, ...style }"
   >
     <div v-if="simple && showSearchInput" class="k-tree-table__header-pure">
       <k-input
@@ -119,7 +119,6 @@
           <template v-else-if="widget.id ==='sizeControl'">
             <!-- 表格尺寸控制 -->
             <k-dropdown
-              :size="compSize"
               trigger="click"
               @command="(command) => {_size = command || undefined}"
             >
@@ -191,7 +190,7 @@
         ref="xTree"
         :border="useAntStyle ? 'inner' : border"
         :size="tableSize"
-        height="100%"
+        :height="adaptive ? undefined : '100%'"
         :data="showTableData"
         :row-config="rowConfig"
         :sort-config="sortConfig"
@@ -441,12 +440,6 @@ const widgets = computed(() => {
         slot: null,
       });
     }
-    if (props.showSizeControl) {
-      widgetsList.push({
-        id:'sizeControl',
-        slot: null
-      });
-    }
     if (props.showTransfer) {
       widgetsList.push({
         id: 'transfer',
@@ -513,13 +506,16 @@ const headerText = computed(() => {
 
 // 表格高度计算
 const tableHeight = computed(() => {
+  if (props.adaptive) {
+    return 'fit-content';
+  }
   const isShowHeader = (props.showDescription || widgets.value?.length) && props.showHeaderTools;
   const headerHeight = isShowHeader ? (props.size === 'mini' ? 34 : 42) : 0;
   const pageHeight = isPaging.value ? (props.size === 'mini' ? 34 : 42) : 0;
   return `calc(100% - ${headerHeight}px - ${pageHeight}px)`;
 });
 const tableSize = computed(() => {
-  return _size.value ?? props.size;
+  return _size.value ?? undefined;
 });
 const __showTransfer = computed(() => {
   const toolbarNames = widgets.value.map((item) => item.id);
@@ -538,7 +534,13 @@ const treeConfig = computed(() => {
 const sortConfig = computed(() => Object.assign(defaultSortConfig, props.sortConfig || {}));
 const rowConfig = computed(() => Object.assign(defaultRowConfig, props.rowConfig || {}));
 const editConfig = computed(() => Object.assign(defaultEditConfig, props.editConfig || {}));
-const scrollY = computed(() => Object.assign(defaultScrollY, props.scrollY || {}));
+const scrollY = computed(() => {
+  const scrollYConfig = Object.assign(defaultScrollY, props.scrollY || {});
+  if (props.adaptive) {
+    scrollYConfig.enabled = false;
+  }
+  return scrollYConfig;
+});
 const columnConfig = computed(() => Object.assign(defaultColumnConfig, props.columnConfig || {}));
 const seqConfig = computed(() => Object.assign(defaultSeqConfig, props.seqConfig || {}));
 // 是否分页
@@ -649,7 +651,12 @@ function filterTableData() {
     return searchMethod(searchKey, filterData);
   }
   const visibleColumns = flatColumns.value.filter((col: columnConfigType) => col.visible !== false);
-  const fieldList = visibleColumns.map((col: columnConfigType) => col.field || '');
+  const fieldList = visibleColumns.map((col: columnConfigType) => {
+    if (col.field && !col.type) {
+      return col.field;
+    }
+    return null;
+  }).filter((field: string | null) => field !== null);
   let tableData = filterData.filter((dataItem: any) =>
     fieldList.some((field: string) => {
       const cellLabel = tableInstance.value.getCellLabel(dataItem, field);
