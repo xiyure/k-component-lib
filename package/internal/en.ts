@@ -75,5 +75,6 @@ export default {
   curYear: 'current year',
   refresh: 'refresh',
   columnHeaderController: 'column header controller',
-  advancedFilter_c: 'advanced filter'
+  advancedFilter_c: 'advanced filter',
+  sizeControlTrigger: 'Size Control'
 };

@@ -75,5 +75,6 @@ export default {
   curYear: '本年度',
   refresh: '刷新',
   columnHeaderController: '列头控制器',
-  advancedFilter_c: '高级筛选'
+  advancedFilter_c: '高级筛选',
+  sizeControlTrigger: '调整表格大小'
 };

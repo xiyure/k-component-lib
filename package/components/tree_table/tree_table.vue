@@ -106,7 +106,7 @@
                     :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
                     v-if="widget.widget"
                   />
-                  <slot v-else name="_filterTrigger" :is-filter="hasConfigCondition">
+                  <slot v-else name="filterTrigger" :is-filter="hasConfigCondition">
                     <k-button :size="compSize">
                       <IconFilter v-if="!hasConfigCondition" />
                       <IconFilterFill v-else color="#2882FF" />
@@ -115,6 +115,34 @@
                 </div>
               </template>
             </k-filter>
+          </template>
+          <template v-else-if="widget.id ==='sizeControl'">
+            <!-- 表格尺寸控制 -->
+            <k-dropdown
+              :size="compSize"
+              trigger="click"
+              @command="(command) => {_size = command || undefined}"
+            >
+              <template #title>
+                <div v-ksw_tooltip="$t('sizeControlTrigger')" class="text-sm">
+                  <component
+                    :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
+                    v-if="widget.widget"
+                  />
+                  <slot v-else name="sizeControlTrigger">
+                    <k-button :size="compSize"><IconSizeControls /></k-button>
+                  </slot>
+                </div>
+              </template>
+              <k-dropdown-item
+                v-for="item in sizeList"
+                :key="item.value"
+                :style="{
+                  color: _size === (item.value || undefined) ? '#2882FF' : '',
+                }"
+                :command="item.value"
+              >{{ item.label }}</k-dropdown-item>
+            </k-dropdown>
           </template>
           <template v-else-if="widget.id === 'transfer'">
             <!-- 穿梭框 -->
@@ -131,7 +159,7 @@
                     :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
                     v-if="widget.widget"
                   />
-                  <slot v-else name="_transferTrigger">
+                  <slot v-else name="transferTrigger">
                     <k-button :size="compSize">
                       <IconSetting />
                     </k-button>
@@ -162,7 +190,7 @@
       <k-table
         ref="xTree"
         :border="useAntStyle ? 'inner' : border"
-        :size="size"
+        :size="tableSize"
         height="100%"
         :data="showTableData"
         :row-config="rowConfig"
@@ -246,7 +274,7 @@
 import { ref, computed, watch, onMounted, nextTick, inject, provide } from 'vue';
 import VXETable from 'vxe-table';
 import { VueI18nTranslation } from 'vue-i18n';
-import { IconSearch, IconSetting, IconRefresh, IconFilter, IconFilterFill } from 'ksw-vue-icon';
+import { IconSearch, IconSetting, IconRefresh, IconFilter, IconFilterFill, IconSizeControls } from 'ksw-vue-icon';
 import { cloneDeep } from 'lodash-es';
 import KColumnGroup from './column_group';
 import { KInput } from '../input';
@@ -257,6 +285,7 @@ import { KOperate } from '../operate';
 import { KTable } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
+import { KDropdown, KDropdownItem } from '../dropdown';
 import { TreeTableProps, columnConfigType, TableHeaderControl } from './type';
 import {
   genRandomStr,
@@ -295,9 +324,10 @@ const t = inject<VueI18nTranslation>('$t');
 const DEFAULT_PAGES = [25, 50, 80, 100, 150];
 const DEFAULT_WIDGETS = new Map([
   ['search', 'search'],
-  ['filter', 'filter'],
   ['refresh', 'refresh'],
-  ['transfer', 'transfer'],
+  ['filter', 'filter'],
+  ['sizeControl', 'sizeControl'],
+  ['transfer', 'transfer']
 ]);
 // 表格默认配置
 const defaultRowConfig = {
@@ -356,6 +386,13 @@ const emits = defineEmits([
   'advanced-filter-clear',
 ]);
 const xTree = ref();
+const _size = ref(props.size);
+const sizeList = [
+  { label: '默认', value: '' },
+  { label: '中等', value:'medium' },
+  { label: '小号', value:'small' },
+  { label: '紧凑', value:'mini' },
+];
 const tableTransferRef = ref();
 // 列配置
 const columns = ref<any>([]);
@@ -396,6 +433,18 @@ const widgets = computed(() => {
       widgetsList.push({
         id: 'filter',
         slot: null,
+      });
+    }
+    if (props.showSizeControl) {
+      widgetsList.push({
+        id:'sizeControl',
+        slot: null,
+      });
+    }
+    if (props.showSizeControl) {
+      widgetsList.push({
+        id:'sizeControl',
+        slot: null
       });
     }
     if (props.showTransfer) {
@@ -468,6 +517,9 @@ const tableHeight = computed(() => {
   const headerHeight = isShowHeader ? (props.size === 'mini' ? 34 : 42) : 0;
   const pageHeight = isPaging.value ? (props.size === 'mini' ? 34 : 42) : 0;
   return `calc(100% - ${headerHeight}px - ${pageHeight}px)`;
+});
+const tableSize = computed(() => {
+  return _size.value ?? props.size;
 });
 const __showTransfer = computed(() => {
   const toolbarNames = widgets.value.map((item) => item.id);
