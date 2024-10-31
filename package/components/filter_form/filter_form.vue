@@ -13,7 +13,7 @@
           v-if="compVisible(item)"
           :key="item.prop"
           v-bind="item"
-          :style="`grid-column: span ${item.column}`"
+          :style="`grid-column: span ${item.column === undefined ? 1 : item.column < maxColumn ? item.column : maxColumn}`"
           class="grid-auto-rows:max-content;"
         >
           <slot :name="item.prop" :form-data="formData">
@@ -129,7 +129,6 @@ const _styleModule = inject('_styleModule', '');
 const props = withDefaults(defineProps<FilterFormProps>(), {
   items: () => [],
   size: 'base',
-  columns: 3,
   collapse: true,
   reserve: false,
   visible: false,
@@ -154,7 +153,6 @@ onMounted(() => {
   setTimeout(() => {
     // 获取KFormRef的高度
     const height = (KFormRef.value?.$el.clientHeight ?? 0) + 2;
-    console.log('height', height);
 
     filterForm?.value.style.setProperty('--expandHeight', `${height}px`);
     filterForm?.value.style.setProperty('--transition-duration', '0.3s');
@@ -282,15 +280,25 @@ function computeMaxColumn() {
   setTimeout(() => {
     // 获取KFormRef的高度
     const height = (KFormRef.value?.$el.clientHeight ?? 0) + 2;
-    console.log('height', height);
-
     filterForm?.value.style.setProperty('--expandHeight', `${height}px`);
     filterForm?.value.style.setProperty('--transition-duration', '0.3s');
     const topNew = markers.value.offsetTop;
     filterBtn?.value.style.setProperty('--top-new', `${topNew}px`);
   }, 1);
 
-  console.log(maxColumn.value);
+  // console.log(maxColumn.value);
+}
+
+function computeItemSpan() {
+  props.items.forEach((item: any) => {
+    if (!item.column) {
+      return 1;
+    } else if (item.column <= maxColumn.value) {
+      return item.column;
+    } else {
+      return maxColumn.value;
+    }
+  });
 }
 
 // expose instance
