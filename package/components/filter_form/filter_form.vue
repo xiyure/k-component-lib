@@ -1,12 +1,12 @@
 <template>
-  <div ref="vvn" class="vvn is-expand">
+  <div ref="filterForm" class="filterForm is-expand">
     <k-form
       ref="KFormRef"
-      class="filtr-items1 relative"
+      class="filtr-items w-full relative grid grid-cols-1 2xs:grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 base:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
       :model="formData"
       :size="size"
       :class="['k-form', _styleModule]"
-      :style="`grid-template-columns:repeat(${columns},minmax(0, 1fr))`"
+      :showColon="showColon"
     >
       <template v-for="item in items" :key="item.prop">
         <k-form-item
@@ -87,9 +87,9 @@
         </k-form-item>
       </template>
       <div
-        ref="bbm"
-        class="bbm flex w-full h-8 is-expand"
-        :style="`grid-column: ${columns} / ${columns + 1}; `"
+        ref="markers"
+        class="markers flex w-full h-8 is-expand"
+        :style="`grid-column: ${maxColumn} / ${maxColumn + 1}; `"
       ></div>
       <div ref="filterBtn" class="filtr-btns flex bg-white">
         <slot name="action">
@@ -109,7 +109,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, computed, watch, onMounted } from 'vue';
+import { ref, inject, computed, watch, onMounted, onUnmounted } from 'vue';
 import { KInput } from '../input';
 import { KSelect, KOption } from '../select';
 import { KRadio, KRadioGroup } from '../radio';
@@ -121,7 +121,7 @@ import { FilterFormProps, filterFormItem } from './type';
 import { getExposeProxy } from '../../utils';
 
 defineOptions({
-  name: 'KFilterForm'
+  name: 'KFilterForm',
 });
 
 const DEFAULT_SIZES = ['base', 'sm'];
@@ -132,7 +132,7 @@ const props = withDefaults(defineProps<FilterFormProps>(), {
   columns: 3,
   collapse: true,
   reserve: false,
-  visible: false
+  visible: false,
 });
 const emits = defineEmits(['search', 'reset', 'change']);
 
@@ -140,28 +140,39 @@ const formData = ref({});
 let preItems = {};
 const filterBtn = ref();
 const KFormRef = ref();
-const bbm = ref();
-const vvn = ref();
+const markers = ref();
+const filterForm = ref();
 const isCollapse = ref(props.collapse);
+const maxColumn = ref(1);
 
 onMounted(() => {
   if (!props.collapse) {
     expand();
     return;
   }
-  // 获取KFormRef的高度
-  const height = (KFormRef.value?.$el.clientHeight ?? 0) + 2;
-  vvn?.value.style.setProperty('--expandHeight', `${height}px`);
 
   setTimeout(() => {
-    vvn?.value.style.setProperty('--transition-duration', '0.3s');
+    // 获取KFormRef的高度
+    const height = (KFormRef.value?.$el.clientHeight ?? 0) + 2;
+    console.log('height', height);
+
+    filterForm?.value.style.setProperty('--expandHeight', `${height}px`);
+    filterForm?.value.style.setProperty('--transition-duration', '0.3s');
+    const topNew = markers.value.offsetTop;
+    filterBtn?.value.style.setProperty('--top-new', `${topNew}px`);
   }, 1);
 
-  const topNew = bbm.value.offsetTop;
-  filterBtn?.value.style.setProperty('--top-new', `${topNew}px`);
+  filterForm?.value.classList.remove('is-expand');
+  markers?.value.classList.remove('is-expand');
 
-  vvn?.value.classList.remove('is-expand');
-  bbm?.value.classList.remove('is-expand');
+  computeMaxColumn();
+});
+
+// 监测窗口发生变化后
+window.addEventListener('resize', computeMaxColumn);
+
+onUnmounted(() => {
+  window.removeEventListener('resize', computeMaxColumn);
 });
 
 const compSize = computed(() => (attrs: any = {}) => {
@@ -188,7 +199,7 @@ watch(
   () => props.items,
   () => {
     preItems = {};
-  }
+  },
 );
 watch(
   () => props.items,
@@ -201,7 +212,7 @@ watch(
       }
     });
   },
-  { deep: true, immediate: true }
+  { deep: true, immediate: true },
 );
 watch(
   () => formData.value,
@@ -209,61 +220,23 @@ watch(
     emits('change', newValue);
 
     setTimeout(() => {
-      const topNew = bbm.value.offsetTop;
+      const topNew = markers.value.offsetTop;
       filterBtn?.value.style.setProperty('--top-new', `${topNew}px`);
       const height = (KFormRef.value?.$el.clientHeight ?? 0) + 2;
-      vvn?.value.style.setProperty('--expandHeight', `${height}px`);
+      filterForm?.value.style.setProperty('--expandHeight', `${height}px`);
     }, 100);
-
-    // const visibleCout = totalVisible();
-    // if (visibleCout > preVisibleCout) {
-    //   console.log('+');
-    //   setTimeout(() => {
-    //     const height = KFormRef.value?.$el.clientHeight + 2;
-    //     const topNew = bbm.value.offsetTop;
-    //     vvn?.value.style.setProperty('--expandHeight', `${height}px`);
-    //     filterBtn?.value.style.setProperty('--top-new', `${topNew}px`);
-    //     // console.log('@', height, topNew);
-    //   }, 100);
-    // } else if (visibleCout < preVisibleCout) {
-    //   setTimeout(() => {
-    //     // console.log('@', height, topNew);
-    //     const topNew = bbm.value.offsetTop;
-    //     filterBtn?.value.style.setProperty('--top-new', `${topNew}px`);
-    //     const height = KFormRef.value?.$el.clientHeight + 2;
-    //     vvn?.value.style.setProperty('--expandHeight', `${height}px`);
-    //   }, 100);
-    //   console.log('-');
-    // }
-    // preVisibleCout = visibleCout;
   },
-  { deep: true }
+  { deep: true },
 );
-
-// function totalVisible() {
-//   let visibleCout = 0;
-
-//   props.items.forEach((item: any) => {
-//     let visible = item.visible ?? true;
-//     if (typeof visible === 'function') {
-//       visible = visible(formData.value);
-//     }
-//     if (Boolean(visible)) {
-//       visibleCout++;
-//     }
-//   });
-
-//   return visibleCout;
-// }
 
 function toggle() {
   filterBtn?.value.classList.toggle('is-expand');
-  bbm?.value.classList.toggle('is-expand');
-  vvn?.value.classList.toggle('is-expand');
+  markers?.value.classList.toggle('is-expand');
+  filterForm?.value.classList.toggle('is-expand');
 
   isCollapse.value = !isCollapse.value;
 
-  const topNew = bbm.value.offsetTop;
+  const topNew = markers.value.offsetTop;
   filterBtn?.value.style.setProperty('--top-new', `${topNew}px`);
 }
 function expand() {
@@ -290,6 +263,34 @@ function reset() {
 
 function getFormData() {
   return formData.value;
+}
+
+function computeMaxColumn() {
+  if (!KFormRef?.value?.$el) return;
+  let count = 1;
+  const gridTemplateColumns = getComputedStyle(KFormRef?.value?.$el).gridTemplateColumns.split(' ');
+  for (let i = 1; i < gridTemplateColumns.length; i++) {
+    const abs = Math.abs(parseInt(gridTemplateColumns[i]) - parseInt(gridTemplateColumns[i - 1]));
+    if (abs > 2) {
+      maxColumn.value = count;
+      break;
+    }
+    count++;
+  }
+  maxColumn.value = count;
+
+  setTimeout(() => {
+    // 获取KFormRef的高度
+    const height = (KFormRef.value?.$el.clientHeight ?? 0) + 2;
+    console.log('height', height);
+
+    filterForm?.value.style.setProperty('--expandHeight', `${height}px`);
+    filterForm?.value.style.setProperty('--transition-duration', '0.3s');
+    const topNew = markers.value.offsetTop;
+    filterBtn?.value.style.setProperty('--top-new', `${topNew}px`);
+  }, 1);
+
+  console.log(maxColumn.value);
 }
 
 // expose instance

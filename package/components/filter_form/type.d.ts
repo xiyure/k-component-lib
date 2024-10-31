@@ -19,4 +19,5 @@ export interface FilterFormProps {
   collapse?: boolean;
   reserve?: boolean;
   visible?: boolean;
+  showColon?: boolean;
 }
