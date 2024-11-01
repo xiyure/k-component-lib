@@ -14,4 +14,4 @@ title: tooltips 气泡框
 
 ## API
 
-<API src="./data.json" lang="zh"></API>
+<API src="./tooltip.json" lang="zh"></API>

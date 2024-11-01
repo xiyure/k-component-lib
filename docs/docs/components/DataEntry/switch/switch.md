@@ -62,4 +62,4 @@ title: Switch 开关
 
 ## API
 
-<API src="./data.json" lang="zh"></API>
+<API src="./switch.json" lang="zh"></API>

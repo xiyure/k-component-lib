@@ -40,6 +40,6 @@ title: Radio 单选框
 
 ## API
 
-<API src="./data.json" lang="zh"></API>
+<API src="./radio.json" lang="zh"></API>
 
-<API src="./data2.json" lang="zh"></API>
+<API src="./radio_group.json" lang="zh"></API>

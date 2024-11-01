@@ -96,12 +96,14 @@
     {
       "displayName": "label",
       "description": "标签位置显示的内容",
-      "parameters": "{ label: string }"
+      "parameters": "object",
+      "tip": "{ label: string }"
     },
     {
       "displayName": "error",
       "description": "验证错误信息的显示内容",
-      "parameters": "{ error: string }"
+      "parameters": "object",
+      "tip": "{ error: string }"
     }
   ],
   "methods": [

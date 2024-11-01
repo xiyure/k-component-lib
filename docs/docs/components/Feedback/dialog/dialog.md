@@ -16,4 +16,4 @@ title: dialog 对话框
 
 ## API
 
-<API src="./data.json" lang="zh"></API>
+<API src="./dialog.json" lang="zh"></API>

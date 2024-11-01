@@ -29,8 +29,8 @@
     "vitepress-sidebar": "^1.26.0"
   },
   "dependencies": {
-    "@ksware/ksw-ux": "^0.0.67",
+    "@ksware/ksw-ux": "^0.0.77",
     "@vitejs/plugin-vue-jsx": "^4.0.1",
-    "ksw-vue-icon": "^2.2.31"
+    "ksw-vue-icon": "^2.2.35"
   }
 }

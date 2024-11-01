@@ -70,7 +70,8 @@
     {
       "displayName": "reference",
       "description": "自定义触发按钮",
-      "parameters": "{ hasConfigCondition: boolean }"
+      "parameters": "object",
+      "tip": "{ hasConfigCondition: boolean }"
     }
   ],
   "methods": [

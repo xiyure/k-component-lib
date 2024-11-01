@@ -169,6 +169,61 @@
       "defaultValue": "false",
       "tip": "",
       "version": "0.0.67"
+    },
+    {
+      "displayName": "default-transfer-data",
+      "type": "object",
+      "description": "默认的列头控制穿梭框数据，数据格式为Array<{label: string, key: string, disabled: boolean, visible: boolean}>",
+      "defaultValue": "",
+      "tip": "(() = > TableHeaderControl[] | Promise<TableHeaderControl[]>) | TableHeaderControl[]",
+      "version": "0.0.72"
+    },
+    {
+      "displayName": "on-transfer-show",
+      "type": "Function",
+      "description": "列头控制穿梭框显示时回调",
+      "defaultValue": "",
+      "tip": "() => void",
+      "version": "0.0.72"
+    },
+    {
+      "displayName": "on-transfer-hide",
+      "type": "Function",
+      "description": "列头控制穿梭框隐藏时回调",
+      "defaultValue": "",
+      "tip": "(transferData: TableHeaderControl[]) => void",
+      "version": "0.0.72"
+    },
+    {
+      "displayName": "on-advanced-filter-show",
+      "type": "Function",
+      "description": "高级筛选显示时回调",
+      "defaultValue": "",
+      "tip": "() => void",
+      "version": "0.0.72"
+    },
+    {
+      "displayName": "on-advanced-filter-hide",
+      "type": "Function",
+      "description": "高级筛选关闭时的回调",
+      "defaultValue": "",
+      "tip": "(filterData: FilterDataType) => void",
+      "version": "0.0.72"
+    },
+    {
+      "displayName": "use-ant-style",
+      "type": "boolean",
+      "description": "是否使用ant-design样式",
+      "defaultValue": "false",
+      "tip": "",
+      "version": "0.0.74"
+    },
+    {
+      "displayName": "adaptive",
+      "type": "boolean",
+      "description": "是否自适应内容高度",
+      "defaultValue": "false",
+      "version": "0.0.77"
     }
   ],
   "subProps": {
@@ -427,19 +482,22 @@
     {
       "displayName": "[column.field]",
       "description": "自定义该列单元格内容",
-      "parameters": "{ column, row }"
+      "parameters": "object",
+      "tip": "{ column, row }"
     },
     {
 
       "displayName": "[column.field]-header",
       "description": "自定义该列列头内容",
-       "parameters": "{ column }"
+       "parameters": "object",
+       "tip": "{ column }"
     },
     {
 
       "displayName": "[column.field]-label",
       "description": "自定义该列单元格文本内容（当单元格设置icon时，使用该插槽只会替换文本内容，不会替换icon）",
-      "parameters": "{ column, row }"
+      "parameters": "object",
+      "tip": "{ column, row }"
     },
     {
       "displayName": "drag-icon",
@@ -456,16 +514,23 @@
     {
       "displayName": "description",
       "description": "自定义表格数据描述内容",
-      "parameters": "{ total, conditionInfo }"
+      "parameters": "object",
+      "tip": "{ total, conditionInfo }"
     },
     {
-      "displayName": "_filterTrigger",
+      "displayName": "filterTrigger",
       "description": "自定义高级筛选触发按钮",
-      "parameters": "{ isFilter }"
+      "parameters": "object",
+      "tip": "{ isFilter: boolean"
     },
     {
-      "displayName": "_transferTrigger",
+      "displayName": "transferTrigger",
       "description": "自定义列头控制穿梭框触发按钮"
+    },
+    {
+      "displayName": "sizeControlTrigger",
+      "description": "自定义表格size切换触发按钮",
+      "version": "0.0.77"
     }
   ],
   "methods": [

@@ -13,7 +13,7 @@
       "type": "string",
       "description": "面板标题",
       "defaultValue": "false",
-      "tip": "''"
+      "tip": ""
     },
     {
       "displayName": "icon",

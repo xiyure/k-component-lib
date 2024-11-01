@@ -109,7 +109,8 @@
     {
       "displayName": "actions",
       "description": "页脚的内容",
-      "parameters": "{ confirm: (e: MouseEvent) => void, cancel: (e: MouseEvent) => void }"
+      "parameters": "object",
+      "tip": "{ confirm: (e: MouseEvent) => void, cancel: (e: MouseEvent) => void }"
     }
   ],
   "methods": []
