@@ -96,6 +96,7 @@
           <k-button :size="compSize()" @click="reset">{{ $t('reset') }}</k-button>
           <k-button :size="compSize()" main @click="search">{{ $t('query') }}</k-button>
           <KButton
+            v-show="rowMax > 1"
             text
             :icon-right="isCollapse ? 'IconArrowBottom' : 'IconArrowTop'"
             @click="toggle"
@@ -143,6 +144,8 @@ const markers = ref();
 const filterForm = ref();
 const isCollapse = ref(props.collapse);
 const maxColumn = ref(1);
+const rowMax = ref(1);
+const firstRowHeight = ref('');
 
 onMounted(() => {
   if (!props.collapse) {
@@ -153,15 +156,26 @@ onMounted(() => {
   setTimeout(() => {
     // 获取KFormRef的高度
     const height = (KFormRef.value?.$el.clientHeight ?? 0) + 2;
-
     filterForm?.value.style.setProperty('--expandHeight', `${height}px`);
     filterForm?.value.style.setProperty('--transition-duration', '0.3s');
     const topNew = markers.value.offsetTop;
     filterBtn?.value.style.setProperty('--top-new', `${topNew}px`);
+    const gridTemplateRows = getComputedStyle(KFormRef?.value?.$el).gridTemplateRows.split(' ');
+    firstRowHeight.value = gridTemplateRows[0];
+    rowMax.value = gridTemplateRows.length;
+
+    filterForm?.value.style.setProperty('--firstRowHeight', `${firstRowHeight.value}`);
   }, 1);
 
+  // setTimeout(() => {
+  // 获取KFormRef的高度
+  filterForm?.value.style.setProperty('--transition-duration', '0.3s');
   filterForm?.value.classList.remove('is-expand');
   markers?.value.classList.remove('is-expand');
+  // }, 2);
+
+  // filterForm?.value.classList.remove('is-expand');
+  // markers?.value.classList.remove('is-expand');
 
   computeMaxColumn();
 });
@@ -222,6 +236,10 @@ watch(
       filterBtn?.value.style.setProperty('--top-new', `${topNew}px`);
       const height = (KFormRef.value?.$el.clientHeight ?? 0) + 2;
       filterForm?.value.style.setProperty('--expandHeight', `${height}px`);
+
+      const gridTemplateRows = getComputedStyle(KFormRef?.value?.$el).gridTemplateRows.split(' ');
+      firstRowHeight.value = gridTemplateRows[0];
+      rowMax.value = gridTemplateRows.length;
     }, 100);
   },
   { deep: true },
@@ -236,6 +254,14 @@ function toggle() {
 
   const topNew = markers.value.offsetTop;
   filterBtn?.value.style.setProperty('--top-new', `${topNew}px`);
+
+  setTimeout(() => {
+    // 获取KFormRef的高度
+    const height = (KFormRef.value?.$el.clientHeight ?? 0) + 2;
+    filterForm?.value.style.setProperty('--expandHeight', `${height}px`);
+    const topNew = markers.value.offsetTop;
+    filterBtn?.value.style.setProperty('--top-new', `${topNew}px`);
+  }, 1);
 }
 function expand() {
   filterBtn?.value.classList.add('is-expand');
@@ -284,9 +310,11 @@ function computeMaxColumn() {
     filterForm?.value.style.setProperty('--transition-duration', '0.3s');
     const topNew = markers.value.offsetTop;
     filterBtn?.value.style.setProperty('--top-new', `${topNew}px`);
-  }, 1);
 
-  // console.log(maxColumn.value);
+    const gridTemplateRows = getComputedStyle(KFormRef?.value?.$el).gridTemplateRows.split(' ');
+    firstRowHeight.value = gridTemplateRows[0];
+    rowMax.value = gridTemplateRows.length;
+  }, 1);
 }
 
 function computeItemSpan() {
