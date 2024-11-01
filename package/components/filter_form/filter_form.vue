@@ -153,33 +153,12 @@ onMounted(() => {
     return;
   }
 
-  setTimeout(() => {
-    // 获取KFormRef的高度
-    const height = KFormRef.value?.$el.clientHeight ?? 0;
-    filterForm?.value.style.setProperty('--expandHeight', `${height}px`);
-    filterForm?.value.style.setProperty('--transition-duration', '0.3s');
-    const topNew = markers.value.offsetTop;
-    filterBtn?.value.style.setProperty('--top-new', `${topNew}px`);
-    const gridTemplateRows = getComputedStyle(KFormRef?.value?.$el).gridTemplateRows.split(' ');
-    firstRowHeight.value = gridTemplateRows[0];
-    rowMax.value = gridTemplateRows.length;
+  computeMaxColumn();
 
-    console.log('onMounted', gridTemplateRows, rowMax.value);
-
-    filterForm?.value.style.setProperty('--firstRowHeight', `${firstRowHeight.value}`);
-  }, 1);
-
-  // setTimeout(() => {
   // 获取KFormRef的高度
   filterForm?.value.style.setProperty('--transition-duration', '0.3s');
   filterForm?.value.classList.remove('is-expand');
   markers?.value.classList.remove('is-expand');
-  // }, 2);
-
-  // filterForm?.value.classList.remove('is-expand');
-  // markers?.value.classList.remove('is-expand');
-
-  computeMaxColumn();
 });
 
 // 监测窗口发生变化后
@@ -291,7 +270,7 @@ function getFormData() {
   return formData.value;
 }
 
-function computeMaxColumn() {
+function computeMaxColumn(time) {
   if (!KFormRef?.value?.$el) return;
   let count = 1;
   const gridTemplateColumns = getComputedStyle(KFormRef?.value?.$el).gridTemplateColumns.split(' ');
@@ -306,17 +285,25 @@ function computeMaxColumn() {
   maxColumn.value = count;
 
   setTimeout(() => {
-    // 获取KFormRef的高度
-    const height = KFormRef.value?.$el.clientHeight ?? 0;
-    filterForm?.value.style.setProperty('--expandHeight', `${height}px`);
-    filterForm?.value.style.setProperty('--transition-duration', '0.3s');
-    const topNew = markers.value.offsetTop;
-    filterBtn?.value.style.setProperty('--top-new', `${topNew}px`);
-
-    const gridTemplateRows = getComputedStyle(KFormRef?.value?.$el).gridTemplateRows.split(' ');
-    firstRowHeight.value = gridTemplateRows[0];
-    rowMax.value = gridTemplateRows.length;
+    getAutoSize(time);
   }, 1);
+}
+
+function getAutoSize(time) {
+  // 表单真实高度
+  const __formTrueHeight = KFormRef.value?.$el.clientHeight ?? 0;
+  // btns 展开时移动距离
+  const __BtnBarMoveTop = markers.value.offsetTop;
+  // 网格布局行数
+  const __gridTemplateRowsArr = getComputedStyle(KFormRef?.value?.$el).gridTemplateRows.split(' ');
+  // 第一行高度
+  const __firstRowHeight = __gridTemplateRowsArr[0];
+
+  rowMax.value = __gridTemplateRowsArr.length;
+  filterForm?.value.style.setProperty('--expandHeight', `${__formTrueHeight}px`);
+  filterForm?.value.style.setProperty('--transition-duration', '0.3s');
+  filterBtn?.value.style.setProperty('--top-new', `${__BtnBarMoveTop}px`);
+  filterForm?.value.style.setProperty('--firstRowHeight', `${__firstRowHeight}`);
 }
 
 // expose instance
