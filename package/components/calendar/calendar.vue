@@ -1,5 +1,14 @@
 <template>
-  <el-calendar ref="kCalendarRef" :class="['k-calendar', _styleModule]" v-bind="$attrs">
+  <el-calendar
+    ref="kCalendarRef"
+    :class="[
+      'k-calendar',
+      _styleModule,
+      { 'k-calendar--adaptive': adaptive },
+      'text-base'
+    ]"
+    v-bind="$attrs"
+  >
     <template #header="{ date }">
       <slot name="header" :date="date">
         <div class="k-calendar__header">
@@ -59,7 +68,8 @@ defineOptions({
 
 const props = withDefaults(defineProps<CalendarProps>(), {
   schedule: {},
-  showLunar: false
+  showLunar: false,
+  adaptive: false
 });
 
 const _styleModule = inject('_styleModule', '');
