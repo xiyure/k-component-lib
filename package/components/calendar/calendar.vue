@@ -35,7 +35,7 @@
             <div class="k-calendar__schedule">
               <ul>
                 <li
-                  v-for="item in scheduleContent(cellData.data.date)"
+                  v-for="item in targetSchedule(cellData.data.date)"
                   :key="item"
                   ref="scheduleItemRef"
                   class="k-calendar__schedule-item"
@@ -57,7 +57,7 @@ import { ElCalendar } from 'element-plus';
 import type { CalendarDateType, CalendarInstance } from 'element-plus';
 import { getLunar } from 'chinese-lunar-calendar';
 import { IconArrowLeft, IconArrowRight } from 'ksw-vue-icon';
-import { CalendarProps } from './type';
+import { CalendarProps, Schedule } from './type';
 import { lunarMonth, lunarDay } from './const';
 import { KCheckbox } from '../checkbox';
 import { getExposeProxy } from '../../utils';
@@ -89,8 +89,23 @@ const lunarDate = computed(() => function (date:Date) {
   };
 });
 
-const scheduleContent = computed(() => function (date:Date) {
-  return props.schedule[formatDate(date)] || [];
+const scheduleContent = computed(() => {
+  return props.schedule.map((item: Schedule) => {
+    const { date } = item;
+    let dateStr: string | undefined = undefined;
+    const newDate: Date = new Date(date);
+    if (newDate instanceof Date && !isNaN(newDate?.getTime())) {
+      dateStr = formatDate(newDate);
+    }
+    return {
+      date: dateStr,
+      content: item.content
+    }
+  }).filter((item: Schedule) => item.date);
+});
+const targetSchedule = computed(() => function (date:Date) {
+  const targetContent = scheduleContent.value.find((item: Schedule) => item.date === formatDate(date));
+  return targetContent?.content || [];
 });
 
 function jumpDate(command:CalendarDateType) {
