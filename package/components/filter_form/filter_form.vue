@@ -155,7 +155,7 @@ onMounted(() => {
 
   setTimeout(() => {
     // 获取KFormRef的高度
-    const height = (KFormRef.value?.$el.clientHeight ?? 0) + 2;
+    const height = KFormRef.value?.$el.clientHeight ?? 0;
     filterForm?.value.style.setProperty('--expandHeight', `${height}px`);
     filterForm?.value.style.setProperty('--transition-duration', '0.3s');
     const topNew = markers.value.offsetTop;
@@ -163,6 +163,8 @@ onMounted(() => {
     const gridTemplateRows = getComputedStyle(KFormRef?.value?.$el).gridTemplateRows.split(' ');
     firstRowHeight.value = gridTemplateRows[0];
     rowMax.value = gridTemplateRows.length;
+
+    console.log('onMounted', gridTemplateRows, rowMax.value);
 
     filterForm?.value.style.setProperty('--firstRowHeight', `${firstRowHeight.value}`);
   }, 1);
@@ -234,7 +236,7 @@ watch(
     setTimeout(() => {
       const topNew = markers.value.offsetTop;
       filterBtn?.value.style.setProperty('--top-new', `${topNew}px`);
-      const height = (KFormRef.value?.$el.clientHeight ?? 0) + 2;
+      const height = KFormRef.value?.$el.clientHeight ?? 0;
       filterForm?.value.style.setProperty('--expandHeight', `${height}px`);
 
       const gridTemplateRows = getComputedStyle(KFormRef?.value?.$el).gridTemplateRows.split(' ');
@@ -257,7 +259,7 @@ function toggle() {
 
   setTimeout(() => {
     // 获取KFormRef的高度
-    const height = (KFormRef.value?.$el.clientHeight ?? 0) + 2;
+    const height = KFormRef.value?.$el.clientHeight ?? 0;
     filterForm?.value.style.setProperty('--expandHeight', `${height}px`);
     const topNew = markers.value.offsetTop;
     filterBtn?.value.style.setProperty('--top-new', `${topNew}px`);
@@ -305,7 +307,7 @@ function computeMaxColumn() {
 
   setTimeout(() => {
     // 获取KFormRef的高度
-    const height = (KFormRef.value?.$el.clientHeight ?? 0) + 2;
+    const height = KFormRef.value?.$el.clientHeight ?? 0;
     filterForm?.value.style.setProperty('--expandHeight', `${height}px`);
     filterForm?.value.style.setProperty('--transition-duration', '0.3s');
     const topNew = markers.value.offsetTop;
@@ -315,18 +317,6 @@ function computeMaxColumn() {
     firstRowHeight.value = gridTemplateRows[0];
     rowMax.value = gridTemplateRows.length;
   }, 1);
-}
-
-function computeItemSpan() {
-  props.items.forEach((item: any) => {
-    if (!item.column) {
-      return 1;
-    } else if (item.column <= maxColumn.value) {
-      return item.column;
-    } else {
-      return maxColumn.value;
-    }
-  });
 }
 
 // expose instance
