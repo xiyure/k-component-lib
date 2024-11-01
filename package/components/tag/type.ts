@@ -5,4 +5,5 @@ export interface TagProps {
   textColor?: string;
   point?: boolean;
   text?: string;
+  border?: boolean;
 }
