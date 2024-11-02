@@ -4,9 +4,9 @@
       'k-view-item',
       _styleModule,
       {
-        'k-view-active' : activeView === props.value,
-        'k-view-disabled': props.disabled
-      }
+        'k-view-active': activeView === props.value,
+        'k-view-disabled': props.disabled,
+      },
     ]"
     :draggable="parentProps.draggable"
     @dragstart="handleDragStart"
@@ -19,7 +19,7 @@
     </div>
     <div class="k-view-item__other">
       <span>{{ props.count }}</span>
-      <el-dropdown trigger="click" @command="handleCommand">
+      <el-dropdown v-if="showCustomControl" trigger="click" @command="handleCommand">
         <span class="k-view-item-remove" @click.stop.prevent>
           <IconMore />
         </span>
@@ -40,22 +40,24 @@ import { IconMore } from 'ksw-vue-icon';
 import { ViewItemProps } from './type';
 
 defineOptions({
-  name: 'KViewItem'
+  name: 'KViewItem',
 });
 
 const props = withDefaults(defineProps<ViewItemProps>(), {
   label: '',
-  count: 0
+  count: 0,
+  showCustomControl: false,
 });
 const emits = defineEmits(['change', 'remove', '_drag-start', '_drag-drop']);
 
-const activeView:any = inject('activeView');
+const activeView: any = inject('activeView');
 const _styleModule = inject('_styleModule', '');
 const parentProps = inject<any>('parentProps', {});
 
-function handleCommand(command:string) {
+function handleCommand(command: string) {
   switch (command) {
-    case 'remove': handleRemove();
+    case 'remove':
+      handleRemove();
   }
 }
 function handleChange() {
@@ -68,25 +70,24 @@ function handleRemove() {
   emits('remove', props);
 }
 // 拖拽
-function handleDragStart(e:Event) {
+function handleDragStart(e: Event) {
   if (!parentProps.draggable) {
     return;
   }
   emits('_drag-start', e.currentTarget, props);
 }
-function handleDragOver(e:Event) {
+function handleDragOver(e: Event) {
   if (!parentProps.draggable) {
     return;
   }
   e.preventDefault();
 }
-function handleDrop(e:Event) {
+function handleDrop(e: Event) {
   if (!parentProps.draggable) {
     return;
   }
   emits('_drag-drop', e.currentTarget);
 }
-
 </script>
 
 <style lang="less">

@@ -79,9 +79,6 @@ watch(
     color.value = newVal; // 更新 ref
     const getColorS = GetColorLevelNew(newVal).colorLevel;
     if (newVal) {
-      // const hexColor = newVal;
-      // const { lightColor } = GetColorLevel(hexColor);
-
       // 等待 dom 更新
       nextTick(() => {
         if (KTagRef.value.$el?.style) {

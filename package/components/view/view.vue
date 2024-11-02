@@ -4,7 +4,10 @@
       class="k-view-nav p-2 h-full border-r border-gray-200 relative flex-shrink-0"
       :class="{ 'is-collapse': viewCollapse }"
     >
-      <div class="showViewBtn flex justify-center items-center rounded-full" @click="handleViewVisible">
+      <div
+        class="showViewBtn flex justify-center items-center rounded-full"
+        @click="handleViewVisible"
+      >
         <IconArrowRight :class="{ 'is-collapse': !viewCollapse }" />
       </div>
       <div class="k-view-aside" :style="{ display: viewCollapse ? 'none' : 'block' }">
@@ -65,12 +68,12 @@ import { ViewProps, ViewItemProps } from './type';
 import { genRandomStr } from '../../utils';
 
 defineOptions({
-  name: 'KView'
+  name: 'KView',
 });
 
 const props = withDefaults(defineProps<ViewProps>(), {
   draggable: false,
-  collapse: false
+  collapse: false,
 });
 const emits = defineEmits(['refresh', 'change', 'remove', 'drag', 'visible']);
 
@@ -96,7 +99,7 @@ const dragElement: {
   data: ViewItemProps | null;
 } = {
   element: null,
-  data: null
+  data: null,
 };
 let isCustom: boolean = false;
 const specialViewId = genRandomStr(8);
@@ -163,7 +166,7 @@ defineExpose({
   collapse,
   toggle,
   isExpand,
-  isCollapse
+  isCollapse,
 });
 </script>
 
