@@ -35,6 +35,8 @@ const props = withDefaults(defineProps<TagProps>(), {
   text: undefined,
 });
 
+
+
 const _styleModule = inject('_styleModule', '');
 const defaultColor = {
   primary: '#2882FF',
