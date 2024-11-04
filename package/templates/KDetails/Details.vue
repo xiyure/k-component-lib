@@ -21,7 +21,7 @@ import KDetailsItem from './DetailsItem.vue';
 
 const props = withDefaults(defineProps<DetailsProps>(), {
   direction: 'vertical',
-  showLine: false,
+  showLine: false
 });
 
 const RefKDetails = ref();

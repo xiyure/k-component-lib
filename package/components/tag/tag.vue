@@ -19,64 +19,34 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, inject, nextTick } from 'vue';
+import { ref, watch, inject, nextTick } from 'vue';
 import { ElTag } from 'element-plus';
 import { TagProps } from './type';
-import { getCompSize, isValidColor, getExposeProxy, GetColorLevelNew } from '../../utils';
+import { getCompSize, getExposeProxy, GetColorLevelNew } from '../../utils';
 import { colors } from './const';
 
 defineOptions({
-  name: 'KTag',
+  name: 'KTag'
 });
 
 const props = withDefaults(defineProps<TagProps>(), {
   point: false,
   type: undefined,
-  text: undefined,
+  text: undefined
 });
-
-
 
 const _styleModule = inject('_styleModule', '');
-const defaultColor = {
-  primary: '#2882FF',
-  success: '#22C55E',
-  danger: '#EF4444',
-  warning: '#F97316',
-  info: '#6B7280',
-};
-
-// const fillColor = computed(() =>
-//   isValidColor(props.color) ? props.color : defaultColor[props.type],
-// );
-// const tagTextColor = computed(() => {
-//   const color = props.point ? fillColor.value : '#FFF';
-//   return isValidColor(props.textColor) ? props.textColor : color;
-// });
-const tagAttrs = computed(() => {
-  let sizeAttr = {
-    width: '0.75rem',
-    height: '0.75rem',
-    fontSize: '0.875rem',
-  };
-  if (props.size === 'sm') {
-    sizeAttr = {
-      width: '0.5rem',
-      height: '0.5rem',
-      fontSize: '0.75rem',
-    };
-  }
-  return sizeAttr;
-});
-
-const KTagRef = ref(null);
+const KTagRef = ref<any>(null);
 const color = ref(props.color);
 
 // watch props.color 变化, 更新颜色变量
 watch(
   () => props.color,
   (newVal) => {
-    color.value = newVal; // 更新 ref
+    if (!newVal) {
+      return;
+    }
+    color.value = newVal;
     const getColorS = GetColorLevelNew(newVal).colorLevel;
     if (newVal) {
       // 等待 dom 更新
@@ -89,14 +59,14 @@ watch(
           colors.forEach((item) => {
             KTagRef.value.$el?.style.setProperty(
               `--tag${item.name}`,
-              getColorS[`--k-oklch-${item.value}`],
+              getColorS[`--k-oklch-${item.value}`]
             );
           });
         }
       });
     }
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 const instance: any = {};

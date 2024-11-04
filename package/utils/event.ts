@@ -41,10 +41,12 @@ export class Emitter {
 
 const OBSERVER_KEY = 'data-observer-key';
 export class ElementObserver {
-  public resizeObserver: ResizeObserver | null
-  public actions: any
+  public resizeObserver: ResizeObserver | null;
+
+  public actions: any;
+
   constructor() {
-    this.actions = {}
+    this.actions = {};
     this.resizeObserver = new ResizeObserver((entries) => {
       entries.forEach((entry) => {
         const target = entry.target as HTMLElement;
@@ -55,6 +57,7 @@ export class ElementObserver {
       });
     });
   }
+
   observe(el: HTMLElement | Element, callback: (entry: ResizeObserverEntry) => any) {
     if (!(el instanceof HTMLElement) && !(el instanceof Element)) {
       return;
@@ -63,6 +66,7 @@ export class ElementObserver {
     this.actions[observeKey] = callback;  
     this.resizeObserver?.observe(el);
   }
+
   unobserve(el: HTMLElement | Element) {
     if (!(el instanceof HTMLElement) && !(el instanceof Element)) {
       return;

@@ -6,7 +6,7 @@
       :model="formData"
       :size="size"
       :class="['k-form', _styleModule]"
-      :showColon="showColon"
+      :show-colon="showColon"
     >
       <template v-for="item in items" :key="item.prop">
         <k-form-item
@@ -122,7 +122,7 @@ import { FilterFormProps, filterFormItem } from './type';
 import { getExposeProxy } from '../../utils';
 
 defineOptions({
-  name: 'KFilterForm',
+  name: 'KFilterForm'
 });
 
 const DEFAULT_SIZES = ['base', 'sm'];
@@ -132,7 +132,7 @@ const props = withDefaults(defineProps<FilterFormProps>(), {
   size: 'base',
   collapse: true,
   reserve: false,
-  visible: false,
+  visible: false
 });
 const emits = defineEmits(['search', 'reset', 'change']);
 
@@ -192,7 +192,7 @@ watch(
   () => props.items,
   () => {
     preItems = {};
-  },
+  }
 );
 watch(
   () => props.items,
@@ -205,7 +205,7 @@ watch(
       }
     });
   },
-  { deep: true, immediate: true },
+  { deep: true, immediate: true }
 );
 watch(
   () => formData.value,
@@ -223,7 +223,7 @@ watch(
       rowMax.value = gridTemplateRows.length;
     }, 100);
   },
-  { deep: true },
+  { deep: true }
 );
 
 function toggle() {
@@ -270,7 +270,7 @@ function getFormData() {
   return formData.value;
 }
 
-function computeMaxColumn(time) {
+function computeMaxColumn() {
   if (!KFormRef?.value?.$el) return;
   let count = 1;
   const gridTemplateColumns = getComputedStyle(KFormRef?.value?.$el).gridTemplateColumns.split(' ');
@@ -285,11 +285,11 @@ function computeMaxColumn(time) {
   maxColumn.value = count;
 
   setTimeout(() => {
-    getAutoSize(time);
+    getAutoSize();
   }, 1);
 }
 
-function getAutoSize(time) {
+function getAutoSize() {
   // 表单真实高度
   const __formTrueHeight = KFormRef.value?.$el.clientHeight ?? 0;
   // btns 展开时移动距离

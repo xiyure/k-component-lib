@@ -6,7 +6,7 @@
       _styleModule,
       { 'tree-table-use-ant-style': useAntStyle },
     ]"
-    :style="{ height: adaptive ? 'fit-content' :  height, ...style }"
+    :style="{ height: adaptive ? 'fit-content' : height, ...style }"
   >
     <div v-if="simple && showSearchInput" class="k-tree-table__header-pure">
       <k-input
@@ -88,6 +88,7 @@
               children-field="group"
               filter-key="field"
               :remote="advancedFilterConfig?.remote ?? false"
+              :ignore-case="advancedFilterConfig?.ignoreCase"
               :formatter="advancedFilterConfig?.dateFormat ?? 'YYYY-MM-DD HH:mm:ss'"
               :default-condition="advancedFilterConfig?.defaultCondition ?? filterConditionInfo"
               @confirm="refreshAdvancedFilter"
@@ -140,7 +141,9 @@
                   color: _size === (item.value || undefined) ? '#2882FF' : '',
                 }"
                 :command="item.value"
-              >{{ item.label }}</k-dropdown-item>
+              >
+                {{ item.label }}
+              </k-dropdown-item>
             </k-dropdown>
           </template>
           <template v-else-if="widget.id === 'transfer'">
@@ -288,18 +291,18 @@ import { KTable } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
 import { KDropdown, KDropdownItem } from '../dropdown';
-import { TreeTableProps, columnConfigType, TableHeaderControl } from './type';
+import { TreeTableProps, ColumnConfig, TableHeaderControl } from './type';
 import {
   genRandomStr,
   treeDataToArray,
   getValidTreeData,
   resetTreeData,
-  getExposeProxy,
+  getExposeProxy
 } from '../../utils';
 import { useMethods, useCheckbox } from './hooks';
 
 defineOptions({
-  name: 'KTreeTable',
+  name: 'KTreeTable'
 });
 
 const props = withDefaults(defineProps<TreeTableProps>(), {
@@ -317,7 +320,7 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
   autoResize: true,
   showColumnMenu: false,
   cellClickToggleHighlight: true,
-  round: false,
+  round: false
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -336,7 +339,7 @@ const defaultRowConfig = {
   isHover: true,
   isCurrent: true,
   useKey: true,
-  keyField: 'id',
+  keyField: 'id'
 };
 const defaultTreeConfig = {
   transform: true,
@@ -344,19 +347,19 @@ const defaultTreeConfig = {
   parentField: 'pid',
   childrenField: 'children',
   trigger: 'cell',
-  hasChildField: 'hasChild',
+  hasChildField: 'hasChild'
 };
 const defaultPaginationConfig = {
   pagerCount: 7,
   currentPage: 1,
   pageSizes: DEFAULT_PAGES,
-  pageSize: DEFAULT_PAGES[0],
+  pageSize: DEFAULT_PAGES[0]
 };
 const defaultSortConfig = {};
 const defaultEditConfig = {
   key: 'id',
   trigger: 'click',
-  mode: 'cell',
+  mode: 'cell'
 };
 const defaultSeqConfig = {
   seqMethod: ({ rowIndex }) => {
@@ -366,7 +369,7 @@ const defaultSeqConfig = {
       return (currentPage - 1) * pageSize + rowIndex + startIndex;
     }
     return rowIndex + startIndex;
-  },
+  }
 };
 
 const defaultScrollY = { enabled: true };
@@ -385,15 +388,15 @@ const emits = defineEmits([
   'drag-end',
   'sort-change',
   'advanced-filter-confirm',
-  'advanced-filter-clear',
+  'advanced-filter-clear'
 ]);
 const xTree = ref();
 const _size = ref(props.size);
 const sizeList = [
   { label: '默认', value: '' },
-  { label: '中等', value:'medium' },
-  { label: '小号', value:'small' },
-  { label: '紧凑', value:'mini' },
+  { label: '中等', value: 'medium' },
+  { label: '小号', value: 'small' },
+  { label: '紧凑', value: 'mini' }
 ];
 const tableTransferRef = ref();
 // 列配置
@@ -422,31 +425,31 @@ const widgets = computed(() => {
     if (props.showSearchInput) {
       widgetsList.push({
         id: 'search',
-        slot: null,
+        slot: null
       });
     }
     if (props.showRefresh) {
       widgetsList.push({
         id: 'refresh',
-        slot: null,
+        slot: null
       });
     }
     if (props.showFilter) {
       widgetsList.push({
         id: 'filter',
-        slot: null,
+        slot: null
       });
     }
     if (props.showSizeControl) {
       widgetsList.push({
-        id:'sizeControl',
-        slot: null,
+        id: 'sizeControl',
+        slot: null
       });
     }
     if (props.showTransfer) {
       widgetsList.push({
         id: 'transfer',
-        slot: null,
+        slot: null
       });
     }
     return widgetsList;
@@ -474,12 +477,11 @@ const filterColumns = computed(() => {
   const validColumns = getValidTreeData(
     cloneDeep(columns.value),
     'group',
-    (dataItem) =>
-      !dataItem.type &&
+    (dataItem) => !dataItem.type &&
       dataItem.title &&
       dataItem.field &&
       (filterAll !== false || dataItem.visible !== false) &&
-      !exclude.includes(dataItem.field),
+      !exclude.includes(dataItem.field)
   );
   if (filterColumns) {
     return resetTreeData(validColumns, 'group', filterColumns, 'field');
@@ -517,9 +519,7 @@ const tableHeight = computed(() => {
   const pageHeight = isPaging.value ? (props.size === 'mini' ? 34 : 42) : 0;
   return `calc(100% - ${headerHeight}px - ${pageHeight}px)`;
 });
-const tableSize = computed(() => {
-  return _size.value ?? undefined;
-});
+const tableSize = computed(() => _size.value ?? undefined);
 const __showTransfer = computed(() => {
   const toolbarNames = widgets.value.map((item) => item.id);
   if (props.showHeaderTools && toolbarNames.includes('transfer')) {
@@ -577,7 +577,7 @@ const {
   checkBoxChange,
   checkboxAll,
   clearCheckedData,
-  _checkboxMethods,
+  _checkboxMethods
 } = useCheckbox(tableInstance, showTableData, props);
 watch(
   [() => props.data, () => props.data?.length],
@@ -586,14 +586,14 @@ watch(
     xeTableData.value = setTableData(props.data);
     advancedFilter();
   },
-  { immediate: true },
+  { immediate: true }
 );
 watch(
   () => props.paginationConfig,
   () => {
     paginationConfig.value = Object.assign(paginationConfig.value, props.paginationConfig || {});
   },
-  { immediate: true, deep: true },
+  { immediate: true, deep: true }
 );
 onMounted(() => {
   initTransfer();
@@ -610,7 +610,7 @@ watch(
     updateTransfer();
     handleCustomRender();
   },
-  { deep: true },
+  { deep: true }
 );
 
 let isFilterStatus = false;
@@ -631,17 +631,17 @@ watch(
       }
     });
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 // 表格内容搜索
 let tableDataMap: Map<string | number, any> = new Map();
 const treeDataMap: Map<string | number, any> = new Map();
 function filterTableData() {
-  const filterData = filterConditionInfo.value?.conditionList?.length
-    ? newFilterData.value
-    : xeTableData.value;
-  const { strict, searchMethod } = props.searchConfig ?? {};
+  const filterData = filterConditionInfo.value?.conditionList?.length ?
+    newFilterData.value :
+    xeTableData.value;
+  const { strict, searchMethod, ignoreCase = false } = props.searchConfig ?? {};
   const searchKey = query.value.trim().replace(/\\/g, '\\\\');
   if (props.isRemoteQuery || props.searchConfig?.isRemoteQuery) {
     emits('remote-query', searchKey);
@@ -653,22 +653,23 @@ function filterTableData() {
   if (typeof searchMethod === 'function') {
     return searchMethod(searchKey, filterData);
   }
-  const visibleColumns = flatColumns.value.filter((col: columnConfigType) => col.visible !== false);
-  const fieldList = visibleColumns.map((col: columnConfigType) => {
+  const visibleColumns = flatColumns.value.filter((col: ColumnConfig) => col.visible !== false);
+  const fieldList = visibleColumns.map((col: ColumnConfig) => {
     if (col.field && !col.type) {
       return col.field;
     }
     return null;
   }).filter((field: string | null) => field !== null);
-  let tableData = filterData.filter((dataItem: any) =>
-    fieldList.some((field: string) => {
-      const cellLabel = tableInstance.value.getCellLabel(dataItem, field);
-      if (strict === true) {
-        return cellLabel === searchKey;
-      }
+  let tableData = filterData.filter((dataItem: any) => fieldList.some((field: string) => {
+    const cellLabel = tableInstance.value.getCellLabel(dataItem, field);
+    if (strict === true) {
+      return cellLabel === searchKey;
+    }
+    if (ignoreCase) {
       return String(cellLabel).toLowerCase().indexOf(searchKey.toLowerCase()) !== -1;
-    }),
-  ) as any;
+    }
+    return String(cellLabel).indexOf(searchKey) !== -1;
+  })) as any;
   // 当表格数据为树时，筛选后的数据应展示完整的子树
   if (props.useTree) {
     const { rowField } = getTreeConfigField();
@@ -723,9 +724,7 @@ function getParentNode(dataItem: any, parentField: string, rowField: string) {
 // 筛选后的数据与用户输入数据的顺序保持一致
 function sortFunc(targetData: any[], sortData: any, key: string | number) {
   const sortKeyList = sortData.map((item: any) => item[key]);
-  return targetData.sort((a, b) =>
-    sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1,
-  );
+  return targetData.sort((a, b) => (sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1));
 }
 // 分页相关
 function changePageSize(pageSize: number) {
@@ -778,23 +777,23 @@ function handleCustomRender() {
     if (col.render) {
       col.cellRender = {
         name: genRandomStr(16),
-        ...(col.cellRender || {}),
+        ...(col.cellRender || {})
       };
       VXETable.renderer.add(col.cellRender.name, {
         renderDefault(_renderOpts, { row, column }) {
           return col.render({ row, column });
-        },
+        }
       });
     }
     if (col.renderEdit) {
       col.editRender = {
         name: genRandomStr(16),
-        ...(col.editRender || {}),
+        ...(col.editRender || {})
       };
       VXETable.renderer.add(col.editRender.name, {
         renderEdit(_renderOpts, { row, column }) {
           return col.renderEdit({ row, column });
-        },
+        }
       });
     }
   }
@@ -805,7 +804,7 @@ function getTreeConfigField() {
   return { parentField, rowField };
 }
 function updateColumn(ids: string[]) {
-  flatColumns.value.forEach((col: columnConfigType) => {
+  flatColumns.value.forEach((col: ColumnConfig) => {
     if (ids.includes(col.field as string)) {
       col.visible = true;
     } else {
@@ -821,7 +820,7 @@ async function initTransfer() {
   }
   transferData = Array.isArray(transferData) ? transferData : [];
   const transferDataMap = new Map<string | undefined, TableHeaderControl>(
-    transferData.map((item: TableHeaderControl) => [item.key, item]),
+    transferData.map((item: TableHeaderControl) => [item.key, item])
   );
   const fieldList = transferData.map((item: TableHeaderControl) => item.key);
   const cols = props.column.map((col) => {
@@ -839,38 +838,38 @@ async function initTransfer() {
 function updateTransfer() {
   flatColumns.value = treeDataToArray(columns.value, 'group');
   originData.value = flatColumns.value
-    .map((item: columnConfigType) => {
-      if (item.title && item.field) {
-        return {
-          label: item.title,
-          key: item.field,
-        };
-      }
-      return null;
-    })
-    .filter((item: columnConfigType) => item);
+  .map((item: ColumnConfig) => {
+    if (item.title && item.field) {
+      return {
+        label: item.title,
+        key: item.field
+      };
+    }
+    return null;
+  })
+  .filter((item: ColumnConfig) => item);
   selectData.value = flatColumns.value
-    .filter((col: columnConfigType) => col.visible !== false)
-    .map((item: columnConfigType) => ({
-      label: item.title,
-      key: item.field,
-    }));
-  defaultHeader.value = selectData.value.map((item: columnConfigType) => item.key);
+  .filter((col: ColumnConfig) => col.visible !== false)
+  .map((item: ColumnConfig) => ({
+    label: item.title,
+    key: item.field
+  }));
+  defaultHeader.value = selectData.value.map((item: ColumnConfig) => item.key);
 }
-function hideColumn(column: columnConfigType) {
+function hideColumn(column: ColumnConfig) {
   if (!__showTransfer.value) {
     return;
   }
   const columnItem = flatColumns.value.find(
-    (item: columnConfigType) => item.field === column.field,
+    (item: ColumnConfig) => item.field === column.field
   );
   columnItem.visible = false;
   selectData.value = flatColumns.value
-    .filter((col: columnConfigType) => col.visible !== false)
-    .map((item: any) => ({
-      label: item.title,
-      key: item.field,
-    }));
+  .filter((col: ColumnConfig) => col.visible !== false)
+  .map((item: any) => ({
+    label: item.title,
+    key: item.field
+  }));
   emits('hide-column', column);
 }
 function sortTableHeader(fieldList: { label: string; key: string }[]) {
@@ -878,8 +877,8 @@ function sortTableHeader(fieldList: { label: string; key: string }[]) {
     return;
   }
   let keyIndex = 0;
-  const map = new Map(flatColumns.value.map((v: columnConfigType) => [v.field, v]));
-  const setData = (columns: columnConfigType[]) => {
+  const map = new Map(flatColumns.value.map((v: ColumnConfig) => [v.field, v]));
+  const setData = (columns: ColumnConfig[]) => {
     for (const [index, col] of columns.entries()) {
       if (Array.isArray(col.group) && col.group.length > 0) {
         setData(col.group);
@@ -971,7 +970,7 @@ function cellClick({ row, rowid }) {
 function dragEnd(data: any[]) {
   emits('drag-end', {
     newData: data,
-    oldData: xeTableData.value,
+    oldData: xeTableData.value
   });
 }
 
@@ -1039,13 +1038,13 @@ function getHeaderControllerData(): TableHeaderControl[] {
     label: item.label,
     key: item.key,
     visible: selectSet.has(item.key),
-    disabled: item.disabled ?? false,
+    disabled: item.disabled ?? false
   }));
   return newTransferData;
 }
 function setHeaderControllerData(transferData: TableHeaderControl[]) {
   transferData.forEach?.((item: TableHeaderControl) => {
-    const column = flatColumns.value.find((col: columnConfigType) => col.field === item.key);
+    const column = flatColumns.value.find((col: ColumnConfig) => col.field === item.key);
     if (!column) {
       return;
     }
@@ -1060,7 +1059,7 @@ function setHeaderControllerData(transferData: TableHeaderControl[]) {
       label: item.label ?? '',
       key: item.key ?? `_${genRandomStr(8)}`,
       disabled: item.disabled ?? false,
-      visible: item.visible !== false,
+      visible: item.visible !== false
     })) ?? [];
   selectData.value = originData.value.filter((item: TableHeaderControl) => item.visible !== false);
   sortTableHeader(transferData);
@@ -1079,7 +1078,7 @@ const customMethods = {
   getHeaderControllerData,
   setHeaderControllerData,
   ..._methods,
-  ..._checkboxMethods,
+  ..._checkboxMethods
 };
 
 defineExpose(getExposeProxy(customMethods, tableInstance));

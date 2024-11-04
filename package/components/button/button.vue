@@ -76,6 +76,9 @@ const color = ref(props.color);
 watch(
   () => props.color,
   (newVal) => {
+    if (!newVal) {
+      return;
+    }
     color.value = newVal; // 更新 ref
     const getColorS = GetColorLevelNew(newVal).colorLevel;
     if (newVal) {

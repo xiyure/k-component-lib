@@ -12,7 +12,7 @@ import { ElOption } from 'element-plus';
 import { getExposeProxy } from '../../utils';
 
 defineOptions({
-  name: 'KOption',
+  name: 'KOption'
 });
 
 const _styleModule = inject('_styleModule', '');

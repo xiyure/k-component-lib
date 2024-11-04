@@ -44,22 +44,22 @@
 import { ref, watch, inject } from 'vue';
 import { IconClose, IconMore } from 'ksw-vue-icon';
 import { KDropdown, KDropdownItem } from '../dropdown';
-import { OperateProps } from './type.d';
+import { OperateProps, OperateData } from './type';
 
 defineOptions({
   name: 'KOperate'
 });
 
 const props = withDefaults(defineProps<OperateProps>(), {
-  data: [],
+  data: () => [],
   max: 5,
   total: 0,
   hideOnClick: true
 });
 
 const _styleModule = inject('_styleModule', '');
-const hideData = ref<any>([]);
-const showData = ref<any>([]);
+const hideData = ref<Array<OperateData>>([]);
+const showData = ref<Array<OperateData>>([]);
 
 watch(() => [props.data, props.max], () => {
   if (!Array.isArray(props.data)) {
@@ -79,7 +79,7 @@ watch(() => [props.data, props.max], () => {
 
 const emits = defineEmits(['close']);
 
-function handler(item: any) {
+function handler(item: OperateData) {
   const { disabled, handler } = item;
   if (disabled) {
     return;

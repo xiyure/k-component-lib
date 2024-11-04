@@ -85,7 +85,7 @@
               />
             </k-select>
           </div>
-          <div class="k-filter__value" :title="item.value">
+          <div class="k-filter__value" :title="(item.value)?.toString()">
             <div v-if="instance(item.key)?.dataType === 'date'" class="k-filter__date-box">
               <k-select
                 v-model="item.dateRange"
@@ -178,36 +178,25 @@ import { ref, computed, inject, onMounted, watch } from 'vue';
 import { VueI18nTranslation } from 'vue-i18n';
 import { IconClose, IconClearDate, IconAdd, IconFilter, IconFilterFill } from 'ksw-vue-icon';
 import { cloneDeep } from 'lodash-es';
-import { FilterProps } from './type';
+import { FilterProps, FilterData } from './type';
 import { KInput } from '../input';
 import { KSelect, KOption } from '../select';
 import { KButton } from '../button';
 import { KPopover } from '../popover';
 import { KCascader } from '../cascader';
-import { dateTypeOptions, logicOptions } from './data';
+import { dateTypeOptions, logicOptions } from '../../constant/filter_data';
 import { treeDataToArray, isValid, formatter } from '../../utils';
 
 defineOptions({
   name: 'KFilter'
 });
 
-type IFilterDataType = {
-  title: string[];
-  logic: string;
-  value: any;
-  showValue: any;
-  key: any;
-  dateRange?: string;
-  dateType?: string;
-  handler: ((a: any, b: any) => boolean) | null;
-  _allowSelectLogic?: boolean;
-};
-
 const props = withDefaults(defineProps<FilterProps>(), {
   border: true,
   size: 'base',
   filterKey: 'title',
   childrenField: 'children',
+  ignoreCase: false,
   data: () => []
 });
 
@@ -225,7 +214,7 @@ const popperClassName = ref('');
 const _styleModule = inject('_styleModule', '');
 const emits = defineEmits(['confirm', 'clear', 'show', 'hide']);
 const t = inject<VueI18nTranslation>('$t');
-const filterData = ref<IFilterDataType[]>([]);
+const filterData = ref<FilterData[]>([]);
 const filterRule = ref(0);
 
 const flatColumns = computed(() => treeDataToArray(cloneDeep(props.options), 'group'));
@@ -244,7 +233,7 @@ const conditionList = computed(
 );
 
 const dateLogicList = computed(
-  () => function (item: IFilterDataType) {
+  () => function (item: FilterData) {
     if (item.logic === 'equal') {
       return dateTypeOptions;
     }
@@ -259,13 +248,13 @@ const hasConfigCondition = computed(() => filterData.value.some(
 
 // 日期禁用
 const disabledInput = computed(
-  () => function (item: IFilterDataType) {
+  () => function (item: FilterData) {
     const disabledLogicTypes = ['empty', 'nonEmpty'];
     return !item.logic || disabledLogicTypes.includes(item.logic);
   }
 );
 const disabledDatePicker = computed(
-  () => function (item: IFilterDataType) {
+  () => function (item: FilterData) {
     const notDisabledDateRanges = ['date', 'range'];
     return disabledInput.value(item) || !notDisabledDateRanges.includes(item.dateRange as string);
   }
@@ -321,7 +310,7 @@ function initData() {
 }
 // 添加条件
 function addCondition() {
-  const addItem = {
+  const addItem: FilterData = {
     title: [],
     logic: '',
     showValue: '',
@@ -374,7 +363,7 @@ function filter(data?: any[]) {
         if (!targetColumn || !targetColumn[props.filterKey]) {
           return false;
         }
-        return item.handler?.(dataItem[targetColumn[props.filterKey]], item.value);
+        return item.handler?.(dataItem[targetColumn[props.filterKey]], item.value, props.ignoreCase);
       });
     }
     return conditionInfo.conditionList.every((item) => {
@@ -385,7 +374,7 @@ function filter(data?: any[]) {
       if (!targetColumn || !targetColumn[props.filterKey]) {
         return false;
       }
-      return item.handler?.(dataItem[targetColumn[props.filterKey]], item.value);
+      return item.handler?.(dataItem[targetColumn[props.filterKey]], item.value, props.ignoreCase);
     });
   });
   return {
@@ -476,7 +465,7 @@ function changeLogic(dataItem) {
     changeDateLogic(dataItem);
   }
 }
-function changeDateLogic(item: IFilterDataType) {
+function changeDateLogic(item: FilterData) {
   if (disabledInput.value(item)) {
     item.value = '';
     item.showValue = '';
@@ -484,7 +473,7 @@ function changeDateLogic(item: IFilterDataType) {
   }
   changeDateRange(item);
 }
-function changeDateRange(item: IFilterDataType) {
+function changeDateRange(item: FilterData) {
   setDatePickerType(item);
   let dateValue: any = Array.isArray(item.value) ? '' : item.value;
   switch (item.dateRange) {
@@ -574,7 +563,7 @@ function getCurMonthDayCount(isPre = false) {
   return 28;
 }
 // 设置日期选择器的类型（日期 or 时间段）
-function setDatePickerType(item: IFilterDataType) {
+function setDatePickerType(item: FilterData) {
   if (item.logic === 'equal') {
     const dateArray = ['date', 'today', 'tomorrow', 'yesterday'];
     item.dateType = dateArray.includes(item.dateRange as string) ? 'datetime' : 'datetimerange';
@@ -583,7 +572,7 @@ function setDatePickerType(item: IFilterDataType) {
     item.dateType = !dateArray.includes(item.dateRange as string) ? 'datetime' : 'datetimerange';
   }
 }
-function updateValue(dataItem: IFilterDataType, uiType: string, options?: any[]) {
+function updateValue(dataItem: FilterData, uiType: string, options?: any[]) {
   if (uiType === 'input') {
     dataItem.showValue = dataItem.value;
   } else if (uiType === 'select') {

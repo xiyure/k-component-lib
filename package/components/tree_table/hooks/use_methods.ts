@@ -1,5 +1,5 @@
 import { ref, computed } from 'vue';
-import { Store } from '../type.d';
+import { Store } from '../type';
 import { multiFieldSort } from '../../../utils';
 
 // 重定义vxe-table的部分方法

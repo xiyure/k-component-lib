@@ -56,30 +56,26 @@ if (typeof window !== 'undefined') {
 watch(
   () => props.color,
   (newVal) => {
+    if (!newVal) {
+      return;
+    }
     color.value = newVal; // 更新 ref
     const getColorS = GetColorLevelNew(newVal).colorLevel;
-    if (newVal) {
-      // const hexColor = newVal;
-      // const { lightColor } = GetColorLevel(hexColor);
-
-      // 等待 dom 更新
-      nextTick(() => {
-        if (el.value?.style) {
-          parent.value = el.value?.parentNode?.parentNode;
-
-          const rbgValue = getColorS['--k-oklch-500'].match(/\(([^)]+)\)/)[1]; // 获取 rbg 值, 用于设置 focus 样式
-          // border
-          parent.value?.style.setProperty('--checkbox-color--focus', `rgba(${rbgValue}, 0.2)`);
-
-          colors.forEach((item) => {
-            parent.value?.style.setProperty(
-              `--checkbox${item.name}`,
-              getColorS[`--k-oklch-${item.value}`]
-            );
-          });
-        }
-      });
-    }
+    // 等待 dom 更新
+    nextTick(() => {
+      if (el.value?.style) {
+        parent.value = el.value?.parentNode?.parentNode;
+        const rbgValue = getColorS['--k-oklch-500'].match(/\(([^)]+)\)/)[1]; // 获取 rbg 值, 用于设置 focus 样式
+        // border
+        parent.value?.style.setProperty('--checkbox-color--focus', `rgba(${rbgValue}, 0.2)`);
+        colors.forEach((item) => {
+          parent.value?.style.setProperty(
+          `--checkbox${item.name}`,
+          getColorS[`--k-oklch-${item.value}`]
+          );
+        });
+      }
+    });
   },
   { immediate: true }
 );

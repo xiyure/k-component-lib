@@ -103,19 +103,28 @@ export const logicOptions = [
     logicList: [
       {
         logic: 'equal',
-        handler(a: string, b: string) {
+        handler(a: string, b: string, ignoreCase: boolean) {
+          if (ignoreCase) {
+            return a.toLowerCase() === b.toLowerCase();
+          }
           return a === b;
         }
       },
       {
         logic: 'notEqual',
-        handler(a: string, b: string) {
+        handler(a: string, b: string, ignoreCase: boolean) {
+          if (ignoreCase) {
+            return a.toLowerCase() === b.toLowerCase();
+          }
           return a !== b;
         }
       },
       {
         logic: 'contain',
-        handler(a: string, b: string) {
+        handler(a: string, b: string, ignoreCase: boolean) {
+          if (ignoreCase) {
+            return a.toLowerCase() === b.toLowerCase();
+          }
           return a.includes(b);
         }
       },

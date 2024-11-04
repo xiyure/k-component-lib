@@ -62,7 +62,7 @@ const box = ref();
 const buttons = parseBtnList(flattenChildren(slots.default?.()));
 const hideTabs = ref<HTMLElement[]>([]);
 let buttonsElem: HTMLElement[];
-const key = `_${genRandomStr(8)}`
+const key = `_${genRandomStr(8)}`;
 
 // 可视区域发生变化时，下拉列表也随之更新
 onMounted(() => {

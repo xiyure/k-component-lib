@@ -11,8 +11,8 @@ import * as components from './components';
 import * as templates from './templates';
 import * as originComponents from './element-plus';
 import * as directives from './directives';
-import zh from './internal/zh';
-import en from './internal/en';
+import zh from './locale/zh';
+import en from './locale/en';
 import { Emitter, ElementObserver } from './utils';
 import './style/tailwind.css';
 import 'overlayscrollbars/styles/overlayscrollbars.css'; // 引入overlayscrollbars样式
@@ -42,7 +42,7 @@ const install = (app: any, options?: optionsType) => {
   handleProjectStyle(options?.styleModule);
   app.use(ElementPlus, {
     ...options?.ElementPlusOptions,
-    locale: options?.locale === 'en' ? enLocal : zhLocal,
+    locale: options?.locale === 'en' ? enLocal : zhLocal
   });
   // 国际化
   registerInternal(app, options);
@@ -81,7 +81,7 @@ function registerInternal(app: any, options?: optionsType) {
   const messages = { zh, en };
   const i18n = createI18n({
     locale: options?.locale === 'en' ? 'en' : 'zh',
-    messages,
+    messages
   });
   app.use(i18n);
   // i18n
@@ -95,7 +95,7 @@ function handleProjectStyle(styleModule: string | undefined) {
     projectName = styleModule;
   } else if (styleModule !== undefined) {
     console.warn(
-      `'styleModule' expected to be ${projectList.map((name) => `'${name}'`).join(' or ')}, but got '${styleModule}'.`,
+      `'styleModule' expected to be ${projectList.map((name) => `'${name}'`).join(' or ')}, but got '${styleModule}'.`
     );
   }
   // 项目样式导入

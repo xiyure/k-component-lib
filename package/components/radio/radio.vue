@@ -19,12 +19,12 @@ import { GetColorLevelNew, getExposeProxy } from '../../utils';
 import { colors } from './const';
 
 defineOptions({
-  name: 'KRadio',
+  name: 'KRadio'
 });
 
 const props = withDefaults(defineProps<RadioProps>(), {
   color: '',
-  button: false,
+  button: false
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -33,37 +33,32 @@ const kRadioRef = ref();
 
 const __size__ = inject(
   '__size__',
-  computed(() => 'base'),
+  computed(() => 'base')
 );
 
 // watch props.color 变化, 更新颜色变量
 watch(
   () => props.color,
   (newVal) => {
-    color.value = newVal; // 更新 ref
-    const getColorS = GetColorLevelNew(newVal).colorLevel;
-    if (newVal) {
-      // const hexColor = newVal;
-      // const { lightColor } = GetColorLevel(hexColor);
-
-      // 等待 dom 更新
-      nextTick(() => {
-        if (kRadioRef.value.$el?.style) {
-          // 添加一个 css 颜色变量
-
-          const rbgValue = getColorS['--k-oklch-500'].match(/\(([^)]+)\)/)[1]; // 获取 rbg 值, 用于设置 focus 样式
-          kRadioRef.value.$el?.style.setProperty('--radio-color--focus', `rgba(${rbgValue}, 0.2)`);
-          colors.forEach((item) => {
-            kRadioRef.value.$el?.style.setProperty(
-              `--radio${item.name}`,
-              getColorS[`--k-oklch-${item.value}`],
-            );
-          });
-        }
-      });
+    if (!newVal) {
+      return;
     }
+    color.value = newVal;
+    const getColorS = GetColorLevelNew(newVal).colorLevel;
+    nextTick(() => {
+      if (kRadioRef.value.$el?.style) {
+        const rbgValue = getColorS['--k-oklch-500'].match(/\(([^)]+)\)/)[1]; // 获取 rbg 值, 用于设置 focus 样式
+        kRadioRef.value.$el?.style.setProperty('--radio-color--focus', `rgba(${rbgValue}, 0.2)`);
+        colors.forEach((item) => {
+          kRadioRef.value.$el?.style.setProperty(
+            `--radio${item.name}`,
+            getColorS[`--k-oklch-${item.value}`]
+          );
+        });
+      }
+    });
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 const getSizeClass = computed(() => {

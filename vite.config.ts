@@ -19,6 +19,7 @@ export default defineConfig({
     })
   ],
   esbuild: {
+    pure: ['console.log', 'alert', 'debugger'],
     jsxFactory: 'h',
     jsxFragment: 'Fragment',
     jsxInject: `import { h, Fragment } from 'vue';`

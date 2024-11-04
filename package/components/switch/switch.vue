@@ -18,12 +18,12 @@ import { SwitchProps } from './type';
 import { getCompSize, getExposeProxy } from '../../utils';
 
 defineOptions({
-  name: 'KSwitch',
+  name: 'KSwitch'
 });
 
 const props = withDefaults(defineProps<SwitchProps>(), {
   switchOnColor: '',
-  switchOffColor: '',
+  switchOffColor: ''
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -34,7 +34,7 @@ defineExpose(getExposeProxy(instance, kSwitchRef));
 
 const __size__ = inject(
   '__size__',
-  computed(() => 'base'),
+  computed(() => 'base')
 );
 </script>
 

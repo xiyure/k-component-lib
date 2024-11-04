@@ -68,12 +68,12 @@ import { ViewProps, ViewItemProps } from './type';
 import { genRandomStr } from '../../utils';
 
 defineOptions({
-  name: 'KView',
+  name: 'KView'
 });
 
 const props = withDefaults(defineProps<ViewProps>(), {
   draggable: false,
-  collapse: false,
+  collapse: false
 });
 const emits = defineEmits(['refresh', 'change', 'remove', 'drag', 'visible']);
 
@@ -99,7 +99,7 @@ const dragElement: {
   data: ViewItemProps | null;
 } = {
   element: null,
-  data: null,
+  data: null
 };
 let isCustom: boolean = false;
 const specialViewId = genRandomStr(8);
@@ -166,7 +166,7 @@ defineExpose({
   collapse,
   toggle,
   isExpand,
-  isCollapse,
+  isCollapse
 });
 </script>
 

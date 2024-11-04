@@ -40,13 +40,13 @@ import { IconMore } from 'ksw-vue-icon';
 import { ViewItemProps } from './type';
 
 defineOptions({
-  name: 'KViewItem',
+  name: 'KViewItem'
 });
 
 const props = withDefaults(defineProps<ViewItemProps>(), {
   label: '',
   count: 0,
-  showCustomControl: false,
+  showCustomControl: false
 });
 const emits = defineEmits(['change', 'remove', '_drag-start', '_drag-drop']);
 

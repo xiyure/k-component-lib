@@ -19,16 +19,16 @@
 const props = defineProps({
   label: {
     type: String,
-    default: '',
+    default: ''
   },
   value: {
     type: String || Object,
-    default: '',
+    default: ''
   },
   render: {
     type: Function,
-    default: () => null,
-  },
+    default: () => null
+  }
 });
 </script>
 <style scoped></style>

@@ -89,20 +89,18 @@ const lunarDate = computed(() => function (date:Date) {
   };
 });
 
-const scheduleContent = computed(() => {
-  return props.schedule.map((item: Schedule) => {
-    const { date } = item;
-    let dateStr: string | undefined = undefined;
-    const newDate: Date = new Date(date);
-    if (newDate instanceof Date && !isNaN(newDate?.getTime())) {
-      dateStr = formatDate(newDate);
-    }
-    return {
-      date: dateStr,
-      content: item.content
-    }
-  }).filter((item: Schedule) => item.date);
-});
+const scheduleContent = computed(() => props.schedule.map((item: Schedule) => {
+  const { date } = item;
+  let dateStr: string | undefined;
+  const newDate: Date = new Date(date);
+  if (newDate instanceof Date && !Number.isNaN(newDate?.getTime())) {
+    dateStr = formatDate(newDate);
+  }
+  return {
+    date: dateStr,
+    content: item.content
+  };
+}).filter((item: Schedule) => item.date));
 const targetSchedule = computed(() => function (date:Date) {
   const targetContent = scheduleContent.value.find((item: Schedule) => item.date === formatDate(date));
   return targetContent?.content || [];

@@ -21,11 +21,11 @@ import { DatePicker } from './type';
 import { getCompSize, getExposeProxy } from '../../utils';
 
 defineOptions({
-  name: 'KDatePicker',
+  name: 'KDatePicker'
 });
 
 const props = withDefaults(defineProps<DatePicker>(), {
-  showDefaultShortcuts: true,
+  showDefaultShortcuts: true
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -34,24 +34,24 @@ const datePickerRef = ref<any>(null);
 const defaultDateRange = [
   {
     text: t?.('within7days'),
-    value: () => getTargetDay(-7),
+    value: () => getTargetDay(-7)
   },
   {
     text: t?.('within15days'),
-    value: () => getTargetDay(-15),
+    value: () => getTargetDay(-15)
   },
   {
     text: t?.('curMonth'),
-    value: getCurMonthRange(),
+    value: getCurMonthRange()
   },
   {
     text: t?.('curQuarter'),
-    value: getCurQuarterRange(),
+    value: getCurQuarterRange()
   },
   {
     text: t?.('curYear'),
-    value: getCurYearRange(),
-  },
+    value: getCurYearRange()
+  }
 ];
 
 const customShortcuts = computed(() => {
@@ -137,7 +137,7 @@ defineExpose(getExposeProxy(instance, datePickerRef));
 
 const __size__ = inject(
   '__size__',
-  computed(() => 'base'),
+  computed(() => 'base')
 );
 </script>
 
