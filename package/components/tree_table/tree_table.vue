@@ -150,7 +150,10 @@
               width="auto"
               :teleported="false"
               @show="transferShow"
-              @hide="transferHide"
+              @hide="() => {
+                transferHide();
+                transferChange();
+              }"
             >
               <template #reference>
                 <div v-ksw_tooltip="$t('columnHeaderController')" class="text-sm">
@@ -829,6 +832,9 @@ async function initTransfer() {
   columns.value = cols.sort((a, b) => fieldList.indexOf(a.field) - fieldList.indexOf(b.field));
   updateTransfer();
   handleCustomRender();
+  setTimeout(() => {
+    preTransferDataStr = JSON.stringify(getHeaderControllerData());
+  });
 }
 function updateTransfer() {
   flatColumns.value = treeDataToArray(columns.value, 'group');
@@ -889,6 +895,16 @@ function sortTableHeader(fieldList: { label: string; key: string }[]) {
 function transferShow() {
   if (typeof props.onTransferShow === 'function') {
     props.onTransferShow();
+  }
+}
+let preTransferDataStr: string = '';
+function transferChange() {
+  if (typeof props.onTransferChange === 'function') {
+    const transferData = getHeaderControllerData();
+    if (JSON.stringify(transferData) !== preTransferDataStr) {
+      props.onTransferChange(transferData);
+      preTransferDataStr = JSON.stringify(transferData);
+    }
   }
 }
 function transferHide() {

@@ -1,8 +1,9 @@
-import { SlotsType, defineComponent } from 'vue';
+import { SlotsType, VNode, defineComponent } from 'vue';
 import { KTableColumn, KColumnGroup } from '../table';
 import TableColumnContent from './table_column_content.vue';
-import { columnConfigType } from './type.d';
+import { columnConfigType } from './type';
 
+const SLOT_NAMES: string[] = ['header', 'edit'];
 export default defineComponent({
   name: 'ColumnGroup',
   props: {
@@ -29,11 +30,7 @@ export default defineComponent({
     )
     function addColumnGroup(col: columnConfigType) {
       const group = col.group || [];
-      const childrenSlots = {};
-      const slotName = `${col.field}-header`;
-      if (slots[slotName]) {
-        childrenSlots['header'] = (data: any) => slots[slotName]?.(data)
-      };
+      const childrenSlots = getChildrenSlots(slots, col.field );
       return  <KColumnGroup
         { ...col }
         key={col}
@@ -52,11 +49,7 @@ export default defineComponent({
       </KColumnGroup>
     }
     function getTableColumn(slots: SlotsType, col: columnConfigType) {
-      const childrenSlots = {};
-      const slotName = `${col.field}-header`;
-      if (slots[slotName]) {
-        childrenSlots['header'] = (data: any) => slots[slotName]?.(data);
-      };
+      const childrenSlots = getChildrenSlots(slots, col.field);
       if (!col.render && (slots[col.field ?? ''] || col.showIcon) && !col.type) {
         childrenSlots['default'] =  (data: any) =>{
           const field = col.field ?? '';
@@ -80,6 +73,19 @@ export default defineComponent({
         };
       }
       return <KTableColumn key={col.field} {...col} v-slots={childrenSlots} />
+    }
+    function getChildrenSlots(slots: SlotsType, fieldName: string | undefined) {
+      if (!fieldName) {
+        return {};
+      }
+      const childrenSlots: any = {};
+      for (const name of SLOT_NAMES) {
+        const slotName = `${fieldName}-${name}`;
+        if (slots[slotName]) {
+          childrenSlots[name] = (data: any) => slots[slotName]?.(data);
+        }
+      }
+      return childrenSlots;
     }
   }
 })

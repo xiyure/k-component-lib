@@ -110,6 +110,7 @@ export interface TreeTableProps {
     | TableHeaderControl[]
   onTransferShow?: () => void
   onTransferHide?: (transferData: TableHeaderControl[]) => void
+  onTransferChange?: (transferData: TableHeaderControl[]) => void
   onAdvancedFilterShow?: () => void
   onAdvancedFilterHide?: (filterData: any) => void
   useAntStyle?: boolean

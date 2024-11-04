@@ -18,6 +18,11 @@ export default defineConfig({
       include: ['package'],
     })
   ],
+  esbuild: {
+    jsxFactory: 'h',
+    jsxFragment: 'Fragment',
+    jsxInject: `import { h, Fragment } from 'vue';`
+  },
   build: {
     outDir: name,
 		lib: {
