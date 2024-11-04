@@ -13,7 +13,7 @@
       "type": "object",
       "description": "表格列配置",
       "defaultValue": "",
-      "tip": "columnConfigType[]"
+      "tip": "ColumnConfig[]"
     },
     {
       "displayName": "size",
@@ -90,7 +90,7 @@
       "type": "object",
       "description": "批量操作配置",
       "defaultValue": "",
-      "tip": "{label: string, handler: () => any}[]"
+      "tip": "OperateData[]"
     },
     {
       "displayName": "cellClickToggleHighlight",
@@ -146,21 +146,21 @@
       "type": "object",
       "description": "分页配置",
       "defaultValue": "",
-      "tip": "PaginationConfigType"
+      "tip": "PaginationConfig"
     },
     {
       "displayName": "searchConfig",
       "type": "object",
       "description": "搜索配置",
       "defaultValue": "",
-      "tip": "searchConfigType"
+      "tip": "SearchConfig"
     },
     {
       "displayName": "seq-config",
       "type": "object",
       "description": "搜索配置",
       "defaultValue": "",
-      "tip": "seqConfigType"
+      "tip": "SeqConfig"
     },
     {
       "displayName": "simple",
@@ -195,6 +195,14 @@
       "version": "0.0.72"
     },
     {
+      "displayName": "on-transfer-change",
+      "type": "Function",
+      "description": "列头控制穿梭框隐藏时如果数据发生变化时则执行回调",
+      "defaultValue": "",
+      "tip": "(transferData: TableHeaderControl[]) => void",
+      "version": "0.0.80"
+    },
+    {
       "displayName": "on-advanced-filter-show",
       "type": "Function",
       "description": "高级筛选显示时回调",
@@ -227,7 +235,7 @@
     }
   ],
   "subProps": {
-    "columnConfigType": [
+    "ColumnConfig": [
       {
         "displayName": "title",
         "description": "列头显示文字",
@@ -256,27 +264,31 @@
       {
         "displayName": "sortable",
         "description": "是否可排序",
-        "type": "boolean"
+        "type": "boolean",
+        "defaultValue": "false"
       },
       {
         "displayName": "showIcon",
         "description": "是否显示图标",
-        "type": "boolean"
+        "type": "boolean",
+        "defaultValue": "false"
       },
       {
         "displayName": "visible",
         "description": "是否显示该列",
-        "type": "boolean"
+        "type": "boolean",
+        "defaultValue": "true"
       },
       {
         "displayName": "showColumnMenu",
         "description": "是否显示列头菜单",
-        "type": "boolean"
+        "type": "boolean",
+        "defaultValue": "false"
       },
       {
         "displayName": "group",
         "description": "用于多级表头分组，参数配置与列配置一致",
-        "type": "any[]"
+        "type": "ColumnConfig[]"
       },
       {
         "displayName": "render",
@@ -297,11 +309,12 @@
         "tip": "'string' | 'number' | 'boolean' | 'date'"
       }
     ],
-    "searchConfigType": [
+    "SearchConfig": [
       {
         "displayName": "strict",
         "description": "是否精确搜索",
-        "type": "boolean"
+        "type": "boolean",
+        "defaultValue": "false"
       },
       {
         "displayName": "searchMethod",
@@ -312,24 +325,34 @@
       {
         "displayName": "isRemoteQuery",
         "description": "是否远程搜索",
-        "type": "boolean"
+        "type": "boolean",
+        "defaultValue": "false"
+      },
+      {
+        "displayName": "ignoreCase",
+        "description": "是否忽略大小写",
+        "type": "boolean",
+        "defaultValue": "false",
+        "version": "0.0.80"
       }
     ],
-    "advancedFilterConfigType": [
+    "AdvancedFilterConfig": [
       {
         "displayName": "filterAll",
         "description": "是否筛选所有数据，为false时只筛选column.visible=true的数据",
-        "type": "boolean"
+        "type": "boolean",
+        "defaultValue": "true"
       },
       {
         "displayName": "exclude",
         "description": "排除项, 与column.field相同, 该参数包含的列不参与高级筛选",
-        "type": "any[]"
+        "type": "string[]"
       },
       {
         "displayName": "remote",
         "description": "启用远程筛选， 为true时所有条件将通过远程接口进行查询， 也可以为数组，指定远程筛选的列",
-        "type": "boolean | string[]"
+        "type": "boolean | string[]",
+        "defaultValue": "false"
       },
       {
         "displayName": "dateFormat",
@@ -342,9 +365,16 @@
         "description": "自定义列筛选条件",
         "type": "object",
         "tip": "{title: string, field: string, dataTypes: string, options: { label: string, value: any }[]}[]"
+      },
+      {
+        "displayName": "ignoreCase",
+        "description": "是否忽略大小写",
+        "type": "boolean",
+        "defaultValue": "false",
+        "version": "0.0.80"
       }
     ],
-    "PaginationConfigType": [
+    "PaginationConfig": [
       {
         "displayName": "total",
         "description": "总条数",
@@ -379,10 +409,11 @@
       {
         "displayName": "isRemotePaging",
         "description": "是否服务端分页",
-        "type": "boolean"
+        "type": "boolean",
+        "defaultValue": "false"
       }
     ],
-    "seqConfigType": [
+    "SeqConfig": [
       {
         "displayName": "startIndex",
         "type": "number",
@@ -415,7 +446,7 @@
       "displayName": "server-paging",
       "description": "服务端分页",
       "type": "Function",
-      "tip": "(config: PaginationConfigType) => void"
+      "tip": "(config: PaginationConfig) => void"
     },
     {
       "displayName": "highlight-clear",
@@ -427,7 +458,7 @@
       "displayName": "highlight-change",
       "description": "高亮状态变化时触发",
       "type": "Function",
-      "tip": "(row: any, isHighLight: boolean) => void"
+      "tip": "(row: Row, isHighLight: boolean) => void"
     },
     {
       "displayName": "cell-click",
@@ -439,7 +470,7 @@
       "displayName": "hide-column",
       "description": "隐藏列时触发",
       "type": "Function",
-      "tip": "(column: ColumnConfigType) => void"
+      "tip": "(column: ColumnConfig) => void"
     },
     {
       "displayName": "checkbox-all",
@@ -491,6 +522,14 @@
       "description": "自定义该列列头内容",
        "parameters": "object",
        "tip": "{ column }"
+    },
+    {
+
+      "displayName": "[column.field]-edit",
+      "description": "自定义单元格渲染列内容",
+       "parameters": "object",
+       "tip": "{ column }",
+       "version": "0.0.80"
     },
     {
 

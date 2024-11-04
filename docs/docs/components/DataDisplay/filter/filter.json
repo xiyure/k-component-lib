@@ -3,7 +3,7 @@
   "props": [
     {
       "displayName": "options",
-      "type": "any[]",
+      "type": "filterOptions[]",
       "description": "筛选配置项，包含字段、标题、数据类型、等信息，目前支持的类型有：string、number、date，默认为string",
       "defaultValue": "",
       "tip": ""
@@ -50,6 +50,13 @@
       "displayName": "formatter",
       "type": "string",
       "description": "用于dataType=date，用于格式化日期值"
+    },
+    {
+      "displayName": "ignore-case",
+      "type": "boolean",
+      "description": "是否忽略大小写",
+      "defaultValue": "false",
+      "version": "0.0.80"
     }
   ],
   "events": [

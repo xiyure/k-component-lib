@@ -229,11 +229,11 @@ function genTag(content: string) {
   if (!content) {
     return '';
   }
-  const html = `<KTag type="primary" size="sm" text-color="#2882ff" style="background-color: #FFF" round>${content.toString()}</KTag>`;
+  const html = `<KTag size="sm" round>${content.toString()}</KTag>`;
   return html;
 }
 function escapeParams(params: any) {
-  const { displayName, description, type, defaultValue, parameters, tip, version } = params
+  const { displayName, description, type, defaultValue, parameters, tip, version } = params;
   return {
     displayName: escapeCharacter(displayName),
     description: escapeCharacter(description),

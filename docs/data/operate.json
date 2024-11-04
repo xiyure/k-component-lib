@@ -6,7 +6,7 @@
       "type": "object",
       "description": "操作项数据配置",
       "defaultValue": "",
-      "tip": "{label: string, handler: Function}[]"
+      "tip": "OperateData[]"
     },
     {
       "displayName": "total",

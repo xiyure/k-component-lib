@@ -1,7 +1,7 @@
 export interface FilterProps {
   data?: any[],
-  column?: Options[]
-  options?: Options[]
+  column?: filterOptions[]
+  options?: filterOptions[]
   border?: boolean
   size?: 'base' | 'sm'
   childrenField?: string
@@ -26,7 +26,7 @@ export type FilterData = {
   _allowSelectLogic?: boolean
 }
 
-export interface Options {
+export interface filterOptions {
   title: string
   value: string
   dataType?: 'string' | 'number' | 'date'
@@ -34,7 +34,7 @@ export interface Options {
     label: string
     value: string
   }[]
-  group?: Options[]
+  group?: filterOptions[]
 }
 
 export interface Condition {
