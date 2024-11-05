@@ -1,3 +1,8 @@
-import KPagination from './pagination.vue';
+import Pagination from './pagination.vue';
+import type { SFCWithInstall } from '../../types';
+import { withInstall } from '../../utils/install';
 
-export { KPagination };
+export const KPagination: SFCWithInstall<typeof Pagination> = withInstall(Pagination);
+export default KPagination;
+
+export * from './type';

@@ -1,3 +1,8 @@
-import KCascader from './cascader.vue';
+import Cascader from './cascader.vue';
+import type { SFCWithInstall } from '../../types';
+import { withInstall } from '../../utils/install';
 
-export { KCascader };
+export const KCascader: SFCWithInstall<typeof Cascader> = withInstall(Cascader);
+export default KCascader;
+
+export * from './type';

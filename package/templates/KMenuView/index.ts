@@ -1,3 +1,8 @@
-import KMenuView from './KMenuView.vue';
+import MenuView from './KMenuView.vue';
+import type { SFCWithInstall } from '../../types';
+import { withInstall } from '../../utils/install';
 
-export { KMenuView };
+export const KMenuView: SFCWithInstall<typeof MenuView> = withInstall(MenuView);
+export default KMenuView;
+
+export * from './type';

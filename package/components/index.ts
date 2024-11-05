@@ -27,7 +27,7 @@ import { KDrawer } from './drawer';
 import { KForm, KFormItem } from './form';
 import { KSteps, KStep } from './step';
 import { KCollapse, KCollapseItem } from './collapse';
-import { KView, KViewItem } from './view';
+import { KView } from './view';
 import { KBadge } from './badge';
 import { KTimeline, KTimelineItem } from './timeline';
 import { KCalendar } from './calendar';
@@ -81,7 +81,6 @@ export {
   KCollapse,
   KCollapseItem,
   KView,
-  KViewItem,
   KBadge,
   KTimeline,
   KTimelineItem,

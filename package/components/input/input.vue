@@ -35,7 +35,7 @@
 <script setup lang="ts">
 import { ref, computed, inject, provide } from 'vue';
 import { ElInput } from 'element-plus';
-import { InputProps } from './type.d';
+import { InputProps } from './type';
 import { getCompSize, getExposeProxy } from '../../utils';
 
 defineOptions({

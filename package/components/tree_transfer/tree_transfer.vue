@@ -99,7 +99,7 @@
 <script setup lang="tsx">
 import { ref, computed, watch, nextTick, inject } from 'vue';
 import { IconSearch, IconDrag, IconClose } from 'ksw-vue-icon';
-import { TreeTransferProps } from './type.d';
+import { TreeTransferProps } from './type';
 import { KTable, KTableColumn } from '../table';
 import { KInput } from '../input';
 import { sortBySmallerList } from '../../utils';

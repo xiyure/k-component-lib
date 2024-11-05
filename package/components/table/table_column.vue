@@ -273,7 +273,7 @@ import { KDialog } from '../dialog';
 import { KInput } from '../input';
 import { KButton } from '../button';
 import { KTooltip } from '../tooltip';
-import { TableColumnProps } from './type.d';
+import { TableColumnProps } from './type';
 
 defineOptions({
   name: 'KTableColumn'

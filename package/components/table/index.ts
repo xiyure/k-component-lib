@@ -1,5 +1,18 @@
-import KTable from './table.vue';
-import KTableColumn from './table_column.vue';
-import KColumnGroup from './column_group.vue';
+import Table from './table.vue';
+import TableColumn from './table_column.vue';
+import ColumnGroup from './column_group.vue';
+import type { SFCWithInstall } from '../../types';
+import { withInstall } from '../../utils/install';
 
-export { KTable, KTableColumn, KColumnGroup };
+export const KTable: SFCWithInstall<typeof Table> &
+{
+  KTableColumn: typeof KTableColumn,
+  KColumnGroup: typeof KColumnGroup
+} = withInstall(Table, { TableColumn, ColumnGroup });
+export default KTable;
+
+export const KTableColumn: SFCWithInstall<typeof TableColumn> = withInstall(TableColumn);
+
+export const KColumnGroup: SFCWithInstall<typeof ColumnGroup> = withInstall(ColumnGroup);
+
+export * from './type';

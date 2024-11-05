@@ -1,4 +1,8 @@
-import KView from './view.vue';
-import KViewItem from './view_item.vue';
+import View from './view.vue';
+import type { SFCWithInstall } from '../../types';
+import { withInstall } from '../../utils/install';
 
-export { KView, KViewItem };
+export const KView: SFCWithInstall<typeof View> = withInstall(View);
+export default KView;
+
+export * from './type';

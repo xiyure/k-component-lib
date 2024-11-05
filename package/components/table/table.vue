@@ -29,7 +29,7 @@ import { ref, provide, computed, onUnmounted, nextTick, inject } from 'vue';
 import { VxeColumnProps, VxeTableInstance } from 'vxe-table';
 import Sortable from 'sortablejs';
 import { IconDrag } from 'ksw-vue-icon';
-import { KTableProps } from './type.d';
+import { KTableProps } from './type';
 import { genRandomStr } from '../../utils';
 
 const DESC_EVENT_NAME = 'desc-change';

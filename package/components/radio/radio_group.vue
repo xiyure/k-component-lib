@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, provide, inject } from 'vue';
 import { ElRadioGroup } from 'element-plus';
-import { RadioGroupProps } from './type.d';
+import { RadioGroupProps } from './type';
 import { getCompSize, getExposeProxy } from '../../utils';
 
 defineOptions({

@@ -1,3 +1,8 @@
-import KTransfer from './transfer.vue';
+import Transfer from './transfer.vue';
+import type { SFCWithInstall } from '../../types';
+import { withInstall } from '../../utils/install';
 
-export { KTransfer };
+export const KTransfer: SFCWithInstall<typeof Transfer> = withInstall(Transfer);
+export default KTransfer;
+
+export * from './type';

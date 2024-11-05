@@ -1,4 +1,4 @@
-export interface PageHeadProps {
+export interface PageDetailsProps {
   /**
    * 菜单图标
    */

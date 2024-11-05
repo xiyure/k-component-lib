@@ -1,20 +1,20 @@
 import { Component } from 'vue';
 
-export interface optionItem {
+export interface menuViewOption {
   index?: any
   title?: string
   icon?: string | Component
   disabled?: boolean
   route?: object
-  children?: optionItem[]
+  children?: menuViewOption[]
 }
 export interface menuViewProps {
-  options?: optionItem[]
+  options?: menuViewOption[]
   active?: number
   showCollapse?: boolean
   collapse?: boolean
 }
 
-export interface subMenuProps {
-  options: optionItem[]
+export interface subMenuViewProps {
+  options: menuViewOption[]
 }

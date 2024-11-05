@@ -1,3 +1,8 @@
-import KButtonContainer from './button_container.vue';
+import ButtonContainer from './button_container.vue';
+import type { SFCWithInstall } from '../../types';
+import { withInstall } from '../../utils/install';
 
-export { KButtonContainer };
+export const KButtonContainer: SFCWithInstall<typeof ButtonContainer> = withInstall(ButtonContainer);
+export default KButtonContainer;
+
+export * from './type';

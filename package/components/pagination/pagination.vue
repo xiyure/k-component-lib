@@ -11,7 +11,7 @@
 import { ref, inject } from 'vue';
 import { ElPagination } from 'element-plus';
 import { getCompSize, getExposeProxy } from '../../utils';
-import { PaginationProps } from './type.d';
+import { PaginationProps } from './type';
 
 defineOptions({
   name: 'KPagination'

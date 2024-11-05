@@ -64,6 +64,7 @@
 <script setup lang="ts">
 import { ref, computed, provide, inject } from 'vue';
 import { IconRefresh, IconArrowRight } from 'ksw-vue-icon';
+import KViewItem from './view_item.vue';
 import { ViewProps, ViewItemProps } from './type';
 import { genRandomStr } from '../../utils';
 

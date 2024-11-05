@@ -110,7 +110,7 @@
 <script setup lang="ts">
 import { computed, inject } from 'vue';
 
-import { ResultProps } from './type.d';
+import { ResultProps } from './type';
 
 defineOptions({
   name: 'KResult'

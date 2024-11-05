@@ -1,3 +1,8 @@
-import KOperate from './operate.vue';
+import Operate from './operate.vue';
+import type { SFCWithInstall } from '../../types';
+import { withInstall } from '../../utils/install';
 
-export { KOperate };
+export const KOperate: SFCWithInstall<typeof Operate> = withInstall(Operate);
+export default KOperate;
+
+export * from './type';

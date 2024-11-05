@@ -43,15 +43,15 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { MenuItemRegistered } from 'element-plus';
-import { optionItem, subMenuProps } from './type';
+import { menuViewOption, subMenuViewProps } from './type';
 
 defineOptions({
   name: 'SubMenu'
 });
-const props = defineProps<subMenuProps>();
+const props = defineProps<subMenuViewProps>();
 const emits = defineEmits(['click']);
 
-const subMenuAttrs = computed(() => (obj: optionItem) => {
+const subMenuAttrs = computed(() => (obj: menuViewOption) => {
   const { children, ...rest } = obj;
   return rest;
 });

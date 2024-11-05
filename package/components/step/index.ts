@@ -1,4 +1,14 @@
-import KSteps from './steps.vue';
-import KStep from './step.vue';
+import Steps from './steps.vue';
+import Step from './step.vue';
+import type { SFCWithInstall } from '../../types';
+import { withInstall } from '../../utils/install';
 
-export { KSteps, KStep };
+export const KSteps: SFCWithInstall<typeof Steps> &
+{
+  Step: typeof Step
+} = withInstall(Steps, { Step });
+export default KSteps;
+
+export const KStep: SFCWithInstall<typeof Step> = withInstall(Step);
+
+export * from './type';

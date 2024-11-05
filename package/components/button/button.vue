@@ -42,7 +42,7 @@
 import { computed, ref, nextTick, watch, inject } from 'vue';
 import { ElButton } from 'element-plus';
 import { IconLoading } from 'ksw-vue-icon';
-import { ButtonProps } from './type.d';
+import { ButtonProps } from './type';
 import { genRandomStr, getExposeProxy, GetColorLevelNew } from '../../utils';
 import { btnTypes } from './const';
 

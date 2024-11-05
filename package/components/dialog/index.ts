@@ -1,3 +1,8 @@
-import KDialog from './dialog.vue';
+import Dialog from './dialog.vue';
+import type { SFCWithInstall } from '../../types';
+import { withInstall } from '../../utils/install';
 
-export { KDialog };
+export const KDialog: SFCWithInstall<typeof Dialog> = withInstall(Dialog);
+export default KDialog;
+
+export * from './type';
