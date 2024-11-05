@@ -2,6 +2,8 @@
 import { KPageViewBus } from './KPageViewBus';
 // KPageDetails, 详情模板
 import { KPageDetails } from './KPageDetails';
+// KDetailsItem, 详情项模板
+import { KDetailsItem } from './KDetailsItem';
 // KPageTableView, 表格模板
 import { KPageTableView } from './KPageTableView';
 // KDetailsItem, 详情项模板
@@ -17,5 +19,6 @@ export {
   KDetails,
   KPageTableView,
   KMenuView,
+  KDetailsItem,
   GFPageDetails,
 };
