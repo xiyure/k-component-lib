@@ -23,16 +23,17 @@ import { ref, watch, inject, nextTick } from 'vue';
 import { ElTag } from 'element-plus';
 import { TagProps } from './type';
 import { getCompSize, getExposeProxy, GetColorLevelNew } from '../../utils';
+import { getCompSize, getExposeProxy, GetColorLevelNew } from '../../utils';
 import { colors } from './const';
 
 defineOptions({
-  name: 'KTag'
+  name: 'KTag',
 });
 
 const props = withDefaults(defineProps<TagProps>(), {
   point: false,
   type: undefined,
-  text: undefined
+  text: undefined,
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -59,14 +60,14 @@ watch(
           colors.forEach((item) => {
             KTagRef.value.$el?.style.setProperty(
               `--tag${item.name}`,
-              getColorS[`--k-oklch-${item.value}`]
+              getColorS[`--k-oklch-${item.value}`],
             );
           });
         }
       });
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 const instance: any = {};
