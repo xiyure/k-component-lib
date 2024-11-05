@@ -17,71 +17,120 @@
   --icon-Space: 2rem;
 
   position: relative;
+
+  .el-tabs__header {
+    .el-tabs__nav-wrap {
+      .el-tabs__nav-scroll {
+        .el-tabs__nav {
+          .el-tabs__active-bar {
+            background-color: var(--k-theme-primary);
+          }
+          .el-tabs__item {
+            max-width: 14rem;
+            // padding: 0 1rem;
+
+            color: var(--k-theme-text--normal);
+
+            .el-tooltip__trigger {
+              display: inline-flex;
+              align-items: center;
+              width: 100%;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              gap: 0.25rem;
+
+              padding: 0 0.75rem;
+
+              transition: all var(--el-transition-duration)
+                var(--el-transition-function-ease-in-out-bezier);
+
+              &.k-tab-item-closeable {
+                padding-right: 0;
+              }
+
+              // span:first-child {
+              //   padding-left: 1rem;
+              // }
+              // span:last-child:not(:first-child) {
+              //   padding-right: 1rem;
+              //   display: inline-block;
+              //   flex: 1;
+              //   overflow: hidden;
+              //   text-overflow: ellipsis;
+              //   white-space: nowrap;
+              // }
+              span + span {
+                margin-left: 0.25rem;
+              }
+              // &.k-tab-item-closeable {
+              //   padding-right: 0;
+              // }
+
+              // &:hover {
+              //   color: var(--k-theme-primary-400);
+              // }
+            }
+
+            .el-icon.is-icon-close {
+              margin-left: 0.25rem;
+              margin-right: 0.75rem;
+              // padding-right: 1rem;
+              flex-shrink: 1;
+
+              &:hover {
+                background: transparent !important;
+                color: var(--k-theme-primary) !important;
+              }
+            }
+
+            &:hover:not(.is-disabled, .is-active) {
+              color: var(--k-theme-primary-400);
+            }
+            &.is-active {
+              color: var(--k-theme-primary);
+            }
+          }
+          .el-tabs__item.is-left {
+            width: calc(var(--plane-max-width) + 2rem);
+          }
+
+          .el-tabs__item.is-closable {
+            position: relative;
+
+            .el-icon.is-icon-close {
+              width: var(--icon-size);
+              height: var(--icon-size);
+              &:hover {
+                background: unset;
+                color: unset;
+                border-radius: unset;
+
+                background: var(--k-blue-100);
+                border-radius: var(--k-rounded-full);
+              }
+            }
+          }
+        }
+      }
+      &::after {
+        background-color: var(--k-gray-200);
+      }
+    }
+  }
+
   .el-tabs__nav-next,
   .el-tabs__nav-prev {
     display: none;
   }
-  .el-tabs__item {
-    max-width: 14rem;
 
-    .el-tooltip__trigger {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      span:first-child {
-        padding-left: 1rem;
-      }
-      span:last-child {
-        padding-right: 1rem;
-        display: inline-block;
-        flex: 1;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-      span + span {
-        margin-left: 0.25rem;
-      }
-    }
-    .k-tab-item-closeable {
-      padding-right: 0;
-    }
-
-    .k-tab-item-closeable + .el-icon {
-      margin-right: 0.5rem;
-    }
-
-    &:hover:not(.is-disabled) {
-      color: var(--k-blue-400);
-    }
-  }
-  .el-tabs__item.is-left {
-    width: calc(var(--plane-max-width) + 2rem);
-  }
-
-  .el-tabs__item.is-closable {
-    position: relative;
-
-    .el-icon.is-icon-close {
-      width: var(--icon-size);
-      height: var(--icon-size);
-      &:hover {
-        background: unset;
-        color: unset;
-        border-radius: unset;
-
-        background: var(--k-blue-100);
-        border-radius: var(--k-rounded-full);
-      }
-    }
-  }
   .el-tabs__nav-wrap {
-    &.is-top, &.is-bottom {
+    &.is-top,
+    &.is-bottom {
       padding-right: var(--more-width);
     }
-    &.is-left, &.is-right {
+    &.is-left,
+    &.is-right {
       padding-top: 2.5rem !important;
       padding-bottom: 0 !important;
     }
@@ -135,10 +184,10 @@
     right: 0;
     width: calc(var(--plane-max-width) + 2rem);
     border-bottom: unset;
-  
+
     &::after {
       background: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.05));
-  
+
       right: 0;
       height: calc(var(--more-width) / 2);
       width: calc(var(--plane-max-width) + 2rem);

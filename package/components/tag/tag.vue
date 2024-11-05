@@ -23,7 +23,6 @@ import { ref, watch, inject, nextTick } from 'vue';
 import { ElTag } from 'element-plus';
 import { TagProps } from './type';
 import { getCompSize, getExposeProxy, GetColorLevelNew } from '../../utils';
-import { getCompSize, getExposeProxy, GetColorLevelNew } from '../../utils';
 import { colors } from './const';
 
 defineOptions({
