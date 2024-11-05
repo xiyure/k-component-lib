@@ -13,10 +13,10 @@
       v-if="hideTabs.length"
       class="k-tabs-more"
       :class="`tab-${tabPosition}-layout`"
-      :style="{ right: (editable
-        || addable)
-        && (tabPosition === 'top'
-          || tabPosition === 'bottom') ? '2rem' : 0 }"
+      :style="{
+        right:
+          (editable || addable) && (tabPosition === 'top' || tabPosition === 'bottom') ? '2rem' : 0,
+      }"
     >
       <TabDropdownMenu :tabs="hideTabs" @command="jumpToTab">
         <template #title>
@@ -40,7 +40,7 @@ import { flattenChildren, isValidElement, camelize, getExposeProxy } from '../..
 import { TabsProps } from './type';
 
 defineOptions({
-  name: 'KTabs'
+  name: 'KTabs',
 });
 
 const props = withDefaults(defineProps<TabsProps>(), {
@@ -48,7 +48,7 @@ const props = withDefaults(defineProps<TabsProps>(), {
   tabPosition: 'top',
   editable: false,
   addable: false,
-  maxWidth: undefined
+  maxWidth: undefined,
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -94,7 +94,7 @@ watch(
       });
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 function isElementInContainerView(el: any, translate: number = 0) {
@@ -106,9 +106,15 @@ function isElementInContainerView(el: any, translate: number = 0) {
   const diff = translate - preTranslate;
   const { width: addTabWidth, height: addTabHeight } = addTabElem?.getBoundingClientRect() ?? {};
   if (props.tabPosition === 'top' || props.tabPosition === 'bottom') {
-    return elRect.left + diff >= containerRect.left && elRect.right + diff <= containerRect.right - (addTabWidth ?? 0); 
+    return (
+      elRect.left + diff >= containerRect.left &&
+      elRect.right + diff <= containerRect.right - (addTabWidth ?? 0)
+    );
   }
-  return elRect.top + diff >= containerRect.top && elRect.bottom + diff <= containerRect.bottom - (addTabHeight ?? 0);
+  return (
+    elRect.top + diff >= containerRect.top &&
+    elRect.bottom + diff <= containerRect.bottom - (addTabHeight ?? 0)
+  );
 }
 function jumpToTab(item: any) {
   const name = item.name ?? '';
@@ -141,28 +147,25 @@ function getHideTabs() {
 // 解析tab-pane
 function parseTabList(children: any[]): any[] {
   return children
-  .map(node => {
-    if (isValidElement(node)) {
-      const props = { ...(node.props || {}) };
-      for (const [k, v] of Object.entries(props)) {
-        delete props[k];
-        props[camelize(k)] = v;
+    .map((node) => {
+      if (isValidElement(node)) {
+        const props = { ...(node.props || {}) };
+        for (const [k, v] of Object.entries(props)) {
+          delete props[k];
+          props[camelize(k)] = v;
+        }
+        const slots = node.children || {};
+        const name = node.props?.name !== undefined ? node.props.name : undefined;
+        const { label = slots.label, disabled } = props;
+        return {
+          name,
+          label,
+          disabled: disabled === '' || disabled,
+        };
       }
-      const slots = node.children || {};
-      const name = node.props?.name !== undefined ? node.props.name : undefined;
-      const {
-        label = slots.label,
-        disabled
-      } = props;
-      return {
-        name,
-        label,
-        disabled: disabled === '' || disabled
-      };
-    }
-    return null;
-  })
-  .filter(tab => tab);
+      return null;
+    })
+    .filter((tab) => tab);
 }
 
 watch(
@@ -170,7 +173,7 @@ watch(
   () => {
     activeName.value = props.modelValue as string;
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 const instance: any = {};
