@@ -19,6 +19,9 @@ import { ref, provide, onMounted, onUnmounted } from 'vue';
 import { DetailsProps } from './type';
 import KDetailsItem from './DetailsItem.vue';
 
+defineOptions({
+  name: 'KDetails'
+});
 const props = withDefaults(defineProps<DetailsProps>(), {
   direction: 'vertical',
   showLine: false

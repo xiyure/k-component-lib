@@ -63,7 +63,9 @@ import { ref } from 'vue';
 import { KPageViewBus } from '../KPageViewBus';
 import { KTooltip } from '../../components';
 
-const tips = ref(false);
+defineOptions({
+  name: 'KPageTableView'
+});
 
 const props = defineProps({
   showAside: {
@@ -96,6 +98,7 @@ const props = defineProps({
   }
 });
 
+const tips = ref(false);
 // 正则判断 props.pageIcon 中是否是图片链接
 const isImgUrl = /.(jpg|jpeg|png|gif|svg)$/;
 

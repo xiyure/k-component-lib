@@ -29,6 +29,9 @@
 import { inject, computed, ComputedRef } from 'vue';
 import { DetailsItemProps, DetailsProps } from './type';
 
+defineOptions({
+  name: 'KDetailsItem'
+});
 const props = withDefaults(defineProps<DetailsItemProps>(), {
   column: 1,
   showLine: undefined

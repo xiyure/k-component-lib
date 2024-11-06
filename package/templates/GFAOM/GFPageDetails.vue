@@ -72,6 +72,9 @@ import { KTabs, KTabPane } from '../../components/tab';
 import DetailsHeadItem from './DetailsHeadItem.vue';
 import { GFPageDetailProps } from './type';
 
+defineOptions({
+  name: 'GFPageDetails'
+});
 const props = withDefaults(defineProps<GFPageDetailProps>(), {
   icon: '',
   title: '标题',

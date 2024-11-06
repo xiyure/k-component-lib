@@ -2,7 +2,7 @@ import Select from './select.vue';
 import Option from './option.vue';
 import OptionGroup from './option_group.vue';
 import type { SFCWithInstall } from '../../types';
-import { withInstall } from '../../utils/install';
+import { withInstall, withNoopInstall } from '../../utils/install';
 
 export const KSelect: SFCWithInstall<typeof Select> &
 {
@@ -11,8 +11,8 @@ export const KSelect: SFCWithInstall<typeof Select> &
 } = withInstall(Select, { Option, OptionGroup });
 export default KSelect;
 
-export const KOption: SFCWithInstall<typeof Option> = withInstall(Option);
+export const KOption: SFCWithInstall<typeof Option> = withNoopInstall(Option);
 
-export const KOptionGroup: SFCWithInstall<typeof OptionGroup> = withInstall(OptionGroup);
+export const KOptionGroup: SFCWithInstall<typeof OptionGroup> = withNoopInstall(OptionGroup);
 
 export * from './type';

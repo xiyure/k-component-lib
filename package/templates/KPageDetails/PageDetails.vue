@@ -48,8 +48,12 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import DetailsHeadItem from './DetailsHeadItem.vue';
+
+defineOptions({
+  name: 'KPageDetails'
+});
 
 const props = defineProps({
   pageIcon: {

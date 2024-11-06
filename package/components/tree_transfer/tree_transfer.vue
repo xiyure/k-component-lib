@@ -104,6 +104,9 @@ import { KTable, KTableColumn } from '../table';
 import { KInput } from '../input';
 import { sortBySmallerList } from '../../utils';
 
+defineOptions({
+  name: 'KTreeTransfer'
+});
 const props = withDefaults(defineProps<TreeTransferProps>(), {
   showFilter: true,
   useTree: false,

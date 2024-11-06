@@ -10,7 +10,7 @@ import { ElDropdownItem } from 'element-plus';
 import { getExposeProxy } from '../../utils';
 
 defineOptions({
-  name: 'KDropDownItem'
+  name: 'KDropdownItem'
 });
 
 const _styleModule = inject('_styleModule', '');

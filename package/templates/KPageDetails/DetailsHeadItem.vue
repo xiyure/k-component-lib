@@ -15,7 +15,10 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+defineOptions({
+  name: 'KPageDetailsHeadItem'
+});
 const props = defineProps({
   label: {
     type: String,

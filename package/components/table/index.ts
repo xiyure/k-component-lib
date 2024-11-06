@@ -2,7 +2,7 @@ import Table from './table.vue';
 import TableColumn from './table_column.vue';
 import ColumnGroup from './column_group.vue';
 import type { SFCWithInstall } from '../../types';
-import { withInstall } from '../../utils/install';
+import { withInstall, withNoopInstall } from '../../utils/install';
 
 export const KTable: SFCWithInstall<typeof Table> &
 {
@@ -11,8 +11,8 @@ export const KTable: SFCWithInstall<typeof Table> &
 } = withInstall(Table, { TableColumn, ColumnGroup });
 export default KTable;
 
-export const KTableColumn: SFCWithInstall<typeof TableColumn> = withInstall(TableColumn);
+export const KTableColumn: SFCWithInstall<typeof TableColumn> = withNoopInstall(TableColumn);
 
-export const KColumnGroup: SFCWithInstall<typeof ColumnGroup> = withInstall(ColumnGroup);
+export const KColumnGroup: SFCWithInstall<typeof ColumnGroup> = withNoopInstall(ColumnGroup);
 
 export * from './type';

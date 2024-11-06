@@ -1,7 +1,7 @@
 import Form from './form.vue';
 import FormItem from './form_item.vue';
 import type { SFCWithInstall } from '../../types';
-import { withInstall } from '../../utils/install';
+import { withInstall, withNoopInstall } from '../../utils/install';
 
 export const KForm: SFCWithInstall<typeof Form> &
 {
@@ -9,6 +9,6 @@ export const KForm: SFCWithInstall<typeof Form> &
 } = withInstall(Form, { FormItem });
 export default KForm;
 
-export const KFormItem: SFCWithInstall<typeof FormItem> = withInstall(FormItem);
+export const KFormItem: SFCWithInstall<typeof FormItem> = withNoopInstall(FormItem);
 
 export * from './type';

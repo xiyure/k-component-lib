@@ -57,10 +57,13 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import { KTooltip } from '../../components';
 
+defineOptions({
+  name: 'KPageViewBus'
+});
 const tips = ref(false);
 const drawerStatus = ref(false);
 const props = defineProps({

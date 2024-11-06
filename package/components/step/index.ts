@@ -1,7 +1,7 @@
 import Steps from './steps.vue';
 import Step from './step.vue';
 import type { SFCWithInstall } from '../../types';
-import { withInstall } from '../../utils/install';
+import { withInstall, withNoopInstall } from '../../utils/install';
 
 export const KSteps: SFCWithInstall<typeof Steps> &
 {
@@ -9,6 +9,6 @@ export const KSteps: SFCWithInstall<typeof Steps> &
 } = withInstall(Steps, { Step });
 export default KSteps;
 
-export const KStep: SFCWithInstall<typeof Step> = withInstall(Step);
+export const KStep: SFCWithInstall<typeof Step> = withNoopInstall(Step);
 
 export * from './type';

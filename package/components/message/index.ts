@@ -1,3 +1,7 @@
-import { KMessage } from './message.ts';
+import { withInstallFunction } from '../../utils/install';
+import Message from './message';
 
-export { KMessage };
+export const KMessage = withInstallFunction(Message, '$message');
+export default KMessage;
+
+export * from './type';

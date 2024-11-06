@@ -16,6 +16,10 @@
 </template>
 
 <script lang="ts" setup>
+
+defineOptions({
+  name: 'DetailsHeadItem'
+});
 const props = defineProps({
   label: {
     type: String,

@@ -1,19 +1,9 @@
 import { ElMessage, MessageParams, MessageHandler } from 'element-plus';
 import { IconWarning } from 'ksw-vue-icon';
-import { MessageProps } from './type';
+import { MessageService, MessageOption, Message } from './type';
 import './style.less';
 
-type MeassgeOptionType = MessageProps | string;
-type MeassgeType = 'success' | 'warning' | 'info' | 'error';
-interface IMessageFunction<T, V> {
-  (options:T): V,
-  success: (options:T) => V,
-  error: (options:T) => V,
-  warning: (options:T) => V,
-  info: (options:T) => V,
-}
-
-const KMessage:IMessageFunction<MeassgeOptionType, MessageHandler> = ((options:MeassgeOptionType) => {
+const KMessage:MessageService<MessageOption, MessageHandler> = ((options:MessageOption) => {
   if (typeof options === 'string') {
     options = {
       message: options
@@ -25,16 +15,16 @@ const KMessage:IMessageFunction<MeassgeOptionType, MessageHandler> = ((options:M
     }
   }
   return ElMessage(options as MessageParams);
-}) as IMessageFunction<MeassgeOptionType, MessageHandler>;
+}) as MessageService<MessageOption, MessageHandler>;
 
 ['success', 'error', 'info', 'warning'].forEach((type) => {
-  const messageType = type as MeassgeType;
-  KMessage[type] = (options:MeassgeOptionType) => {
+  const messageType = type as Message;
+  KMessage[type] = (options:MessageOption) => {
     if (typeof options === 'string') {
       options = {
         message: options,
         type: messageType
-      } as MeassgeOptionType;
+      } as MessageOption;
     } else {
       if (type === 'warning') {
         options.icon = IconWarning;
@@ -44,4 +34,4 @@ const KMessage:IMessageFunction<MeassgeOptionType, MessageHandler> = ((options:M
     return KMessage(options);
   };
 });
-export { KMessage };
+export default KMessage;
