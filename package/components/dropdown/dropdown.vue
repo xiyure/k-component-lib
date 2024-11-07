@@ -3,7 +3,7 @@
     ref="kDropDownRef"
     :class="['k-dropdown', _styleModule]"
     v-bind="$attrs"
-    :size="getCompSize(size)"
+    :size="formatSize.elSize"
   >
     <slot name="title">
       <span class="k-dropdown-link">{{ props.title }}</span>
@@ -17,10 +17,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from 'vue';
+import { ref, provide, inject } from 'vue';
 import { ElDropdown } from 'element-plus';
 import { DropDownProps } from './type';
-import { getCompSize, getExposeProxy } from '../../utils';
+import { getExposeProxy, SIZE_KEY } from '../../utils';
+import { useSize } from '../../hooks';
 
 defineOptions({
   name: 'KDropdown'
@@ -28,7 +29,12 @@ defineOptions({
 
 const _styleModule = inject('_styleModule', '');
 const props = withDefaults(defineProps<DropDownProps>(), {});
+
+const formatSize = useSize<DropDownProps>(props);
+
 const kDropDownRef = ref();
+
+provide(SIZE_KEY, formatSize);
 
 const instance: any = {};
 defineExpose(getExposeProxy(instance, kDropDownRef));

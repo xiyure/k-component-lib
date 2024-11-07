@@ -6,13 +6,13 @@
     :class="[
       'el-button',
       {
-        'el-button--main': props.main === true,
-        'el-button--secondary': props.secondary === true,
-        'el-button--text': props.text === true,
-        'el-button--icon': props.icon === true,
-        'is-loading': props.loading,
-        'is-disabled': props.disabled,
-        'button-loading': props.loading,
+        'el-button--main': main,
+        'el-button--secondary': secondary,
+        'el-button--text': text,
+        'el-button--icon': icon,
+        'is-loading': loading,
+        'is-disabled': disabled,
+        'button-loading': loading,
       },
       getElTypeColor,
       getSizeClass,
@@ -45,6 +45,7 @@ import { IconLoading } from 'ksw-vue-icon';
 import { ButtonProps } from './type';
 import { genRandomStr, getExposeProxy, GetColorLevelNew } from '../../utils';
 import { btnTypes } from './const';
+import { useSize } from '../../hooks';
 
 defineOptions({
   name: 'KButton'
@@ -65,11 +66,12 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   icon: false
 });
 
+const formatSize = useSize<ButtonProps>(props);
+
 const _styleModule = inject('_styleModule', '');
 
 const id = genRandomStr(8);
 const buttonRef = ref();
-
 const color = ref(props.color);
 
 // watch props.color 变化, 更新颜色变量
@@ -85,7 +87,7 @@ watch(
       nextTick(() => {
         if (buttonRef?.value?.$el?.style) {
           const classList = buttonRef.value.$el?.classList;
-          const rbgValue = getColorS['--k-oklch-500'].match(/\(([^)]+)\)/)[1]; // 获取 rbg 值, 用于设置 focus 样式
+          const rbgValue = getColorS['--k-oklch-500'].match(/\(([^)]+)\)/)[1];
 
           for (const item of btnTypes) {
             const btnType = `el-button--${item.type}`;
@@ -98,7 +100,6 @@ watch(
               });
             }
           }
-
           // focus
           buttonRef.value.$el?.style.setProperty('--k-button-focus', `rgba(${rbgValue}, 0.2)`);
         }
@@ -116,36 +117,23 @@ const getElTypeColor = computed(() => {
   return '';
 });
 
-const __size__ = inject(
-  '__size__',
-  computed(() => 'base')
-);
-
 const getSizeClass = computed(() => {
-  const size = props.size ?? __size__.value;
-  return size ? `el-button--${size}` : '';
+  const { ownSize } = formatSize.value;
+  return ownSize ? `el-button--${ownSize}` : '';
 });
 
 const getBtnBase = computed(() => {
-  // props.type 中包含 primary, success, info, warning, danger 时, 返回 true
-  const checkType = (tp: string) => {
-    const arr = ['primary', 'success', 'info', 'warning', 'danger'];
-    if (arr.includes(tp)) {
-      return true;
-    }
-    return false;
-  };
-
-  if (
-    props.main === false &&
-    props.secondary === false &&
-    props.text === false &&
-    props.icon === false &&
-    !checkType(props.type)
-  ) {
-    return 'k-button--base';
+  const buttonTypes = ['main', 'secondary', 'text', 'icon'];
+  const elTypes = ['primary', 'success', 'info', 'warning', 'danger'];
+  if (elTypes.includes(props.type)) {
+    return '';
   }
-  return '';
+  for (let i = 0; i < buttonTypes.length; i++) {
+    if (props[buttonTypes[i]]) {
+      return '';
+    }
+  }
+  return 'k-button--base';
 });
 
 const instance: any = {};

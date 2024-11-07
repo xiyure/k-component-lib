@@ -1,3 +1,3 @@
-export interface SelectInputProps {
+export interface SelectProps {
   size?: 'lg' | 'base' | 'sm' | ''
 }

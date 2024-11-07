@@ -16,6 +16,7 @@ import { ref, computed, watch, nextTick, inject } from 'vue';
 import { ElRadio } from 'element-plus';
 import { RadioProps } from './type';
 import { GetColorLevelNew, getExposeProxy } from '../../utils';
+import { useSize } from '../../hooks';
 import { colors } from './const';
 
 defineOptions({
@@ -27,14 +28,11 @@ const props = withDefaults(defineProps<RadioProps>(), {
   button: false
 });
 
+const formatSize = useSize<RadioProps>(props);
+
 const _styleModule = inject('_styleModule', '');
 const color = ref(props.color);
 const kRadioRef = ref();
-
-const __size__ = inject(
-  '__size__',
-  computed(() => 'base')
-);
 
 // watch props.color 变化, 更新颜色变量
 watch(
@@ -62,8 +60,8 @@ watch(
 );
 
 const getSizeClass = computed(() => {
-  const size = props.size ?? __size__.value;
-  return size ? `k-radio--${size}` : '';
+  const { ownSize } = formatSize.value;
+  return ownSize ? `k-radio--${ownSize}` : '';
 });
 
 const instance: any = {};

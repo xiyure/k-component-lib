@@ -40,7 +40,7 @@ import { flattenChildren, isValidElement, camelize, getExposeProxy } from '../..
 import { TabsProps } from './type';
 
 defineOptions({
-  name: 'KTabs',
+  name: 'KTabs'
 });
 
 const props = withDefaults(defineProps<TabsProps>(), {
@@ -48,7 +48,7 @@ const props = withDefaults(defineProps<TabsProps>(), {
   tabPosition: 'top',
   editable: false,
   addable: false,
-  maxWidth: undefined,
+  maxWidth: undefined
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -94,7 +94,7 @@ watch(
       });
     }
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 function isElementInContainerView(el: any, translate: number = 0) {
@@ -147,25 +147,25 @@ function getHideTabs() {
 // 解析tab-pane
 function parseTabList(children: any[]): any[] {
   return children
-    .map((node) => {
-      if (isValidElement(node)) {
-        const props = { ...(node.props || {}) };
-        for (const [k, v] of Object.entries(props)) {
-          delete props[k];
-          props[camelize(k)] = v;
-        }
-        const slots = node.children || {};
-        const name = node.props?.name !== undefined ? node.props.name : undefined;
-        const { label = slots.label, disabled } = props;
-        return {
-          name,
-          label,
-          disabled: disabled === '' || disabled,
-        };
+  .map((node) => {
+    if (isValidElement(node)) {
+      const props = { ...(node.props || {}) };
+      for (const [k, v] of Object.entries(props)) {
+        delete props[k];
+        props[camelize(k)] = v;
       }
-      return null;
-    })
-    .filter((tab) => tab);
+      const slots = node.children || {};
+      const name = node.props?.name !== undefined ? node.props.name : undefined;
+      const { label = slots.label, disabled } = props;
+      return {
+        name,
+        label,
+        disabled: disabled === '' || disabled
+      };
+    }
+    return null;
+  })
+  .filter((tab) => tab);
 }
 
 watch(
@@ -173,7 +173,7 @@ watch(
   () => {
     activeName.value = props.modelValue as string;
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 const instance: any = {};

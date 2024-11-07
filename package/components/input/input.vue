@@ -12,7 +12,7 @@
     v-bind="$attrs"
     :prefix-icon="iconLeft ?? prefixIcon"
     :suffix-icon="iconRight ?? suffixIcon"
-    :size="getCompSize(props.size ?? injectSize)"
+    :size="formatSize.elSize"
   >
     <template v-if="slots.prepend" #prepend>
       <div :class="slotClass(prependSlotType)">
@@ -36,7 +36,8 @@
 import { ref, computed, inject, provide } from 'vue';
 import { ElInput } from 'element-plus';
 import { InputProps } from './type';
-import { getCompSize, getExposeProxy } from '../../utils';
+import { getExposeProxy, SIZE_KEY } from '../../utils';
+import { useSize } from '../../hooks';
 
 defineOptions({
   name: 'KInput'
@@ -50,6 +51,8 @@ const props = withDefaults(defineProps<InputProps>(), {
   prefixIcon: undefined,
   suffixIcon: undefined
 });
+
+const formatSize = useSize<InputProps>(props);
 
 const _styleModule = inject('_styleModule', '');
 const slots = defineSlots(); // 具名插槽
@@ -72,15 +75,7 @@ const slotClass = computed(() => (slot) => {
   }
 });
 
-const injectSize = inject(
-  '__size__',
-  computed(() => 'base')
-);
-
-provide(
-  '__size__',
-  computed(() => props.size ?? injectSize.value)
-);
+provide(SIZE_KEY, formatSize);
 
 const inputRef = ref<any>(null);
 

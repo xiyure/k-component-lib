@@ -9,7 +9,7 @@
         { 'is-custom': color },
       ]"
       v-bind="$attrs"
-      :size="getCompSize(size)"
+      :size="formatSize.elSize"
     >
       <span>
         <slot>{{ props.text }}</slot>
@@ -22,20 +22,24 @@
 import { ref, watch, inject, nextTick } from 'vue';
 import { ElTag } from 'element-plus';
 import { TagProps } from './type';
-import { getCompSize, getExposeProxy, GetColorLevelNew } from '../../utils';
+import { getExposeProxy, GetColorLevelNew } from '../../utils';
+import { useSize } from '../../hooks';
 import { colors } from './const';
 
 defineOptions({
-  name: 'KTag',
+  name: 'KTag'
 });
 
 const props = withDefaults(defineProps<TagProps>(), {
   point: false,
   type: undefined,
-  text: undefined,
+  text: undefined
 });
 
 const _styleModule = inject('_styleModule', '');
+
+const formatSize = useSize<TagProps>(props);
+
 const KTagRef = ref<any>(null);
 const color = ref(props.color);
 
@@ -59,14 +63,14 @@ watch(
           colors.forEach((item) => {
             KTagRef.value.$el?.style.setProperty(
               `--tag${item.name}`,
-              getColorS[`--k-oklch-${item.value}`],
+              getColorS[`--k-oklch-${item.value}`]
             );
           });
         }
       });
     }
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 const instance: any = {};

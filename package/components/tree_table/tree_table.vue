@@ -297,7 +297,8 @@ import {
   treeDataToArray,
   getValidTreeData,
   resetTreeData,
-  getExposeProxy
+  getExposeProxy,
+  SIZE_KEY
 } from '../../utils';
 import { useMethods, useCheckbox } from './hooks';
 
@@ -519,6 +520,7 @@ const tableHeight = computed(() => {
   const pageHeight = isPaging.value ? (props.size === 'mini' ? 34 : 42) : 0;
   return `calc(100% - ${headerHeight}px - ${pageHeight}px)`;
 });
+// size相关
 const tableSize = computed(() => _size.value ?? undefined);
 const __showTransfer = computed(() => {
   const toolbarNames = widgets.value.map((item) => item.id);
@@ -1066,6 +1068,13 @@ function setHeaderControllerData(transferData: TableHeaderControl[]) {
 }
 
 provide('__showTransfer', __showTransfer);
+provide(SIZE_KEY, computed(() => {
+  if (_size.value === 'small' || _size.value === 'mini') {
+    return 'sm';
+  } 
+  return 'base';
+}));
+
 const customMethods = {
   tableInstance,
   filter,

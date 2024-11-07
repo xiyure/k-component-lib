@@ -34,7 +34,7 @@
             </template>
           </k-view-item>
         </div>
-        <div :id="customViewId" class="k-view__custom-data text-base">
+        <div v-if="customData?.length" :id="customViewId" class="k-view__custom-data text-base">
           <slot name="custom-header">
             <span class="custom-table-box">{{ $t('customView') }}</span>
           </slot>

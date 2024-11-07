@@ -3,6 +3,7 @@
     ref="KTreeSelectRef"
     :name="name ?? randomName"
     :class="['k-tree-select', _styleModule]"
+    :size="formatSize.elSize"
     v-bind="$attrs"
     @input="handleInput"
     @blur="(e: Event) => {
@@ -48,23 +49,28 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, computed } from 'vue';
+import { ref, provide, inject, computed } from 'vue';
 import { ElTreeSelect } from 'element-plus';
 import { debounce } from 'lodash-es';
 import { TreeSelectProps } from './type';
-import { getExposeProxy, genRandomStr } from '../../utils';
+import { getExposeProxy, genRandomStr, SIZE_KEY } from '../../utils';
+import { useSize } from '../../hooks';
 
 defineOptions({
   name: 'KTreeSelect'
 });
 
 const customSlots = ['empty', 'default'];
-const _styleModule = inject('_styleModule', '');
+
 const props = withDefaults(defineProps<TreeSelectProps>(), {
   expandIcon: 'IconFolderOpen',
   collapseIcon: 'IconFlowNested',
   debounce: 500
 });
+
+const formatSize = useSize<TreeSelectProps>(props);
+const _styleModule = inject('_styleModule', '');
+
 const emits = defineEmits(['input', 'blur']);
 
 const KTreeSelectRef = ref();
@@ -95,6 +101,8 @@ const handleInput = (event: Event) => {
   debounce(setQuery, props.debounce)();
   emits('input', event);
 };
+
+provide(SIZE_KEY, formatSize);
 
 const instance: any = {};
 defineExpose(getExposeProxy(instance, KTreeSelectRef));

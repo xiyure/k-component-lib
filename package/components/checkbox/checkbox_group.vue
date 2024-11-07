@@ -3,17 +3,17 @@
     ref="kCheckboxGroupRef"
     :class="['k-checkbox-group', _styleModule]"
     v-bind="$attrs"
-    :size="getCompSize(size)"
   >
     <slot></slot>
   </el-checkbox-group>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, provide, inject, computed } from 'vue';
+import { ref, watch, provide, inject } from 'vue';
 import { ElCheckboxGroup } from 'element-plus';
 import { CheckboxGroupProps } from './type';
-import { getCompSize, getExposeProxy } from '../../utils/index';
+import { getExposeProxy, SIZE_KEY } from '../../utils';
+import { useSize } from '../../hooks';
 
 defineOptions({
   name: 'KCheckboxGroup'
@@ -22,6 +22,8 @@ defineOptions({
 const props = withDefaults(defineProps<CheckboxGroupProps>(), {
   color: '#409eff'
 });
+
+const formatSize = useSize<CheckboxGroupProps>(props);
 
 const _styleModule = inject('_styleModule', '');
 const fillColor = ref(props.color);
@@ -34,17 +36,9 @@ watch(
   }
 );
 
-const injectSize = inject(
-  '__size__',
-  computed(() => 'base')
-);
-
 provide('useCheckboxGroup', true);
 provide('_fillColor', fillColor);
-provide(
-  '__size__',
-  computed(() => props.size ?? injectSize.value)
-);
+provide(SIZE_KEY, formatSize);
 
 const instance: any = {};
 defineExpose(getExposeProxy(instance, kCheckboxGroupRef));

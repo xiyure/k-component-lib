@@ -6,7 +6,6 @@
         v-model="searchStr"
         :placeholder="filterablePlaceholder"
         :prefix-icon="IconSearch"
-        :size="size"
       ></k-input>
     </div>
     <el-transfer
@@ -61,8 +60,7 @@ defineOptions({
 
 const props = withDefaults(defineProps<TransferProps>(), {
   matchKey: 'label',
-  filterable: true,
-  size: 'base'
+  filterable: true
 });
 
 const emits = defineEmits([

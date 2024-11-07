@@ -12,7 +12,6 @@
       <Dropdown
         :tabs="hideTabs"
         :trigger="trigger"
-        :size="size"
         :max-height="maxHeight"
         :placement="placement"
         :hide-on-click="hideOnClick"
@@ -35,10 +34,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, inject } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch, inject, nextTick } from 'vue';
 import { ButtonContainerProps } from './type';
 import Dropdown from './dropdown_menu';
 import { flattenChildren, isValidElement, camelize, genRandomStr } from '../../utils';
+import { useSize } from '../../hooks';
 
 defineOptions(({
   name: 'KButtonContainer'
@@ -49,13 +49,13 @@ const styleModule = inject('_styleModule', '');
 
 const props = withDefaults(defineProps<ButtonContainerProps>(), {
   trigger: 'click',
-  size: 'base',
   maxHeight: 300,
   placement: 'bottom',
   hideOnClick: true,
   teleported: true,
   triggerIcon: 'IconMore'
 });
+
 const slots = defineSlots();
 const container = ref();
 const box = ref();
@@ -64,18 +64,26 @@ const hideTabs = ref<HTMLElement[]>([]);
 let buttonsElem: HTMLElement[];
 const key = `_${genRandomStr(8)}`;
 
-// 可视区域发生变化时，下拉列表也随之更新
+// 可视区域发生变化时，下拉列表也同步更新
 onMounted(() => {
   buttonsElem = container.value?.querySelectorAll('.k-button');
   box.value.setAttribute('data-observer-key', key);
-  getHideBtnList();
-  elementObserver.observe(box.value, getHideBtnList);
+  resize();
+  elementObserver.observe(box.value, resize);
 });
 onBeforeUnmount(() => {
   if (box.value) {
     elementObserver?.unobserve?.(box.value);
   }
 });
+
+// 控件自身size发生变化时，需要重新计算可视区域
+const formatSize = useSize<ButtonContainerProps>(props);
+watch(() => formatSize.value, () => {
+  nextTick(() => {
+    resize();
+  });
+}, { deep: true });
 
 function parseBtnList(children: any[]): any[] {
   return children
@@ -105,7 +113,7 @@ function isElementInContainerView(el: HTMLElement) {
   }
   return elRect.left >= containerRect.left && elRect.right <= containerRect.right;
 }
-function getHideBtnList() {
+function resize() {
   const res: HTMLElement[] = [];
   if (!buttons) {
     return [];

@@ -120,6 +120,7 @@ import { KButton } from '../button';
 import { KForm, KFormItem } from '../form';
 import { FilterFormProps, filterFormItem } from './type';
 import { getExposeProxy } from '../../utils';
+import { useSize } from '../../hooks';
 
 defineOptions({
   name: 'KFilterForm'
@@ -129,11 +130,13 @@ const DEFAULT_SIZES = ['base', 'sm'];
 const _styleModule = inject('_styleModule', '');
 const props = withDefaults(defineProps<FilterFormProps>(), {
   items: () => [],
-  size: 'base',
   collapse: true,
   reserve: false,
   visible: false
 });
+
+const formatSize = useSize<FilterFormProps>(props);
+
 const emits = defineEmits(['search', 'reset', 'change']);
 
 const formData = ref({});
@@ -173,7 +176,7 @@ const compSize = computed(() => (attrs: any = {}) => {
   if (size && DEFAULT_SIZES.includes(size)) {
     return size;
   }
-  return props.size;
+  return formatSize.value.ownSize;
 });
 
 const compVisible = computed(() => (item: filterFormItem) => {

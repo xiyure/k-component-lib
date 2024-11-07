@@ -3,7 +3,7 @@
     ref="KFormRef"
     :class="['k-form', _styleModule]"
     v-bind="$attrs"
-    :size="getCompSize(props.size)"
+    :size="formatSize.elSize"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
       <slot :name="name" v-bind="data"></slot>
@@ -15,17 +15,19 @@
 import { ref, onMounted, onUnmounted, inject, provide, computed } from 'vue';
 import { ElForm } from 'element-plus';
 import { FormProps } from './type';
-import { getCompSize, getExposeProxy } from '../../utils';
+import { getExposeProxy, SIZE_KEY } from '../../utils';
+import { useSize } from '../../hooks';
 
 defineOptions({
   name: 'KForm'
 });
 
-const props = withDefaults(defineProps<FormProps>(), {
-  size: 'base'
-});
+const props = withDefaults(defineProps<FormProps>(), {});
 
 const _styleModule = inject('_styleModule', '');
+
+const formatSize = useSize<FormProps>(props);
+
 const KFormRef = ref<any>(null);
 let inputDoms: HTMLInputElement[];
 
@@ -72,10 +74,7 @@ function onKeyDown(event: any) {
 const instance: any = {};
 defineExpose(getExposeProxy(instance, KFormRef));
 
-provide(
-  '__size__',
-  computed(() => props.size)
-);
+provide(SIZE_KEY, formatSize);
 
 provide(
   '__showColon__',

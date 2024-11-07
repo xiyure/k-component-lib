@@ -12,7 +12,6 @@
       _styleModule,
     ]"
     v-bind="$attrs"
-    :size="getCompSize(size)"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
       <slot :name="name" v-bind="data"></slot>
@@ -24,7 +23,8 @@
 import { ref, computed, watch, provide, inject } from 'vue';
 import { ElRadioGroup } from 'element-plus';
 import { RadioGroupProps } from './type';
-import { getCompSize, getExposeProxy } from '../../utils';
+import { getExposeProxy, SIZE_KEY } from '../../utils';
+import { useSize } from '../../hooks';
 
 defineOptions({
   name: 'KRadioGroup'
@@ -33,15 +33,16 @@ defineOptions({
 const props = withDefaults(defineProps<RadioGroupProps>(), {
   row: true,
   column: false,
-  size: 'base',
   button: false
 });
 
+const formatSize = useSize<RadioGroupProps>(props);
 const _styleModule = inject('_styleModule', '');
 
+const KRadioGroupRef = ref(null);
 const fillColor = ref(props.color);
 
-const getSizeClass = computed(() => (props.size ? `k-radio-group--${props.size}` : ''));
+const getSizeClass = computed(() => (formatSize.value.ownSize ? `k-radio-group--${formatSize.value.ownSize}` : ''));
 
 watch(
   () => props.color,
@@ -51,9 +52,7 @@ watch(
 );
 
 provide('_fillColor', fillColor);
-
-const KRadioGroupRef = ref(null);
-
+provide(SIZE_KEY, formatSize);
 const instance: any = {};
 defineExpose(getExposeProxy(instance, KRadioGroupRef));
 </script>

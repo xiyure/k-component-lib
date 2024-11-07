@@ -2,7 +2,7 @@
   <div
     :class="[
       'k-filter',
-      { 'text-sm': props.size === 'sm', 'text-base': props.size !== 'sm' },
+      { 'text-sm': formatSize.ownSize === 'sm', 'text-base': formatSize.ownSize !== 'sm' },
       _styleModule,
     ]"
   >
@@ -19,7 +19,7 @@
     >
       <template #reference>
         <slot name="reference" :has-config-condition="hasConfigCondition">
-          <k-button v-if="border" :size="props.size">
+          <k-button v-if="border" :size="formatSize.ownSize">
             <IconFilter v-if="!hasConfigCondition" />
             <IconFilterFill v-else color="#2882FF" />
           </k-button>
@@ -31,11 +31,11 @@
       </template>
       <div class="k-filter__content">
         <div class="k-filter__header">
-          <span :class="props.size === 'sm' ? 'text-base' : 'text-lg'" class="font-bold">
+          <span :class="formatSize.ownSize === 'sm' ? 'text-base' : 'text-lg'" class="font-bold">
             {{ $t('advancedFilter') }}
           </span>
           <span
-            :class="props.size === 'sm' ? 'text-sm' : 'text-base'"
+            :class="formatSize.ownSize === 'sm' ? 'text-sm' : 'text-base'"
             @click="
               () => {
                 clearFilter();
@@ -57,7 +57,7 @@
             <k-cascader
               v-model="item.title"
               :teleported="false"
-              :size="props.size"
+              :size="formatSize.ownSize"
               :options="options"
               :props="{
                 label: 'title',
@@ -71,7 +71,7 @@
           <div class="k-filter__logic">
             <k-select
               v-model="item.logic"
-              :size="props.size"
+              :size="formatSize.ownSize"
               :teleported="false"
               clearable
               :disabled="item._allowSelectLogic === false"
@@ -89,7 +89,7 @@
             <div v-if="instance(item.key)?.dataType === 'date'" class="k-filter__date-box">
               <k-select
                 v-model="item.dateRange"
-                :size="props.size"
+                :size="formatSize.ownSize"
                 :teleported="false"
                 clearable
                 :disabled="disabledInput(item)"
@@ -110,7 +110,7 @@
                 v-model="item.value"
                 :type="item.dateType"
                 :teleported="false"
-                :size="props.size"
+                :size="formatSize.ownSize"
                 clearable
                 :disabled="disabledDatePicker(item)"
                 @change="
@@ -123,7 +123,7 @@
             <k-select
               v-else-if="instance(item.key)?.options?.length"
               v-model="item.value"
-              :size="props.size"
+              :size="formatSize.ownSize"
               :teleported="false"
               :disabled="disabledInput(item)"
               clearable
@@ -139,7 +139,7 @@
             <k-input
               v-else
               v-model="item.value"
-              :size="props.size"
+              :size="formatSize.ownSize"
               :disabled="disabledInput(item)"
               clearable
               @change="updateValue(item, 'input', instance(item.key).options)"
@@ -147,7 +147,7 @@
           </div>
           <i class="close-icon" @click="removeConditionItem(index)"><IconClose /></i>
         </div>
-        <div class="k-filter__operate" :class="props.size === 'sm' ? 'text-sm' : 'text-base'">
+        <div class="k-filter__operate" :class="formatSize.ownSize === 'sm' ? 'text-sm' : 'text-base'">
           <div class="k-filer__operate-left">
             <span @click="addCondition">
               <IconAdd />
@@ -158,14 +158,14 @@
             <span class="select-label">{{ $t('aboveCondition') }}：</span>
             <k-select
               v-model="filterRule"
-              :size="props.size"
+              :size="formatSize.ownSize"
               :disabled="disableChangeMode"
               :teleported="false"
             >
               <k-option :label="$t('anyOne')" :value="0"></k-option>
               <k-option :label="$t('all')" :value="1"></k-option>
             </k-select>
-            <k-button :size="props.size" main @click="query">{{ $t('query') }}</k-button>
+            <k-button :size="formatSize.ownSize" main @click="query">{{ $t('query') }}</k-button>
           </div>
         </div>
       </div>
@@ -186,6 +186,7 @@ import { KPopover } from '../popover';
 import { KCascader } from '../cascader';
 import { dateTypeOptions, logicOptions } from '../../constant/filter_data';
 import { treeDataToArray, isValid, formatter } from '../../utils';
+import { useSize } from '../../hooks';
 
 defineOptions({
   name: 'KFilter'
@@ -193,12 +194,13 @@ defineOptions({
 
 const props = withDefaults(defineProps<FilterProps>(), {
   border: true,
-  size: 'base',
   filterKey: 'title',
   childrenField: 'children',
   ignoreCase: false,
   data: () => []
 });
+
+const formatSize = useSize<FilterProps>(props);
 
 onMounted(() => {
   const deprecatedFields = ['column'];

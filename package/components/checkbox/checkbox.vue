@@ -6,7 +6,6 @@
     :class="[getSizeClass, _styleModule]"
     v-bind="$attrs"
     :label="label"
-    :size="getCompSize(size)"
     @click="handleClickLabel"
   >
     <slot>
@@ -21,7 +20,8 @@
 import { ref, watch, nextTick, computed, inject } from 'vue';
 import { ElCheckbox } from 'element-plus';
 import { CheckboxProps } from './type';
-import { getCompSize, getExposeProxy, genRandomStr, GetColorLevelNew } from '../../utils/index';
+import { getExposeProxy, genRandomStr, GetColorLevelNew } from '../../utils/index';
+import { useSize } from '../../hooks';
 import { colors } from './const';
 
 defineOptions({
@@ -36,10 +36,7 @@ const kCheckboxRef = ref();
 
 const id = genRandomStr(8);
 
-const __size__ = inject(
-  '__size__',
-  computed(() => 'base')
-);
+const formatSize = useSize(props);
 
 const color = ref(props.color);
 // watch props.color 变化, 更新颜色变量
@@ -91,8 +88,8 @@ function handleClickLabel(e) {
 }
 
 const getSizeClass = computed(() => {
-  const size = props.size ?? __size__.value;
-  return size ? `k-checkbox--${size}` : '';
+  const { ownSize } = formatSize.value;
+  return ownSize ? `k-checkbox--${ownSize}` : '';
 });
 
 const instance: any = {};

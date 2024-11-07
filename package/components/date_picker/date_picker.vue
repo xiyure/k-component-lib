@@ -5,7 +5,7 @@
     v-bind="$attrs"
     :type="type"
     :shortcuts="customShortcuts"
-    :size="getCompSize(props.size ?? __size__)"
+    :size="formatSize.elSize"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
       <slot :name="name" v-bind="data"></slot>
@@ -14,11 +14,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, inject } from 'vue';
+import { ref, computed, provide, inject } from 'vue';
 import { ElDatePicker } from 'element-plus';
 import { VueI18nTranslation } from 'vue-i18n';
 import { DatePicker } from './type';
-import { getCompSize, getExposeProxy } from '../../utils';
+import { getExposeProxy, SIZE_KEY } from '../../utils';
+import { useSize } from '../../hooks';
 
 defineOptions({
   name: 'KDatePicker'
@@ -27,6 +28,8 @@ defineOptions({
 const props = withDefaults(defineProps<DatePicker>(), {
   showDefaultShortcuts: true
 });
+
+const formatSize = useSize<DatePicker>(props);
 
 const _styleModule = inject('_styleModule', '');
 const t = inject<VueI18nTranslation>('$t');
@@ -132,13 +135,10 @@ function getCurYearRange() {
   return [startDate, endDate];
 }
 
+provide(SIZE_KEY, formatSize);
+
 const instance: any = {};
 defineExpose(getExposeProxy(instance, datePickerRef));
-
-const __size__ = inject(
-  '__size__',
-  computed(() => 'base')
-);
 </script>
 
 <style lang="less">

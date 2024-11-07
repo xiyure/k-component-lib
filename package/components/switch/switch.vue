@@ -3,7 +3,7 @@
     ref="kSwitchRef"
     :class="['k-switch', _styleModule]"
     v-bind="$attrs"
-    :size="getCompSize(props.size ?? __size__)"
+    :size="formatSize.elSize"
     :style="{
       '--el-switch-on-color': props.switchOnColor,
       '--el-switch-off-color': props.switchOffColor,
@@ -12,10 +12,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, computed } from 'vue';
+import { ref, inject } from 'vue';
 import { ElSwitch } from 'element-plus';
 import { SwitchProps } from './type';
-import { getCompSize, getExposeProxy } from '../../utils';
+import { getExposeProxy } from '../../utils';
+import { useSize } from '../../hooks';
 
 defineOptions({
   name: 'KSwitch'
@@ -27,15 +28,13 @@ const props = withDefaults(defineProps<SwitchProps>(), {
 });
 
 const _styleModule = inject('_styleModule', '');
+
+const formatSize = useSize<SwitchProps>(props);
+
 const kSwitchRef = ref();
 
 const instance: any = {};
 defineExpose(getExposeProxy(instance, kSwitchRef));
-
-const __size__ = inject(
-  '__size__',
-  computed(() => 'base')
-);
 </script>
 
 <style lang="less">

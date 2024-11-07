@@ -3,7 +3,7 @@
     ref="KFormItemRef"
     :class="['k-form-item', _styleModule, { 'k-form-item--colon': injectShowColon }]"
     v-bind="$attrs"
-    :size="getCompSize(props.size)"
+    :size="formatSize.elSize"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
       <slot :name="name" v-bind="data"></slot>
@@ -15,15 +15,16 @@
 import { ref, inject, computed } from 'vue';
 import { ElFormItem } from 'element-plus';
 import { FormItemProps } from './type';
-import { getCompSize, getExposeProxy } from '../../utils';
+import { getExposeProxy } from '../../utils';
+import { useSize } from '../../hooks';
 
 defineOptions({
   name: 'KFormItem'
 });
 
-const props = withDefaults(defineProps<FormItemProps>(), {
-  size: 'base'
-});
+const props = withDefaults(defineProps<FormItemProps>(), {});
+
+const formatSize = useSize<FormItemProps>(props);
 
 const _styleModule = inject('_styleModule', '');
 const KFormItemRef = ref<any>(null);
