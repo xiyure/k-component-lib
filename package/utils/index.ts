@@ -5,3 +5,4 @@ export * from './color';
 export * from './const';
 export * from './key';
 export * from './install';
+export * from './typescript';

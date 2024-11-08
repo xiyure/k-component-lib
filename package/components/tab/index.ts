@@ -1,6 +1,6 @@
 import Tabs from './tabs.vue';
 import TabPane from './tab_pane.vue';
-import type { SFCWithInstall } from '../../types';
+import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall, withNoopInstall } from '../../utils/install';
 
 export const KTabs: SFCWithInstall<typeof Tabs> &

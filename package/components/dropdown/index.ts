@@ -1,6 +1,6 @@
 import Dropdown from './dropdown.vue';
 import DropdownItem from './dropdown_item.vue';
-import type { SFCWithInstall } from '../../types';
+import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall, withNoopInstall } from '../../utils/install';
 
 export const KDropdown: SFCWithInstall<typeof Dropdown> & {

@@ -1,7 +1,7 @@
 import Table from './table.vue';
 import TableColumn from './table_column.vue';
 import ColumnGroup from './column_group.vue';
-import type { SFCWithInstall } from '../../types';
+import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall, withNoopInstall } from '../../utils/install';
 
 export const KTable: SFCWithInstall<typeof Table> &

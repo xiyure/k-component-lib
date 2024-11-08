@@ -1,6 +1,6 @@
 import Radio from './radio.vue';
 import RadioGroup from './radio_group.vue';
-import type { SFCWithInstall } from '../../types';
+import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall, withNoopInstall } from '../../utils/install';
 
 export const KRadio: SFCWithInstall<typeof Radio> &

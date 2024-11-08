@@ -1,5 +1,5 @@
 import Cascader from './cascader.vue';
-import type { SFCWithInstall } from '../../types';
+import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall } from '../../utils/install';
 
 export const KCascader: SFCWithInstall<typeof Cascader> = withInstall(Cascader);

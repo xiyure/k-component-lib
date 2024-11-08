@@ -1,7 +1,7 @@
 import Select from './select.vue';
 import Option from './option.vue';
 import OptionGroup from './option_group.vue';
-import type { SFCWithInstall } from '../../types';
+import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall, withNoopInstall } from '../../utils/install';
 
 export const KSelect: SFCWithInstall<typeof Select> &

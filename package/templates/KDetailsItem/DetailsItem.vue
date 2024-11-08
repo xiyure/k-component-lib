@@ -22,6 +22,10 @@
 <script lang="ts" setup>
 import { DetailsItemProps } from './type';
 
+defineOptions({
+  name: 'KDetailsItem'
+});
+
 const props = withDefaults(defineProps<DetailsItemProps>(), {});
 </script>
 <style lang="less" scoped>

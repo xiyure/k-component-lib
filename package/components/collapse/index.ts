@@ -1,6 +1,6 @@
 import Collapse from './collapse.vue';
 import CollapseItem from './collapse_item.vue';
-import type { SFCWithInstall } from '../../types';
+import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall, withNoopInstall } from '../../utils/install';
 
 export const KCollapse: SFCWithInstall<typeof Collapse> & {

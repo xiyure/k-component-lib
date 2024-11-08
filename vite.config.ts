@@ -24,14 +24,50 @@ export default defineConfig({
     jsxFragment: 'Fragment',
     jsxInject: `import { h, Fragment } from 'vue';`
   },
+  publicDir: 'static',
   build: {
     outDir: name,
 		lib: {
-			entry: _path.resolve(__dirname, "package/index.ts"),
-			name: name,
-			fileName: "index",
+			entry: 'package/index.ts',
+      name,
+      fileName: 'index'
 		},
 		rollupOptions: {
+      // input: ['package/index.ts'],
+      // output: [
+      //   {
+      //     format: "es",
+      //     entryFileNames: "[name].mjs",
+      //     preserveModules: true,
+      //     exports: "named",
+      //     dir: `${name}/es`,
+      //     globals: {
+      //       vue: "Vue",
+      //       "element-plus": "ElementPlus",
+      //       "vxe-table": "VxeTable",
+      //       "vxe-pc-ui": "VxeUI",
+      //       "vue-i18n": "VueI18n",
+      //       "chinese-lunar-calendar": "ChineseLunarCalendar",
+      //       sortablejs: "Sortable"
+      //     }
+      //   },
+      //   {
+      //     format: "cjs",
+      //     entryFileNames: "[name].js",
+      //     preserveModules: true,
+      //     exports: "named",
+      //     dir: `${name}/lib`,
+      //     globals: {
+      //       vue: "Vue",
+      //       "element-plus": "ElementPlus",
+      //       "vxe-table": "VxeTable",
+      //       "vxe-pc-ui": "VxeUI",
+      //       "vue-i18n": "VueI18n",
+      //       "chinese-lunar-calendar": "ChineseLunarCalendar",
+      //       sortablejs: "Sortable"
+      //     }
+      //   },
+      // ],
 			external: [
         "vue",
         "element-plus",
@@ -41,7 +77,7 @@ export default defineConfig({
         "chinese-lunar-calendar",
         "sortablejs"
       ],
-			output: {
+      output: {
 				globals: {
 					vue: "Vue",
           "element-plus": "ElementPlus",
@@ -51,7 +87,7 @@ export default defineConfig({
           "chinese-lunar-calendar": "ChineseLunarCalendar",
           sortablejs: "Sortable"
 				},
-			},
+			}
 		},
 	},
   resolve: {

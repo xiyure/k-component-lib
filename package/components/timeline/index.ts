@@ -1,6 +1,6 @@
 import Timeline from './time_line.vue';
 import TimelineItem from './timeline_item.vue';
-import type { SFCWithInstall } from '../../types';
+import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall, withNoopInstall } from '../../utils/install';
 
 export const KTimeline: SFCWithInstall<typeof Timeline> &

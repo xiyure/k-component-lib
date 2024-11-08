@@ -1,6 +1,6 @@
 import Details from './Details.vue';
 import DetailsItem from './DetailsItem.vue';
-import type { SFCWithInstall } from '../../types';
+import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall, withNoopInstall } from '../../utils/install';
 
 export const KDetails: SFCWithInstall<typeof Details> & {

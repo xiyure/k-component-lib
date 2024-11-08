@@ -1,5 +1,5 @@
 import TreeSelect from './tree_select.vue';
-import type { SFCWithInstall } from '../../types';
+import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall } from '../../utils/install';
 
 export const KTreeSelect: SFCWithInstall<typeof TreeSelect> = withInstall(TreeSelect);
