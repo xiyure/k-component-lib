@@ -2,13 +2,6 @@
 @import '../../style/global.less';
 
 .k-pagination {
-  .el-pager li,
-  .btn-prev,
-  .btn-next {
-    border: 1px --k-gray-200 solid !important;
-    color: #000;
-    background-color: transparent !important;
-  }
   .el-pager {
     margin: 0 8px;
     li {
@@ -17,10 +10,20 @@
     li:first-child {
       margin-left: 0;
     }
-    li.is-active {
-      border: 1px var(--k-theme-primary) solid !important;
-      color: var(--k-theme-primary) !important;
-      background-color: transparent !important;
-    }
+  }
+}
+
+.k-pagination:not(.is-background) {
+  .el-pager li,
+  .btn-prev,
+  .btn-next {
+    border: 1px --k-gray-200 solid !important;
+    color: #000;
+    background-color: transparent !important;
+  }
+  li.is-active {
+    border: 1px var(--k-theme-primary) solid !important;
+    color: var(--k-theme-primary) !important;
+    background-color: transparent !important;
   }
 }

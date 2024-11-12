@@ -30,7 +30,7 @@
     "vue": "^3.4.21",
     "vue-i18n": "^9.13.1",
     "vxe-pc-ui": "^4.0.82",
-    "vxe-table": "^4.7.78"
+    "vxe-table": "^4.7.96"
   },
   "devDependencies": {
     "@types/node": "^22.5.5",

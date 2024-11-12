@@ -1,5 +1,4 @@
 import { defineConfig } from 'vite';
-import fs from 'fs';
 import _path from 'path';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
@@ -33,41 +32,6 @@ export default defineConfig({
       fileName: 'index'
 		},
 		rollupOptions: {
-      // input: ['package/index.ts'],
-      // output: [
-      //   {
-      //     format: "es",
-      //     entryFileNames: "[name].mjs",
-      //     preserveModules: true,
-      //     exports: "named",
-      //     dir: `${name}/es`,
-      //     globals: {
-      //       vue: "Vue",
-      //       "element-plus": "ElementPlus",
-      //       "vxe-table": "VxeTable",
-      //       "vxe-pc-ui": "VxeUI",
-      //       "vue-i18n": "VueI18n",
-      //       "chinese-lunar-calendar": "ChineseLunarCalendar",
-      //       sortablejs: "Sortable"
-      //     }
-      //   },
-      //   {
-      //     format: "cjs",
-      //     entryFileNames: "[name].js",
-      //     preserveModules: true,
-      //     exports: "named",
-      //     dir: `${name}/lib`,
-      //     globals: {
-      //       vue: "Vue",
-      //       "element-plus": "ElementPlus",
-      //       "vxe-table": "VxeTable",
-      //       "vxe-pc-ui": "VxeUI",
-      //       "vue-i18n": "VueI18n",
-      //       "chinese-lunar-calendar": "ChineseLunarCalendar",
-      //       sortablejs: "Sortable"
-      //     }
-      //   },
-      // ],
 			external: [
         "vue",
         "element-plus",
@@ -106,26 +70,3 @@ export default defineConfig({
     port: 12580
   }
 });
-
-type copyFilePluginType = {
-  src: string,
-  dest: string
-}
-// 将文件直接复制到打包后的目录下
-function copyFile({src, dest}:copyFilePluginType) {
-  return {
-    name: 'copy-file-plugin',
-    closeBundle() {
-      try {
-        fs.copyFile(src, dest, (err) => {
-          if (!err) {
-            console.log('successfully');
-          }
-        });
-      } catch (error) {
-        console.error(error);
-      }
-      
-    },
-  };
-}

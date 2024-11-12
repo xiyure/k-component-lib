@@ -17,28 +17,76 @@ export function useMethods(props: any) {
   const keyField = computed(() => props.rowConfig?.keyField ?? 'id');
   // 在第一行插入行数据
   const insert = (records: any) => new Promise((resolve) => {
-    const newRows = getValidRows(records);
-    xeTableData.value.unshift(...newRows);
+    const newRows = Array.isArray(records) ? records : [records];
+    if (!props.useTree) {
+      xeTableData.value.unshift(...newRows);
+    } else {
+      for (let i = 0; i < newRows.length; i++) {
+        const row = newRows[i];
+        const pid = props.treeConfig?.parentField ?? 'pid';
+        const parentRow = xeTableData.value.find((item: any) => item[keyField.value] === row[pid]);
+        if (!parentRow) {
+          xeTableData.value.unshift(row);
+          return;
+        }
+        const insertIndex = xeTableData.value.findIndex((item: any) => item[pid] === parentRow[keyField.value]);
+        if (insertIndex === -1) {
+          xeTableData.value.unshift(row);
+        } else {
+          xeTableData.value.splice(insertIndex, 0, row);
+        }
+      }
+    }
     addTempData(newRows, tempInsertData);
     resolve(records);
   });
   const insertRecords = (records: any, row: any, isNext = false) => new Promise((resolve) => {
-    let newIndex: any;
-    const length = xeTableData.value.length;
-    if (typeof row === 'number') {
-      newIndex = (Number.isNaN(Math.floor(row)) ? 0 : Math.floor(row)) % length;
-    } else if (typeof row === 'object') {
-      const targetIndex = xeTableData.value.findIndex((item: any) => item[keyField.value] === row?.[keyField.value]);
-      newIndex = targetIndex === -1 ? 0 : targetIndex;
+    const newRows = Array.isArray(records) ? records : [records];
+    if (!props.useTree) {
+      let newIndex: any;
+      const length = xeTableData.value.length;
+      if (typeof row === 'number') {
+        newIndex = (Number.isNaN(Math.floor(row)) ? 0 : Math.floor(row)) % length;
+      } else if (typeof row === 'object') {
+        const targetIndex = xeTableData.value.findIndex((item: any) => item[keyField.value] === row?.[keyField.value]);
+        newIndex = targetIndex === -1 ? 0 : targetIndex;
+      } else {
+        newIndex = 0;
+      }
+      if (newIndex === -1) {
+        xeTableData.value.push(...newRows);
+      } else {
+        newIndex = isNext ? newIndex + 1 : newIndex;
+        xeTableData.value.splice(newIndex, 0, ...newRows);
+      }
     } else {
-      newIndex = 0;
-    }
-    const newRows = getValidRows(records, row);
-    if (newIndex === -1) {
-      xeTableData.value.push(...newRows);
-    } else {
-      newIndex = isNext ? newIndex + 1 : newIndex;
-      xeTableData.value.splice(newIndex, 0, ...newRows);
+      const validRows: any[] = [];
+      const invalidRows: any[] = [];
+      let insertIndex: number = -1;
+      for (let i = 0; i < newRows.length; i++) {
+        const rowItem = newRows[i];
+        const pid = props.treeConfig?.parentField ?? 'pid';
+        if (typeof row === 'object' && (row[pid] === rowItem[pid] || (!row[pid] && !rowItem[pid]))) {
+          insertIndex = xeTableData.value.findIndex((item: any) => item[keyField.value] === row[keyField.value]);
+          if (insertIndex !== -1) {
+            validRows.push(rowItem);
+          }
+        } else {
+          const parentRow = xeTableData.value.find((item: any) => item[keyField.value] === rowItem[pid]);
+          if (!parentRow) {
+            invalidRows.push(rowItem);
+          } else {
+            insertIndex = xeTableData.value.findIndex((item: any) => item[pid] === parentRow[keyField.value]);
+            if (insertIndex === -1) {
+              invalidRows.push(rowItem);
+            } else {
+              validRows.push(rowItem);
+            }
+          }
+        }
+      }
+      xeTableData.value.splice((isNext ? insertIndex + 1 : insertIndex), 0, ...validRows);
+      xeTableData.value.push(...invalidRows);
     }
     addTempData(newRows, tempInsertData);
     resolve(records);
@@ -135,39 +183,6 @@ export function useMethods(props: any) {
     xeTableData.value = Array.from(newData);
     store.data = [...xeTableData.value];
     return xeTableData.value;
-  }
-
-  function getValidRows(records: any, row?: any) {
-    const newRows = Array.isArray(records) ? records : [records];
-    const pid = props.treeConfig?.parentField ?? 'pid';
-    if (!props.useTree) {
-      return newRows;
-    }
-    if (typeof row !== 'object') {
-      console.warn('The row parameter must be an Row or null data when using tree table.');
-      return [];
-    }
-    const targetRow = xeTableData.value.find((item: any) => item[keyField.value] === row?.[keyField.value]);
-    const res: any[] = [];
-    if (!targetRow) {
-      for (let i = 0; i < newRows.length; i++) {
-        if (newRows[i][pid]) {
-          console.warn(`The row with id ${newRows[i][keyField.value]} is not exist in table data.`);
-          continue;
-        }
-        res.push(newRows[i]);
-      }
-    } else {
-      for (let i = 0; i < newRows.length; i++) {
-        const row = newRows[i];
-        if (row[pid] !== targetRow[pid]) {
-          console.warn(`Row with id ${row[keyField.value]} is not a child of row with id ${targetRow[pid]}.`);
-          continue;
-        }
-        res.push(row);
-      }
-    }
-    return res;
   }
 
   return {

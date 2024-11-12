@@ -14,7 +14,6 @@
         :suffix-icon="IconSearch"
         :placeholder="$t('searchTable')"
         clearable
-        :size="compSize"
         @change="filter"
       />
     </div>
@@ -23,7 +22,7 @@
       class="k-tree-table__header"
       :style="{
         justifyContent: showDescription ? 'space-between' : 'flex-end',
-        height: compSize === 'sm' ? '24px' : '32px',
+        height: getVailSize() === 'sm' ? '24px' : '32px',
       }"
     >
       <div v-if="showDescription" class="k-table-info">
@@ -61,14 +60,12 @@
               :suffix-icon="IconSearch"
               :placeholder="$t('searchTable')"
               clearable
-              :size="compSize"
               @change="filter"
             />
           </template>
           <template v-else-if="widget.id === 'refresh'">
             <k-button
               v-ksw_tooltip="$t('refresh')"
-              :size="compSize"
               @click="
                 () => {
                   emits('refresh');
@@ -84,7 +81,6 @@
               ref="tableFilterRef"
               :data="xeTableData"
               :options="filterColumns"
-              :size="compSize"
               children-field="group"
               filter-key="field"
               :remote="advancedFilterConfig?.remote ?? false"
@@ -108,7 +104,7 @@
                     v-if="widget.widget"
                   />
                   <slot v-else name="filterTrigger" :is-filter="hasConfigCondition">
-                    <k-button :size="compSize">
+                    <k-button>
                       <IconFilter v-if="!hasConfigCondition" />
                       <IconFilterFill v-else color="#2882FF" />
                     </k-button>
@@ -130,7 +126,7 @@
                     v-if="widget.widget"
                   />
                   <slot v-else name="sizeControlTrigger">
-                    <k-button :size="compSize"><IconSizeControls /></k-button>
+                    <k-button><IconSizeControls /></k-button>
                   </slot>
                 </div>
               </template>
@@ -165,9 +161,7 @@
                     v-if="widget.widget"
                   />
                   <slot v-else name="transferTrigger">
-                    <k-button :size="compSize">
-                      <IconSetting />
-                    </k-button>
+                    <k-button><IconSetting /></k-button>
                   </slot>
                 </div>
               </template>
@@ -261,15 +255,15 @@
     </div>
     <div v-if="isPaging" class="pagination-box">
       <k-pagination
-        :total="dataLength"
-        :page-size="paginationConfig.pageSize"
-        :pager-count="paginationConfig.pagerCount"
-        :page-sizes="paginationConfig.pageSizes"
-        :current-page="paginationConfig.currentPage"
-        :layout="paginationConfig.layout"
-        :size="compSize"
+      v-bind="paginationConfig"
+      :total="dataLength"
         @current-change="changeCurrentPage"
         @size-change="changePageSize"
+        @change="(currentPage: number, pageSize: number) => {
+          emits('change', currentPage, pageSize)
+        }"
+        @prev-click="(value: number) => { emits('prev-click', value)}"
+        @next-click="(value: number) => { emits('next-click', value)}"
       />
     </div>
   </div>
@@ -389,7 +383,12 @@ const emits = defineEmits([
   'drag-end',
   'sort-change',
   'advanced-filter-confirm',
-  'advanced-filter-clear'
+  'advanced-filter-clear',
+  'current-change',
+  'size-change',
+  'change',
+  'prev-click',
+  'next-click'
 ]);
 const xTree = ref();
 const _size = ref(props.size);
@@ -516,8 +515,8 @@ const tableHeight = computed(() => {
     return 'fit-content';
   }
   const isShowHeader = (props.showDescription || widgets.value?.length) && props.showHeaderTools;
-  const headerHeight = isShowHeader ? (props.size === 'mini' ? 34 : 42) : 0;
-  const pageHeight = isPaging.value ? (props.size === 'mini' ? 34 : 42) : 0;
+  const headerHeight = isShowHeader ? (getVailSize() === 'sm' ? 34 : 42) : 0;
+  const pageHeight = isPaging.value ? (getVailSize() === 'sm' ? 34 : 42) : 0;
   return `calc(100% - ${headerHeight}px - ${pageHeight}px)`;
 });
 // size相关
@@ -568,8 +567,6 @@ const dataLength = computed(() => {
   }
   return visibleData.value.length;
 });
-// 表格size控制
-const compSize = computed(() => (props.size === 'mini' ? 'sm' : undefined));
 
 const { setTableData, sortChange, _methods } = useMethods(props);
 const {
@@ -735,6 +732,7 @@ function changePageSize(pageSize: number) {
   if (props.isServerPaging || isRemotePaging) {
     emits('server-paging', paginationConfig.value);
   }
+  emits('size-change', pageSize);
 }
 function changeCurrentPage(pageNum: number) {
   paginationConfig.value.currentPage = pageNum;
@@ -742,6 +740,7 @@ function changeCurrentPage(pageNum: number) {
   if (props.isServerPaging || isRemotePaging) {
     emits('server-paging', paginationConfig.value);
   }
+  emits('current-change', pageNum);
 }
 function getShowTableData(data: any[]) {
   const { isRemotePaging } = paginationConfig.value;
@@ -1067,12 +1066,16 @@ function setHeaderControllerData(transferData: TableHeaderControl[]) {
   sortTableHeader(transferData);
 }
 
-provide('__showTransfer', __showTransfer);
-provide(SIZE_KEY, computed(() => {
+function getVailSize() {
   if (_size.value === 'small' || _size.value === 'mini') {
     return 'sm';
   } 
   return 'base';
+}
+
+provide('__showTransfer', __showTransfer);
+provide(SIZE_KEY, computed(() => {
+  return getVailSize();
 }));
 
 const customMethods = {

@@ -2,6 +2,7 @@ import { Component, VNode, CSSProperties } from 'vue';
 import { VxeTablePropTypes, VxeColgroupProps, VxeColumnProps, VxeColumnPropTypes } from 'vxe-table';
 import { OperateData } from '../operate/type';
 import { Condition, FilterValue, ConditionInfo } from '../filter/type';
+import { PaginationProps as ElPaginationProps } from "element-plus"
 
 export interface TreeTableProps {
   data?: any[]
@@ -91,13 +92,8 @@ type FilterColumn = {
     value: FilterValue
   }[]
 }
-export interface PaginationConfig {
-  total?: number
-  pagerCount?: number
-  currentPage?: number
-  pageSizes?: number[]
-  pageSize?: number
-  layout?: string
+export interface PaginationConfig extends Omit<ElPaginationProps, 'size'> {
+  size?: 'base' | 'sm',
   isRemotePaging?: boolean
 }
 
