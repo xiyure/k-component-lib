@@ -18,7 +18,6 @@ export interface TreeTableProps {
   showOverflow?: string | boolean
   autoResize?: boolean
   height?: string | number
-  fit?: boolean
   align?: string
   border?: boolean | string
   emptyText?: string

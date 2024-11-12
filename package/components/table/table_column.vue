@@ -88,6 +88,7 @@
             ></i>
           </span>
           <filter-popper
+            v-if="props.filters"
             :filters="props.filters"
             :column="headerSlotProps.column"
             trigger="click"
