@@ -9,13 +9,13 @@ import 'overlayscrollbars/styles/overlayscrollbars.css';
 // style of lib
 export function useTheme(app: App, config: ContextConfig = {}) {
   const styleModule = config.styleModule;
-  const projectList = ['AOM', 'GFAOM'];
+  const projectList = ['AOM', 'GFAOM', 'KingAutometa'];
   let projectName = 'AOM';
   if (typeof styleModule === 'string' && projectList.includes(styleModule)) {
     projectName = styleModule;
   } else if (styleModule !== undefined) {
     console.warn(
-      `'styleModule' expected to be ${projectList.map((name) => `'${name}'`).join(' or ')}, but got '${styleModule}'.`
+      `'styleModule' expected to be ${projectList.map((name) => `'${name}'`).join(' or ')}, but got '${styleModule}'.`,
     );
   }
   // 项目样式导入
