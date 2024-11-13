@@ -10,7 +10,7 @@
     @tab-click="getHideTabs"
   >
     <div
-      v-if="hideTabs.length"
+      v-if="hideTabIndex.length"
       class="k-tabs-more"
       :class="`tab-${tabPosition}-layout`"
       :style="{
@@ -18,7 +18,7 @@
           (editable || addable) && (tabPosition === 'top' || tabPosition === 'bottom') ? '2rem' : 0,
       }"
     >
-      <TabDropdownMenu :tabs="hideTabs" @command="jumpToTab">
+      <TabDropdownMenu :tab-index-list="hideTabIndex" :tab-slots="$slots" @command="jumpToTab">
         <template #title>
           <IconMore />
         </template>
@@ -36,7 +36,7 @@ import { ref, watch, nextTick, onMounted, onUnmounted, inject } from 'vue';
 import { ElTabs } from 'element-plus';
 import { IconMore } from 'ksw-vue-icon';
 import TabDropdownMenu from './tab_dropdown_menu';
-import { flattenChildren, isValidElement, camelize, getExposeProxy } from '../../utils';
+import { getExposeProxy } from '../../utils';
 import { TabsProps } from './type';
 
 defineOptions({
@@ -57,12 +57,9 @@ let tabsElem: HTMLElement | null = null;
 let translateElem: HTMLElement | null | undefined = null;
 let tabPaneDoms: NodeList | null | undefined = null;
 let addTabElem: HTMLElement | null | undefined = null;
-const slots = defineSlots();
 const KTabsRef = ref<any>();
 
-const tabs = parseTabList(flattenChildren(slots.default?.()));
-
-const hideTabs = ref<any>([]);
+const hideTabIndex = ref<number[]>([]);
 let preTranslate = 0;
 
 // 可视区域发生变化时，下拉列表也随之更新
@@ -81,7 +78,6 @@ nextTick(() => {
   getHideTabs();
 });
 
-// watch props.maxWidth , 如果有值, 则把 k-tabs-box 中的变量 "  --plane-max-width" = props.maxWidth
 watch(
   () => props.maxWidth,
   (val) => {
@@ -132,40 +128,14 @@ function getHideTabs() {
     const [translate] = matches.map((m) => parseFloat(m.slice(1, -1)));
 
     const res: any[] = [];
-    if (!tabs) {
-      return [];
-    }
     tabPaneDoms?.forEach((item: any, index: number) => {
-      if (!isElementInContainerView(item, translate) && tabs[index]) {
-        res.push(tabs[index]);
+      if (!isElementInContainerView(item, translate)) {
+        res.push(index);
       }
     });
     preTranslate = translate;
-    hideTabs.value = res;
+    hideTabIndex.value = res;
   });
-}
-// 解析tab-pane
-function parseTabList(children: any[]): any[] {
-  return children
-  .map((node) => {
-    if (isValidElement(node)) {
-      const props = { ...(node.props || {}) };
-      for (const [k, v] of Object.entries(props)) {
-        delete props[k];
-        props[camelize(k)] = v;
-      }
-      const slots = node.children || {};
-      const name = node.props?.name !== undefined ? node.props.name : undefined;
-      const { label = slots.label, disabled } = props;
-      return {
-        name,
-        label,
-        disabled: disabled === '' || disabled
-      };
-    }
-    return null;
-  })
-  .filter((tab) => tab);
 }
 
 watch(

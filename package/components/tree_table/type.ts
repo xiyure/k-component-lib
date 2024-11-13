@@ -1,8 +1,8 @@
 import { Component, VNode, CSSProperties } from 'vue';
 import { VxeTablePropTypes, VxeColgroupProps, VxeColumnProps, VxeColumnPropTypes } from 'vxe-table';
+import { PaginationProps as ElPaginationProps } from 'element-plus';
 import { OperateData } from '../operate/type';
 import { Condition, FilterValue, ConditionInfo } from '../filter/type';
-import { PaginationProps as ElPaginationProps } from "element-plus"
 
 export interface TreeTableProps {
   data?: any[]

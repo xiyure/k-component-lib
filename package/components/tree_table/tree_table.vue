@@ -255,8 +255,8 @@
     </div>
     <div v-if="isPaging" class="pagination-box">
       <k-pagination
-      v-bind="paginationConfig"
-      :total="dataLength"
+        v-bind="paginationConfig"
+        :total="dataLength"
         @current-change="changeCurrentPage"
         @size-change="changePageSize"
         @change="(currentPage: number, pageSize: number) => {
@@ -1074,9 +1074,7 @@ function getVailSize() {
 }
 
 provide('__showTransfer', __showTransfer);
-provide(SIZE_KEY, computed(() => {
-  return getVailSize();
-}));
+provide(SIZE_KEY, computed(() => getVailSize()));
 
 const customMethods = {
   tableInstance,
