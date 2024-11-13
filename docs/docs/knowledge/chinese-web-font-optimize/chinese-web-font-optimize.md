@@ -96,7 +96,7 @@ date: 2020-08-13 10:30:00
 
 ![字蛛+（Font-spider-Plus）](./assets/chinese-web-font-optimize/fsp.gif)
 
-## 动态加载字体 :star: <Badge type="tip" text="终极方案" />
+## 动态加载字体 :star: <k-tag type="primary" round>终极方案</k-tag>
 
 这是一个终极方案，根据用户需求动态加载字体文件。根据页面中实际使用的字体，实时动态加载相应的字体文件。这种方法不受固定文案的限制，即使页面内容不断变更，也不会影响字体的展示。
 
