@@ -19,11 +19,10 @@ export function useTheme(app: App, config: ContextConfig = {}) {
     );
   }
   // 项目样式导入
-  const isDev = process.env.NODE_ENV === 'development';
+  const isDev = import.meta.env.MODE === 'development';
   const styleUrl = isDev
    ? `../style/theme/${projectName}/theme.css`
-    : `../theme/${projectName}/theme.css`;
-  console.log('styleUrl', styleUrl);
+    : `./theme/${projectName}/theme.css`;
   import(styleUrl);
   app.provide('_styleModule', config?.styleModule ?? '');
 }

@@ -78,6 +78,10 @@ function copyFiles() {
       from: _path.resolve(__dirname, 'package/style/theme'),
       to: _path.resolve(__dirname, `${name}/theme`),
       isDir: true
+    },
+    {
+      from: _path.resolve(__dirname, 'package/style/variable.css'),
+      to: _path.resolve(__dirname, `${name}/variable.css`)
     }
   ];
   return {
