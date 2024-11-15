@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import { ref, provide, computed, onUnmounted, nextTick, inject } from 'vue';
 import { VxeColumnProps, VxeTableInstance } from 'vxe-table';
-import Sortable from 'sortablejs';
+import Sortable, { SortableEvent } from 'sortablejs';
 import { IconDrag } from 'ksw-vue-icon';
 import { KTableProps } from './type';
 import { genRandomStr } from '../../utils';
@@ -87,7 +87,7 @@ for (const key in eventMap) {
 const emits = defineEmits([
   'desc-change',
   'hide-column',
-  'drag-end',
+  'drag',
   'sort-change',
   'clear-sort',
   'filter-change',
@@ -134,45 +134,8 @@ function rowDrop() {
 
   sortable = Sortable.create(tbodyElement, {
     handle: '.__column-drag-icon',
-    onEnd: (sortableEvent) => {
-      const targetTrElem = sortableEvent.item;
-      const prevTrElem = targetTrElem.previousElementSibling as HTMLElement;
-      const targetRowNode = vxeTableRef.value?.getRowNode(targetTrElem);
-      if (!targetRowNode) {
-        return;
-      }
-      const selfRow = targetRowNode.item;
-      const curRowIndex = props.data?.findIndex(row => row.id === selfRow.id) as number;
-      const curRow = props.data?.splice(curRowIndex, 1)[0];
-      if (prevTrElem) {
-        // 移动到节点
-        const prevRowNode = vxeTableRef.value?.getRowNode(prevTrElem);
-        if (!prevRowNode) {
-          return;
-        }
-        const prevRow = prevRowNode.item;
-        const prevRowIndex = props.data?.findIndex(row => row.id === prevRow.id) as number;
-        const prevParentRow = vxeTableRef.value?.getRowById(prevRow.parentId);
-        if (vxeTableRef.value?.isTreeExpandByRow(prevRow)) {
-          // 移动到当前的子节点
-          curRow.parentId = prevRow.id;
-          props.data?.splice(prevRowIndex + 1, 0, curRow);
-        } else if (vxeTableRef.value?.isTreeExpandByRow(prevParentRow)) {
-          // 移动到相邻节点
-          curRow.parentId = prevRow.parentId ?? null;
-          props.data?.splice(prevRowIndex + 1, 0, curRow);
-        } else {
-          // 移动到父节点的相邻节点
-          curRow.parentId = prevParentRow?.parentId ?? null;
-          props.data?.splice(prevRowIndex + 1, 0, curRow);
-        }
-      } else {
-        // 移动到第一行
-        curRow.parentId = null;
-        props.data?.unshift(curRow);
-      }
-      emits('drag-end', props.data);
-      vxeTableRef.value?.reloadData(props.data ?? []);
+    onEnd: (sortableEvent: SortableEvent) => {
+      emits('drag', sortableEvent);
     }
   });
 }

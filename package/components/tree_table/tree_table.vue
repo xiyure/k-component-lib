@@ -229,7 +229,7 @@
           }
         "
         @sort-change="onSortChange"
-        @drag-end="dragEnd"
+        @drag="drag"
       >
         <template v-for="(item, index) in columns" :key="index">
           <KColumnGroup :column="item" :size="size" :align="align">
@@ -275,6 +275,7 @@ import VXETable from 'vxe-table';
 import { VueI18nTranslation } from 'vue-i18n';
 import { IconSearch, IconSetting, IconRefresh, IconFilter, IconFilterFill, IconSizeControls } from 'ksw-vue-icon';
 import { cloneDeep } from 'lodash-es';
+import { SortableEvent } from 'sortablejs';
 import KColumnGroup from './column_group';
 import { KInput } from '../input';
 import { KButton } from '../button';
@@ -380,7 +381,7 @@ const emits = defineEmits([
   'hide-column',
   'checkbox-change',
   'checkbox-all',
-  'drag-end',
+  'drag',
   'sort-change',
   'advanced-filter-confirm',
   'advanced-filter-clear',
@@ -568,7 +569,7 @@ const dataLength = computed(() => {
   return visibleData.value.length;
 });
 
-const { setTableData, sortChange, _methods } = useMethods(props);
+const { setTableData, sortChange, dragSort, _methods } = useMethods(props, tableInstance);
 const {
   checkedDataSize,
   checkboxConfig,
@@ -968,11 +969,10 @@ function cellClick({ row, rowid }) {
   }
   emits('highlight-change', row, isHighlight);
 }
-function dragEnd(data: any[]) {
-  emits('drag-end', {
-    newData: data,
-    oldData: xeTableData.value
-  });
+function drag(sortEvent: SortableEvent) {
+  if (dragSort(sortEvent)) {
+    emits('drag', xeTableData.value);
+  }
 }
 
 // 刷新高级筛选的表格数据
