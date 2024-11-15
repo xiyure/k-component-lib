@@ -37,13 +37,13 @@
 import { inject } from 'vue';
 import { ElDropdown, ElDropdownMenu, ElDropdownItem } from 'element-plus';
 import { IconMore } from 'ksw-vue-icon';
-import { ViewItemProps } from './type';
+import { ViewData } from './type';
 
 defineOptions({
   name: 'KViewItem'
 });
 
-const props = withDefaults(defineProps<ViewItemProps>(), {
+const props = withDefaults(defineProps<ViewData>(), {
   label: '',
   count: 0,
   showCustomControl: false

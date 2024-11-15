@@ -225,11 +225,11 @@ export function useMethods(props: any, $table: Ref<VxeTableInstance>) {
         return false;
       }
       const prevRow = prevRowNode.item;
-    if (isMoveToChild(curRow, prevRow)) {
-      console.warn('Can not move to child node');
-      updateDragData(curRow, curRowIndex);
-      return false;
-    }
+      if (isMoveToChild(curRow, prevRow)) {
+        console.warn('Can not move to child node');
+        updateDragData(curRow, curRowIndex);
+        return false;
+      }
       const prevRowIndex = xeTableData.value
       ?.findIndex((row: VxeTablePropTypes.Row) => row.id === prevRow.id) as number;
       const prevParentRow = $table.value?.getRowById(prevRow.parentId);

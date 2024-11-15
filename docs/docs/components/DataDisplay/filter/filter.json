@@ -85,7 +85,7 @@
     {
       "displayName": "filter",
       "description": "筛选数据",
-      "type": "object",
+      "type": "Function",
       "tip": "() => { conditionInfo, tableData }"
     },
     {

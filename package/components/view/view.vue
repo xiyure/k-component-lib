@@ -65,7 +65,7 @@
 import { ref, computed, provide, inject } from 'vue';
 import { IconRefresh, IconArrowRight } from 'ksw-vue-icon';
 import KViewItem from './view_item.vue';
-import { ViewProps, ViewItemProps } from './type';
+import { ViewProps, ViewData } from './type';
 import { genRandomStr } from '../../utils';
 
 defineOptions({
@@ -87,17 +87,17 @@ const customData = computed(() => props.data?.filter((item) => Boolean(item.cust
 function handleFresh() {
   emits('refresh');
 }
-function handleChange(data: ViewItemProps) {
+function handleChange(data: ViewData) {
   active.value = data.value;
   emits('change', { value: data.value, data });
 }
-function handleRemove(data: ViewItemProps) {
+function handleRemove(data: ViewData) {
   emits('remove', { value: data.value, data });
 }
 // 拖拽排序
 const dragElement: {
   element: HTMLElement | null;
-  data: ViewItemProps | null;
+  data: ViewData | null;
 } = {
   element: null,
   data: null
@@ -105,7 +105,7 @@ const dragElement: {
 let isCustom: boolean = false;
 const specialViewId = genRandomStr(8);
 const customViewId = genRandomStr(8);
-function onDragStart(elem: HTMLElement, data: ViewItemProps) {
+function onDragStart(elem: HTMLElement, data: ViewData) {
   dragElement.element = elem;
   dragElement.data = data;
   isCustom = data.custom ?? false;

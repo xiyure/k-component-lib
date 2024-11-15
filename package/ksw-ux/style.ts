@@ -15,14 +15,14 @@ export function useTheme(app: App, config: ContextConfig = {}) {
     projectName = styleModule;
   } else if (styleModule !== undefined) {
     console.warn(
-      `'styleModule' expected to be ${projectList.map((name) => `'${name}'`).join(' or ')}, but got '${styleModule}'.`,
+      `'styleModule' expected to be ${projectList.map((name) => `'${name}'`).join(' or ')}, but got '${styleModule}'.`
     );
   }
   // 项目样式导入
   const isDev = import.meta.env.MODE === 'development';
-  const styleUrl = isDev
-   ? `../style/theme/${projectName}/theme.css`
-    : `./theme/${projectName}/theme.css`;
+  const styleUrl = isDev ?
+   `../style/theme/${projectName}/theme.css` :
+    `./theme/${projectName}/theme.css`;
   import(styleUrl);
   app.provide('_styleModule', config?.styleModule ?? '');
 }

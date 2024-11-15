@@ -98,7 +98,7 @@
       <div style="display: flex; flex-direction: column; align-items: center">
         <p v-if="!title" class="base-title">{{ statusMessage.title }}</p>
         <p v-else class="base-title">{{ title }}</p>
-        <p class="base-subTitle">{{ subTitle }}</p>
+        <p class="base-subTitle">{{ content }}</p>
       </div>
     </slot>
     <div style="display: flex">

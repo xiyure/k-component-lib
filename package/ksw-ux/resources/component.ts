@@ -92,5 +92,5 @@ export default [
   KTreeTransfer,
   KTreeSelect,
   KFilterForm,
-  KSliderButton,
+  KSliderButton
 ] as Plugin[];

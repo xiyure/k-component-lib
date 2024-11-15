@@ -16,12 +16,11 @@ import { NolebaseGitChangelogPlugin } from '@nolebase/vitepress-plugin-git-chang
 import '@nolebase/vitepress-plugin-git-changelog/client/style.css';
 import DocTitle from '../components/DocTitle.vue';
 import { KswIcon } from 'ksw-vue-icon';
-// import 'ksw-vue-icon/styles/icon.css'; // index 中已经引用 不需要重复引用
 /*
  *  npm
  */
-// import KUI from '@ksware/ksw-ux';
-// import '@ksware/ksw-ux/kingsware-ui/style.css';
+import KUI from '@ksware/ksw-ux';
+import '@ksware/ksw-ux/kingsware-ui/style.css';
 /*
  *  本地 build
  */
@@ -30,8 +29,7 @@ import { KswIcon } from 'ksw-vue-icon';
 /*
  *  源码
  */
-import KUI from '../../../package/index';
-// import '../../../package/style/theme/AOM/theme.css'; // index 中已经引用 不需要重复引用
+// import KUI from '../../../package/index';
 
 export default {
   ...DefaultTheme,

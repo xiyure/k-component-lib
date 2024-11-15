@@ -8,11 +8,10 @@
 <template>
   <div ref="sliderButton" class="k-slider-button p-1 rounded-lg flex w-full bg-gray-100">
     <div
-      :ref="'bbm' + index"
-      v-for="(item, index) in props.items"
-      @click="handleClick(item)"
+      v-for="item in props.items"
       :class="{ 'is-active': active === item.name }"
       class="k-slider-button-pane w-full rounded flex justify-center items-center text-center text-gray-500 cursor-pointer relative"
+      @click="handleClick(item)"
     >
       {{ item.label }}
     </div>
@@ -24,10 +23,12 @@ import { ref, onMounted, nextTick } from 'vue';
 import { SliderButtonProps } from './type';
 
 defineOptions({
-  name: 'KSliderButton',
+  name: 'KSliderButton'
 });
 
-const props = withDefaults(defineProps<SliderButtonProps>(), {});
+const props = withDefaults(defineProps<SliderButtonProps>(), {
+  items: () => []
+});
 
 const emits = defineEmits(['change']);
 
@@ -42,10 +43,10 @@ onMounted(() => {
 });
 
 function getActiveItemPosition() {
-  const activeElement = document.querySelector('.k-slider-button-pane.is-active');
+  const activeElement: HTMLElement | null = document.querySelector('.k-slider-button-pane.is-active');
   const { width } = activeElement?.getBoundingClientRect() || { width: 0, height: 0 };
-  let top = activeElement?.offsetTop || 0;
-  let left = activeElement?.offsetLeft || 0;
+  const top = activeElement?.offsetTop || 0;
+  const left = activeElement?.offsetLeft || 0;
   sliderButton?.value?.style.setProperty('--item-top', `${top}px`);
   sliderButton?.value?.style.setProperty('--item-left', `${left}px`);
   sliderButton?.value?.style.setProperty('--item-width', `${width}px`);
