@@ -37,3 +37,4 @@ export * from './tree_transfer';
 export * from './tree_select';
 export * from './filter_form';
 export * from './button_container';
+export * from './slider_button';
