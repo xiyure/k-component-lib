@@ -1,5 +1,5 @@
 import type { App } from 'vue';
-import type { ContextConfig } from '../types';
+import type { ContextConfig } from '../utils/typescript';
 import 'element-plus/dist/index.css';
 import 'vxe-table/lib/style.css';
 import 'ksw-vue-icon/styles/icon.css';
@@ -19,6 +19,11 @@ export function useTheme(app: App, config: ContextConfig = {}) {
     );
   }
   // 项目样式导入
-  import(`../style/theme/${projectName}/theme.css`);
+  const isDev = process.env.NODE_ENV === 'development';
+  const styleUrl = isDev
+   ? `../style/theme/${projectName}/theme.css`
+    : `../theme/${projectName}/theme.css`;
+  console.log('styleUrl', styleUrl);
+  import(styleUrl);
   app.provide('_styleModule', config?.styleModule ?? '');
 }

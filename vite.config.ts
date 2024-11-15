@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import _path from 'path';
+import fs from 'fs';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import dts from 'vite-plugin-dts';
@@ -15,7 +16,8 @@ export default defineConfig({
     dts({
       tsconfigPath: "tsconfig.json",
       include: ['package'],
-    })
+    }),
+    copyFiles()
   ],
   esbuild: {
     pure: ['console.log', 'alert', 'debugger'],
@@ -23,7 +25,6 @@ export default defineConfig({
     jsxFragment: 'Fragment',
     jsxInject: `import { h, Fragment } from 'vue';`
   },
-  publicDir: 'static',
   build: {
     outDir: name,
 		lib: {
@@ -70,3 +71,29 @@ export default defineConfig({
     port: 12580
   }
 });
+
+function copyFiles() {
+  const paths = [
+    {
+      from: _path.resolve(__dirname, 'package/style/theme'),
+      to: _path.resolve(__dirname, `${name}/theme`),
+      isDir: true
+    }
+  ];
+  return {
+    name: 'copy-file-plugin',
+    closeBundle() {
+      try {
+        for (const { from, to, isDir = false } of paths) {
+          fs.cp(from, to, {recursive: isDir}, (err) => {
+            if (err) {
+              console.error(err);
+            }
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  };
+}
