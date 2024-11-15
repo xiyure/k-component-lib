@@ -4,15 +4,14 @@
 .k-slider-button {
   --item-top: 0.25rem;
   --item-left: 0.25rem;
-  --item-width: 2rem;
-  --item-height: 2rem;
+  --item-width: 0;
 
   position: relative;
 
   &::before {
     content: '';
     width: var(--item-width);
-    height: var(--item-height);
+    height: var(--k-theme-button-size-height--base);
     background: #fff;
     position: absolute;
     top: var(--item-top);
@@ -21,9 +20,9 @@
     transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
   }
   .k-slider-button-pane {
+    user-select: none;
+    height: var(--k-theme-button-size-height--base);
     &.is-active {
-      // background-color: #fff;
-      height: 2rem;
     }
   }
 }

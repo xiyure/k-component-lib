@@ -6,7 +6,7 @@
 * @version V3.0.0
 !-->
 <template>
-  <div ref="sliderButton" class="k-slider-button p-1 rounded flex w-full h-10 bg-gray-100">
+  <div ref="sliderButton" class="k-slider-button p-1 rounded-lg flex w-full bg-gray-100">
     <div
       :ref="'bbm' + index"
       v-for="(item, index) in props.items"
@@ -43,13 +43,12 @@ onMounted(() => {
 
 function getActiveItemPosition() {
   const activeElement = document.querySelector('.k-slider-button-pane.is-active');
-  const { width, height } = activeElement?.getBoundingClientRect() || { width: 0, height: 0 };
+  const { width } = activeElement?.getBoundingClientRect() || { width: 0, height: 0 };
   let top = activeElement?.offsetTop || 0;
   let left = activeElement?.offsetLeft || 0;
   sliderButton?.value?.style.setProperty('--item-top', `${top}px`);
   sliderButton?.value?.style.setProperty('--item-left', `${left}px`);
   sliderButton?.value?.style.setProperty('--item-width', `${width}px`);
-  sliderButton?.value?.style.setProperty('--item-height', `${height}px`);
 }
 
 function handleClick(item: any) {
