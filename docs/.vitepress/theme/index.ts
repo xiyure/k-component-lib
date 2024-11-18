@@ -17,19 +17,19 @@ import '@nolebase/vitepress-plugin-git-changelog/client/style.css';
 import DocTitle from '../components/DocTitle.vue';
 import { KswIcon } from 'ksw-vue-icon';
 /*
- *  npm
+ *  源码
  */
-import KUI from '@ksware/ksw-ux';
-import '@ksware/ksw-ux/kingsware-ui/style.css';
+// import install from '../../../package/index';
 /*
  *  本地 build
  */
-// import KUI from '../../../kingsware-ui/index';
+// import install from '../../../kingsware-ui/index';
 // import '../../../kingsware-ui/style.css';
 /*
- *  源码
+ *  npm
  */
-// import KUI from '../../../package/index';
+import install from '@ksware/ksw-ux';
+import '@ksware/ksw-ux/kingsware-ui/style.css';
 
 export default {
   ...DefaultTheme,
@@ -44,7 +44,7 @@ export default {
   enhanceApp(ctx) {
     // inject Third-party libraries
     // DefaultTheme.enhanceApp(ctx);
-    ctx.app.use(KUI);
+    ctx.app.use(install);
     ctx.app.use(KswIcon);
     ctx.app.use(NolebaseGitChangelogPlugin);
     ctx.app.component('demo-preview', Container);
@@ -63,7 +63,9 @@ export default {
   setup() {
     onMounted(() => {
       // 选择所有具有滚动条的元素
-      const scrollableElements = document.querySelectorAll('body, aside, pre, div[class="vxe-table--body-wrapper body--wrapper"]');
+      const scrollableElements = document.querySelectorAll(
+        'body, aside, pre, div[class="vxe-table--body-wrapper body--wrapper"]',
+      );
 
       // 对每个元素初始化 OverlayScrollbars
       scrollableElements.forEach((element) => {
