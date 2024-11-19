@@ -15,14 +15,11 @@ export function useTheme(app: App, config: ContextConfig = {}) {
     projectName = styleModule;
   } else if (styleModule !== undefined) {
     console.warn(
-      `'styleModule' expected to be ${projectList.map((name) => `'${name}'`).join(' or ')}, but got '${styleModule}'.`
+      `'styleModule' expected to be ${projectList.map((name) => `'${name}'`).join(' | ')}, but got '${styleModule}'.`
     );
   }
-  // 项目样式导入
-  const isDev = import.meta.env.MODE === 'development';
-  const styleUrl = isDev ?
-   `../style/theme/${projectName}/theme.css` :
-    `./theme/${projectName}/theme.css`;
-  import(styleUrl);
+  // 添加项目类名
+  const body = document.getElementsByTagName('body')[0];
+  body?.classList.add(projectName);
   app.provide('_styleModule', config?.styleModule ?? '');
 }
