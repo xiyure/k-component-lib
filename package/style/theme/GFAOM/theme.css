@@ -1,7 +1,9 @@
 @import '../../variable.css';
 @import './custom.less';
-:root {
+
+body.GFAOM {
   --k-theme-test: red;
+  --theme-name: 'Hello, GFAOM!';
   /*
    * 主题色 theme color🎨 
    */

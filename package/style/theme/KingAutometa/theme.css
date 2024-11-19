@@ -1,7 +1,8 @@
 @import '../../variable.css';
 
-:root {
-  --k-theme-test: yellow;
+body.KingAutometa {
+  --k-theme-test: purple;
+  --theme-name: 'Hello, KingAutometa!';
   /*
    * 主题色 theme color🎨 
    */

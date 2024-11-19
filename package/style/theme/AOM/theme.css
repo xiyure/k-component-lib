@@ -1,7 +1,8 @@
 @import '../../variable.css';
 
-:root {
+body.AOM {
   --k-theme-test: blue;
+  --theme-name: 'Hello, AOM!';
   /*
    * 主题色 theme color🎨 
    */
