@@ -15,7 +15,7 @@ export default defineConfig({
     vueJsx(),
     dts({
       tsconfigPath: "tsconfig.json",
-      include: ['package'],
+      include: ['packages']
     }),
     copyFiles()
   ],
@@ -28,7 +28,7 @@ export default defineConfig({
   build: {
     outDir: name,
 		lib: {
-			entry: 'package/index.ts',
+			entry: 'packages/index.ts',
       name,
       fileName: 'index'
 		},
@@ -58,7 +58,7 @@ export default defineConfig({
   resolve: {
     // 配置路径别名
     alias: {
-      '@': _path.resolve(__dirname, './package'),
+      '@': _path.resolve(__dirname, './packages'),
     },
   },
   css: {
@@ -75,7 +75,7 @@ export default defineConfig({
 function copyFiles() {
   const paths = [
     {
-      from: _path.resolve(__dirname, 'package/static/tailwind'),
+      from: _path.resolve(__dirname, 'packages/static/tailwind'),
       to: _path.resolve(__dirname, `${name}/tailwind`),
       isDir: true
     }

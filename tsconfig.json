@@ -1,17 +1,16 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "ES2022",
     "useDefineForClassFields": true,
-    "module": "ESNext",
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
 
     /* Bundler mode */
     "moduleResolution": "Node",
-    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
+    "noEmit": false,
     "jsx": "preserve",
 
     /* Linting */
@@ -24,7 +23,8 @@
     "types": ["node"],
     "baseUrl": ".",
     "paths": {
-      "@/*":["./package"]
+      "@ksw-ux/*": ["packages/*"],
+      "ksw-ux": ["packages"]
     },
     "declaration": true
   },
@@ -34,5 +34,6 @@
     "packages/**/*.tsx",
     "packages/**/*.vue"
   ],
+  "exclude": ["node_modules", "**/*.md"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -21,7 +21,7 @@ export default defineConfig({
         elementPlus: ['element-plus'],
         vxeTable: [/vxe-table/],
         vxePcUi: [/vxe-pc-ui/],
-        'ksw-ux': [/package\/(components|templates|utils|style|interface|element-plus.ts)/, /vue-i18n/],
+        'ksw-ux': [/packages\/(components|templates|utils|style|interface|element-plus.ts)/, /vue-i18n/],
         'ksw-icon': [/ksw-vue-icon/]
         // '@nolebase': [/@nolebase/],
       }
@@ -44,9 +44,9 @@ export default defineConfig({
   //   rollupOptions: {
   //     output: {
   // manualChunks(id) {
-  //   if (id.includes('package/components')) {
+  //   if (id.includes('packages/components')) {
   //     console.log(id);
-  //     return id.toString().split('package/')[1].split('/')[0].toString();
+  //     return id.toString().split('packages/')[1].split('/')[0].toString();
   //   }
   // },
   //     },

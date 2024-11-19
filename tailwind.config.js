@@ -1,10 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 
-import AOM from './package/style/theme/AOM/theme-tw';
+import AOM from './packages/style/theme/AOM/theme-tw';
 
 export default {
   darkMode: 'class',
-  content: ['./example/**/*.{vue,js,ts,md}', './package/**/*.{js,ts,vue,md}'],
+  content: ['./example/**/*.{vue,js,ts,md}', './packages/**/*.{js,ts,vue,md}'],
   theme: {
     extend: AOM
   },

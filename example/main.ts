@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import KUi from '../package/index';
+import KUi from '../packages/index';
 import App from './App.vue';
 import { KswIcon } from 'ksw-vue-icon';
 import '../tailwind.css';

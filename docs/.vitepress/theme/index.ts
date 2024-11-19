@@ -19,7 +19,7 @@ import { KswIcon } from 'ksw-vue-icon';
 /*
  *  源码
  */
-// import install from '../../../package/index';
+// import install from '../../../packages/index';
 /*
  *  本地 build
  */
