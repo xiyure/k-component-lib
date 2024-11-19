@@ -5,6 +5,7 @@ import 'vxe-table/lib/style.css';
 import 'ksw-vue-icon/styles/icon.css';
 import '../style/tailwind.css';
 import 'overlayscrollbars/styles/overlayscrollbars.css';
+import '../style/theme/index.css';
 
 // style of lib
 export function useTheme(app: App, config: ContextConfig = {}) {

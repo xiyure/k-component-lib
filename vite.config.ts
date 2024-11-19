@@ -75,13 +75,9 @@ export default defineConfig({
 function copyFiles() {
   const paths = [
     {
-      from: _path.resolve(__dirname, 'package/style/theme'),
-      to: _path.resolve(__dirname, `${name}/theme`),
+      from: _path.resolve(__dirname, 'package/static/tailwind'),
+      to: _path.resolve(__dirname, `${name}/tailwind`),
       isDir: true
-    },
-    {
-      from: _path.resolve(__dirname, 'package/style/variable.css'),
-      to: _path.resolve(__dirname, `${name}/variable.css`)
     }
   ];
   return {
