@@ -7,7 +7,7 @@ import {
   useDirectives,
   provide
 } from './ksw-ux';
-import type { ContextConfig } from './utils/typescript';
+import type { ContextConfig } from '@ksw-ux/utils/typescript';
 
 const install = (app: App, options?: ContextConfig) => {
   makeRegister(app);

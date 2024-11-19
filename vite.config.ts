@@ -58,7 +58,8 @@ export default defineConfig({
   resolve: {
     // 配置路径别名
     alias: {
-      '@': _path.resolve(__dirname, './packages'),
+      '@ksw-ux/*': _path.resolve(__dirname, 'packages/*'),
+      'ksw-ux': _path.resolve(__dirname, 'packages')
     },
   },
   css: {
@@ -75,10 +76,14 @@ export default defineConfig({
 function copyFiles() {
   const paths = [
     {
-      from: _path.resolve(__dirname, 'packages/static/tailwind'),
-      to: _path.resolve(__dirname, `${name}/tailwind`),
+      from: resolvePath('packages/static/tailwind'),
+      to: resolvePath(`${name}/tailwind`),
       isDir: true
-    }
+    },
+    // {
+    //   from: resolvePath('typings/global.d.ts'),
+    //   to: resolvePath(`${name}/global.d.ts`)
+    // }
   ];
   return {
     name: 'copy-file-plugin',
@@ -96,4 +101,8 @@ function copyFiles() {
       }
     },
   };
+}
+
+function resolvePath(path: string) {
+  return _path.resolve(__dirname, path);
 }

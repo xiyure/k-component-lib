@@ -7,7 +7,7 @@
     "skipLibCheck": true,
 
     /* Bundler mode */
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": false,
@@ -23,17 +23,17 @@
     "types": ["node"],
     "baseUrl": ".",
     "paths": {
-      "@ksw-ux/*": ["packages/*"],
-      "ksw-ux": ["packages"]
+      "@ksw-ux/*": ["./packages/*"],
+      "ksw-ux": ["./packages"]
     },
     "declaration": true
   },
   "include": [
-    "packages/**/*.ts",
-    "packages/**/*.d.ts",
-    "packages/**/*.tsx",
-    "packages/**/*.vue"
+    "packages",
+    "typings"
   ],
   "exclude": ["node_modules", "**/*.md"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [
+    { "path": "./tsconfig.node.json" }
+  ]
 }
