@@ -3,31 +3,34 @@
 @import '../../style/global.less';
 
 .k-tree {
-  .k-tree__filter {
-    width: fit-content;
-    margin-bottom: 10px;
+  .el-tree {
+    .el-tree-node__expand-icon {
+      transform: unset;
+      width: 0;
+      padding: 0 0 0 0.5rem;
+      svg {
+        display: none;
+      }
+    }
+    .ksw-icon,
+    .ksw-icon.ksw-icon-FlowNested,
+    .ksw-icon.IconFolderOpen {
+      font-size: 1rem;
+      color: var(--k-yellow-500);
+      transform: unset;
+      margin-right: 5px;
+    }
+  
+    .el-select-dropdown__item.is-disabled {
+      .ksw-icon.ksw-icon-FlowNested {
+        color: var(--k-gray-200);
+      }
+    }
+  }
+  .k-tree-node-label {
+    margin-left: 5px;
   }
 }
-.el-tree {
-  .el-tree-node__expand-icon {
-    transform: unset;
-    width: 0;
-    padding: 0 0 0 0.5rem;
-    svg {
-      display: none;
-    }
-  }
-  .ksw-icon,
-  .ksw-icon.ksw-icon-FlowNested,
-  .ksw-icon.IconFolderOpen {
-    font-size: 1rem;
-    color: var(--k-yellow-500);
-    transform: unset;
-  }
-
-  .el-select-dropdown__item.is-disabled {
-    .ksw-icon.ksw-icon-FlowNested {
-      color: var(--k-gray-200);
-    }
-  }
+.el-tree-node__expand-icon {
+  display: none;
 }

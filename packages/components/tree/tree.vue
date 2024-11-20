@@ -1,32 +1,24 @@
 <template>
-  <div :class="['k-tree', _styleModule]">
-    <div class="k-tree__filter">
-      <k-input
-        v-if="props.showFilter" v-model="query" :placeholder="$t('enterInputSearch')"
-        @input="filterTreeNode"
-        @keyup.enter="filter(query)"
-      >
-        <template #append>
-          <k-button main @click="filter(query)"><IconSearch /></k-button>
-        </template>
-      </k-input>
-    </div>
-    <el-tree-v2 ref="KTreeRef" v-bind="$attrs" :filter-method="filterMethod">
-      <template v-for="(_, name) in $slots" :key="name" #[name]="data">
-        <slot :name="name" v-bind="data"></slot>
-      </template>
-    </el-tree-v2>
-  </div>
+  <el-tree
+    ref="KTreeRef"
+    :class="['k-tree', _styleModule]"
+    :filter-method="filterMethod"
+    v-bind="$attrs"
+    >
+    <template #default="{ node, data }">
+      <component v-if="treeIcon(node, data)" :is="treeIcon(node, data)" />
+      <span class="k-tree-node-label">
+        <slot :node="node" :data="data">{{ data.label }}</slot>
+      </span>
+    </template>
+  </el-tree>
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from 'vue';
-import { ElTreeV2 } from 'element-plus';
-import type { TreeNode } from 'element-plus/es/components/tree-v2/src/types';
-import { IconSearch } from 'ksw-vue-icon';
+import { ref, inject, computed } from 'vue';
+import { ElTree } from 'element-plus';
+import { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type';
 import { TreeProps } from './type';
-import { KInput } from '../input';
-import { KButton } from '../button';
 import { getExposeProxy } from '../../utils';
 
 defineOptions({
@@ -34,26 +26,31 @@ defineOptions({
 });
 
 const props = withDefaults(defineProps<TreeProps>(), {
-  showFilter: true,
-  lazy: true,
-  filterMethod: (query: string, node: TreeNode) => node.label?.includes(query)
+  filterMethod: (query: string, node: TreeNodeData) => node.label?.includes(query),
+  icon: '',
+  expandIcon: '',
+  collapseIcon: '',
 });
 
 const _styleModule = inject('_styleModule', '');
 const KTreeRef = ref();
-const query = ref('');
 
-function filterTreeNode(value: string) {
-  if (props.lazy) {
-    return;
+const treeIcon = computed(() => (node: TreeNodeData, data: TreeNodeData) => {
+  let icon: any = '';
+  if (node.isLeaf) {
+    icon = props.icon;
+  } else if (node.expanded) {
+    icon = props.expandIcon;
+  } else {
+    icon = props.collapseIcon;
   }
-  filter(value);
-}
-function filter(query: string) {
-  return KTreeRef.value?.filter(query);
-}
+  if (typeof icon === 'function') {
+    return icon(node, data);
+  }
+  return icon;
+})
 
-const instance: any = { filter };
+const instance: any = {};
 defineExpose(getExposeProxy(instance, KTreeRef));
 </script>
 

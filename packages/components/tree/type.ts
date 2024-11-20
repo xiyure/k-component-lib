@@ -1,7 +1,9 @@
-import type { TreeNode } from 'element-plus/es/components/tree-v2/src/types';
+import { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type';
+import { Component } from 'vue';
 
 export interface TreeProps {
-  showFilter?: boolean
-  lazy?: boolean
-  filterMethod?: (value:string, data:TreeNode) => void
+  filterMethod?: (value: string, data: TreeNodeData, node: TreeNodeData) => boolean
+  icon?: ((node: TreeNodeData, data: TreeNodeData) => string | Component) | string | Component
+  expandIcon?: ((node: TreeNodeData, data: TreeNodeData) => string | Component) | string | Component
+  collapseIcon?: ((node: TreeNodeData, data: TreeNodeData) => string | Component) | string | Component
 }

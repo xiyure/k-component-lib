@@ -19,7 +19,7 @@
     </div>
     <div class="k-view-item__other">
       <span>{{ props.count }}</span>
-      <el-dropdown v-if="showCustomControl" trigger="click" @command="handleCommand">
+      <el-dropdown v-if="showCustomControl ?? parentProps.showCustomControl" trigger="click" @command="handleCommand">
         <span class="k-view-item-remove" @click.stop.prevent>
           <IconMore />
         </span>
@@ -46,7 +46,7 @@ defineOptions({
 const props = withDefaults(defineProps<ViewData>(), {
   label: '',
   count: 0,
-  showCustomControl: false
+  showCustomControl: undefined
 });
 const emits = defineEmits(['change', 'remove', '_drag-start', '_drag-drop']);
 

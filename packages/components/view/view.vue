@@ -20,37 +20,71 @@
           </span>
         </div>
         <div :id="specialViewId" class="k-view__special-data">
-          <k-view-item
-            v-for="item in specialData"
-            :key="item.value"
-            v-bind="item"
-            @change="handleChange"
-            @remove="handleRemove"
-            @_drag-start="onDragStart"
-            @_drag-drop="onDrop"
-          >
-            <template v-if="$slots.label" #label>
-              <slot name="label" :data="item"></slot>
-            </template>
-          </k-view-item>
+          <template v-if="!useTree">
+            <k-view-item
+              v-for="item in specialData"
+              :key="item.value"
+              v-bind="item"
+              @change="handleChange"
+              @remove="handleRemove"
+              @_drag-start="onDragStart"
+              @_drag-drop="onDrop"
+            >
+              <template v-if="$slots.label" #label>
+                <slot name="label" :data="item"></slot>
+              </template>
+            </k-view-item>
+          </template>
+          <template v-else>
+            <k-tree
+              class="k-tree-view-item"
+              :data="props.data"
+              highlight-current
+              v-bind="treeConfig"
+              @current-change="handleChange"
+              @node-expand="handleNodeExpand"
+              @node-collapse="handleNodeCollapse"
+            >
+              <template v-if="$slots.label" #default="{ node, data }">
+                <slot name="label" :node="node" :data="data"></slot>
+              </template>
+            </k-tree>
+          </template>
         </div>
         <div v-if="customData?.length" :id="customViewId" class="k-view__custom-data text-base">
           <slot name="custom-header">
             <span class="custom-table-box">{{ $t('customView') }}</span>
           </slot>
-          <k-view-item
-            v-for="item in customData"
-            :key="item.value"
-            v-bind="item"
-            @change="handleChange"
-            @remove="handleRemove"
-            @_drag-start="onDragStart"
-            @_drag-drop="onDrop"
-          >
-            <template v-if="$slots.label" #label>
-              <slot name="label" :data="item"></slot>
-            </template>
-          </k-view-item>
+          <template v-if="!useTree">
+            <k-view-item
+              v-for="item in customData"
+              :key="item.value"
+              v-bind="item"
+              @change="handleChange"
+              @remove="handleRemove"
+              @_drag-start="onDragStart"
+              @_drag-drop="onDrop"
+            >
+              <template v-if="$slots.label" #label>
+                <slot name="label" :data="item"></slot>
+              </template>
+            </k-view-item>
+          </template>
+          <template v-else>
+            <k-tree
+              class="k-tree-view-item"
+              :data="props.data"
+              highlight-current
+              v-bind="treeConfig"
+              @current-change="handleChange"
+              @node-expand="handleNodeExpand"
+              @node-collapse="handleNodeCollapse"
+            >
+              <template v-if="$slots.label" #default="{ node, data }">
+                <slot name="label" :node="node" :data="data"></slot>
+              </template>
+            </k-tree>
+          </template>
         </div>
       </div>
     </div>
@@ -66,6 +100,7 @@ import { ref, computed, provide, inject } from 'vue';
 import { IconRefresh, IconArrowRight } from 'ksw-vue-icon';
 import KViewItem from './view_item.vue';
 import { ViewProps, ViewData } from './type';
+import { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type';
 import { genRandomStr } from '../../utils';
 
 defineOptions({
@@ -74,25 +109,42 @@ defineOptions({
 
 const props = withDefaults(defineProps<ViewProps>(), {
   draggable: false,
-  collapse: false
+  collapse: false,
+  showCustomControl: false,
+  useTree: false,
+  treeConfig: () => ({})
 });
-const emits = defineEmits(['refresh', 'change', 'remove', 'drag', 'visible']);
-
+const emits = defineEmits(['refresh', 'change', 'remove', 'drag', 'visible', 'node-expand', 'node-collapse']);
 const _styleModule = inject('_styleModule', '');
 const active = ref(props.defaultActive ?? props.data?.[0]?.value ?? '');
 
-const specialData = computed(() => props.data?.filter((item) => !item.custom));
+const specialData = computed(() => props.data?.filter((item) => !item.custom) ?? []);
 const customData = computed(() => props.data?.filter((item) => Boolean(item.custom)));
 
 function handleFresh() {
   emits('refresh');
 }
-function handleChange(data: ViewData) {
+function handleChange(data: ViewData, node?: TreeNodeData) {
   active.value = data.value;
-  emits('change', { value: data.value, data });
+  emits('change', { value: data.value, data, node });
 }
 function handleRemove(data: ViewData) {
   emits('remove', { value: data.value, data });
+}
+function handleNodeExpand(data: TreeNodeData, node: TreeNodeData) {
+  if (isLeafNode(node)) {
+    return;
+  }
+  emits('node-expand', data, node);
+}
+function handleNodeCollapse(data: TreeNodeData, node: TreeNodeData) {
+  if (isLeafNode(node)) {
+    return;
+  }
+  emits('node-collapse', data, node);
+}
+function isLeafNode(node: TreeNodeData) {
+  return node.isLeaf;
 }
 // 拖拽排序
 const dragElement: {
