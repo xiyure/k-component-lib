@@ -79,6 +79,7 @@
               @current-change="handleChange"
               @node-expand="handleNodeExpand"
               @node-collapse="handleNodeCollapse"
+              :showArrow="showArrow"
             >
               <template v-if="$slots.label" #default="{ node, data }">
                 <slot name="label" :node="node" :data="data"></slot>
@@ -104,7 +105,7 @@ import { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type';
 import { genRandomStr } from '../../utils';
 
 defineOptions({
-  name: 'KView'
+  name: 'KView',
 });
 
 const props = withDefaults(defineProps<ViewProps>(), {
@@ -112,9 +113,19 @@ const props = withDefaults(defineProps<ViewProps>(), {
   collapse: false,
   showCustomControl: false,
   useTree: false,
-  treeConfig: () => ({})
+  treeConfig: () => ({}),
+  showArrow: false,
+  indent: 20,
 });
-const emits = defineEmits(['refresh', 'change', 'remove', 'drag', 'visible', 'node-expand', 'node-collapse']);
+const emits = defineEmits([
+  'refresh',
+  'change',
+  'remove',
+  'drag',
+  'visible',
+  'node-expand',
+  'node-collapse',
+]);
 const _styleModule = inject('_styleModule', '');
 const active = ref(props.defaultActive ?? props.data?.[0]?.value ?? '');
 
@@ -152,7 +163,7 @@ const dragElement: {
   data: ViewData | null;
 } = {
   element: null,
-  data: null
+  data: null,
 };
 let isCustom: boolean = false;
 const specialViewId = genRandomStr(8);
@@ -219,7 +230,7 @@ defineExpose({
   collapse,
   toggle,
   isExpand,
-  isCollapse
+  isCollapse,
 });
 </script>
 

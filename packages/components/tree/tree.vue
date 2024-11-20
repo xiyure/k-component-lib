@@ -1,10 +1,10 @@
 <template>
   <el-tree
     ref="KTreeRef"
-    :class="['k-tree', _styleModule]"
+    :class="['k-tree', _styleModule, { 'k-tree-show-arrow': props.showArrow }]"
     :filter-method="filterMethod"
     v-bind="$attrs"
-    >
+  >
     <template #default="{ node, data }">
       <component v-if="treeIcon(node, data)" :is="treeIcon(node, data)" />
       <span class="k-tree-node-label">
@@ -22,7 +22,7 @@ import { TreeProps } from './type';
 import { getExposeProxy } from '../../utils';
 
 defineOptions({
-  name: 'KTree'
+  name: 'KTree',
 });
 
 const props = withDefaults(defineProps<TreeProps>(), {
@@ -30,6 +30,7 @@ const props = withDefaults(defineProps<TreeProps>(), {
   icon: '',
   expandIcon: '',
   collapseIcon: '',
+  showArrow: true,
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -48,7 +49,7 @@ const treeIcon = computed(() => (node: TreeNodeData, data: TreeNodeData) => {
     return icon(node, data);
   }
   return icon;
-})
+});
 
 const instance: any = {};
 defineExpose(getExposeProxy(instance, KTreeRef));
