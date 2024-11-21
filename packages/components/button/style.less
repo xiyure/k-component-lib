@@ -24,6 +24,7 @@
   --k-button-border-color--disabled: var(--k-gray-200);
   --k-button-border-color--loading: var(--k-gray-200);
   --k-button-focus: rgba(var(--k-theme-primary-rgb), 0.2);
+  --k-button-rounded: var(--k-theme-button-size-rounded--base);
 
   // 初始化所有样式
   .init-style();
@@ -39,7 +40,7 @@
   border-color: var(--k-button-border-color);
   padding: var(--k-theme-button-size-padding--base);
   height: var(--k-theme-button-size-height--base);
-  border-radius: var(--k-theme-button-size-rounded--base);
+  border-radius: var(--k-button-rounded);
   color: var(--k-button-content-color);
   .text-base();
   cursor: pointer;
@@ -59,11 +60,11 @@
 
   // size
   &.el-button--sm {
+    --k-button-rounded: var(--k-theme-button-size-rounded--sm);
     .text-sm();
     padding: var(--k-theme-button-size-padding--sm);
     height: var(--k-theme-button-size-height--sm);
     gap: var(--k-theme-button-size-gap--sm);
-    border-radius: var(--k-theme-button-size-rounded--sm);
 
     span {
       display: inline-flex;
@@ -77,11 +78,11 @@
     }
   }
   &.el-button--lg {
+    --k-button-rounded: var(--k-theme-button-size-rounded--lg);
     .text-lg();
     padding: var(--k-theme-button-size-padding--lg);
     height: var(--k-theme-button-size-height--lg);
     gap: var(--k-theme-button-size-gap--lg);
-    border-radius: var(--k-theme-button-size-rounded--lg);
 
     span {
       display: inline-flex;
@@ -519,14 +520,14 @@
   .k-button:first-child,
   .el-button:first-child,
   .k-button.el-button:first-child {
-    border-top-left-radius: var(--k-rounded-base);
-    border-bottom-left-radius: var(--k-rounded-base);
+    border-top-left-radius: var(--k-button-rounded);
+    border-bottom-left-radius: var(--k-button-rounded);
   }
   .k-button:last-child,
   .el-button:last-child,
   .k-button.el-button:last-child {
-    border-top-right-radius: var(--k-rounded-base);
-    border-bottom-right-radius: var(--k-rounded-base);
+    border-top-right-radius: var(--k-button-rounded);
+    border-bottom-right-radius: var(--k-button-rounded);
   }
   .k-button + .k-button {
     margin-left: -1px;

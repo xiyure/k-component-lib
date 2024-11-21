@@ -1,6 +1,5 @@
 @import '../../style/variable.css';
 @import '../../style/general.less';
-@import '../../style/global.less';
 
 .k-select.el-select {
   --bg-color: #fff;
@@ -19,9 +18,8 @@
   .el-select__wrapper {
     .init-style();
     .text-base();
-    min-height: unset;
-    height: var(--height);
-    padding: var(--padding) 0;
+    min-height: var(--height);
+    padding: var(--padding);
     border-radius: var(--border-radius);
     border: var(--border-color--normal) 1px solid;
     background: #fff;
