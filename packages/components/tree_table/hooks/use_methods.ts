@@ -3,23 +3,27 @@ import { VxeTablePropTypes, VxeTableInstance } from 'vxe-table';
 import { SortableEvent } from 'sortablejs';
 import { Store } from '../type';
 import { multiFieldSort } from '../../../utils';
+import { TreeTableProps, RowData } from '../type';
 
 // 重定义vxe-table的部分方法
-export function useMethods(props: any, $table: Ref<VxeTableInstance>) {
+export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>) {
   const store: Store = {
     data: [],
     sortData: [],
     filterData: []
   };
-  const xeTableData = ref<any>([]);
-  const tempInsertData = new Map<string | number, any>();
-  const tempRemoveData = new Map<string | number, any>();
-  const tempSetData = new Map<string | number, any>();
-  const expandRows: VxeTablePropTypes.Row[] = [];
+  type Row = VxeTablePropTypes.Row;
+  type RowDataMap = Map<string | number, RowData>;
+
+  const xeTableData = ref<RowData[]>([]);
+  const tempInsertData: RowDataMap = new Map();
+  const tempRemoveData: RowDataMap = new Map();
+  const tempSetData: RowDataMap = new Map();
+  const expandRows: RowData[] = [];
 
   const keyField = computed(() => props.rowConfig?.keyField ?? 'id');
   // 在第一行插入行数据
-  const insert = (records: any) => new Promise((resolve) => {
+  const insert = (records: RowData | RowData[]) => new Promise((resolve) => {
     const newRows = Array.isArray(records) ? records : [records];
     getTreeExpandRecords();
     if (!props.useTree) {
@@ -28,12 +32,12 @@ export function useMethods(props: any, $table: Ref<VxeTableInstance>) {
       for (let i = 0; i < newRows.length; i++) {
         const row = newRows[i];
         const pid = props.treeConfig?.parentField ?? 'pid';
-        const parentRow = xeTableData.value.find((item: any) => item[keyField.value] === row[pid]);
+        const parentRow = xeTableData.value.find((item: RowData) => item[keyField.value] === row[pid]);
         if (!parentRow) {
           xeTableData.value.unshift(row);
           return;
         }
-        const insertIndex = xeTableData.value.findIndex((item: any) => item[pid] === parentRow[keyField.value]);
+        const insertIndex = xeTableData.value.findIndex((item: RowData) => item[pid] === parentRow[keyField.value]);
         if (insertIndex === -1) {
           xeTableData.value.unshift(row);
         } else {
@@ -45,16 +49,16 @@ export function useMethods(props: any, $table: Ref<VxeTableInstance>) {
     restoreTreeExpandRecords();
     resolve(records);
   });
-  const insertRecords = (records: any, row: any, isNext = false) => new Promise((resolve) => {
+  const insertRecords = (records: RowData | RowData[], row: Row | number, isNext = false) => new Promise((resolve) => {
     const newRows = Array.isArray(records) ? records : [records];
     getTreeExpandRecords();
     if (!props.useTree) {
-      let newIndex: any;
+      let newIndex: number;
       const length = xeTableData.value.length;
       if (typeof row === 'number') {
         newIndex = (Number.isNaN(Math.floor(row)) ? 0 : Math.floor(row)) % length;
       } else if (typeof row === 'object') {
-        const targetIndex = xeTableData.value.findIndex((item: any) => item[keyField.value] === row?.[keyField.value]);
+        const targetIndex = xeTableData.value.findIndex((item: RowData) => item[keyField.value] === row?.[keyField.value]);
         newIndex = targetIndex === -1 ? 0 : targetIndex;
       } else {
         newIndex = 0;
@@ -66,23 +70,23 @@ export function useMethods(props: any, $table: Ref<VxeTableInstance>) {
         xeTableData.value.splice(newIndex, 0, ...newRows);
       }
     } else {
-      const validRows: any[] = [];
-      const invalidRows: any[] = [];
+      const validRows: RowData[] = [];
+      const invalidRows: RowData[] = [];
       let insertIndex: number = -1;
       for (let i = 0; i < newRows.length; i++) {
         const rowItem = newRows[i];
         const pid = props.treeConfig?.parentField ?? 'pid';
         if (typeof row === 'object' && (row[pid] === rowItem[pid] || (!row[pid] && !rowItem[pid]))) {
-          insertIndex = xeTableData.value.findIndex((item: any) => item[keyField.value] === row[keyField.value]);
+          insertIndex = xeTableData.value.findIndex((item: RowData) => item[keyField.value] === row[keyField.value]);
           if (insertIndex !== -1) {
             validRows.push(rowItem);
           }
         } else {
-          const parentRow = xeTableData.value.find((item: any) => item[keyField.value] === rowItem[pid]);
+          const parentRow = xeTableData.value.find((item: RowData) => item[keyField.value] === rowItem[pid]);
           if (!parentRow) {
             invalidRows.push(rowItem);
           } else {
-            insertIndex = xeTableData.value.findIndex((item: any) => item[pid] === parentRow[keyField.value]);
+            insertIndex = xeTableData.value.findIndex((item: RowData) => item[pid] === parentRow[keyField.value]);
             if (insertIndex === -1) {
               invalidRows.push(rowItem);
             } else {
@@ -99,9 +103,9 @@ export function useMethods(props: any, $table: Ref<VxeTableInstance>) {
     resolve(records);
   });
   // 在指定位置插入数据
-  const insertAt = (records: any, row: any) => insertRecords(records, row);
+  const insertAt = (records: RowData | RowData[], row: Row | number) => insertRecords(records, row);
   // 在指定行后插入数据
-  const insertNextAt = (records: any, row: any) => insertRecords(records, row, true);
+  const insertNextAt = (records: RowData | RowData[], row: Row | number) => insertRecords(records, row, true);
   // 删除临时添加的数据
   const removeInsertRow = () => new Promise((resolve) => {
     getTreeExpandRecords();
@@ -123,18 +127,18 @@ export function useMethods(props: any, $table: Ref<VxeTableInstance>) {
   // 获取临时添加的数据
   const getInsertRecords = () => Array.from(tempInsertData.values());
   // 判断是否是临时添加的数据
-  const isInsertByRow = (row: any) => tempInsertData.has(row[keyField.value]);
+  const isInsertByRow = (row: RowData) => tempInsertData.has(row[keyField.value]);
   // 删除指定行数据
-  const remove = (rows: any) => new Promise((resolve) => {
+  const remove = (rows: RowData | RowData[]) => new Promise((resolve) => {
     if (rows === undefined) {
       xeTableData.value.length = 0;
       resolve({ rows: [], row: null });
     }
-    let rest = rows;
+    let rest: RowData[] | RowData = rows;
     if (!Array.isArray(rows)) {
       rest = [rows];
     }
-    const removeMap = new Map(rest.map((row: any) => [row[keyField.value], row]));
+    const removeMap = new Map(rest.map((row: RowData) => [row[keyField.value], row]));
     for (let i = 0; i < xeTableData.value.length; i++) {
       const key = xeTableData.value[i][keyField.value];
       if (removeMap.has(key)) {
@@ -143,7 +147,7 @@ export function useMethods(props: any, $table: Ref<VxeTableInstance>) {
         i--;
       }
     }
-    addTempData(rest, tempRemoveData);
+    addTempData(rest as RowData[], tempRemoveData);
     resolve({ rows, row: rows });
   });
   // 获取临时删除的数据
@@ -155,7 +159,7 @@ export function useMethods(props: any, $table: Ref<VxeTableInstance>) {
     updateRecords: Array.from(tempSetData.values()),
     pendingRecords: []
   });
-  const setRow = (rows: any, record: object) => new Promise((resolve) => {
+  const setRow = (rows: Row | Row[], record: RowData) => new Promise((resolve) => {
     if (!rows || !record) {
       resolve(rows);
     }
@@ -163,7 +167,7 @@ export function useMethods(props: any, $table: Ref<VxeTableInstance>) {
     if (!Array.isArray(rows)) {
       rest = [rows];
     }
-    rest.forEach((item: any) => {
+    rest.forEach((item: Row) => {
       Object.assign(item, record);
       tempSetData.set(item[keyField.value], item);
     });
@@ -180,8 +184,8 @@ export function useMethods(props: any, $table: Ref<VxeTableInstance>) {
     multiFieldSort(xeTableData.value, fieldRules);
     restoreTreeExpandRecords();
   };
-  function addTempData(rows: any[], dataMap: Map<string | number, any>) {
-    rows.forEach((item: any) => {
+  function addTempData(rows: RowData[], dataMap: RowDataMap) {
+    rows.forEach((item: RowData) => {
       dataMap.set(item[keyField.value], item);
     });
   }
@@ -214,7 +218,7 @@ export function useMethods(props: any, $table: Ref<VxeTableInstance>) {
     }
     const selfRow = targetRowNode.item;
     const curRowIndex = xeTableData.value
-    ?.findIndex((row: VxeTablePropTypes.Row) => row.id === selfRow.id) as number;
+    ?.findIndex((row: RowData) => row.id === selfRow.id) as number;
     const curRow = xeTableData.value?.splice(curRowIndex, 1)[0];
     // 更新插入索引
     let insertIndex = 0;
@@ -231,7 +235,7 @@ export function useMethods(props: any, $table: Ref<VxeTableInstance>) {
         return false;
       }
       const prevRowIndex = xeTableData.value
-      ?.findIndex((row: VxeTablePropTypes.Row) => row.id === prevRow.id) as number;
+      ?.findIndex((row: RowData) => row.id === prevRow.id) as number;
       const prevParentRow = $table.value?.getRowById(prevRow.parentId);
       // 更新插入索引
       insertIndex = prevRowIndex + 1;
@@ -253,13 +257,13 @@ export function useMethods(props: any, $table: Ref<VxeTableInstance>) {
     updateDragData(curRow, insertIndex);
     return true;
   }
-  function updateDragData(row: VxeTablePropTypes.Row, index: number) {
+  function updateDragData(row: Row, index: number) {
     setTimeout(() => {
       xeTableData.value?.splice(index, 0, row);
       restoreTreeExpandRecords();
     });
   }
-  function isMoveToChild(node: VxeTablePropTypes.Row, target: VxeTablePropTypes.Row) {
+  function isMoveToChild(node: Row, target: RowData | undefined) {
     const pid = props.treeConfig?.parentField ?? 'pid';
     const id = keyField.value;
     if (!node[id] || !target || !target[pid]) {
@@ -268,11 +272,23 @@ export function useMethods(props: any, $table: Ref<VxeTableInstance>) {
     if (node[id] === target[pid]) {
       return true;
     }
-    const parentRow = xeTableData.value.find((item: any) => item[id] === target[pid]);
+    const parentRow = xeTableData.value.find((item: RowData) => item[id] === target[pid]);
     return isMoveToChild(node, parentRow);
   }
+  function expandTree(rows: Row | Row[]) {
+    const records = Array.isArray(rows) ? rows : [rows];
+    const ids = records.map((row) => row[keyField.value]);
+    const event = new Event('click', { bubbles: true });
+    for (const id of ids) {
+      const rowIconElem: Element = $table.value?.$el.querySelector(`[rowid='${id}'] .vxe-tree--btn-wrapper`);
+      if (rowIconElem) {
+        rowIconElem.dispatchEvent(event);
+      }
+    }
+
+  }
   // 数据更新时应清除所有缓存数据
-  function setTableData(data: any) {
+  function setTableData(data: RowData[] | undefined) {
     tempInsertData.clear();
     tempRemoveData.clear();
     tempSetData.clear();
@@ -293,7 +309,8 @@ export function useMethods(props: any, $table: Ref<VxeTableInstance>) {
       remove,
       getRemoveRecords,
       getRecordset,
-      setRow
+      setRow,
+      expandTree
     },
     setTableData,
     sortChange,

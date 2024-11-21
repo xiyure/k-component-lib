@@ -8,6 +8,6 @@ export interface TransferProps {
     disabled?: string
   }
   matchKey?: string
-  defaultKeys?: string[]
+  defaultKeys?: (string | number)[]
   filterable?: boolean
 }

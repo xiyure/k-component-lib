@@ -12,5 +12,6 @@ export function useI18n(app: App, config: ContextConfig = {}) {
     messages
   });
   app.use(i18n);
+  app.config.globalProperties.$t = i18n.global.t;
   app.provide('$t', i18n.global.t);
 }

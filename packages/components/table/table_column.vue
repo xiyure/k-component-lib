@@ -24,6 +24,7 @@
           </slot>
         </div>
         <k-dialog
+          v-if="isShowColumnMenu"
           v-model="dialogVisible"
           :title="$t('customDescription')"
           @open="openDialog"

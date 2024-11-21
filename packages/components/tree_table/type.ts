@@ -5,7 +5,7 @@ import { OperateData } from '../operate/type';
 import { Condition, FilterValue, ConditionInfo } from '../filter/type';
 
 export interface TreeTableProps {
-  data?: any[]
+  data?: RowData[]
   size?: string
   sortConfig?: VxeTablePropTypes.SortConfig
   seqConfig?: SeqConfig
@@ -75,12 +75,13 @@ export interface ColumnConfig extends VxeColumnProps {
   showColumnMenu?: boolean
   group?: VxeColgroupProps[]
   dataType?: string
-  render?: () => VNode
+  render?: (data: any) => VNode
+  renderEdit?: (data: any) => VNode
 }
 
-type WidgetItem = {
+export type WidgetItem = {
   id: string
-  widget: Component | (() => VNode | Component)
+  widget?: Component | (() => VNode | Component)
 }
 type FilterColumn = {
   title: string
@@ -132,4 +133,11 @@ export interface SearchConfig {
   searchMethod?: (key: string | number, data: any[]) => any[]
   isRemoteQuery?: boolean
   ignoreCase?: boolean
+}
+
+export interface RowData {
+  icon?: string
+  __folder__?: boolean
+  iconStyle?: CSSProperties & { empty: boolean, size: number }
+  [key: string]: any
 }

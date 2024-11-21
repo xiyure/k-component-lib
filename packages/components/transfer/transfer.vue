@@ -106,7 +106,7 @@ watch(() => [props.modelValue, props.matchKey], () => {
     return;
   }
   props.modelValue.forEach(valueItem => {
-    const targetData = props.data.find((item:object) => item[props.matchKey] === valueItem[props.matchKey]);
+    const targetData = props.data.find((item:any) => item[props.matchKey] === valueItem[props.matchKey]);
     if (targetData) {
       const { key } = defaultPropsConfig.value;
       modelValue.value.push(targetData[key]);
@@ -181,7 +181,7 @@ function getNewModelValue(value:Array<any>) {
   const newModelValue:number[] = [];
   const { key } = defaultPropsConfig.value;
   for (const index of value) {
-    const findItem = sourceData.value.find((item:object) => item[key] === index);
+    const findItem = sourceData.value.find((item:any) => item[key] === index);
     if (findItem) {
       newModelValue.push(findItem);
     }

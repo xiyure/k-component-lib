@@ -210,20 +210,20 @@
         :round="useAntStyle || round"
         v-bind="$attrs"
         @checkbox-change="
-          (data) => {
+          (data: any) => {
             checkBoxChange(data);
             emits('checkbox-change', data);
           }
         "
         @checkbox-all="
-          (data) => {
+          (data: any) => {
             checkboxAll(data);
             emits('checkbox-all', data);
           }
         "
         @hide-column="hideColumn"
         @cell-click="
-          (data) => {
+          (data: any) => {
             cellClick(data);
             emits('cell-click', data);
           }
@@ -271,7 +271,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, nextTick, inject, provide } from 'vue';
-import VXETable from 'vxe-table';
+import VXETable, { VxeTable, VxeTablePropTypes } from 'vxe-table';
 import { VueI18nTranslation } from 'vue-i18n';
 import { IconSearch, IconSetting, IconRefresh, IconFilter, IconFilterFill, IconSizeControls } from 'ksw-vue-icon';
 import { cloneDeep } from 'lodash-es';
@@ -286,7 +286,13 @@ import { KTable } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
 import { KDropdown, KDropdownItem } from '../dropdown';
-import { TreeTableProps, ColumnConfig, TableHeaderControl } from './type';
+import type {
+  TreeTableProps,
+  ColumnConfig,
+  TableHeaderControl,
+  RowData
+} from './type';
+import type { ConditionInfo, Condition } from '../filter';
 import {
   genRandomStr,
   treeDataToArray,
@@ -358,7 +364,7 @@ const defaultEditConfig = {
   mode: 'cell'
 };
 const defaultSeqConfig = {
-  seqMethod: ({ rowIndex }) => {
+  seqMethod: ({ rowIndex }: { rowIndex: number }) => {
     const startIndex = props.seqConfig?.startIndex ?? 1;
     if (isPaging.value) {
       const { pageSize, currentPage } = paginationConfig.value;
@@ -401,26 +407,29 @@ const sizeList = [
 ];
 const tableTransferRef = ref();
 // 列配置
-const columns = ref<any>([]);
-const flatColumns = ref<any>([]);
+const columns = ref<ColumnConfig[]>([]);
+const flatColumns = ref<ColumnConfig[]>([]);
 // 表格数据
-const xeTableData = ref<any>([]);
+const xeTableData = ref<RowData[]>([]);
 // 搜索框关键词
 const query = ref('');
 const searchStr = ref('');
 // 穿梭框
-const selectData = ref<any>([]);
-const originData = ref<any>([]);
-const defaultHeader = ref<string[]>([]);
+const selectData = ref<{label: string, key: string, value?: string}[]>([]);
+const originData = ref<{label: string, key: string, value?: string}[]>([]);
+const defaultHeader = ref<(string | number)[]>([]);
 // 高级筛选
 const tableFilterRef = ref(); // 高级筛选后的数据
-const newFilterData = ref<any>([]);
-const filterConditionInfo: any = ref(null);
+const newFilterData = ref<RowData[]>([]);
+const filterConditionInfo = ref<ConditionInfo | undefined>();
 // 分页配置
 const paginationConfig = ref<any>(defaultPaginationConfig);
 
 const widgets = computed(() => {
-  const widgetsList: any[] = [];
+  const widgetsList: ({
+    id: string,
+    slot: string | null
+  } & any)[] = [];
   if (!Array.isArray(props.widgets)) {
     // 兼容老版本参数
     if (props.showSearchInput) {
@@ -499,7 +508,7 @@ const headerText = computed(() => {
   if (filterConditionInfo.value?.conditionList?.length) {
     const { filterRule } = filterConditionInfo.value;
     text += filterRule === 0 ? (t?.('anyOne') as string) : (t?.('all') as string);
-    filterConditionInfo.value.conditionList.forEach((item: any, index: number) => {
+    filterConditionInfo.value.conditionList.forEach((item: Condition, index: number) => {
       const point = props.useTree && index === 0 ? '' : '·';
       text += `  ${point} ${item.title} ${item.logic} ${item.showValue}`;
     });
@@ -635,8 +644,8 @@ watch(
 );
 
 // 表格内容搜索
-let tableDataMap: Map<string | number, any> = new Map();
-const treeDataMap: Map<string | number, any> = new Map();
+let tableDataMap: Map<string | number, RowData> = new Map();
+const treeDataMap: Map<string | number, RowData> = new Map();
 function filterTableData() {
   const filterData = filterConditionInfo.value?.conditionList?.length ?
     newFilterData.value :
@@ -660,7 +669,7 @@ function filterTableData() {
     }
     return null;
   }).filter((field: string | null) => field !== null);
-  let tableData = filterData.filter((dataItem: any) => fieldList.some((field: string) => {
+  let tableData = filterData.filter((dataItem: RowData) => fieldList.some((field: string) => {
     const cellLabel = tableInstance.value.getCellLabel(dataItem, field);
     if (strict === true) {
       return cellLabel === searchKey;
@@ -669,11 +678,11 @@ function filterTableData() {
       return String(cellLabel).toLowerCase().indexOf(searchKey.toLowerCase()) !== -1;
     }
     return String(cellLabel).indexOf(searchKey) !== -1;
-  })) as any;
+  }));
   // 当表格数据为树时，筛选后的数据应展示完整的子树
   if (props.useTree) {
     const { rowField } = getTreeConfigField();
-    tableDataMap = new Map(xeTableData.value.map((item: any) => [item[rowField], item]));
+    tableDataMap = new Map(xeTableData.value.map((item: RowData) => [item[rowField], item]));
     handleTreeData(tableData);
     tableData = sortFunc([...treeDataMap.values()], xeTableData.value, rowField);
   } else {
@@ -682,7 +691,7 @@ function filterTableData() {
   return tableData;
 }
 // 处理树形数据
-function handleTreeData(leafData: any[]) {
+function handleTreeData(leafData: RowData[]) {
   const { parentField, rowField } = getTreeConfigField();
   treeDataMap.clear();
   for (let index = 0; index < leafData.length; index++) {
@@ -697,7 +706,7 @@ function handleTreeData(leafData: any[]) {
   }
   addChildNodes(leafData);
 }
-function addChildNodes(leafData: any[]) {
+function addChildNodes(leafData: RowData[]) {
   const { parentField, rowField } = getTreeConfigField();
   const childrenMap = new Map(leafData.map((item) => [item[rowField], item]));
   for (const dataItem of xeTableData.value) {
@@ -708,7 +717,7 @@ function addChildNodes(leafData: any[]) {
   }
 }
 // 根据叶子节点递归遍历获取祖先节点
-function getParentNode(dataItem: any, parentField: string, rowField: string) {
+function getParentNode(dataItem: RowData, parentField: string, rowField: string) {
   const parentKey = dataItem[parentField];
   const parentItem = tableDataMap.get(parentKey);
   if (!parentItem) {
@@ -722,8 +731,8 @@ function getParentNode(dataItem: any, parentField: string, rowField: string) {
   }
 }
 // 筛选后的数据与用户输入数据的顺序保持一致
-function sortFunc(targetData: any[], sortData: any, key: string | number) {
-  const sortKeyList = sortData.map((item: any) => item[key]);
+function sortFunc(targetData: RowData[], sortData: RowData, key: string | number) {
+  const sortKeyList = sortData.map((item: RowData) => item[key]);
   return targetData.sort((a, b) => (sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1));
 }
 // 分页相关
@@ -743,7 +752,7 @@ function changeCurrentPage(pageNum: number) {
   }
   emits('current-change', pageNum);
 }
-function getShowTableData(data: any[]) {
+function getShowTableData(data: RowData[]) {
   const { isRemotePaging } = paginationConfig.value;
   if (props.isServerPaging || isRemotePaging) {
     emits('server-paging', paginationConfig.value);
@@ -763,7 +772,9 @@ function updatePageNum(length: number) {
   }
   paginationConfig.value.currentPage = currentPage;
 }
-function getRowStyle(rowInfo: any) {
+function getRowStyle(
+  rowInfo: {row: VxeTablePropTypes.Row, rowIndex: number, $rowIndex: number}
+) {
   if (!props.rowStyle) {
     const { row } = rowInfo;
     return row.style || {};
@@ -776,25 +787,25 @@ function getRowStyle(rowInfo: any) {
 // 自定义单元格渲染
 function handleCustomRender() {
   for (const col of flatColumns.value) {
-    if (col.render) {
+    if (typeof col.render === 'function') {
       col.cellRender = {
         name: genRandomStr(16),
         ...(col.cellRender || {})
       };
-      VXETable.renderer.add(col.cellRender.name, {
-        renderDefault(_renderOpts, { row, column }) {
-          return col.render({ row, column });
+      VXETable.renderer.add(col.cellRender.name as string, {
+        renderTableDefault(_renderOpts, { row, column }) {
+          return col.render?.({ row, column }) as any;
         }
       });
     }
-    if (col.renderEdit) {
+    if (typeof col.renderEdit === 'function') {
       col.editRender = {
         name: genRandomStr(16),
         ...(col.editRender || {})
       };
-      VXETable.renderer.add(col.editRender.name, {
-        renderEdit(_renderOpts, { row, column }) {
-          return col.renderEdit({ row, column });
+      VXETable.renderer.add(col.editRender.name as string, {
+        renderTableEdit(_renderOpts, { row, column }) {
+          return col.renderEdit?.({ row, column }) as any;
         }
       });
     }
@@ -847,16 +858,22 @@ function updateTransfer() {
         key: item.field
       };
     }
-    return null;
   })
-  .filter((item: ColumnConfig) => item);
+  .filter((item: { label: string; key: string } | undefined) => item !== undefined);
   selectData.value = flatColumns.value
   .filter((col: ColumnConfig) => col.visible !== false)
-  .map((item: ColumnConfig) => ({
-    label: item.title,
-    key: item.field
-  }));
-  defaultHeader.value = selectData.value.map((item: ColumnConfig) => item.key);
+  .map((item: ColumnConfig) => {
+    if (item.title && item.field) {
+      return {
+        label: item.title,
+        key: item.field
+      }
+    }
+  })
+  .filter((item: { label: string; key: string } | undefined) => item !== undefined);
+  defaultHeader.value = selectData.value
+    .map((item: ColumnConfig) => item.key)
+    .filter((key: string | number | undefined) => key !== undefined);
 }
 function hideColumn(column: ColumnConfig) {
   if (!__showTransfer.value) {
@@ -865,13 +882,21 @@ function hideColumn(column: ColumnConfig) {
   const columnItem = flatColumns.value.find(
     (item: ColumnConfig) => item.field === column.field
   );
+  if (!columnItem) {
+    return;
+  }
   columnItem.visible = false;
   selectData.value = flatColumns.value
   .filter((col: ColumnConfig) => col.visible !== false)
-  .map((item: any) => ({
-    label: item.title,
-    key: item.field
-  }));
+  .map((item: ColumnConfig) => {
+    if (item.title && item.field) {
+      return {
+        label: item.title,
+        key: item.field
+      }
+    }
+  })
+  .filter((item) => item !== undefined)
   emits('hide-column', column);
 }
 function sortTableHeader(fieldList: { label: string; key: string }[]) {
@@ -915,7 +940,7 @@ function transferHide() {
   }
 }
 // 高级筛选相关方法
-function refreshAdvancedFilter(conditionInfo: any, newTableData: any[], isEmit = true) {
+function refreshAdvancedFilter(conditionInfo: ConditionInfo, newTableData: RowData[], isEmit = true) {
   filterConditionInfo.value = conditionInfo;
   newFilterData.value = newTableData;
   if (props.useTree) {
@@ -949,8 +974,8 @@ function advancedFilterHide() {
 }
 // 行高亮
 let isHighlight = false;
-let preRowKey = null;
-function cellClick({ row, rowid }) {
+let preRowKey: string | number | null = null;
+function cellClick({ row, rowid }: {row: VxeTablePropTypes.Row, rowid: string | number}) {
   if (!props.cellClickToggleHighlight) {
     return;
   }
@@ -976,7 +1001,7 @@ function drag(sortEvent: SortableEvent) {
 }
 
 // 刷新高级筛选的表格数据
-async function advancedFilter(data?: any[] | undefined) {
+async function advancedFilter(data?: RowData[] | undefined) {
   if (!tableFilterRef.value) {
     return;
   }
@@ -996,7 +1021,7 @@ async function clearAdvancedFilter() {
   refreshAdvancedFilter(conditionInfo, tableData, false);
   return { conditionInfo, tableData };
 }
-function loadData(data: any[]) {
+function loadData(data: RowData[]) {
   if (!Array.isArray(data)) {
     return;
   }
@@ -1016,12 +1041,12 @@ function getRowById(id: string | number) {
   if (row) {
     return row;
   }
-  const targetRow = xeTableData.value.find((item: any) => item[rowConfig.value.keyField] === id);
+  const targetRow = xeTableData.value.find((item: RowData) => item[rowConfig.value.keyField] === id);
   if (targetRow) {
     return targetRow;
   }
   const tempRecords = tableInstance.value.getInsertRecords();
-  const tempRow = tempRecords.find((item: any) => item[rowConfig.value.keyField] === id);
+  const tempRow = tempRecords.find((item: VxeTablePropTypes.Row) => item[rowConfig.value.keyField] === id);
   return tempRow ?? null;
 }
 // vxe-table行数据中dom被销毁时会导致tooltip无法关闭，这里提供手动销毁tooltip方法给予外部调用
