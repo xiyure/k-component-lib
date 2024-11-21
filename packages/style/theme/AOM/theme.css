@@ -155,9 +155,9 @@ body.AOM {
   --k-theme-button-size-height--sm: var(--k-size-6);
   --k-theme-button-size-height--base: var(--k-size-8);
   --k-theme-button-size-height--lg: var(--k-size-10);
-  --k-theme-button-size-padding--sm: 0 var(--k-size-2);
-  --k-theme-button-size-padding--base: 0 var(--k-size-3);
-  --k-theme-button-size-padding--lg: 0 var(--k-size-4);
+  --k-theme-button-size-padding--sm: 0.1875rem var(--k-size-2);
+  --k-theme-button-size-padding--base: 0.1875rem var(--k-size-3);
+  --k-theme-button-size-padding--lg: 0.465625rem var(--k-size-4);
   --k-theme-button-size-gap--sm: var(--k-size-1);
   --k-theme-button-size-gap--base: var(--k-size-1);
   --k-theme-button-size-gap--lg: var(--k-size-1);
