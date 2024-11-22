@@ -52,6 +52,7 @@
 import { ref, provide, inject, computed } from 'vue';
 import { ElTreeSelect } from 'element-plus';
 import { debounce } from 'lodash-es';
+import { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type';
 import { TreeSelectProps } from './type';
 import { getExposeProxy, genRandomStr, SIZE_KEY } from '../../utils';
 import { useSize } from '../../hooks';
@@ -79,7 +80,7 @@ const query = ref({
 });
 const randomName = genRandomStr(8);
 
-const nodeIcon = computed(() => (nodeItem: any) => {
+const nodeIcon = computed(() => (nodeItem: TreeNodeData) => {
   const { node, data } = nodeItem;
   if (data.icon) {
     return data.icon;

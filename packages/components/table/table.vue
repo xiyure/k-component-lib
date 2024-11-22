@@ -35,7 +35,12 @@ import { genRandomStr } from '../../utils';
 const DESC_EVENT_NAME = 'desc-change';
 const HIDE_COLUMN = 'hide-column';
 
-const eventMap = {
+const eventMap: {
+  [eventName: string]: {
+    name: string,
+    callback: (...arg: any) => void
+  }
+} = {
   descChange: {
     name: 'desc-change',
     callback: updateDescription.bind(this)

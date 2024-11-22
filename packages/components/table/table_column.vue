@@ -14,8 +14,8 @@
           <slot name="header" v-bind="headerSlotProps">
             <!-- 列标题 -->
             <i
-              v-if="tableInstance.editConfig
-                && tableInstance.editConfig.showIcon !== false
+              v-if="tableInstance?.editConfig
+                && tableInstance?.editConfig?.showIcon !== false
                 && editRender
               "
               class="k-table-column__edit vxe-table-icon-edit"
@@ -252,8 +252,13 @@
 </template>
 
 <script setup lang="ts">
-import { inject, ref, watch, computed, ComputedRef } from 'vue';
-import { VxeColumnProps } from 'vxe-table';
+import { inject, ref, watch, computed, ComputedRef, Ref } from 'vue';
+import type {
+  VxeColumnProps,
+  VxeTableInstance,
+  VxeColumnPropTypes,
+  VxeTablePropTypes
+} from 'vxe-table';
 import {
   IconTips,
   IconMore,
@@ -275,16 +280,25 @@ import { KDialog } from '../dialog';
 import { KInput } from '../input';
 import { KButton } from '../button';
 import { KTooltip } from '../tooltip';
-import { TableColumnProps } from './type';
+import { TableColumnProps, Column } from './type';
 
 defineOptions({
   name: 'KTableColumn'
 });
 
-const tableInstance:any = inject('tableInstance');
+const tableInstance = inject<Ref<VxeTableInstance | null>>(
+  'tableInstance',
+  computed(() => null)
+);
 const showTransfer = inject<ComputedRef>('__showTransfer', computed(() => false));
 const pid = inject('tableId');
-const filterPanelConfig: any = inject('filterPanelConfig');
+const filterPanelConfig = inject<Ref<{field: string, isOpen: boolean}>>(
+  'filterPanelConfig',
+  computed(() => ({
+  field: '___default___',
+  isOpen: false
+}))
+);
 const showColumnMenuParent = inject('showColumnMenu', false);
 const props = withDefaults(defineProps<TableColumnProps>(), {
   showColumnMenu: undefined
@@ -293,7 +307,7 @@ const slots = defineSlots();
 
 const popoverRef = ref();
 const isExpandColumn = ref(false);
-const oldWidth = ref<number | string>('');
+const oldWidth = ref<number | string | undefined>('');
 const colDesc = ref('');
 const dialogVisible = ref(false);
 const textareaContent = ref('');
@@ -320,8 +334,8 @@ watch(() => filterPanelConfig.value, () => {
 }, { deep: true });
 
 const isShowColumnMenu = computed(() => props.showColumnMenu ?? showColumnMenuParent);
-const isFilterActive = computed(() => tableInstance.value?.isFilter(props.field));
-const filterConfig = computed(() => tableInstance.value.filterConfig ?? {});
+const isFilterActive = computed(() => tableInstance.value?.isFilter(props.field ?? ''));
+const filterConfig = computed(() => tableInstance.value?.filterConfig ?? {});
 const filterButtonText = computed(() => {
   const { confirmButtonText, resetButtonText } = filterConfig.value;
   return {
@@ -329,11 +343,11 @@ const filterButtonText = computed(() => {
     resetButtonText
   };  
 });
-const sortConfig = computed(() => tableInstance.value.sortConfig ?? {});
+const sortConfig = computed(() => tableInstance.value?.sortConfig ?? {});
 // 排序
 function changeSortStatus(id: string, column:any) {
   const order = column.order;
-  let op:any = null;
+  let op: 'asc' | 'desc' | null = null;
   if (id === '_asc-icon' && order !== 'asc') {
     op = 'asc';
   } else if (id === '_desc-icon' && order !== 'desc') {
@@ -341,28 +355,25 @@ function changeSortStatus(id: string, column:any) {
   }
   tableSort(column, op);
 }
-function tableSort(column:VxeColumnProps, order:string) {
-  tableInstance.value?.sort({
-    field: column.field,
-    order
-  });
+function tableSort(column:VxeColumnProps, order: VxeTablePropTypes.SortOrder) {
+  tableInstance.value?.sort(column.field ?? '', order);
   emitter.emit('sort-change', pid, { column, field: column.field, order });
 }
-function clearSort(column: string | VxeColumnProps) {
+function clearSort(column: Column) {
   tableInstance.value?.clearSort(column);
   emitter.emit('clear-sort', pid);
 }
 // 展开/收起
 function expandColumn(isExpand:boolean) {
   isExpandColumn.value = isExpand;
-  let newWidth: number | string = '';
+  let newWidth: number | string | undefined = '';
   if (isExpand) {
-    oldWidth.value = tableInstance.value.getColumnWidth(props.field);
+    oldWidth.value = tableInstance.value?.getColumnWidth(props.field ?? '');
     newWidth = '40';
   } else {
-    newWidth = oldWidth.value;
+    newWidth = oldWidth.value ?? '';
   }
-  tableInstance.value.setColumnWidth(props.field, newWidth);
+  tableInstance.value?.setColumnWidth(props.field ?? '', newWidth);
 }
 // 自定义说明
 function openDialog() {
@@ -379,12 +390,18 @@ function hideColumn(column: VxeColumnProps) {
   popoverRef.value?.hide();
 }
 // 筛选表格数据
-async function setFilter(column: string | VxeColumnProps, options: any) {
+async function setFilter(column: Column, options: VxeColumnPropTypes.FilterItem[]) {
+  if (!tableInstance.value) {
+    return;
+  }
   await tableInstance.value.setFilter(column, options);
   tableInstance.value.updateData();
 }
 // 事件处理
-async function clearFilter(column: string | VxeColumnProps) {
+async function clearFilter(column: Column) {
+  if (!tableInstance.value) {
+    return;
+  }
   await tableInstance.value.clearFilter(column);
   emitter?.emit('clear-filter', pid, { filterList: props.filters });
 }

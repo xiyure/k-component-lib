@@ -75,11 +75,11 @@ const emits = defineEmits([
 
 const _styleModule = inject('_styleModule', '');
 const t = inject<VueI18nTranslation>('$t');
-const modelValue:any = ref([]);
+const modelValue = ref<Array<any>>([]);
 const searchStr = ref('');
-const sourceData = ref<any>([]);
+const sourceData = ref<Array<any>>([]);
 let transferBox:HTMLElement | null = null;
-let filterInput:any = [];
+let filterInput: NodeListOf<HTMLInputElement> | undefined;
 let defaultSourceKeys: string[] = [];
 const id = genRandomStr(8);
 
@@ -127,7 +127,13 @@ watch(() => props.data, (newValue) => {
   defaultSourceKeys.length = 0;
 }, { immediate: true });
 watch(() => searchStr.value, (newValue) => {
+  if (!filterInput || !filterInput.length) {
+    return;
+  }
   for (let i = 0; i < filterInput.length; i++) {
+    if (filterInput[i]?.value) {
+      continue;
+    }
     filterInput[i].value = newValue;
     const event = new Event('input', { bubbles: true });
     filterInput[i].dispatchEvent(event);
@@ -190,7 +196,7 @@ function getNewModelValue(value:Array<any>) {
 }
 
 // 拖拽排序
-let sortable: any = null;
+let sortable: Sortable | null = null;
 function initSortable() {
   const dragElem = document.getElementById(id)?.querySelectorAll('.el-transfer-panel__list')?.[1] as HTMLElement;
   if (!dragElem) {

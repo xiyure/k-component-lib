@@ -77,6 +77,7 @@ export interface ColumnConfig extends VxeColumnProps {
   dataType?: string
   render?: (data: any) => VNode
   renderEdit?: (data: any) => VNode
+  [key: string]: any
 }
 
 export type WidgetItem = {

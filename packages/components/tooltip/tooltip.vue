@@ -44,8 +44,8 @@ const props = withDefaults(defineProps<TooltipProps>(), {
   iconSize: '15px'
 });
 
-const tooltipRef = ref<any>(null);
-const fillColor: any = ref(undefined);
+const tooltipRef = ref();
+const fillColor = ref<string | undefined>(undefined);
 
 const _popperStyle = computed(() => {
   const popperStyle = props.popperStyle || {};

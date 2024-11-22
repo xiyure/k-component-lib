@@ -47,29 +47,15 @@ import { ref } from 'vue';
 import { KPopover } from '../popover';
 import { KCheckbox } from '../checkbox';
 import { KButton } from '../button';
+import { FilterPopperProps } from './type';
 
-const props = defineProps({
-  filters: {
-    type: Array,
-    default: () => []
-  },
-  column: {
-    type: Object,
-    default: () => {}
-  },
-  trigger: {
-    type: String,
-    default: () => 'hover'
-  },
-  visible: {
-    type: Boolean,
-    default: undefined
-  },
-  text: {
-    type: Object,
-    default: () => {}
-  }
-});
+const props = withDefaults(defineProps<FilterPopperProps>(), {
+  filters: () => [],
+  column: () => ({}),
+  trigger: 'hover',
+  visible: undefined,
+  text: () => ({})
+})
 
 const emits = defineEmits(['set-filter', 'clear-filter', 'filter-change', 'filter-visible']);
 

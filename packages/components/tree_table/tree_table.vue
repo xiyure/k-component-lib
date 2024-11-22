@@ -756,6 +756,7 @@ function sortFunc(targetData: any[], sortData: any, key: string | number) {
 
 function clearSearch() {
   searchStr.value = '';
+  query.value = '';
 }
 // 分页相关
 function changePageSize(pageSize: number) {

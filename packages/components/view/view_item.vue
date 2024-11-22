@@ -34,10 +34,10 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from 'vue';
+import { inject, computed } from 'vue';
 import { ElDropdown, ElDropdownMenu, ElDropdownItem } from 'element-plus';
 import { IconMore } from 'ksw-vue-icon';
-import { ViewData } from './type';
+import { ViewData, ViewProps } from './type';
 
 defineOptions({
   name: 'KViewItem'
@@ -50,9 +50,9 @@ const props = withDefaults(defineProps<ViewData>(), {
 });
 const emits = defineEmits(['change', 'remove', '_drag-start', '_drag-drop']);
 
-const activeView: any = inject('activeView');
+const activeView = inject<ViewData>('activeView', computed(() => {}));
 const _styleModule = inject('_styleModule', '');
-const parentProps = inject<any>('parentProps', {});
+const parentProps = inject<ViewProps>('parentProps', {});
 
 function handleCommand(command: string) {
   switch (command) {

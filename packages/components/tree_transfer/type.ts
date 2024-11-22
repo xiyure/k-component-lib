@@ -1,8 +1,9 @@
 import { Component } from 'vue';
+import { VxeTablePropTypes } from 'vxe-table';
 
 export interface TreeTransferProps {
-  data: any[]
-  defaultData?: any[]
+  data: TreeTransferData[]
+  defaultData?: string[]
   titles?: [string, string]
   showFilter?: boolean
   useTree?: boolean
@@ -12,9 +13,13 @@ export interface TreeTransferProps {
   collapseIconColor?: string
   icon?: Component | string
   iconColor?: string
-  treeConfig?: any
+  treeConfig?: VxeTablePropTypes.TreeConfig
   label?: string
-  scrollY?: any
+  scrollY?: VxeTablePropTypes.ScrollY
   drag?: boolean
   checkMethod?: (data: any) => boolean
+}
+
+export interface TreeTransferData {
+  [key: string]: any
 }

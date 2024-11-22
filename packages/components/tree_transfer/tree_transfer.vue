@@ -99,7 +99,8 @@
 <script setup lang="tsx">
 import { ref, computed, watch, nextTick, inject } from 'vue';
 import { IconSearch, IconDrag, IconClose } from 'ksw-vue-icon';
-import { TreeTransferProps } from './type';
+import { VxeTablePropTypes } from 'vxe-table';
+import { TreeTransferProps, TreeTransferData } from './type';
 import { KTable, KTableColumn } from '../table';
 import { KInput } from '../input';
 import { sortBySmallerList } from '../../utils';
@@ -107,6 +108,9 @@ import { sortBySmallerList } from '../../utils';
 defineOptions({
   name: 'KTreeTransfer'
 });
+
+type Row = VxeTablePropTypes.Row;
+
 const props = withDefaults(defineProps<TreeTransferProps>(), {
   showFilter: true,
   useTree: false,
@@ -126,17 +130,17 @@ const defaultTreeConfig = {
   indent: 0,
   showIcon: false
 };
-const fullData = ref<any>(props.data ?? []);
-const leftData = ref<any>(fullData.value);
+const fullData = ref<TreeTransferData[]>(props.data ?? []);
+const leftData = ref<TreeTransferData[]>(fullData.value);
+const rightData = ref<TreeTransferData[]>([]);
+const showRightData = ref<TreeTransferData[]>([]);
 const query = ref('');
 const treeLeftRef = ref();
 const treeRightRef = ref();
-const rightData = ref<any>([]);
-const showRightData = ref<any>([]);
 const selectData = ref<Set<number | string>>(new Set());
-const treeDataMap:Map<string | number, any> = new Map();
+const treeDataMap:Map<string | number, TreeTransferData> = new Map();
 
-const columnIcon = computed(() => function (row) {
+const columnIcon = computed(() => function (row: Row) {
   const expand = treeLeftRef.value?.tableInstance.isTreeExpandByRow(row);
   const isLeafNode = !(row.children && row.children.length);
   if (isLeafNode && row.nodeType === 1) {
@@ -159,7 +163,7 @@ const treeConfig = computed(() => {
   return undefined;
 });
 const scrollY = computed(() => ({ enabled: true, ...props.scrollY || {} }));
-const rowLevel = computed(() => (row: any) => getTreeNodeLevel(row));
+const rowLevel = computed(() => (row: Row) => getTreeNodeLevel(row));
 
 watch(() => props.defaultData, (newValue) => {
   if (!Array.isArray(newValue)) {
@@ -169,7 +173,7 @@ watch(() => props.defaultData, (newValue) => {
     selectData.value.add(id);
   });
   fullData.value = sortBySmallerList(props.data, props.defaultData ?? []);
-  rightData.value = fullData.value.filter((item: any) => {
+  rightData.value = fullData.value.filter((item: TreeTransferData) => {
     if (newValue.includes(item.id) && checkMethod({ row: item })) {
       return true;
     }
@@ -185,8 +189,8 @@ function checkboxChange() {
   emits('change', getSelectedData());
 }
 function updateSelectData() {
-  const newData = fullData.value.filter((item: any) => selectData.value.has(item.id));
-  rightData.value = newData.filter((item: any) => {
+  const newData = fullData.value.filter((item: TreeTransferData) => selectData.value.has(item.id));
+  rightData.value = newData.filter((item: TreeTransferData) => {
     if (props.defaultData?.includes(item.id) && !checkMethod({ row: item })) {
       return false;
     }
@@ -203,7 +207,7 @@ function handleSelectData() {
     selectData.value.add(dataItem.id);
   }
 }
-function removeRightData(row) {
+function removeRightData(row: Row) {
   const isSelect = selectData.value.has(row.id);
   if (isSelect) {
     selectData.value.delete(row.id);
@@ -235,7 +239,7 @@ async function filterData() {
 }
 async function filterLeftData() {
   const searchKey = query.value.trim();
-  let tableData = props.data.filter((dataItem:any) => dataItem[props.label].toString().indexOf(searchKey) !== -1);
+  let tableData = props.data.filter((dataItem:TreeTransferData) => dataItem[props.label].toString().indexOf(searchKey) !== -1);
   // 当表格数据为树时，筛选后的数据应展示完整的子树
   if (props.useTree) {
     handleTreeData(tableData);
@@ -258,7 +262,7 @@ async function filterLeftData() {
   await treeLeftRef.value.tableInstance.reloadData(leftData.value);
 }
 // 处理树形数据
-function handleTreeData(leafData: any[]) {
+function handleTreeData(leafData: TreeTransferData[]) {
   const { parentField, rowField } = getTreeConfigField();
   treeDataMap.clear();
   for (let index = 0; index < leafData.length; index++) {
@@ -273,7 +277,7 @@ function handleTreeData(leafData: any[]) {
   }
   addChildNodes(leafData);
 }
-function addChildNodes(leafData: any[]) {
+function addChildNodes(leafData: TreeTransferData[]) {
   const { parentField, rowField } = getTreeConfigField();
   const childrenMap = new Map(leafData.map(item => [item[rowField], item]));
   for (const dataItem of props.data) {
@@ -284,7 +288,7 @@ function addChildNodes(leafData: any[]) {
   }
 }
 // 根据叶子节点递归遍历获取祖先节点
-function getParentNode(dataItem: any, parentField: string, rowField: string) {
+function getParentNode(dataItem: TreeTransferData, parentField: string, rowField: string) {
   const parentKey = dataItem[parentField];
   const parentItem = props.data?.find(item => item[rowField] === parentKey);
   if (!parentItem) {
@@ -297,7 +301,7 @@ function getParentNode(dataItem: any, parentField: string, rowField: string) {
     getParentNode(parentItem, parentField, rowField);
   }
 }
-function getTreeNodeLevel(row) {
+function getTreeNodeLevel(row: Row): number {
   if (!props.useTree) {
     return 0;
   }
@@ -312,8 +316,8 @@ function getTreeNodeLevel(row) {
   return 0;
 }
 // 筛选后的数据与用户输入数据的顺序保持一致
-function sortTreeData(targetData:any[], sortData: any, key: string | number) {
-  const sortKeyList = sortData.map((item:any) => item[key]);
+function sortTreeData(targetData:TreeTransferData[], sortData: TreeTransferData, key: string | number) {
+  const sortKeyList = sortData.map((item:TreeTransferData) => item[key]);
   return targetData.sort((a, b) => (sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1));
 }
 function filterRightData() {
@@ -329,26 +333,26 @@ function getTreeConfigField() {
   const rowField = treeConfig.value?.rowField || 'id';
   return { parentField, rowField };
 }
-function toggleTreeExpand(row, e) {
+function toggleTreeExpand(row: Row, e: Event) {
   e.stopPropagation();
   treeLeftRef.value.tableInstance.toggleTreeExpand(row);
 }
 // 拖拽排序
-function dragSort(newData: any[]) {
+function dragSort(newData: TreeTransferData[]) {
   const ids = newData.map(item => item.id);
   fullData.value = sortBySmallerList(fullData.value, ids);
   const selectedData = getSelectedData();
   emits('change', selectedData);
   emits('sort', selectedData);
 }
-function sortFunc(targetData:any[], sortData: any) {
-  const sortKeyList = sortData.map((item:any) => item.id);
+function sortFunc(targetData:TreeTransferData[], sortData: TreeTransferData) {
+  const sortKeyList = sortData.map((item:TreeTransferData) => item.id);
   return targetData.sort((a, b) => (sortKeyList.indexOf(a.id) < sortKeyList.indexOf(b.id) ? -1 : 1));
 }
 function getSelectedData() {
-  return fullData.value.filter((item: any) => selectData.value.has(item.id));
+  return fullData.value.filter((item: TreeTransferData) => selectData.value.has(item.id));
 }
-function getIcon(icon: any, row: any) {
+function getIcon(icon: any, row: Row) {
   if (typeof icon === 'function') {
     return icon?.(row);
   }

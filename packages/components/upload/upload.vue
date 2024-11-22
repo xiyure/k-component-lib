@@ -95,7 +95,7 @@ defineOptions({
 const props = withDefaults(defineProps<UploadProps>(), {});
 
 const _styleModule = inject('_styleModule', '');
-const KUploadRef = ref<any>(null);
+const KUploadRef = ref();
 
 const statusIcon = computed(() => (status: string) => {
   if (status === 'success' && props.successIcon) {
