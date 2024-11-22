@@ -29,7 +29,7 @@ const formatSize = useSize<SelectProps>(props);
 
 const _styleModule = inject('_styleModule', '');
 
-const inputRef = ref<any>(null);
+const inputRef = ref<any>();
 
 provide(SIZE_KEY, formatSize);
 

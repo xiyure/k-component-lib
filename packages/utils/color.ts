@@ -1,9 +1,17 @@
 // culori
-import { parse, converter } from 'culori';
+import { parse, converter, Oklch } from 'culori';
 
 export function GetColorLevelNew(color: string) {
   // 预设状态颜色
-  const presetColors = {
+  const presetColors: {
+    primary: string;
+    success: string;
+    warning: string;
+    danger: string;
+    error: string;
+    info: string;
+    [key: string]: string
+  } = {
     primary: '#3b82f6',
     success: '#22c55e',
     warning: '#f97316',
@@ -36,16 +44,17 @@ export function GetColorLevelNew(color: string) {
     '--k-oklch-950'
   ];
   // 校验颜色是否是预设颜色
-  if (Object.keys(presetColors).includes(color)) {
-    color = presetColors[color];
-  }
+  let colorValue = presetColors[color] ?? '';
   // 1.转换成 oklch, 并获取 hue
   const toOKLCH = converter('oklch');
   const toRGB = converter('rgb');
-  const colorLevel = {}; // 最终返回的颜色等级
+  const colorLevel: { [key: string]: string } = {}; // 最终返回的颜色等级
 
-  if (parse(color)) {
-    const { l, c, h } = toOKLCH(color);
+  if (parse(colorValue)) {
+    const { l, c, h } = toOKLCH(colorValue) ?? {};
+    if (!l ||!c ||!h) {
+      return;
+    }
 
     // 提取颜色hub值, 计算色阶
     for (let i = 0; i < 11; i++) {
@@ -58,9 +67,9 @@ export function GetColorLevelNew(color: string) {
       const chromaMax = c;
       const chromaClamp = clampRgbValue(chroma, chromaMin, chromaMax);
 
-      const newOklchColor = { l: lightClamp, c: chromaClamp, h, mode: 'oklch' };
+      const newOklchColor: Oklch = { l: lightClamp, c: chromaClamp, h, mode: 'oklch' };
 
-      const newRGBColor = toRGB(newOklchColor);
+      const newRGBColor: { r: number; g: number; b: number } = toRGB(newOklchColor);
 
       const newRGBColor255 = {
         mode: 'rgb',
@@ -81,6 +90,6 @@ export function GetColorLevelNew(color: string) {
   };
 }
 
-function clampRgbValue(value, min = 0, max = 255) {
+function clampRgbValue(value: number, min = 0, max = 255) {
   return Math.max(min, Math.min(max, value));
 }

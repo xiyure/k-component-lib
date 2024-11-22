@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, inject, provide, computed } from 'vue';
-import { ElForm } from 'element-plus';
+import { ElForm, FormItemInstance } from 'element-plus';
 import { FormProps } from './type';
 import { getExposeProxy, SIZE_KEY } from '../../utils';
 import { useSize } from '../../hooks';
@@ -28,7 +28,7 @@ const _styleModule = inject('_styleModule', '');
 
 const formatSize = useSize<FormProps>(props);
 
-const KFormRef = ref<any>(null);
+const KFormRef = ref<FormItemInstance>();
 let inputDoms: HTMLInputElement[];
 
 onMounted(() => {
@@ -45,8 +45,14 @@ onUnmounted(() => {
   KFormRef.value?.$el.removeEventListener('keydown', onKeyDown);
 });
 
-function onKeyDown(event: any) {
+function onKeyDown(event: KeyboardEvent) {
+  if (!event.target || !(event.target instanceof HTMLInputElement)) {
+    return;
+  }
   const index = event.target.getAttribute('data-index');
+  if (!index) {
+    return;
+  }
   let nextIndex = parseInt(index);
   if (Number.isNaN(nextIndex) || nextIndex < 0 || nextIndex >= inputDoms.length) {
     return;

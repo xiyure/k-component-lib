@@ -30,7 +30,7 @@ const _styleModule = inject('_styleModule', '');
 
 provide(SIZE_KEY, formatSize);
 
-const cascaderRef = ref<any>(null);
+const cascaderRef = ref(null);
 
 const instance: any = {};
 defineExpose(getExposeProxy(instance, cascaderRef));

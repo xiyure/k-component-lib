@@ -55,12 +55,14 @@
 import { ref, computed, inject } from 'vue';
 import { ElCalendar } from 'element-plus';
 import type { CalendarDateType, CalendarInstance } from 'element-plus';
+// @ts-ignore chinese-lunar-calendar has not declare dependencies
 import { getLunar } from 'chinese-lunar-calendar';
 import { IconArrowLeft, IconArrowRight } from 'ksw-vue-icon';
 import { CalendarProps, Schedule } from './type';
 import { lunarMonth, lunarDay } from './const';
 import { KCheckbox } from '../checkbox';
 import { getExposeProxy } from '../../utils';
+import type { IntRange } from '../../utils/typescript/common'
 
 defineOptions({
   name: 'KCalendar'
@@ -84,8 +86,8 @@ const lunarDate = computed(() => function (date:Date) {
   const lunarInfo = getLunar(year, month, day);
   return {
     ...lunarInfo,
-    lunarMonth_zh: lunarMonth[lunarInfo.lunarMonth],
-    lunarDate_zh: lunarDay[lunarInfo.lunarDate]
+    lunarMonth_zh: lunarMonth[lunarInfo.lunarMonth as IntRange<1, 12>],
+    lunarDate_zh: lunarDay[lunarInfo.lunarDate as IntRange<1, 30>]
   };
 });
 

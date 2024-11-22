@@ -29,9 +29,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, inject, nextTick } from 'vue';
+import { ref, watch, inject, nextTick, Ref, computed } from 'vue';
 import { ElStep } from 'element-plus';
-import { StepProps } from './type';
+import { StepProps, StepsProps } from './type';
 import { KPopover } from '../popover';
 import { genRandomStr, getExposeProxy } from '../../utils';
 
@@ -44,12 +44,18 @@ const props = withDefaults(defineProps<StepProps>(), {
   description: '',
   status: ''
 });
-const stepsProps: any = inject('stepProps');
-const stepsInfo: any = inject('stepsInfo');
+const stepsProps: StepsProps = inject('stepProps', {});
+const stepsInfo: Ref<any[]> = inject('stepsInfo', computed(() => []));
 const _styleModule = inject('_styleModule', '');
 const id = genRandomStr(8);
 const key = stepsInfo.value.find((item) => item.name === props.title)?.key ?? '';
-const DEFAULT_STATUS_COLOR = {
+const DEFAULT_STATUS_COLOR: {
+  primary: string;
+  success: string;
+  error: string;
+  wait: string;
+  [key: string]: string;
+} = {
   primary: '#2882FF',
   success: '#22C55E',
   error: '#EF4444',
@@ -59,7 +65,7 @@ const DEFAULT_STATUS_COLOR = {
 watch(
   () => stepsProps.active,
   (newValue) => {
-    if (props.status || props.color) {
+    if (props.status || props.color || !newValue) {
       return;
     }
     const typeKeys = Object.keys(DEFAULT_STATUS_COLOR);
@@ -112,7 +118,7 @@ function setStepColor(color: string) {
   }
 }
 
-function getProcessStatus(type: string) {
+function getProcessStatus(type: string | undefined) {
   switch (type) {
     case 'primary':
       return 'finish';

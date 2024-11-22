@@ -33,7 +33,7 @@ const formatSize = useSize<DatePicker>(props);
 
 const _styleModule = inject('_styleModule', '');
 const t = inject<VueI18nTranslation>('$t');
-const datePickerRef = ref<any>(null);
+const datePickerRef = ref(null);
 const defaultDateRange = [
   {
     text: t?.('within7days'),

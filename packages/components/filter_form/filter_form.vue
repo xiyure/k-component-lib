@@ -118,7 +118,7 @@ import { KCheckbox, KCheckboxGroup } from '../checkbox';
 import { KDatePicker } from '../date_picker';
 import { KButton } from '../button';
 import { KForm, KFormItem } from '../form';
-import { FilterFormProps, filterFormItem } from './type';
+import { FilterFormProps, FilterFormItem } from './type';
 import { getExposeProxy } from '../../utils';
 import { useSize } from '../../hooks';
 
@@ -139,8 +139,8 @@ const formatSize = useSize<FilterFormProps>(props);
 
 const emits = defineEmits(['search', 'reset', 'change']);
 
-const formData = ref({});
-let preItems = {};
+const formData = ref<{ [prop: string]: any }>({});
+let preItems: { [prop: string]: any } = {};
 const filterBtn = ref();
 const KFormRef = ref();
 const markers = ref();
@@ -179,7 +179,7 @@ const compSize = computed(() => (attrs: any = {}) => {
   return formatSize.value.ownSize;
 });
 
-const compVisible = computed(() => (item: filterFormItem) => {
+const compVisible = computed(() => (item: FilterFormItem) => {
   let visible = item.visible ?? true;
   if (typeof visible === 'function') {
     visible = visible(formData.value);
@@ -200,7 +200,7 @@ watch(
 watch(
   () => props.items,
   () => {
-    props.items?.forEach((item: any) => {
+    props.items?.forEach((item: FilterFormItem) => {
       const { prop, value } = item;
       if (value !== preItems[prop]) {
         formData.value[prop] = value;
@@ -212,7 +212,7 @@ watch(
 );
 watch(
   () => formData.value,
-  (newValue: any) => {
+  (newValue: { [prop: string]: any }) => {
     emits('change', newValue);
 
     setTimeout(() => {
@@ -262,7 +262,7 @@ function search() {
 }
 
 function reset() {
-  props.items.forEach((item: any) => {
+  props.items.forEach((item: FilterFormItem) => {
     formData.value[item.prop] = item.value;
   });
   KFormRef.value.resetFields();

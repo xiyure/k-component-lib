@@ -1,8 +1,11 @@
-import { SlotsType, defineComponent } from 'vue';
+import { defineComponent } from 'vue';
 import { KTableColumn, KColumnGroup } from '../table';
 import TableColumnContent from './table_column_content.vue';
 import { ColumnConfig } from './type';
 
+type SlotsType = {
+  [key: string]: any;
+}
 const SLOT_NAMES: string[] = ['header', 'edit'];
 export default defineComponent({
   name: 'ColumnGroup',
@@ -57,7 +60,7 @@ export default defineComponent({
           if (slots[field]) {
             return slots[field]?.(data);
           } else if (col.showIcon) {
-            const fieldLabelSlot = {};
+            const fieldLabelSlot: SlotsType = {};
             const fieldLabelSlotName = `${field}-label`;
             if (slots[fieldLabelSlotName]) {
               fieldLabelSlot[fieldLabelSlotName] = (data: any) => slots[fieldLabelSlotName]?.(data);
@@ -78,7 +81,7 @@ export default defineComponent({
       if (!fieldName) {
         return {};
       }
-      const childrenSlots: any = {};
+      const childrenSlots: SlotsType = {};
       for (const name of SLOT_NAMES) {
         const slotName = `${fieldName}-${name}`;
         if (slots[slotName]) {

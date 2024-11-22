@@ -37,7 +37,7 @@ import { ElTabs } from 'element-plus';
 import { IconMore } from 'ksw-vue-icon';
 import TabDropdownMenu from './tab_dropdown_menu';
 import { getExposeProxy } from '../../utils';
-import { TabsProps } from './type';
+import { TabsProps, TabData } from './type';
 
 defineOptions({
   name: 'KTabs',
@@ -54,10 +54,10 @@ const props = withDefaults(defineProps<TabsProps>(), {
 const _styleModule = inject('_styleModule', '');
 const activeName = ref<string | undefined>(undefined);
 let tabsElem: HTMLElement | null = null;
-let translateElem: HTMLElement | null | undefined = null;
-let tabPaneDoms: NodeList | null | undefined = null;
+let translateElem: HTMLElement | undefined;
+let tabPaneDoms: NodeListOf<HTMLElement> | [] = [];
 let addTabElem: HTMLElement | null | undefined = null;
-const KTabsRef = ref<any>();
+const KTabsRef = ref();
 
 const hideTabIndex = ref<number[]>([]);
 let preTranslate = 0;
@@ -72,9 +72,9 @@ onUnmounted(() => {
 
 nextTick(() => {
   tabsElem = KTabsRef?.value?.$el;
-  translateElem = tabsElem?.querySelector('.el-tabs__nav');
+  translateElem = tabsElem?.querySelector('.el-tabs__nav') ?? undefined;
   addTabElem = tabsElem?.querySelector('.el-tabs__new-tab');
-  tabPaneDoms = tabsElem?.querySelectorAll('.el-tabs__item');
+  tabPaneDoms = tabsElem?.querySelectorAll('.el-tabs__item') ?? [];
   getHideTabs();
 });
 
@@ -93,7 +93,7 @@ watch(
   { immediate: true },
 );
 
-function isElementInContainerView(el: any, translate: number = 0) {
+function isElementInContainerView(el: HTMLElement, translate: number = 0) {
   if (!tabsElem) {
     return;
   }
@@ -112,7 +112,7 @@ function isElementInContainerView(el: any, translate: number = 0) {
     elRect.bottom + diff <= containerRect.bottom - (addTabHeight ?? 0)
   );
 }
-function jumpToTab(item: any) {
+function jumpToTab(item: TabData) {
   const name = item.name ?? '';
   activeName.value = name;
   getHideTabs();
@@ -127,8 +127,8 @@ function getHideTabs() {
     }
     const [translate] = matches.map((m) => parseFloat(m.slice(1, -1)));
 
-    const res: any[] = [];
-    tabPaneDoms?.forEach((item: any, index: number) => {
+    const res: number[] = [];
+    tabPaneDoms?.forEach((item: HTMLElement, index: number) => {
       if (!isElementInContainerView(item, translate)) {
         res.push(index);
       }

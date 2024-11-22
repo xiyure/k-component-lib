@@ -20,7 +20,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, nextTick } from 'vue';
-import { SliderButtonProps } from './type';
+import { SliderButtonProps, SliderButtonPaneProps } from './type';
 
 defineOptions({
   name: 'KSliderButton'
@@ -52,7 +52,7 @@ function getActiveItemPosition() {
   sliderButton?.value?.style.setProperty('--item-width', `${width}px`);
 }
 
-function handleClick(item: any) {
+function handleClick(item: SliderButtonPaneProps) {
   if (active.value !== item.name) {
     active.value = item.name;
     nextTick(() => {

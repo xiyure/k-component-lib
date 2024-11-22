@@ -33,7 +33,7 @@
   </el-input>
 </template>
 <script setup lang="ts">
-import { ref, computed, inject, provide } from 'vue';
+import { ref, computed, inject, provide, SlotsType } from 'vue';
 import { ElInput } from 'element-plus';
 import { InputProps } from './type';
 import { getExposeProxy, SIZE_KEY } from '../../utils';
@@ -62,7 +62,7 @@ const prependSlotType = prependSlot?.[0]?.type;
 const appendSlot = slots.append?.();
 const appendSlotType = appendSlot?.[0]?.type;
 
-const slotClass = computed(() => (slot) => {
+const slotClass = computed(() => (slot: SlotsType) => {
   switch (typeof slot) {
     case 'string':
       return 'k-input-slot--htmlTag';
@@ -77,7 +77,7 @@ const slotClass = computed(() => (slot) => {
 
 provide(SIZE_KEY, formatSize);
 
-const inputRef = ref<any>(null);
+const inputRef = ref();
 
 const instance: any = {};
 defineExpose(getExposeProxy(instance, inputRef));

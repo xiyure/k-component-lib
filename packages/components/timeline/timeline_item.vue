@@ -60,14 +60,19 @@ watch(() => props.color, (newValue) => {
 
 const showRight = computed(() => props.placement === 'right');
 
-function getTimelineType(type: string) {
+type TagTypeParams = 'primary' | 'success' | 'warning' | 'danger' | 'info' | undefined;
+function getTimelineType(type: string): TagTypeParams {
+  const innerTypes =  ['primary', 'success', 'warning'];
   if (type === 'wait') {
     return 'info';
   }
   if (type === 'error') {
     return 'danger';
   }
-  return type;
+  if (!innerTypes.includes(type)) {
+    return undefined;
+  }
+  return type as TagTypeParams;
 }
 
 const KTimelineItemRef = ref(null);

@@ -82,12 +82,12 @@ watch(
       return;
     }
     color.value = newVal; // 更新 ref
-    const getColorS = GetColorLevelNew(newVal).colorLevel;
+    const getColorS = GetColorLevelNew(newVal)?.colorLevel;
     if (newVal) {
       nextTick(() => {
         if (buttonRef?.value?.$el?.style) {
           const classList = buttonRef.value.$el?.classList;
-          const rbgValue = getColorS['--k-oklch-500'].match(/\(([^)]+)\)/)[1];
+          const rbgValue = getColorS?.['--k-oklch-500']?.match(/\(([^)]+)\)/)?.[1];
 
           for (const item of btnTypes) {
             const btnType = `el-button--${item.type}`;
@@ -95,7 +95,7 @@ watch(
               item.vars.forEach((item) => {
                 buttonRef.value.$el?.style.setProperty(
                   `--k-button-${item.name}`,
-                  getColorS[`--k-oklch-${item.value}`]
+                  getColorS?.[`--k-oklch-${item.value}`]
                 );
               });
             }
@@ -123,7 +123,7 @@ const getSizeClass = computed(() => {
 });
 
 const getBtnBase = computed(() => {
-  const buttonTypes = ['main', 'secondary', 'text', 'icon'];
+  const buttonTypes: Array<keyof ButtonProps>  = ['main', 'secondary', 'text', 'icon'];
   const elTypes = ['primary', 'success', 'info', 'warning', 'danger'];
   if (elTypes.includes(props.type)) {
     return '';

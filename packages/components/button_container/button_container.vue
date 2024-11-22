@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, watch, inject, nextTick } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch, inject, nextTick, VNode, VNodeChild, VNodeTypes } from 'vue';
 import { ButtonContainerProps } from './type';
 import Dropdown from './dropdown_menu';
 import { flattenChildren, isValidElement, camelize, genRandomStr } from '../../utils';
@@ -60,7 +60,7 @@ const slots = defineSlots();
 const container = ref();
 const box = ref();
 const buttons = parseBtnList(flattenChildren(slots.default?.()));
-const hideTabs = ref<HTMLElement[]>([]);
+const hideTabs = ref<{label: string, disabled: boolean}[]>([]);
 let buttonsElem: HTMLElement[];
 const key = `_${genRandomStr(8)}`;
 
@@ -85,7 +85,7 @@ watch(() => formatSize.value, () => {
   });
 }, { deep: true });
 
-function parseBtnList(children: any[]): any[] {
+function parseBtnList(children: any[]): ({label: string, disabled: boolean}[]) {
   return children
   .map(node => {
     if (isValidElement(node)) {
@@ -102,7 +102,7 @@ function parseBtnList(children: any[]): any[] {
     }
     return null;
   })
-  .filter(btn => btn);
+  .filter(btn => btn !== null);
 }
 
 function isElementInContainerView(el: HTMLElement) {
@@ -114,7 +114,7 @@ function isElementInContainerView(el: HTMLElement) {
   return elRect.left >= containerRect.left && elRect.right <= containerRect.right;
 }
 function resize() {
-  const res: HTMLElement[] = [];
+  const res: {label: string, disabled: boolean}[] = [];
   if (!buttons) {
     return [];
   }

@@ -27,7 +27,7 @@ const props = withDefaults(defineProps<FormItemProps>(), {});
 const formatSize = useSize<FormItemProps>(props);
 
 const _styleModule = inject('_styleModule', '');
-const KFormItemRef = ref<any>(null);
+const KFormItemRef = ref(null);
 
 const instance: any = {};
 defineExpose(getExposeProxy(instance, KFormItemRef));

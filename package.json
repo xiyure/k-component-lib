@@ -33,6 +33,7 @@
     "vxe-table": "^4.7.96"
   },
   "devDependencies": {
+    "@types/culori": "^2.1.1",
     "@types/node": "^22.5.5",
     "@types/sortablejs": "^1.15.8",
     "@typescript-eslint/eslint-plugin": "^7.18.0",

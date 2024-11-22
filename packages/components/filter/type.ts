@@ -21,8 +21,8 @@ export type FilterData = {
   showValue: FilterValue
   key: string | null
   dateRange?: string
-  dateType?: string
-  handler: ((a: FilterValue, b: FilterValue, ignoreCase?: boolean) => boolean) | null
+  dateType?: 'year' | 'month' | 'week' | 'date' | 'datetime' | 'datetimerange' | 'daterange' | undefined
+  handler: ((a: FilterValue, b?: FilterValue, ignoreCase?: boolean) => boolean) | null
   _allowSelectLogic?: boolean
 }
 
@@ -43,7 +43,7 @@ export interface Condition {
   value: FilterValue
   showValue: FilterValue
   key: string | null
-  handler: ((a: FilterValue, b: FilterValue, ignoreCase?: boolean) => boolean) | null
+  handler: ((a: FilterValue, b?: FilterValue, ignoreCase?: boolean) => boolean) | null
 }
 
 export interface ConditionInfo {

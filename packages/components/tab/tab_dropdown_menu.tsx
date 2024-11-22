@@ -1,6 +1,7 @@
 import { defineComponent } from 'vue';
 import { KDropdown, KDropdownItem } from '../dropdown';
 import { flattenChildren, isValidElement, camelize } from '../../utils';
+import { TabData } from './type';
 
 export default defineComponent({
   name: 'TabLabel',
@@ -30,7 +31,7 @@ export default defineComponent({
             v-slots={slots}
           >
           {
-            tabs.map((tab: any) => (
+            tabs.map((tab: TabData) => (
               <KDropdownItem
                 key={tab.name}
                 command={tab}
@@ -45,7 +46,7 @@ export default defineComponent({
         </>
       )
     }
-    function jumpToTab(command: any) {
+    function jumpToTab(command: TabData) {
       emit('command', command)
     }
     // 解析tab-pane

@@ -1,5 +1,5 @@
 <template>
-  <el-option ref="KOptionRef" :class="['k-option', _styleModule]" v-bind="$attrs">
+  <el-option ref="KOptionRef" value="":class="['k-option', _styleModule]" v-bind="$attrs">
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
       <slot :name="name" v-bind="data"></slot>
     </template>

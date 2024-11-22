@@ -1,6 +1,6 @@
 import { VNode, Component } from 'vue';
 
-export interface filterFormItem {
+export interface FilterFormItem {
   label?: string;
   prop: string;
   value: any;
@@ -13,7 +13,7 @@ export interface filterFormItem {
 }
 
 export interface FilterFormProps {
-  items?: filterFormItem[];
+  items?: FilterFormItem[];
   size?: 'base' | 'sm' | undefined;
   collapse?: boolean;
   reserve?: boolean;

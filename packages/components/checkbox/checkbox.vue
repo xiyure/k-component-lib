@@ -57,18 +57,18 @@ watch(
       return;
     }
     color.value = newVal; // 更新 ref
-    const getColorS = GetColorLevelNew(newVal).colorLevel;
+    const getColorS = GetColorLevelNew?.(newVal)?.colorLevel;
     // 等待 dom 更新
     nextTick(() => {
       if (el.value?.style) {
         parent.value = el.value?.parentNode?.parentNode;
-        const rbgValue = getColorS['--k-oklch-500'].match(/\(([^)]+)\)/)[1]; // 获取 rbg 值, 用于设置 focus 样式
+        const rbgValue = getColorS?.['--k-oklch-500'].match(/\(([^)]+)\)/)?.[1]; // 获取 rbg 值, 用于设置 focus 样式
         // border
         parent.value?.style.setProperty('--checkbox-color--focus', `rgba(${rbgValue}, 0.2)`);
         colors.forEach((item) => {
           parent.value?.style.setProperty(
           `--checkbox${item.name}`,
-          getColorS[`--k-oklch-${item.value}`]
+          getColorS?.[`--k-oklch-${item.value}`]
           );
         });
       }
@@ -77,11 +77,14 @@ watch(
   { immediate: true }
 );
 
-function handleClickLabel(e) {
+function handleClickLabel(e: Event) {
   if (!props.strict) {
     return;
   }
-  const isCheckbox = e.target.classList.contains('el-checkbox__inner');
+  if (!e.target || !(e.target instanceof Element)) {
+    return;
+  }
+  const isCheckbox = e.target?.classList.contains('el-checkbox__inner');
   if (!isCheckbox) {
     e.preventDefault();
   }

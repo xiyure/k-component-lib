@@ -265,21 +265,11 @@
         :total="dataLength"
         @current-change="changeCurrentPage"
         @size-change="changePageSize"
-        @change="
-          (currentPage: number, pageSize: number) => {
-            emits('change', currentPage, pageSize);
-          }
-        "
-        @prev-click="
-          (value: number) => {
-            emits('prev-click', value);
-          }
-        "
-        @next-click="
-          (value: number) => {
-            emits('next-click', value);
-          }
-        "
+        @change="(currentPage: number, pageSize: number) => {
+          emits('page-change', currentPage, pageSize)
+        }"
+        @prev-click="(value: number) => { emits('prev-click', value)}"
+        @next-click="(value: number) => { emits('next-click', value)}"
       />
     </div>
   </div>
@@ -287,7 +277,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, nextTick, inject, provide } from 'vue';
-import VXETable, { VxeTable, VxeTablePropTypes } from 'vxe-table';
+import VXETable, { VxeTablePropTypes } from 'vxe-table';
 import { VueI18nTranslation } from 'vue-i18n';
 import {
   IconSearch,
@@ -412,9 +402,9 @@ const emits = defineEmits([
   'sort-change',
   'advanced-filter-confirm',
   'advanced-filter-clear',
-  'current-change',
-  'size-change',
-  'change',
+  'page-current-change',
+  'page-size-change',
+  'page-change',
   'prev-click',
   'next-click',
 ]);
@@ -763,6 +753,10 @@ function sortFunc(targetData: any[], sortData: any, key: string | number) {
     sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1,
   );
 }
+
+function clearSearch() {
+  searchStr.value = '';
+}
 // 分页相关
 function changePageSize(pageSize: number) {
   paginationConfig.value.pageSize = pageSize;
@@ -770,7 +764,7 @@ function changePageSize(pageSize: number) {
   if (props.isServerPaging || isRemotePaging) {
     emits('server-paging', paginationConfig.value);
   }
-  emits('size-change', pageSize);
+  emits('page-size-change', pageSize);
 }
 function changeCurrentPage(pageNum: number) {
   paginationConfig.value.currentPage = pageNum;
@@ -778,7 +772,7 @@ function changeCurrentPage(pageNum: number) {
   if (props.isServerPaging || isRemotePaging) {
     emits('server-paging', paginationConfig.value);
   }
-  emits('current-change', pageNum);
+  emits('page-current-change', pageNum);
 }
 function getShowTableData(data: RowData[]) {
   const { isRemotePaging } = paginationConfig.value;
@@ -818,9 +812,9 @@ function handleCustomRender() {
         name: genRandomStr(16),
         ...(col.cellRender || {}),
       };
-      VXETable.renderer.add(col.cellRender.name, {
+      VXETable.renderer.add(col.cellRender.name as string, {
         renderDefault(_renderOpts, { row, column }) {
-          return col.render({ row, column });
+          return col.render?.({ row, column }) as any;
         },
       });
       VXETable.renderer.add(col.cellRender.name as string, {
@@ -1152,6 +1146,7 @@ const customMethods = {
   disposeRowTooltip,
   getHeaderControllerData,
   setHeaderControllerData,
+  clearSearch,
   ..._methods,
   ..._checkboxMethods,
 };

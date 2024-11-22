@@ -42,15 +42,15 @@ watch(
       return;
     }
     color.value = newVal;
-    const getColorS = GetColorLevelNew(newVal).colorLevel;
+    const getColorS = GetColorLevelNew?.(newVal)?.colorLevel;
     nextTick(() => {
       if (kRadioRef.value.$el?.style) {
-        const rbgValue = getColorS['--k-oklch-500'].match(/\(([^)]+)\)/)[1]; // 获取 rbg 值, 用于设置 focus 样式
+        const rbgValue = getColorS?.['--k-oklch-500']?.match(/\(([^)]+)\)/)?.[1]; // 获取 rbg 值, 用于设置 focus 样式
         kRadioRef.value.$el?.style.setProperty('--radio-color--focus', `rgba(${rbgValue}, 0.2)`);
         colors.forEach((item) => {
           kRadioRef.value.$el?.style.setProperty(
             `--radio${item.name}`,
-            getColorS[`--k-oklch-${item.value}`]
+            getColorS?.[`--k-oklch-${item.value}`]
           );
         });
       }

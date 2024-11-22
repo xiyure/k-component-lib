@@ -114,7 +114,7 @@
                 clearable
                 :disabled="disabledDatePicker(item)"
                 @change="
-                  (val: any) => {
+                  (val: Date | Date[]) => {
                     dateChange(val, item);
                   }
                 "
@@ -178,7 +178,7 @@ import { ref, computed, inject, onMounted, watch } from 'vue';
 import { VueI18nTranslation } from 'vue-i18n';
 import { IconClose, IconClearDate, IconAdd, IconFilter, IconFilterFill } from 'ksw-vue-icon';
 import { cloneDeep } from 'lodash-es';
-import { FilterProps, FilterData } from './type';
+import { FilterProps, FilterData, filterOptions } from './type';
 import { KInput } from '../input';
 import { KSelect, KOption } from '../select';
 import { KButton } from '../button';
@@ -205,6 +205,7 @@ const formatSize = useSize<FilterProps>(props);
 onMounted(() => {
   const deprecatedFields = ['column'];
   deprecatedFields.forEach((field: string) => {
+    // @ts-ignore
     if (props[field]) {
       console.warn(`[KFilter] The "${field}" field is deprecated, please use "options" instead.`);
     }
@@ -221,13 +222,13 @@ const filterRule = ref(0);
 
 const flatColumns = computed(() => treeDataToArray(cloneDeep(props.options), 'group'));
 const instance = computed(
-  () => function (value: any) {
-    const matchInstance: any = flatColumns.value?.find((item) => item[props.filterKey] === value);
+  () => function (value: string | null) {
+    const matchInstance: filterOptions = flatColumns.value?.find((item) => item[props.filterKey] === value);
     return matchInstance;
   }
 );
 const conditionList = computed(
-  () => function (item: any) {
+  () => function (item: FilterData) {
     const columnItem = flatColumns.value?.find((col) => col[props.filterKey] === item.key);
     const type = columnItem?.dataType || 'string';
     return logicOptions.find((item) => item.type === type);
@@ -407,7 +408,7 @@ function getRemoteFieldMap() {
   if (!Array.isArray(props.remote)) {
     return new Map();
   }
-  return new Map(props.remote.map((item: any, index: number) => [item, index]));
+  return new Map(props.remote.map((item: string, index: number) => [item, index]));
 }
 function changeCondition(index: number) {
   const targetItem = filterData.value[index];
@@ -419,8 +420,8 @@ function changeCondition(index: number) {
     targetItem.showValue = '';
     return;
   }
-  let columns: any[] = props.options ?? [];
-  let columnItem: any = null;
+  let columns: filterOptions[] = props.options ?? [];
+  let columnItem: filterOptions | undefined;
   for (const title of titles) {
     columnItem = columns?.find((item) => item.title === title);
     columns = columnItem?.group ?? [];
@@ -428,11 +429,11 @@ function changeCondition(index: number) {
   targetItem.key = columnItem?.[props.filterKey];
   targetItem.logic = 'equal';
   const logicOptionItem = logicOptions.find(
-    (item) => item.type === (columnItem.dataType || 'string')
+    (item) => item.type === (columnItem?.dataType || 'string')
   );
   if (logicOptionItem) {
     const logicItem = logicOptionItem.logicList.find((item) => item.logic === 'equal');
-    targetItem.handler = logicItem?.handler as any;
+    targetItem.handler = logicItem?.handler ?? null;
   }
   if (columnItem?.options?.length) {
     targetItem.value = columnItem.options[0].value;
@@ -444,7 +445,7 @@ function changeCondition(index: number) {
     targetItem._allowSelectLogic = true;
   }
 }
-function changeLogic(dataItem) {
+function changeLogic(dataItem: FilterData) {
   if (
     (dataItem.logic === 'after' || dataItem.logic === 'before') &&
     dataItem.dateType === 'datetimerange'
@@ -462,7 +463,7 @@ function changeLogic(dataItem) {
     dataItem.showValue = '';
   }
   const logicItem = logicOptionItem.logicList.find((item) => item.logic === dataItem.logic);
-  dataItem.handler = logicItem?.handler;
+  dataItem.handler = logicItem?.handler ?? null;
   if (type === 'date') {
     changeDateLogic(dataItem);
   }
@@ -574,7 +575,7 @@ function setDatePickerType(item: FilterData) {
     item.dateType = !dateArray.includes(item.dateRange as string) ? 'datetime' : 'datetimerange';
   }
 }
-function updateValue(dataItem: FilterData, uiType: string, options?: any[]) {
+function updateValue(dataItem: FilterData, uiType: string, options?: {label: string, value: any}[]) {
   if (uiType === 'input') {
     dataItem.showValue = dataItem.value;
   } else if (uiType === 'select') {
@@ -582,7 +583,7 @@ function updateValue(dataItem: FilterData, uiType: string, options?: any[]) {
     dataItem.showValue = targetOption?.label ?? '';
   }
 }
-function dateChange(val: any, item: any) {
+function dateChange(val: Date  | Date[], item: FilterData) {
   const formatterData = formatter(val, props.formatter);
   item.showValue = Array.isArray(formatterData) ? formatterData.join(' - ') : formatterData;
 }

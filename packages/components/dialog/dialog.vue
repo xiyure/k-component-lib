@@ -20,7 +20,7 @@ defineOptions({
 });
 
 const _styleModule = inject('_styleModule', '');
-const kDialogRef = ref<any>();
+const kDialogRef = ref();
 
 const instance: any = {};
 defineExpose(getExposeProxy(instance, kDialogRef));

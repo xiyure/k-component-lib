@@ -40,7 +40,7 @@ const _styleModule = inject('_styleModule', '');
 
 const formatSize = useSize<TagProps>(props);
 
-const KTagRef = ref<any>(null);
+const KTagRef = ref();
 const color = ref(props.color);
 
 // watch props.color 变化, 更新颜色变量
@@ -51,19 +51,19 @@ watch(
       return;
     }
     color.value = newVal;
-    const getColorS = GetColorLevelNew(newVal).colorLevel;
+    const getColorS = GetColorLevelNew?.(newVal)?.colorLevel;
     if (newVal) {
       // 等待 dom 更新
       nextTick(() => {
         if (KTagRef.value.$el?.style) {
           // 添加一个 css 颜色变量
 
-          const rbgValue = getColorS['--k-oklch-500'].match(/\(([^)]+)\)/)[1]; // 获取 rbg 值, 用于设置 focus 样式
+          const rbgValue = getColorS?.['--k-oklch-500']?.match(/\(([^)]+)\)/)?.[1]; // 获取 rbg 值, 用于设置 focus 样式
           KTagRef.value.$el?.style.setProperty('--tag-color--focus', `rgba(${rbgValue}, 0.2)`);
           colors.forEach((item) => {
             KTagRef.value.$el?.style.setProperty(
               `--tag${item.name}`,
-              getColorS[`--k-oklch-${item.value}`]
+              getColorS?.[`--k-oklch-${item.value}`]
             );
           });
         }

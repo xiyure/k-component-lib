@@ -19,7 +19,7 @@ const KMessage:MessageService<MessageOption, MessageHandler> = ((options:Message
 
 ['success', 'error', 'info', 'warning'].forEach((type) => {
   const messageType = type as Message;
-  KMessage[type] = (options:MessageOption) => {
+  KMessage[type as Message] = (options:MessageOption) => {
     if (typeof options === 'string') {
       options = {
         message: options,

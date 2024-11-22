@@ -20,7 +20,7 @@ defineOptions({
 });
 
 const _styleModule = inject('_styleModule', '');
-const KDrawerRef = ref<any>(null);
+const KDrawerRef = ref(null);
 
 const instance: any = {};
 defineExpose(getExposeProxy(instance, KDrawerRef));
