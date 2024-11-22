@@ -2,12 +2,13 @@
 @import '../../style/general.less';
 
 .filterForm {
-  height: calc(2rem);
+  height: calc(2rem + 0.25rem);
   overflow: hidden;
+  padding: 0.125rem;
   transition: all var(--transition-duration) ease-in-out;
   &.is-expand {
     transition: all var(--transition-duration) ease-in-out;
-    height: var(--expandHeight);
+    height: calc(var(--expandHeight) + 0.25rem);
     .filtr-items::after {
       display: none;
     }
@@ -29,7 +30,7 @@
       width: 100vw;
       height: 100vh;
       position: absolute;
-      top: var(--firstRowHeight);
+      top: calc(var(--firstRowHeight) + 0.25rem);
       left: 0;
       background: #fff;
       z-index: 10;
