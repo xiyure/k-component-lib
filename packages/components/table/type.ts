@@ -11,7 +11,7 @@ export interface TableColumnProps {
   desc?: string
   showColumnMenu?: boolean
   editRender?: VxeColumnPropTypes.EditRender
-  type?: 'seq' | 'checkbox' | 'radio' | 'html' | 'expand'
+  type?: 'seq' | 'checkbox' | 'radio' | 'html' | 'expand' | null
   field?: string
 }
 

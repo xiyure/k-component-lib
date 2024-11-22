@@ -1,5 +1,5 @@
 import { Component, VNode, CSSProperties } from 'vue';
-import { VxeTablePropTypes, VxeColgroupProps, VxeColumnProps, VxeColumnPropTypes } from 'vxe-table';
+import { VxeTablePropTypes, VxeColgroupProps, VxeColumnPropTypes } from 'vxe-table';
 import { PaginationProps as ElPaginationProps } from 'element-plus';
 import { OperateData } from '../operate/type';
 import { Condition, FilterValue, ConditionInfo } from '../filter/type';
@@ -59,7 +59,7 @@ export interface TreeTableProps {
   adaptive?: boolean
 }
 
-export interface ColumnConfig extends VxeColumnProps {
+export interface ColumnConfig {
   visible?: boolean
   key?: string | number
   field?: string
@@ -73,9 +73,9 @@ export interface ColumnConfig extends VxeColumnProps {
   sortable?: boolean
   showIcon?: boolean
   showColumnMenu?: boolean
-  group?: VxeColgroupProps[]
+  group?: (ColumnConfig & VxeColgroupProps)[]
   dataType?: string
-  render?: (data: any) => VNode
+  render?: (...arg: any) => VNode
   renderEdit?: (data: any) => VNode
   [key: string]: any
 }

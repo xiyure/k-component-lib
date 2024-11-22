@@ -1,5 +1,5 @@
 export interface FilterProps {
-  data?: FilterData[],
+  data?: any[],
   column?: filterOptions[]
   options?: filterOptions[]
   border?: boolean
