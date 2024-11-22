@@ -8,21 +8,22 @@ body.GFAOM {
    * 主题色 theme color🎨 
    */
   /* primary-rgb */
-  --k-theme-primary: rgb(22, 119, 255);
-  --k-theme-primary-50: rgb(var(--k-blue-rgb-50));
-  --k-theme-primary-100: rgb(var(--k-blue-rgb-100));
-  --k-theme-primary-200: rgb(var(--k-blue-rgb-200));
-  --k-theme-primary-300: rgb(var(--k-blue-rgb-300));
-  --k-theme-primary-400: rgb(var(--k-blue-rgb-400));
-  --k-theme-primary-500: rgb(var(--k-blue-rgb-500));
-  --k-theme-primary-600: rgb(var(--k-blue-rgb-600));
-  --k-theme-primary-700: rgb(var(--k-blue-rgb-700));
-  --k-theme-primary-800: rgb(var(--k-blue-rgb-800));
-  --k-theme-primary-900: rgb(var(--k-blue-rgb-900));
-  --k-theme-primary-950: rgb(var(--k-blue-rgb-950));
-  --k-theme-primary--hover: rgb(var(--k-blue-rgb-400));
-  --k-theme-primary--active: rgb(var(--k-blue-rgb-600));
-  --k-theme-primary--focus: rgb(var(--k-blue-rgb-100));
+  --k-theme-primary: rgb(24, 144, 255);
+  --k-theme-primary-50: rgb(222.34, 250.88, 255);
+  --k-theme-primary-100: rgb(199.3, 238.79, 255);
+  --k-theme-primary-200: rgb(167.15, 221.47, 255);
+  --k-theme-primary-300: rgb(133.53, 203.8, 255);
+  --k-theme-primary-400: rgb(72.75, 175.06, 255);
+  --k-theme-primary-500: rgb(24, 144, 255);
+  --k-theme-primary-600: rgb(8.2, 121.44, 219.59);
+  --k-theme-primary-700: rgb(0, 90.95, 172.28);
+  --k-theme-primary-800: rgb(0, 70.17, 139.72);
+  --k-theme-primary-900: rgb(0, 50.35, 108.35);
+  --k-theme-primary-950: rgb(0, 29.59, 75.63);
+
+  --k-theme-primary--hover: var(--k-theme-primary-400);
+  --k-theme-primary--active: var(--k-theme-primary-600);
+  --k-theme-primary--focus: var(--k-theme-primary-100);
   --k-theme-primary-rgb: 22, 119, 255;
 
   /* info-rgb */
