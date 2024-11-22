@@ -309,12 +309,7 @@ import { KTable } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
 import { KDropdown, KDropdownItem } from '../dropdown';
-import type {
-  TreeTableProps,
-  ColumnConfig,
-  TableHeaderControl,
-  RowData
-} from './type';
+import type { TreeTableProps, ColumnConfig, TableHeaderControl, RowData } from './type';
 import type { ConditionInfo, Condition } from '../filter';
 import {
   genRandomStr,
@@ -441,8 +436,8 @@ const xeTableData = ref<RowData[]>([]);
 const query = ref('');
 const searchStr = ref('');
 // 穿梭框
-const selectData = ref<{label: string, key: string, value?: string}[]>([]);
-const originData = ref<{label: string, key: string, value?: string}[]>([]);
+const selectData = ref<{ label: string; key: string; value?: string }[]>([]);
+const originData = ref<{ label: string; key: string; value?: string }[]>([]);
 const defaultHeader = ref<(string | number)[]>([]);
 // 高级筛选
 const tableFilterRef = ref(); // 高级筛选后的数据
@@ -453,8 +448,8 @@ const paginationConfig = ref<any>(defaultPaginationConfig);
 
 const widgets = computed(() => {
   const widgetsList: ({
-    id: string,
-    slot: string | null
+    id: string;
+    slot: string | null;
   } & any)[] = [];
   if (!Array.isArray(props.widgets)) {
     // 兼容老版本参数
@@ -805,9 +800,7 @@ function updatePageNum(length: number) {
   }
   paginationConfig.value.currentPage = currentPage;
 }
-function getRowStyle(
-  rowInfo: {row: VxeTablePropTypes.Row, rowIndex: number, $rowIndex: number}
-) {
+function getRowStyle(rowInfo: { row: VxeTablePropTypes.Row; rowIndex: number; $rowIndex: number }) {
   if (!props.rowStyle) {
     const { row } = rowInfo;
     return row.style || {};
@@ -829,10 +822,11 @@ function handleCustomRender() {
         renderDefault(_renderOpts, { row, column }) {
           return col.render({ row, column });
         },
+      });
       VXETable.renderer.add(col.cellRender.name as string, {
         renderTableDefault(_renderOpts, { row, column }) {
           return col.render?.({ row, column }) as any;
-        }
+        },
       });
     }
     if (typeof col.renderEdit === 'function') {
@@ -843,7 +837,7 @@ function handleCustomRender() {
       VXETable.renderer.add(col.editRender.name as string, {
         renderTableEdit(_renderOpts, { row, column }) {
           return col.renderEdit?.({ row, column }) as any;
-        }
+        },
       });
     }
   }
@@ -888,26 +882,26 @@ async function initTransfer() {
 function updateTransfer() {
   flatColumns.value = treeDataToArray(columns.value, 'group');
   originData.value = flatColumns.value
-  .map((item: ColumnConfig) => {
-    if (item.title && item.field) {
-      return {
-        label: item.title,
-        key: item.field
-      };
-    }
-  })
-  .filter((item: { label: string; key: string } | undefined) => item !== undefined);
-  selectData.value = flatColumns.value
-  .filter((col: ColumnConfig) => col.visible !== false)
-  .map((item: ColumnConfig) => {
-    if (item.title && item.field) {
-      return {
-        label: item.title,
-        key: item.field
+    .map((item: ColumnConfig) => {
+      if (item.title && item.field) {
+        return {
+          label: item.title,
+          key: item.field,
+        };
       }
-    }
-  })
-  .filter((item: { label: string; key: string } | undefined) => item !== undefined);
+    })
+    .filter((item: { label: string; key: string } | undefined) => item !== undefined);
+  selectData.value = flatColumns.value
+    .filter((col: ColumnConfig) => col.visible !== false)
+    .map((item: ColumnConfig) => {
+      if (item.title && item.field) {
+        return {
+          label: item.title,
+          key: item.field,
+        };
+      }
+    })
+    .filter((item: { label: string; key: string } | undefined) => item !== undefined);
   defaultHeader.value = selectData.value
     .map((item: ColumnConfig) => item.key)
     .filter((key: string | number | undefined) => key !== undefined);
@@ -916,24 +910,22 @@ function hideColumn(column: ColumnConfig) {
   if (!__showTransfer.value) {
     return;
   }
-  const columnItem = flatColumns.value.find(
-    (item: ColumnConfig) => item.field === column.field
-  );
+  const columnItem = flatColumns.value.find((item: ColumnConfig) => item.field === column.field);
   if (!columnItem) {
     return;
   }
   columnItem.visible = false;
   selectData.value = flatColumns.value
-  .filter((col: ColumnConfig) => col.visible !== false)
-  .map((item: ColumnConfig) => {
-    if (item.title && item.field) {
-      return {
-        label: item.title,
-        key: item.field
+    .filter((col: ColumnConfig) => col.visible !== false)
+    .map((item: ColumnConfig) => {
+      if (item.title && item.field) {
+        return {
+          label: item.title,
+          key: item.field,
+        };
       }
-    }
-  })
-  .filter((item) => item !== undefined)
+    })
+    .filter((item) => item !== undefined);
   emits('hide-column', column);
 }
 function sortTableHeader(fieldList: { label: string; key: string }[]) {
@@ -977,7 +969,11 @@ function transferHide() {
   }
 }
 // 高级筛选相关方法
-function refreshAdvancedFilter(conditionInfo: ConditionInfo, newTableData: RowData[], isEmit = true) {
+function refreshAdvancedFilter(
+  conditionInfo: ConditionInfo,
+  newTableData: RowData[],
+  isEmit = true,
+) {
   filterConditionInfo.value = conditionInfo;
   newFilterData.value = newTableData;
   if (props.useTree) {
@@ -1012,7 +1008,7 @@ function advancedFilterHide() {
 // 行高亮
 let isHighlight = false;
 let preRowKey: string | number | null = null;
-function cellClick({ row, rowid }: {row: VxeTablePropTypes.Row, rowid: string | number}) {
+function cellClick({ row, rowid }: { row: VxeTablePropTypes.Row; rowid: string | number }) {
   if (!props.cellClickToggleHighlight) {
     return;
   }
@@ -1078,12 +1074,16 @@ function getRowById(id: string | number) {
   if (row) {
     return row;
   }
-  const targetRow = xeTableData.value.find((item: RowData) => item[rowConfig.value.keyField] === id);
+  const targetRow = xeTableData.value.find(
+    (item: RowData) => item[rowConfig.value.keyField] === id,
+  );
   if (targetRow) {
     return targetRow;
   }
   const tempRecords = tableInstance.value.getInsertRecords();
-  const tempRow = tempRecords.find((item: VxeTablePropTypes.Row) => item[rowConfig.value.keyField] === id);
+  const tempRow = tempRecords.find(
+    (item: VxeTablePropTypes.Row) => item[rowConfig.value.keyField] === id,
+  );
   return tempRow ?? null;
 }
 // vxe-table行数据中dom被销毁时会导致tooltip无法关闭，这里提供手动销毁tooltip方法给予外部调用
