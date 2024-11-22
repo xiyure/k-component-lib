@@ -47,6 +47,10 @@
     min-width: 200px;
     position: relative;
     transition: all 0.125s ease-in-out;
+    height: 100%;
+    overflow: hidden;
+    display: flex !important;
+    flex-direction: column;
   }
   .k-view__header {
     display: flex;
@@ -69,6 +73,8 @@
   }
   .k-view__special-data {
     padding: 0.5rem 0;
+    flex: 1;
+    overflow-y: auto;
     .k-view-item-remove {
       display: none;
     }

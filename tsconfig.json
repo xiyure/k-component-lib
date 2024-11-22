@@ -28,12 +28,7 @@
     },
     "declaration": true
   },
-  "include": [
-    "packages",
-    "typings"
-  ],
+  "include": ["packages", "typings", "src/**/*"],
   "exclude": ["node_modules", "**/*.md"],
-  "references": [
-    { "path": "./tsconfig.node.json" }
-  ]
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

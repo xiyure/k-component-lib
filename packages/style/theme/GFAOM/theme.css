@@ -162,9 +162,9 @@ body.GFAOM {
   --k-theme-button-size-gap--sm: var(--k-size-1);
   --k-theme-button-size-gap--base: var(--k-size-1);
   --k-theme-button-size-gap--lg: var(--k-size-1);
-  --k-theme-button-size-rounded--sm: 0.25rem;
-  --k-theme-button-size-rounded--base: 0.375rem;
-  --k-theme-button-size-rounded--lg: 0.5rem;
+  --k-theme-button-size-rounded--sm: 0.125rem;
+  --k-theme-button-size-rounded--base: 0.125rem;
+  --k-theme-button-size-rounded--lg: 0.25rem;
 
   /* radio */
   --k-theme-radio-size-height--sm: var(--k-theme-button-size-height--sm);

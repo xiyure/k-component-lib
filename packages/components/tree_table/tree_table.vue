@@ -113,11 +113,15 @@
               </template>
             </k-filter>
           </template>
-          <template v-else-if="widget.id ==='sizeControl'">
+          <template v-else-if="widget.id === 'sizeControl'">
             <!-- 表格尺寸控制 -->
             <k-dropdown
               trigger="click"
-              @command="(command) => {_size = command || undefined}"
+              @command="
+                (command) => {
+                  _size = command || undefined;
+                }
+              "
             >
               <template #title>
                 <div v-ksw_tooltip="$t('sizeControlTrigger')" class="text-sm">
@@ -149,10 +153,12 @@
               width="auto"
               :teleported="false"
               @show="transferShow"
-              @hide="() => {
-                transferHide();
-                transferChange();
-              }"
+              @hide="
+                () => {
+                  transferHide();
+                  transferChange();
+                }
+              "
             >
               <template #reference>
                 <div v-ksw_tooltip="$t('columnHeaderController')" class="text-sm">
@@ -259,11 +265,21 @@
         :total="dataLength"
         @current-change="changeCurrentPage"
         @size-change="changePageSize"
-        @change="(currentPage: number, pageSize: number) => {
-          emits('change', currentPage, pageSize)
-        }"
-        @prev-click="(value: number) => { emits('prev-click', value)}"
-        @next-click="(value: number) => { emits('next-click', value)}"
+        @change="
+          (currentPage: number, pageSize: number) => {
+            emits('change', currentPage, pageSize);
+          }
+        "
+        @prev-click="
+          (value: number) => {
+            emits('prev-click', value);
+          }
+        "
+        @next-click="
+          (value: number) => {
+            emits('next-click', value);
+          }
+        "
       />
     </div>
   </div>
@@ -273,7 +289,14 @@
 import { ref, computed, watch, onMounted, nextTick, inject, provide } from 'vue';
 import VXETable, { VxeTable, VxeTablePropTypes } from 'vxe-table';
 import { VueI18nTranslation } from 'vue-i18n';
-import { IconSearch, IconSetting, IconRefresh, IconFilter, IconFilterFill, IconSizeControls } from 'ksw-vue-icon';
+import {
+  IconSearch,
+  IconSetting,
+  IconRefresh,
+  IconFilter,
+  IconFilterFill,
+  IconSizeControls,
+} from 'ksw-vue-icon';
 import { cloneDeep } from 'lodash-es';
 import { SortableEvent } from 'sortablejs';
 import KColumnGroup from './column_group';
@@ -299,12 +322,12 @@ import {
   getValidTreeData,
   resetTreeData,
   getExposeProxy,
-  SIZE_KEY
+  SIZE_KEY,
 } from '../../utils';
 import { useMethods, useCheckbox } from './hooks';
 
 defineOptions({
-  name: 'KTreeTable'
+  name: 'KTreeTable',
 });
 
 const props = withDefaults(defineProps<TreeTableProps>(), {
@@ -322,7 +345,7 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
   autoResize: true,
   showColumnMenu: false,
   cellClickToggleHighlight: true,
-  round: false
+  round: false,
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -334,14 +357,14 @@ const DEFAULT_WIDGETS = new Map([
   ['refresh', 'refresh'],
   ['filter', 'filter'],
   ['sizeControl', 'sizeControl'],
-  ['transfer', 'transfer']
+  ['transfer', 'transfer'],
 ]);
 // 表格默认配置
 const defaultRowConfig = {
   isHover: true,
   isCurrent: true,
   useKey: true,
-  keyField: 'id'
+  keyField: 'id',
 };
 const defaultTreeConfig = {
   transform: true,
@@ -349,19 +372,22 @@ const defaultTreeConfig = {
   parentField: 'pid',
   childrenField: 'children',
   trigger: 'cell',
-  hasChildField: 'hasChild'
+  hasChildField: 'hasChild',
 };
 const defaultPaginationConfig = {
   pagerCount: 7,
   currentPage: 1,
   pageSizes: DEFAULT_PAGES,
-  pageSize: DEFAULT_PAGES[0]
+  pageSize: DEFAULT_PAGES[0],
+  size: props.useAntStyle ? 'sm' : undefined,
+  layout: props.useAntStyle ? 'total, prev, pager, next, sizes' : undefined,
 };
+
 const defaultSortConfig = {};
 const defaultEditConfig = {
   key: 'id',
   trigger: 'click',
-  mode: 'cell'
+  mode: 'cell',
 };
 const defaultSeqConfig = {
   seqMethod: ({ rowIndex }: { rowIndex: number }) => {
@@ -371,7 +397,7 @@ const defaultSeqConfig = {
       return (currentPage - 1) * pageSize + rowIndex + startIndex;
     }
     return rowIndex + startIndex;
-  }
+  },
 };
 
 const defaultScrollY = { enabled: true };
@@ -395,7 +421,7 @@ const emits = defineEmits([
   'size-change',
   'change',
   'prev-click',
-  'next-click'
+  'next-click',
 ]);
 const xTree = ref();
 const _size = ref(props.size);
@@ -403,7 +429,7 @@ const sizeList = [
   { label: '默认', value: '' },
   { label: '中等', value: 'medium' },
   { label: '小号', value: 'small' },
-  { label: '紧凑', value: 'mini' }
+  { label: '紧凑', value: 'mini' },
 ];
 const tableTransferRef = ref();
 // 列配置
@@ -435,31 +461,31 @@ const widgets = computed(() => {
     if (props.showSearchInput) {
       widgetsList.push({
         id: 'search',
-        slot: null
+        slot: null,
       });
     }
     if (props.showRefresh) {
       widgetsList.push({
         id: 'refresh',
-        slot: null
+        slot: null,
       });
     }
     if (props.showFilter) {
       widgetsList.push({
         id: 'filter',
-        slot: null
+        slot: null,
       });
     }
     if (props.showSizeControl) {
       widgetsList.push({
         id: 'sizeControl',
-        slot: null
+        slot: null,
       });
     }
     if (props.showTransfer) {
       widgetsList.push({
         id: 'transfer',
-        slot: null
+        slot: null,
       });
     }
     return widgetsList;
@@ -487,11 +513,12 @@ const filterColumns = computed(() => {
   const validColumns = getValidTreeData(
     cloneDeep(columns.value),
     'group',
-    (dataItem) => !dataItem.type &&
+    (dataItem) =>
+      !dataItem.type &&
       dataItem.title &&
       dataItem.field &&
       (filterAll !== false || dataItem.visible !== false) &&
-      !exclude.includes(dataItem.field)
+      !exclude.includes(dataItem.field),
   );
   if (filterColumns) {
     return resetTreeData(validColumns, 'group', filterColumns, 'field');
@@ -586,7 +613,7 @@ const {
   checkBoxChange,
   checkboxAll,
   clearCheckedData,
-  _checkboxMethods
+  _checkboxMethods,
 } = useCheckbox(tableInstance, showTableData, props);
 watch(
   [() => props.data, () => props.data?.length],
@@ -595,14 +622,14 @@ watch(
     xeTableData.value = setTableData(props.data);
     advancedFilter();
   },
-  { immediate: true }
+  { immediate: true },
 );
 watch(
   () => props.paginationConfig,
   () => {
     paginationConfig.value = Object.assign(paginationConfig.value, props.paginationConfig || {});
   },
-  { immediate: true, deep: true }
+  { immediate: true, deep: true },
 );
 onMounted(() => {
   initTransfer();
@@ -619,7 +646,7 @@ watch(
     updateTransfer();
     handleCustomRender();
   },
-  { deep: true }
+  { deep: true },
 );
 
 let isFilterStatus = false;
@@ -640,16 +667,16 @@ watch(
       }
     });
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 // 表格内容搜索
 let tableDataMap: Map<string | number, RowData> = new Map();
 const treeDataMap: Map<string | number, RowData> = new Map();
 function filterTableData() {
-  const filterData = filterConditionInfo.value?.conditionList?.length ?
-    newFilterData.value :
-    xeTableData.value;
+  const filterData = filterConditionInfo.value?.conditionList?.length
+    ? newFilterData.value
+    : xeTableData.value;
   const { strict, searchMethod, ignoreCase = false } = props.searchConfig ?? {};
   const searchKey = query.value.trim().replace(/\\/g, '\\\\');
   if (props.isRemoteQuery || props.searchConfig?.isRemoteQuery) {
@@ -663,22 +690,26 @@ function filterTableData() {
     return searchMethod(searchKey, filterData);
   }
   const visibleColumns = flatColumns.value.filter((col: ColumnConfig) => col.visible !== false);
-  const fieldList = visibleColumns.map((col: ColumnConfig) => {
-    if (col.field && !col.type) {
-      return col.field;
-    }
-    return null;
-  }).filter((field: string | null) => field !== null);
-  let tableData = filterData.filter((dataItem: RowData) => fieldList.some((field: string) => {
-    const cellLabel = tableInstance.value.getCellLabel(dataItem, field);
-    if (strict === true) {
-      return cellLabel === searchKey;
-    }
-    if (ignoreCase) {
-      return String(cellLabel).toLowerCase().indexOf(searchKey.toLowerCase()) !== -1;
-    }
-    return String(cellLabel).indexOf(searchKey) !== -1;
-  }));
+  const fieldList = visibleColumns
+    .map((col: ColumnConfig) => {
+      if (col.field && !col.type) {
+        return col.field;
+      }
+      return null;
+    })
+    .filter((field: string | null) => field !== null);
+  let tableData = filterData.filter((dataItem: any) =>
+    fieldList.some((field: string) => {
+      const cellLabel = tableInstance.value.getCellLabel(dataItem, field);
+      if (strict === true) {
+        return cellLabel === searchKey;
+      }
+      if (ignoreCase) {
+        return String(cellLabel).toLowerCase().indexOf(searchKey.toLowerCase()) !== -1;
+      }
+      return String(cellLabel).indexOf(searchKey) !== -1;
+    }),
+  ) as any;
   // 当表格数据为树时，筛选后的数据应展示完整的子树
   if (props.useTree) {
     const { rowField } = getTreeConfigField();
@@ -731,9 +762,11 @@ function getParentNode(dataItem: RowData, parentField: string, rowField: string)
   }
 }
 // 筛选后的数据与用户输入数据的顺序保持一致
-function sortFunc(targetData: RowData[], sortData: RowData, key: string | number) {
-  const sortKeyList = sortData.map((item: RowData) => item[key]);
-  return targetData.sort((a, b) => (sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1));
+function sortFunc(targetData: any[], sortData: any, key: string | number) {
+  const sortKeyList = sortData.map((item: any) => item[key]);
+  return targetData.sort((a, b) =>
+    sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1,
+  );
 }
 // 分页相关
 function changePageSize(pageSize: number) {
@@ -790,8 +823,12 @@ function handleCustomRender() {
     if (typeof col.render === 'function') {
       col.cellRender = {
         name: genRandomStr(16),
-        ...(col.cellRender || {})
+        ...(col.cellRender || {}),
       };
+      VXETable.renderer.add(col.cellRender.name, {
+        renderDefault(_renderOpts, { row, column }) {
+          return col.render({ row, column });
+        },
       VXETable.renderer.add(col.cellRender.name as string, {
         renderTableDefault(_renderOpts, { row, column }) {
           return col.render?.({ row, column }) as any;
@@ -801,7 +838,7 @@ function handleCustomRender() {
     if (typeof col.renderEdit === 'function') {
       col.editRender = {
         name: genRandomStr(16),
-        ...(col.editRender || {})
+        ...(col.editRender || {}),
       };
       VXETable.renderer.add(col.editRender.name as string, {
         renderTableEdit(_renderOpts, { row, column }) {
@@ -833,7 +870,7 @@ async function initTransfer() {
   }
   transferData = Array.isArray(transferData) ? transferData : [];
   const transferDataMap = new Map<string | undefined, TableHeaderControl>(
-    transferData.map((item: TableHeaderControl) => [item.key, item])
+    transferData.map((item: TableHeaderControl) => [item.key, item]),
   );
   const fieldList = transferData.map((item: TableHeaderControl) => item.key);
   const cols = props.column.map((col) => {
@@ -1064,7 +1101,7 @@ function getHeaderControllerData(): TableHeaderControl[] {
     label: item.label,
     key: item.key,
     visible: selectSet.has(item.key),
-    disabled: item.disabled ?? false
+    disabled: item.disabled ?? false,
   }));
   return newTransferData;
 }
@@ -1085,7 +1122,7 @@ function setHeaderControllerData(transferData: TableHeaderControl[]) {
       label: item.label ?? '',
       key: item.key ?? `_${genRandomStr(8)}`,
       disabled: item.disabled ?? false,
-      visible: item.visible !== false
+      visible: item.visible !== false,
     })) ?? [];
   selectData.value = originData.value.filter((item: TableHeaderControl) => item.visible !== false);
   sortTableHeader(transferData);
@@ -1094,12 +1131,15 @@ function setHeaderControllerData(transferData: TableHeaderControl[]) {
 function getVailSize() {
   if (_size.value === 'small' || _size.value === 'mini') {
     return 'sm';
-  } 
+  }
   return 'base';
 }
 
 provide('__showTransfer', __showTransfer);
-provide(SIZE_KEY, computed(() => getVailSize()));
+provide(
+  SIZE_KEY,
+  computed(() => getVailSize()),
+);
 
 const customMethods = {
   tableInstance,
@@ -1113,7 +1153,7 @@ const customMethods = {
   getHeaderControllerData,
   setHeaderControllerData,
   ..._methods,
-  ..._checkboxMethods
+  ..._checkboxMethods,
 };
 
 defineExpose(getExposeProxy(customMethods, tableInstance));

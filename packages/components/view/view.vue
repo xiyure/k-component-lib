@@ -20,36 +20,38 @@
           </span>
         </div>
         <div :id="specialViewId" class="k-view__special-data">
-          <template v-if="!useTree">
-            <k-view-item
-              v-for="item in specialData"
-              :key="item.value"
-              v-bind="item"
-              @change="handleChange"
-              @remove="handleRemove"
-              @_drag-start="onDragStart"
-              @_drag-drop="onDrop"
-            >
-              <template v-if="$slots.label" #label>
-                <slot name="label" :data="item"></slot>
-              </template>
-            </k-view-item>
-          </template>
-          <template v-else>
-            <k-tree
-              class="k-tree-view-item"
-              :data="props.data"
-              highlight-current
-              v-bind="treeConfig"
-              @current-change="handleChange"
-              @node-expand="handleNodeExpand"
-              @node-collapse="handleNodeCollapse"
-            >
-              <template v-if="$slots.label" #default="{ node, data }">
-                <slot name="label" :node="node" :data="data"></slot>
-              </template>
-            </k-tree>
-          </template>
+          <el-scrollbar height="100%">
+            <template v-if="!useTree">
+              <k-view-item
+                v-for="item in specialData"
+                :key="item.value"
+                v-bind="item"
+                @change="handleChange"
+                @remove="handleRemove"
+                @_drag-start="onDragStart"
+                @_drag-drop="onDrop"
+              >
+                <template v-if="$slots.label" #label>
+                  <slot name="label" :data="item"></slot>
+                </template>
+              </k-view-item>
+            </template>
+            <template v-else>
+              <k-tree
+                class="k-tree-view-item"
+                :data="props.data"
+                highlight-current
+                v-bind="treeConfig"
+                @current-change="handleChange"
+                @node-expand="handleNodeExpand"
+                @node-collapse="handleNodeCollapse"
+              >
+                <template v-if="$slots.label" #default="{ node, data }">
+                  <slot name="label" :node="node" :data="data"></slot>
+                </template>
+              </k-tree>
+            </template>
+          </el-scrollbar>
         </div>
         <div v-if="customData?.length" :id="customViewId" class="k-view__custom-data text-base">
           <slot name="custom-header">
