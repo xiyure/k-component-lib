@@ -38,6 +38,10 @@
             </template>
             <template v-else>
               <k-tree
+                ref="KViewTree"
+                node-key="value"
+                :default-expanded-keys="defaultExpandedKeys"
+                :current-node-key="currentNodeKey"
                 class="k-tree-view-item"
                 :data="props.data"
                 highlight-current
@@ -74,7 +78,11 @@
           </template>
           <template v-else>
             <k-tree
+              ref="KCustomViewTree"
               class="k-tree-view-item"
+              node-key="value"
+              :default-expanded-keys="defaultExpandedKeys"
+              :current-node-key="currentNodeKey"
               :data="props.data"
               highlight-current
               v-bind="treeConfig"
@@ -99,11 +107,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, provide, inject } from 'vue';
+import { ref, watch, computed, provide, inject } from 'vue';
 import { IconRefresh, IconArrowRight } from 'ksw-vue-icon';
 import KViewItem from './view_item.vue';
 import { ViewProps, ViewData } from './type';
 import { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type';
+import { KTree } from '../tree';
 import { genRandomStr } from '../../utils';
 
 defineOptions({
@@ -133,6 +142,21 @@ const active = ref(props.defaultActive ?? props.data?.[0]?.value ?? '');
 
 const specialData = computed(() => props.data?.filter((item) => !item.custom) ?? []);
 const customData = computed(() => props.data?.filter((item) => Boolean(item.custom)));
+
+const defaultExpandedKeys = ref<(string | number)[]>([]);
+const currentNodeKey = ref<string | number>('');
+
+
+watch(() => props.defaultActive, (val: string | number | undefined) => {
+  let activeValue = val;
+  if (!val) {
+    activeValue = props.data?.[0].value;
+  }
+  active.value = activeValue;
+  defaultExpandedKeys.value = [activeValue ?? ''];
+  currentNodeKey.value = activeValue ?? '';
+
+}, { immediate: true });
 
 function handleFresh() {
   emits('refresh');

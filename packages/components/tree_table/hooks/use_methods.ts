@@ -1,4 +1,4 @@
-import { ref, computed, Ref } from 'vue';
+import { ref, computed, nextTick, Ref } from 'vue';
 import { VxeTablePropTypes, VxeTableInstance } from 'vxe-table';
 import { SortableEvent } from 'sortablejs';
 import { Store } from '../type';
@@ -275,12 +275,21 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     const parentRow = xeTableData.value.find((item: RowData) => item[id] === target[pid]);
     return isMoveToChild(node, parentRow);
   }
-  function expandTree(rows: Row | Row[]) {
+  async function setTreeExpand(rows: Row | Row[], checked: boolean) {
     const records = Array.isArray(rows) ? rows : [rows];
-    const ids = records.map((row) => row[keyField.value]);
+    const isLazy = props.treeConfig?.lazy ?? false;
+    if (!isLazy) {
+      await $table.value?.setTreeExpand(records, checked);
+      return;
+    }
+    await nextTick()
     const event = new Event('click', { bubbles: true });
-    for (const id of ids) {
-      const rowIconElem: Element = $table.value?.$el.querySelector(`[rowid='${id}'] .vxe-tree--btn-wrapper`);
+    for (const row of records) {
+      const isExpand = $table.value?.isTreeExpandByRow(row);
+      if (isExpand === checked) {
+        continue;
+      }
+      const rowIconElem: Element = $table.value?.$el.querySelector(`[rowid='${row.id}'] .vxe-tree--btn-wrapper`);
       if (rowIconElem) {
         rowIconElem.dispatchEvent(event);
       }
@@ -310,7 +319,7 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
       getRemoveRecords,
       getRecordset,
       setRow,
-      expandTree
+      setTreeExpand
     },
     setTableData,
     sortChange,
