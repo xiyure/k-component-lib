@@ -35,16 +35,19 @@
                 <span
                   class="tree-transfer__cell"
                   :style="{
-                    marginLeft: `${ rowLevel(row) * (props.treeConfig?.indent ?? 12) }px`
+                    marginLeft: `${rowLevel(row) * (props.treeConfig?.indent ?? 12)}px`,
                   }"
-                  :class="{'list-item-disabled': row.disabled }"
+                  :class="{ 'list-item-disabled': row.disabled }"
                   @click="toggleTreeExpand(row, $event)"
                 >
-                  <component :is="columnIcon(row)?.icon" class="column-icon" :color="columnIcon(row)?.color" />
-                  <span
-                    class="tree-transfer__cell-label"
-                    :title="row[props.label]"
-                  >{{ row[props.label] }}</span>
+                  <component
+                    :is="columnIcon(row)?.icon"
+                    class="column-icon"
+                    :color="columnIcon(row)?.color"
+                  />
+                  <span class="tree-transfer__cell-label" :title="row[props.label]">
+                    {{ row[props.label] }}
+                  </span>
                 </span>
               </template>
             </k-table-column>
@@ -63,9 +66,7 @@
             :scroll-y="scrollY"
             @drag-end="dragSort"
           >
-            <k-table-column
-              :field="label"
-            >
+            <k-table-column :field="label">
               <template #header="data">
                 <slot name="rightHeader" v-bind="data">
                   <div class="right-data-header">
@@ -75,12 +76,20 @@
                 </slot>
               </template>
               <template #default="{ row }">
-                <div
-                  class="column-body"
-                >
+                <div class="column-body">
                   <span class="column-content">
-                    <component :is="getIcon(props.icon, row)" v-if="props.icon" class="column-icon" />
-                    <span class="tree-transfer__cell-label" :title="row[props.label]">{{ row[props.label] }}</span>
+                    <slot name="right-cell">
+                      <component
+                        :is="getIcon(props.icon, row)"
+                        v-if="props.icon"
+                        class="column-icon"
+                      />
+                      <slot name="right-label" :parentData="parentData(row)">
+                        <span class="tree-transfer__cell-label" :title="row[props.label]">
+                          {{ row[props.label] }}
+                        </span>
+                      </slot>
+                    </slot>
                   </span>
                   <div class="column-operate">
                     <IconDrag class="__column-drag-icon" />
@@ -106,7 +115,7 @@ import { KInput } from '../input';
 import { sortBySmallerList } from '../../utils';
 
 defineOptions({
-  name: 'KTreeTransfer'
+  name: 'KTreeTransfer',
 });
 
 type Row = VxeTablePropTypes.Row;
@@ -114,7 +123,7 @@ type Row = VxeTablePropTypes.Row;
 const props = withDefaults(defineProps<TreeTransferProps>(), {
   showFilter: true,
   useTree: false,
-  label: 'label'
+  label: 'label',
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -128,7 +137,7 @@ const defaultTreeConfig = {
   trigger: 'cell',
   hasChildField: 'hasChild',
   indent: 0,
-  showIcon: false
+  showIcon: false,
 };
 const fullData = ref<TreeTransferData[]>(props.data ?? []);
 const leftData = ref<TreeTransferData[]>(fullData.value);
@@ -138,22 +147,28 @@ const query = ref('');
 const treeLeftRef = ref();
 const treeRightRef = ref();
 const selectData = ref<Set<number | string>>(new Set());
-const treeDataMap:Map<string | number, TreeTransferData> = new Map();
+const treeDataMap: Map<string | number, TreeTransferData> = new Map();
 
-const columnIcon = computed(() => function (row: Row) {
-  const expand = treeLeftRef.value?.tableInstance.isTreeExpandByRow(row);
-  const isLeafNode = !(row.children && row.children.length);
-  if (isLeafNode && row.nodeType === 1) {
-    return { icon: getIcon(props.collapseIcon, row), color: props.collapseIconColor };
-  } if (props.icon && isLeafNode) {
-    return { icon: getIcon(props.icon, row), color: props.iconColor };
-  } if (props.expandIcon && expand && !isLeafNode) {
-    return { icon: getIcon(props.expandIcon, row), color: props.expandIconColor };
-  } if (props.collapseIcon && !expand && !isLeafNode) {
-    return { icon: getIcon(props.collapseIcon, row), color: props.collapseIconColor };
-  }
-});
-const checkRowKeys = computed(() => Array.from((selectData.value)));
+const columnIcon = computed(
+  () =>
+    function (row: Row) {
+      const expand = treeLeftRef.value?.tableInstance.isTreeExpandByRow(row);
+      const isLeafNode = !(row.children && row.children.length);
+      if (isLeafNode && row.nodeType === 1) {
+        return { icon: getIcon(props.collapseIcon, row), color: props.collapseIconColor };
+      }
+      if (props.icon && isLeafNode) {
+        return { icon: getIcon(props.icon, row), color: props.iconColor };
+      }
+      if (props.expandIcon && expand && !isLeafNode) {
+        return { icon: getIcon(props.expandIcon, row), color: props.expandIconColor };
+      }
+      if (props.collapseIcon && !expand && !isLeafNode) {
+        return { icon: getIcon(props.collapseIcon, row), color: props.collapseIconColor };
+      }
+    },
+);
+const checkRowKeys = computed(() => Array.from(selectData.value));
 const treeConfig = computed(() => {
   if (props.useTree) {
     const newTreeConfig = Object.assign(defaultTreeConfig, props.treeConfig || {});
@@ -162,26 +177,30 @@ const treeConfig = computed(() => {
   }
   return undefined;
 });
-const scrollY = computed(() => ({ enabled: true, ...props.scrollY || {} }));
+const scrollY = computed(() => ({ enabled: true, ...(props.scrollY || {}) }));
 const rowLevel = computed(() => (row: Row) => getTreeNodeLevel(row));
 
-watch(() => props.defaultData, (newValue) => {
-  if (!Array.isArray(newValue)) {
-    return;
-  }
-  newValue.forEach((id: string | number) => {
-    selectData.value.add(id);
-  });
-  fullData.value = sortBySmallerList(props.data, props.defaultData ?? []);
-  rightData.value = fullData.value.filter((item: TreeTransferData) => {
-    if (newValue.includes(item.id) && checkMethod({ row: item })) {
-      return true;
+watch(
+  () => props.defaultData,
+  (newValue) => {
+    if (!Array.isArray(newValue)) {
+      return;
     }
-    return false;
-  });
-  showRightData.value = rightData.value;
-  treeLeftRef.value?.tableInstance.reloadData(leftData.value);
-}, { immediate: true, deep: true });
+    newValue.forEach((id: string | number) => {
+      selectData.value.add(id);
+    });
+    fullData.value = sortBySmallerList(props.data, props.defaultData ?? []);
+    rightData.value = fullData.value.filter((item: TreeTransferData) => {
+      if (newValue.includes(item.id) && checkMethod({ row: item })) {
+        return true;
+      }
+      return false;
+    });
+    showRightData.value = rightData.value;
+    treeLeftRef.value?.tableInstance.reloadData(leftData.value);
+  },
+  { immediate: true, deep: true },
+);
 
 function checkboxChange() {
   handleSelectData();
@@ -212,9 +231,9 @@ function removeRightData(row: Row) {
   if (isSelect) {
     selectData.value.delete(row.id);
   }
-  const targetRow = leftData.value.find(item => item.id === row.id);
+  const targetRow = leftData.value.find((item) => item.id === row.id);
   treeLeftRef.value.tableInstance.setCheckboxRow(targetRow, false);
-  const removeIndex = showRightData.value.findIndex(item => item.id === row.id);
+  const removeIndex = showRightData.value.findIndex((item) => item.id === row.id);
   if (removeIndex >= 0) {
     showRightData.value.splice(removeIndex, 1);
   }
@@ -226,7 +245,7 @@ function clearData() {
     if (hasSelect) {
       selectData.value.delete(dataItem.id);
     }
-    const targetRow = leftData.value.find(item => item.id === dataItem.id);
+    const targetRow = leftData.value.find((item) => item.id === dataItem.id);
     treeLeftRef.value.tableInstance.setCheckboxRow(targetRow, false);
   }
   showRightData.value = [];
@@ -239,7 +258,9 @@ async function filterData() {
 }
 async function filterLeftData() {
   const searchKey = query.value.trim();
-  let tableData = props.data.filter((dataItem:TreeTransferData) => dataItem[props.label].toString().indexOf(searchKey) !== -1);
+  let tableData = props.data.filter(
+    (dataItem: TreeTransferData) => dataItem[props.label].toString().indexOf(searchKey) !== -1,
+  );
   // 当表格数据为树时，筛选后的数据应展示完整的子树
   if (props.useTree) {
     handleTreeData(tableData);
@@ -279,7 +300,7 @@ function handleTreeData(leafData: TreeTransferData[]) {
 }
 function addChildNodes(leafData: TreeTransferData[]) {
   const { parentField, rowField } = getTreeConfigField();
-  const childrenMap = new Map(leafData.map(item => [item[rowField], item]));
+  const childrenMap = new Map(leafData.map((item) => [item[rowField], item]));
   for (const dataItem of props.data) {
     const parentKey = dataItem[parentField];
     if (childrenMap.get(parentKey)) {
@@ -290,7 +311,7 @@ function addChildNodes(leafData: TreeTransferData[]) {
 // 根据叶子节点递归遍历获取祖先节点
 function getParentNode(dataItem: TreeTransferData, parentField: string, rowField: string) {
   const parentKey = dataItem[parentField];
-  const parentItem = props.data?.find(item => item[rowField] === parentKey);
+  const parentItem = props.data?.find((item) => item[rowField] === parentKey);
   if (!parentItem) {
     return;
   }
@@ -309,16 +330,22 @@ function getTreeNodeLevel(row: Row): number {
   if (!row[parentField]) {
     return 0;
   }
-  const targetItem = props.data.find(item => item[rowField] === row[parentField]);
+  const targetItem = props.data.find((item) => item[rowField] === row[parentField]);
   if (targetItem) {
     return 1 + getTreeNodeLevel(targetItem);
-  } 
+  }
   return 0;
 }
 // 筛选后的数据与用户输入数据的顺序保持一致
-function sortTreeData(targetData:TreeTransferData[], sortData: TreeTransferData, key: string | number) {
-  const sortKeyList = sortData.map((item:TreeTransferData) => item[key]);
-  return targetData.sort((a, b) => (sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1));
+function sortTreeData(
+  targetData: TreeTransferData[],
+  sortData: TreeTransferData,
+  key: string | number,
+) {
+  const sortKeyList = sortData.map((item: TreeTransferData) => item[key]);
+  return targetData.sort((a, b) =>
+    sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1,
+  );
 }
 function filterRightData() {
   const searchKey = query.value.trim();
@@ -326,7 +353,9 @@ function filterRightData() {
     showRightData.value = rightData.value;
     return;
   }
-  showRightData.value = rightData.value.filter(item => item[props.label].toString().includes(searchKey));
+  showRightData.value = rightData.value.filter((item) =>
+    item[props.label].toString().includes(searchKey),
+  );
 }
 function getTreeConfigField() {
   const parentField = treeConfig.value?.parentField || 'pid';
@@ -339,15 +368,17 @@ function toggleTreeExpand(row: Row, e: Event) {
 }
 // 拖拽排序
 function dragSort(newData: TreeTransferData[]) {
-  const ids = newData.map(item => item.id);
+  const ids = newData.map((item) => item.id);
   fullData.value = sortBySmallerList(fullData.value, ids);
   const selectedData = getSelectedData();
   emits('change', selectedData);
   emits('sort', selectedData);
 }
-function sortFunc(targetData:TreeTransferData[], sortData: TreeTransferData) {
-  const sortKeyList = sortData.map((item:TreeTransferData) => item.id);
-  return targetData.sort((a, b) => (sortKeyList.indexOf(a.id) < sortKeyList.indexOf(b.id) ? -1 : 1));
+function sortFunc(targetData: TreeTransferData[], sortData: TreeTransferData) {
+  const sortKeyList = sortData.map((item: TreeTransferData) => item.id);
+  return targetData.sort((a, b) =>
+    sortKeyList.indexOf(a.id) < sortKeyList.indexOf(b.id) ? -1 : 1,
+  );
 }
 function getSelectedData() {
   return fullData.value.filter((item: TreeTransferData) => selectData.value.has(item.id));
@@ -363,14 +394,33 @@ function checkMethod(data: any) {
   return props.checkMethod?.(data) ?? !row.disabled ?? true;
 }
 
+const parentData = computed(
+  () =>
+    function (row: Row) {
+      let data = row;
+      while (data.pid) {
+        leftData.value.map((item) => {
+          if (item.id == data.pid) {
+            data = item;
+          }
+        });
+      }
+      let name = data.name;
+      data = row[props.label];
+      data = { data, name };
+      return data;
+    },
+);
+
 defineExpose({
-  clearData
+  clearData,
 });
 </script>
 
 <style lang="less">
 @import './style.less';
-.tree-transfer__cell, .column-content {
+.tree-transfer__cell,
+.column-content {
   display: flex;
   align-items: center;
   .column-icon {
