@@ -58,3 +58,14 @@
     }
   }
 }
+.k-collapse-outline {
+  // 通过::v-deep穿透样式，移除el-collapse-item__header的下边框
+  .el-collapse-item__header {
+    border-bottom: none !important;
+  }
+
+  // 如果需要移除其他地方的边框，可以继续添加相应的样式
+  .el-collapse-item {
+    border-bottom: none !important;
+  }
+}
