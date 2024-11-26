@@ -17,6 +17,7 @@ export interface TreeTransferProps {
   label?: string
   scrollY?: VxeTablePropTypes.ScrollY
   drag?: boolean
+  showDrag?: boolean
   checkMethod?: (data: any) => boolean
 }
 

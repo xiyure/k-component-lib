@@ -92,7 +92,7 @@
                     </slot>
                   </span>
                   <div class="column-operate">
-                    <IconDrag class="__column-drag-icon" />
+                    <IconDrag v-if="props.showDrag" class="__column-drag-icon" />
                     <IconClose class="column-close" @click="removeRightData(row)" />
                   </div>
                 </div>
@@ -124,6 +124,7 @@ const props = withDefaults(defineProps<TreeTransferProps>(), {
   showFilter: true,
   useTree: false,
   label: 'label',
+  showDrag: false,
 });
 
 const _styleModule = inject('_styleModule', '');
