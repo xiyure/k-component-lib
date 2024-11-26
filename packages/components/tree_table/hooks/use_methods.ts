@@ -275,26 +275,37 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     const parentRow = xeTableData.value.find((item: RowData) => item[id] === target[pid]);
     return isMoveToChild(node, parentRow);
   }
-  async function setTreeExpand(rows: Row | Row[], checked: boolean) {
-    const records = Array.isArray(rows) ? rows : [rows];
-    const isLazy = props.treeConfig?.lazy ?? false;
-    if (!isLazy) {
-      await $table.value?.setTreeExpand(records, checked);
-      return;
-    }
-    await nextTick()
-    const event = new Event('click', { bubbles: true });
-    for (const row of records) {
-      const isExpand = $table.value?.isTreeExpandByRow(row);
-      if (isExpand === checked) {
-        continue;
+  /* TODO: vxe-table的setTreeExpand方法存在问题，这里暂时重写该方法
+    issue:https://github.com/x-extends/vxe-table/issues/2650
+  */
+  async function setTreeExpand(rows: Row | Row[], checked: boolean, timeout: number = 100) {
+    return new Promise(async(resolve) => {
+      const records = Array.isArray(rows) ? rows : [rows];
+      const isLazy = props.treeConfig?.lazy ?? false;
+      if (!isLazy) {
+        await $table.value?.setTreeExpand(records, checked);
+        resolve(null);
       }
-      const rowIconElem: Element = $table.value?.$el.querySelector(`[rowid='${row.id}'] .vxe-tree--btn-wrapper`);
-      if (rowIconElem) {
-        rowIconElem.dispatchEvent(event);
+      try {
+        const event = new Event('click', { bubbles: true });
+        for (const row of records) {
+          await $table.value?.clearTreeExpandLoaded(row);
+          const isExpand = $table.value?.isTreeExpandByRow(row);
+          if (isExpand === checked) {
+            continue;
+          }
+          const rowIconElem: Element = $table.value?.$el.querySelector(`[rowid='${row.id}'] .vxe-tree--btn-wrapper`);
+          if (rowIconElem) {
+            rowIconElem.dispatchEvent(event);
+          }
+        }
+      } catch (error) {
+        console.error(error);
       }
-    }
-
+      setTimeout(() => {
+        resolve(null);
+      }, timeout)
+    })
   }
   // 数据更新时应清除所有缓存数据
   function setTableData(data: RowData[] | undefined) {
