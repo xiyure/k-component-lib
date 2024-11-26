@@ -10,7 +10,7 @@
       >
         <IconArrowRight :class="{ 'is-collapse': !viewCollapse }" />
       </div>
-      <div class="k-view-aside" :style="{ display: viewCollapse ? 'none' : 'block' }">
+      <div class="k-view-aside" :style="{ display: viewCollapse ? 'none' : 'flex' }">
         <div class="k-view__header">
           <div class="view-title text-base font-bold">
             <slot name="header">{{ $t('view') }}</slot>
@@ -20,7 +20,7 @@
           </span>
         </div>
         <div :id="specialViewId" class="k-view__special-data">
-          <el-scrollbar height="100%">
+          <el-scrollbar>
             <template v-if="!useTree">
               <k-view-item
                 v-for="item in specialData"
@@ -146,17 +146,19 @@ const customData = computed(() => props.data?.filter((item) => Boolean(item.cust
 const defaultExpandedKeys = ref<(string | number)[]>([]);
 const currentNodeKey = ref<string | number>('');
 
-
-watch(() => props.defaultActive, (val: string | number | undefined) => {
-  let activeValue = val;
-  if (!val) {
-    activeValue = props.data?.[0].value;
-  }
-  active.value = activeValue;
-  defaultExpandedKeys.value = [activeValue ?? ''];
-  currentNodeKey.value = activeValue ?? '';
-
-}, { immediate: true });
+watch(
+  () => props.defaultActive,
+  (val: string | number | undefined) => {
+    let activeValue = val;
+    if (!val) {
+      activeValue = props.data?.[0].value;
+    }
+    active.value = activeValue;
+    defaultExpandedKeys.value = [activeValue ?? ''];
+    currentNodeKey.value = activeValue ?? '';
+  },
+  { immediate: true },
+);
 
 function handleFresh() {
   emits('refresh');
