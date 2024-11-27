@@ -18,7 +18,7 @@
       <slot name="label">{{ props.label }}</slot>
     </div>
     <div class="k-view-item__other">
-      <span>{{ props.count }}</span>
+      <span v-if="parentProps.showCount">{{ props.count }}</span>
       <el-dropdown v-if="showCustomControl ?? parentProps.showCustomControl" trigger="click" @command="handleCommand">
         <span class="k-view-item-remove" @click.stop.prevent>
           <IconMore />

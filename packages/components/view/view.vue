@@ -127,6 +127,7 @@ const props = withDefaults(defineProps<ViewProps>(), {
   treeConfig: () => ({}),
   showArrow: false,
   indent: 20,
+  showCount: true
 });
 const emits = defineEmits([
   'refresh',

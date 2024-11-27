@@ -6,8 +6,9 @@
     <k-popover
       width="100%"
       :show-arrow="false"
-      :visible="showOptions.length > 0"
+      :visible="popperVisible"
       popper-class="k-script-input-popper"
+      @hide="hidePopper"
     >
       <template #reference>
         <div
@@ -20,14 +21,26 @@
           @focus="handleFocus"
         ></div>
       </template>
-      <k-tree
+      <k-tree-table
+        id="k-script-input-tree"
         ref="$tree"
-        node-key="value"
+        border="none"
+        :use-tree="true"
+        :column="columns"
         :data="options"
+        :show-search-input="true"
+        :show-filter="false"
+        :show-header="false"
+        :show-page="false"
+        :cell-click-toggle-highlight="false"
+        :show-description="false"
+        :show-refresh="false"
+        :row-config="{keyField: 'value', isCurrent: true}"
+        :tree-config="{parentField: 'pid', rowField: 'value'}"
         highlight-current
-        :current-node-key="currentNode"
-        @node-click="handleNodeClick"
-      ></k-tree>
+        adaptive
+        @cell-click="cellClick"
+      ></k-tree-table>
     </k-popover>
     <div class="k-script-input-append">
       <slot name="append"></slot>
@@ -36,9 +49,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, inject, onMounted, onBeforeUnmount, nextTick } from 'vue';
-import { ScriptInputProps, ScriptOptions } from './type';
-import { genRandomStr, treeDataToArray1 } from '../../utils';
+import { ref, computed, watch, inject, onMounted, onBeforeUnmount } from 'vue';
+import { ScriptInputProps } from './type';
+import { genRandomStr, allTreeDataToArray1 } from '../../utils';
 
 defineOptions({
   name: 'KScriptInput',
@@ -51,13 +64,13 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   size: 'base',
 });
 
-const emits = defineEmits(['change', 'input', 'focus', 'blur', 'select']);
+const emits = defineEmits(['change', 'input', 'focus', 'blur', 'select', 'update:modelValue']);
 
 onMounted(() => {
-  KScriptInput.value.addEventListener('keydown', toggleSelect);
+ document.addEventListener('keydown', toggleSelect);
 });
 onBeforeUnmount(() => {
-  KScriptInput.value.removeEventListener('keydown', toggleSelect);
+ document.removeEventListener('keydown', toggleSelect);
 });
 
 const prefix = `_${genRandomStr(8)}`;
@@ -67,34 +80,45 @@ let preTextValue: string = '';
 const curInput = ref('');
 const textValue = ref('');
 const selectedIndex = ref<number>(0);
-const nodeMap = new Map<string, any>();
+const popperVisible = ref(false);
+const columns = [
+  { field: 'label', label: '', treeNode: true }
+]
 
-const showOptions = computed(() => {
-  if (!curInput.value) {
-    return [];
-  }
-  return props.options.filter((item: ScriptOptions) => {
-    return item.label.toLowerCase().indexOf(curInput.value.toLowerCase()) !== -1;
-  });
-});
 const flattedOptions = computed(() => {
-  return treeDataToArray1(showOptions.value, 'children') ?? [];
-});
-const currentNode = computed(() => {
-  return flattedOptions.value[selectedIndex.value]?.value;
+  const tableData = $tree.value?.getTableData().fullData?? [];
+  return allTreeDataToArray1(tableData, 'children') ?? [];
 });
 
-watch(() => props.options, () =>{
-  nextTick(() => {
-    nodeMap.clear();
-    const fullData =treeDataToArray1(props.options, 'children') ?? [];
-    fullData.forEach((item) => {
-      const node =$tree.value.getNode(item.value);
-      nodeMap.set(item.value, node);
-    });
-  });
+watch(() => curInput.value, () => {
+  if (curInput.value === '') {
+    popperVisible.value = false;
+    return;
+  }
+  $tree.value?.filter(curInput.value);
+  if ($tree.value?.getVisibleData()?.length) {
+    popperVisible.value = true;
+  } else {
+    popperVisible.value = false;
+  }
+}, { immediate: true })
+// watch(() => props.modelValue, () => {
+//   console.log(props.modelValue)
+//   const type = typeof props.modelValue;
+//   if ((type !== 'string' && type !== 'number') || props.modelValue === undefined) {
+//     console.warn(`'modelValue' must be a string or number, but got ${type}`);
+//     return;
+//   }
+//   nextTick(() => {
+//     clear();
+//     textValue.value = props.modelValue.toString();
+//     preTextValue = textValue.value;
+//   });
+// }, {immediate: true})
+
+watch(() => textValue.value, () => {
+  emits('update:modelValue', parseText())
 }, {immediate: true})
-
 
 function handleInput(event: InputEvent) {
   if (!(event.target instanceof HTMLElement)) {
@@ -119,11 +143,13 @@ function handleBlur() {
   }
   emits('blur');
 }
-function handleNodeClick(data: any, node: any) {
-  if (!node.isLeaf) {
+function cellClick({ row }: { row: any}) {
+  const rowIndex = flattedOptions.value.findIndex((item) => item.value === row.value);
+  selectedIndex.value = rowIndex;
+  if (row.children?.length) {
     return;
   }
-  selectOption(data);
+  selectOption(row);
 }
 function selectOption(data: any) {
   let endIndex = curInput.value.length ? -curInput.value.length : undefined;
@@ -154,31 +180,46 @@ function parseText() {
       return item;
     })
     .join(' ');
-  emits('change', res)
+  emits('change', res);
+  return res;
 }
 function generateScriptTag(content: string) {
   return `<div class="k-script-tag" contenteditable="false">${content}</div>`
 }
 function toggleSelect(event: KeyboardEvent) {
-
+  const dataLength = flattedOptions.value.length;
   if (event.code === 'ArrowUp') {
-    selectedIndex.value--; 
+    selectedIndex.value = (selectedIndex.value - 1 + dataLength) % dataLength;
+    while (isHideNode(flattedOptions.value[selectedIndex.value])) {
+      selectedIndex.value = (selectedIndex.value - 1 + dataLength) % dataLength;
+    }
   } else if (event.code === 'ArrowDown') {
-    selectedIndex.value++; 
+    selectedIndex.value = (selectedIndex.value + 1) % dataLength;
+    while (isHideNode(flattedOptions.value[selectedIndex.value])) {
+      selectedIndex.value = (selectedIndex.value + 1) % dataLength;
+    }
   }
-  if (selectedIndex.value < 0) {
-    selectedIndex.value = flattedOptions.value.length - 1;
-  } else if (selectedIndex.value >= flattedOptions.value.length) {
-    selectedIndex.value = 0;
+  const targetOption = flattedOptions.value[selectedIndex.value];
+  const row = $tree.value?.getRowById(targetOption?.value);
+  if (row) {
+    $tree.value.setCurrentRow(row);
   }
   if (event.code === 'Enter') {
     event.preventDefault();
-    const targetOption = flattedOptions.value[selectedIndex.value];
-    const targetNode = nodeMap.get(targetOption.value ?? '');
-    if (targetNode.isLeaf) {
+    if (row.children?.length && !row.optional) {
+      $tree.value?.toggleTreeExpand(row);
+    } else {
       selectOption(targetOption);
     }
   }
+}
+
+function isHideNode(rowData: any) {
+  const parentRow = $tree.value?.getRowById(rowData?.pid);
+  if (!parentRow) {
+    return false;
+  }
+  return Boolean(!$tree.value?.isTreeExpandByRow(parentRow) && rowData.pid);
 }
 // 解决输入非字符内容时光标无法移到最后的问题
 function cursorToEnd() {
@@ -188,6 +229,11 @@ function cursorToEnd() {
     range?.selectAllChildren(KScriptInput.value);
     range?.collapseToEnd();
   }
+}
+function hidePopper() {
+  selectedIndex.value = 0;
+  $tree.value?.setCurrentRow(null);
+  $tree.value?.clearTreeExpand();
 }
 function clear() {
   KScriptInput.value.innerHTML = '';

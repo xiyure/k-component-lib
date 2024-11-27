@@ -1081,6 +1081,9 @@ function getRowById(id: string | number) {
   );
   return tempRow ?? null;
 }
+function getVisibleData() {
+  return showTableData.value;
+}
 // vxe-table行数据中dom被销毁时会导致tooltip无法关闭，这里提供手动销毁tooltip方法给予外部调用
 function disposeRowTooltip() {
   const tooltip = document.querySelector('.vxe-table--tooltip-wrapper');
@@ -1142,6 +1145,7 @@ const customMethods = {
   advancedFilter,
   clearAdvancedFilter,
   getAdvancedCondition,
+  getVisibleData,
   getRowById,
   loadData,
   disposeRowTooltip,

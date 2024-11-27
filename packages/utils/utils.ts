@@ -133,6 +133,20 @@ export function treeDataToArray(treeData: any[] | undefined, childrenField: stri
   return result;
 }
 
+export function allTreeDataToArray1(treeData: any[] | undefined, childrenField: string) {
+  if (!Array.isArray(treeData) || treeData.length === 0) {
+    return [];
+  }
+  let result: any[] = [];
+  for (const item of treeData) {
+    result.push(item);
+    if (Array.isArray(item[childrenField])) {
+      result = result.concat(allTreeDataToArray1(item[childrenField], childrenField));
+    }
+  }
+  return result;
+}
+
 export function getValidTreeData(
   treeData: any[],
   childrenField: string,

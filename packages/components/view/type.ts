@@ -10,6 +10,7 @@ export interface ViewProps {
   useTree?: boolean
   treeConfig?: TreeViewConfig
   showArrow?: boolean
+  showCount?: boolean
 }
 export interface ViewData {
   value: any
