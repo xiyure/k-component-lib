@@ -10,7 +10,7 @@
       </div>
       <OverlayScrollbarsComponent
         defer
-        class="flex-1"
+        class="OverlayScrollbarsComponent flex-1"
         :options="{ scrollbars: { autoHide: 'scroll', theme: 'os-theme-light' } }"
       >
         <el-menu v-bind="$attrs" :collapse="useCollapse" @select="handleSelect">
@@ -61,13 +61,13 @@ import { menuViewProps } from './type';
 import SubMenu from './subMenu.vue';
 
 defineOptions({
-  name: 'KMenuView'
+  name: 'KMenuView',
 });
 
 const props = withDefaults(defineProps<menuViewProps>(), {
   options: () => [],
   showCollapse: true,
-  collapse: undefined
+  collapse: undefined,
 });
 const emits = defineEmits(['click', 'select']);
 
