@@ -45,7 +45,11 @@
                     class="column-icon"
                     :color="columnIcon(row)?.color"
                   />
-                  <span class="tree-transfer__cell-label" :title="row[props.label]">
+                  <span
+                    class="tree-transfer__cell-label"
+                    :title="row[props.label]"
+                    @click="addRightData(row)"
+                  >
                     {{ row[props.label] }}
                   </span>
                 </span>
@@ -113,6 +117,7 @@ import { TreeTransferProps, TreeTransferData } from './type';
 import { KTable, KTableColumn } from '../table';
 import { KInput } from '../input';
 import { sortBySmallerList } from '../../utils';
+import { add } from 'lodash-es';
 
 defineOptions({
   name: 'KTreeTransfer',
@@ -412,6 +417,24 @@ const parentData = computed(
       return data;
     },
 );
+
+async function addRightData(row: Row) {
+  const $table = treeLeftRef.value.tableInstance;
+  if (row.pid === undefined || row.pid !== null) {
+    // const targetRow = leftData.value.find((item) => item.id === row.id);
+    const row1 = $table.getRowById(row.id);
+   
+    // 查找 showRightData 中是否已经存在该 row，避免重复添加
+    const addIndex = showRightData.value.findIndex((item) => item.id === row.id);
+    let isCheck = await treeLeftRef.value.tableInstance.isCheckedByCheckboxRow(row1)
+    if (!isCheck) {
+      // 如果不存在，则将其添加到右侧数据
+      showRightData.value.push(row);
+    } else showRightData.value.splice(addIndex, 1);
+    await treeLeftRef.value.tableInstance.setCheckboxRow(row1, !isCheck);
+    emits('change', getSelectedData());
+  }
+}
 
 defineExpose({
   clearData,
