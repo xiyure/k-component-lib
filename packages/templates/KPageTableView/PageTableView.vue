@@ -15,7 +15,7 @@
     <KPageViewBus
       v-if="showAside"
       :title="asideTitle"
-      :info="asideDescriptions"
+      :info="asideInfo"
       :refresh="asideRefresh"
       @refresh="emitEvent('refresh')"
     >
@@ -42,7 +42,7 @@
           </div>
           <p class="KPageHead-title">{{ pageTitle }}</p>
           <div v-if="pageIcon" class="KPageHead-info pl-1">
-            <KTooltip :content="pageDescriptions" @hide="() => (tips = false)">
+            <KTooltip v-if="pageInfo" :content="pageInfo" @hide="() => (tips = false)">
               <IconTips v-show="tips" color="#4193f2" size="16"></IconTips>
             </KTooltip>
           </div>
@@ -64,38 +64,38 @@ import { KPageViewBus } from '../KPageViewBus';
 import { KTooltip } from '../../components';
 
 defineOptions({
-  name: 'KPageTableView'
+  name: 'KPageTableView',
 });
 
 const props = defineProps({
   showAside: {
     type: Boolean,
-    default: false
+    default: false,
   },
   asideTitle: {
     type: String,
-    default: 'viewBus'
+    default: 'viewBus',
   },
-  asideDescriptions: {
+  asideInfo: {
     type: String,
-    default: 'viewBusInfo'
+    default: '',
   },
   asideRefresh: {
     type: Boolean,
-    default: false
+    default: false,
   },
   pageIcon: {
     type: String,
-    default: ''
+    default: '',
   },
   pageTitle: {
     type: String,
-    default: '页面标题'
+    default: '页面标题',
   },
-  pageDescriptions: {
+  pageInfo: {
     type: String,
-    default: '页面描述信息'
-  }
+    default: '',
+  },
 });
 
 const tips = ref(false);
@@ -103,9 +103,9 @@ const tips = ref(false);
 const isImgUrl = /.(jpg|jpeg|png|gif|svg)$/;
 
 // 判断 props.pageIcon 是否是图片链接
-const icon = isImgUrl.test(props.pageIcon) ?
-  () => <img src={props.pageIcon} alt='icon' class='KPageHead-icon' /> :
-  props.pageIcon;
+const icon = isImgUrl.test(props.pageIcon)
+  ? () => <img src={props.pageIcon} alt='icon' class='KPageHead-icon' />
+  : props.pageIcon;
 
 // 自定义事件
 const emitEvent = defineEmits(['refresh']);
