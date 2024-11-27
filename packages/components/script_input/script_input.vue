@@ -1,30 +1,38 @@
 <template>
-  <k-popover
-    width="100%"
-    :show-arrow="false"
-    :visible="popperVisible"
-    popper-class="k-script-input-popper"
-  >
-    <template #reference>
-      <div
-        ref="KScriptInput"
-        :class="['k-script-input', _styleModule]"
-        contenteditable
-        :spellcheck="false"
-        @input="handleInput"
-        @blur="handleBlur"
-        @focus="handleFocus"
-      ></div>
-    </template>
-    <ul>
-      <li
-        v-for="(item, index) in showOptions"
-        :key="item.value"
-        :class="['k-script-option', {'selected': index === selectedIndex }]"
-        @click="selectOption(item, index)"
-      >{{ item.label }}</li>
-    </ul>
-  </k-popover>
+  <div class="k-script-input-wrapper">
+    <div class="k-script-input-append">
+      <slot name="prepend"></slot>
+    </div>
+    <k-popover
+      width="100%"
+      :show-arrow="false"
+      :visible="showOptions.length > 0"
+      popper-class="k-script-input-popper"
+    >
+      <template #reference>
+        <div
+          ref="KScriptInput"
+          :class="['k-script-input', _styleModule]"
+          contenteditable
+          :spellcheck="false"
+          @input="handleInput"
+          @blur="handleBlur"
+          @focus="handleFocus"
+        ></div>
+      </template>
+      <ul>
+        <li
+          v-for="(item, index) in showOptions"
+          :key="item.value"
+          :class="['k-script-option', {'selected': index === selectedIndex }]"
+          @click="selectOption(item, index)"
+        >{{ item.label }}</li>
+      </ul>
+    </k-popover>
+    <div class="k-script-input-append">
+      <slot name="append"></slot>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -57,11 +65,12 @@ const KScriptInput = ref();
 let preTextValue: string = '';
 const curInput = ref('');
 const textValue = ref('');
-const popperVisible = ref(false);
 const selectedIndex = ref(-1);
-let cacheIndex = -1;
 
 const showOptions = computed(() => {
+  if (!curInput.value) {
+    return [];
+  }
   return props.options.filter((item: ScriptOptions) => {
     return item.label.toLowerCase().indexOf(curInput.value.toLowerCase()) !== -1;
   });
@@ -81,19 +90,13 @@ function handleInput(event: InputEvent) {
   textValue.value = KScriptInput.value.innerHTML;
 }
 function handleFocus() {
-  popperVisible.value = true;
-  if (cacheIndex >= 0) {
-    selectedIndex.value = cacheIndex;
-  } else {
-    selectedIndex.value = 0;
-  }
+  selectedIndex.value = 0;
   emits('focus');
 }
 function handleBlur() {
-  popperVisible.value = false;
   if (preTextValue!== textValue.value) {
     preTextValue = textValue.value;
-    parseText()
+    parseText();
   }
   selectedIndex.value = -1;
   emits('blur');
@@ -131,7 +134,6 @@ function parseText() {
       return item;
     })
     .join(' ');
-  console.log(res)
   emits('change', res)
 }
 function generateScriptTag(content: string) {
@@ -163,8 +165,18 @@ function cursorToEnd() {
     range?.collapseToEnd();
   }
 }
-</script>
+function clear() {
+  KScriptInput.value.innerHTML = '';
+  textValue.value = '';
+  preTextValue = '';
+  selectedIndex.value = -1;
+  curInput.value = '';
+}
 
+defineExpose({
+  clear
+})
+</script>
 <style lang="less">
 @import './style.less';
 </style>

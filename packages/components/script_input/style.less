@@ -2,8 +2,16 @@
 @import '../../style/general.less';
 @import '../../style/global.less';
 
+.k-script-input-wrapper {
+  display: flex;
+  .k-script-input-prepend, .k-script-input-append {
+    display: flex;
+    align-items: center;
+  }
+}
 .k-script-input {
   border: 1px solid black;
+  flex: 1;
   .k-script-tag {
     display: inline-block;
     width: fit-content;
