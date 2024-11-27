@@ -1,0 +1,27 @@
+@import '../../style/variable.css';
+@import '../../style/general.less';
+@import '../../style/global.less';
+
+.k-script-input {
+  border: 1px solid black;
+  .k-script-tag {
+    display: inline-block;
+    width: fit-content;
+    padding: 5px 8px;
+    border-radius: 5px;
+    margin:5px;
+    color: #fff;
+    background-color: #2882FF;
+    font-size: 14px;
+  }
+}
+
+.k-script-input-popper {
+  li {
+    margin-bottom: 10px;
+
+    &.selected {
+      background-color: var(--k-blue-200);
+    }
+  }
+}

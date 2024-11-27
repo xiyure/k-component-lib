@@ -39,6 +39,7 @@ import { KTreeSelect } from '../../components/tree_select';
 import { KFilterForm } from '../../components/filter_form';
 import { KButtonContainer } from '../../components/button_container';
 import { KSliderButton } from '../../components/slider_button';
+import { KScriptInput } from '../../components/script_input';
 
 export default [
   KButton,
@@ -92,5 +93,6 @@ export default [
   KTreeTransfer,
   KTreeSelect,
   KFilterForm,
-  KSliderButton
+  KSliderButton,
+  KScriptInput
 ] as Plugin[];

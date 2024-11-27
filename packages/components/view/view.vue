@@ -138,7 +138,7 @@ const emits = defineEmits([
   'node-collapse',
 ]);
 const _styleModule = inject('_styleModule', '');
-const active = ref(props.defaultActive ?? props.data?.[0]?.value ?? '');
+const active = ref<string | number>('');
 
 const specialData = computed(() => props.data?.filter((item) => !item.custom) ?? []);
 const customData = computed(() => props.data?.filter((item) => Boolean(item.custom)));
@@ -151,9 +151,9 @@ watch(
   (val: string | number | undefined) => {
     let activeValue = val;
     if (!val) {
-      activeValue = props.data?.[0].value;
+      activeValue = props.data?.[0]?.value ?? '';
     }
-    active.value = activeValue;
+    active.value = activeValue as string;
     defaultExpandedKeys.value = [activeValue ?? ''];
     currentNodeKey.value = activeValue ?? '';
   },
