@@ -268,6 +268,8 @@ function generateScriptTag(content: string) {
 }
 function toggleSelect(event: KeyboardEvent) {
   const dataLength = flattedOptions.value.length;
+  console.log(KScriptInputWrapper.value);
+  const headerElement = KScriptInputWrapper.value.querySelector('.el-input__inner');
   if (event.code === 'ArrowUp') {
     selectedIndex.value = (selectedIndex.value - 1 + dataLength) % dataLength;
     while (
@@ -290,7 +292,18 @@ function toggleSelect(event: KeyboardEvent) {
   if (row) {
     $tree.value.setCurrentRow(row);
   }
-  if (event.code === 'Enter') {
+  console.log(document.activeElement, headerElement);
+  document.addEventListener('keydown', (event) => {
+    // 检查是否按下了上下左右箭头键
+    if (
+      event.key === 'ArrowUp' ||
+      event.key === 'ArrowDown'
+    ) {
+      headerElement.blur(); // 使元素失去焦点
+      console.log('按下了上下左右箭头键，元素失去焦点');
+    }
+  });
+  if (event.code === 'Enter' && popperVisible.value && document.activeElement !== headerElement) {
     event.preventDefault();
     if (props.useTree && row && row.children?.length && !row.optional) {
       $tree.value?.toggleTreeExpand(row);
