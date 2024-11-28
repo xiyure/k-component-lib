@@ -116,7 +116,7 @@ onBeforeUnmount(() => {
 });
 
 const prefix = `_${genRandomStr(8)}`;
-const dynamicClassName  = `_${genRandomStr(8)}`
+const dynamicClassName = `_${genRandomStr(8)}`;
 const KScriptInput = ref();
 const $tree = ref();
 let preTextValue: string = '';
@@ -295,10 +295,7 @@ function toggleSelect(event: KeyboardEvent) {
   }
   document.addEventListener('keydown', (event) => {
     // 检查是否按下了上下左右箭头键
-    if (
-      event.key === 'ArrowUp' ||
-      event.key === 'ArrowDown'
-    ) {
+    if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
       headerElement.blur(); // 使元素失去焦点
     }
   });
@@ -353,6 +350,10 @@ function showPopper() {
   popperVisible.value = true;
   setTimeout(() => {
     isManual = true;
+  });
+  nextTick(() => {
+    const headerElement = document.querySelector(`.${dynamicClassName} .el-input__inner`);
+    headerElement.focus();
   });
 }
 function hidePopper() {
