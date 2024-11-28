@@ -41,19 +41,25 @@
     flex: 1;
     padding: 0.25rem 0.5rem;
     line-height: 1.5rem;
-    overflow: hidden;
+    // overflow: hidden;
+
+    resize: vertical;
+    min-height: 2rem;
 
     // var_tag
     .k-script-tag {
       display: inline-block;
       width: fit-content;
-      height: 1.5rem;
-      line-height: 1.5rem;
+      height: 1.375rem;
+      line-height: 1.375rem;
       padding: 0 8px;
       border-radius: 0.25rem;
       color: var(--k-theme-text--normal);
       background-color: var(--k-gray-200);
       font-size: 14px;
+      text-wrap: nowrap;
+      text-overflow: ellipsis;
+      margin: 0.0625rem 0;
       & + .k-script-tag {
         margin-left: 0.125rem;
       }
@@ -76,12 +82,22 @@
       background-color: var(--k-blue-200);
     }
   }
-}
-#k-script-input-tree {
-  .k-table-func {
-    width: 100%;
-    .k-input {
-      width: 100% !important;
+
+  #k-script-input-tree {
+    .k-table-func {
+      width: 100%;
+      .k-input {
+        width: 100% !important;
+      }
+    }
+    .k-script-input-tree-disabled {
+      opacity: 0.5;
+      &:hover {
+        background: unset;
+        .col--tree-node {
+          background: unset;
+        }
+      }
     }
   }
 }

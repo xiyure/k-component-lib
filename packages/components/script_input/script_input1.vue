@@ -13,26 +13,28 @@
       placement="bottom"
     >
       <template #reference>
-        <div
-          ref="KScriptInput"
-          :class="['k-script-input', _styleModule]"
-          contenteditable
-          :spellcheck="false"
-          @input="handleInput"
-          @blur="handleBlur"
-          @focus="handleFocus"
-          @compositionstart="
-            () => {
-              isAllowInput = false;
-            }
-          "
-          @compositionend="
-            (e: InputEvent) => {
-              isAllowInput = true;
-              handleInput(e);
-            }
-          "
-        ></div>
+        <el-scrollbar class="flex-1">
+          <div
+            ref="KScriptInput"
+            :class="['k-script-input', _styleModule]"
+            contenteditable
+            :spellcheck="false"
+            @input="handleInput"
+            @blur="handleBlur"
+            @focus="handleFocus"
+            @compositionstart="
+              () => {
+                isAllowInput = false;
+              }
+            "
+            @compositionend="
+              (e: InputEvent) => {
+                isAllowInput = true;
+                handleInput(e);
+              }
+            "
+          ></div>
+        </el-scrollbar>
       </template>
       <k-tree-table
         id="k-script-input-tree"
@@ -55,6 +57,8 @@
             return row.optional !== false;
           },
         }"
+        :showSearchInput="isShowInput"
+        :show-header-tools="isShowInput"
         :row-class-name="
           ({ row }) => {
             if (row.optional === false && !row.children?.length) {
