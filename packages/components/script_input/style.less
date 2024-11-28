@@ -13,9 +13,11 @@
   .k-script-input-append {
     display: flex;
     align-items: center;
+    flex-shrink: 1;
     .k-button {
       border-radius: unset;
       border: unset;
+      height: 100%;
     }
   }
   .k-script-input-prepend:has(.k-button) {
@@ -39,6 +41,7 @@
     flex: 1;
     padding: 0.25rem 0.5rem;
     line-height: 1.5rem;
+    overflow: hidden;
 
     // var_tag
     .k-script-tag {
