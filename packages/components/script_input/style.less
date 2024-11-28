@@ -1,29 +1,67 @@
 @import '../../style/variable.css';
 @import '../../style/general.less';
-@import '../../style/global.less';
 
 .k-script-input-wrapper {
+  width: 100%;
+  border: 1px solid var(--k-gray-200);
+  border-radius: var(--k-theme-button-size-rounded--base);
   display: flex;
-  .k-script-input-prepend, .k-script-input-append {
+  gap: 0.25rem;
+  overflow: hidden;
+  box-sizing: border-box;
+  .k-script-input-prepend,
+  .k-script-input-append {
     display: flex;
     align-items: center;
+    .k-button {
+      border-radius: unset;
+      border: unset;
+    }
   }
-}
-.k-script-input {
-  border: 1px solid black;
-  flex: 1;
-  .k-script-tag {
-    display: inline-block;
-    width: fit-content;
-    padding: 5px 8px;
-    border-radius: 5px;
-    margin:5px;
-    color: #fff;
-    background-color: #2882FF;
-    font-size: 14px;
+  .k-script-input-prepend:has(.k-button) {
+    border-right: 1px solid var(--k-gray-200);
   }
-  .k-tree-table .k-tree-table__header .k-table-func .k-input {
-    width: 100% !important;
+  .k-script-input-append:has(.k-button) {
+    border-left: 1px solid var(--k-gray-200);
+  }
+
+  &:has(.k-script-input:focus-visible) {
+    border: 1px solid var(--k-theme-primary);
+    box-shadow: var(--k-theme-focue-style);
+    transition: all 0.2s ease-in-out;
+  }
+
+  &:hover {
+    border: 1px solid var(--k-theme-primary);
+  }
+
+  .k-script-input {
+    flex: 1;
+    padding: 0.25rem 0.5rem;
+    line-height: 1.5rem;
+
+    // var_tag
+    .k-script-tag {
+      display: inline-block;
+      width: fit-content;
+      height: 1.5rem;
+      line-height: 1.5rem;
+      padding: 0 8px;
+      border-radius: 0.25rem;
+      color: var(--k-theme-text--normal);
+      background-color: var(--k-gray-200);
+      font-size: 14px;
+      & + .k-script-tag {
+        margin-left: 0.125rem;
+      }
+    }
+
+    &:focus-visible {
+      outline: unset;
+    }
+    .k-tree-table .k-tree-table__header .k-table-func .k-input {
+      // width: 100%;
+    }
   }
 }
 
@@ -43,4 +81,4 @@
       width: 100% !important;
     }
   }
-} 
+}
