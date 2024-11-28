@@ -1,6 +1,6 @@
 <template>
   <div class="k-script-input-wrapper">
-    <div class="k-script-input-append">
+    <div class="k-script-input-prepend">
       <slot name="prepend"></slot>
     </div>
     <k-popover
@@ -8,7 +8,7 @@
       :show-arrow="false"
       :visible="popperVisible"
       popper-class="k-script-input-popper"
-      @hide="hidePopper"
+      @hide="onHidePopper"
     >
       <template #reference>
         <div
@@ -19,13 +19,20 @@
           @input="handleInput"
           @blur="handleBlur"
           @focus="handleFocus"
+          @compositionstart="() =>{
+            isAllowInput = false;
+          }"
+          @compositionend="(e: InputEvent) => {
+            isAllowInput = true;
+            handleInput(e)
+          }"
         ></div>
       </template>
       <k-tree-table
         id="k-script-input-tree"
         ref="$tree"
         border="none"
-        :use-tree="true"
+        :use-tree="useTree"
         :column="columns"
         :data="options"
         :show-search-input="true"
@@ -49,9 +56,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, inject, onMounted, onBeforeUnmount } from 'vue';
+import { ref, computed, watch, inject, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import { ScriptInputProps } from './type';
-import { genRandomStr, allTreeDataToArray1 } from '../../utils';
+import { genRandomStr, allTreeDataToArray } from '../../utils';
 
 defineOptions({
   name: 'KScriptInput',
@@ -62,21 +69,25 @@ const _styleModule = inject('_styleModule', '');
 const props = withDefaults(defineProps<ScriptInputProps>(), {
   options: () => [],
   size: 'base',
+  useTree: false
 });
 
 const emits = defineEmits(['change', 'input', 'focus', 'blur', 'select', 'update:modelValue']);
 
 onMounted(() => {
- document.addEventListener('keydown', toggleSelect);
+  document.addEventListener('keydown', toggleSelect);
+ 
 });
 onBeforeUnmount(() => {
- document.removeEventListener('keydown', toggleSelect);
+  document.removeEventListener('keydown', toggleSelect);
 });
 
 const prefix = `_${genRandomStr(8)}`;
 const KScriptInput = ref();
 const $tree = ref();
 let preTextValue: string = '';
+const isAllowInput = ref(true);
+let cacheRes = '';
 const curInput = ref('');
 const textValue = ref('');
 const selectedIndex = ref<number>(0);
@@ -87,7 +98,7 @@ const columns = [
 
 const flattedOptions = computed(() => {
   const tableData = $tree.value?.getTableData().fullData?? [];
-  return allTreeDataToArray1(tableData, 'children') ?? [];
+  return allTreeDataToArray(tableData, 'children') ?? [];
 });
 
 watch(() => curInput.value, () => {
@@ -102,26 +113,30 @@ watch(() => curInput.value, () => {
     popperVisible.value = false;
   }
 }, { immediate: true })
-// watch(() => props.modelValue, () => {
-//   console.log(props.modelValue)
-//   const type = typeof props.modelValue;
-//   if ((type !== 'string' && type !== 'number') || props.modelValue === undefined) {
-//     console.warn(`'modelValue' must be a string or number, but got ${type}`);
-//     return;
-//   }
-//   nextTick(() => {
-//     clear();
-//     textValue.value = props.modelValue.toString();
-//     preTextValue = textValue.value;
-//   });
-// }, {immediate: true})
+watch(() => props.modelValue, (newValue) => {
+  const type = typeof newValue;
+  if ((type !== 'string' && type !== 'number') || newValue === undefined) {
+    console.warn(`'modelValue' must be a string or number, but got ${type}`);
+    return;
+  }
+  if (newValue === cacheRes) {
+    return;
+  }
+  nextTick(() => {
+    clear();
+    textValue.value = props.modelValue.toString();
+    preTextValue = textValue.value;
+  });
+}, {immediate: true})
 
 watch(() => textValue.value, () => {
-  emits('update:modelValue', parseText())
+  const res = parseText();
+  cacheRes = res;
+  emits('update:modelValue', res);
 }, {immediate: true})
 
 function handleInput(event: InputEvent) {
-  if (!(event.target instanceof HTMLElement)) {
+  if (!(event.target instanceof HTMLElement) || !isAllowInput.value) {
     return;
   }
   if (event.data === ' ') {
@@ -187,6 +202,12 @@ function generateScriptTag(content: string) {
   return `<div class="k-script-tag" contenteditable="false">${content}</div>`
 }
 function toggleSelect(event: KeyboardEvent) {
+  if (!popperVisible.value || !KScriptInput.value) {
+    if (event.code === 'Enter') {
+      document.execCommand('insertHTML', false, '<br>');
+    }
+    return;
+  }
   const dataLength = flattedOptions.value.length;
   if (event.code === 'ArrowUp') {
     selectedIndex.value = (selectedIndex.value - 1 + dataLength) % dataLength;
@@ -206,7 +227,7 @@ function toggleSelect(event: KeyboardEvent) {
   }
   if (event.code === 'Enter') {
     event.preventDefault();
-    if (row.children?.length && !row.optional) {
+    if (props.useTree && row && row.children?.length && !row.optional) {
       $tree.value?.toggleTreeExpand(row);
     } else {
       selectOption(targetOption);
@@ -230,10 +251,17 @@ function cursorToEnd() {
     range?.collapseToEnd();
   }
 }
-function hidePopper() {
+function onHidePopper() {
   selectedIndex.value = 0;
   $tree.value?.setCurrentRow(null);
   $tree.value?.clearTreeExpand();
+}
+function showPopper() {
+  popperVisible.value = true;
+}
+function hidePopper() {
+  popperVisible.value = false;
+  onHidePopper();
 }
 function clear() {
   KScriptInput.value.innerHTML = '';
@@ -243,7 +271,9 @@ function clear() {
 }
 
 defineExpose({
-  clear
+  clear,
+  showPopper,
+  hidePopper
 })
 </script>
 <style lang="less">
