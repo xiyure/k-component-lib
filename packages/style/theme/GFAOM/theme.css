@@ -2,7 +2,7 @@
 @import './custom.less';
 
 body.GFAOM {
-  --k-theme-test: red;
+  --k-theme-test: blue;
   --theme-name: 'Hello, GFAOM!';
   /*
    * 主题色 theme color🎨 
