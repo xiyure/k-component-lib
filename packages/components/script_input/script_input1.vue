@@ -42,10 +42,11 @@
         :use-tree="useTree"
         :column="columns"
         :data="options"
-        :show-search-input="true"
+        :show-search-input="isShowInput"
         :show-filter="false"
         :show-header="false"
         :show-page="false"
+        :show-header-tools="isShowInput"
         :cell-click-toggle-highlight="false"
         :show-description="false"
         :show-refresh="false"
@@ -56,8 +57,6 @@
             return row.optional !== false;
           },
         }"
-        :showSearchInput="isShowInput"
-        :show-header-tools="isShowInput"
         :row-class-name="
           ({ row }) => {
             if (row.optional === false && !row.children?.length) {
@@ -108,10 +107,12 @@ const emits = defineEmits(['change', 'input', 'focus', 'blur', 'select', 'update
 
 onMounted(() => {
   document.addEventListener('keydown', toggleSelect);
+  document.addEventListener('click', hidePopperByClick);
   handleResize();
 });
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', toggleSelect);
+  document.removeEventListener('click', hidePopperByClick);
 });
 
 const prefix = `_${genRandomStr(8)}`;
@@ -125,6 +126,7 @@ const textValue = ref('');
 const selectedIndex = ref<number>(0);
 const popperVisible = ref(false);
 const columns = [{ field: 'label', label: '', treeNode: true }];
+let isManual = false;
 
 const isShowInput = ref(false);
 
@@ -152,7 +154,7 @@ const flattedOptions = computed(() => {
 watch(
   () => curInput.value,
   () => {
-    if (curInput.value === '') {
+    if (curInput.value === '' && !isManual) {
       popperVisible.value = false;
       return;
     }
@@ -249,7 +251,7 @@ function parseText() {
     text = text.replace(replaceReg, `${prefix}-${label}&nbsp;`);
   }
   const res = text
-    .split('&nbsp;')
+    .split(/&nbsp;| /g)
     .filter((item) => item !== '')
     .map((item) => {
       if (item.startsWith(prefix + '-')) {
@@ -328,14 +330,31 @@ function onHidePopper() {
   $tree.value?.setCurrentRow(null);
   $tree.value?.clearTreeExpand();
   isShowInput.value = false;
+  if (isManual) {
+    isManual = false;
+  }
 }
 function showPopper() {
+  if (popperVisible.value) {
+    return;
+  }
+  curInput.value = '';
   isShowInput.value = true;
   popperVisible.value = true;
+  setTimeout(() => {
+    isManual = true;
+  });
 }
 function hidePopper() {
   popperVisible.value = false;
   onHidePopper();
+}
+function hidePopperByClick(event: MouseEvent) {
+  const popperElem = document.querySelector('.k-script-input-popper');
+  if (!isManual || popperElem?.contains?.(event.target as Node)) {
+    return;
+  }
+  hidePopper();
 }
 function clear() {
   KScriptInput.value.innerHTML = '';
