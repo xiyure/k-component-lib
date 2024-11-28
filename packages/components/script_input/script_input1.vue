@@ -8,6 +8,7 @@
       :show-arrow="false"
       :visible="popperVisible"
       popper-class="k-script-input-popper"
+      @show="onShowPopper"
       @hide="onHidePopper"
     >
       <template #reference>
@@ -42,7 +43,18 @@
         :cell-click-toggle-highlight="false"
         :show-description="false"
         :show-refresh="false"
-        :row-config="{keyField: 'value', isCurrent: true}"
+        :row-config="{
+          keyField: 'value',
+          isCurrent: true,
+          currentMethod: ({ row }) => {
+          return row.optional !== false
+        }}"
+        :row-class-name="({ row }) => {
+          if (row.optional === false && !row.children?.length) {
+            return 'k-script-input-tree-disabled';
+          }
+          return '';
+        }"
         :tree-config="{parentField: 'pid', rowField: 'value'}"
         highlight-current
         adaptive
@@ -159,6 +171,9 @@ function handleBlur() {
   emits('blur');
 }
 function cellClick({ row }: { row: any}) {
+  if (row.optional === false) {
+    return;
+  }
   const rowIndex = flattedOptions.value.findIndex((item) => item.value === row.value);
   selectedIndex.value = rowIndex;
   if (row.children?.length) {
@@ -175,6 +190,7 @@ function selectOption(data: any) {
   KScriptInput.value.innerHTML = textValue.value;
   cursorToEnd();
   emits('select', data);
+  popperVisible.value = false;
 }
 function parseText() {
   let text = textValue.value;
@@ -202,21 +218,19 @@ function generateScriptTag(content: string) {
   return `<div class="k-script-tag" contenteditable="false">${content}</div>`
 }
 function toggleSelect(event: KeyboardEvent) {
-  if (!popperVisible.value || !KScriptInput.value) {
-    if (event.code === 'Enter') {
-      document.execCommand('insertHTML', false, '<br>');
-    }
-    return;
-  }
   const dataLength = flattedOptions.value.length;
   if (event.code === 'ArrowUp') {
     selectedIndex.value = (selectedIndex.value - 1 + dataLength) % dataLength;
-    while (isHideNode(flattedOptions.value[selectedIndex.value])) {
+    while (isHideNode(flattedOptions.value[selectedIndex.value])
+      || flattedOptions.value[selectedIndex.value].optional === false
+    ) {
       selectedIndex.value = (selectedIndex.value - 1 + dataLength) % dataLength;
     }
   } else if (event.code === 'ArrowDown') {
     selectedIndex.value = (selectedIndex.value + 1) % dataLength;
-    while (isHideNode(flattedOptions.value[selectedIndex.value])) {
+    while (isHideNode(flattedOptions.value[selectedIndex.value])
+      || flattedOptions.value[selectedIndex.value].optional === false
+    ) {
       selectedIndex.value = (selectedIndex.value + 1) % dataLength;
     }
   }
@@ -249,6 +263,13 @@ function cursorToEnd() {
     const range = window.getSelection();
     range?.selectAllChildren(KScriptInput.value);
     range?.collapseToEnd();
+  }
+}
+function onShowPopper() {
+  const value = flattedOptions.value?.[0]?.value;
+  const row = $tree.value?.getRowById(value);
+  if (row) {
+    $tree.value.setCurrentRow(row);
   }
 }
 function onHidePopper() {
