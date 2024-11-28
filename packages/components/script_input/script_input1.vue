@@ -4,13 +4,12 @@
       <slot name="prepend"></slot>
     </div>
     <k-popover
-      :width="popover"
+      :width="popoverWidth"
       :show-arrow="false"
       :visible="popperVisible"
       popper-class="k-script-input-popper"
       @show="onShowPopper"
       @hide="onHidePopper"
-      placement="bottom"
     >
       <template #reference>
         <el-scrollbar class="flex-1">
@@ -80,7 +79,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, inject, onMounted, onBeforeUnmount, nextTick } from 'vue';
+import {
+  ref,
+  computed,
+  watch,
+  inject,
+  onMounted,
+  onBeforeUnmount,
+  nextTick,
+  onUnmounted,
+} from 'vue';
 import { ScriptInputProps } from './type';
 import { genRandomStr, allTreeDataToArray } from '../../utils';
 
@@ -100,6 +108,7 @@ const emits = defineEmits(['change', 'input', 'focus', 'blur', 'select', 'update
 
 onMounted(() => {
   document.addEventListener('keydown', toggleSelect);
+  handleResize();
 });
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', toggleSelect);
@@ -120,29 +129,20 @@ const columns = [{ field: 'label', label: '', treeNode: true }];
 const isShowInput = ref(false);
 
 const KScriptInputWrapper = ref();
-const popover = ref();
+const popoverWidth = ref(0);
 
-// 获取 KScriptInputWrapper 的宽度
-const getWidth = () => {
-  nextTick(() => {
-    if (!KScriptInputWrapper.value) {
-      return;
-    }
-    const { width } = KScriptInputWrapper.value.getBoundingClientRect();
-    popover.value = `${width}px`;
-  });
-};
+// 监测窗口发生变化后
+window.addEventListener('resize', handleResize);
 
-// 监听屏幕尺寸发生改变时
-watch(
-  () => window.innerWidth,
-  () => {
-    getWidth();
-  },
-  {
-    immediate: true,
-  },
-);
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize);
+});
+
+function handleResize() {
+  // 获取 KScriptInputWrapper 的 宽度
+  popoverWidth.value = KScriptInputWrapper.value?.offsetWidth ?? 0;
+  console.log('handleResize', popoverWidth.value);
+}
 
 const flattedOptions = computed(() => {
   const tableData = $tree.value?.getTableData().fullData ?? [];
