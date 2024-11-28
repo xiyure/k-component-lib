@@ -1,33 +1,75 @@
 <template>
-  <div class="k-script-input-wrapper">
-    <div class="k-script-input-append">
+  <div class="k-script-input-wrapper" ref="KScriptInputWrapper">
+    <div class="k-script-input-prepend">
       <slot name="prepend"></slot>
     </div>
     <k-popover
-      width="100%"
+      :width="popoverWidth"
       :show-arrow="false"
-      :visible="showOptions.length > 0"
-      popper-class="k-script-input-popper"
+      :visible="popperVisible"
+      :popper-class="`k-script-input-popper ${dynamicClassName}`"
+      @show="onShowPopper"
+      @hide="onHidePopper"
     >
       <template #reference>
-        <div
-          ref="KScriptInput"
-          :class="['k-script-input', _styleModule]"
-          contenteditable
-          :spellcheck="false"
-          @input="handleInput"
-          @blur="handleBlur"
-          @focus="handleFocus"
-        ></div>
+        <el-scrollbar class="flex-1">
+          <div
+            ref="KScriptInput"
+            :class="['k-script-input', _styleModule]"
+            contenteditable
+            :spellcheck="false"
+            @input="handleInput"
+            @blur="handleBlur"
+            @focus="handleFocus"
+            @compositionstart="
+              () => {
+                isAllowInput = false;
+              }
+            "
+            @compositionend="
+              (e: InputEvent) => {
+                isAllowInput = true;
+                handleInput(e);
+              }
+            "
+          ></div>
+        </el-scrollbar>
       </template>
-      <k-tree
+      <k-tree-table
+        id="k-script-input-tree"
         ref="$tree"
-        node-key="value"
+        border="none"
+        :use-tree="useTree"
+        :column="columns"
         :data="options"
+        :show-search-input="isShowInput"
+        :show-filter="false"
+        :show-header="false"
+        :show-page="false"
+        :show-header-tools="isShowInput"
+        :cell-click-toggle-highlight="false"
+        :show-description="false"
+        :show-refresh="false"
+        :row-config="{
+          keyField: 'value',
+          isCurrent: true,
+          currentMethod: ({ row }) => {
+            return row.optional !== false;
+          },
+        }"
+        :row-class-name="
+          ({ row }) => {
+            if (row.optional === false && !row.children?.length) {
+              return 'k-script-input-tree-disabled';
+            }
+            return '';
+          }
+        "
+        :tree-config="{ parentField: 'pid', rowField: 'value' }"
         highlight-current
-        :current-node-key="currentNode"
-        @node-click="handleNodeClick"
-      ></k-tree>
+        adaptive
+        @cell-click="cellClick"
+      ></k-tree-table>
     </k-popover>
     <div class="k-script-input-append">
       <slot name="append"></slot>
@@ -36,9 +78,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, inject, onMounted, onBeforeUnmount, nextTick } from 'vue';
-import { ScriptInputProps, ScriptOptions } from './type';
-import { genRandomStr, treeDataToArray1 } from '../../utils';
+import {
+  ref,
+  computed,
+  watch,
+  inject,
+  onMounted,
+  onBeforeUnmount,
+  nextTick,
+  onUnmounted,
+} from 'vue';
+import { ScriptInputProps } from './type';
+import { genRandomStr, allTreeDataToArray } from '../../utils';
 
 defineOptions({
   name: 'KScriptInput',
@@ -49,60 +100,111 @@ const _styleModule = inject('_styleModule', '');
 const props = withDefaults(defineProps<ScriptInputProps>(), {
   options: () => [],
   size: 'base',
+  useTree: false,
 });
 
-const emits = defineEmits(['change', 'input', 'focus', 'blur', 'select']);
+const emits = defineEmits(['change', 'input', 'focus', 'blur', 'select', 'update:modelValue']);
 
 onMounted(() => {
-  KScriptInput.value.addEventListener('keydown', toggleSelect);
+  document.addEventListener('keydown', toggleSelect);
+  document.addEventListener('click', hidePopperByClick);
+  handleResize();
 });
 onBeforeUnmount(() => {
-  KScriptInput.value.removeEventListener('keydown', toggleSelect);
+  document.removeEventListener('keydown', toggleSelect);
+  document.removeEventListener('click', hidePopperByClick);
 });
 
 const prefix = `_${genRandomStr(8)}`;
+const dynamicClassName = `_${genRandomStr(8)}`;
 const KScriptInput = ref();
 const $tree = ref();
 let preTextValue: string = '';
+const isAllowInput = ref(true);
+let cacheRes = '';
 const curInput = ref('');
 const textValue = ref('');
 const selectedIndex = ref<number>(0);
-const nodeMap = new Map<string, any>();
+const popperVisible = ref(false);
+const columns = [{ field: 'label', label: '', treeNode: true }];
+let isManual = false;
 
-const showOptions = computed(() => {
-  if (!curInput.value) {
-    return [];
-  }
-  return props.options.filter((item: ScriptOptions) => {
-    return item.label.toLowerCase().indexOf(curInput.value.toLowerCase()) !== -1;
-  });
+const isShowInput = ref(false);
+
+const KScriptInputWrapper = ref();
+const popoverWidth = ref(0);
+
+// 监测窗口发生变化后
+window.addEventListener('resize', handleResize);
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize);
 });
+
+function handleResize() {
+  // 获取 KScriptInputWrapper 的 宽度
+  popoverWidth.value = KScriptInputWrapper.value?.offsetWidth ?? 0;
+}
+
 const flattedOptions = computed(() => {
-  return treeDataToArray1(showOptions.value, 'children') ?? [];
-});
-const currentNode = computed(() => {
-  return flattedOptions.value[selectedIndex.value]?.value;
+  const tableData = $tree.value?.getTableData().fullData ?? [];
+  return allTreeDataToArray(tableData, 'children') ?? [];
 });
 
-watch(() => props.options, () =>{
-  nextTick(() => {
-    nodeMap.clear();
-    const fullData =treeDataToArray1(props.options, 'children') ?? [];
-    fullData.forEach((item) => {
-      const node =$tree.value.getNode(item.value);
-      nodeMap.set(item.value, node);
+watch(
+  () => curInput.value,
+  () => {
+    if (curInput.value === '' && !isManual) {
+      popperVisible.value = false;
+      return;
+    }
+    $tree.value?.filter(curInput.value);
+    if ($tree.value?.getVisibleData()?.length) {
+      popperVisible.value = true;
+    } else {
+      popperVisible.value = false;
+    }
+  },
+  { immediate: true },
+);
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    const type = typeof newValue;
+    if ((type !== 'string' && type !== 'number') || newValue === undefined) {
+      console.warn(`'modelValue' must be a string or number, but got ${type}`);
+      return;
+    }
+    if (newValue === cacheRes) {
+      return;
+    }
+    nextTick(() => {
+      clear();
+      textValue.value = props.modelValue.toString();
+      preTextValue = textValue.value;
+      KScriptInput.value.innerHTML = textValue.value;
     });
-  });
-}, {immediate: true})
+  },
+  { immediate: true },
+);
 
+watch(
+  () => textValue.value,
+  () => {
+    const res = parseText();
+    cacheRes = res;
+    emits('update:modelValue', res);
+  },
+  { immediate: true },
+);
 
 function handleInput(event: InputEvent) {
-  if (!(event.target instanceof HTMLElement)) {
+  if (!(event.target instanceof HTMLElement) || !isAllowInput.value) {
     return;
   }
   if (event.data === ' ') {
     curInput.value = '';
-  } else if(event.data === null) {
+  } else if (event.data === null) {
     curInput.value = curInput.value.slice(0, -1);
   } else {
     curInput.value += event.data ?? '';
@@ -113,37 +215,44 @@ function handleFocus() {
   emits('focus');
 }
 function handleBlur() {
-  if (preTextValue!== textValue.value) {
+  if (preTextValue !== textValue.value) {
     preTextValue = textValue.value;
     parseText();
   }
   emits('blur');
 }
-function handleNodeClick(data: any, node: any) {
-  if (!node.isLeaf) {
+function cellClick({ row }: { row: any }) {
+  if (row.optional === false) {
     return;
   }
-  selectOption(data);
+  const rowIndex = flattedOptions.value.findIndex((item) => item.value === row.value);
+  selectedIndex.value = rowIndex;
+  if (row.children?.length) {
+    return;
+  }
+  selectOption(row);
 }
 function selectOption(data: any) {
   let endIndex = curInput.value.length ? -curInput.value.length : undefined;
   textValue.value = textValue.value.slice(0, endIndex);
   curInput.value = '';
-  textValue.value += generateScriptTag(data.label)
+  textValue.value += generateScriptTag(data.label);
   preTextValue = textValue.value;
   KScriptInput.value.innerHTML = textValue.value;
   cursorToEnd();
   emits('select', data);
+  popperVisible.value = false;
 }
 function parseText() {
   let text = textValue.value;
-  const replaceReg = /<div[^>]*>(.*?)<\/div>/
+  const replaceReg = /<div[^>]*>(.*?)<\/div>/;
   while (replaceReg.test(text)) {
     const regex = />([\s\S]*?)<\/div>/;
     const label = text.match(regex)?.[1] ?? '';
     text = text.replace(replaceReg, `${prefix}-${label}&nbsp;`);
   }
-  const res = text.split('&nbsp;')
+  const res = text
+    .split(/&nbsp;| /g)
     .filter((item) => item !== '')
     .map((item) => {
       if (item.startsWith(prefix + '-')) {
@@ -154,31 +263,59 @@ function parseText() {
       return item;
     })
     .join(' ');
-  emits('change', res)
+  emits('change', res);
+  return res;
 }
 function generateScriptTag(content: string) {
-  return `<div class="k-script-tag" contenteditable="false">${content}</div>`
+  return `<div class="k-script-tag" contenteditable="false">${content}</div>`;
 }
 function toggleSelect(event: KeyboardEvent) {
-
+  const dataLength = flattedOptions.value.length;
+  const headerElement = document.querySelector(`.${dynamicClassName} .el-input__inner`);
   if (event.code === 'ArrowUp') {
-    selectedIndex.value--; 
+    selectedIndex.value = (selectedIndex.value - 1 + dataLength) % dataLength;
+    while (
+      isHideNode(flattedOptions.value[selectedIndex.value]) ||
+      flattedOptions.value[selectedIndex.value].optional === false
+    ) {
+      selectedIndex.value = (selectedIndex.value - 1 + dataLength) % dataLength;
+    }
   } else if (event.code === 'ArrowDown') {
-    selectedIndex.value++; 
+    selectedIndex.value = (selectedIndex.value + 1) % dataLength;
+    while (
+      isHideNode(flattedOptions.value[selectedIndex.value]) ||
+      flattedOptions.value[selectedIndex.value].optional === false
+    ) {
+      selectedIndex.value = (selectedIndex.value + 1) % dataLength;
+    }
   }
-  if (selectedIndex.value < 0) {
-    selectedIndex.value = flattedOptions.value.length - 1;
-  } else if (selectedIndex.value >= flattedOptions.value.length) {
-    selectedIndex.value = 0;
+  const targetOption = flattedOptions.value[selectedIndex.value];
+  const row = $tree.value?.getRowById(targetOption?.value);
+  if (row) {
+    $tree.value.setCurrentRow(row);
   }
-  if (event.code === 'Enter') {
+  document.addEventListener('keydown', (event) => {
+    // 检查是否按下了上下左右箭头键
+    if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+      headerElement?.blur(); // 使元素失去焦点
+    }
+  });
+  if (event.code === 'Enter' && popperVisible.value && document.activeElement !== headerElement) {
     event.preventDefault();
-    const targetOption = flattedOptions.value[selectedIndex.value];
-    const targetNode = nodeMap.get(targetOption.value ?? '');
-    if (targetNode.isLeaf) {
+    if (props.useTree && row && row.children?.length && !row.optional) {
+      $tree.value?.toggleTreeExpand(row);
+    } else {
       selectOption(targetOption);
     }
   }
+}
+
+function isHideNode(rowData: any) {
+  const parentRow = $tree.value?.getRowById(rowData?.pid);
+  if (!parentRow) {
+    return false;
+  }
+  return Boolean(!$tree.value?.isTreeExpandByRow(parentRow) && rowData.pid);
 }
 // 解决输入非字符内容时光标无法移到最后的问题
 function cursorToEnd() {
@@ -189,6 +326,48 @@ function cursorToEnd() {
     range?.collapseToEnd();
   }
 }
+function onShowPopper() {
+  const value = flattedOptions.value?.[0]?.value;
+  const row = $tree.value?.getRowById(value);
+  if (row) {
+    $tree.value.setCurrentRow(row);
+  }
+}
+function onHidePopper() {
+  selectedIndex.value = 0;
+  $tree.value?.setCurrentRow(null);
+  $tree.value?.clearTreeExpand();
+  isShowInput.value = false;
+  if (isManual) {
+    isManual = false;
+  }
+}
+function showPopper() {
+  if (popperVisible.value) {
+    return;
+  }
+  curInput.value = '';
+  isShowInput.value = true;
+  popperVisible.value = true;
+  setTimeout(() => {
+    isManual = true;
+  });
+  nextTick(() => {
+    const headerElement = document.querySelector(`.${dynamicClassName} .el-input__inner`);
+    headerElement?.focus();
+  });
+}
+function hidePopper() {
+  popperVisible.value = false;
+  onHidePopper();
+}
+function hidePopperByClick(event: MouseEvent) {
+  const popperElem = document.querySelector(`.${dynamicClassName}`);
+  if (!isManual || popperElem?.contains?.(event.target as Node)) {
+    return;
+  }
+  hidePopper();
+}
 function clear() {
   KScriptInput.value.innerHTML = '';
   textValue.value = '';
@@ -197,8 +376,10 @@ function clear() {
 }
 
 defineExpose({
-  clear
-})
+  clear,
+  showPopper,
+  hidePopper,
+});
 </script>
 <style lang="less">
 @import './style.less';
