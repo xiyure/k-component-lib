@@ -7,7 +7,7 @@
       :width="popoverWidth"
       :show-arrow="false"
       :visible="popperVisible"
-      popper-class="k-script-input-popper"
+      :popper-class="`k-script-input-popper ${dynamicClassName}`"
       @show="onShowPopper"
       @hide="onHidePopper"
     >
@@ -116,6 +116,7 @@ onBeforeUnmount(() => {
 });
 
 const prefix = `_${genRandomStr(8)}`;
+const dynamicClassName  = `_${genRandomStr(8)}`
 const KScriptInput = ref();
 const $tree = ref();
 let preTextValue: string = '';
@@ -143,7 +144,6 @@ onUnmounted(() => {
 function handleResize() {
   // 获取 KScriptInputWrapper 的 宽度
   popoverWidth.value = KScriptInputWrapper.value?.offsetWidth ?? 0;
-  console.log('handleResize', popoverWidth.value);
 }
 
 const flattedOptions = computed(() => {
@@ -363,7 +363,7 @@ function hidePopper() {
   onHidePopper();
 }
 function hidePopperByClick(event: MouseEvent) {
-  const popperElem = document.querySelector('.k-script-input-popper');
+  const popperElem = document.querySelector(`.${dynamicClassName}`);
   if (!isManual || popperElem?.contains?.(event.target as Node)) {
     return;
   }
