@@ -128,6 +128,7 @@ const selectedIndex = ref<number>(0);
 const popperVisible = ref(false);
 const columns = [{ field: 'label', label: '', treeNode: true }];
 let isManual = false;
+const isStringMode = ref(true)
 
 const isShowInput = ref(false);
 
@@ -180,8 +181,8 @@ watch(
     }
     nextTick(() => {
       clear();
-      textValue.value = props.modelValue.toString();
       preTextValue = textValue.value;
+      textValue.value = parseModelValue(newValue.toString());
       KScriptInput.value.innerHTML = textValue.value;
     });
   },
@@ -209,16 +210,13 @@ function handleInput(event: InputEvent) {
   } else {
     curInput.value += event.data ?? '';
   }
+  preTextValue = textValue.value;
   textValue.value = KScriptInput.value.innerHTML;
 }
 function handleFocus() {
   emits('focus');
 }
 function handleBlur() {
-  if (preTextValue !== textValue.value) {
-    preTextValue = textValue.value;
-    parseText();
-  }
   emits('blur');
 }
 function cellClick({ row }: { row: any }) {
@@ -233,23 +231,31 @@ function cellClick({ row }: { row: any }) {
   selectOption(row);
 }
 function selectOption(data: any) {
-  let endIndex = curInput.value.length ? -curInput.value.length : undefined;
-  textValue.value = textValue.value.slice(0, endIndex);
+  removeInvalidChar();
+  textValue.value = textValue.value + generateScriptTag(data.label);
   curInput.value = '';
-  textValue.value += generateScriptTag(data.label);
   preTextValue = textValue.value;
   KScriptInput.value.innerHTML = textValue.value;
   cursorToEnd();
   emits('select', data);
   popperVisible.value = false;
 }
+function removeInvalidChar() {
+  const text = textValue.value;
+  const index = text.lastIndexOf(curInput.value);
+  if (index === -1) {
+    return;
+  }
+  textValue.value = text.slice(0, index) + text.slice(index + curInput.value.length);
+}
 function parseText() {
-  let text = textValue.value;
+  let text = parseValue();
   const replaceReg = /<div[^>]*>(.*?)<\/div>/;
   while (replaceReg.test(text)) {
     const regex = />([\s\S]*?)<\/div>/;
     const label = text.match(regex)?.[1] ?? '';
-    text = text.replace(replaceReg, `${prefix}-${label}&nbsp;`);
+    const targetLabel = fxSet.has(label) ? `fx(${label})` : `${prefix}-${label}&nbsp;` ;
+    text = text.replace(replaceReg, targetLabel);
   }
   const res = text
     .split(/&nbsp;| /g)
@@ -258,13 +264,37 @@ function parseText() {
       if (item.startsWith(prefix + '-')) {
         const label = item.slice(10);
         const targetOption = props.options.find((item) => item.label === label);
-        return targetOption?.value ?? null;
+        return `fx(${targetOption?.value ?? null})`;
       }
       return item;
     })
     .join(' ');
   emits('change', res);
   return res;
+}
+function parseValue() {
+  let text = textValue.value;
+  const divTagReg = /<div>(.*?)<\/div>/;
+  while (divTagReg.test(text)) {
+    const regex = /<div>([\s\S]*?)<\/div>/;
+    const divLabel = text.match(regex)?.[1] ?? '';
+    text = text.replace(divTagReg, `&nbsp;${divLabel}`);
+  }
+  return text;
+}
+const funcReg = /fx\((.*?)\)/;
+const fxSet = new Set();
+function parseModelValue(value: string) {
+  let originText = value;
+  while (funcReg.test(originText)) {
+    const match = originText.match(funcReg)
+    if (match?.[0] === undefined || match?.[1] === undefined) {
+      break;
+    }
+    fxSet.add(match[1]);
+    originText = originText.replace(match?.[0], generateScriptTag(match[1]));
+  }
+  return originText;
 }
 function generateScriptTag(content: string) {
   return `<div class="k-script-tag" contenteditable="false">${content}</div>`;
@@ -307,6 +337,8 @@ function toggleSelect(event: KeyboardEvent) {
     } else {
       selectOption(targetOption);
     }
+  } else if (event.code === 'Enter') {
+    curInput.value = '';
   }
 }
 
