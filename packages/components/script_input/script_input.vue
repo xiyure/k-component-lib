@@ -6,7 +6,7 @@
     <k-popover
       :width="popoverWidth"
       :show-arrow="false"
-      :visible="popperVisible"
+      :visible="popperVisible && _isStringMode"
       :popper-class="`k-script-input-popper ${dynamicClassName}`"
       @show="onShowPopper"
       @hide="onHidePopper"
@@ -128,7 +128,7 @@ const selectedIndex = ref<number>(0);
 const popperVisible = ref(false);
 const columns = [{ field: 'label', label: '', treeNode: true }];
 let isManual = false;
-const isStringMode = ref(true)
+const _isStringMode = ref(true)
 
 const isShowInput = ref(false);
 
@@ -253,9 +253,11 @@ function parseText() {
   const replaceReg = /<div[^>]*>(.*?)<\/div>/;
   while (replaceReg.test(text)) {
     const regex = />([\s\S]*?)<\/div>/;
-    const label = text.match(regex)?.[1] ?? '';
-    const targetLabel = fxSet.has(label) ? `fx(${label})` : `${prefix}-${label}&nbsp;` ;
-    text = text.replace(replaceReg, targetLabel);
+    let label = text.match(regex)?.[1] ?? '';
+    if (_isStringMode.value) {
+      label = fxSet.has(label) ? `fx(${label})` : `${prefix}-${label}&nbsp;` ;
+    }
+    text = text.replace(replaceReg, label);
   }
   const res = text
     .split(/&nbsp;| /g)
@@ -269,8 +271,9 @@ function parseText() {
       return item;
     })
     .join(' ');
-  emits('change', res);
-  return res;
+  const result = formatter(res);
+  emits('input', result);
+  return result;
 }
 function parseValue() {
   let text = textValue.value;
@@ -295,6 +298,25 @@ function parseModelValue(value: string) {
     originText = originText.replace(match?.[0], generateScriptTag(match[1]));
   }
   return originText;
+}
+function formatter(str: string) {
+  const reg = /fx\((.*?)\)/;
+  str = str.replace(/\'/g, "''");
+  let newStr = '';
+  while (reg.test(str)) {
+    const match = str.match(reg)?.[0] ?? '';
+    const index = str.indexOf(match);
+    const targetText = str.slice(0, index);
+    if (targetText?.length) {
+      newStr += `'${targetText}'`;
+    }
+    newStr += match;
+    str = str.slice(index + match.length);
+  }
+  if (str?.length) {
+    newStr += `'${str}'`;
+  }
+  return newStr;
 }
 function generateScriptTag(content: string) {
   return `<div class="k-script-tag" contenteditable="false">${content}</div>`;
@@ -375,7 +397,7 @@ function onHidePopper() {
   }
 }
 function showPopper() {
-  if (popperVisible.value) {
+  if (popperVisible.value || !_isStringMode.value) {
     return;
   }
   curInput.value = '';
@@ -406,11 +428,55 @@ function clear() {
   preTextValue = '';
   curInput.value = '';
 }
+function toggleMode() {
+  saveTextValue();
+  _isStringMode.value = !_isStringMode.value;
+  restoreTextValue();
+}
+
+function setStringMode(stringMode: boolean) {
+  if (isStringMode()) {
+    return;
+  }
+  saveTextValue();
+  _isStringMode.value = stringMode;
+  restoreTextValue();
+}
+function isStringMode() {
+  return _isStringMode.value;
+}
+const caches = {
+  expression: '',
+  string: ''
+};
+function saveTextValue() {
+  if (!isStringMode()) {
+    caches['expression'] = textValue.value;
+  } else {
+    caches['string'] = textValue.value;
+  }
+}
+function restoreTextValue() {
+  clear();
+  if (isStringMode()) {
+    textValue.value = caches['string'] ?? '';
+  } else {
+    textValue.value = caches['expression'] ?? '';
+  }
+  KScriptInput.value.innerHTML = textValue.value;
+  const res = parseText() ?? '';
+  cacheRes = res;
+  emits('update:modelValue', res);
+  emits('change', res);
+}
 
 defineExpose({
   clear,
   showPopper,
   hidePopper,
+  toggleMode,
+  setStringMode,
+  isStringMode
 });
 </script>
 <style lang="less">
