@@ -1,6 +1,17 @@
 <template>
   <div class="k-script-input-wrapper" ref="KScriptInputWrapper">
     <div class="k-script-input-prepend">
+      <k-button
+        v-if="showModeSwitch"
+        @click="
+          () => {
+            toggleMode();
+            modeStatus = !modeStatus;
+          }
+        "
+      >
+        <IconCTypePythonColor :grayscale="modeStatus" />
+      </k-button>
       <slot name="prepend"></slot>
     </div>
     <k-popover
@@ -73,6 +84,9 @@
     </k-popover>
     <div class="k-script-input-append">
       <slot name="append"></slot>
+      <k-button v-if="showPopperSwitch" @click="showPopper">
+        <IconVariable />
+      </k-button>
     </div>
   </div>
 </template>
@@ -101,6 +115,8 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   options: () => [],
   size: 'base',
   useTree: false,
+  showModeSwitch: true,
+  showPopperSwitch: true,
 });
 
 const emits = defineEmits(['change', 'input', 'focus', 'blur', 'select', 'update:modelValue']);
@@ -134,6 +150,7 @@ const isShowInput = ref(false);
 
 const KScriptInputWrapper = ref();
 const popoverWidth = ref(0);
+const modeStatus = ref(false);
 
 // 监测窗口发生变化后
 window.addEventListener('resize', handleResize);
