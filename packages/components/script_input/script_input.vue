@@ -128,7 +128,7 @@ const selectedIndex = ref<number>(0);
 const popperVisible = ref(false);
 const columns = [{ field: 'label', label: '', treeNode: true }];
 let isManual = false;
-const _isStringMode = ref(true)
+const _isStringMode = ref(true);
 
 const isShowInput = ref(false);
 
@@ -255,7 +255,7 @@ function parseText() {
     const regex = />([\s\S]*?)<\/div>/;
     let label = text.match(regex)?.[1] ?? '';
     if (_isStringMode.value) {
-      label = fxSet.has(label) ? `fx(${label})` : `${prefix}-${label}&nbsp;` ;
+      label = fxSet.has(label) ? `fx(${label})` : `${prefix}-${label}&nbsp;`;
     }
     text = text.replace(replaceReg, label);
   }
@@ -293,7 +293,7 @@ function parseModelValue(value: string) {
     return originText;
   }
   while (funcReg.test(originText)) {
-    const match = originText.match(funcReg)
+    const match = originText.match(funcReg);
     if (match?.[0] === undefined || match?.[1] === undefined) {
       break;
     }
@@ -453,13 +453,17 @@ function isStringMode() {
 }
 const caches = {
   expression: '',
-  string: ''
+  string: '',
+};
+const tempCaches = {
+  expression: '',
+  string: '',
 };
 function saveTextValue() {
   if (!isStringMode()) {
-    caches['expression'] = textValue.value;
+    tempCaches['expression'] = textValue.value;
   } else {
-    caches['string'] = textValue.value;
+    tempCaches['string'] = textValue.value;
   }
 }
 function restoreTextValue() {
@@ -472,17 +476,18 @@ function restoreTextValue() {
   KScriptInput.value.innerHTML = textValue.value;
   const res = parseText() ?? '';
   cacheRes = res;
+  caches['expression'] = tempCaches['expression'];
+  caches['string'] = tempCaches['string'];
   emits('update:modelValue', res);
   emits('change', res);
 }
-
 defineExpose({
   clear,
   showPopper,
   hidePopper,
   toggleMode,
   setStringMode,
-  isStringMode
+  isStringMode,
 });
 </script>
 <style lang="less">
