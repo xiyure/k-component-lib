@@ -288,7 +288,10 @@ function parseValue() {
 const funcReg = /fx\((.*?)\)/;
 const fxSet = new Set();
 function parseModelValue(value: string) {
-  let originText = value;
+  let originText = value.replace(/''/g, "'");
+  if (!isStringMode()) {
+    return originText;
+  }
   while (funcReg.test(originText)) {
     const match = originText.match(funcReg)
     if (match?.[0] === undefined || match?.[1] === undefined) {
@@ -302,6 +305,9 @@ function parseModelValue(value: string) {
 function formatter(str: string) {
   const reg = /fx\((.*?)\)/;
   str = str.replace(/\'/g, "''");
+  if (!_isStringMode.value) {
+    return str;
+  }
   let newStr = '';
   while (reg.test(str)) {
     const match = str.match(reg)?.[0] ?? '';
