@@ -263,7 +263,6 @@ function parseText() {
     })
     .join(' ');
   const finalRes = encapsulateAndEscapeFx(res);
-  console.log(finalRes);
   emits('change', finalRes);
   return finalRes;
 }

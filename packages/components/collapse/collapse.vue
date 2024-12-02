@@ -1,6 +1,14 @@
 <template>
-  <div :class="{ 'k-collapse-outline': isOutline }">
-    <el-collapse ref="kCollapseRef" :class="['k-collapse', _styleModule]" v-bind="$attrs">
+  <div :class="[{ 'k-collapse-outline': isOutline }]">
+    <el-collapse
+      ref="kCollapseRef"
+      :class="[
+        'k-collapse',
+        _styleModule,
+        { 'is-useAntStyle': useAntStyle, 'is-useStepStyle': useStepStyle },
+      ]"
+      v-bind="$attrs"
+    >
       <template v-for="(_, name) in $slots" :key="name" #[name]="data">
         <slot :name="name" v-bind="data"></slot>
       </template>
@@ -23,6 +31,14 @@ const props = defineProps({
     default: false,
   },
   isOutline: {
+    type: Boolean,
+    default: false,
+  },
+  useAntStyle: {
+    type: Boolean,
+    default: false,
+  },
+  useStepStyle: {
     type: Boolean,
     default: false,
   },

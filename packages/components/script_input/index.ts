@@ -1,4 +1,4 @@
-import ScriptInput from './script_input1.vue';
+import ScriptInput from './script_input.vue';
 import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall } from '../../utils/install';
 

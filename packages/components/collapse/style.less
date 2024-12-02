@@ -1,5 +1,5 @@
 @import '../../style/variable.css';
-@import '../../style/global.less';
+@import '../../style/general.less';
 // @import '../../style/theme/AOM/theme.css';
 
 .el-collapse,
@@ -23,6 +23,11 @@
 
       &:is-left {
         justify-content: flex-start;
+      }
+      .icon-ele {
+        .text-sm();
+        margin: 0 8px 0 auto;
+        color: var(--k-theme-primary);
       }
     }
 
@@ -54,6 +59,98 @@
     &:first-child {
       .el-collapse-item__header {
         border-top: 1px solid var(--k-gray-200);
+      }
+    }
+  }
+
+  &.is-useAntStyle {
+    border: 1px solid var(--k-gray-200);
+    border-radius: var(--k-theme-button-size-rounded--base);
+    overflow: hidden;
+    .el-collapse-item {
+      .el-collapse-item__header {
+        background: var(--k-gray-50);
+        border-top: unset;
+      }
+    }
+  }
+  &.is-useStepStyle {
+    border: unset;
+    border-radius: unset;
+    overflow: unset;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    .el-collapse-item {
+      border: unset;
+      border-radius: var(--k-theme-button-size-rounded--lg);
+      overflow: hidden;
+      transition: all 0.2s ease-in-out;
+      &.is-active {
+        border: unset;
+      }
+      .el-collapse-item__header {
+        background: var(--k-gray-50);
+        border: unset;
+        .info {
+          .text-sm();
+          position: relative;
+          color: var(--k-theme-text--light);
+          margin-left: 0.5rem;
+
+          &::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -0.25rem;
+            transform: translateY(-50%);
+            height: 0.75rem;
+            width: 1px;
+            background: var(--k-gray-200);
+          }
+        }
+      }
+      .el-collapse-item__wrap {
+        border: unset;
+      }
+      // process
+      &.is-process {
+        .el-collapse-item__header {
+          background: #fff;
+          color: var(--k-theme-primary);
+        }
+      }
+      // wait
+      &.is-wait {
+        margin: 0 1rem;
+        .el-collapse-item__header {
+          background: #fff;
+          color: var(--k-gray-300);
+          .info {
+            color: var(--k-gray-300);
+          }
+        }
+      }
+      // finish
+      &.is-finish {
+        .el-collapse-item__header {
+          background: #fff;
+          color: var(--k-theme-success);
+        }
+      }
+      //error
+      &.is-error {
+        .el-collapse-item__header {
+          background: #fff;
+          color: var(--k-theme-danger);
+        }
+      }
+      // .warning
+      &.is-warning {
+        .el-collapse-item__header {
+          background: #fff;
+          color: var(--k-theme-warning);
+        }
       }
     }
   }

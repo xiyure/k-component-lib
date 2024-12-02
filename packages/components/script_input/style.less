@@ -18,13 +18,24 @@
       border-radius: unset;
       border: unset;
       height: 100%;
+      color: var(--k-theme-text--normal);
+      &:hover {
+        color: var(--k-theme-primary);
+      }
+      & + .k-button {
+        margin: 0;
+      }
     }
   }
   .k-script-input-prepend:has(.k-button) {
-    border-right: 1px solid var(--k-gray-200);
+    .k-button {
+      border-right: 1px solid var(--k-gray-200);
+    }
   }
   .k-script-input-append:has(.k-button) {
-    border-left: 1px solid var(--k-gray-200);
+    .k-button {
+      border-left: 1px solid var(--k-gray-200);
+    }
   }
 
   &:has(.k-script-input:focus-visible) {
