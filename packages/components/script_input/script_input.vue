@@ -1,11 +1,8 @@
 <template>
   <div class="k-script-input-wrapper" ref="KScriptInputWrapper">
     <div class="k-script-input-prepend">
-      <k-button
-        v-if="showModeSwitch"
-        @click="toggleMode"
-      >
-        <IconCTypePythonColor :grayscale="!_isStringMode" />
+      <k-button v-if="showModeSwitch" @click="toggleMode">
+        <component :is="!_isStringMode ? 'IconModeExpressionColor' : 'IconModeExpression'" />
       </k-button>
       <slot name="prepend"></slot>
     </div>
@@ -121,6 +118,7 @@ onMounted(() => {
   document.addEventListener('keydown', toggleSelect);
   document.addEventListener('click', hidePopperByClick);
   handleResize();
+  console.log(popoverWidth.value);
 });
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', toggleSelect);
@@ -354,7 +352,7 @@ function formatter(str: string) {
 function unFormatter(str: string) {
   const strArr = str.split("''");
   strArr.forEach((item, index) => {
-    strArr[index] = item.replace(/'/g, "");
+    strArr[index] = item.replace(/'/g, '');
   });
   return strArr.join("'");
 }
@@ -453,7 +451,7 @@ function showPopper() {
   });
 }
 function getElement(selector: string): HTMLInputElement | null {
-  return document.querySelector(selector)
+  return document.querySelector(selector);
 }
 function hidePopper() {
   popperVisible.value = false;
