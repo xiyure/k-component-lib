@@ -12,9 +12,9 @@
   --k-button-bg-color--disabled: var(--k-gray-100);
   --k-button-bg-color--loading: var(--k-theme--frontColor);
   // content
-  --k-button-content-color: var(--k-gray-400);
-  --k-button-content-color--hover: var(--k-gray-400);
-  --k-button-content-color--active: var(--k-gray-400);
+  --k-button-content-color: var(--k-gray-700);
+  --k-button-content-color--hover: var(--k-gray-600);
+  --k-button-content-color--active: var(--k-gray-500);
   --k-button-content-color--disabled: var(--k-gray-300);
   --k-button-content-color--loading: var(--k-gray-300);
   // border
@@ -502,34 +502,35 @@
     &:not(:last-child) {
       border-right-width: 0;
     }
-  }
-  .el-button:hover,
-  .el-button:focus {
-    // z-index: 2;
-  }
-  .el-button + .el-button--main {
-    border-left: 1px solid rgba(0, 0, 0, 0.1);
-  }
-  .el-button--main,
-  .el-button--secondary {
-    &:nth-child(1):visited,
-    &:nth-child(1):focus-visible {
-      border-right: 1px solid rgba(0, 0, 0, 0.1);
+
+    &.el-button--main,
+    &.el-button--secondary {
+      &:nth-child(1):visited,
+      &:nth-child(1):focus-visible {
+        border-right: 1px solid rgba(0, 0, 0, 0.1);
+      }
     }
-  }
-  .k-button:first-child,
-  .el-button:first-child,
-  .k-button.el-button:first-child {
-    border-top-left-radius: var(--k-button-rounded);
-    border-bottom-left-radius: var(--k-button-rounded);
-  }
-  .k-button:last-child,
-  .el-button:last-child,
-  .k-button.el-button:last-child {
-    border-top-right-radius: var(--k-button-rounded);
-    border-bottom-right-radius: var(--k-button-rounded);
-  }
-  .k-button + .k-button {
-    margin-left: -1px;
+    &:first-child {
+      border-top-left-radius: var(--k-button-rounded);
+      border-bottom-left-radius: var(--k-button-rounded);
+    }
+    &:last-child {
+      border-top-right-radius: var(--k-button-rounded);
+      border-bottom-right-radius: var(--k-button-rounded);
+    }
+    & + & {
+      margin-left: -1px;
+    }
+    & + .el-button--main {
+      border-left: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    & + .el-dropdown,
+    & + .k-dropdown {
+      .k-button.el-button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-left: 1px solid var(--k-button-border-color);
+      }
+    }
   }
 }
