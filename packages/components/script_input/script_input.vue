@@ -3,14 +3,9 @@
     <div class="k-script-input-prepend">
       <k-button
         v-if="showModeSwitch"
-        @click="
-          () => {
-            toggleMode();
-            modeStatus = !modeStatus;
-          }
-        "
+        @click="toggleMode"
       >
-        <IconCTypePythonColor :grayscale="modeStatus" />
+        <IconCTypePythonColor :grayscale="!_isStringMode" />
       </k-button>
       <slot name="prepend"></slot>
     </div>
@@ -47,6 +42,7 @@
         </el-scrollbar>
       </template>
       <k-tree-table
+        v-if="showTree"
         id="k-script-input-tree"
         ref="$tree"
         border="none"
@@ -150,7 +146,9 @@ const isShowInput = ref(false);
 
 const KScriptInputWrapper = ref();
 const popoverWidth = ref(0);
-const modeStatus = ref(false);
+const funcReg = /fx\((.*?)\)/;
+const fxSet = new Set();
+const showTree = ref(false);
 
 // 监测窗口发生变化后
 window.addEventListener('resize', handleResize);
@@ -197,10 +195,10 @@ watch(
       return;
     }
     nextTick(() => {
-      clear();
       preTextValue = textValue.value;
-      textValue.value = parseModelValue(newValue.toString());
+      textValue.value = parseModelValue(cacheRes.toString());
       KScriptInput.value.innerHTML = textValue.value;
+      cursorToEnd();
     });
   },
   { immediate: true },
@@ -231,6 +229,7 @@ function handleInput(event: InputEvent) {
   textValue.value = KScriptInput.value.innerHTML;
 }
 function handleFocus() {
+  showTree.value = true;
   emits('focus');
 }
 function handleBlur(event: FocusEvent) {
@@ -241,6 +240,7 @@ function handleBlur(event: FocusEvent) {
   if (popperElem && !popperElem.contains(event.relatedTarget as Node)) {
     emits('blur');
     emits('change', parseText());
+    showTree.value = false;
   }
 }
 function cellClick({ row }: { row: any }) {
@@ -312,13 +312,13 @@ function parseValue() {
   }
   return text;
 }
-const funcReg = /fx\((.*?)\)/;
-const fxSet = new Set();
 function parseModelValue(value: string) {
+  fxSet.clear();
   let originText = value.replace(/''/g, "'");
   if (!isStringMode()) {
-    return originText;
+    return originText.substring(1, originText.length - 1);
   }
+  originText = unFormatter(originText);
   while (funcReg.test(originText)) {
     const match = originText.match(funcReg);
     if (match?.[0] === undefined || match?.[1] === undefined) {
@@ -351,6 +351,13 @@ function formatter(str: string) {
   }
   return newStr;
 }
+function unFormatter(str: string) {
+  const strArr = str.split("''");
+  strArr.forEach((item, index) => {
+    strArr[index] = item.replace(/'/g, "");
+  });
+  return strArr.join("'");
+}
 function generateScriptTag(content: string) {
   return `<div class="k-script-tag" contenteditable="false">${content}</div>`;
 }
@@ -380,7 +387,7 @@ function toggleSelect(event: KeyboardEvent) {
     $tree.value.setCurrentRow(row);
   }
   document.addEventListener('keydown', (event) => {
-    // 检查是否按下了上下左右箭头键
+    // 检查是否按下了上下箭头键
     if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
       headerElement?.blur(); // 使元素失去焦点
     }
@@ -436,6 +443,7 @@ function showPopper() {
   curInput.value = '';
   isShowInput.value = true;
   popperVisible.value = true;
+  showTree.value = true;
   setTimeout(() => {
     isManual = true;
   });
@@ -449,6 +457,7 @@ function getElement(selector: string): HTMLInputElement | null {
 }
 function hidePopper() {
   popperVisible.value = false;
+  showTree.value = false;
   onHidePopper();
 }
 function hidePopperByClick(event: MouseEvent) {
