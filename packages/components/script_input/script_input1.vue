@@ -262,8 +262,31 @@ function parseText() {
       return item;
     })
     .join(' ');
-  emits('change', res);
-  return res;
+  const finalRes = encapsulateAndEscapeFx(res);
+  console.log(finalRes);
+  emits('change', finalRes);
+  return finalRes;
+}
+function encapsulateAndEscapeFx(input: string): string {
+  const regex = /fx\((.*?)\)/g;
+  let lastEnd = 0;
+  let result: string[] = [];
+  input.replace(regex, (match, group, offset) => {
+    const beforeText = input.slice(lastEnd, offset).trim();
+    if (beforeText) {
+      result.push(`'${beforeText.replace(/'/g, "''")}'`);
+    }
+    result.push(match);
+    lastEnd = offset + match.length;
+    return match; // 继续替换
+  });
+  if (lastEnd < input.length) {
+    const remainingText = input.slice(lastEnd).trim();
+    if (remainingText) {
+      result.push(`'${remainingText.replace(/'/g, "''")}'`);
+    }
+  }
+  return result.join('');
 }
 function generateScriptTag(content: string) {
   return `<div class="k-script-tag" contenteditable="false">${content}</div>`;

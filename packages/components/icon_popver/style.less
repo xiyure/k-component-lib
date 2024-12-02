@@ -1,0 +1,44 @@
+.icon-container {
+  width: 452px;
+  height: 326px;
+  overflow-y: auto;
+  padding-right: 10px;
+
+  .k-input {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+
+  .icon-list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .ksw-icon svg {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+  }
+}
+
+
+/* 定义滚动条样式 */
+.icon-container::-webkit-scrollbar {
+  width: 8px; /* 设置滚动条宽度 */
+}
+
+/* 定义滚动条的轨道样式 */
+.icon-container::-webkit-scrollbar-track {
+  background: transparent; /* 设置轨道背景透明 */
+}
+
+/* 定义滚动条滑块的样式 */
+.icon-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1); /* 设置滚动条颜色，使用透明度 */
+  border-radius: 4px; /* 设置滑块圆角 */
+}
+
+/* 定义鼠标悬停时的滚动条样式 */
+.icon-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2); /* 鼠标悬停时的透明度稍高 */
+}

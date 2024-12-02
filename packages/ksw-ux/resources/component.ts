@@ -40,6 +40,7 @@ import { KFilterForm } from '../../components/filter_form';
 import { KButtonContainer } from '../../components/button_container';
 import { KSliderButton } from '../../components/slider_button';
 import { KScriptInput } from '../../components/script_input';
+import { KIconPopver } from '../../components/icon_popver';
 
 export default [
   KButton,
@@ -94,5 +95,6 @@ export default [
   KTreeSelect,
   KFilterForm,
   KSliderButton,
-  KScriptInput
+  KScriptInput,
+  KIconPopver
 ] as Plugin[];
