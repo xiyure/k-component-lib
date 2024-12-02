@@ -2,7 +2,10 @@
   <div class="k-script-input-wrapper" ref="KScriptInputWrapper">
     <div class="k-script-input-prepend">
       <k-button v-if="showModeSwitch" @click="toggleMode">
-        <component :is="!_isStringMode ? 'IconModeExpressionColor' : 'IconModeExpression'" />
+        <component
+          :is="!_isStringMode ? 'IconModeExpressionColor' : 'IconModeExpression'"
+          color="var(--k-gray-400)"
+        />
       </k-button>
       <slot name="prepend"></slot>
     </div>
