@@ -52,23 +52,18 @@ watch(
     }
     color.value = newVal;
     const getColorS = GetColorLevelNew?.(newVal)?.colorLevel;
-    if (newVal) {
-      // 等待 dom 更新
-      nextTick(() => {
-        if (KTagRef.value.$el?.style) {
-          // 添加一个 css 颜色变量
-
-          const rbgValue = getColorS?.['--k-oklch-500']?.match(/\(([^)]+)\)/)?.[1]; // 获取 rbg 值, 用于设置 focus 样式
-          KTagRef.value.$el?.style.setProperty('--tag-color--focus', `rgba(${rbgValue}, 0.2)`);
-          colors.forEach((item) => {
-            KTagRef.value.$el?.style.setProperty(
-              `--tag${item.name}`,
-              getColorS?.[`--k-oklch-${item.value}`]
-            );
-          });
-        }
-      });
-    }
+    nextTick(() => {
+      if (KTagRef.value?.$el?.style) {
+        const rbgValue = getColorS?.['--k-oklch-500']?.match(/\(([^)]+)\)/)?.[1]; // 获取 rbg 值, 用于设置 focus 样式
+        KTagRef.value.$el?.style.setProperty('--tag-color--focus', `rgba(${rbgValue}, 0.2)`);
+        colors.forEach((item) => {
+          KTagRef.value.$el?.style.setProperty(
+            `--tag${item.name}`,
+            getColorS?.[`--k-oklch-${item.value}`]
+          );
+        });
+      }
+    });
   },
   { immediate: true }
 );

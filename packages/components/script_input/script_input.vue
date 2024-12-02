@@ -233,8 +233,15 @@ function handleInput(event: InputEvent) {
 function handleFocus() {
   emits('focus');
 }
-function handleBlur() {
-  emits('blur');
+function handleBlur(event: FocusEvent) {
+  if (!(event.target instanceof HTMLElement)) {
+    return;
+  }
+  const popperElem = getElement(`.${dynamicClassName}`);
+  if (popperElem && !popperElem.contains(event.relatedTarget as Node)) {
+    emits('blur');
+    emits('change', parseText());
+  }
 }
 function cellClick({ row }: { row: any }) {
   if (row.optional === false) {
@@ -256,6 +263,9 @@ function selectOption(data: any) {
   cursorToEnd();
   emits('select', data);
   popperVisible.value = false;
+  nextTick(() => {
+    emits('change', parseText());
+  });
 }
 function removeInvalidChar() {
   const text = textValue.value;
@@ -346,7 +356,7 @@ function generateScriptTag(content: string) {
 }
 function toggleSelect(event: KeyboardEvent) {
   const dataLength = flattedOptions.value.length;
-  const headerElement = document.querySelector(`.${dynamicClassName} .el-input__inner`);
+  const headerElement = getElement(`.${dynamicClassName} .el-input__inner`);
   if (event.code === 'ArrowUp') {
     selectedIndex.value = (selectedIndex.value - 1 + dataLength) % dataLength;
     while (
@@ -430,16 +440,19 @@ function showPopper() {
     isManual = true;
   });
   nextTick(() => {
-    const headerElement = document.querySelector(`.${dynamicClassName} .el-input__inner`);
+    const headerElement = getElement(`.${dynamicClassName} .el-input__inner`);
     headerElement?.focus();
   });
+}
+function getElement(selector: string): HTMLInputElement | null {
+  return document.querySelector(selector)
 }
 function hidePopper() {
   popperVisible.value = false;
   onHidePopper();
 }
 function hidePopperByClick(event: MouseEvent) {
-  const popperElem = document.querySelector(`.${dynamicClassName}`);
+  const popperElem = getElement(`.${dynamicClassName}`);
   if (!isManual || popperElem?.contains?.(event.target as Node)) {
     return;
   }
