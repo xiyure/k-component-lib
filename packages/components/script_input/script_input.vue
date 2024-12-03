@@ -228,7 +228,8 @@ function handleInput(event: InputEvent) {
     curInput.value += event.data ?? '';
   }
   preTextValue = textValue.value;
-  textValue.value = KScriptInput.value.innerHTML;
+  const innerHTML = KScriptInput.value.innerHTML;
+  textValue.value = innerHTML === '<br>' ? '' : innerHTML;
 }
 function handleFocus() {
   showTree.value = true;
@@ -330,12 +331,14 @@ function parseModelValue(value: string) {
     const value = match[1];
     const targetOption = props.options.find((item) => item.value === value);
     let label = targetOption?.label ?? '';
+    let isError = false;
     if (!targetOption) {
       label = `${value}:error`;
       Message.error(`'${value}' not found`);
       fxSet.add(label);
+      isError = true;
     }
-    originText = originText.replace(match?.[0], generateScriptTag(label) + '&nbsp;');
+    originText = originText.replace(match?.[0], generateScriptTag(label, isError) + '&nbsp;');
   }
   return originText;
 }
@@ -368,8 +371,8 @@ function unFormatter(str: string) {
   });
   return strArr.join("'");
 }
-function generateScriptTag(content: string) {
-  return `<div class="k-script-tag" contenteditable="false">${content}</div>`;
+function generateScriptTag(content: string, isError: boolean = false) {
+  return `<div class="k-script-tag ${isError ? 'is-error' : ''}"  contenteditable="false">${content}</div>`;
 }
 function toggleSelect(event: KeyboardEvent) {
   const dataLength = flattedOptions.value.length;
