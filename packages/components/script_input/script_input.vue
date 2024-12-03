@@ -149,6 +149,7 @@ const popperVisible = ref(false);
 const columns = [{ field: 'label', label: '', treeNode: true }];
 let isManual = false;
 const _isStringMode = ref(true);
+let canFocus = false;
 
 const isShowInput = ref(false);
 
@@ -207,6 +208,7 @@ watch(
       preTextValue = textValue.value;
       textValue.value = parseModelValue(newValue.toString());
       KScriptInput.value.innerHTML = textValue.value;
+      cacheRes = newValue.toString();
       cursorToEnd();
     });
   },
@@ -240,6 +242,7 @@ function handleInput(event: InputEvent) {
 }
 function handleFocus() {
   showTree.value = true;
+  canFocus = true;
   emits('focus');
 }
 function handleBlur(event: FocusEvent) {
@@ -248,6 +251,7 @@ function handleBlur(event: FocusEvent) {
   }
   const popperElem = getElement(`.${dynamicClassName}`);
   if (popperElem && !popperElem.contains(event.relatedTarget as Node)) {
+    canFocus = false
     emits('blur');
     emits('change', parseText());
     showTree.value = false;
@@ -433,6 +437,9 @@ function isHideNode(rowData: any) {
 }
 // 解决输入非字符内容时光标无法移到最后的问题
 function cursorToEnd() {
+  if (!canFocus) {
+    return;
+  }
   if (window.getSelection) {
     KScriptInput.value.focus();
     const range = window.getSelection();
@@ -500,7 +507,7 @@ function toggleMode() {
 }
 
 function setStringMode(stringMode: boolean) {
-  if (isStringMode()) {
+  if (isStringMode() === stringMode) {
     return;
   }
   saveTextValue();
