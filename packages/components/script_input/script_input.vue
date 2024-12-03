@@ -80,7 +80,7 @@
     </k-popover>
     <div class="k-script-input-append">
       <slot name="append"></slot>
-      <k-button v-if="showPopperSwitch" @click="showPopper">
+      <k-button v-if="showPopperSwitch" @click="showPopper" :disabled="!_isStringMode">
         <IconVariable />
       </k-button>
     </div>
