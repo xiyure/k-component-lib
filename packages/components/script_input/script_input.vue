@@ -99,6 +99,7 @@ import {
   onUnmounted,
 } from 'vue';
 import { ScriptInputProps } from './type';
+import Message from '../message';
 import { genRandomStr, allTreeDataToArray } from '../../utils';
 
 defineOptions({
@@ -197,7 +198,7 @@ watch(
     }
     nextTick(() => {
       preTextValue = textValue.value;
-      textValue.value = parseModelValue(cacheRes.toString());
+      textValue.value = parseModelValue(newValue.toString());
       KScriptInput.value.innerHTML = textValue.value;
       cursorToEnd();
     });
@@ -242,6 +243,7 @@ function handleBlur(event: FocusEvent) {
     emits('blur');
     emits('change', parseText());
     showTree.value = false;
+    popperVisible.value = false;
   }
 }
 function cellClick({ row }: { row: any }) {
@@ -325,8 +327,15 @@ function parseModelValue(value: string) {
     if (match?.[0] === undefined || match?.[1] === undefined) {
       break;
     }
-    fxSet.add(match[1]);
-    originText = originText.replace(match?.[0], generateScriptTag(match[1]));
+    const value = match[1];
+    const targetOption = props.options.find((item) => item.value === value);
+    let label = targetOption?.label ?? '';
+    if (!targetOption) {
+      label = `${value}:error`;
+      Message.error(`'${value}' not found`);
+      fxSet.add(label);
+    }
+    originText = originText.replace(match?.[0], generateScriptTag(label) + '&nbsp;');
   }
   return originText;
 }
