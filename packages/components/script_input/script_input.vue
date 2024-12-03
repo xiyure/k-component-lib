@@ -72,7 +72,7 @@
             return '';
           }
         "
-        :tree-config="{ parentField: 'pid', rowField: 'value' }"
+        :tree-config="{ parentField: 'pid', rowField: 'value', expandAll: expandAll }"
         highlight-current
         adaptive
         @cell-click="cellClick"
@@ -114,6 +114,7 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   useTree: false,
   showModeSwitch: true,
   showPopperSwitch: true,
+  expandAll: false,
 });
 
 const emits = defineEmits(['change', 'input', 'focus', 'blur', 'select', 'update:modelValue']);
@@ -160,8 +161,10 @@ onUnmounted(() => {
 });
 
 function handleResize() {
-  // 获取 KScriptInputWrapper 的 宽度
-  popoverWidth.value = KScriptInputWrapper.value?.offsetWidth ?? 0;
+  nextTick(() => {
+    // 获取 KScriptInputWrapper 的 宽度
+    popoverWidth.value = KScriptInputWrapper.value?.offsetWidth ?? 0;
+  });
 }
 
 const flattedOptions = computed(() => {

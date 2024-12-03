@@ -7,6 +7,7 @@ export interface ScriptInputProps {
   useTree?: boolean;
   showPopperSwitch?: boolean;
   showModeSwitch?: boolean;
+  expandAll?: boolean;
 }
 
 export type ScriptOptions = {
