@@ -127,7 +127,15 @@ const props = withDefaults(defineProps<ViewProps>(), {
   treeConfig: () => ({}),
   showArrow: false,
   indent: 20,
-  showCount: true
+  showCount: true,
+  props: () => ({
+    label: 'label',
+    value: 'value',
+    count: 'count',
+    children: 'children',
+    disabled: 'disabled',
+    custom: 'custom',
+  })
 });
 const emits = defineEmits([
   'refresh',

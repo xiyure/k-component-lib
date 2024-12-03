@@ -72,7 +72,7 @@
             return '';
           }
         "
-        :tree-config="{ parentField: 'pid', rowField: 'value', expandAll: expandAll }"
+        :tree-config="treeConfig"
         highlight-current
         adaptive
         @cell-click="cellClick"
@@ -117,13 +117,18 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   expandAll: false,
 });
 
+const DEFAULT_TREE_CONFIG = {
+  parentField: 'pid',
+  rowField: 'value',
+  expandAll: false,
+}
+
 const emits = defineEmits(['change', 'input', 'focus', 'blur', 'select', 'update:modelValue']);
 
 onMounted(() => {
   document.addEventListener('keydown', toggleSelect);
   document.addEventListener('click', hidePopperByClick);
   handleResize();
-  console.log(popoverWidth.value);
 });
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', toggleSelect);
@@ -160,13 +165,12 @@ onUnmounted(() => {
   window.removeEventListener('resize', handleResize);
 });
 
-function handleResize() {
-  nextTick(() => {
-    // 获取 KScriptInputWrapper 的 宽度
-    popoverWidth.value = KScriptInputWrapper.value?.offsetWidth ?? 0;
-  });
-}
-
+const treeConfig = computed(() => {
+  if (!props.useTree) {
+    return undefined;
+  }
+  return Object.assign(DEFAULT_TREE_CONFIG, props.treeConfig || {});
+})
 const flattedOptions = computed(() => {
   const tableData = $tree.value?.getTableData().fullData ?? [];
   return allTreeDataToArray(tableData, 'children') ?? [];
@@ -535,6 +539,12 @@ function restoreTextValue() {
   caches['string'] = tempCaches['string'];
   emits('update:modelValue', res);
   emits('change', res);
+}
+function handleResize() {
+  nextTick(() => {
+    // 获取 KScriptInputWrapper 的 宽度
+    popoverWidth.value = KScriptInputWrapper.value?.offsetWidth ?? 0;
+  });
 }
 defineExpose({
   clear,
