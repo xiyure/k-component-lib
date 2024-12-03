@@ -125,5 +125,4 @@ export const isCheckingRelativePath = (path: string) => {
         return relativePath + '.vue';
     }
     return relativePath
-  return `./${relativePath}`
 }
