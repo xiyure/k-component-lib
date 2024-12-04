@@ -4,6 +4,7 @@ import { PaginationProps as ElPaginationProps } from 'element-plus';
 import { OperateData } from '../operate/type';
 import { Condition, FilterValue, ConditionInfo } from '../filter/type';
 
+export type Row = VxeTablePropTypes.Row
 export interface TreeTableProps {
   data?: RowData[]
   size?: string
@@ -21,7 +22,7 @@ export interface TreeTableProps {
   align?: string
   border?: boolean | string
   emptyText?: string
-  rowStyle?: CSSProperties | ((rowInfo: VxeTablePropTypes.Row) => CSSProperties)
+  rowStyle?: CSSProperties | ((rowInfo: Row) => CSSProperties)
   column: ColumnConfig[]
   showPage?: boolean
   useTree?: boolean

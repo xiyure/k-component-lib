@@ -68,10 +68,10 @@ export default defineComponent({
       if (props.capsule) {
         const children = slots.default?.()[0]?.children || [];
         steps.value = (children as any[])
-          .map((item) => {
+          .map((item, index) => {
             if (item.type && item.type.name === "KStep") {
               return {
-                key: item.key,
+                key: index,
                 name: item.props?.title || "",
               };
             }

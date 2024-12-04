@@ -34,6 +34,7 @@ import { ElStep } from 'element-plus';
 import { StepProps, StepsProps } from './type';
 import { KPopover } from '../popover';
 import { genRandomStr, getExposeProxy } from '../../utils';
+import { isNumber } from 'lodash-es';
 
 defineOptions({
   name: 'KStep'
@@ -65,7 +66,13 @@ const DEFAULT_STATUS_COLOR: {
 watch(
   () => stepsProps.active,
   (newValue) => {
-    if (props.status || props.color || !newValue) {
+    if (
+      !isNumber(newValue)
+      || newValue < 0
+      || newValue >= stepsInfo.value.length
+      || props.status
+      || props.color
+    ) {
       return;
     }
     const typeKeys = Object.keys(DEFAULT_STATUS_COLOR);
