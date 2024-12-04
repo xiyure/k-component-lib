@@ -24,8 +24,9 @@
             <template v-if="!useTree">
               <k-view-item
                 v-for="item in specialData"
-                :key="item.value"
-                v-bind="item"
+                :key="item[config.value]"
+                :origin-data="item"
+                v-bind="formatter(item)"
                 @change="handleChange"
                 @remove="handleRemove"
                 @_drag-start="onDragStart"
@@ -39,11 +40,17 @@
             <template v-else>
               <k-tree
                 ref="KViewTree"
-                node-key="value"
+                class="k-tree-view-item"
+                :node-key="config.value"
+                :props="{
+                  label: config.label,
+                  disabled: config.disabled,
+                  children: config.children
+                }"
                 :default-expanded-keys="defaultExpandedKeys"
                 :current-node-key="currentNodeKey"
-                class="k-tree-view-item"
                 :data="props.data"
+                :show-arrow="showArrow"
                 highlight-current
                 v-bind="treeConfig"
                 @current-change="handleChange"
@@ -62,8 +69,9 @@
               <template v-if="!useTree">
                 <k-view-item
                   v-for="item in customData"
-                  :key="item.value"
-                  v-bind="item"
+                  :key="item[config.value]"
+                  :origin-data="item"
+                  v-bind="formatter(item)"
                   @change="handleChange"
                   @remove="handleRemove"
                   @_drag-start="onDragStart"
@@ -78,16 +86,21 @@
                 <k-tree
                   ref="KCustomViewTree"
                   class="k-tree-view-item"
-                  node-key="value"
+                  :node-key="config.value"
+                  :props="{
+                    label: config.label,
+                    disabled: config.disabled,
+                    children: config.children
+                  }"
                   :default-expanded-keys="defaultExpandedKeys"
                   :current-node-key="currentNodeKey"
                   :data="props.data"
                   highlight-current
+                  :show-arrow="showArrow"
                   v-bind="treeConfig"
                   @current-change="handleChange"
                   @node-expand="handleNodeExpand"
                   @node-collapse="handleNodeCollapse"
-                  :showArrow="showArrow"
                 >
                   <template v-if="$slots.label" #default="{ node, data }">
                     <slot name="label" :node="node" :data="data"></slot>
@@ -119,6 +132,14 @@ defineOptions({
   name: 'KView',
 });
 
+const DEFAULT_PROPS = {
+  label: 'label',
+  value: 'value',
+  count: 'count',
+  children: 'children',
+  disabled: 'disabled',
+  custom: 'custom',
+}
 const props = withDefaults(defineProps<ViewProps>(), {
   draggable: false,
   collapse: false,
@@ -126,16 +147,7 @@ const props = withDefaults(defineProps<ViewProps>(), {
   useTree: false,
   treeConfig: () => ({}),
   showArrow: false,
-  indent: 20,
-  showCount: true,
-  props: () => ({
-    label: 'label',
-    value: 'value',
-    count: 'count',
-    children: 'children',
-    disabled: 'disabled',
-    custom: 'custom',
-  })
+  showCount: true
 });
 const emits = defineEmits([
   'refresh',
@@ -149,8 +161,11 @@ const emits = defineEmits([
 const _styleModule = inject('_styleModule', '');
 const active = ref<string | number>('');
 
-const specialData = computed(() => props.data?.filter((item) => !item.custom) ?? []);
-const customData = computed(() => props.data?.filter((item) => Boolean(item.custom)));
+const config = computed(() => {
+  return Object.assign(DEFAULT_PROPS, props.props ?? {});
+});
+const specialData = computed(() => props.data?.filter((item) => !item[config.value.custom]) ?? []);
+const customData = computed(() => props.data?.filter((item) => Boolean(item[config.value.custom])));
 
 const defaultExpandedKeys = ref<(string | number)[]>([]);
 const currentNodeKey = ref<string | number>('');
@@ -160,7 +175,7 @@ watch(
   (val: string | number | undefined) => {
     let activeValue = val;
     if (!val) {
-      activeValue = props.data?.[0]?.value ?? '';
+      activeValue = props.data?.[0]?.[config.value.value] ?? '';
     }
     active.value = activeValue as string;
     defaultExpandedKeys.value = [activeValue ?? ''];
@@ -173,11 +188,11 @@ function handleFresh() {
   emits('refresh');
 }
 function handleChange(data: ViewData, node?: TreeNodeData) {
-  active.value = data.value;
-  emits('change', { value: data.value, data, node });
+  active.value = data[config.value.value];
+  emits('change', { value: active.value, data, node });
 }
 function handleRemove(data: ViewData) {
-  emits('remove', { value: data.value, data });
+  emits('remove', { value: data[config.value.value], data });
 }
 function handleNodeExpand(data: TreeNodeData, node: TreeNodeData) {
   if (isLeafNode(node)) {
@@ -208,7 +223,7 @@ const customViewId = genRandomStr(8);
 function onDragStart(elem: HTMLElement, data: ViewData) {
   dragElement.element = elem;
   dragElement.data = data;
-  isCustom = data.custom ?? false;
+  isCustom = data[config.value.custom] ?? false;
 }
 function onDrop(elem: HTMLElement) {
   if (!dragElement.element || dragElement.element === elem) {
@@ -226,7 +241,7 @@ function onDrop(elem: HTMLElement) {
   parentElem?.replaceChild(dragElement.element as HTMLElement, temp);
   dragElement.element = null;
   isCustom = false;
-  emits('drag', { value: dragElement.data?.value, data: dragElement.data });
+  emits('drag', { value: dragElement.data?.[config.value.value], data: dragElement.data });
   dragElement.data = null;
 }
 function isChildElement(parentElem: HTMLElement | null, element: HTMLElement) {
@@ -257,6 +272,16 @@ function isExpand() {
 }
 function isCollapse() {
   return viewCollapse.value;
+}
+function formatter(data: ViewData) {
+  return {
+    label: data[config.value.label] ?? '',
+    value: data[config.value.value] ?? '',
+    count: data[config.value.count] ?? 0,
+    disabled: data[config.value.disabled] ?? false,
+    custom: data[config.value.custom] ?? false,
+    showCustomControl: data.showCustomControl ?? false,
+  }
 }
 
 provide('activeView', active);

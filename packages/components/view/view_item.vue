@@ -34,23 +34,19 @@
 </template>
 
 <script setup lang="ts">
-import { inject, computed } from 'vue';
+import { inject, ref, Ref } from 'vue';
 import { ElDropdown, ElDropdownMenu, ElDropdownItem } from 'element-plus';
 import { IconMore } from 'ksw-vue-icon';
-import { ViewData, ViewProps } from './type';
+import { ViewItemProps, ViewProps } from './type';
 
 defineOptions({
   name: 'KViewItem'
 });
 
-const props = withDefaults(defineProps<ViewData>(), {
-  label: '',
-  count: 0,
-  showCustomControl: undefined
-});
+const props = defineProps<ViewItemProps>();
 const emits = defineEmits(['change', 'remove', '_drag-start', '_drag-drop']);
 
-const activeView = inject<ViewData>('activeView', computed(() => {}));
+const activeView = inject<Ref<string | number>>('activeView', ref(0));
 const _styleModule = inject('_styleModule', '');
 const parentProps = inject<ViewProps>('parentProps', {});
 
@@ -64,17 +60,17 @@ function handleChange() {
   if (props.disabled || activeView.value === props.value) {
     return;
   }
-  emits('change', props);
+  emits('change', props.originData);
 }
 function handleRemove() {
-  emits('remove', props);
+  emits('remove', props.originData);
 }
 // 拖拽
 function handleDragStart(e: Event) {
   if (!parentProps.draggable) {
     return;
   }
-  emits('_drag-start', e.currentTarget, props);
+  emits('_drag-start', e.currentTarget, props.originData);
 }
 function handleDragOver(e: Event) {
   if (!parentProps.draggable) {

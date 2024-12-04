@@ -11,23 +11,28 @@ export interface ViewProps {
   treeConfig?: TreeViewConfig
   showArrow?: boolean
   showCount?: boolean
-  props?: {
-    label?: string
-    vale?: string
-    count?: string
-    custom?: string
-    disabled?: string
-    children?: string
-  }
+  props?: ViewAttributes
+}
+export interface ViewAttributes {
+  label?: string
+  value?: string
+  count?: string
+  custom?: string
+  disabled?: string
+  children?: string
 }
 export interface ViewData {
-  value: any
-  label?: string
-  count?: number | string
-  disabled?: boolean
-  custom?: boolean
   showCustomControl?: boolean
-  children?: ViewData[]
+  [key: string]: any
+}
+export interface ViewItemProps {
+  label: string
+  value: string
+  count: number | string
+  custom: boolean
+  disabled: boolean
+  showCustomControl?: boolean
+  originData?: any
 }
 
 export interface TreeViewProps {

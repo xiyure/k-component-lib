@@ -3,12 +3,18 @@
     ref="KTreeRef"
     :class="['k-tree', _styleModule, { 'k-tree-show-arrow': props.showArrow }]"
     :filter-method="filterMethod"
+    :props="props.props"
     v-bind="$attrs"
   >
     <template #default="{ node, data }">
       <component v-if="treeIcon(node, data)" :is="treeIcon(node, data)" />
       <span class="k-tree-node-label">
-        <slot :node="node" :data="data">{{ data.label }}</slot>
+        <slot :node="node" :data="data">
+          {{ typeof props.props?.label === 'function' 
+            ? data[props.props.label(data, node) ?? 'label']
+            : data[props.props?.label ?? 'label']
+          }}
+        </slot>
       </span>
     </template>
   </el-tree>
