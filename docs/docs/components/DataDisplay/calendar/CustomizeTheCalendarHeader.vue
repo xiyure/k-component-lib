@@ -1,5 +1,5 @@
 <template>
-  <k-calendar ref="calendar" :schedule="[]" adaptive show-lunar>
+  <k-calendar ref="calendar" :schedule="[]" adaptive>
     <template #header="{ date }">
       <span>Custom header content</span>
       <span>{{ date }}</span>

@@ -2,7 +2,7 @@ import { h, onMounted } from 'vue';
 import DefaultTheme from 'vitepress/theme';
 import { Container } from '../plugin/container/index';
 import './style.less';
-// import './tailwind.css'; // index 中已经引用 不需要重复引用
+import './tailwind.css'; // index 中已经引用 不需要重复引用
 import 'overlayscrollbars/overlayscrollbars.css';
 import { OverlayScrollbars } from 'overlayscrollbars';
 import {
@@ -19,7 +19,7 @@ import { KswIcon } from 'ksw-vue-icon';
 /*
  *  源码
  */
-// import install from '../../../packages/index';
+import install from '../../../packages/index';
 /*
  *  本地 build
  */
@@ -28,8 +28,8 @@ import { KswIcon } from 'ksw-vue-icon';
 /*
  *  npm
  */
-import install from '@ksware/ksw-ux';
-import '@ksware/ksw-ux/kingsware-ui/style.css';
+// import install from '@ksware/ksw-ux';
+// import '@ksware/ksw-ux/kingsware-ui/style.css';
 
 export default {
   ...DefaultTheme,

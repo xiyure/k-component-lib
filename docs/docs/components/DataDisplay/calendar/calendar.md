@@ -22,19 +22,23 @@ title: calendar 日历
 
 设置 range 属性指定日历的显示范围。 开始时间必须是周起始日，结束时间必须是周结束日，且时间跨度不能超过两个月。
 
-<preview path="./radiusCalendar.vue" />
+<preview path="./rangeCalendar.vue" />
 
 ## 自定义日历头部
 
-设置徽章点的偏移，格式是[左，顶部]， 代表状态点从左侧和默认位置顶部的偏移。
-
 <preview path="./CustomizeTheCalendarHeader.vue" />
 
-## 国际化
+## 自定义农历日历
+
+设置 show-lunar 属性指定是否显示农历日历。
+
+<preview path="./lunarCalendar.vue" />
+
+<!-- ## 国际化
 
 由于 Element Plus 的默认语言为英语，如果你需要设置其它的语言，请参考国际化文档。
 
-要注意的是：日期相关的文字（月份，每一周的第一天等等）也都是通过国际化来配置的。
+要注意的是：日期相关的文字（月份，每一周的第一天等等）也都是通过国际化来配置的。 -->
 
 <!-- <API src="./collapse.json" lang="zh"></API>
 

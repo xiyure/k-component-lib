@@ -1,5 +1,5 @@
 <template>
-  <k-calendar v-model="value" :schedule="[]" adaptive show-lunar></k-calendar>
+  <k-calendar v-model="value" :schedule="[]"></k-calendar>
 </template>
 
 <script lang="ts" setup>

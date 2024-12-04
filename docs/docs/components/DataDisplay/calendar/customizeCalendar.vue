@@ -1,5 +1,5 @@
 <template>
-  <k-calendar :schedule="[]" adaptive show-lunar>
+  <k-calendar :schedule="[]" adaptive>
     <template #date-cell="{ data }">
       <p :class="data.isSelected ? 'is-selected' : ''">
         {{ data.day.split('-').slice(1).join('-') }}
