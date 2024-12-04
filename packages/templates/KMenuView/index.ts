@@ -1,4 +1,4 @@
-import MenuView from './KMenuView.vue';
+import MenuView from './MenuView.vue';
 import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall } from '../../utils/install';
 

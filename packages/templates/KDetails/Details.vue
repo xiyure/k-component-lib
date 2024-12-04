@@ -20,11 +20,11 @@ import { DetailsProps } from './type';
 import KDetailsItem from './DetailsItem.vue';
 
 defineOptions({
-  name: 'KDetails'
+  name: 'KDetails',
 });
 const props = withDefaults(defineProps<DetailsProps>(), {
   direction: 'vertical',
-  showLine: false
+  showLine: false,
 });
 
 const RefKDetails = ref();

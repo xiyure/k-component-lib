@@ -29,14 +29,15 @@
       <!-- body -->
       <div class="extra-head-body px-6 py-3">
         <slot name="head-abstract">
-          <div class="flex gap-16 overflow-auto scrollbar-hide">
-            <DetailsHeadItem
+          <div class="w-full relative overflow-auto scrollbar-hide flex gap-4">
+            <DetailsItem
               v-for="item in props.abstract"
               :key="item.label"
               :label="item.label"
               :value="item.value"
               :render="item.render"
-            ></DetailsHeadItem>
+              flex
+            ></DetailsItem>
           </div>
         </slot>
       </div>
@@ -49,29 +50,29 @@
 </template>
 
 <script setup lang="ts">
-import DetailsHeadItem from './DetailsHeadItem.vue';
+import DetailsItem from '../KDetails/DetailsItem.vue';
 
 defineOptions({
-  name: 'KPageDetails'
+  name: 'KPageDetails',
 });
 
 const props = defineProps({
   pageIcon: {
     type: String,
-    default: ''
+    default: '',
   },
   pageTitle: {
     type: String,
-    default: '标题'
+    default: '标题',
   },
   pageDescriptions: {
     type: String,
-    default: ''
+    default: '',
   },
   abstract: {
     type: Array,
-    default: () => []
-  }
+    default: () => [],
+  },
 });
 </script>
 <style lang="less" scoped>

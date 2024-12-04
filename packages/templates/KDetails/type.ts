@@ -1,5 +1,11 @@
 import { VNode, Component } from 'vue';
 
+export interface DetailsProps {
+  abstract?: DetailsItemProps[];
+  direction?: 'horizontal' | 'vertical';
+  showLine?: boolean;
+}
+
 export interface DetailsItemProps {
   label?: string;
   value?: string | object;
@@ -7,10 +13,5 @@ export interface DetailsItemProps {
   showLine?: boolean;
   column?: number;
   direction?: 'horizontal' | 'vertical';
-}
-
-export interface DetailsProps {
-  abstract?: DetailsItemProps[];
-  direction?: 'horizontal' | 'vertical';
-  showLine?: boolean;
+  flex?: boolean;
 }

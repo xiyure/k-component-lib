@@ -1,5 +1,6 @@
 // culori
 import { parse, converter, Oklch } from 'culori';
+import { getCSSVar } from './utils';
 
 // 预设状态颜色
 const presetColors: {

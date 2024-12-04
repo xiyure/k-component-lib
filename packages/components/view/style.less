@@ -69,7 +69,6 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 0.25rem;
   }
   .k-view__special-data {
     padding: 0.5rem 0 0 0;
@@ -147,5 +146,9 @@
     .k-view-item__other {
       color: var(--k-gray-300) !important;
     }
+  }
+
+  & + & {
+    margin-top: 0.25rem;
   }
 }
