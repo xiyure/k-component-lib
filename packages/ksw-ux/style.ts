@@ -22,5 +22,5 @@ export function useTheme(app: App, config: ContextConfig = {}) {
   // 添加项目类名
   const body = document.getElementsByTagName('body')[0];
   body?.classList.add(projectName);
-  app.provide('_styleModule', config?.styleModule ?? '');
+  app.provide('_styleModule', projectName === 'AOM'? '' : projectName);
 }

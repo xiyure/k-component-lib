@@ -1,4 +1,4 @@
-import Steps from './steps.vue';
+import Steps from './steps';
 import Step from './step.vue';
 import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall, withNoopInstall } from '../../utils/install';
