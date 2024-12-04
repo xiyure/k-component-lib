@@ -29,7 +29,7 @@ export default defineConfig({
     GitChangelog({ 
       repoURL: () => 'https://github.com/xiyure/k-component-lib' 
     }), 
-    GitChangelogMarkdownSection({ 
+    GitChangelogMarkdownSection({
       sections: { 
         disableChangelog: true, 
         disableContributors: false 
