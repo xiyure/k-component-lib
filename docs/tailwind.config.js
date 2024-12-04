@@ -10,7 +10,17 @@ export default {
     '../packages/**/*.{js,ts,vue,md}'
   ],
   theme: {
-    extend: {}
+    extend: {
+      screens:{
+        '2xs':'768px',
+        xs:'960px',
+        sm:'1440px',
+        base:'1920px',
+        lg:'2560px',
+        xl:'3008px',
+        '2xl':'3840px',
+      }
+    }
   },
   plugins: []
 };

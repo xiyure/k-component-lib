@@ -2,7 +2,7 @@ import { h, onMounted } from 'vue';
 import DefaultTheme from 'vitepress/theme';
 import { Container } from '../plugin/container/index';
 import './style.less';
-import './tailwind.css'; // index 中已经引用 不需要重复引用
+import './tailwind.css';
 import 'overlayscrollbars/overlayscrollbars.css';
 import { OverlayScrollbars } from 'overlayscrollbars';
 import {
