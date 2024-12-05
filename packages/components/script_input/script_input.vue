@@ -121,7 +121,7 @@ const DEFAULT_TREE_CONFIG = {
   parentField: 'pid',
   rowField: 'value',
   expandAll: false,
-}
+};
 
 const emits = defineEmits(['change', 'input', 'focus', 'blur', 'select', 'update:modelValue']);
 
@@ -171,7 +171,7 @@ const treeConfig = computed(() => {
     return undefined;
   }
   return Object.assign(DEFAULT_TREE_CONFIG, props.treeConfig || {});
-})
+});
 const flattedOptions = computed(() => {
   const tableData = $tree.value?.getTableData().fullData ?? [];
   return allTreeDataToArray(tableData, 'children') ?? [];
@@ -251,7 +251,7 @@ function handleBlur(event: FocusEvent) {
   }
   const popperElem = getElement(`.${dynamicClassName}`);
   if (popperElem && !popperElem.contains(event.relatedTarget as Node)) {
-    canFocus = false
+    canFocus = false;
     emits('blur');
     emits('change', parseText());
     showTree.value = false;

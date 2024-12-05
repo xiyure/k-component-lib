@@ -28,20 +28,32 @@
       </div>
 
       <!-- body -->
-      <div class="head-abstract mb-4">
+      <div class="head-abstract mb-4 flex flex-col">
         <slot name="head-abstract">
           <div
-            class="grid gap-4"
+            ref="RefHeadAbstract"
+            class="RefHeadAbstract grid gap-4"
+            :class="{
+              'is-collapse': !showDetailsAllStatus && useItemCollapse,
+              'use-collapse': useItemCollapse && showDetailsAllStatus,
+            }"
             :style="`grid-template-columns:repeat(${columns},minmax(0, 1fr))`"
           >
-            <DetailsHeadItem
+            <KDetailsItem
               v-for="item in props.abstract"
               :key="item.label"
               :label="item.label"
               :value="item.value"
               :render="item.render"
               :style="`grid-column: span ${item.column}`"
-            ></DetailsHeadItem>
+              :direction="direction"
+            ></KDetailsItem>
+          </div>
+          <div class="!m-auto p-2" v-if="useItemCollapse">
+            <k-button text @click="toggleShowDetailsAllStatus">
+              <IconArrowTop :rotate="showDetailsAllStatus ? 180 : 0" />
+              {{ !showDetailsAllStatus ? '收起详情' : '展开详情' }}
+            </k-button>
           </div>
         </slot>
       </div>
@@ -50,11 +62,7 @@
     <div class="GFPageDetails-slot--default flex-1">
       <slot name="detail">
         <k-tabs v-model="activeName" v-bind="tabsConfig">
-          <k-tab-pane
-            v-for="item in tabs"
-            :key="item.name"
-            v-bind="item"
-          >
+          <k-tab-pane v-for="item in tabs" :key="item.name" v-bind="item">
             <template v-if="$slots[`${item.name}-label`]" #label>
               <slot :name="`${item.name}-label`"></slot>
             </template>
@@ -67,13 +75,15 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { KTabs, KTabPane } from '../../components/tab';
-import DetailsHeadItem from './DetailsHeadItem.vue';
+import { KDetailsItem } from '../KDetails';
 import { GFPageDetailProps } from './type';
 
+// console.log(KDetailsItem);
+
 defineOptions({
-  name: 'GFPageDetails'
+  name: 'GFPageDetails',
 });
 const props = withDefaults(defineProps<GFPageDetailProps>(), {
   icon: '',
@@ -81,14 +91,79 @@ const props = withDefaults(defineProps<GFPageDetailProps>(), {
   description: '',
   columns: 3,
   abstract: () => [],
-  tabs: () => []
+  tabs: () => [],
+  direction: 'horizontal',
+  useItemCollapse: false,
 });
 
+const showDetailsAllStatus = ref(true);
+const RefHeadAbstract = ref();
+
 const defaultActiveName = props.tabsConfig?.defaultActive;
-const activeName = ref((defaultActiveName ?? props.tabs[0].name));
+const activeName = ref(defaultActiveName ?? props.tabs[0].name);
+
+const maxColumn = ref(1);
+const rowMax = ref(1);
+
+onMounted(() => {
+  console.log(getRefHeadAbstractHeight());
+  computeMaxColumn();
+});
 
 function toggleActiveTab(name: string) {
   activeName.value = name;
+}
+
+// 获取 RefHeadAbstract 元素的宽度第一行的高度
+function getRefHeadAbstractHeight() {
+  const height = RefHeadAbstract.value?.children[0].children[0].clientHeight;
+  // console.log(RefHeadAbstract.value?.children[0].children[0]);
+
+  // RefHeadAbstract
+
+  return height;
+}
+
+function toggleShowDetailsAllStatus() {
+  showDetailsAllStatus.value = !showDetailsAllStatus.value;
+}
+
+function computeMaxColumn() {
+  if (!RefHeadAbstract?.value) return;
+  let count = 1;
+  const gridTemplateColumns = getComputedStyle(RefHeadAbstract?.value).gridTemplateColumns.split(
+    ' ',
+  );
+  for (let i = 1; i < gridTemplateColumns.length; i++) {
+    const abs = Math.abs(parseInt(gridTemplateColumns[i]) - parseInt(gridTemplateColumns[i - 1]));
+    if (abs > 2) {
+      maxColumn.value = count;
+      break;
+    }
+    count++;
+  }
+  maxColumn.value = count;
+
+  setTimeout(() => {
+    getAutoSize();
+  }, 1);
+}
+
+function getAutoSize() {
+  // 表单真实高度
+  const __formTrueHeight = RefHeadAbstract.value?.clientHeight ?? 0;
+  // 网格布局行数
+  const __gridTemplateRowsArr = getComputedStyle(RefHeadAbstract?.value).gridTemplateRows.split(
+    ' ',
+  );
+
+  // 第一行高度
+  const __firstRowHeight = __gridTemplateRowsArr[0];
+
+  rowMax.value = __gridTemplateRowsArr.length;
+  RefHeadAbstract?.value.style.setProperty('--expandHeight', `${__formTrueHeight}px`);
+  RefHeadAbstract?.value.style.setProperty('--transition-duration', '0.3s');
+  RefHeadAbstract?.value.style.setProperty('--firstRowHeight', `${__firstRowHeight}`);
 }
 
 defineExpose({ toggleActiveTab });

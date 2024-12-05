@@ -12,11 +12,11 @@
     ref="RefDetailsItem"
     class="k-detailsItem bbm h-fit flex flex-col gap-1 shrink-0 pb-2"
     :class="[
-      { 'border-b border-gray-200': props.showLine ?? __parentProps__.showLine },
-      { '!flex-row': props.direction ?? __parentProps__.direction == 'horizontal' },
-      { 'min-w-24': props.flex === true },
+      { 'border-b border-gray-200': props.showLine === true },
+      { '!flex-row': props.direction === 'horizontal' },
+      { 'min-w-24': props.useflex === true },
     ]"
-    :style="computedStyle"
+    :style="props.useflex ? '' : `grid-column: span ${newColumn};`"
   >
     <p class="titel text-base text-gray-400 text-nowrap leading-6">{{ label }}:</p>
     <p class="value text-base text-normal min-h-6 flex items-center leading-6 w-full">
@@ -36,29 +36,19 @@ defineOptions({
 const props = withDefaults(defineProps<DetailsItemProps>(), {
   column: 1,
   showLine: undefined,
-  flex: false,
+  useflex: false,
 });
-console.log(props.flex);
 
 const injectMaxColumn = inject<ComputedRef>(
   '__maxColumn__',
   computed(() => props.column),
 );
-const __parentProps__ = inject<DetailsProps>('__parentProps__', props);
 
 const newColumn = computed(() => {
   if (injectMaxColumn.value) {
     return injectMaxColumn.value >= props.column ? props.column : injectMaxColumn.value;
   }
   return props.column;
-});
-
-const computedStyle = computed(() => {
-  const style = props.flex ? '' : `grid-column: span ${props.column};`;
-
-  return {
-    style,
-  };
 });
 </script>
 <style lang="less" scoped>

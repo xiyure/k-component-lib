@@ -36,7 +36,9 @@
               :label="item.label"
               :value="item.value"
               :render="item.render"
-              flex
+              :showLine="showLine"
+              :direction="direction"
+              :useflex="useflex"
             ></DetailsItem>
           </div>
         </slot>
@@ -72,6 +74,18 @@ const props = defineProps({
   abstract: {
     type: Array,
     default: () => [],
+  },
+  showLine: {
+    type: Boolean,
+    default: false,
+  },
+  direction: {
+    type: String,
+    default: 'vertical',
+  },
+  useflex: {
+    type: Boolean,
+    default: true,
   },
 });
 </script>

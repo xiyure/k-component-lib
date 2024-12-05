@@ -4,6 +4,7 @@ export interface DetailsProps {
   abstract?: DetailsItemProps[];
   direction?: 'horizontal' | 'vertical';
   showLine?: boolean;
+  useflex?: boolean;
 }
 
 export interface DetailsItemProps {
@@ -13,5 +14,5 @@ export interface DetailsItemProps {
   showLine?: boolean;
   column?: number;
   direction?: 'horizontal' | 'vertical';
-  flex?: boolean;
+  useflex?: boolean;
 }
