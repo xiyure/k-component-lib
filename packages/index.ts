@@ -9,13 +9,13 @@ import {
 } from './ksw-ux';
 import type { ContextConfig } from '@ksw-ux/utils/typescript';
 
-const install = (app: App, options?: ContextConfig) => {
+const install = (app: App, config?: ContextConfig) => {
   makeRegister(app);
-  useTheme(app, options);
-  registerThirdLib(app, options);
-  useI18n(app, options);
+  useTheme(app, config);
+  registerThirdLib(app, config);
+  useI18n(app, config);
   useDirectives(app);
-  provide(app);
+  provide(app, config);
 };
 
 export * from './components';

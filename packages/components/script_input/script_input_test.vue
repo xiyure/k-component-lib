@@ -98,7 +98,6 @@ import {
   nextTick,
   onUnmounted,
 } from 'vue';
-import DiffMatchPatch from 'diff-match-patch';
 import { ScriptInputProps } from './type';
 import Message from '../message';
 import { genRandomStr, allTreeDataToArray } from '../../utils';
@@ -109,7 +108,7 @@ defineOptions({
 });
 
 const _styleModule = inject('_styleModule', '');
-const diff = new DiffMatchPatch();
+const diff = inject('__diffMatchPatch');
 
 const props = withDefaults(defineProps<ScriptInputProps>(), {
   options: () => [],
@@ -138,7 +137,6 @@ onBeforeUnmount(() => {
   document.removeEventListener('click', hidePopperByClick);
 });
 
-const prefix = `_${genRandomStr(8)}`;
 const dynamicClassName = `_${genRandomStr(8)}`;
 const KScriptInput = ref();
 const $tree = ref();
@@ -147,7 +145,6 @@ let preTextValue: string = '';
 const isAllowInput = ref(true);
 let cacheRes = '';
 const curInput = ref('');
-const textValue = ref('');
 const selectedIndex = ref<number>(0);
 const popperVisible = ref(false);
 const columns = [{ field: 'label', label: '', treeNode: true }];
@@ -209,9 +206,10 @@ watch(
       return;
     }
     nextTick(() => {
-      preTextValue = textValue.value;
-      textValue.value = parseModelValue(newValue.toString());
-      KScriptInput.value.innerHTML = textValue.value;
+      preTextValue = getEditorContent();
+      tempText = preTextValue;
+      const innerText = parseModelValue(newValue.toString());
+      setEditorContent(innerText);
       cacheRes = newValue.toString();
       resetCursor();
     });
@@ -219,15 +217,18 @@ watch(
   { immediate: true },
 );
 
-watch(
-  () => textValue.value,
-  () => {
-    const res = parseText();
-    cacheRes = res;
-    emits('update:modelValue', res);
-  },
-  { immediate: true },
-);
+function updateModelValue() {
+  const res = parseInputValue();
+  cacheRes = res;
+  emits('update:modelValue', res);
+}
+function getEditorContent() {
+  return formatterEscape(KScriptInput.value.innerHTML);
+}
+function setEditorContent(value: string) {
+  KScriptInput.value.innerHTML = value;
+}
+let tempText = '';
 function handleInput(event: InputEvent) {
   if (!(event.target instanceof HTMLElement) || !isAllowInput.value) {
     return;
@@ -239,9 +240,9 @@ function handleInput(event: InputEvent) {
   } else if (event.data !== null) {
     curInput.value += event.data ?? '';
   }
-  preTextValue = textValue.value;
-  const innerHTML = KScriptInput.value.innerHTML;
-  textValue.value = innerHTML === '<br>' ? '' : formatterEscape(innerHTML);
+  preTextValue = tempText;
+  tempText = getEditorContent();
+  updateModelValue();
 }
 function handleFocus() {
   showTree.value = true;
@@ -256,7 +257,7 @@ function handleBlur(event: FocusEvent) {
   if (popperElem && !popperElem.contains(event.relatedTarget as Node)) {
     canFocus = false
     emits('blur');
-    emits('change', parseText());
+    emits('change', parseInputValue());
     showTree.value = false;
     popperVisible.value = false;
   }
@@ -274,19 +275,27 @@ function cellClick({ row }: { row: Row }) {
 }
 function selectOption(data: Row | RowData) {
   const { value, key } = removeInvalidChar(data);
-  textValue.value = value;
   curInput.value = '';
-  preTextValue = textValue.value;
-  KScriptInput.value.innerHTML = textValue.value;
+  setEditorContent(value);
+  preTextValue = getEditorContent();
+  tempText = preTextValue;
   resetCursor(key);
   emits('select', data);
   popperVisible.value = false;
   nextTick(() => {
-    emits('change', parseText());
+    updateModelValue();
+    emits('change', parseInputValue());
   });
 }
 function removeInvalidChar(data: Row | RowData) {
-  const diffText = diff.diff_main(preTextValue, textValue.value);
+  const key = genRandomStr(8);
+  if (isManual) {
+    return {
+      value: getEditorContent() + generateScriptTag(data.label, key),
+      key
+    };
+  }
+  const diffText = diff.diff_main(preTextValue, getEditorContent());
   let replaceText = '';
   const firstSameObj = diffText.find((diff) => diff[0] === 0);
   const firstSameText = firstSameObj?.[1] ?? '';
@@ -298,15 +307,14 @@ function removeInvalidChar(data: Row | RowData) {
   } else {
     replaceText = firstSameText;
   };
-  const key = genRandomStr(8);
   let validText = '';
   if (firstSameObj) {
-    firstSameObj[1] = replaceText + generateScriptTag(data.label, key);
+    firstSameObj[1] = `${replaceText}${generateScriptTag(data.label, key)}`;
     validText = diffText
       .filter((diff: [number, string]) => diff[0] === 0)
       .map((diff: [number, string]) => diff[1]).join('');
   } else {
-    validText = generateScriptTag(data.label, key);
+    validText = `${generateScriptTag(data.label, key)}`;
   }
 
   return {
@@ -314,42 +322,30 @@ function removeInvalidChar(data: Row | RowData) {
     key
   };
 }
-function parseText() {
-  let text = parseValue();
-  const replaceReg = /<div[^>]*>(.*?)<\/div>/;
-  while (replaceReg.test(text)) {
-    const regex = />([\s\S]*?)<\/div>/;
-    let label = text.match(regex)?.[1] ?? '';
-    if (_isStringMode.value) {
-      label = fxSet.has(label) ? `fx(${label})` : `${prefix}-${label} `;
-    }
-    text = text.replace(replaceReg, label);
+function parseInputValue() {
+  if (!isStringMode()) {
+    return getEditorContent();
   }
-  const res = text
-    .split(/ /g)
-    .filter((item) => item !== '')
-    .map((item) => {
-      if (item.startsWith(prefix + '-')) {
-        const label = item.slice(10);
+  let text = '';
+  const nodes = KScriptInput.value.childNodes;
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i];
+    if (node.nodeType === 3) {
+      text += node.textContent ?? '';
+    } else if (node.tagName.toUpperCase() === 'DIV' && node.classList.contains('k-script-tag')) {
+      const label = node.innerText;
+      if (fxSet.has(label)) {
+        text += `fx(${label})`;
+      } else {
         const targetOption = props.options.find((item) => item.label === label);
-        return `fx(${targetOption?.value ?? null})`;
+        text += `fx(${targetOption?.value ?? null})`;
       }
-      return item;
-    })
-    .join(' ');
-  const result = formatter(res);
-  emits('input', result);
-  return result;
-}
-function parseValue() {
-  let text = textValue.value;
-  const divTagReg = /<div>(.*?)<\/div>/;
-  while (divTagReg.test(text)) {
-    const regex = /<div>([\s\S]*?)<\/div>/;
-    const divLabel = text.match(regex)?.[1] ?? '';
-    text = text.replace(divTagReg, ` ${divLabel}`);
+    }
   }
-  return text;
+  text = text.split(' ').filter((item) => item !== '').join(' ');
+  const res = formatter(text);
+  emits('input', res);
+  return res;
 }
 function parseModelValue(value: string) {
   fxSet.clear();
@@ -542,8 +538,7 @@ function hidePopperByClick(event: MouseEvent) {
   hidePopper();
 }
 function clear() {
-  KScriptInput.value.innerHTML = '';
-  textValue.value = '';
+  setEditorContent('');
   preTextValue = '';
   curInput.value = '';
 }
@@ -573,21 +568,14 @@ const tempCaches = {
   string: '',
 };
 function saveTextValue() {
-  if (!isStringMode()) {
-    tempCaches['expression'] = textValue.value;
-  } else {
-    tempCaches['string'] = textValue.value;
-  }
+  const attrName = isStringMode() ? 'string' : 'expression';
+  tempCaches[attrName] = getEditorContent();
 }
 function restoreTextValue() {
   clear();
-  if (isStringMode()) {
-    textValue.value = caches['string'] ?? '';
-  } else {
-    textValue.value = caches['expression'] ?? '';
-  }
-  KScriptInput.value.innerHTML = textValue.value;
-  const res = parseText() ?? '';
+  const attrName = isStringMode() ? 'string' : 'expression';
+  setEditorContent(caches[attrName]);
+  const res = parseInputValue() ?? '';
   cacheRes = res;
   caches['expression'] = tempCaches['expression'];
   caches['string'] = tempCaches['string'];

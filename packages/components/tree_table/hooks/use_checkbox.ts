@@ -75,13 +75,17 @@ export function useCheckbox($table: Ref<VxeTableInstance>, tableData: Ref<RowDat
     resolve(undefined);
   });
   // 清除复选框缓存状态
-  const clearCheckboxReserve = () => new Promise((resolve) => {
-    if (props.showPage && !props.useTree) {
-      checkedData.value = new Set(tableData.value.map((row: RowData) => row[keyField.value]));
-    }
-    $table.value?.clearCheckboxReserve();
-    resolve(undefined);
-  });
+  const clearCheckboxReserve = async() => {
+    await $table.value?.clearCheckboxReserve();
+    new Promise((resolve) => {
+      if (props.showPage && !props.useTree) {
+        const checkRows = $table.value?.getCheckboxRecords();
+        checkedData.value = new Set(checkRows.map((row: RowData) => row[keyField.value]));
+        $table.value?.setCheckboxRow(checkRows, true);
+      }
+      resolve(undefined);
+    });
+  }
 
   // gutter中复选框点击事件
   function checkBoxChange(
@@ -111,9 +115,9 @@ export function useCheckbox($table: Ref<VxeTableInstance>, tableData: Ref<RowDat
   }
   // 关闭批量操作
   function closeBatchOperation() {
-    clearCheckedData();
     clearCheckboxRow();
-    clearCheckboxReserve();
+    clearCheckedData();
+    $table.value.clearCheckboxReserve();
   }
   // 判断是否禁用复选框
   function isCheckboxDisabled(row: Row) {
