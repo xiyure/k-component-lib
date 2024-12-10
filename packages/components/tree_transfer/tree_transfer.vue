@@ -21,7 +21,7 @@
             :tree-config="treeConfig"
             :row-config="{ keyField: 'id' }"
             :scroll-y="scrollY"
-            :checkbox-config="{ checkRowKeys, trigger: 'null', checkMethod }"
+            :checkbox-config="{ checkRowKeys, trigger: 'cell', checkMethod }"
             @checkbox-change="checkboxChange"
             @checkbox-all="checkboxChange"
           >
@@ -48,7 +48,6 @@
                   <span
                     class="tree-transfer__cell-label"
                     :title="row[props.label]"
-                    @click="addRightData(row)"
                   >
                     {{ row[props.label] }}
                   </span>
@@ -117,7 +116,6 @@ import { TreeTransferProps, TreeTransferData } from './type';
 import { KTable, KTableColumn } from '../table';
 import { KInput } from '../input';
 import { sortBySmallerList } from '../../utils';
-import { add } from 'lodash-es';
 
 defineOptions({
   name: 'KTreeTransfer',
@@ -369,8 +367,12 @@ function getTreeConfigField() {
   return { parentField, rowField };
 }
 function toggleTreeExpand(row: Row, e: Event) {
-  e.stopPropagation();
-  treeLeftRef.value.tableInstance.toggleTreeExpand(row);
+  if (props.useTree && !isLeafNode(row)) {
+    e.stopPropagation();
+    const $table = treeLeftRef.value.tableInstance;
+    $table.toggleTreeExpand(row);
+  }
+  
 }
 // 拖拽排序
 function dragSort(newData: TreeTransferData[]) {
@@ -399,6 +401,9 @@ function checkMethod(data: any) {
   const { row } = data;
   return props.checkMethod?.(data) ?? !row.disabled ?? true;
 }
+function isLeafNode(row: Row) {
+  return !row.children || row.children.length === 0;
+}
 
 const parentData = computed(
   () =>
@@ -417,24 +422,6 @@ const parentData = computed(
       return data;
     },
 );
-
-async function addRightData(row: Row) {
-  const $table = treeLeftRef.value.tableInstance;
-  if ((row.pid === undefined || row.pid !== null) && (!row.children || row.children?.length === 0)) {
-    // const targetRow = leftData.value.find((item) => item.id === row.id);
-    const row1 = $table.getRowById(row.id);
-   
-    // 查找 showRightData 中是否已经存在该 row，避免重复添加
-    const addIndex = showRightData.value.findIndex((item) => item.id === row.id);
-    let isCheck = await treeLeftRef.value.tableInstance.isCheckedByCheckboxRow(row1)
-    if (!isCheck) {
-      // 如果不存在，则将其添加到右侧数据
-      showRightData.value.push(row);
-    } else showRightData.value.splice(addIndex, 1);
-    await treeLeftRef.value.tableInstance.setCheckboxRow(row1, !isCheck);
-    emits('change', getSelectedData());
-  }
-}
 
 defineExpose({
   clearData,
