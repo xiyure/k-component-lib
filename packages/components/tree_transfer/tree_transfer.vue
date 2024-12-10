@@ -2,6 +2,7 @@
   <div :class="['k-tree-transfer', _styleModule]">
     <div v-if="showFilter" class="k-transfer__filter">
       <k-input
+        ref="KTransferInputRef"
         v-model="query"
         :placeholder="$t('enterInputSearch')"
         :suffix-icon="IconSearch"
@@ -45,10 +46,7 @@
                     class="column-icon"
                     :color="columnIcon(row)?.color"
                   />
-                  <span
-                    class="tree-transfer__cell-label"
-                    :title="row[props.label]"
-                  >
+                  <span class="tree-transfer__cell-label" :title="row[props.label]">
                     {{ row[props.label] }}
                   </span>
                 </span>
@@ -109,7 +107,7 @@
 </template>
 
 <script setup lang="tsx">
-import { ref, computed, watch, nextTick, inject } from 'vue';
+import { ref, computed, watch, nextTick, inject, onMounted } from 'vue';
 import { IconSearch, IconDrag, IconClose } from 'ksw-vue-icon';
 import { VxeTablePropTypes } from 'vxe-table';
 import { TreeTransferProps, TreeTransferData } from './type';
@@ -372,7 +370,6 @@ function toggleTreeExpand(row: Row, e: Event) {
     const $table = treeLeftRef.value.tableInstance;
     $table.toggleTreeExpand(row);
   }
-  
 }
 // 拖拽排序
 function dragSort(newData: TreeTransferData[]) {
@@ -405,23 +402,37 @@ function isLeafNode(row: Row) {
   return !row.children || row.children.length === 0;
 }
 
-const parentData = computed(
-  () =>
-    function (row: Row) {
-      let data = row;
-      while (data.pid) {
-        leftData.value.map((item) => {
-          if (item.id == data.pid) {
-            data = item;
-          }
-        });
+const parentData = computed(() => {
+  return function (row: Row) {
+    let data = row;
+    while (data.pid) {
+      const parent = leftData.value.find((item) => item.id === data.pid);
+      if (parent) {
+        data = parent;
+      } else {
+        break;
       }
-      let name = data.name;
-      data = row[props.label];
-      data = { data, name };
-      return data;
-    },
-);
+    }
+    const name = data.name;
+    const labelData = row[props.label];
+
+    return { data: labelData, name };
+  };
+});
+
+const KTransferInputRef = ref();
+const addEvent = () => {
+  const InputRef = KTransferInputRef.value?.$el.querySelector('.el-input__suffix');
+  if (InputRef) {
+    InputRef.addEventListener('click', filterData);
+  } else {
+    console.error('Element with class .el-input__suffix not found');
+  }
+};
+
+onMounted(() => {
+  addEvent();
+});
 
 defineExpose({
   clearData,
