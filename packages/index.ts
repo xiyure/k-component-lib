@@ -15,7 +15,7 @@ const install = (app: App, config?: ContextConfig) => {
   registerThirdLib(app, config);
   useI18n(app, config);
   useDirectives(app);
-  provide(app, config);
+  provide(app);
 };
 
 export * from './components';

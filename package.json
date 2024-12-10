@@ -23,7 +23,7 @@
   },
   "peerDependencies": {
     "chinese-lunar-calendar": "^1.0.1",
-    "element-plus": "^2.8.0",
+    "element-plus": "^2.9.0",
     "ksw-vue-icon": "latest",
     "lodash-es": "^4.17.21",
     "sortablejs": "^1.15.2",
@@ -48,7 +48,6 @@
     "eslint-plugin-vue": "^9.28.0",
     "fast-glob": "^3.3.2",
     "globals": "^15.9.0",
-    "ksw-vue-icon": "^2.3.9",
     "less": "^4.2.0",
     "less-loader": "^12.2.0",
     "overlayscrollbars-vue": "^0.5.9",
