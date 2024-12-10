@@ -10,6 +10,7 @@ export interface FilterProps {
   remote?: boolean | string[]
   formatter?: string
   ignoreCase?: boolean
+  showPopper?: boolean
 }
 
 export type FilterValue = string | number | Date | null
