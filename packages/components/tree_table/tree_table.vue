@@ -1,12 +1,12 @@
 <template>
   <div
     :class="[
-      'k-tree-table',
+      'k-tree-table flex flex-col h-full',
       props.class,
       _styleModule,
       { 'tree-table-use-ant-style': useAntStyle },
     ]"
-    :style="{ height: adaptive ? 'fit-content' : height, ...style }"
+    :style="{ ...style }"
   >
     <div v-if="simple && showSearchInput" class="k-tree-table__header-pure">
       <k-input
@@ -20,9 +20,9 @@
     <div
       v-else-if="showHeaderTools && !simple"
       class="k-tree-table__header"
+      ref="RefTableHeader"
       :style="{
         justifyContent: showDescription ? 'space-between' : 'flex-end',
-        height: getVailSize() === 'sm' ? '24px' : '32px',
       }"
     >
       <div v-if="showDescription" class="k-table-info">
@@ -191,7 +191,7 @@
         </template>
       </div>
     </div>
-    <div class="table-box" :style="{ height: tableHeight }">
+    <div class="table-box flex-1 overflow-auto">
       <k-table
         ref="xTree"
         :border="useAntStyle ? 'inner' : border"
@@ -259,17 +259,27 @@
         <k-operate :total="checkedDataSize" :data="batchOperations" @close="closeBatchOperation" />
       </div>
     </div>
-    <div v-if="isPaging" class="pagination-box">
+    <div v-if="isPaging" class="pagination-box" ref="RefTablePagination">
       <k-pagination
         v-bind="paginationConfig"
         :total="dataLength"
         @current-change="changeCurrentPage"
         @size-change="changePageSize"
-        @change="(currentPage: number, pageSize: number) => {
-          emits('page-change', currentPage, pageSize)
-        }"
-        @prev-click="(value: number) => { emits('prev-click', value)}"
-        @next-click="(value: number) => { emits('next-click', value)}"
+        @change="
+          (currentPage: number, pageSize: number) => {
+            emits('page-change', currentPage, pageSize);
+          }
+        "
+        @prev-click="
+          (value: number) => {
+            emits('prev-click', value);
+          }
+        "
+        @next-click="
+          (value: number) => {
+            emits('next-click', value);
+          }
+        "
       />
     </div>
   </div>
@@ -531,16 +541,6 @@ const headerText = computed(() => {
   return text;
 });
 
-// 表格高度计算
-const tableHeight = computed(() => {
-  if (props.adaptive) {
-    return 'fit-content';
-  }
-  const isShowHeader = (props.showDescription || widgets.value?.length) && props.showHeaderTools;
-  const headerHeight = isShowHeader ? (getVailSize() === 'sm' ? 34 : 42) : 0;
-  const pageHeight = isPaging.value ? (getVailSize() === 'sm' ? 34 : 42) : 0;
-  return `calc(100% - ${headerHeight}px - ${pageHeight}px)`;
-});
 // size相关
 const tableSize = computed(() => _size.value ?? undefined);
 const __showTransfer = computed(() => {
