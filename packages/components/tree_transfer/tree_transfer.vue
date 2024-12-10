@@ -420,7 +420,7 @@ const parentData = computed(
 
 async function addRightData(row: Row) {
   const $table = treeLeftRef.value.tableInstance;
-  if ((row.pid === undefined || row.pid !== null) && row.children?.length === 0) {
+  if ((row.pid === undefined || row.pid !== null) && (!row.children || row.children?.length === 0)) {
     // const targetRow = leftData.value.find((item) => item.id === row.id);
     const row1 = $table.getRowById(row.id);
    
