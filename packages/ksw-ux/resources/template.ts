@@ -10,6 +10,7 @@ import { KDetailsItem, KDetails } from '../../templates/KDetails';
 import { KMenuView } from '../../templates/KMenuView';
 // GFPageDetails
 import { GFPageDetails } from '../../templates/GFAOM';
+import { KNewTransfer } from '../../templates/KNewTransfer';
 
 export default [
   KPageViewBus,
@@ -18,5 +19,6 @@ export default [
   KDetails,
   KPageTableView,
   KMenuView,
-  GFPageDetails
+  GFPageDetails,
+  KNewTransfer,
 ] as Plugin[];

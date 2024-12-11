@@ -11,7 +11,10 @@
     </div>
     <div class="k-transfer__body">
       <div class="k-transfer-content k-transfer-content__left">
-        <div class="k-transfer__list" :class="useTree ? 'transfer-tree-table' : ''">
+        <div
+          class="k-transfer__list"
+          :class="useTree ? 'transfer-tree-table' : ''"
+        >
           <k-table
             ref="treeLeftRef"
             size="mini"
@@ -33,8 +36,8 @@
               checkboxChange(row, checked, true)
             }"
           >
-            <template #empty v-if="$slots.empty">
-              <slot name="empty"></slot>
+            <template #empty v-if="$slots.empty && query">
+              <slot name="empty" :query="query"></slot>
             </template>
             <k-table-column
               type="checkbox"
@@ -76,8 +79,8 @@
             :scroll-y="scrollY"
             @drag-end="dragSort"
           >
-            <template #empty v-if="$slots.empty">
-              <slot name="empty"></slot>
+            <template #empty v-if="$slots.empty && query">
+              <slot name="empty" :query="query"></slot>
             </template>
             <k-table-column :field="label">
               <template #header="data">
@@ -143,7 +146,7 @@ const props = withDefaults(defineProps<TreeTransferProps>(), {
 
 const _styleModule = inject('_styleModule', '');
 // 定义emit
-const emits = defineEmits(['change', 'sort', 'getQuery']);
+const emits = defineEmits(['change', 'sort']);
 const defaultTreeConfig = {
   transform: true,
   rowField: 'id',
@@ -322,7 +325,6 @@ function clearData() {
 async function filterData() {
   await filterLeftData();
   updateSelectData();
-  emits('getQuery', getQuery());
 }
 
 function getQuery() {
@@ -521,7 +523,7 @@ defineExpose({
   setCheckboxRow,
   isCheckedRow,
   clearQuery,
-  getQuery
+  getQuery,
 });
 </script>
 
