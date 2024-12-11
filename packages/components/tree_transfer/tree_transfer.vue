@@ -26,6 +26,9 @@
             @checkbox-change="checkboxChange"
             @checkbox-all="checkboxChange"
           >
+            <template #empty v-if="$slots.empty">
+              <slot name="empty"></slot>
+            </template>
             <k-table-column
               type="checkbox"
               :field="label"
@@ -67,6 +70,9 @@
             :scroll-y="scrollY"
             @drag-end="dragSort"
           >
+            <template #empty v-if="$slots.empty">
+              <slot name="empty"></slot>
+            </template>
             <k-table-column :field="label">
               <template #header="data">
                 <slot name="rightHeader" v-bind="data">
@@ -130,7 +136,7 @@ const props = withDefaults(defineProps<TreeTransferProps>(), {
 
 const _styleModule = inject('_styleModule', '');
 // 定义emit
-const emits = defineEmits(['change', 'sort']);
+const emits = defineEmits(['change', 'sort', 'getQuery']);
 const defaultTreeConfig = {
   transform: true,
   rowField: 'id',
@@ -181,6 +187,24 @@ const treeConfig = computed(() => {
 });
 const scrollY = computed(() => ({ enabled: true, ...(props.scrollY || {}) }));
 const rowLevel = computed(() => (row: Row) => getTreeNodeLevel(row));
+
+const parentData = computed(() => {
+  return function (row: Row) {
+    let data = row;
+    while (data.pid) {
+      const parent = leftData.value.find((item) => item.id === data.pid);
+      if (parent) {
+        data = parent;
+      } else {
+        break;
+      }
+    }
+    const name = data.name;
+    const labelData = row[props.label];
+
+    return { data: labelData, name };
+  };
+});
 
 watch(
   () => props.defaultData,
@@ -256,7 +280,13 @@ function clearData() {
 // 筛选
 async function filterData() {
   await filterLeftData();
+
   updateSelectData();
+  emits('getQuery', getQuery());
+}
+
+function getQuery() {
+  return query.value;
 }
 async function filterLeftData() {
   const searchKey = query.value.trim();
@@ -402,24 +432,6 @@ function isLeafNode(row: Row) {
   return !row.children || row.children.length === 0;
 }
 
-const parentData = computed(() => {
-  return function (row: Row) {
-    let data = row;
-    while (data.pid) {
-      const parent = leftData.value.find((item) => item.id === data.pid);
-      if (parent) {
-        data = parent;
-      } else {
-        break;
-      }
-    }
-    const name = data.name;
-    const labelData = row[props.label];
-
-    return { data: labelData, name };
-  };
-});
-
 const KTransferInputRef = ref();
 const addEvent = () => {
   const InputRef = KTransferInputRef.value?.$el.querySelector('.el-input__suffix');
@@ -430,12 +442,19 @@ const addEvent = () => {
   }
 };
 
+async function clearQuery() {
+  query.value = '';
+  await filterData();
+  clearData();
+}
+
 onMounted(() => {
   addEvent();
 });
 
 defineExpose({
   clearData,
+  clearQuery,
 });
 </script>
 
