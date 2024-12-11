@@ -5,7 +5,7 @@ export interface TreeTransferProps {
   data: TreeTransferData[]
   defaultData?: string[]
   titles?: [string, string]
-  showFilter?: boolean
+  showSearchInput?: boolean
   useTree?: boolean
   expandIcon?: Component | string
   expandIconColor?: string
@@ -19,6 +19,7 @@ export interface TreeTransferProps {
   drag?: boolean
   showDrag?: boolean
   checkMethod?: (data: any) => boolean
+  searchMethod?: (keyword: string, data: any[]) => Promise<any[]>
 }
 
 export interface TreeTransferData {
