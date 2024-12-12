@@ -10,6 +10,7 @@
 </template>
 
 <script setup lang="ts">
+import { VxeColgroup } from 'vxe-table';
 
 defineOptions({
   name: 'KColumnGroup'

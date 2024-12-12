@@ -121,6 +121,7 @@
 
 <script setup lang="ts">
 import { ref, watch, computed, provide, inject } from 'vue';
+import { ElScrollbar } from 'element-plus';
 import { IconRefresh, IconArrowRight } from 'ksw-vue-icon';
 import KViewItem from './view_item.vue';
 import { ViewProps, ViewData } from './type';

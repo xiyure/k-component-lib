@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 import { ref, provide, inject } from 'vue';
-import { ElDropdown } from 'element-plus';
+import { ElDropdown, ElDropdownMenu } from 'element-plus';
 import { DropDownProps } from './type';
 import { getExposeProxy, SIZE_KEY } from '../../utils';
 import { useSize } from '../../hooks';

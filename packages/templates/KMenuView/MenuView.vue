@@ -55,7 +55,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { IconLeftMenuDisplay } from 'ksw-vue-icon';
-import { MenuItemRegistered } from 'element-plus';
+import { ElMenu, MenuItemRegistered } from 'element-plus';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue';
 import { menuViewProps } from './type';
 import SubMenu from './subMenu.vue';

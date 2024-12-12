@@ -865,8 +865,8 @@ async function initTransfer() {
   );
   const fieldList = transferData.map((item: TableHeaderControl) => item.key);
   const cols = props.column.map((col) => {
-    const visible = transferDataMap.get(col.field)?.visible ?? col.visible !== false;
     const field = col.field ?? `_table_column_${col.type ?? ''}`;
+    const visible = transferDataMap.get(field)?.visible ?? col.visible !== false;
     return { ...cloneDeep(col), visible, field };
   });
   columns.value = cols.sort((a, b) => fieldList.indexOf(a.field) - fieldList.indexOf(b.field));

@@ -259,6 +259,7 @@ import type {
   VxeColumnPropTypes,
   VxeTablePropTypes
 } from 'vxe-table';
+import { VxeColumn } from 'vxe-table';
 import {
   IconTips,
   IconMore,

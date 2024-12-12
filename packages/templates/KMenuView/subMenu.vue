@@ -42,7 +42,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { MenuItemRegistered } from 'element-plus';
+import { ElSubMenu, ElIcon, ElMenuItem, MenuItemRegistered } from 'element-plus';
 import { menuViewOption, subMenuViewProps } from './type';
 
 defineOptions({
