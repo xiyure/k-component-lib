@@ -1,9 +1,6 @@
 <template>
-  <span
-    v-if="!col.type"
-    class="column-default__content"
-  >
-    <component 
+  <span v-if="!col.type" class="column-default__content">
+    <component
       :is="displayIcon(row)"
       v-if="props.col.showIcon && (row.icon || row.__folder)"
       :color="row.__folder ? '#FAC814' : row.iconStyle?.empty ? '#cdcacf' : row.iconStyle?.color"
@@ -11,17 +8,19 @@
       :grayscale="Boolean(row.iconStyle?.grayscale)"
     />
     <span
-      class="column-default__content__text" :style="{
-        marginLeft: ((row.icon || row.__folder) && col.showIcon)
-          ? `${iconSize(row) + (row.iconStyle?.indent ?? 3)}px`
-          : 0,
+      class="column-default__content__text"
+      :style="{
+        marginLeft:
+          (row.icon || row.__folder) && col.showIcon
+            ? `${iconSize(row) + (row.iconStyle?.indent ?? 3)}px`
+            : 0,
       }"
     >
       <template v-if="$slots[`${col.field ?? ''}-label`]">
         <slot :name="`${col.field ?? ''}-label`" :row="row" :column="col"></slot>
       </template>
       <template v-else-if="typeof col.formatter === 'function'">
-        {{ col.formatter({cellValue: row[col.field], row, column:col}) }}
+        {{ col.formatter({ cellValue: row[col.field], row, column: col }) }}
       </template>
       <template v-else>{{ row[col.field] === '' ? '-' : row[col.field] ?? '-' }}</template>
     </span>
@@ -35,22 +34,24 @@ const tableInstance: any = inject('tableInstance');
 const props = defineProps({
   row: {
     type: Object,
-    default: () => {}
+    default: () => {},
   },
   col: {
     type: Object,
-    default: () => {}
+    default: () => {},
   },
   size: {
     type: String,
-    default: 'default'
+    default: 'default',
   },
   align: {
     type: String,
-    default: () => 'left'
-  }
+    default: () => 'left',
+  },
 });
-const iconSize = computed(() => (row: any) => row.iconStyle?.size ?? (props.size === 'mini' ? 16 : 20));
+const iconSize = computed(
+  () => (row: any) => row.iconStyle?.size ?? (props.size === 'mini' ? 16 : 20),
+);
 const displayIcon = computed(() => (row: any) => {
   if (!row.__folder) {
     return row.icon;
@@ -58,5 +59,4 @@ const displayIcon = computed(() => (row: any) => {
   return tableInstance.value?.isTreeExpandByRow(row) ? 'IconFolderOpen' : 'IconFlowNested';
 });
 </script>
-<style lang="less">
-</style>
+<style lang="less"></style>

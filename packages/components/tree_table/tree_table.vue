@@ -6,7 +6,7 @@
       _styleModule,
       { 'tree-table-use-ant-style': useAntStyle },
     ]"
-    :style="{ ...style }"
+    :style="{ height: height, ...style }"
   >
     <div v-if="simple && showSearchInput" class="k-tree-table__header-pure">
       <k-input
@@ -342,6 +342,8 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
   cellClickToggleHighlight: true,
   round: false,
 });
+
+console.log(props.height);
 
 const _styleModule = inject('_styleModule', '');
 const slots = defineSlots();
