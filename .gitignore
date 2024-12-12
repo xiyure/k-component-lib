@@ -23,7 +23,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-example/view/index.vue
+example/view
 
 .temp
 cache

@@ -211,7 +211,7 @@ function initSortable() {
         return;
       }
       modelValue.value.splice(newIndex, 0, modelValue.value.splice(oldIndex, 1)[0]);
-      sourceData.value = sortBySmallerList(sourceData.value, modelValue.value, 'key');
+      sourceData.value = sortBySmallerList(sourceData.value, modelValue.value, props.props?.key ?? 'key');
       const newModelValue:number[] = getNewModelValue(modelValue.value);
       emits('update:modelValue', newModelValue);
       emits('sort', sourceData.value);

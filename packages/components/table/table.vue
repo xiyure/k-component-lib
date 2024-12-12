@@ -139,6 +139,7 @@ function rowDrop() {
 
   sortable = Sortable.create(tbodyElement, {
     handle: '.__column-drag-icon',
+    animation: 150,
     onEnd: (sortableEvent: SortableEvent) => {
       emits('drag', sortableEvent);
     }

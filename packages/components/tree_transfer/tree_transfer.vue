@@ -77,7 +77,7 @@
             :data="showRightData"
             :row-config="{ useKey: true }"
             :scroll-y="scrollY"
-            @drag-end="dragSort"
+            @drag="dragSort"
           >
             <template #empty v-if="$slots.empty && query">
               <slot name="empty" :query="query"></slot>
@@ -123,6 +123,7 @@
 
 <script setup lang="tsx">
 import { ref, computed, watch, nextTick, inject, onMounted } from 'vue';
+import { SortableEvent } from 'sortablejs';
 import { IconSearch, IconDrag, IconClose } from 'ksw-vue-icon';
 import { VxeTablePropTypes } from 'vxe-table';
 import { TreeTransferProps, TreeTransferData } from './type';
@@ -458,12 +459,18 @@ function toggleTreeExpand(row: Row, e: Event) {
   }
 }
 // 拖拽排序
-function dragSort(newData: TreeTransferData[]) {
-  const ids = newData.map((item) => item.id);
+function dragSort(sortEvent: SortableEvent) {
+  const { oldIndex, newIndex } = sortEvent;
+  if (newIndex === undefined || oldIndex === undefined || newIndex === oldIndex) {
+    return;
+  }
+  const ids = showRightData.value.map((item) => item.id);
+  ids.splice(newIndex, 0, ids.splice(oldIndex, 1)[0]);
   fullData.value = sortBySmallerList(fullData.value, ids);
   const selectedData = getSelectedData();
   emits('change', selectedData);
   emits('sort', selectedData);
+  updateSelectData();
 }
 function sortFunc(targetData: TreeTransferData[], sortData: TreeTransferData) {
   const sortKeyList = sortData.map((item: TreeTransferData) => item.id);
@@ -511,7 +518,6 @@ function addEvent() {
     console.error('Element with class .el-input__suffix not found');
   }
 };
-
 async function clearQuery() {
   query.value = '';
   await filterData();
