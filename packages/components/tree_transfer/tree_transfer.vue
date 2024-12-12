@@ -446,9 +446,6 @@ function filterRightData() {
     showRightData.value = rightData.value;
     return;
   }
-  showRightData.value = rightData.value.filter((item) =>
-    item[props.label].toString().includes(searchKey),
-  );
 }
 function getTreeConfigField() {
   const parentField = treeConfig.value?.parentField || 'pid';
