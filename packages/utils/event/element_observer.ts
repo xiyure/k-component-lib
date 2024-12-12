@@ -7,15 +7,20 @@ export class ElementObserver {
 
   constructor() {
     this.actions = {};
-    this.resizeObserver = new ResizeObserver((entries) => {
-      entries.forEach((entry) => {
-        const target = entry.target as HTMLElement;
-        const targetKey = target.getAttribute(OBSERVER_KEY);
-        if (targetKey && this.actions[targetKey]) {
-          this.actions[targetKey](entry);
-        }
+    // 检查是否在浏览器环境中
+    if (typeof ResizeObserver !== 'undefined') {
+      this.resizeObserver = new ResizeObserver((entries) => {
+        entries.forEach((entry) => {
+          const target = entry.target as HTMLElement;
+          const targetKey = target.getAttribute(OBSERVER_KEY);
+          if (targetKey && this.actions[targetKey]) {
+            this.actions[targetKey](entry);
+          }
+        });
       });
-    });
+    } else {
+      this.resizeObserver = null;
+    }
   }
 
   observe(el: HTMLElement | Element, callback: (entry: ResizeObserverEntry) => any) {

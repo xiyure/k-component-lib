@@ -243,11 +243,15 @@ function initCheckDataMap() {
     }
     checkDataMap.set(dataItem.id, { row: {...dataItem}, checked: false });
   }
-  const checkedRows = treeLeftRef.value.tableInstance.getCheckboxRecords();
-  for (const row of checkedRows) {
-    const mapItem = checkDataMap.get(row.id);
-    if (mapItem) {
-      mapItem.checked = true;
+  // 添加空值检查
+  const tableInstance = treeLeftRef?.value?.tableInstance;
+  if (tableInstance) {
+    const checkedRows = tableInstance.getCheckboxRecords();
+    for (const row of checkedRows) {
+      const mapItem = checkDataMap.get(row.id);
+      if (mapItem) {
+        mapItem.checked = true;
+      }
     }
   }
   updateSelectData();

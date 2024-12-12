@@ -19,8 +19,10 @@ export function useTheme(app: App, config: ContextConfig = {}) {
       `'styleModule' expected to be ${projectList.map((name) => `'${name}'`).join(' | ')}, but got '${styleModule}'.`
     );
   }
-  // 添加项目类名
-  const body = document.getElementsByTagName('body')[0];
-  body?.classList.add(projectName);
+  if (typeof document !== 'undefined') {
+    // 添加项目类名
+    const body = document?.getElementsByTagName('body')[0];
+    body?.classList.add(projectName);
+  }
   app.provide('_styleModule', projectName === 'AOM'? '' : projectName);
 }
