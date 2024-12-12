@@ -1,14 +1,16 @@
 <template>
   <div class="KNewTransfer">
-    <div class="transfer-dialog-content">
-      <IconTips class="transfer-dialog-icon" />
-      <slot name="header">{{ title }}</slot>
-    </div>
-    <k-form :model="form" labk-width="auto" style="max-width: 600px">
+    <slot name="header">
+      <div class="transfer-dialog-content">
+        <IconTips class="transfer-dialog-icon" />
+        {{ title }}
+      </div>
+    </slot>
+    <k-form ref="KFormRef" :model="form" labk-width="auto" style="max-width: 600px">
       <k-form-item
         label="选择机器类型"
-        props="machineType"
-        :rules="{ required: true, message: '请选择机器类型' }"
+        prop="machineType"
+        :rules="{ required: true, message: '请选择类型' }"
       >
         <k-radio-group v-model="form.machineType">
           <k-popconfirm
@@ -37,17 +39,17 @@
       <k-tree-transfer
         ref="myTreeTransfer"
         :data="treeTransferData"
-        :defaultData="defaultList"
         :titles="['待选IP', '已选IP']"
+        :defaultData="defaultData"
         label="name"
         expand-icon="IconFolderOpen"
         expand-icon-color="#f60"
         collapse-icon-color="red"
         icon-color="green"
         collapse-icon="IconFolderClose"
-        drag
-        @change="getSelectedData"
         class="my-box-item"
+        v-bind="$attrs"
+        @change="getSelectedData"
       >
         <template #empty="{ query }">
           <div class="empty-text">
@@ -60,8 +62,8 @@
     </div>
     <slot name="footer">
       <div class="footer">
-        <k-button @click="console.log('cancel')">取消</k-button>
-        <k-button type="primary" main @click="handleSubmit">确定</k-button>
+        <k-button @click="handleCancel">取消</k-button>
+        <k-button type="primary" main @click="handleSubmit()">确定</k-button>
       </div>
     </slot>
   </div>
@@ -69,34 +71,24 @@
 
 <script setup lang="tsx">
 import { ref, reactive, watch } from 'vue';
+import { KNewTransfer, KNewTransferInterface } from './type';
 
 defineOptions({
   name: 'KNewTransfer',
 });
 
-const props = defineProps({
-  defaultList: {
-    type: Array,
-    default: () => [],
-  },
-  treeTransferData: {
-    type: Array,
-    default: () => [
-      { id: 10000, name: '10.2.145.233' },
-      { id: 10050, name: '10.2.145.232' },
-      { id: 24300, name: '10.2.145.231' },
-    ],
-  },
-  title: {
-    type: String,
-    default: '仅允许选择同一种类型的机器',
-  },
+const props = withDefaults(defineProps<KNewTransfer>(), {
+  title: '仅允许选择同一种类型的机器',
+  selectList: () => [],
+  defaultData: () => [],
+  defaultVal: '',
+  treeTransferData: () => [],
 });
 
 const form = reactive({
-  machineType: '',
+  machineType: props.defaultVal,
 });
-const myTreeTransfer = ref<MyTreeTransfer | null>(null);
+const myTreeTransfer = ref<KNewTransferInterface | null>(null);
 
 const confirmEvent = () => {
   form.machineType = selectValue;
@@ -110,22 +102,16 @@ const cancelEvent = () => {
   isShowPopconfirm.value = false;
 };
 
-let arr = ref([]);
+let arr = ref(props.defaultData);
 
 const getSelectedData = (data: any) => {
   arr.value = data;
 };
-
-const selectList = ref([
-  { name: 'windows', type: 'windows' },
-  { name: 'Linux', type: 'Linux' },
-]);
 const isShowPopconfirm = ref(false);
 let selectValue = '';
 
 const handleSelectType = (value) => {
   selectValue = value;
-  console.log(arr.value);
   if (form.machineType && !(arr.value.length == 0)) {
     isShowPopconfirm.value = true;
   } else form.machineType = value;
@@ -137,15 +123,34 @@ watch(
     setTimeout(() => {
       myTreeTransfer.value!.clearQuery();
     }, 0);
+    const _temp = props.selectList.find((item) => {
+      return item.type === value;
+    });
+    if (_temp && _temp.fun && typeof _temp.fun === 'function') {
+      _temp.fun(selectValue);
+    }
   },
 );
+
+const KFormRef = ref();
 const handleSubmit = () => {
-  return { arr: arr.value, type: form.machineType };
+  if (KFormRef.value) {
+    KFormRef.value.validate((valid) => {
+      if (valid) {
+        return { arr: arr.value, type: form.machineType };
+      } else {
+        console.warn('error submit!!');
+        return false;
+      }
+    });
+  }
 };
 
+const handleCancel = () => {};
 defineExpose({
   handleSubmit,
   handleSelectType,
+  handleCancel
 });
 </script>
 

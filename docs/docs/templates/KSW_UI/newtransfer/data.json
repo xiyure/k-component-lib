@@ -1,0 +1,53 @@
+{
+  "name": "",
+  "props": [
+    {
+      "displayName": "treeTransferData",
+      "type": "array",
+      "description": "页面图标",
+      "defaultValue": "null"
+    },
+    {
+      "displayName": "title",
+      "type": "string",
+      "description": "页面标题",
+      "defaultValue": "标题"
+    },
+    {
+      "displayName": "defaultVal",
+      "type": "string",
+      "description": "选择器的默认选项",
+      "defaultValue": "选项"
+    },
+    {
+      "displayName": "selectList",
+      "type": "array",
+      "description": "选择器所有选项"
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "header",
+      "description": "页头标题栏内容"
+    },
+    {
+      "displayName": "footer",
+      "description": "页头底部内容"
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "handleSubmit",
+      "description": "获取选中的数据以及对应的类型"
+    },
+    {
+      "displayName": "handleSelectType",
+      "description": "点击选择器时的事件回调"
+    },
+    {
+      "displayName": "handleCancel",
+      "description": "取消按钮的回调"
+    }
+  ]
+}
