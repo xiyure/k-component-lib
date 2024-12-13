@@ -12,7 +12,7 @@
     <k-popover
       :width="popoverWidth"
       :show-arrow="false"
-      :visible="popperVisible && _isStringMode"
+      :visible="popperVisible"
       :popper-class="`k-script-input-popper ${dynamicClassName}`"
       @show="onShowPopper"
       @hide="onHidePopper"
@@ -33,7 +33,7 @@
               }
             "
             @compositionend="
-              (e: InputEvent) => {
+              (e: CompositionEvent) => {
                 isAllowInput = true;
                 handleInput(e);
               }
@@ -65,7 +65,7 @@
           },
         }"
         :row-class-name="
-          ({ row }) => {
+          ({ row }: any) => {
             if (row.optional === false && !row.children?.length) {
               return 'k-script-input-tree-disabled';
             }
@@ -80,7 +80,7 @@
     </k-popover>
     <div class="k-script-input-append">
       <slot name="append"></slot>
-      <k-button v-if="showPopperSwitch" @click="showPopper" :disabled="!_isStringMode">
+      <k-button v-if="showPopperSwitch" @click="showPopper">
         <IconVariable />
       </k-button>
     </div>
@@ -101,12 +101,14 @@ import {
 import { ScriptInputProps } from './type';
 import Message from '../message';
 import { genRandomStr, allTreeDataToArray } from '../../utils';
+import { Row, RowData } from '../tree_table';
 
 defineOptions({
   name: 'KScriptInput',
 });
 
 const _styleModule = inject('_styleModule', '');
+const diff = inject<any>('__diffMatchPatch');
 
 const props = withDefaults(defineProps<ScriptInputProps>(), {
   options: () => [],
@@ -114,14 +116,14 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   useTree: false,
   showModeSwitch: true,
   showPopperSwitch: true,
-  expandAll: false,
+  expandAll: false
 });
 
 const DEFAULT_TREE_CONFIG = {
   parentField: 'pid',
   rowField: 'value',
   expandAll: false,
-};
+}
 
 const emits = defineEmits(['change', 'input', 'focus', 'blur', 'select', 'update:modelValue']);
 
@@ -135,29 +137,32 @@ onBeforeUnmount(() => {
   document.removeEventListener('click', hidePopperByClick);
 });
 
-const prefix = `_${genRandomStr(8)}`;
+// 动态类名
 const dynamicClassName = `_${genRandomStr(8)}`;
+// 列配置
+const columns = [{ field: 'label', label: '', treeNode: true }];
+// ref
 const KScriptInput = ref();
 const $tree = ref();
+const KScriptInputWrapper = ref();
+// 当前是否字符串模式
+const _isStringMode = ref(true);
+// @ts-ignore: unknown warning
 let preTextValue: string = '';
-const isAllowInput = ref(true);
 let cacheRes = '';
 const curInput = ref('');
-const textValue = ref('');
 const selectedIndex = ref<number>(0);
-const popperVisible = ref(false);
-const columns = [{ field: 'label', label: '', treeNode: true }];
 let isManual = false;
-const _isStringMode = ref(true);
+const popperVisible = ref(false);
+const isAllowInput = ref(true);
 let canFocus = false;
-
+const showTree = ref(false);
 const isShowInput = ref(false);
-
-const KScriptInputWrapper = ref();
 const popoverWidth = ref(0);
+// 表达式相关
 const funcReg = /fx\((.*?)\)/;
 const fxSet = new Set();
-const showTree = ref(false);
+
 
 // 监测窗口发生变化后
 window.addEventListener('resize', handleResize);
@@ -171,7 +176,7 @@ const treeConfig = computed(() => {
     return undefined;
   }
   return Object.assign(DEFAULT_TREE_CONFIG, props.treeConfig || {});
-});
+})
 const flattedOptions = computed(() => {
   const tableData = $tree.value?.getTableData().fullData ?? [];
   return allTreeDataToArray(tableData, 'children') ?? [];
@@ -205,40 +210,43 @@ watch(
       return;
     }
     nextTick(() => {
-      preTextValue = textValue.value;
-      textValue.value = parseModelValue(newValue.toString());
-      KScriptInput.value.innerHTML = textValue.value;
+      preTextValue = getEditorContent();
+      tempText = preTextValue;
+      const innerText = parseModelValue(newValue.toString());
+      setEditorContent(innerText);
       cacheRes = newValue.toString();
-      cursorToEnd();
+      resetCursor();
     });
   },
   { immediate: true },
 );
 
-watch(
-  () => textValue.value,
-  () => {
-    const res = parseText();
-    cacheRes = res;
-    emits('update:modelValue', res);
-  },
-  { immediate: true },
-);
-
-function handleInput(event: InputEvent) {
+function updateModelValue() {
+  const res = parseInputValue();
+  cacheRes = res;
+  emits('update:modelValue', res);
+}
+function getEditorContent() {
+  return formatterEscape(KScriptInput.value.innerHTML);
+}
+function setEditorContent(value: string) {
+  KScriptInput.value.innerHTML = value;
+}
+let tempText = '';
+function handleInput(event: InputEvent | CompositionEvent) {
   if (!(event.target instanceof HTMLElement) || !isAllowInput.value) {
     return;
   }
   if (event.data === ' ') {
     curInput.value = '';
-  } else if (event.data === null) {
+  } else if (event.data === null && curInput.value.length) {
     curInput.value = curInput.value.slice(0, -1);
-  } else {
+  } else if (event.data !== null) {
     curInput.value += event.data ?? '';
   }
-  preTextValue = textValue.value;
-  const innerHTML = KScriptInput.value.innerHTML;
-  textValue.value = innerHTML === '<br>' ? '' : innerHTML;
+  preTextValue = tempText;
+  tempText = getEditorContent();
+  updateModelValue();
 }
 function handleFocus() {
   showTree.value = true;
@@ -251,14 +259,14 @@ function handleBlur(event: FocusEvent) {
   }
   const popperElem = getElement(`.${dynamicClassName}`);
   if (popperElem && !popperElem.contains(event.relatedTarget as Node)) {
-    canFocus = false;
+    canFocus = false
     emits('blur');
-    emits('change', parseText());
+    emits('change', parseInputValue());
     showTree.value = false;
     popperVisible.value = false;
   }
 }
-function cellClick({ row }: { row: any }) {
+function cellClick({ row }: { row: Row }) {
   if (row.optional === false) {
     return;
   }
@@ -269,69 +277,87 @@ function cellClick({ row }: { row: any }) {
   }
   selectOption(row);
 }
-function selectOption(data: any) {
-  removeInvalidChar();
-  textValue.value = textValue.value + generateScriptTag(data.label);
+function selectOption(data: Row | RowData) {
+  const { value, key } = handleInputContent(data);
   curInput.value = '';
-  preTextValue = textValue.value;
-  KScriptInput.value.innerHTML = textValue.value;
-  cursorToEnd();
+  setEditorContent(value);
+  preTextValue = getEditorContent();
+  tempText = preTextValue;
+  resetCursor(key);
   emits('select', data);
   popperVisible.value = false;
   nextTick(() => {
-    emits('change', parseText());
+    updateModelValue();
+    emits('change', parseInputValue());
   });
 }
-function removeInvalidChar() {
-  const text = textValue.value;
-  const index = text.lastIndexOf(curInput.value);
-  if (index === -1) {
-    return;
+function handleInputContent(data: Row | RowData) {
+  const key = genRandomStr(8);
+  const content = _isStringMode.value ? generateScriptTag(data.label, key) : data.value;
+  if (isManual) {
+    return {
+      value: getEditorContent() + content,
+      key
+    };
   }
-  textValue.value = text.slice(0, index) + text.slice(index + curInput.value.length);
+  const diffText = diff.diff_main(preTextValue, getEditorContent());
+  let replaceText = '';
+  const firstSameObj = diffText.find((diff: [number, string]) => diff[0] === 0);
+  const firstSameText = firstSameObj?.[1] ?? '';
+  const [firstDiffIndex, firstDiffText] = diffText.find((diff: [number, string]) => diff[0] !== 0) ?? [-2, ''];
+  if (firstDiffIndex === 1) {
+    replaceText = (firstSameText + firstDiffText).slice(0, -curInput.value.length);
+  } else if (firstDiffIndex === -1) {
+    replaceText = firstSameText.slice(0, -curInput.value.length);
+  } else {
+    replaceText = firstSameText;
+  };
+  let validText = '';
+  if (firstSameObj) {
+    firstSameObj[1] = `${replaceText}${content}`;
+    validText = diffText
+      .filter((diff: [number, string]) => diff[0] === 0)
+      .map((diff: [number, string]) => diff[1]).join('');
+  } else {
+    validText = content;
+  }
+
+  return {
+    value: validText,
+    key
+  };
 }
-function parseText() {
-  let text = parseValue();
-  const replaceReg = /<div[^>]*>(.*?)<\/div>/;
-  while (replaceReg.test(text)) {
-    const regex = />([\s\S]*?)<\/div>/;
-    let label = text.match(regex)?.[1] ?? '';
-    if (_isStringMode.value) {
-      label = fxSet.has(label) ? `fx(${label})` : `${prefix}-${label}&nbsp;`;
-    }
-    text = text.replace(replaceReg, label);
+function parseInputValue() {
+  if (!isStringMode()) {
+    return getEditorContent();
   }
-  const res = text
-    .split(/&nbsp;| /g)
-    .filter((item) => item !== '')
-    .map((item) => {
-      if (item.startsWith(prefix + '-')) {
-        const label = item.slice(10);
+  let text = '';
+  const nodes = KScriptInput.value.childNodes;
+  for (let i = 0; i < nodes.length; i++) {
+    const node: HTMLElement = nodes[i];
+    if (node.nodeType === 3) {
+      text += node.textContent ?? '';
+    } else if (node.tagName.toUpperCase() === 'DIV' && node.classList.contains('k-script-tag')) {
+      const label = node.innerText;
+      if (fxSet.has(label)) {
+        text += `fx(${label})`;
+      } else {
         const targetOption = props.options.find((item) => item.label === label);
-        return `fx(${targetOption?.value ?? null})`;
+        text += `fx(${targetOption?.value ?? null})`;
       }
-      return item;
-    })
-    .join(' ');
-  const result = formatter(res);
-  emits('input', result);
-  return result;
-}
-function parseValue() {
-  let text = textValue.value;
-  const divTagReg = /<div>(.*?)<\/div>/;
-  while (divTagReg.test(text)) {
-    const regex = /<div>([\s\S]*?)<\/div>/;
-    const divLabel = text.match(regex)?.[1] ?? '';
-    text = text.replace(divTagReg, `&nbsp;${divLabel}`);
+    }
   }
-  return text;
+  text = text.split(' ').filter((item) => item !== '').join(' ');
+  const res = formatter(text);
+  emits('input', res);
+  return res;
 }
+// 解析传入的值
 function parseModelValue(value: string) {
   fxSet.clear();
   let originText = value.replace(/''/g, "'");
   if (!isStringMode()) {
-    return originText.substring(1, originText.length - 1);
+    return originText;
   }
   originText = unFormatter(originText);
   while (funcReg.test(originText)) {
@@ -349,7 +375,8 @@ function parseModelValue(value: string) {
       fxSet.add(label);
       isError = true;
     }
-    originText = originText.replace(match?.[0], generateScriptTag(label, isError) + '&nbsp;');
+    const key = genRandomStr(8);
+    originText = originText.replace(match?.[0], generateScriptTag(label, key, isError) + ' ');
   }
   return originText;
 }
@@ -382,13 +409,15 @@ function unFormatter(str: string) {
   });
   return strArr.join("'");
 }
-function generateScriptTag(content: string, isError: boolean = false) {
-  return `<div class="k-script-tag ${isError ? 'is-error' : ''}"  contenteditable="false">${content}</div>`;
+function generateScriptTag(content: string, key: string, isError: boolean = false, ) {
+  return `<div class="k-script-tag ${isError ? 'is-error' : ''}" data-key="${key}"  contenteditable="false">${content}</div>`;
 }
 function toggleSelect(event: KeyboardEvent) {
   const dataLength = flattedOptions.value.length;
   const headerElement = getElement(`.${dynamicClassName} .el-input__inner`);
+  // 为了防止事件冲突，使用方向键选择脚本时，脚本搜索输入框应失去焦点
   if (event.code === 'ArrowUp') {
+    headerElement?.blur();
     selectedIndex.value = (selectedIndex.value - 1 + dataLength) % dataLength;
     while (
       isHideNode(flattedOptions.value[selectedIndex.value]) ||
@@ -397,6 +426,7 @@ function toggleSelect(event: KeyboardEvent) {
       selectedIndex.value = (selectedIndex.value - 1 + dataLength) % dataLength;
     }
   } else if (event.code === 'ArrowDown') {
+    headerElement?.blur();
     selectedIndex.value = (selectedIndex.value + 1) % dataLength;
     while (
       isHideNode(flattedOptions.value[selectedIndex.value]) ||
@@ -410,12 +440,6 @@ function toggleSelect(event: KeyboardEvent) {
   if (row) {
     $tree.value.setCurrentRow(row);
   }
-  document.addEventListener('keydown', (event) => {
-    // 检查是否按下了上下箭头键
-    if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-      headerElement?.blur(); // 使元素失去焦点
-    }
-  });
   if (event.code === 'Enter' && popperVisible.value && document.activeElement !== headerElement) {
     event.preventDefault();
     if (props.useTree && row && row.children?.length && !row.optional) {
@@ -428,7 +452,7 @@ function toggleSelect(event: KeyboardEvent) {
   }
 }
 
-function isHideNode(rowData: any) {
+function isHideNode(rowData: RowData) {
   const parentRow = $tree.value?.getRowById(rowData?.pid);
   if (!parentRow) {
     return false;
@@ -436,16 +460,38 @@ function isHideNode(rowData: any) {
   return Boolean(!$tree.value?.isTreeExpandByRow(parentRow) && rowData.pid);
 }
 // 解决输入非字符内容时光标无法移到最后的问题
-function cursorToEnd() {
-  if (!canFocus) {
+function resetCursor(key?: string) {
+  if (!canFocus || window.getSelection === undefined) {
     return;
   }
-  if (window.getSelection) {
+  const selection = window.getSelection();
+  if (key === undefined) {
     KScriptInput.value.focus();
-    const range = window.getSelection();
-    range?.selectAllChildren(KScriptInput.value);
-    range?.collapseToEnd();
+    selection?.selectAllChildren(KScriptInput.value);
+    selection?.collapseToEnd();
+  } else {
+    const range = document.createRange();
+    range.selectNodeContents(KScriptInput.value);
+    range.setStart(KScriptInput.value, getDomIndex(key))
+    range.collapse(true);
+    selection?.removeAllRanges();
+    selection?.addRange(range);
   }
+}
+function getDomIndex(key: string) {
+  if (!key) {
+    return -1;
+  }
+  const childNodes: HTMLElement[] = Array.from(KScriptInput.value?.childNodes ?? []);
+  let index = 0;
+  for (let i = 0; i < childNodes.length; i++) {
+    index++;
+    const targetKey = childNodes[i]?.getAttribute?.('data-key');
+    if (targetKey === key) {
+      break;
+    }
+  }
+  return index;
 }
 function onShowPopper() {
   const value = flattedOptions.value?.[0]?.value;
@@ -464,7 +510,7 @@ function onHidePopper() {
   }
 }
 function showPopper() {
-  if (popperVisible.value || !_isStringMode.value) {
+  if (popperVisible.value) {
     return;
   }
   curInput.value = '';
@@ -495,8 +541,7 @@ function hidePopperByClick(event: MouseEvent) {
   hidePopper();
 }
 function clear() {
-  KScriptInput.value.innerHTML = '';
-  textValue.value = '';
+  setEditorContent('');
   preTextValue = '';
   curInput.value = '';
 }
@@ -526,21 +571,14 @@ const tempCaches = {
   string: '',
 };
 function saveTextValue() {
-  if (!isStringMode()) {
-    tempCaches['expression'] = textValue.value;
-  } else {
-    tempCaches['string'] = textValue.value;
-  }
+  const attrName = isStringMode() ? 'string' : 'expression';
+  tempCaches[attrName] = getEditorContent();
 }
 function restoreTextValue() {
   clear();
-  if (isStringMode()) {
-    textValue.value = caches['string'] ?? '';
-  } else {
-    textValue.value = caches['expression'] ?? '';
-  }
-  KScriptInput.value.innerHTML = textValue.value;
-  const res = parseText() ?? '';
+  const attrName = isStringMode() ? 'string' : 'expression';
+  setEditorContent(caches[attrName]);
+  const res = parseInputValue() ?? '';
   cacheRes = res;
   caches['expression'] = tempCaches['expression'];
   caches['string'] = tempCaches['string'];
@@ -552,6 +590,9 @@ function handleResize() {
     // 获取 KScriptInputWrapper 的 宽度
     popoverWidth.value = KScriptInputWrapper.value?.offsetWidth ?? 0;
   });
+}
+function formatterEscape(str: string) {
+  return str.replace(/&nbsp;/g, ' ')
 }
 defineExpose({
   clear,

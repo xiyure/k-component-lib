@@ -101,14 +101,12 @@ import {
 import { ScriptInputProps } from './type';
 import Message from '../message';
 import { genRandomStr, allTreeDataToArray } from '../../utils';
-import { Row, RowData } from '../tree_table';
 
 defineOptions({
   name: 'KScriptInput',
 });
 
 const _styleModule = inject('_styleModule', '');
-const diff = inject('__diffMatchPatch');
 
 const props = withDefaults(defineProps<ScriptInputProps>(), {
   options: () => [],
@@ -123,7 +121,7 @@ const DEFAULT_TREE_CONFIG = {
   parentField: 'pid',
   rowField: 'value',
   expandAll: false,
-}
+};
 
 const emits = defineEmits(['change', 'input', 'focus', 'blur', 'select', 'update:modelValue']);
 
@@ -137,14 +135,15 @@ onBeforeUnmount(() => {
   document.removeEventListener('click', hidePopperByClick);
 });
 
+const prefix = `_${genRandomStr(8)}`;
 const dynamicClassName = `_${genRandomStr(8)}`;
 const KScriptInput = ref();
 const $tree = ref();
-// @ts-ignore: unknown warning
 let preTextValue: string = '';
 const isAllowInput = ref(true);
 let cacheRes = '';
 const curInput = ref('');
+const textValue = ref('');
 const selectedIndex = ref<number>(0);
 const popperVisible = ref(false);
 const columns = [{ field: 'label', label: '', treeNode: true }];
@@ -172,7 +171,7 @@ const treeConfig = computed(() => {
     return undefined;
   }
   return Object.assign(DEFAULT_TREE_CONFIG, props.treeConfig || {});
-})
+});
 const flattedOptions = computed(() => {
   const tableData = $tree.value?.getTableData().fullData ?? [];
   return allTreeDataToArray(tableData, 'children') ?? [];
@@ -206,43 +205,40 @@ watch(
       return;
     }
     nextTick(() => {
-      preTextValue = getEditorContent();
-      tempText = preTextValue;
-      const innerText = parseModelValue(newValue.toString());
-      setEditorContent(innerText);
+      preTextValue = textValue.value;
+      textValue.value = parseModelValue(newValue.toString());
+      KScriptInput.value.innerHTML = textValue.value;
       cacheRes = newValue.toString();
-      resetCursor();
+      cursorToEnd();
     });
   },
   { immediate: true },
 );
 
-function updateModelValue() {
-  const res = parseInputValue();
-  cacheRes = res;
-  emits('update:modelValue', res);
-}
-function getEditorContent() {
-  return formatterEscape(KScriptInput.value.innerHTML);
-}
-function setEditorContent(value: string) {
-  KScriptInput.value.innerHTML = value;
-}
-let tempText = '';
+watch(
+  () => textValue.value,
+  () => {
+    const res = parseText();
+    cacheRes = res;
+    emits('update:modelValue', res);
+  },
+  { immediate: true },
+);
+
 function handleInput(event: InputEvent) {
   if (!(event.target instanceof HTMLElement) || !isAllowInput.value) {
     return;
   }
   if (event.data === ' ') {
     curInput.value = '';
-  } else if (event.data === null && curInput.value.length) {
+  } else if (event.data === null) {
     curInput.value = curInput.value.slice(0, -1);
-  } else if (event.data !== null) {
+  } else {
     curInput.value += event.data ?? '';
   }
-  preTextValue = tempText;
-  tempText = getEditorContent();
-  updateModelValue();
+  preTextValue = textValue.value;
+  const innerHTML = KScriptInput.value.innerHTML;
+  textValue.value = innerHTML === '<br>' ? '' : innerHTML;
 }
 function handleFocus() {
   showTree.value = true;
@@ -255,14 +251,14 @@ function handleBlur(event: FocusEvent) {
   }
   const popperElem = getElement(`.${dynamicClassName}`);
   if (popperElem && !popperElem.contains(event.relatedTarget as Node)) {
-    canFocus = false
+    canFocus = false;
     emits('blur');
-    emits('change', parseInputValue());
+    emits('change', parseText());
     showTree.value = false;
     popperVisible.value = false;
   }
 }
-function cellClick({ row }: { row: Row }) {
+function cellClick({ row }: { row: any }) {
   if (row.optional === false) {
     return;
   }
@@ -273,79 +269,63 @@ function cellClick({ row }: { row: Row }) {
   }
   selectOption(row);
 }
-function selectOption(data: Row | RowData) {
-  const { value, key } = removeInvalidChar(data);
+function selectOption(data: any) {
+  removeInvalidChar();
+  textValue.value = textValue.value + generateScriptTag(data.label);
   curInput.value = '';
-  setEditorContent(value);
-  preTextValue = getEditorContent();
-  tempText = preTextValue;
-  resetCursor(key);
+  preTextValue = textValue.value;
+  KScriptInput.value.innerHTML = textValue.value;
+  cursorToEnd();
   emits('select', data);
   popperVisible.value = false;
   nextTick(() => {
-    updateModelValue();
-    emits('change', parseInputValue());
+    emits('change', parseText());
   });
 }
-function removeInvalidChar(data: Row | RowData) {
-  const key = genRandomStr(8);
-  if (isManual) {
-    return {
-      value: getEditorContent() + generateScriptTag(data.label, key),
-      key
-    };
+function removeInvalidChar() {
+  const text = textValue.value;
+  const index = text.lastIndexOf(curInput.value);
+  if (index === -1) {
+    return;
   }
-  const diffText = diff.diff_main(preTextValue, getEditorContent());
-  let replaceText = '';
-  const firstSameObj = diffText.find((diff) => diff[0] === 0);
-  const firstSameText = firstSameObj?.[1] ?? '';
-  const [firstDiffIndex, firstDiffText] = diffText.find((diff) => diff[0] !== 0) ?? [-2, ''];
-  if (firstDiffIndex === 1) {
-    replaceText = (firstSameText + firstDiffText).slice(0, -curInput.value.length);
-  } else if (firstDiffIndex === -1) {
-    replaceText = firstSameText.slice(0, -curInput.value.length);
-  } else {
-    replaceText = firstSameText;
-  };
-  let validText = '';
-  if (firstSameObj) {
-    firstSameObj[1] = `${replaceText}${generateScriptTag(data.label, key)}`;
-    validText = diffText
-      .filter((diff: [number, string]) => diff[0] === 0)
-      .map((diff: [number, string]) => diff[1]).join('');
-  } else {
-    validText = `${generateScriptTag(data.label, key)}`;
-  }
-
-  return {
-    value: validText,
-    key
-  };
+  textValue.value = text.slice(0, index) + text.slice(index + curInput.value.length);
 }
-function parseInputValue() {
-  if (!isStringMode()) {
-    return getEditorContent();
-  }
-  let text = '';
-  const nodes = KScriptInput.value.childNodes;
-  for (let i = 0; i < nodes.length; i++) {
-    const node = nodes[i];
-    if (node.nodeType === 3) {
-      text += node.textContent ?? '';
-    } else if (node.tagName.toUpperCase() === 'DIV' && node.classList.contains('k-script-tag')) {
-      const label = node.innerText;
-      if (fxSet.has(label)) {
-        text += `fx(${label})`;
-      } else {
-        const targetOption = props.options.find((item) => item.label === label);
-        text += `fx(${targetOption?.value ?? null})`;
-      }
+function parseText() {
+  let text = parseValue();
+  const replaceReg = /<div[^>]*>(.*?)<\/div>/;
+  while (replaceReg.test(text)) {
+    const regex = />([\s\S]*?)<\/div>/;
+    let label = text.match(regex)?.[1] ?? '';
+    if (_isStringMode.value) {
+      label = fxSet.has(label) ? `fx(${label})` : `${prefix}-${label}&nbsp;`;
     }
+    text = text.replace(replaceReg, label);
   }
-  text = text.split(' ').filter((item) => item !== '').join(' ');
-  const res = formatter(text);
-  emits('input', res);
-  return res;
+  const res = text
+    .split(/&nbsp;| /g)
+    .filter((item) => item !== '')
+    .map((item) => {
+      if (item.startsWith(prefix + '-')) {
+        const label = item.slice(10);
+        const targetOption = props.options.find((item) => item.label === label);
+        return `fx(${targetOption?.value ?? null})`;
+      }
+      return item;
+    })
+    .join(' ');
+  const result = formatter(res);
+  emits('input', result);
+  return result;
+}
+function parseValue() {
+  let text = textValue.value;
+  const divTagReg = /<div>(.*?)<\/div>/;
+  while (divTagReg.test(text)) {
+    const regex = /<div>([\s\S]*?)<\/div>/;
+    const divLabel = text.match(regex)?.[1] ?? '';
+    text = text.replace(divTagReg, `&nbsp;${divLabel}`);
+  }
+  return text;
 }
 function parseModelValue(value: string) {
   fxSet.clear();
@@ -369,8 +349,7 @@ function parseModelValue(value: string) {
       fxSet.add(label);
       isError = true;
     }
-    const key = genRandomStr(8);
-    originText = originText.replace(match?.[0], generateScriptTag(label, key, isError) + ' ');
+    originText = originText.replace(match?.[0], generateScriptTag(label, isError) + '&nbsp;');
   }
   return originText;
 }
@@ -403,8 +382,8 @@ function unFormatter(str: string) {
   });
   return strArr.join("'");
 }
-function generateScriptTag(content: string, key: string, isError: boolean = false, ) {
-  return `<div class="k-script-tag ${isError ? 'is-error' : ''}" data-key="${key}"  contenteditable="false">${content}</div>`;
+function generateScriptTag(content: string, isError: boolean = false) {
+  return `<div class="k-script-tag ${isError ? 'is-error' : ''}"  contenteditable="false">${content}</div>`;
 }
 function toggleSelect(event: KeyboardEvent) {
   const dataLength = flattedOptions.value.length;
@@ -449,7 +428,7 @@ function toggleSelect(event: KeyboardEvent) {
   }
 }
 
-function isHideNode(rowData: RowData) {
+function isHideNode(rowData: any) {
   const parentRow = $tree.value?.getRowById(rowData?.pid);
   if (!parentRow) {
     return false;
@@ -457,38 +436,16 @@ function isHideNode(rowData: RowData) {
   return Boolean(!$tree.value?.isTreeExpandByRow(parentRow) && rowData.pid);
 }
 // 解决输入非字符内容时光标无法移到最后的问题
-function resetCursor(key?: string) {
-  if (!canFocus || window.getSelection === undefined) {
+function cursorToEnd() {
+  if (!canFocus) {
     return;
   }
-  const selection = window.getSelection();
-  if (key === undefined) {
+  if (window.getSelection) {
     KScriptInput.value.focus();
-    selection?.selectAllChildren(KScriptInput.value);
-    selection?.collapseToEnd();
-  } else {
-    const range = document.createRange();
-    range.selectNodeContents(KScriptInput.value);
-    range.setStart(KScriptInput.value, getDomIndex(key))
-    range.collapse(true);
-    selection?.removeAllRanges();
-    selection?.addRange(range);
+    const range = window.getSelection();
+    range?.selectAllChildren(KScriptInput.value);
+    range?.collapseToEnd();
   }
-}
-function getDomIndex(key: string) {
-  if (!key) {
-    return -1;
-  }
-  const childNodes = Array.from(KScriptInput.value?.childNodes ?? []);
-  let index = 0;
-  for (let i = 0; i < childNodes.length; i++) {
-    index++;
-    const targetKey = childNodes[i]?.getAttribute?.('data-key');
-    if (targetKey === key) {
-      break;
-    }
-  }
-  return index;
 }
 function onShowPopper() {
   const value = flattedOptions.value?.[0]?.value;
@@ -538,7 +495,8 @@ function hidePopperByClick(event: MouseEvent) {
   hidePopper();
 }
 function clear() {
-  setEditorContent('');
+  KScriptInput.value.innerHTML = '';
+  textValue.value = '';
   preTextValue = '';
   curInput.value = '';
 }
@@ -568,14 +526,21 @@ const tempCaches = {
   string: '',
 };
 function saveTextValue() {
-  const attrName = isStringMode() ? 'string' : 'expression';
-  tempCaches[attrName] = getEditorContent();
+  if (!isStringMode()) {
+    tempCaches['expression'] = textValue.value;
+  } else {
+    tempCaches['string'] = textValue.value;
+  }
 }
 function restoreTextValue() {
   clear();
-  const attrName = isStringMode() ? 'string' : 'expression';
-  setEditorContent(caches[attrName]);
-  const res = parseInputValue() ?? '';
+  if (isStringMode()) {
+    textValue.value = caches['string'] ?? '';
+  } else {
+    textValue.value = caches['expression'] ?? '';
+  }
+  KScriptInput.value.innerHTML = textValue.value;
+  const res = parseText() ?? '';
   cacheRes = res;
   caches['expression'] = tempCaches['expression'];
   caches['string'] = tempCaches['string'];
@@ -587,9 +552,6 @@ function handleResize() {
     // 获取 KScriptInputWrapper 的 宽度
     popoverWidth.value = KScriptInputWrapper.value?.offsetWidth ?? 0;
   });
-}
-function formatterEscape(str: string) {
-  return str.replace(/&nbsp;/g, ' ')
 }
 defineExpose({
   clear,
