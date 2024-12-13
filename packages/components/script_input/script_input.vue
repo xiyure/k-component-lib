@@ -209,12 +209,12 @@ watch(
     if (newValue === cacheRes) {
       return;
     }
+    const innerText = parseModelValue(newValue.toString());
+    setEditorContent(innerText);
+    cacheRes = newValue.toString();
     nextTick(() => {
       preTextValue = getEditorContent();
       tempText = preTextValue;
-      const innerText = parseModelValue(newValue.toString());
-      setEditorContent(innerText);
-      cacheRes = newValue.toString();
       resetCursor();
     });
   },
@@ -376,7 +376,7 @@ function parseModelValue(value: string) {
       isError = true;
     }
     const key = genRandomStr(8);
-    originText = originText.replace(match?.[0], generateScriptTag(label, key, isError) + ' ');
+    originText = originText.replace(match?.[0], generateScriptTag(label, key, isError));
   }
   return originText;
 }
@@ -391,16 +391,16 @@ function formatter(str: string) {
     const match = str.match(reg)?.[0] ?? '';
     const index = str.indexOf(match);
     const targetText = str.slice(0, index);
-    if (targetText?.length) {
-      newStr += `'${targetText}'`;
+    if (targetText?.trim()?.length) {
+      newStr += ` '${targetText?.trim()}' `;
     }
-    newStr += match;
+    newStr += ` ${match} `;
     str = str.slice(index + match.length);
   }
   if (str?.length) {
     newStr += `'${str}'`;
   }
-  return newStr;
+  return newStr.trim();
 }
 function unFormatter(str: string) {
   const strArr = str.split("''");
