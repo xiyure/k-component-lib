@@ -343,8 +343,6 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
   round: false,
 });
 
-console.log(props.height);
-
 const _styleModule = inject('_styleModule', '');
 const slots = defineSlots();
 const t = inject<VueI18nTranslation>('$t');
@@ -577,6 +575,7 @@ const isPaging = computed(() => props.showPage && !props.useTree && !props.simpl
 // 页面展示的表格数据
 const visibleData = computed(() => filterTableData());
 const showTableData = computed(() => {
+  resetCheckboxStatus()
   const { isRemotePaging } = paginationConfig.value;
   if (!isPaging.value || props.isServerPaging || isRemotePaging) {
     return visibleData.value;
@@ -600,6 +599,7 @@ const {
   checkBoxChange,
   checkboxAll,
   clearCheckedData,
+  resetCheckboxStatus,
   _checkboxMethods,
 } = useCheckbox(tableInstance, showTableData, props);
 watch(
@@ -722,17 +722,42 @@ function handleTreeData(leafData: RowData[]) {
     treeDataMap.set(dataItem[rowField], dataItem);
     getParentNode(dataItem, parentField, rowField);
   }
-  addChildNodes(leafData);
+  const xeTableDataMap = convertToMap();
+  addChildNodes(leafData, xeTableDataMap);
 }
-function addChildNodes(leafData: RowData[]) {
-  const { parentField, rowField } = getTreeConfigField();
-  const childrenMap = new Map(leafData.map((item) => [item[rowField], item]));
-  for (const dataItem of xeTableData.value) {
-    const parentKey = dataItem[parentField];
-    if (childrenMap.get(parentKey)) {
-      treeDataMap.set(dataItem[rowField], dataItem);
+function addChildNodes(
+  leafData: RowData[],
+  dataMap: Map<string | number, { node: RowData; children: RowData[] }>
+) {
+  if (!leafData || !leafData.length) {
+    return;
+  }
+  const rowField = rowConfig.value.keyField;
+  for (const leafDataItem of leafData) {
+    const targetNode = dataMap.get(leafDataItem[rowField]);
+    if (targetNode) {
+      targetNode.children.forEach((child: RowData) => {
+        if (!treeDataMap.get(child[rowField])) {
+          treeDataMap.set(child[rowField], child);
+        }
+      })
+      addChildNodes(targetNode.children, dataMap);
     }
   }
+}
+function convertToMap() {
+  const xeTableDataMap = new Map<string | number, { node: RowData; children: RowData[] }>();
+  const { rowField, parentField } = getTreeConfigField();
+  for (const node of xeTableData.value) {
+    if (!xeTableDataMap.has(node[rowField])) {
+      xeTableDataMap.set(node[rowField], {node, children: []});
+    }
+    const parentNode = xeTableDataMap.get(node[parentField]);
+    if (parentNode) {
+      parentNode.children.push(node);
+    }
+  }
+  return xeTableDataMap;
 }
 // 根据叶子节点递归遍历获取祖先节点
 function getParentNode(dataItem: RowData, parentField: string, rowField: string) {

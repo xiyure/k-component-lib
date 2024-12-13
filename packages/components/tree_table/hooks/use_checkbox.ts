@@ -7,7 +7,8 @@ type Row = VxeTablePropTypes.Row;
 // 重定义vxe-table的部分方法
 export function useCheckbox($table: Ref<VxeTableInstance>, tableData: Ref<RowData[]>, props: TreeTableProps) {
   const defaultCheckboxConfig = {};
-  const checkedData = ref<Set<string>>(new Set());
+  const checkedData = ref<Set<string | string>>(new Set());
+  const checkedLeafData: Set<string | string> = new Set();
   // 复选框选中数量
   const checkedDataSize = computed(() => checkedData.value.size);
 
@@ -18,9 +19,11 @@ export function useCheckbox($table: Ref<VxeTableInstance>, tableData: Ref<RowDat
     const defaultRowKeys = checkAll ?
       tableData.value.map((row: RowData) => row[keyField.value]) :
       newCheckRowKeys;
-    for (const id of defaultRowKeys) {
-      checkedData.value.add(id);
-    }
+    const defaultCheckedRows = defaultRowKeys.map((rowKey) => {
+      const row = $table.value?.getRowById(rowKey);
+      return row;
+    });
+    handleCheckboxData(defaultCheckedRows, true);
   });
   const checkboxConfig = computed(() => Object.assign(defaultCheckboxConfig, props.checkboxConfig || {}));
   const keyField = computed(() => props.rowConfig?.keyField ?? 'id');
@@ -30,17 +33,12 @@ export function useCheckbox($table: Ref<VxeTableInstance>, tableData: Ref<RowDat
     const newRows = Array.isArray(rows) ? rows : [rows];
     const res: Row[] = [];
     for (const row of newRows) {
-      if (checked) {
-        if (isCheckboxDisabled(row)) {
-          continue;
-        }
-        res.push(row);
-        checkedData.value.add(row[keyField.value]);
-      } else {
-        res.push(row);
-        checkedData.value.delete(row[keyField.value]);
+      if (isCheckboxDisabled(row)) {
+        continue;
       }
+      res.push(row);
     }
+    handleCheckboxData(res, checked);
     $table.value?.setCheckboxRow(res, checked);
     resolve({ rows, checked });
   });
@@ -53,8 +51,8 @@ export function useCheckbox($table: Ref<VxeTableInstance>, tableData: Ref<RowDat
           continue;
         }
         res.push(row);
-        checkedData.value.add(row[keyField.value]);
       }
+      handleCheckboxData(res, checked);
       $table.value?.setCheckboxRow(res, checked);
     } else {
       clearCheckedData();
@@ -62,12 +60,54 @@ export function useCheckbox($table: Ref<VxeTableInstance>, tableData: Ref<RowDat
     }
     resolve({ checked });
   });
+  // 处理复选框选中数据
+  const handleCheckboxData = (row: RowData | RowData[], isChecked: boolean) => {
+    const rowData = Array.isArray(row)? row : [row];
+    for (const rowDataItem of rowData) {
+      const row = $table.value?.getRowById(rowDataItem[keyField.value]);
+      handleTreeCheckboxData(row, isChecked);
+    }
+  }
+  const handleTreeCheckboxData = (row: Row | null, isChecked: boolean) => {
+    if (!row) {
+      return;
+    }
+    if (isChecked) {
+      checkedData.value.add(row[keyField.value]);
+    } else {
+      checkedData.value.delete(row[keyField.value]);
+    }
+    if (!row.children || row.children.length === 0) {
+      if (isChecked) {
+        checkedLeafData.add(row[keyField.value]);
+      } else {
+        checkedLeafData.delete(row[keyField.value]);
+      }
+    }
+    if (row.children && row.children.length) {
+      for (const childRow of row.children) {
+        handleTreeCheckboxData(childRow, isChecked);
+      }
+    }
+  }
+  async function resetCheckboxStatus() {
+    await $table.value?.clearCheckboxRow();
+    if (checkedLeafData.size === 0) {
+      return;
+    }
+    const checkRows: Row[] = [];
+    for (const checkRow of checkedLeafData.values()) {
+      const row = $table.value?.getRowById(checkRow);
+      if (row) {
+        checkRows.push(row);
+      }
+    }
+    $table.value?.setCheckboxRow(checkRows, true);
+  }
   // 清除复选框选中行
   const clearCheckboxRow = () => new Promise((resolve) => {
     if (props.showPage && !props.useTree) {
-      for (const row of tableData.value) {
-        checkedData.value.delete(row[keyField.value]);
-      }
+      handleCheckboxData(tableData.value, false);
     } else {
       clearCheckedData();
     }
@@ -80,7 +120,7 @@ export function useCheckbox($table: Ref<VxeTableInstance>, tableData: Ref<RowDat
     new Promise((resolve) => {
       if (props.showPage && !props.useTree) {
         const checkRows = $table.value?.getCheckboxRecords();
-        checkedData.value = new Set(checkRows.map((row: RowData) => row[keyField.value]));
+        checkedData.value = new Set(checkRows.map((row: Row) => row[keyField.value]));
         $table.value?.setCheckboxRow(checkRows, true);
       }
       resolve(undefined);
@@ -91,27 +131,13 @@ export function useCheckbox($table: Ref<VxeTableInstance>, tableData: Ref<RowDat
   function checkBoxChange(
     { row, checked }: { row: Row, checked: boolean }
   ) {
-    if (!props.showBatchOperation) {
-      return;
-    }
-    if (checked) {
-      checkedData.value.add(row[keyField.value]);
-    } else {
-      checkedData.value.delete(row[keyField.value]);
-    }
+    handleCheckboxData(row, checked);
   }
   // 表格头部复选框点击事件
   function checkboxAll({ checked }: { checked: boolean }) {
-    if (!props.showBatchOperation) {
-      return;
-    }
-    for (const row of tableData.value) {
-      if (checked) {
-        checkedData.value.add(row[keyField.value]);
-      } else {
-        checkedData.value.delete(row[keyField.value]);
-      }
-    }
+    const checkedRows = $table.value?.getCheckboxRecords() ?? [];
+    const childrenRows = checkedRows.filter((row) => !row.children || !row.children.length);
+    handleCheckboxData(childrenRows, checked);
   }
   // 关闭批量操作
   function closeBatchOperation() {
@@ -133,6 +159,7 @@ export function useCheckbox($table: Ref<VxeTableInstance>, tableData: Ref<RowDat
   // 清空已选数据
   function clearCheckedData() {
     checkedData.value.clear();
+    checkedLeafData.clear();
   }
 
   return {
@@ -147,6 +174,7 @@ export function useCheckbox($table: Ref<VxeTableInstance>, tableData: Ref<RowDat
     closeBatchOperation,
     isCheckboxDisabled,
     clearCheckedData,
+    resetCheckboxStatus,
     checkedDataSize,
     checkboxConfig
   };
