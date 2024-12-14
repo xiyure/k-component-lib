@@ -116,3 +116,48 @@
     }
   }
 }
+
+.mytable-scrollba {
+  .mytable-scrollbar {
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+    }
+  }
+}
+
+[data-vxe-ui-theme='light'] {
+  .mytable-scrollbar {
+    ::-webkit-scrollbar-track,
+    ::-webkit-scrollbar-corner {
+      background-color: #ffffff;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #bfbfbf;
+    }
+    ::-webkit-scrollbar-thumb:hover,
+    ::-webkit-scrollbar-thumb:active {
+      background-color: #787878;
+    }
+  }
+}
+
+/** 暗黑模式 */
+[data-vxe-ui-theme='dark'] {
+  .mytable-scrollbar {
+    ::-webkit-scrollbar-track,
+    ::-webkit-scrollbar-corner {
+      background-color: #151518;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #bfbfbf;
+    }
+    ::-webkit-scrollbar-thumb:hover,
+    ::-webkit-scrollbar-thumb:active {
+      background-color: #a3a6ad;
+    }
+  }
+}

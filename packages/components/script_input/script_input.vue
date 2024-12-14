@@ -1,3 +1,4 @@
+template
 <template>
   <div class="k-script-input-wrapper" ref="KScriptInputWrapper">
     <div class="k-script-input-prepend">
@@ -16,67 +17,72 @@
       :popper-class="`k-script-input-popper ${dynamicClassName}`"
       @show="onShowPopper"
       @hide="onHidePopper"
+      class="overflow-hidden"
     >
       <template #reference>
-        <el-scrollbar class="flex-1">
-          <div
-            ref="KScriptInput"
-            :class="['k-script-input', _styleModule]"
-            contenteditable
-            :spellcheck="false"
-            @input="handleInput"
-            @blur="handleBlur"
-            @focus="handleFocus"
-            @compositionstart="
-              () => {
-                isAllowInput = false;
-              }
-            "
-            @compositionend="
-              (e: CompositionEvent) => {
-                isAllowInput = true;
-                handleInput(e);
-              }
-            "
-          ></div>
-        </el-scrollbar>
-      </template>
-      <k-tree-table
-        v-if="showTree"
-        id="k-script-input-tree"
-        ref="$tree"
-        border="none"
-        :use-tree="useTree"
-        :column="columns"
-        :data="options"
-        :show-search-input="isShowInput"
-        :show-filter="false"
-        :show-header="false"
-        :show-page="false"
-        :show-header-tools="isShowInput"
-        :cell-click-toggle-highlight="false"
-        :show-description="false"
-        :show-refresh="false"
-        :row-config="{
-          keyField: 'value',
-          isCurrent: true,
-          currentMethod: ({ row }) => {
-            return row.optional !== false;
-          },
-        }"
-        :row-class-name="
-          ({ row }: any) => {
-            if (row.optional === false && !row.children?.length) {
-              return 'k-script-input-tree-disabled';
+        <div
+          ref="KScriptInput"
+          :class="['k-script-input', _styleModule]"
+          contenteditable
+          :spellcheck="false"
+          @input="handleInput"
+          @blur="handleBlur"
+          @focus="handleFocus"
+          @compositionstart="
+            () => {
+              isAllowInput = false;
             }
-            return '';
-          }
-        "
-        :tree-config="treeConfig"
-        highlight-current
-        adaptive
-        @cell-click="cellClick"
-      ></k-tree-table>
+          "
+          @compositionend="
+            (e: CompositionEvent) => {
+              isAllowInput = true;
+              handleInput(e);
+            }
+          "
+        ></div>
+      </template>
+      <div>
+        <el-scrollbar>
+          <k-tree-table
+            v-if="showTree"
+            id="k-script-input-tree"
+            class="mytable-scrollbar"
+            ref="$tree"
+            border="none"
+            height="320px"
+            :use-tree="useTree"
+            :column="columns"
+            :data="options"
+            :show-search-input="isShowInput"
+            :show-filter="false"
+            :show-header="false"
+            :show-page="false"
+            :show-header-tools="isShowInput"
+            :cell-click-toggle-highlight="false"
+            :show-description="false"
+            :show-refresh="false"
+            :row-config="{
+              keyField: 'value',
+              isCurrent: true,
+              currentMethod: ({ row }) => {
+                return row.optional !== false;
+              },
+            }"
+            :row-class-name="
+              ({ row }: any) => {
+                if (row.optional === false && !row.children?.length) {
+                  return 'k-script-input-tree-disabled';
+                }
+                return '';
+              }
+            "
+            :tree-config="treeConfig"
+            highlight-current
+            adaptive
+            @cell-click="cellClick"
+          ></k-tree-table>
+        </el-scrollbar>
+      </div>
     </k-popover>
     <div class="k-script-input-append">
       <slot name="append"></slot>
@@ -116,14 +122,14 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   useTree: false,
   showModeSwitch: true,
   showPopperSwitch: true,
-  expandAll: false
+  expandAll: false,
 });
 
 const DEFAULT_TREE_CONFIG = {
   parentField: 'pid',
   rowField: 'value',
   expandAll: false,
-}
+};
 
 const emits = defineEmits(['change', 'input', 'focus', 'blur', 'select', 'update:modelValue']);
 
@@ -163,7 +169,6 @@ const popoverWidth = ref(0);
 const funcReg = /fx\((.*?)\)/;
 const fxSet = new Set();
 
-
 // 监测窗口发生变化后
 window.addEventListener('resize', handleResize);
 
@@ -176,7 +181,7 @@ const treeConfig = computed(() => {
     return undefined;
   }
   return Object.assign(DEFAULT_TREE_CONFIG, props.treeConfig || {});
-})
+});
 const flattedOptions = computed(() => {
   const tableData = $tree.value?.getTableData().fullData ?? [];
   return allTreeDataToArray(tableData, 'children') ?? [];
@@ -210,9 +215,10 @@ watch(
       return;
     }
     const innerText = parseModelValue(newValue.toString());
-    setEditorContent(innerText);
+    // setEditorContent(innerText);
     cacheRes = newValue.toString();
     nextTick(() => {
+      setEditorContent(innerText);
       preTextValue = getEditorContent();
       tempText = preTextValue;
       resetCursor();
@@ -259,7 +265,7 @@ function handleBlur(event: FocusEvent) {
   }
   const popperElem = getElement(`.${dynamicClassName}`);
   if (popperElem && !popperElem.contains(event.relatedTarget as Node)) {
-    canFocus = false
+    canFocus = false;
     emits('blur');
     emits('change', parseInputValue());
     showTree.value = false;
@@ -297,34 +303,37 @@ function handleInputContent(data: Row | RowData) {
   if (isManual) {
     return {
       value: getEditorContent() + content,
-      key
+      key,
     };
   }
   const diffText = diff.diff_main(preTextValue, getEditorContent());
   let replaceText = '';
   const firstSameObj = diffText.find((diff: [number, string]) => diff[0] === 0);
   const firstSameText = firstSameObj?.[1] ?? '';
-  const [firstDiffIndex, firstDiffText] = diffText.find((diff: [number, string]) => diff[0] !== 0) ?? [-2, ''];
+  const [firstDiffIndex, firstDiffText] = diffText.find(
+    (diff: [number, string]) => diff[0] !== 0,
+  ) ?? [-2, ''];
   if (firstDiffIndex === 1) {
     replaceText = (firstSameText + firstDiffText).slice(0, -curInput.value.length);
   } else if (firstDiffIndex === -1) {
     replaceText = firstSameText.slice(0, -curInput.value.length);
   } else {
     replaceText = firstSameText;
-  };
+  }
   let validText = '';
   if (firstSameObj) {
     firstSameObj[1] = `${replaceText}${content}`;
     validText = diffText
       .filter((diff: [number, string]) => diff[0] === 0)
-      .map((diff: [number, string]) => diff[1]).join('');
+      .map((diff: [number, string]) => diff[1])
+      .join('');
   } else {
     validText = content;
   }
 
   return {
     value: validText,
-    key
+    key,
   };
 }
 function parseInputValue() {
@@ -347,7 +356,10 @@ function parseInputValue() {
       }
     }
   }
-  text = text.split(' ').filter((item) => item !== '').join(' ');
+  text = text
+    .split(' ')
+    .filter((item) => item !== '')
+    .join(' ');
   const res = formatter(text);
   emits('input', res);
   return res;
@@ -409,7 +421,7 @@ function unFormatter(str: string) {
   });
   return strArr.join("'");
 }
-function generateScriptTag(content: string, key: string, isError: boolean = false, ) {
+function generateScriptTag(content: string, key: string, isError: boolean = false) {
   return `<div class="k-script-tag ${isError ? 'is-error' : ''}" data-key="${key}"  contenteditable="false">${content}</div>`;
 }
 function toggleSelect(event: KeyboardEvent) {
@@ -472,7 +484,7 @@ function resetCursor(key?: string) {
   } else {
     const range = document.createRange();
     range.selectNodeContents(KScriptInput.value);
-    range.setStart(KScriptInput.value, getDomIndex(key))
+    range.setStart(KScriptInput.value, getDomIndex(key));
     range.collapse(true);
     selection?.removeAllRanges();
     selection?.addRange(range);
@@ -592,7 +604,7 @@ function handleResize() {
   });
 }
 function formatterEscape(str: string) {
-  return str.replace(/&nbsp;/g, ' ')
+  return str.replace(/&nbsp;/g, ' ');
 }
 defineExpose({
   clear,
