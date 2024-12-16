@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
 interface Option {
   key: number
@@ -12,17 +12,17 @@ interface Option {
 }
 
 const generateData = () => {
-  const data: Option[] = []
+  const data: Option[] = [];
   for (let i = 1; i <= 15; i++) {
     data.push({
       key: i,
       label: `Option ${i}`,
-      disabled: i % 4 === 0,
-    })
+      disabled: i % 4 === 0
+    });
   }
-  return data
-}
+  return data;
+};
 
-const data = ref<Option[]>(generateData())
-const value = ref([])
+const data = ref<Option[]>(generateData());
+const value = ref([]);
 </script>

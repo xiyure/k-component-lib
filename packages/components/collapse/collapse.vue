@@ -22,31 +22,31 @@ import { ElCollapse } from 'element-plus';
 import { getExposeProxy } from '../../utils/index';
 
 defineOptions({
-  name: 'KCollapse',
+  name: 'KCollapse'
 });
 
 const props = defineProps({
   block: {
     type: Boolean,
-    default: false,
+    default: false
   },
   isOutline: {
     type: Boolean,
-    default: false,
+    default: false
   },
   useAntStyle: {
     type: Boolean,
-    default: false,
+    default: false
   },
   useStepStyle: {
     type: Boolean,
-    default: false,
-  },
+    default: false
+  }
 });
 
 provide(
   '__isBlock__',
-  computed(() => props.block),
+  computed(() => props.block)
 );
 
 const _styleModule = inject('_styleModule', '');

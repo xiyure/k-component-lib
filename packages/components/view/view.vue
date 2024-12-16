@@ -123,14 +123,14 @@
 import { ref, watch, computed, provide, inject } from 'vue';
 import { ElScrollbar } from 'element-plus';
 import { IconRefresh, IconArrowRight } from 'ksw-vue-icon';
+import { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type';
 import KViewItem from './view_item.vue';
 import { ViewProps, ViewData } from './type';
-import { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type';
 import { KTree } from '../tree';
 import { genRandomStr } from '../../utils';
 
 defineOptions({
-  name: 'KView',
+  name: 'KView'
 });
 
 const DEFAULT_PROPS = {
@@ -139,8 +139,8 @@ const DEFAULT_PROPS = {
   count: 'count',
   children: 'children',
   disabled: 'disabled',
-  custom: 'custom',
-}
+  custom: 'custom'
+};
 const props = withDefaults(defineProps<ViewProps>(), {
   draggable: false,
   collapse: false,
@@ -157,14 +157,12 @@ const emits = defineEmits([
   'drag',
   'visible',
   'node-expand',
-  'node-collapse',
+  'node-collapse'
 ]);
 const _styleModule = inject('_styleModule', '');
 const active = ref<string | number>('');
 
-const config = computed(() => {
-  return Object.assign(DEFAULT_PROPS, props.props ?? {});
-});
+const config = computed(() => Object.assign(DEFAULT_PROPS, props.props ?? {}));
 const specialData = computed(() => props.data?.filter((item) => !item[config.value.custom]) ?? []);
 const customData = computed(() => props.data?.filter((item) => Boolean(item[config.value.custom])));
 
@@ -182,7 +180,7 @@ watch(
     defaultExpandedKeys.value = [activeValue ?? ''];
     currentNodeKey.value = activeValue ?? '';
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 function handleFresh() {
@@ -216,7 +214,7 @@ const dragElement: {
   data: ViewData | null;
 } = {
   element: null,
-  data: null,
+  data: null
 };
 let isCustom: boolean = false;
 const specialViewId = genRandomStr(8);
@@ -281,8 +279,8 @@ function formatter(data: ViewData) {
     count: data[config.value.count] ?? 0,
     disabled: data[config.value.disabled] ?? false,
     custom: data[config.value.custom] ?? false,
-    showCustomControl: data.showCustomControl ?? false,
-  }
+    showCustomControl: data.showCustomControl ?? false
+  };
 }
 
 provide('activeView', active);
@@ -293,7 +291,7 @@ defineExpose({
   collapse,
   toggle,
   isExpand,
-  isCollapse,
+  isCollapse
 });
 </script>
 

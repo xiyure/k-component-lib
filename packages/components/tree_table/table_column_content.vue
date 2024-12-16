@@ -34,23 +34,23 @@ const tableInstance: any = inject('tableInstance');
 const props = defineProps({
   row: {
     type: Object,
-    default: () => {},
+    default: () => {}
   },
   col: {
     type: Object,
-    default: () => {},
+    default: () => {}
   },
   size: {
     type: String,
-    default: 'default',
+    default: 'default'
   },
   align: {
     type: String,
-    default: () => 'left',
-  },
+    default: () => 'left'
+  }
 });
 const iconSize = computed(
-  () => (row: any) => row.iconStyle?.size ?? (props.size === 'mini' ? 16 : 20),
+  () => (row: any) => row.iconStyle?.size ?? (props.size === 'mini' ? 16 : 20)
 );
 const displayIcon = computed(() => (row: any) => {
   if (!row.__folder) {

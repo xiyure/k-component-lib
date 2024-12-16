@@ -11,6 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-const value = ref(false)
+import { ref } from 'vue';
+
+const value = ref(false);
 </script>

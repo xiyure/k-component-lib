@@ -28,20 +28,20 @@
 
 <script lang="ts" setup>
 import { inject, computed, ComputedRef } from 'vue';
-import { DetailsItemProps, DetailsProps } from './type';
+import { DetailsItemProps } from './type';
 
 defineOptions({
-  name: 'KDetailsItem',
+  name: 'KDetailsItem'
 });
 const props = withDefaults(defineProps<DetailsItemProps>(), {
   column: 1,
   showLine: undefined,
-  useflex: false,
+  useflex: false
 });
 
 const injectMaxColumn = inject<ComputedRef>(
   '__maxColumn__',
-  computed(() => props.column),
+  computed(() => props.column)
 );
 
 const newColumn = computed(() => {

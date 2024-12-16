@@ -10,7 +10,12 @@
     <template #trigger>
       <div style="display: flex;">
         <k-button type="primary" main>select file</k-button>
-        <k-button class="ml-3" type="success" secondary @click="submitUpload">upload to server</k-button>
+        <k-button
+          class="ml-3" type="success" secondary
+          @click="submitUpload"
+        >
+          upload to server
+        </k-button>
       </div>
     </template>
     <template #tip>

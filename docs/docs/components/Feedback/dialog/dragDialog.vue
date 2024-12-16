@@ -7,7 +7,10 @@
     Open a overflow draggable Dialog
   </k-button>
 
-  <k-dialog v-model="dialogVisible" title="Tips" width="500" draggable>
+  <k-dialog
+    v-model="dialogVisible" title="Tips" width="500"
+    draggable
+  >
     <span>It's a draggable Dialog</span>
     <template #footer>
       <div class="dialog-footer">
@@ -39,8 +42,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const dialogVisible = ref(false)
-const dialogOverflowVisible = ref(false)
+const dialogVisible = ref(false);
+const dialogOverflowVisible = ref(false);
 </script>

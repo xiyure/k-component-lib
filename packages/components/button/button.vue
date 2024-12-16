@@ -48,7 +48,7 @@ import { btnTypes } from './const';
 import { useSize } from '../../hooks';
 
 defineOptions({
-  name: 'KButton',
+  name: 'KButton'
 });
 
 const props = withDefaults(defineProps<ButtonProps>(), {
@@ -63,7 +63,7 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   main: false,
   secondary: false,
   text: false,
-  icon: false,
+  icon: false
 });
 
 const formatSize = useSize<ButtonProps>(props);
@@ -95,7 +95,7 @@ watch(
               item.vars.forEach((item) => {
                 buttonRef.value.$el?.style.setProperty(
                   `--k-button-${item.name}`,
-                  getColorS?.[`--k-oklch-${item.value}`],
+                  getColorS?.[`--k-oklch-${item.value}`]
                 );
               });
             }
@@ -106,7 +106,7 @@ watch(
       });
     }
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 const getElTypeColor = computed(() => {

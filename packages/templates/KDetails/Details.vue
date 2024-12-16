@@ -14,7 +14,7 @@
       v-for="(item, index) in abstract"
       :key="index"
       v-bind="item"
-      :showLine="showLine"
+      :show-line="showLine"
       :useflex="useflex"
       :direction="direction"
     ></KDetailsItem>
@@ -27,12 +27,12 @@ import { DetailsProps } from './type';
 import KDetailsItem from './DetailsItem.vue';
 
 defineOptions({
-  name: 'KDetails',
+  name: 'KDetails'
 });
 const props = withDefaults(defineProps<DetailsProps>(), {
   direction: 'vertical',
   showLine: false,
-  useflex: false,
+  useflex: false
 });
 
 const RefKDetails = ref();

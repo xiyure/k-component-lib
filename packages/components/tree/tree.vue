@@ -7,7 +7,7 @@
     v-bind="$attrs"
   >
     <template #default="{ node, data }">
-      <component v-if="treeIcon(node, data)" :is="treeIcon(node, data)" />
+      <component :is="treeIcon(node, data)" v-if="treeIcon(node, data)" />
       <span class="k-tree-node-label">
         <slot :node="node" :data="data">
           {{ typeof props.props?.label === 'function' 
@@ -28,7 +28,7 @@ import { TreeProps } from './type';
 import { getExposeProxy } from '../../utils';
 
 defineOptions({
-  name: 'KTree',
+  name: 'KTree'
 });
 
 const props = withDefaults(defineProps<TreeProps>(), {
@@ -36,7 +36,7 @@ const props = withDefaults(defineProps<TreeProps>(), {
   icon: '',
   expandIcon: '',
   collapseIcon: '',
-  showArrow: true,
+  showArrow: true
 });
 
 const _styleModule = inject('_styleModule', '');

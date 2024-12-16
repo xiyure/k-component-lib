@@ -1,8 +1,8 @@
 import type { App } from 'vue';
 import { createI18n } from 'vue-i18n';
+import type { ContextConfig } from '@ksw-ux/utils/typescript';
 import zh from '../locale/zh';
 import en from '../locale/en';
-import type { ContextConfig } from '@ksw-ux/utils/typescript'
 
 // i18n
 export function useI18n(app: App, config: ContextConfig = {}) {

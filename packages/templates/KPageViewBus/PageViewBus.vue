@@ -62,23 +62,23 @@ import { ref } from 'vue';
 import { KTooltip } from '../../components';
 
 defineOptions({
-  name: 'KPageViewBus',
+  name: 'KPageViewBus'
 });
 const tips = ref(false);
 const drawerStatus = ref(false);
 const props = defineProps({
   title: {
     type: String,
-    default: '',
+    default: ''
   },
   info: {
     type: String,
-    default: undefined,
+    default: undefined
   },
   refresh: {
     type: Boolean,
-    default: true,
-  },
+    default: true
+  }
 });
 // 自定义事件
 const emitEvent = defineEmits(['refresh']);

@@ -25,8 +25,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const outerVisible = ref(false)
-const innerVisible = ref(false)
+const outerVisible = ref(false);
+const innerVisible = ref(false);
 </script>

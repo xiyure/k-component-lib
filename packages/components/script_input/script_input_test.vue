@@ -1,5 +1,5 @@
 <template>
-  <div class="k-script-input-wrapper" ref="KScriptInputWrapper">
+  <div ref="KScriptInputWrapper" class="k-script-input-wrapper">
     <div class="k-script-input-prepend">
       <k-button v-if="showModeSwitch" @click="toggleMode">
         <component
@@ -80,7 +80,7 @@
     </k-popover>
     <div class="k-script-input-append">
       <slot name="append"></slot>
-      <k-button v-if="showPopperSwitch" @click="showPopper" :disabled="!_isStringMode">
+      <k-button v-if="showPopperSwitch" :disabled="!_isStringMode" @click="showPopper">
         <IconVariable />
       </k-button>
     </div>
@@ -96,14 +96,14 @@ import {
   onMounted,
   onBeforeUnmount,
   nextTick,
-  onUnmounted,
+  onUnmounted
 } from 'vue';
 import { ScriptInputProps } from './type';
 import Message from '../message';
 import { genRandomStr, allTreeDataToArray } from '../../utils';
 
 defineOptions({
-  name: 'KScriptInput',
+  name: 'KScriptInput'
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -114,13 +114,13 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   useTree: false,
   showModeSwitch: true,
   showPopperSwitch: true,
-  expandAll: false,
+  expandAll: false
 });
 
 const DEFAULT_TREE_CONFIG = {
   parentField: 'pid',
   rowField: 'value',
-  expandAll: false,
+  expandAll: false
 };
 
 const emits = defineEmits(['change', 'input', 'focus', 'blur', 'select', 'update:modelValue']);
@@ -191,7 +191,7 @@ watch(
       popperVisible.value = false;
     }
   },
-  { immediate: true },
+  { immediate: true }
 );
 watch(
   () => props.modelValue,
@@ -212,7 +212,7 @@ watch(
       cursorToEnd();
     });
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 watch(
@@ -222,7 +222,7 @@ watch(
     cacheRes = res;
     emits('update:modelValue', res);
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 function handleInput(event: InputEvent) {
@@ -271,7 +271,7 @@ function cellClick({ row }: { row: any }) {
 }
 function selectOption(data: any) {
   removeInvalidChar();
-  textValue.value = textValue.value + generateScriptTag(data.label);
+  textValue.value += generateScriptTag(data.label);
   curInput.value = '';
   preTextValue = textValue.value;
   KScriptInput.value.innerHTML = textValue.value;
@@ -302,17 +302,17 @@ function parseText() {
     text = text.replace(replaceReg, label);
   }
   const res = text
-    .split(/&nbsp;| /g)
-    .filter((item) => item !== '')
-    .map((item) => {
-      if (item.startsWith(prefix + '-')) {
-        const label = item.slice(10);
-        const targetOption = props.options.find((item) => item.label === label);
-        return `fx(${targetOption?.value ?? null})`;
-      }
-      return item;
-    })
-    .join(' ');
+  .split(/&nbsp;| /g)
+  .filter((item) => item !== '')
+  .map((item) => {
+    if (item.startsWith(`${prefix}-`)) {
+      const label = item.slice(10);
+      const targetOption = props.options.find((item) => item.label === label);
+      return `fx(${targetOption?.value ?? null})`;
+    }
+    return item;
+  })
+  .join(' ');
   const result = formatter(res);
   emits('input', result);
   return result;
@@ -329,7 +329,7 @@ function parseValue() {
 }
 function parseModelValue(value: string) {
   fxSet.clear();
-  let originText = value.replace(/''/g, "'");
+  let originText = value.replace(/''/g, '\'');
   if (!isStringMode()) {
     return originText.substring(1, originText.length - 1);
   }
@@ -349,13 +349,13 @@ function parseModelValue(value: string) {
       fxSet.add(label);
       isError = true;
     }
-    originText = originText.replace(match?.[0], generateScriptTag(label, isError) + '&nbsp;');
+    originText = originText.replace(match?.[0], `${generateScriptTag(label, isError)}&nbsp;`);
   }
   return originText;
 }
 function formatter(str: string) {
   const reg = /fx\((.*?)\)/;
-  str = str.replace(/\'/g, "''");
+  str = str.replace(/\'/g, '\'\'');
   if (!_isStringMode.value) {
     return str;
   }
@@ -376,11 +376,11 @@ function formatter(str: string) {
   return newStr;
 }
 function unFormatter(str: string) {
-  const strArr = str.split("''");
+  const strArr = str.split('\'\'');
   strArr.forEach((item, index) => {
     strArr[index] = item.replace(/'/g, '');
   });
-  return strArr.join("'");
+  return strArr.join('\'');
 }
 function generateScriptTag(content: string, isError: boolean = false) {
   return `<div class="k-script-tag ${isError ? 'is-error' : ''}"  contenteditable="false">${content}</div>`;
@@ -519,31 +519,31 @@ function isStringMode() {
 }
 const caches = {
   expression: '',
-  string: '',
+  string: ''
 };
 const tempCaches = {
   expression: '',
-  string: '',
+  string: ''
 };
 function saveTextValue() {
   if (!isStringMode()) {
-    tempCaches['expression'] = textValue.value;
+    tempCaches.expression = textValue.value;
   } else {
-    tempCaches['string'] = textValue.value;
+    tempCaches.string = textValue.value;
   }
 }
 function restoreTextValue() {
   clear();
   if (isStringMode()) {
-    textValue.value = caches['string'] ?? '';
+    textValue.value = caches.string ?? '';
   } else {
-    textValue.value = caches['expression'] ?? '';
+    textValue.value = caches.expression ?? '';
   }
   KScriptInput.value.innerHTML = textValue.value;
   const res = parseText() ?? '';
   cacheRes = res;
-  caches['expression'] = tempCaches['expression'];
-  caches['string'] = tempCaches['string'];
+  caches.expression = tempCaches.expression;
+  caches.string = tempCaches.string;
   emits('update:modelValue', res);
   emits('change', res);
 }
@@ -559,7 +559,7 @@ defineExpose({
   hidePopper,
   toggleMode,
   setStringMode,
-  isStringMode,
+  isStringMode
 });
 </script>
 <style lang="less">

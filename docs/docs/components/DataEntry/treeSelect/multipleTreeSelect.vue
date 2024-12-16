@@ -31,10 +31,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const value = ref()
-const valueStrictly = ref()
+const value = ref();
+const valueStrictly = ref();
 
 const data = [
   {
@@ -47,11 +47,11 @@ const data = [
         children: [
           {
             value: '1-1-1',
-            label: 'Level three 1-1-1',
-          },
-        ],
-      },
-    ],
+            label: 'Level three 1-1-1'
+          }
+        ]
+      }
+    ]
   },
   {
     value: '2',
@@ -63,9 +63,9 @@ const data = [
         children: [
           {
             value: '2-1-1',
-            label: 'Level three 2-1-1',
-          },
-        ],
+            label: 'Level three 2-1-1'
+          }
+        ]
       },
       {
         value: '2-2',
@@ -73,11 +73,11 @@ const data = [
         children: [
           {
             value: '2-2-1',
-            label: 'Level three 2-2-1',
-          },
-        ],
-      },
-    ],
+            label: 'Level three 2-2-1'
+          }
+        ]
+      }
+    ]
   },
   {
     value: '3',
@@ -89,9 +89,9 @@ const data = [
         children: [
           {
             value: '3-1-1',
-            label: 'Level three 3-1-1',
-          },
-        ],
+            label: 'Level three 3-1-1'
+          }
+        ]
       },
       {
         value: '3-2',
@@ -99,11 +99,11 @@ const data = [
         children: [
           {
             value: '3-2-1',
-            label: 'Level three 3-2-1',
-          },
-        ],
-      },
-    ],
-  },
-]
+            label: 'Level three 3-2-1'
+          }
+        ]
+      }
+    ]
+  }
+];
 </script>

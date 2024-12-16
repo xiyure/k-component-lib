@@ -583,7 +583,7 @@ function updateValue(dataItem: FilterData, uiType: string, options?: {label: str
     dataItem.showValue = targetOption?.label ?? '';
   }
 }
-function dateChange(val: Date  | Date[], item: FilterData) {
+function dateChange(val: Date | Date[], item: FilterData) {
   const formatterData = formatter(val, props.formatter);
   item.showValue = Array.isArray(formatterData) ? formatterData.join(' - ') : formatterData;
 }

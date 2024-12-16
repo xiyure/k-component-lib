@@ -1,9 +1,8 @@
-import { ref, computed, nextTick, Ref } from 'vue';
+import { ref, computed, Ref } from 'vue';
 import { VxeTablePropTypes, VxeTableInstance } from 'vxe-table';
 import { SortableEvent } from 'sortablejs';
-import { Store } from '../type';
+import { Store, TreeTableProps, RowData } from '../type';
 import { multiFieldSort } from '../../../utils';
-import { TreeTableProps, RowData } from '../type';
 
 // 重定义vxe-table的部分方法
 export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>) {
@@ -279,7 +278,7 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     issue:https://github.com/x-extends/vxe-table/issues/2650
   */
   async function setTreeExpand(rows: Row | Row[], checked: boolean, timeout: number = 100) {
-    return new Promise(async(resolve) => {
+    return new Promise(async (resolve) => {
       const records = Array.isArray(rows) ? rows : [rows];
       const isLazy = props.treeConfig?.lazy ?? false;
       if (!isLazy) {
@@ -304,8 +303,8 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
       }
       setTimeout(() => {
         resolve(null);
-      }, timeout)
-    })
+      }, timeout);
+    });
   }
   // 数据更新时应清除所有缓存数据
   function setTableData(data: RowData[] | undefined) {

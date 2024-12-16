@@ -1,4 +1,4 @@
-import { VxeColumnProps, VxeColumnPropTypes, VxeTableDefines } from "vxe-table";
+import { VxeColumnProps, VxeColumnPropTypes, VxeTableDefines } from 'vxe-table';
 
 export interface KTableProps {
   data?: any[]

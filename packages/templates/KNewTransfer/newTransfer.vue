@@ -6,7 +6,10 @@
         {{ title }}
       </div>
     </slot>
-    <k-form ref="KFormRef" :model="form" labk-width="auto" style="max-width: 600px">
+    <k-form
+      ref="KFormRef" :model="form" labk-width="auto"
+      style="max-width: 600px"
+    >
       <k-form-item
         label="选择机器类型"
         prop="machineType"
@@ -40,7 +43,7 @@
         ref="myTreeTransfer"
         :data="treeTransferData"
         :titles="['待选IP', '已选IP']"
-        :defaultData="defaultData"
+        :default-data="defaultData"
         label="name"
         expand-icon="IconFolderOpen"
         expand-icon-color="#f60"
@@ -74,7 +77,7 @@ import { ref, reactive, watch } from 'vue';
 import { KNewTransfer, KNewTransferInterface } from './type';
 
 defineOptions({
-  name: 'KNewTransfer',
+  name: 'KNewTransfer'
 });
 
 const props = withDefaults(defineProps<KNewTransfer>(), {
@@ -82,11 +85,11 @@ const props = withDefaults(defineProps<KNewTransfer>(), {
   selectList: () => [],
   defaultData: () => [],
   defaultVal: '',
-  treeTransferData: () => [],
+  treeTransferData: () => []
 });
 
 const form = reactive({
-  machineType: props.defaultVal,
+  machineType: props.defaultVal
 });
 const myTreeTransfer = ref<KNewTransferInterface | null>(null);
 
@@ -102,7 +105,7 @@ const cancelEvent = () => {
   isShowPopconfirm.value = false;
 };
 
-let arr = ref(props.defaultData);
+const arr = ref(props.defaultData);
 
 const getSelectedData = (data: any) => {
   arr.value = data;
@@ -112,7 +115,7 @@ let selectValue = '';
 
 const handleSelectType = (value) => {
   selectValue = value;
-  if (form.machineType && !(arr.value.length == 0)) {
+  if (form.machineType && !(arr.value.length === 0)) {
     isShowPopconfirm.value = true;
   } else form.machineType = value;
 };
@@ -123,13 +126,11 @@ watch(
     setTimeout(() => {
       myTreeTransfer.value!.clearQuery();
     }, 0);
-    const _temp = props.selectList.find((item) => {
-      return item.type === value;
-    });
+    const _temp = props.selectList.find((item) => item.type === value);
     if (_temp && _temp.fun && typeof _temp.fun === 'function') {
       _temp.fun(selectValue);
     }
-  },
+  }
 );
 
 const KFormRef = ref();
@@ -138,10 +139,9 @@ const handleSubmit = () => {
     KFormRef.value.validate((valid) => {
       if (valid) {
         return { arr: arr.value, type: form.machineType };
-      } else {
-        console.warn('error submit!!');
-        return false;
-      }
+      } 
+      console.warn('error submit!!');
+      return false;
     });
   }
 };

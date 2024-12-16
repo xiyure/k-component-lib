@@ -1,4 +1,5 @@
 import type { App } from 'vue';
+import type { ContextConfig } from '@ksw-ux/utils/typescript';
 import {
   makeRegister,
   registerThirdLib,
@@ -7,7 +8,6 @@ import {
   useDirectives,
   provide
 } from './ksw-ux';
-import type { ContextConfig } from '@ksw-ux/utils/typescript';
 
 const install = (app: App, config?: ContextConfig) => {
   makeRegister(app);

@@ -70,7 +70,7 @@ const generateData = (): Option[] => {
     data.push({
       key: i,
       label: `Option ${i}`,
-      disabled: i % 4 === 0,
+      disabled: i % 4 === 0
     });
   }
   return data;
@@ -82,14 +82,12 @@ const leftValue = ref([1]);
 
 const renderFunc = (
   h: (type: string, props: VNodeProps | null, children?: string) => VNode,
-  option: Option,
-) => {
-  return h('span', null, option.label);
-};
+  option: Option
+) => h('span', null, option.label);
 const handleChange = (
   value: number[] | string[],
   direction: 'left' | 'right',
-  movedKeys: string[] | number[],
+  movedKeys: string[] | number[]
 ) => {
   console.log(value, direction, movedKeys);
 };

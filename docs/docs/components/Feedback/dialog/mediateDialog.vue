@@ -3,7 +3,10 @@
     Click to open the Dialog
   </k-button>
 
-  <k-dialog v-model="centerDialogVisible" title="Warning" width="500" center>
+  <k-dialog
+    v-model="centerDialogVisible" title="Warning" width="500"
+    center
+  >
     <span>
       It should be noted that the content will not be aligned in center by
       default
@@ -19,7 +22,7 @@
   </k-dialog>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const centerDialogVisible = ref(false)
+const centerDialogVisible = ref(false);
 </script>

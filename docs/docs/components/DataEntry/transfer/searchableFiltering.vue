@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
 interface Option {
   key: number
@@ -18,7 +18,7 @@ interface Option {
 }
 
 const generateData = () => {
-  const data: Option[] = []
+  const data: Option[] = [];
   const states = [
     'California',
     'Illinois',
@@ -26,23 +26,21 @@ const generateData = () => {
     'Texas',
     'Florida',
     'Colorado',
-    'Connecticut ',
-  ]
-  const initials = ['CA', 'IL', 'MD', 'TX', 'FL', 'CO', 'CT']
+    'Connecticut '
+  ];
+  const initials = ['CA', 'IL', 'MD', 'TX', 'FL', 'CO', 'CT'];
   states.forEach((city, index) => {
     data.push({
       label: city,
       key: index,
-      initial: initials[index],
-    })
-  })
-  return data
-}
+      initial: initials[index]
+    });
+  });
+  return data;
+};
 
-const data = ref<Option[]>(generateData())
-const value = ref([])
+const data = ref<Option[]>(generateData());
+const value = ref([]);
 
-const filterMethod = (query, item) => {
-  return item.initial.toLowerCase().includes(query.toLowerCase())
-}
+const filterMethod = (query, item) => item.initial.toLowerCase().includes(query.toLowerCase());
 </script>

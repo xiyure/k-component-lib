@@ -27,34 +27,34 @@ import { ElCollapseItem } from 'element-plus';
 import { getExposeProxy } from '../../utils/index';
 
 defineOptions({
-  name: 'KCollapseItem',
+  name: 'KCollapseItem'
 });
 
 const props = defineProps({
   block: {
-    type: Boolean,
+    type: Boolean
   },
   process: {
-    type: Boolean,
+    type: Boolean
   },
   wait: {
-    type: Boolean,
+    type: Boolean
   },
   finish: {
-    type: Boolean,
+    type: Boolean
   },
   error: {
-    type: Boolean,
+    type: Boolean
   },
   warning: {
-    type: Boolean,
-  },
+    type: Boolean
+  }
 });
 
 const _styleModule = inject('_styleModule', '');
 const injectIsBlock = inject(
   '__isBlock__',
-  computed(() => props.block),
+  computed(() => props.block)
 );
 
 const kCollapseItemRef = ref(null);

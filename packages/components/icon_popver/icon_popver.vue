@@ -5,8 +5,8 @@
         <k-input v-model="componentName"></k-input>
         <div class="icon-list">
           <component
-            v-for="item in componentNameOptions"
             :is="item.componentName"
+            v-for="item in componentNameOptions"
             class="icon-item"
             @click="updataText(item.componentName)"
           />
@@ -23,10 +23,11 @@
 
 <script setup lang="ts">
 import { iconsDataBase } from 'ksw-vue-icon/icons-base.js';
-import { getExposeProxy } from '../../utils';
 import { ref, computed } from 'vue';
+import { getExposeProxy } from '../../utils';
+
 defineOptions({
-  name: 'KIconPopver',
+  name: 'KIconPopver'
 });
 
 const KIconPopver = ref(null);
@@ -41,14 +42,13 @@ const updataText = async (updataContent: string) => {
 const componentNameOptions = computed(() => {
   if (componentName.value.trim() === '') {
     return iconsDataBase;
-  } else {
-    return iconsDataBase.filter((item: any) => {
-      const nameMatch = item.name.includes(componentName.value);
-      const componentNameMatch = item.componentName.includes(componentName.value);
-      const tagMatch = item.tag.some((tag: string) => tag.includes(componentName.value));
-      return nameMatch || componentNameMatch || tagMatch;
-    });
-  }
+  } 
+  return iconsDataBase.filter((item: any) => {
+    const nameMatch = item.name.includes(componentName.value);
+    const componentNameMatch = item.componentName.includes(componentName.value);
+    const tagMatch = item.tag.some((tag: string) => tag.includes(componentName.value));
+    return nameMatch || componentNameMatch || tagMatch;
+  });
 });
 
 const emits = defineEmits(['updataIcon']);

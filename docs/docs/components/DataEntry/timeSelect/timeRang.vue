@@ -23,8 +23,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const startTime = ref('')
-const endTime = ref('')
+const startTime = ref('');
+const endTime = ref('');
 </script>

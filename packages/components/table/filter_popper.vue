@@ -55,7 +55,7 @@ const props = withDefaults(defineProps<FilterPopperProps>(), {
   trigger: 'hover',
   visible: undefined,
   text: () => ({})
-})
+});
 
 const emits = defineEmits(['set-filter', 'clear-filter', 'filter-change', 'filter-visible']);
 

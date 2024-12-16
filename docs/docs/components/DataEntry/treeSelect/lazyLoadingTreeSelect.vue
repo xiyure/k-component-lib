@@ -19,36 +19,36 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const value = ref()
-const value2 = ref(5)
+const value = ref();
+const value2 = ref(5);
 
-const cacheData = [{ value: 5, label: 'lazy load node5' }]
+const cacheData = [{ value: 5, label: 'lazy load node5' }];
 
 const props = {
   label: 'label',
   children: 'children',
-  isLeaf: 'isLeaf',
-}
+  isLeaf: 'isLeaf'
+};
 
-let id = 0
+let id = 0;
 
 const load = (node, resolve) => {
-  if (node.isLeaf) return resolve([])
+  if (node.isLeaf) return resolve([]);
 
   setTimeout(() => {
     resolve([
       {
         value: ++id,
-        label: `lazy load node${id}`,
+        label: `lazy load node${id}`
       },
       {
         value: ++id,
         label: `lazy load node${id}`,
-        isLeaf: true,
-      },
-    ])
-  }, 400)
-}
+        isLeaf: true
+      }
+    ]);
+  }, 400);
+};
 </script>

@@ -26,9 +26,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const value = ref()
+const value = ref();
 
 const sourceData = [
   {
@@ -41,11 +41,11 @@ const sourceData = [
         children: [
           {
             value: '1-1-1',
-            label: 'Level three 1-1-1',
-          },
-        ],
-      },
-    ],
+            label: 'Level three 1-1-1'
+          }
+        ]
+      }
+    ]
   },
   {
     value: '2',
@@ -57,9 +57,9 @@ const sourceData = [
         children: [
           {
             value: '2-1-1',
-            label: 'Level three 2-1-1',
-          },
-        ],
+            label: 'Level three 2-1-1'
+          }
+        ]
       },
       {
         value: '2-2',
@@ -67,11 +67,11 @@ const sourceData = [
         children: [
           {
             value: '2-2-1',
-            label: 'Level three 2-2-1',
-          },
-        ],
-      },
-    ],
+            label: 'Level three 2-2-1'
+          }
+        ]
+      }
+    ]
   },
   {
     value: '3',
@@ -83,9 +83,9 @@ const sourceData = [
         children: [
           {
             value: '3-1-1',
-            label: 'Level three 3-1-1',
-          },
-        ],
+            label: 'Level three 3-1-1'
+          }
+        ]
       },
       {
         value: '3-2',
@@ -93,18 +93,18 @@ const sourceData = [
         children: [
           {
             value: '3-2-1',
-            label: 'Level three 3-2-1',
-          },
-        ],
-      },
-    ],
-  },
-]
-const data = ref(sourceData)
+            label: 'Level three 3-2-1'
+          }
+        ]
+      }
+    ]
+  }
+];
+const data = ref(sourceData);
 
 const filterMethod = (value) => {
-  data.value = [...sourceData].filter((item) => item.label.includes(value))
-}
+  data.value = [...sourceData].filter((item) => item.label.includes(value));
+};
 
-const filterNodeMethod = (value, data) => data.label.includes(value)
+const filterNodeMethod = (value, data) => data.label.includes(value);
 </script>

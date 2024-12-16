@@ -36,7 +36,7 @@
               :label="item.label"
               :value="item.value"
               :render="item.render"
-              :showLine="showLine"
+              :show-line="showLine"
               :direction="direction"
               :useflex="useflex"
             ></DetailsItem>
@@ -55,38 +55,38 @@
 import DetailsItem from '../KDetails/DetailsItem.vue';
 
 defineOptions({
-  name: 'KPageDetails',
+  name: 'KPageDetails'
 });
 
 const props = defineProps({
   pageIcon: {
     type: String,
-    default: '',
+    default: ''
   },
   pageTitle: {
     type: String,
-    default: '标题',
+    default: '标题'
   },
   pageDescriptions: {
     type: String,
-    default: '',
+    default: ''
   },
   abstract: {
     type: Array,
-    default: () => [],
+    default: () => []
   },
   showLine: {
     type: Boolean,
-    default: false,
+    default: false
   },
   direction: {
     type: String,
-    default: 'vertical',
+    default: 'vertical'
   },
   useflex: {
     type: Boolean,
-    default: true,
-  },
+    default: true
+  }
 });
 </script>
 <style lang="less" scoped>

@@ -1,5 +1,5 @@
 import type { App } from 'vue';
-import type { ContextConfig } from '@ksw-ux/utils/typescript'
+import type { ContextConfig } from '@ksw-ux/utils/typescript';
 import 'element-plus/dist/index.css';
 import 'vxe-table/lib/style.css';
 import 'ksw-vue-icon/styles/icon.css';
@@ -24,5 +24,5 @@ export function useTheme(app: App, config: ContextConfig = {}) {
     const body = document?.getElementsByTagName('body')[0];
     body?.classList.add(projectName);
   }
-  app.provide('_styleModule', projectName === 'AOM'? '' : projectName);
+  app.provide('_styleModule', projectName === 'AOM' ? '' : projectName);
 }

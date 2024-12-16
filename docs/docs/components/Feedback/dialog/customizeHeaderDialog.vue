@@ -18,9 +18,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const visible = ref(false)
+const visible = ref(false);
 </script>
 
 <style scoped>

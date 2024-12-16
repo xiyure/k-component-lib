@@ -62,12 +62,12 @@ export function useCheckbox($table: Ref<VxeTableInstance>, tableData: Ref<RowDat
   });
   // 处理复选框选中数据
   const handleCheckboxData = (row: RowData | RowData[], isChecked: boolean) => {
-    const rowData = Array.isArray(row)? row : [row];
+    const rowData = Array.isArray(row) ? row : [row];
     for (const rowDataItem of rowData) {
       const row = $table.value?.getRowById(rowDataItem[keyField.value]);
       handleTreeCheckboxData(row, isChecked);
     }
-  }
+  };
   const handleTreeCheckboxData = (row: Row | null, isChecked: boolean) => {
     if (!row) {
       return;
@@ -89,7 +89,7 @@ export function useCheckbox($table: Ref<VxeTableInstance>, tableData: Ref<RowDat
         handleTreeCheckboxData(childRow, isChecked);
       }
     }
-  }
+  };
   async function resetCheckboxStatus() {
     await $table.value?.clearCheckboxRow();
     if (checkedLeafData.size === 0) {
@@ -115,7 +115,7 @@ export function useCheckbox($table: Ref<VxeTableInstance>, tableData: Ref<RowDat
     resolve(undefined);
   });
   // 清除复选框缓存状态
-  const clearCheckboxReserve = async() => {
+  const clearCheckboxReserve = async () => {
     await $table.value?.clearCheckboxReserve();
     new Promise((resolve) => {
       if (props.showPage && !props.useTree) {
@@ -125,7 +125,7 @@ export function useCheckbox($table: Ref<VxeTableInstance>, tableData: Ref<RowDat
       }
       resolve(undefined);
     });
-  }
+  };
 
   // gutter中复选框点击事件
   function checkBoxChange(

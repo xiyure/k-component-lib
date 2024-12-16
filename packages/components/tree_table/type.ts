@@ -115,6 +115,7 @@ export interface TableHeaderControl {
   key: string
   visible?: boolean
   disabled?: boolean
+  width?: string
 }
 
 export interface AdvancedFilterConfig {

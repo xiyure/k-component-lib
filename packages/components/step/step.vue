@@ -31,10 +31,10 @@
 <script setup lang="ts">
 import { ref, watch, inject, nextTick, Ref, computed } from 'vue';
 import { ElStep } from 'element-plus';
+import { isNumber } from 'lodash-es';
 import { StepProps, StepsProps } from './type';
 import { KPopover } from '../popover';
 import { genRandomStr, getExposeProxy } from '../../utils';
-import { isNumber } from 'lodash-es';
 
 defineOptions({
   name: 'KStep'
@@ -67,11 +67,11 @@ watch(
   () => stepsProps.active,
   (newValue) => {
     if (
-      !isNumber(newValue)
-      || newValue < 0
-      || newValue >= stepsInfo.value.length
-      || props.status
-      || props.color
+      !isNumber(newValue) ||
+      newValue < 0 ||
+      newValue >= stepsInfo.value.length ||
+      props.status ||
+      props.color
     ) {
       return;
     }

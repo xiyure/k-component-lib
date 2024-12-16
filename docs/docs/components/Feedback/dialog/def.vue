@@ -22,18 +22,18 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 import { KMessageBox } from '@ksware/ksw-ux';
 
-const dialogVisible = ref(false)
+const dialogVisible = ref(false);
 
 const handleClose = (done: () => void) => {
   KMessageBox.confirm('Are you sure to close this dialog?')
-    .then(() => {
-      done()
-    })
-    .catch(() => {
-      // catch error
-    })
-}
+  .then(() => {
+    done();
+  })
+  .catch(() => {
+    // catch error
+  });
+};
 </script>

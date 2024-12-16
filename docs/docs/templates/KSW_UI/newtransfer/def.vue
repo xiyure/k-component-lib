@@ -1,10 +1,10 @@
 <template>
   <KNewTransfer
-    :treeTransferData="treeTransferData"
-    :defaultData="defaultList"
-    defaultVal="windows"
+    :tree-transfer-data="treeTransferData"
+    :default-data="defaultList"
+    default-val="windows"
     title="选择目标服务器"
-    :selectList="[
+    :select-list="[
       {
         name: 'winsssdows',
         type: 'Linux',
@@ -24,10 +24,10 @@
 </template>
 
 <script setup lang="tsx">
-let treeTransferData = [
+const treeTransferData = [
   { id: 10000, name: '10.2.145.233', type: 'windows' },
   { id: 10050, name: '10.2.145.232', type: 'windows' },
-  { id: 24300, name: '10.2.145.231', type: 'windows' },
+  { id: 24300, name: '10.2.145.231', type: 'windows' }
 ];
-let defaultList = [10050];
+const defaultList = [10050];
 </script>

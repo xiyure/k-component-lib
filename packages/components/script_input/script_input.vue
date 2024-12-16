@@ -1,6 +1,6 @@
 template
 <template>
-  <div class="k-script-input-wrapper" ref="KScriptInputWrapper">
+  <div ref="KScriptInputWrapper" class="k-script-input-wrapper">
     <div class="k-script-input-prepend">
       <k-button v-if="showModeSwitch" @click="toggleMode">
         <component
@@ -102,7 +102,7 @@ import {
   onMounted,
   onBeforeUnmount,
   nextTick,
-  onUnmounted,
+  onUnmounted
 } from 'vue';
 import { ScriptInputProps } from './type';
 import Message from '../message';
@@ -110,7 +110,7 @@ import { genRandomStr, allTreeDataToArray } from '../../utils';
 import { Row, RowData } from '../tree_table';
 
 defineOptions({
-  name: 'KScriptInput',
+  name: 'KScriptInput'
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -128,7 +128,7 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
 const DEFAULT_TREE_CONFIG = {
   parentField: 'pid',
   rowField: 'value',
-  expandAll: false,
+  expandAll: false
 };
 
 const emits = defineEmits(['change', 'input', 'focus', 'blur', 'select', 'update:modelValue']);
@@ -201,7 +201,7 @@ watch(
       popperVisible.value = false;
     }
   },
-  { immediate: true },
+  { immediate: true }
 );
 watch(
   () => props.modelValue,
@@ -224,7 +224,7 @@ watch(
       resetCursor();
     });
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 function updateModelValue() {
@@ -367,7 +367,7 @@ function parseInputValue() {
 // 解析传入的值
 function parseModelValue(value: string) {
   fxSet.clear();
-  let originText = value.replace(/''/g, "'");
+  let originText = value.replace(/''/g, '\'');
   if (!isStringMode()) {
     return originText;
   }
@@ -394,7 +394,7 @@ function parseModelValue(value: string) {
 }
 function formatter(str: string) {
   const reg = /fx\((.*?)\)/;
-  str = str.replace(/\'/g, "''");
+  str = str.replace(/'/g, '\'\'');
   if (!_isStringMode.value) {
     return str;
   }
@@ -415,11 +415,11 @@ function formatter(str: string) {
   return newStr.trim();
 }
 function unFormatter(str: string) {
-  const strArr = str.split("''");
+  const strArr = str.split('\'\'');
   strArr.forEach((item, index) => {
     strArr[index] = item.replace(/'/g, '');
   });
-  return strArr.join("'");
+  return strArr.join('\'');
 }
 function generateScriptTag(content: string, key: string, isError: boolean = false) {
   return `<div class="k-script-tag ${isError ? 'is-error' : ''}" data-key="${key}"  contenteditable="false">${content}</div>`;
@@ -576,11 +576,11 @@ function isStringMode() {
 }
 const caches = {
   expression: '',
-  string: '',
+  string: ''
 };
 const tempCaches = {
   expression: '',
-  string: '',
+  string: ''
 };
 function saveTextValue() {
   const attrName = isStringMode() ? 'string' : 'expression';
@@ -592,8 +592,8 @@ function restoreTextValue() {
   setEditorContent(caches[attrName]);
   const res = parseInputValue() ?? '';
   cacheRes = res;
-  caches['expression'] = tempCaches['expression'];
-  caches['string'] = tempCaches['string'];
+  caches.expression = tempCaches.expression;
+  caches.string = tempCaches.string;
   emits('update:modelValue', res);
   emits('change', res);
 }
@@ -612,7 +612,7 @@ defineExpose({
   hidePopper,
   toggleMode,
   setStringMode,
-  isStringMode,
+  isStringMode
 });
 </script>
 <style lang="less">

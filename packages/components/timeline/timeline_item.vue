@@ -62,7 +62,7 @@ const showRight = computed(() => props.placement === 'right');
 
 type TagTypeParams = 'primary' | 'success' | 'warning' | 'danger' | 'info' | undefined;
 function getTimelineType(type: string): TagTypeParams {
-  const innerTypes =  ['primary', 'success', 'warning'];
+  const innerTypes = ['primary', 'success', 'warning'];
   if (type === 'wait') {
     return 'info';
   }

@@ -39,11 +39,11 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref } from 'vue';
 
-const dialogTableVisible = ref(false)
-const dialogFormVisible = ref(false)
-const formLabelWidth = '140px'
+const dialogTableVisible = ref(false);
+const dialogFormVisible = ref(false);
+const formLabelWidth = '140px';
 
 const form = reactive({
   name: '',
@@ -53,29 +53,29 @@ const form = reactive({
   delivery: false,
   type: [],
   resource: '',
-  desc: '',
-})
+  desc: ''
+});
 
 const gridData = [
   {
     date: '2016-05-02',
     name: 'John Smith',
-    address: 'No.1518,  Jinshajiang Road, Putuo District',
+    address: 'No.1518,  Jinshajiang Road, Putuo District'
   },
   {
     date: '2016-05-04',
     name: 'John Smith',
-    address: 'No.1518,  Jinshajiang Road, Putuo District',
+    address: 'No.1518,  Jinshajiang Road, Putuo District'
   },
   {
     date: '2016-05-01',
     name: 'John Smith',
-    address: 'No.1518,  Jinshajiang Road, Putuo District',
+    address: 'No.1518,  Jinshajiang Road, Putuo District'
   },
   {
     date: '2016-05-03',
     name: 'John Smith',
-    address: 'No.1518,  Jinshajiang Road, Putuo District',
-  },
-]
+    address: 'No.1518,  Jinshajiang Road, Putuo District'
+  }
+];
 </script>

@@ -35,9 +35,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-import type { TagProps } from 'element-plus'
+import type { TagProps } from 'element-plus';
 
 type Item = { type: TagProps['type']; label: string }
 
@@ -46,6 +46,6 @@ const items = ref<Array<Item>>([
   { type: 'success', label: 'Tag 2' },
   { type: 'info', label: 'Tag 3' },
   { type: 'warning', label: 'Tag 4' },
-  { type: 'danger', label: 'Tag 5' },
-])
+  { type: 'danger', label: 'Tag 5' }
+]);
 </script>

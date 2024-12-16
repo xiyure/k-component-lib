@@ -1,5 +1,5 @@
-import { Component } from 'vue'
-import { TreeData, TreeNodeData } from 'element-plus/es/components/tree/src/tree.type'
+import { Component } from 'vue';
+import { TreeData, TreeNodeData } from 'element-plus/es/components/tree/src/tree.type';
 
 export interface ViewProps {
   defaultActive?: string | number

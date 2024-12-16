@@ -296,9 +296,9 @@ const pid = inject('tableId');
 const filterPanelConfig = inject<Ref<{field: string, isOpen: boolean}>>(
   'filterPanelConfig',
   computed(() => ({
-  field: '___default___',
-  isOpen: false
-}))
+    field: '___default___',
+    isOpen: false
+  }))
 );
 const showColumnMenuParent = inject('showColumnMenu', false);
 const props = withDefaults(defineProps<TableColumnProps>(), {

@@ -25,10 +25,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, provide, computed, onUnmounted, nextTick, inject } from 'vue';
+import { ref, provide, computed, onMounted, onUnmounted, nextTick, inject } from 'vue';
 import { VxeTable, VxeColumn, VxeColumnProps, VxeTableInstance } from 'vxe-table';
 import Sortable, { SortableEvent } from 'sortablejs';
 import { IconDrag } from 'ksw-vue-icon';
+import domZIndex from 'dom-zindex';
 import { KTableProps } from './type';
 import { genRandomStr } from '../../utils';
 
@@ -99,6 +100,10 @@ const emits = defineEmits([
   'filter-visible',
   'clear-filter'
 ]);
+
+onMounted(() => {
+  initZIndex();
+});
 const vxeTableRef = ref<VxeTableInstance>();
 // 拖拽
 let timer: any;
@@ -124,6 +129,10 @@ onUnmounted(() => {
     sortable.destroy();
   }
 });
+function initZIndex() {
+  const maxZIndex = domZIndex.getMax();
+  domZIndex.setCurrent(maxZIndex + 1);
+}
 function rowDrop() {
   const $table = vxeTableRef.value;
   if (!$table || !$table.$el) {

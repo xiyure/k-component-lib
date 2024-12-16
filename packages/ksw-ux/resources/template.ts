@@ -20,5 +20,5 @@ export default [
   KPageTableView,
   KMenuView,
   GFPageDetails,
-  KNewTransfer,
+  KNewTransfer
 ] as Plugin[];
