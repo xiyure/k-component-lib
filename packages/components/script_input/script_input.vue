@@ -102,7 +102,7 @@ import {
   onMounted,
   onBeforeUnmount,
   nextTick,
-  onUnmounted
+  onUnmounted,
 } from 'vue';
 import { ScriptInputProps } from './type';
 import Message from '../message';
@@ -110,7 +110,7 @@ import { genRandomStr, allTreeDataToArray } from '../../utils';
 import { Row, RowData } from '../tree_table';
 
 defineOptions({
-  name: 'KScriptInput'
+  name: 'KScriptInput',
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -128,7 +128,7 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
 const DEFAULT_TREE_CONFIG = {
   parentField: 'pid',
   rowField: 'value',
-  expandAll: false
+  expandAll: false,
 };
 
 const emits = defineEmits(['change', 'input', 'focus', 'blur', 'select', 'update:modelValue']);
@@ -201,30 +201,32 @@ watch(
       popperVisible.value = false;
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 watch(
-  () => props.modelValue,
-  (newValue) => {
-    const type = typeof newValue;
-    if ((type !== 'string' && type !== 'number') || newValue === undefined) {
+  () => [props.modelValue, props.options],
+  () => {
+    const type = typeof props.modelValue;
+    if ((type !== 'string' && type !== 'number') || props.modelValue === undefined) {
       console.warn(`'modelValue' must be a string or number, but got ${type}`);
       return;
     }
-    if (newValue === cacheRes) {
+    if (props.modelValue === cacheRes) {
       return;
     }
-    const innerText = parseModelValue(newValue.toString());
+    // const innerText = parseModelValue(props.modelValue.toString());
     // setEditorContent(innerText);
-    cacheRes = newValue.toString();
+    // cacheRes = props.modelValue.toString();
     nextTick(() => {
+      const innerText = parseModelValue(props.modelValue.toString());
       setEditorContent(innerText);
+      cacheRes = props.modelValue.toString();
       preTextValue = getEditorContent();
       tempText = preTextValue;
       resetCursor();
     });
   },
-  { immediate: true }
+  { immediate: true, deep: true },
 );
 
 function updateModelValue() {
@@ -367,7 +369,7 @@ function parseInputValue() {
 // 解析传入的值
 function parseModelValue(value: string) {
   fxSet.clear();
-  let originText = value.replace(/''/g, '\'');
+  let originText = value.replace(/''/g, "'");
   if (!isStringMode()) {
     return originText;
   }
@@ -382,7 +384,7 @@ function parseModelValue(value: string) {
     let label = targetOption?.label ?? '';
     let isError = false;
     if (!targetOption) {
-      label = `${value}:error`;
+      label = value;
       Message.error(`'${value}' not found`);
       fxSet.add(label);
       isError = true;
@@ -394,7 +396,7 @@ function parseModelValue(value: string) {
 }
 function formatter(str: string) {
   const reg = /fx\((.*?)\)/;
-  str = str.replace(/'/g, '\'\'');
+  str = str.replace(/'/g, "''");
   if (!_isStringMode.value) {
     return str;
   }
@@ -415,11 +417,11 @@ function formatter(str: string) {
   return newStr.trim();
 }
 function unFormatter(str: string) {
-  const strArr = str.split('\'\'');
+  const strArr = str.split("''");
   strArr.forEach((item, index) => {
     strArr[index] = item.replace(/'/g, '');
   });
-  return strArr.join('\'');
+  return strArr.join("'");
 }
 function generateScriptTag(content: string, key: string, isError: boolean = false) {
   return `<div class="k-script-tag ${isError ? 'is-error' : ''}" data-key="${key}"  contenteditable="false">${content}</div>`;
@@ -576,11 +578,11 @@ function isStringMode() {
 }
 const caches = {
   expression: '',
-  string: ''
+  string: '',
 };
 const tempCaches = {
   expression: '',
-  string: ''
+  string: '',
 };
 function saveTextValue() {
   const attrName = isStringMode() ? 'string' : 'expression';
@@ -612,7 +614,7 @@ defineExpose({
   hidePopper,
   toggleMode,
   setStringMode,
-  isStringMode
+  isStringMode,
 });
 </script>
 <style lang="less">
