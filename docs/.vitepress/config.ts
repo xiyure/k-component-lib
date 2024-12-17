@@ -32,10 +32,10 @@ export default defineConfig({
     },
   },
   cleanUrls: true,
-  rewrites: {
-    // 'docs/(.*)': '(.*)',
-    ...generateRewrites(),
-  },
+  // rewrites: {
+  //   'docs/(.*)': '(.*)',
+  //   ...generateRewrites(),
+  // },
   themeConfig: {
     logo: { src: '/klogo.svg', width: 24, height: 24 },
     nav,
