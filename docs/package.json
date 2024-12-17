@@ -1,7 +1,9 @@
 {
-  "name": "docs",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "ksw-ux-docs",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "license": "MIT",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vitepress dev",
@@ -9,9 +11,25 @@
     "preview": "vitepress preview"
   },
   "author": "",
-  "license": "ISC",
   "description": "",
   "devDependencies": {
-    "vitepress": "^1.5.0"
-  }
+    "vitepress": "^1.5.0",
+    "vitepress-sidebar": "^1.30.2",
+    "@nolebase/vitepress-plugin-enhanced-readabilities": "^2.5.0",
+    "@nolebase/vitepress-plugin-git-changelog": "^2.5.0",
+    "@vue/compiler-core": "^3.5.6",
+    "autoprefixer": "^10.4.20",
+    "fs-extra": "^11.2.0",
+    "glob": "^11.0.0",
+    "gray-matter": "^4.0.3",
+    "less": "^4.2.0",
+    "less-loader": "^12.2.0",
+    "markdown-it": "^14.1.0",
+    "markdown-it-container": "^4.0.0",
+    "overlayscrollbars": "^2.10.0",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.12",
+    "vite-plugin-chunk-split": "^0.5.0"
+  },
+  "dependencies": {}
 }
