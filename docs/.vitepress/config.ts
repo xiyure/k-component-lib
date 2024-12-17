@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitepress';
 import nav from './configs/nav';
 import { generateRewrites, sidebarRewrites } from './plugin/rewritePath';
-import { containerPreview, componentPreview } from '../.vitepress/plugin/demo-preview';
+import { containerPreview, componentPreview } from './plugin/demo-preview';
 import { fileURLToPath, URL } from 'node:url';
 
 // https://vitepress.dev/reference/site-config
