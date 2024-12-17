@@ -7,6 +7,8 @@ export interface ScriptInputProps {
   useTree?: boolean
   showPopperSwitch?: boolean
   showModeSwitch?: boolean
+  defaultMode?: 'string' | 'expression'
+  height?: string
   treeConfig?: {
     [key: string]: any
   }

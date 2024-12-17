@@ -23,6 +23,9 @@ template
         <div
           ref="KScriptInput"
           :class="['k-script-input', _styleModule]"
+          :style="{
+            height: height
+          }"
           contenteditable
           :spellcheck="false"
           @input="handleInput"
@@ -104,7 +107,7 @@ import {
   nextTick,
   onUnmounted,
 } from 'vue';
-import { ScriptInputProps } from './type';
+import { ScriptInputProps, ScriptOptions } from './type';
 import Message from '../message';
 import { genRandomStr, allTreeDataToArray } from '../../utils';
 import { Row, RowData } from '../tree_table';
@@ -123,6 +126,7 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   showModeSwitch: true,
   showPopperSwitch: true,
   expandAll: false,
+  defaultMode: 'string'
 });
 
 const DEFAULT_TREE_CONFIG = {
@@ -152,7 +156,7 @@ const KScriptInput = ref();
 const $tree = ref();
 const KScriptInputWrapper = ref();
 // 当前是否字符串模式
-const _isStringMode = ref(true);
+const _isStringMode = ref(props.defaultMode === 'string');
 // @ts-ignore: unknown warning
 let preTextValue: string = '';
 let cacheRes = '';
@@ -214,9 +218,6 @@ watch(
     if (props.modelValue === cacheRes) {
       return;
     }
-    // const innerText = parseModelValue(props.modelValue.toString());
-    // setEditorContent(innerText);
-    // cacheRes = props.modelValue.toString();
     nextTick(() => {
       const innerText = parseModelValue(props.modelValue.toString());
       setEditorContent(innerText);
@@ -229,8 +230,7 @@ watch(
   { immediate: true, deep: true },
 );
 
-function updateModelValue() {
-  const res = parseInputValue();
+function updateModelValue(res: string) {
   cacheRes = res;
   emits('update:modelValue', res);
 }
@@ -254,7 +254,8 @@ function handleInput(event: InputEvent | CompositionEvent) {
   }
   preTextValue = tempText;
   tempText = getEditorContent();
-  updateModelValue();
+  const { result = '' } = parseInputValue();
+  updateModelValue(result);
 }
 function handleFocus() {
   showTree.value = true;
@@ -295,8 +296,9 @@ function selectOption(data: Row | RowData) {
   emits('select', data);
   popperVisible.value = false;
   nextTick(() => {
-    updateModelValue();
-    emits('change', parseInputValue());
+    const res = parseInputValue();
+    updateModelValue(res?.result ?? '');
+    emits('change', res);
   });
 }
 function handleInputContent(data: Row | RowData) {
@@ -340,31 +342,48 @@ function handleInputContent(data: Row | RowData) {
 }
 function parseInputValue() {
   if (!isStringMode()) {
-    return getEditorContent();
+    return {
+      result: getEditorContent(),
+      scriptTags: []
+    };
   }
   let text = '';
-  const nodes = KScriptInput.value.childNodes;
-  for (let i = 0; i < nodes.length; i++) {
-    const node: HTMLElement = nodes[i];
-    if (node.nodeType === 3) {
-      text += node.textContent ?? '';
-    } else if (node.tagName.toUpperCase() === 'DIV' && node.classList.contains('k-script-tag')) {
-      const label = node.innerText;
-      if (fxSet.has(label)) {
-        text += `fx(${label})`;
-      } else {
-        const targetOption = props.options.find((item) => item.label === label);
-        text += `fx(${targetOption?.value ?? null})`;
+  const scriptTags: (ScriptOptions | null)[] = [];
+  const domToText = (el: HTMLElement) => {
+    if (!el) {
+      return;
+    }
+    const nodes = el.childNodes;
+    for (let i = 0; i < nodes.length; i++) {
+      const node: HTMLElement = nodes[i] as HTMLElement;
+      if (node.nodeType === 3) {
+        text += node.textContent ?? '';
+      } else if (node.tagName.toUpperCase() === 'DIV' && node.classList.contains('k-script-tag')) {
+        const label = node.innerText;
+        if (fxSet.has(label)) {
+          text += `fx(${label})`;
+          scriptTags.push(null);
+        } else {
+          const targetOption = props.options.find((item) => item.label === label);
+          text += `fx(${targetOption?.value ?? null})`;
+          scriptTags.push(targetOption ?? null)
+        }
+      } else if (node.tagName.toUpperCase() === 'DIV') {
+        domToText(node);
       }
     }
   }
+  domToText(KScriptInput.value);
   text = text
     .split(' ')
     .filter((item) => item !== '')
     .join(' ');
   const res = formatter(text);
   emits('input', res);
-  return res;
+  return {
+    result: res,
+    scriptTags
+  };;
 }
 // 解析传入的值
 function parseModelValue(value: string) {
@@ -592,11 +611,11 @@ function restoreTextValue() {
   clear();
   const attrName = isStringMode() ? 'string' : 'expression';
   setEditorContent(caches[attrName]);
-  const res = parseInputValue() ?? '';
-  cacheRes = res;
+  const res = parseInputValue();
+  cacheRes = res?.result ?? '';
   caches.expression = tempCaches.expression;
   caches.string = tempCaches.string;
-  emits('update:modelValue', res);
+  emits('update:modelValue', res?.result ?? '');
   emits('change', res);
 }
 function handleResize() {
