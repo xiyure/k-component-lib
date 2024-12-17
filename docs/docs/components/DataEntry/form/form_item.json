@@ -1,0 +1,141 @@
+{
+  "name": "FormItem",
+  "props": [
+    {
+      "displayName": "prop",
+      "type": "string | string[]",
+      "description": "表单数据字段名",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "label",
+      "type": "string",
+      "description": "标签文本",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "label-position",
+      "type": "enum",
+      "description": "表单域标签的位置，当设置为left或right时，则也需要设置label-width属性，默认会继承Form的label-position",
+      "defaultValue": "",
+      "tip": "'left' | 'right' | 'top'"
+    },
+    {
+      "displayName": "label-width",
+      "type": "string | number",
+      "description": "标签宽度",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "required",
+      "type": "boolean",
+      "description": "是否为必填项",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "rules",
+      "type": "object",
+      "description": "表单验证规则",
+      "defaultValue": "",
+      "tip": "Arrayable<FormItemRule>"
+    },
+    {
+      "displayName": "error",
+      "type": "string",
+      "description": "表单域验证错误时的提示信息。设置该值会导致表单验证状态变为 error，并显示该错误信息",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "show-message",
+      "type": "boolean",
+      "description": "是否显示校验错误信息",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "inline-message",
+      "type": "boolean | string",
+      "description": "是否在行内显示校验信息",
+      "defaultValue": "''",
+      "tip": ""
+    },
+    {
+      "displayName": "size",
+      "type": "enum",
+      "description": "表单域大小",
+      "defaultValue": "base",
+      "tip": "'base' | 'sm'"
+    },
+    {
+      "displayName": "validate-status",
+      "type": "enum",
+      "description": "表单域验证状态",
+      "defaultValue": "",
+      "tip": "'' | 'error' | 'validating' | 'success'"
+    },
+    {
+      "displayName": "for",
+      "type": "string",
+      "description": "form原生属性",
+      "defaultValue": "",
+      "tip": ""
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "default",
+      "description": "表单的内容",
+      "parameters": ""
+    },
+    {
+      "displayName": "label",
+      "description": "标签位置显示的内容",
+      "parameters": "object",
+      "tip": "{ label: string }"
+    },
+    {
+      "displayName": "error",
+      "description": "验证错误信息的显示内容",
+      "parameters": "object",
+      "tip": "{ error: string }"
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "validateMessage",
+      "description": "校验消息",
+      "type": "object",
+      "tip": "Ref<string>"
+    },
+    {
+      "displayName": "validateState",
+      "description": "校验状态",
+      "type": "object",
+      "tip": "Ref<'' | 'error' | 'validating' | 'success'>"
+    },
+    {
+      "displayName": "validate",
+      "description": "验证表单项",
+      "type": "Function",
+      "tip": "(trigger: string, callback?: FormValidateCallback | undefined) => FormValidationResult"
+    },
+    {
+      "displayName": "resetField",
+      "description": "对该表单项进行重置，将其值重置为初始值并移除校验结果",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "clearValidate",
+      "description": "移除该表单项的校验结果",
+      "type": "object",
+      "tip": "Ref<string>"
+    }
+  ]
+}

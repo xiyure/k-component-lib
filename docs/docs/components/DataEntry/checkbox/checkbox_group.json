@@ -1,0 +1,59 @@
+{
+  "name": "CheckboxGroup",
+  "props": [
+    {
+      "displayName": "model-value/v-model",
+      "type": "string[] | number[]",
+      "description": "绑定值",
+      "defaultValue": "[]",
+      "tip": ""
+    },
+    {
+      "displayName": "size",
+      "type": "enum",
+      "description": "checkbox尺寸",
+      "defaultValue": "base",
+      "tip": "'base' | 'sm'"
+    },
+    {
+      "displayName": "disabled",
+      "type": "boolean",
+      "description": "是否禁用",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "min",
+      "type": "number",
+      "description": "可被勾选的checkbox的最小数量",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "max",
+      "type": "number",
+      "description": "可被勾选的checkbox的最大数量",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "tag",
+      "type": "string",
+      "description": "复选框组元素标签",
+      "defaultValue": "div"
+    }
+  ],
+  "events": [
+    {
+      "displayName": "change",
+      "description": "当绑定值变化时触发的事件",
+      "type": "Function",
+      "tip": "(value: string[] | number[]) => void"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "default",
+      "description": "默认插槽内容",
+      "parameters": ""
+    }
+  ],
+  "methods": []
+}

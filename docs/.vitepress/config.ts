@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitepress';
 import nav from './configs/nav';
 import { generateRewrites, sidebarRewrites } from './plugin/rewritePath';
-import { containerPreview, componentPreview } from './plugin/demo-preview';
+import { containerPreview, componentPreview } from '../.vitepress/plugin/demo-preview';
 import { fileURLToPath, URL } from 'node:url';
 
 // https://vitepress.dev/reference/site-config
@@ -9,6 +9,7 @@ export default defineConfig({
   lang: 'zh-CN',
   title: 'ksw-ux',
   description: 'ksw-ux 是一个基于 Element-Plus 的 UI 组件库',
+
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/klogo.svg' }],
     ['meta', { property: 'og:type', content: 'website' }],
@@ -32,16 +33,21 @@ export default defineConfig({
     },
   },
   cleanUrls: true,
-  // rewrites: {
-  //   'docs/(.*)': '(.*)',
-  //   ...generateRewrites(),
-  // },
+  rewrites: {
+    ...generateRewrites(),
+  },
   themeConfig: {
-    logo: { src: '/klogo.svg', width: 24, height: 24 },
+    // https://vitepress.dev/reference/default-theme-config
     nav,
+
     sidebar: {
       ...sidebarRewrites(),
     },
+
+    socialLinks: [{ icon: 'github', link: 'https://github.com/xiyure/k-component-lib' }],
+
+    logo: { src: '/klogo.svg', width: 24, height: 24 },
+
     docFooter: {
       prev: '上一页',
       next: '下一页',

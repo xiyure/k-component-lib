@@ -1,0 +1,293 @@
+{
+  "name": "Select",
+  "props": [
+    {
+      "displayName": "model-value/v-model",
+      "type": "string | number | boolean | object | array",
+      "description": "绑定值",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "multiple",
+      "type": "boolean",
+      "description": "是否多选",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "value-key",
+      "type": "string",
+      "description": "作为 value 唯一标识的键名，绑定值为对象类型时必填",
+      "defaultValue": "value"
+    },
+    {
+      "displayName": "clearable",
+      "type": "boolean",
+      "description": "是否显示清除图标",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "size",
+      "type": "enum",
+      "description": "输入框大小",
+      "defaultValue": "base",
+      "tip": "'base' | 'sm'"
+    },
+    {
+      "displayName": "placeholder",
+      "type": "string",
+      "description": "输入框占位文本",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "filterable",
+      "type": "boolean",
+      "description": "是否可筛选",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "allow-create",
+      "type": "boolean",
+      "description": "是否允许用户创建新条目，只有当 filterable 设置为 true 时才会生效",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "filter-method",
+      "type": "Function",
+      "description": "自定义筛选方法",
+      "defaultValue": "",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "remote",
+      "type": "boolean",
+      "description": "是否启用服务端远程搜索",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "remote-method",
+      "type": "Function",
+      "description": "远程搜索方法",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "remote-show-suffix",
+      "type": "boolean",
+      "description": "远程搜索方法显示后缀图标",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "loading",
+      "type": "boolean",
+      "description": "是否显示加载中状态",
+      "defaultValue": "fa",
+      "tip": ""
+    },
+    {
+      "displayName": "loading-text",
+      "type": "string",
+      "description": "加载中状态文本",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "no-match-text",
+      "type": "string",
+      "description": "无匹配数据时显示的文本,也可以使用empty插槽设置",
+      "defaultValue": "No matching data",
+      "tip": ""
+    },
+    {
+      "displayName": "no-data-text",
+      "type": "string",
+      "description": "无选项时显示的文本,也可以使用empty插槽设置",
+      "defaultValue": "No Data",
+      "tip": ""
+    },
+    {
+      "displayName": "popper-class",
+      "type": "string",
+      "description": "选择器下拉菜单的自定义类名",
+      "defaultValue": "''"
+    },
+    {
+      "displayName": "collapse-tags",
+      "type": "boolean",
+      "description": "多选时是否将选中值按文字的形式展示",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "collapse-tags-tooltip",
+      "type": "boolean",
+      "description": "当鼠标悬停于折叠标签的文本时，是否显示所有选中的标签。要使用此属性，collapse-tags属性必须设定为true",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "tag-type",
+      "type": "enum",
+      "description": "标签类型",
+      "defaultValue": "info",
+      "tip": "'' | 'success' | 'info' | 'warning' | 'danger'"
+    },
+    {
+      "displayName": "reserve-keyword",
+      "type": "boolean",
+      "description": "当 multiple和filterable被设置为true时，是否在选中一个选项后保留当前的搜索关键词",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "default-first-option",
+      "type": "boolean",
+      "description": "是否在输入框按下回车时，选择第一个匹配项。需配合filterable或remote 使用",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "teleported",
+      "type": "boolean",
+      "description": "是否将下拉列表插入至 body 元素",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "persistent",
+      "type": "boolean",
+      "description": "当下拉选择器未被激活并且persistent设置为false，选择器会被删除",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "automatic-dropdown",
+      "type": "boolean",
+      "description": "对于不可搜索的输入框，是否在输入框获得焦点后自动弹出选项菜单",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "clear-icon",
+      "type": "string | Component",
+      "description": "自定义清除图标",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "fit-input-width",
+      "type": "boolean",
+      "description": "是否将下拉选择器的宽度调整为输入框的宽度",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "suffix-icon",
+      "type": "string | Component",
+      "description": "自定义输入框后缀图标",
+      "defaultValue": "ArrowDown",
+      "tip": ""
+    },
+    {
+      "displayName": "placement",
+      "type": "enum",
+      "description": "下拉列表出现的位置",
+      "defaultValue": "bottom-start",
+      "tip": "'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'"
+    }
+  ],
+  "events": [
+    {
+      "displayName": "blur",
+      "description": "输入框失去焦点时触发",
+      "type": "Function",
+      "tip": "(event: FocusEvent) => void"
+    },
+    {
+      "displayName": "focus",
+      "description": "输入框获得焦点时触发",
+      "type": "Function",
+      "tip": "(event: FocusEvent) => void"
+    },
+    {
+      "displayName": "change",
+      "description": "选中值发生变化时触发",
+      "type": "Function",
+      "tip": "(value: any) => void"
+    },
+    {
+      "displayName": "visible-change",
+      "description": "下拉列表显示/隐藏时触发",
+      "type": "Function",
+      "tip": "(visible: boolean) => void"
+    },
+    {
+      "displayName": "clear",
+      "description": "点击清除图标时触发",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "remove-tag",
+      "description": "多选模式下移除标签时触发",
+      "type": "Function",
+      "tip": "(tagValue: any) => void"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "default",
+      "description": "option组件列表",
+      "parameters": ""
+    },
+    {
+      "displayName": "header",
+      "description": "下拉列表头部内容",
+      "parameters": ""
+    },
+    {
+      "displayName": "footer",
+      "description": "下拉列表底部内容",
+      "parameters": ""
+    },
+    {
+      "displayName": "prefix",
+      "description": "KSelect组件头部内容",
+      "parameters": ""
+    },
+    {
+      "displayName": "empty",
+      "description": "无选项时显示的内容",
+      "parameters": ""
+    },
+    {
+      "displayName": "tag",
+      "description": "自定义标签内容",
+      "parameters": ""
+    },
+    {
+      "displayName": "loading",
+      "description": "自定义loading内容",
+      "parameters": ""
+    },
+    {
+      "displayName": "label",
+      "description": "自定义标签内容",
+      "parameters": ""
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "blur",
+      "description": "使输入框失去焦点",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "focus",
+      "description": "使输入框获得焦点",
+      "type": "Function",
+      "tip": "() => void"
+    }
+  ]
+}

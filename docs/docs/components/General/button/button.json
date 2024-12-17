@@ -1,0 +1,98 @@
+{
+  "name": "Button",
+  "props": [
+    {
+      "displayName": "type",
+      "type": "enum",
+      "description": "按钮类型",
+      "defaultValue": "info",
+      "tip": "'primary' | 'success' | 'info' | 'warning' | 'danger'"
+    },
+    {
+      "displayName": "main",
+      "type": "boolean",
+      "description": "是否为主按钮，不能与secondary、text、icon属性同时使用",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "secondary",
+      "type": "boolean",
+      "description": "是否为次级按钮，不能与main、text、icon属性同时使用",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "text",
+      "type": "boolean",
+      "description": "是否为文本按钮，不能与main、secondary、icon属性同时使用",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "icon",
+      "type": "boolean",
+      "description": "是否为图标按钮，不能与main、secondary、text属性同时使用",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "size",
+      "type": "enum",
+      "description": "按钮尺寸",
+      "defaultValue": "base",
+      "tip": "'base' | 'sm'"
+    },
+    {
+      "displayName": "iconLeft",
+      "type": "string | Component",
+      "description": "按钮文字左侧图标",
+      "defaultValue": "-",
+      "tip": ""
+    },
+    {
+      "displayName": "iconRight",
+      "type": "string | Component",
+      "description": "按钮文字右侧图标",
+      "defaultValue": "-",
+      "tip": ""
+    },
+    {
+      "displayName": "value",
+      "type": "string | number",
+      "description": "按钮展示内容",
+      "defaultValue": "-",
+      "tip": ""
+    },
+    {
+      "displayName": "loadingIcon",
+      "type": "Component",
+      "description": "加载图标",
+      "defaultValue": "-",
+      "tip": ""
+    },
+    {
+      "displayName": "color",
+      "type": "string",
+      "description": "按钮主题颜色",
+      "defaultValue": "-",
+      "tip": ""
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "default",
+      "description": "默认插槽内容"
+    },
+    {
+      "displayName": "loading",
+      "description": "自定义加载中组件"
+    },
+    {
+      "displayName": "icon",
+      "description": "自定义图标组件"
+    }
+  ],
+  "methods": []
+}

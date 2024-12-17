@@ -1,0 +1,154 @@
+{
+  "name": "Input",
+  "props": [
+    {
+      "displayName": "type",
+      "type": "string",
+      "description": "类型",
+      "defaultValue": "text",
+      "tip": "'text' | 'textarea' | 'password' | 'button' | 'checkbox' | 'file' | 'number' | 'radio' | ..."
+    },
+    {
+      "displayName": "model-value/v-model",
+      "type": "string | number",
+      "description": "绑定值",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "placeholder",
+      "type": "string",
+      "description": "输入框占位文本",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "clearable",
+      "type": "boolean",
+      "description": "是否显示清除按钮，type不为textarea时生效",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "size",
+      "type": "enum",
+      "description": "输入框大小",
+      "defaultValue": "base",
+      "tip": "'base' | 'sm'"
+    },
+    {
+      "displayName": "prefix-icon",
+      "type": "string | Component",
+      "description": "自定义前缀图标",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "suffix-icon",
+      "type": "string | Component",
+      "description": "自定义后缀图标",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "disabled",
+      "type": "boolean",
+      "description": "是否禁用",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "show-password",
+      "type": "boolean",
+      "description": "是否显示密码，type为password时生效",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "formatter",
+      "type": "Function",
+      "description": "格式化输入值, type为text时生效",
+      "tip": "(value: string) => string"
+    }
+  ],
+  "events": [
+    {
+      "displayName": "blur",
+      "description": "输入框失去焦点时触发",
+      "type": "Function",
+      "tip": "(event: FocusEvent) => void"
+    },
+    {
+      "displayName": "focus",
+      "description": "输入框获得焦点时触发",
+      "type": "Function",
+      "tip": "(event: FocusEvent) => void"
+    },
+    {
+      "displayName": "change",
+      "description": "仅当 modelValue 改变时，当输入框失去焦点或用户按Enter时触发",
+      "type": "Function",
+      "tip": "(value: string | number) => void"
+    },
+    {
+      "displayName": "input",
+      "description": "输入框内容变化时触发",
+      "type": "Function",
+      "tip": "(value: string | number) => void"
+    },
+    {
+      "displayName": "clear",
+      "description": "在点击由 clearable 属性生成的清空按钮时触发",
+      "type": "Function",
+      "tip": "() => void"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "prefix",
+      "description": "输入框头部内容，只对非type='textarea' 有效",
+      "parameters": ""
+    },
+    {
+      "displayName": "suffix",
+      "description": "输入框尾部内容，只对非type='textarea' 有效",
+      "parameters": ""
+    },
+    {
+      "displayName": "prepend",
+      "description": "自定义前置内容, 只对非type='textarea' 有效",
+      "parameters": ""
+    },
+    {
+      "displayName": "append",
+      "description": "自定义后置内容, 只对非type='textarea' 有效",
+      "parameters": ""
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "blur",
+      "description": "使输入框失去焦点",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "focus",
+      "description": "使输入框获得焦点",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "clear",
+      "description": "清空输入框内容",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "select",
+      "description": "选中输入框内容",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "resizeTextarea",
+      "description": "改变textarea的大小",
+      "type": "Function",
+      "tip": "() => void"
+    }
+  ]
+}

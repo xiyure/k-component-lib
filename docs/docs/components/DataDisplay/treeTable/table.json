@@ -1,0 +1,626 @@
+{
+  "name": "TreeTable",
+  "props": [
+    {
+      "displayName": "data",
+      "type": "any[]",
+      "description": "表格数据",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "column",
+      "type": "object",
+      "description": "表格列配置",
+      "defaultValue": "",
+      "tip": "ColumnConfig[]"
+    },
+    {
+      "displayName": "size",
+      "type": "enum",
+      "description": "表格大小",
+      "defaultValue": "small",
+      "tip": "'medium' | 'small' | 'mini'"
+    },
+    {
+      "displayName": "height",
+      "type": "number | string",
+      "description": "表格高度",
+      "defaultValue": "100%",
+      "tip": ""
+    },
+    {
+      "displayName": "useTree",
+      "type": "boolean",
+      "description": "是否使用树形表格",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "isRemoteQuery",
+      "type": "boolean",
+      "description": "是否远程搜索表格数据",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "isServerPaging",
+      "type": "boolean",
+      "description": "是否服务端分页",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "showDescription",
+      "type": "boolean",
+      "description": "表格数据描述，包含筛选条件、统计等内容",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "showHeaderTools",
+      "type": "boolean",
+      "description": "是否显示表头工具栏",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "showBatchOperation",
+      "type": "boolean",
+      "description": "是否显示批量操作（只在type=checkbox时有效）",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "showColumnMenu",
+      "type": "boolean",
+      "description": "是否显示列头菜单",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "showDragColumn",
+      "type": "boolean",
+      "description": "是否显示拖拽列",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "batchOperations",
+      "type": "object",
+      "description": "批量操作配置",
+      "defaultValue": "",
+      "tip": "OperateData[]"
+    },
+    {
+      "displayName": "cellClickToggleHighlight",
+      "type": "boolean",
+      "description": "单元格单击是否高亮/取消高亮状态切换",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "showSearchInput",
+      "type": "boolean",
+      "description": "是否显示搜索框",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "showFilter",
+      "type": "boolean",
+      "description": "是否显示筛选功能按钮",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "showRefresh",
+      "type": "boolean",
+      "description": "是否显示刷新按钮",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "showTransfer",
+      "type": "boolean",
+      "description": "是否显示列头控制穿梭框",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "widgets",
+      "type": "(string | {id: string, widget: Component | () => VNode})[]",
+      "description": "自定义表头组件，设置该参数时，showSearchInput、showFilter、showRefresh、showTransfer参数将失效,该参数数组提供了search、filter、refresh、transfer字段用于控制以上四个参数的显示与顺序，此外还可以自定义组件，参数的id字段用于标识组件，widget字段用于渲染组件，当widget字段为null时，会自动渲染名为id的插槽",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "advancedFilterConfig",
+      "type": "object",
+      "description": "高级筛选配置",
+      "defaultValue": "",
+      "tip": "advancedFilterConfig"
+    },
+    {
+      "displayName": "paginationConfig",
+      "type": "object",
+      "description": "分页配置",
+      "defaultValue": "",
+      "tip": "PaginationConfig"
+    },
+    {
+      "displayName": "searchConfig",
+      "type": "object",
+      "description": "搜索配置",
+      "defaultValue": "",
+      "tip": "SearchConfig"
+    },
+    {
+      "displayName": "seq-config",
+      "type": "object",
+      "description": "搜索配置",
+      "defaultValue": "",
+      "tip": "SeqConfig"
+    },
+    {
+      "displayName": "simple",
+      "type": "boolean",
+      "description": "是否开启简易模式，该模式下只保留表格主体与搜索功能，其他功能均隐藏，搜索功能也可以通过show-search-input参数控制显示/隐藏",
+      "defaultValue": "false",
+      "tip": "",
+      "version": "0.0.67"
+    },
+    {
+      "displayName": "default-transfer-data",
+      "type": "object",
+      "description": "默认的列头控制穿梭框数据，数据格式为Array<{label: string, key: string, disabled: boolean, visible: boolean}>",
+      "defaultValue": "",
+      "tip": "(() = > TableHeaderControl[] | Promise<TableHeaderControl[]>) | TableHeaderControl[]",
+      "version": "0.0.72"
+    },
+    {
+      "displayName": "on-transfer-show",
+      "type": "Function",
+      "description": "列头控制穿梭框显示时回调",
+      "defaultValue": "",
+      "tip": "() => void",
+      "version": "0.0.72"
+    },
+    {
+      "displayName": "on-transfer-hide",
+      "type": "Function",
+      "description": "列头控制穿梭框隐藏时回调",
+      "defaultValue": "",
+      "tip": "(transferData: TableHeaderControl[]) => void",
+      "version": "0.0.72"
+    },
+    {
+      "displayName": "on-transfer-change",
+      "type": "Function",
+      "description": "列头控制穿梭框隐藏时如果数据发生变化时则执行回调",
+      "defaultValue": "",
+      "tip": "(transferData: TableHeaderControl[]) => void",
+      "version": "0.0.80"
+    },
+    {
+      "displayName": "on-advanced-filter-show",
+      "type": "Function",
+      "description": "高级筛选显示时回调",
+      "defaultValue": "",
+      "tip": "() => void",
+      "version": "0.0.72"
+    },
+    {
+      "displayName": "on-advanced-filter-hide",
+      "type": "Function",
+      "description": "高级筛选关闭时的回调",
+      "defaultValue": "",
+      "tip": "(filterData: FilterDataType) => void",
+      "version": "0.0.72"
+    },
+    {
+      "displayName": "use-ant-style",
+      "type": "boolean",
+      "description": "是否使用ant-design样式",
+      "defaultValue": "false",
+      "tip": "",
+      "version": "0.0.74"
+    },
+    {
+      "displayName": "adaptive",
+      "type": "boolean",
+      "description": "是否自适应内容高度",
+      "defaultValue": "false",
+      "version": "0.0.77"
+    }
+  ],
+  "subProps": {
+    "ColumnConfig": [
+      {
+        "displayName": "title",
+        "description": "列头显示文字",
+        "type": "string"
+      },
+      {
+        "displayName": "field",
+        "description": "列字段名",
+        "type": "string"
+      },
+      {
+        "displayName": "width",
+        "description": "列宽度",
+        "type": "number | string"
+      },
+      {
+        "displayName": "minWidth",
+        "description": "最小列宽度",
+        "type": "number | string"
+      },
+      {
+        "displayName": "treeNode",
+        "description": "useTree=true时有效，指定树节点列",
+        "type": "boolean"
+      },
+      {
+        "displayName": "sortable",
+        "description": "是否可排序",
+        "type": "boolean",
+        "defaultValue": "false"
+      },
+      {
+        "displayName": "showIcon",
+        "description": "是否显示图标",
+        "type": "boolean",
+        "defaultValue": "false"
+      },
+      {
+        "displayName": "visible",
+        "description": "是否显示该列",
+        "type": "boolean",
+        "defaultValue": "true"
+      },
+      {
+        "displayName": "showColumnMenu",
+        "description": "是否显示列头菜单",
+        "type": "boolean",
+        "defaultValue": "false"
+      },
+      {
+        "displayName": "group",
+        "description": "用于多级表头分组，参数配置与列配置一致",
+        "type": "ColumnConfig[]"
+      },
+      {
+        "displayName": "render",
+        "description": "自定义渲染函数",
+        "type": "Function",
+        "tip": "({ row, rowIndex, column, columnIndex, $rowIndex, $columnIndex, $event }) => VNode  | Component"
+      },
+      {
+        "displayName": "renderEdit",
+        "description": "自定义渲染编辑单元格函数",
+        "type": "Function",
+        "tip": "({ row, rowIndex, column, columnIndex, $rowIndex, $columnIndex, $event }) => VNode  | Component"
+      },
+      {
+        "displayName": "dataType",
+        "description": "数据类型",
+        "type": "enum",
+        "tip": "'string' | 'number' | 'boolean' | 'date'"
+      }
+    ],
+    "SearchConfig": [
+      {
+        "displayName": "strict",
+        "description": "是否精确搜索",
+        "type": "boolean",
+        "defaultValue": "false"
+      },
+      {
+        "displayName": "searchMethod",
+        "description": "自定义搜索方法",
+        "type": "Function",
+        "tip": "(key, value, data) => boolean"
+      },
+      {
+        "displayName": "isRemoteQuery",
+        "description": "是否远程搜索",
+        "type": "boolean",
+        "defaultValue": "false"
+      },
+      {
+        "displayName": "ignoreCase",
+        "description": "是否忽略大小写",
+        "type": "boolean",
+        "defaultValue": "false",
+        "version": "0.0.80"
+      }
+    ],
+    "AdvancedFilterConfig": [
+      {
+        "displayName": "filterAll",
+        "description": "是否筛选所有数据，为false时只筛选column.visible=true的数据",
+        "type": "boolean",
+        "defaultValue": "true"
+      },
+      {
+        "displayName": "exclude",
+        "description": "排除项, 与column.field相同, 该参数包含的列不参与高级筛选",
+        "type": "string[]"
+      },
+      {
+        "displayName": "remote",
+        "description": "启用远程筛选， 为true时所有条件将通过远程接口进行查询， 也可以为数组，指定远程筛选的列",
+        "type": "boolean | string[]",
+        "defaultValue": "false"
+      },
+      {
+        "displayName": "dateFormat",
+        "description": "日期格式",
+        "type": "string",
+        "defaultValue": "YYYY-MM-DD HH:mm:ss"
+      },
+      {
+        "displayName": "filterColumns",
+        "description": "自定义列筛选条件",
+        "type": "object",
+        "tip": "{title: string, field: string, dataTypes: string, options: { label: string, value: any }[]}[]"
+      },
+      {
+        "displayName": "ignoreCase",
+        "description": "是否忽略大小写",
+        "type": "boolean",
+        "defaultValue": "false",
+        "version": "0.0.80"
+      }
+    ],
+    "PaginationConfig": [
+      {
+        "displayName": "total",
+        "description": "总条数",
+        "type": "number"
+      },
+      {
+        "displayName": "pageSize",
+        "description": "每页条数",
+        "type": "number"
+      },
+      {
+        "displayName": "pageSizes",
+        "description": "每页条数选项",
+        "type": "number[]"
+      },
+      {
+        "displayName": "currentPage",
+        "description": "当前页数",
+        "type": "number"
+      },
+      {
+        "displayName": "pageCount",
+        "description": "总页数",
+        "type": "number"
+      },
+      {
+        "displayName": "layout",
+        "description": "分页布局",
+        "type": "enum",
+        "tip": "'sizes' | 'total' | 'prev' | 'pager' | 'next' | 'jumper' | '->' | '<-'"
+      },
+      {
+        "displayName": "isRemotePaging",
+        "description": "是否服务端分页",
+        "type": "boolean",
+        "defaultValue": "false"
+      }
+    ],
+    "SeqConfig": [
+      {
+        "displayName": "startIndex",
+        "type": "number",
+        "description": "序号起始值",
+        "defaultValue": "1"
+      },
+      {
+        "displayName": "seqMethod",
+        "type": "Function",
+        "description": "自定义序号方法",
+        "defaultValue": "",
+        "tip": "({ row, rowIndex, column, columnIndex }) => number"
+      }
+    ]
+  },
+  "events": [
+    {
+      "displayName": "refresh",
+      "description": "刷新表格数据",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "remote-query",
+      "description": "远程搜索表格数据",
+      "type": "Function",
+      "tip": "(query: string) => void"
+    },
+    {
+      "displayName": "server-paging",
+      "description": "服务端分页",
+      "type": "Function",
+      "tip": "(config: PaginationConfig) => void"
+    },
+    {
+      "displayName": "highlight-clear",
+      "description": "清除高亮状态时触发",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "highlight-change",
+      "description": "高亮状态变化时触发",
+      "type": "Function",
+      "tip": "(row: Row, isHighLight: boolean) => void"
+    },
+    {
+      "displayName": "cell-click",
+      "description": "单元格单击时触发",
+      "type": "Function",
+      "tip": "({ row, rowIndex, $rowIndex, column, columnIndex, $columnIndex, triggerRadio, triggerCheckbox, triggerTreeNode, triggerExpandNode, $event }) => void"
+    },
+    {
+      "displayName": "hide-column",
+      "description": "隐藏列时触发",
+      "type": "Function",
+      "tip": "(column: ColumnConfig) => void"
+    },
+    {
+      "displayName": "checkbox-all",
+      "description": "用于type=checkbox, 全选时触发",
+      "type": "Function",
+      "tip": "(checked: boolean) => void"
+    },
+    {
+      "displayName": "checkbox-change",
+      "description": "用于type=checkbox, 选中项变化时触发",
+      "type": "Function",
+      "tip": "({checked, row, rowIndex, $rowIndex, column, columnIndex, $columnIndex, $event}) => void"
+    },
+    {
+      "displayName": "sort-change",
+      "description": "排序变化时触发",
+      "type": "Function",
+      "tip": "({ column, field, order }) => void"
+    },
+    {
+      "displayName": "drag-end",
+      "description": "用于showDragColumn=true, 拖拽结束时触发",
+      "type": "Function",
+      "tip": "({ newData, oldData }) => void"
+    },
+    {
+      "displayName": "advanced-filter-confirm",
+      "description": "确认高级筛选条件时触发",
+      "type": "Function",
+      "tip": "({conditionInfo, tableData}) => void"
+    },
+    {
+      "displayName": "advanced-filter-clear",
+      "description": "清除高级筛选条件时触发",
+      "type": "Function",
+      "tip": "() => void"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "[column.field]",
+      "description": "自定义该列单元格内容",
+      "parameters": "object",
+      "tip": "{ column, row }"
+    },
+    {
+
+      "displayName": "[column.field]-header",
+      "description": "自定义该列列头内容",
+       "parameters": "object",
+       "tip": "{ column }"
+    },
+    {
+
+      "displayName": "[column.field]-edit",
+      "description": "自定义单元格渲染列内容",
+       "parameters": "object",
+       "tip": "{ column }",
+       "version": "0.0.80"
+    },
+    {
+
+      "displayName": "[column.field]-label",
+      "description": "自定义该列单元格文本内容（当单元格设置icon时，使用该插槽只会替换文本内容，不会替换icon）",
+      "parameters": "object",
+      "tip": "{ column, row }"
+    },
+    {
+      "displayName": "drag-icon",
+      "description": "自定义拖拽列图标"
+    },
+    {
+      "displayName": "empty",
+      "description": "自定义空数据时显示的内容"
+    },
+    {
+      "displayName": "loading",
+      "description": "自定义加载中时显示的内容"
+    },
+    {
+      "displayName": "description",
+      "description": "自定义表格数据描述内容",
+      "parameters": "object",
+      "tip": "{ total, conditionInfo }"
+    },
+    {
+      "displayName": "filterTrigger",
+      "description": "自定义高级筛选触发按钮",
+      "parameters": "object",
+      "tip": "{ isFilter: boolean"
+    },
+    {
+      "displayName": "transferTrigger",
+      "description": "自定义列头控制穿梭框触发按钮"
+    },
+    {
+      "displayName": "sizeControlTrigger",
+      "description": "自定义表格size切换触发按钮",
+      "version": "0.0.77"
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "tableInstance",
+      "description": "vxe表格实例",
+      "type": "object"
+    },
+    {
+      "displayName": "filter",
+      "description": "搜索框数据筛选",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "advancedFilter",
+      "description": "高级筛选",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "clearAdvancedFilter",
+      "description": "清除高级筛选条件",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "getAdvancedCondition",
+      "description": "获取高级筛选条件",
+      "type": "Function",
+      "tip": "() => { conditionList, filterRule }"
+    },
+    {
+      "displayName": "disposeRowTooltip",
+      "description": "销毁单元格溢出行的文字提示",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "getHeaderControllerData",
+      "description": "获取表头控制器数据",
+      "type": "Function",
+      "tip": "() => TableHeaderControl[]",
+      "version": "0.0.67"
+    },
+    {
+      "displayName": "setHeaderControllerData",
+      "description": "设置表头控制器数据",
+      "type": "Function",
+      "tip": "(headerData: TableHeaderControl[]) => void",
+      "version": "0.0.67"
+    }
+  ]
+}
