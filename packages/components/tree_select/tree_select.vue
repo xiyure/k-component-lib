@@ -6,44 +6,38 @@
     :size="formatSize.elSize"
     v-bind="$attrs"
     @input="handleInput"
-    @blur="(e: Event) => {
-      query.value = '';
-      emits('blur', e)
-    }"
+    @blur="
+      (e: Event) => {
+        query.value = '';
+        emits('blur', e);
+      }
+    "
   >
-    <template
-      v-for="(_, name) in $slots"
-      v-if="customSlots.includes(name as string)"
-      :key="name"
-      #[name]="data"
-    >
-      <slot :name="name" v-bind="data"></slot>
+    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+      <template v-if="!customSlots.includes(name as string)">
+        <slot :name="name" v-bind="data"></slot>
+      </template>
     </template>
     <template #default="defaultData">
       <slot v-bind="defaultData">
         <span
-          :style="typeof props.nodeStyle === 'function'
-            ? props.nodeStyle(defaultData)
-            : props.nodeStyle"
-          :class=" typeof props.className === 'function'
-            ? props.className(defaultData)
-            : props.className"
+          :style="
+            typeof props.nodeStyle === 'function' ? props.nodeStyle(defaultData) : props.nodeStyle
+          "
+          :class="
+            typeof props.className === 'function' ? props.className(defaultData) : props.className
+          "
         >
           <component
             :is="nodeIcon(defaultData)"
-            :class="[
-              {'tree-item-icon--noChildren': defaultData.node.isLeaf},
-             
-            ]"
+            :class="[{ 'tree-item-icon--noChildren': defaultData.node.isLeaf }]"
           />
           {{ defaultData.data.label }}
         </span>
       </slot>
     </template>
     <template #empty>
-      <slot name="empty" :query="query">
-        未找到'{{ query.value }}'相关内容
-      </slot>
+      <slot name="empty" :query="query">未找到'{{ query.value }}'相关内容</slot>
     </template>
   </el-tree-select>
 </template>
@@ -58,7 +52,7 @@ import { getExposeProxy, genRandomStr, SIZE_KEY } from '../../utils';
 import { useSize } from '../../hooks';
 
 defineOptions({
-  name: 'KTreeSelect'
+  name: 'KTreeSelect',
 });
 
 const customSlots = ['empty', 'default'];
@@ -66,7 +60,7 @@ const customSlots = ['empty', 'default'];
 const props = withDefaults(defineProps<TreeSelectProps>(), {
   expandIcon: 'IconFolderOpen',
   collapseIcon: 'IconFlowNested',
-  debounce: 500
+  debounce: 500,
 });
 
 const formatSize = useSize<TreeSelectProps>(props);
@@ -76,7 +70,7 @@ const emits = defineEmits(['input', 'blur']);
 
 const KTreeSelectRef = ref();
 const query = ref({
-  value: ''
+  value: '',
 });
 const randomName = genRandomStr(8);
 
