@@ -505,26 +505,54 @@ function resetCursor(key?: string) {
   } else {
     const range = document.createRange();
     range.selectNodeContents(KScriptInput.value);
-    range.setStart(KScriptInput.value, getDomIndex(key));
+    const { node, offset } = getRange(key);
+    range.setStart(node, offset);
     range.collapse(true);
     selection?.removeAllRanges();
     selection?.addRange(range);
   }
 }
-function getDomIndex(key: string) {
+function getRange(key: string) {
   if (!key) {
-    return -1;
+    return { node: KScriptInput.value, offset: 0 };
   }
-  const childNodes: HTMLElement[] = Array.from(KScriptInput.value?.childNodes ?? []);
-  let index = 0;
-  for (let i = 0; i < childNodes.length; i++) {
-    index++;
-    const targetKey = childNodes[i]?.getAttribute?.('data-key');
-    if (targetKey === key) {
-      break;
+  let isFound = false;
+  const range = {
+    node: KScriptInput.value,
+    offset: 0,
+  }
+  const getNodeInfo = (node: HTMLElement) => {
+    if (isFound) {
+      return;
+    }
+    const childNodes = node.childNodes;
+    for (let i = 0; i < childNodes.length; i++) {
+      if (isFound) {
+        break;
+      }
+      const childNode = childNodes[i] as HTMLElement;
+      if (childNode.parentNode !== range.node) {
+        range.node = childNode.parentNode;
+        range.offset = i;
+      }
+      range.offset++;
+      const targetKey = childNode?.getAttribute?.('data-key');
+      if (targetKey === key) {
+        isFound = true;
+        break;
+      }
+      if (childNode.nodeType !== 3
+        && childNode?.tagName?.toUpperCase() === 'DIV'
+        && !childNode?.classList?.contains('k-script-tag')
+      ) {
+        range.node = childNode;
+        range.offset = 0;
+        getNodeInfo(childNode);
+      }
     }
   }
-  return index;
+  getNodeInfo(KScriptInput.value);
+  return range;
 }
 function onShowPopper() {
   const value = flattedOptions.value?.[0]?.value;
