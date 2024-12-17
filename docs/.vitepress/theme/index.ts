@@ -10,10 +10,8 @@ import {
   NolebaseEnhancedReadabilitiesScreenMenu,
   InjectionKey,
 } from '@nolebase/vitepress-plugin-enhanced-readabilities/client';
-import {
-  NolebaseGitChangelogPlugin,
-  Options,
-} from '@nolebase/vitepress-plugin-git-changelog/client';
+import type { Options } from '@nolebase/vitepress-plugin-git-changelog/client';
+import { NolebaseGitChangelogPlugin } from '@nolebase/vitepress-plugin-git-changelog/client';
 import '@nolebase/vitepress-plugin-enhanced-readabilities/client/style.css';
 import '@nolebase/vitepress-plugin-git-changelog/client/style.css';
 import DocTitle from '../components/DocTitle.vue';
