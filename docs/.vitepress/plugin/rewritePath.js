@@ -1,20 +1,20 @@
-import path from "path";
-import { globSync } from "glob";
+import path from 'path';
+import { globSync } from 'glob';
 import sidebar from '../configs/sidebar';
 
 function generateRewrites() {
   const rewrites = {};
-  
+
   // 匹配所有的 Markdown 文件
   const moFiles = globSync('docs/**/*.md');
-  
-  moFiles.forEach(file => {
+
+  moFiles.forEach((file) => {
     // 将路径转换为 POSIX 格式, 兼容 windows
     const posixFile = file.split(path.sep).join(path.posix.sep);
-    
+
     const fileName = path.posix.basename(posixFile, '.md'); // 获取文件名（不带扩展名）
     const dirName = path.posix.basename(path.posix.dirname(posixFile)); // 获取所在目录名
-    
+
     // 检查文件名和目录名是否相同
     if (fileName.toLowerCase() === dirName.toLowerCase()) {
       // 生成重写路径，去掉该目录
@@ -34,14 +34,14 @@ function generateRewrites() {
 
 function sidebarRewrites() {
   function processItems(items) {
-    items.forEach(item => {
+    items.forEach((item) => {
       if (item.link) {
         const parts = item.link?.split('/');
         // 检查 parts 的长度以确保不会访问 undefined
         if (parts.length > 1) {
           const lastPart = parts[parts.length - 1];
           const secondLastPart = parts[parts.length - 2];
-  
+
           // 如果最后两部分相同，则重写链接
           if (lastPart.toLowerCase() === secondLastPart.toLowerCase()) {
             parts.pop(); // 移除最后一部分

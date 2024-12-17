@@ -9,33 +9,33 @@ export default defineConfig({
   lang: 'zh-CN',
   title: 'ksw-ux',
   description: 'ksw-ux 是一个基于 Element-Plus 的 UI 组件库',
-  // head: [
-  //   ['link', { rel: 'icon', type: 'image/svg+xml', href: '/klogo.svg' }],
-  //   ['meta', { property: 'og:type', content: 'website' }],
-  //   ['meta', { property: 'og:locale', content: 'zh' }],
-  //   [
-  //     'meta',
-  //     {
-  //       property: 'og:title',
-  //       content: 'KSW Design | 基于 KSW Design 设计体系的 Vue3 组件库，用于研发企业级中后台产品。',
-  //     },
-  //   ],
-  //   ['meta', { property: 'og:site_name', content: 'KSW Design' }],
-  // ],
-  // markdown: {
-  //   config: (md) => {
-  //     md.use(containerPreview);
-  //     md.use(componentPreview);
-  //   },
-  //   image: {
-  //     lazyLoading: true,
-  //   },
-  // },
-  // cleanUrls: true,
-  // rewrites: {
-  //   // 'docs/(.*)': '(.*)',
-  //   ...generateRewrites(),
-  // },
+  head: [
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/klogo.svg' }],
+    ['meta', { property: 'og:type', content: 'website' }],
+    ['meta', { property: 'og:locale', content: 'zh' }],
+    [
+      'meta',
+      {
+        property: 'og:title',
+        content: 'KSW Design | 基于 KSW Design 设计体系的 Vue3 组件库，用于研发企业级中后台产品。',
+      },
+    ],
+    ['meta', { property: 'og:site_name', content: 'KSW Design' }],
+  ],
+  markdown: {
+    config: (md) => {
+      md.use(containerPreview);
+      md.use(componentPreview);
+    },
+    image: {
+      lazyLoading: true,
+    },
+  },
+  cleanUrls: true,
+  rewrites: {
+    // 'docs/(.*)': '(.*)',
+    ...generateRewrites(),
+  },
   themeConfig: {
     logo: { src: '/klogo.svg', width: 24, height: 24 },
     nav,
