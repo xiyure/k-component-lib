@@ -72,9 +72,15 @@
     .el-checkbox__label {
       color: var(--checkbox-text-color--checked);
     }
+    &.is-bordered {
+      border-color: var(--checkbox__inner__border-color--checked);
+    }
   }
   &.is-bordered {
     border-radius: var(--k-theme-button-size-rounded--base);
+    &:hover {
+      background-color: var(--k-gray-50);
+    }
   }
   &.is-disabled {
     .el-checkbox__input {
