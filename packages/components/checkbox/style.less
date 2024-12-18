@@ -73,6 +73,9 @@
       color: var(--checkbox-text-color--checked);
     }
   }
+  &.is-bordered {
+    border-radius: var(--k-theme-button-size-rounded--base);
+  }
   &.is-disabled {
     .el-checkbox__input {
       .el-checkbox__inner {
@@ -181,6 +184,9 @@
         }
       }
     }
+    &.is-bordered {
+      border-radius: var(--k-theme-button-size-rounded--sm);
+    }
   }
   &.k-checkbox--lg {
     --checkbox__inner__icon__border-size: 0.1rem;
@@ -195,6 +201,9 @@
     }
     .el-checkbox__label {
       .text-lg();
+    }
+    &.is-bordered {
+      border-radius: var(--k-theme-button-size-rounded--lg);
     }
   }
   & + .el-checkbox.k-checkbox {
