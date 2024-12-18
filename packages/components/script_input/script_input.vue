@@ -1,15 +1,6 @@
 template
 <template>
   <div ref="KScriptInputWrapper" class="k-script-input-wrapper">
-    <div class="k-script-input-prepend">
-      <k-button v-if="showModeSwitch" @click="toggleMode">
-        <component
-          :is="!_isStringMode ? 'IconModeExpressionColor' : 'IconModeExpression'"
-          color="var(--k-gray-400)"
-        />
-      </k-button>
-      <slot name="prepend"></slot>
-    </div>
     <k-popover
       :width="popoverWidth"
       :show-arrow="false"
@@ -20,29 +11,47 @@ template
       class="overflow-hidden"
     >
       <template #reference>
-        <div
-          ref="KScriptInput"
-          :class="['k-script-input', _styleModule]"
-          :style="{
-            height: height
-          }"
-          contenteditable
-          :spellcheck="false"
-          @input="handleInput"
-          @blur="handleBlur"
-          @focus="handleFocus"
-          @compositionstart="
-            () => {
-              isAllowInput = false;
-            }
-          "
-          @compositionend="
-            (e: CompositionEvent) => {
-              isAllowInput = true;
-              handleInput(e);
-            }
-          "
-        ></div>
+        <div class="flex w-full">
+          <div class="k-script-input-prepend">
+            <k-button v-if="showModeSwitch" @click="toggleMode">
+              <component
+                :is="!_isStringMode ? 'IconModeExpressionColor' : 'IconModeExpression'"
+                color="var(--k-gray-400)"
+              />
+            </k-button>
+            <slot name="prepend"></slot>
+          </div>
+          <div
+            ref="KScriptInput"
+            :class="['k-script-input', _styleModule]"
+            class="flex-1"
+            :style="{
+              height: height,
+            }"
+            contenteditable
+            :spellcheck="false"
+            @input="handleInput"
+            @blur="handleBlur"
+            @focus="handleFocus"
+            @compositionstart="
+              () => {
+                isAllowInput = false;
+              }
+            "
+            @compositionend="
+              (e: CompositionEvent) => {
+                isAllowInput = true;
+                handleInput(e);
+              }
+            "
+          ></div>
+          <div class="k-script-input-append">
+            <slot name="append"></slot>
+            <k-button v-if="showPopperSwitch" @click="showPopper">
+              <IconVariable />
+            </k-button>
+          </div>
+        </div>
       </template>
       <div>
         <el-scrollbar>
@@ -87,12 +96,6 @@ template
         </el-scrollbar>
       </div>
     </k-popover>
-    <div class="k-script-input-append">
-      <slot name="append"></slot>
-      <k-button v-if="showPopperSwitch" @click="showPopper">
-        <IconVariable />
-      </k-button>
-    </div>
   </div>
 </template>
 
@@ -126,7 +129,7 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   showModeSwitch: true,
   showPopperSwitch: true,
   expandAll: false,
-  defaultMode: 'string'
+  defaultMode: 'string',
 });
 
 const DEFAULT_TREE_CONFIG = {
@@ -344,7 +347,7 @@ function parseInputValue() {
   if (!isStringMode()) {
     return {
       result: getEditorContent(),
-      scriptTags: []
+      scriptTags: [],
     };
   }
   let text = '';
@@ -366,13 +369,13 @@ function parseInputValue() {
         } else {
           const targetOption = props.options.find((item) => item.label === label);
           text += `fx(${targetOption?.value ?? null})`;
-          scriptTags.push(targetOption ?? null)
+          scriptTags.push(targetOption ?? null);
         }
       } else if (node.tagName.toUpperCase() === 'DIV') {
         domToText(node);
       }
     }
-  }
+  };
   domToText(KScriptInput.value);
   text = text
     .split(' ')
@@ -382,8 +385,8 @@ function parseInputValue() {
   emits('input', res);
   return {
     result: res,
-    scriptTags
-  };;
+    scriptTags,
+  };
 }
 // 解析传入的值
 function parseModelValue(value: string) {
@@ -520,7 +523,7 @@ function getRange(key: string) {
   const range = {
     node: KScriptInput.value,
     offset: 0,
-  }
+  };
   const getNodeInfo = (node: HTMLElement) => {
     if (isFound) {
       return;
@@ -541,16 +544,17 @@ function getRange(key: string) {
         isFound = true;
         break;
       }
-      if (childNode.nodeType !== 3
-        && childNode?.tagName?.toUpperCase() === 'DIV'
-        && !childNode?.classList?.contains('k-script-tag')
+      if (
+        childNode.nodeType !== 3 &&
+        childNode?.tagName?.toUpperCase() === 'DIV' &&
+        !childNode?.classList?.contains('k-script-tag')
       ) {
         range.node = childNode;
         range.offset = 0;
         getNodeInfo(childNode);
       }
     }
-  }
+  };
   getNodeInfo(KScriptInput.value);
   return range;
 }
