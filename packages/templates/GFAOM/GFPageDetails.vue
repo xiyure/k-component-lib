@@ -16,9 +16,21 @@
           <div class="w-full flex justify-between items-center mb-4">
             <div class="head-title">
               <slot name="head-title">
-                <div class="flex items-center gap-1 h-8">
+                <div
+                  class="flex items-center gap-1 h-8 items-center justify-center"
+                  @mouseenter="() => (tips = true)"
+                >
                   <component :is="icon" v-if="icon" size="24" />
                   <span class="text-2xl font-bold">{{ title }}</span>
+                  <div v-if="descriptions" class="KPageHead-info h-6 w-6">
+                    <KTooltip
+                      v-if="descriptions"
+                      :content="descriptions"
+                      @hide="() => (tips = false)"
+                    >
+                      <IconTips v-show="tips" color="#4193f2" size="24"></IconTips>
+                    </KTooltip>
+                  </div>
                 </div>
               </slot>
             </div>
@@ -83,7 +95,7 @@ import { GFPageDetailProps } from './type';
 // console.log(KDetailsItem);
 
 defineOptions({
-  name: 'GFPageDetails'
+  name: 'GFPageDetails',
 });
 const props = withDefaults(defineProps<GFPageDetailProps>(), {
   icon: '',
@@ -93,7 +105,7 @@ const props = withDefaults(defineProps<GFPageDetailProps>(), {
   abstract: () => [],
   tabs: () => [],
   direction: 'horizontal',
-  useItemCollapse: false
+  useItemCollapse: false,
 });
 
 const showDetailsAllStatus = ref(true);
@@ -104,6 +116,8 @@ const activeName = ref(defaultActiveName ?? props.tabs[0].name);
 
 const maxColumn = ref(1);
 const rowMax = ref(1);
+
+const tips = ref(false);
 
 onMounted(() => {
   console.log(getRefHeadAbstractHeight());
@@ -132,7 +146,7 @@ function computeMaxColumn() {
   if (!RefHeadAbstract?.value) return;
   let count = 1;
   const gridTemplateColumns = getComputedStyle(RefHeadAbstract?.value).gridTemplateColumns.split(
-    ' '
+    ' ',
   );
   for (let i = 1; i < gridTemplateColumns.length; i++) {
     const abs = Math.abs(parseInt(gridTemplateColumns[i]) - parseInt(gridTemplateColumns[i - 1]));
@@ -154,7 +168,7 @@ function getAutoSize() {
   const __formTrueHeight = RefHeadAbstract.value?.clientHeight ?? 0;
   // 网格布局行数
   const __gridTemplateRowsArr = getComputedStyle(RefHeadAbstract?.value).gridTemplateRows.split(
-    ' '
+    ' ',
   );
 
   // 第一行高度
