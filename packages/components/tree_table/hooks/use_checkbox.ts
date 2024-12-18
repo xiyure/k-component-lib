@@ -1,4 +1,4 @@
-import { ref, computed, onMounted, Ref } from 'vue';
+import { ref, computed, nextTick, Ref } from 'vue';
 import { VxeTablePropTypes, VxeTableInstance } from 'vxe-table';
 import { TreeTableProps, RowData } from '../type';
 
@@ -13,7 +13,7 @@ export function useCheckbox($table: Ref<VxeTableInstance>, tableData: Ref<RowDat
   const checkedDataSize = computed(() => checkedData.value.size);
 
   // 初始化时保存复选框选中行
-  onMounted(() => {
+  nextTick(() => {
     const { checkRowKeys, checkAll } = checkboxConfig.value;
     const newCheckRowKeys = Array.isArray(checkRowKeys) ? checkRowKeys : [];
     const defaultRowKeys = checkAll ?
@@ -22,7 +22,7 @@ export function useCheckbox($table: Ref<VxeTableInstance>, tableData: Ref<RowDat
     const defaultCheckedRows = defaultRowKeys.map((rowKey) => {
       const row = $table.value?.getRowById(rowKey);
       return row;
-    });
+    }).filter((row) => row);
     handleCheckboxData(defaultCheckedRows, true);
   });
   const checkboxConfig = computed(() => Object.assign(defaultCheckboxConfig, props.checkboxConfig || {}));
