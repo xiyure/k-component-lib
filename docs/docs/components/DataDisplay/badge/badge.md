@@ -46,6 +46,4 @@ title: badge 徽章
 
 ## API
 
-<!-- <API src="./collapse.json" lang="zh"></API>
-
-<API src="./collapse_item.json" lang="zh"></API> -->
+<API src="./data.json" lang="zh"></API>
