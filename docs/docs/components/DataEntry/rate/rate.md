@@ -54,4 +54,4 @@ title: Rate 评分
 
 ## API
 
-🚧 施工中
+<API src="./data.json" lang="zh"></API>
