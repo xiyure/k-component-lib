@@ -117,12 +117,12 @@ body.AOM {
   /* theme */
   --k-theme: var(--k-theme-primary);
   --k-theme--bg: #e5f1f9;
-  --k-theme--frontColor: #fff;
+  --k-theme--fontColor: #fff;
   --k-theme--backColor: var(--k-gray-900);
   /* theme-rgb */
   --k-theme: rgb(var(--k-theme-primary-rgb));
   --k-theme--bg: rgb(229, 241, 249);
-  --k-theme--frontColor: rgb(255, 255, 255);
+  --k-theme--fontColor: rgb(255, 255, 255);
   --k-theme--backColor: rgb(var(--k-gray-rgb-900));
   /* 文字色 theme text color */
   --k-theme-text--heavy: var(--k-gray-900);
