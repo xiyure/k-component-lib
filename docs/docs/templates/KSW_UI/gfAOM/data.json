@@ -1,0 +1,85 @@
+{
+  "name": "",
+  "props": [
+    {
+      "displayName": "icon",
+      "type": "string | component",
+      "description": "页面图标"
+    },
+    {
+      "displayName": "title",
+      "type": "string",
+      "description": "页面标题",
+      "defaultValue": "标题"
+    },
+    {
+      "displayName": "description",
+      "type": "string",
+      "description": "hover 页面标题显示的说明",
+      "defaultValue": "描述信息"
+    },
+    {
+      "displayName": "columns",
+      "type": "number",
+      "description": "构建列数",
+      "defaultValue": "3"
+    },
+    {
+      "displayName": "abstract",
+      "type": "array",
+      "description": "需要展示的数据"
+    },
+    {
+      "displayName": "tabsConfig",
+      "type": "array",
+      "description": "标签页配置"
+    },
+    {
+      "displayName": "tabs",
+      "type": "array",
+      "description": "标签页"
+    },
+    {
+      "displayName": "direction",
+      "type": "string",
+      "description": "页面布局",
+      "defaultValue": "horizontal",
+      "tip": "'horizontal' | 'vertical'"
+    },
+    {
+      "displayName": "useItemCollapse",
+      "type": "boolean",
+      "description": "展开收起功能",
+      "defaultValue": "false"
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "extra-head",
+      "description": "页头标题栏额外的内容"
+    },
+    {
+      "displayName": "head-title",
+      "description": "页头标题栏"
+    },
+    {
+      "displayName": "head-toolbar",
+      "description": "页头标题工具栏"
+    },
+    {
+      "displayName": "head-abstract",
+      "description": "页头标题栏摘要信息"
+    },
+    {
+      "displayName": "detail",
+      "description": "页面详情内容"
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "toggleActiveTab",
+      "description": "tabs默认值赋值"
+    }
+  ]
+}
