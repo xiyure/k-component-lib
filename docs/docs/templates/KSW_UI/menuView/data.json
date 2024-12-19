@@ -1,0 +1,109 @@
+{
+  "name": "",
+  "menuViewOption": [
+    {
+      "displayName": "index",
+      "type": "any",
+      "description": "索引"
+    },
+    {
+      "displayName": "title",
+      "type": "string",
+      "description": "菜单标题"
+    },
+    {
+      "displayName": "icon",
+      "type": "string | Component",
+      "description": "菜单icon"
+    },
+    {
+      "displayName": "disabled",
+      "type": "boolean",
+      "description": "是否禁用菜单",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "route",
+      "type": "object",
+      "description": "菜单路由"
+    },
+    {
+      "displayName": "children",
+      "type": "menuViewOption[]",
+      "description": "菜单子路由"
+    }
+  ],
+  "props": [
+    {
+      "displayName": "options",
+      "type": "menuViewOption[]",
+      "description": "菜单视图选项"
+    },
+    {
+      "displayName": "active",
+      "type": "number",
+      "description": "菜单激活状态"
+    },
+    {
+      "displayName": "showCollapse",
+      "type": "boolean",
+      "description": "菜单是否折叠",
+      "defaultValue": "true"
+    },
+    {
+      "displayName": "collapse",
+      "type": "boolean",
+      "description": "可折叠的菜单选项",
+      "defaultValue": "undefined"
+    }
+  ],
+  "events": [
+    {
+      "displayName": "click",
+      "description": "菜单点击事件"
+    },
+    {
+      "displayName": "select",
+      "description": "菜单选择事件"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "app-logo",
+      "description": "系统的标志性图标，通常位于应用程序的导航栏或标题栏，用于品牌识别和用户界面的一致性。"
+    },
+    {
+      "displayName": "动态插槽渲染",
+      "description": "通过 v-for 动态遍历 $slots 对象，遍历每个具名插槽，并将相应的数据传递给插槽。"
+    },
+    {
+      "displayName": "header",
+      "description": "菜单头部插槽"
+    },
+    {
+      "displayName": "main",
+      "description": "菜单主要区域插槽"
+    },
+    {
+      "displayName": "footer",
+      "description": "菜单底部插槽"
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "collapse",
+      "description": "菜单折叠函数",
+      "type": "Function"
+    },
+    {
+      "displayName": "expand",
+      "description": "菜单展开函数",
+      "type": "Function"
+    },
+    {
+      "displayName": "toggleCollapse",
+      "description": "菜单折叠展开函数",
+      "type": "Function"
+    }
+  ]
+}

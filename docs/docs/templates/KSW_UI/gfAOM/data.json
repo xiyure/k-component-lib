@@ -79,7 +79,7 @@
   "methods": [
     {
       "displayName": "toggleActiveTab",
-      "description": "tabs默认值赋值"
-    }
-  ]
+      "description": "tabs默认值赋值",
+      "type": "Function"
+    }]
 }
