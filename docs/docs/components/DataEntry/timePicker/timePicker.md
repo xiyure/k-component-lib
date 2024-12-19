@@ -33,3 +33,7 @@ title: TimePicker 时间选择器
 添加`is-range`属性即可选择时间范围。 同样支持 `arrow-control` 属性。
 
 <preview path="./rangeTimePicker.vue" />
+
+## API
+
+<API src="./data.json" lang="zh"></API>
