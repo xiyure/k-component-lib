@@ -377,10 +377,7 @@ function parseInputValue() {
     }
   };
   domToText(KScriptInput.value);
-  text = text
-    .split(' ')
-    .filter((item) => item !== '')
-    .join(' ');
+  text = text.replace(/\u00A0/g, ' ');
   const res = formatter(text);
   emits('input', res);
   return {
@@ -427,16 +424,16 @@ function formatter(str: string) {
     const match = str.match(reg)?.[0] ?? '';
     const index = str.indexOf(match);
     const targetText = str.slice(0, index);
-    if (targetText?.trim()?.length) {
-      newStr += ` '${targetText?.trim()}' `;
+    if (targetText.length) {
+      newStr += `'${targetText}'`;
     }
-    newStr += ` ${match} `;
+    newStr += `${match}`;
     str = str.slice(index + match.length);
   }
   if (str?.length) {
     newStr += `'${str}'`;
   }
-  return newStr.trim();
+  return newStr;
 }
 function unFormatter(str: string) {
   const strArr = str.split("''");
@@ -575,15 +572,12 @@ function onHidePopper() {
   }
 }
 function showPopper() {
-  if (popperVisible.value) {
-    return;
-  }
-  curInput.value = '';
   isShowInput.value = true;
   popperVisible.value = true;
   showTree.value = true;
   setTimeout(() => {
     isManual = true;
+    curInput.value = '';
   });
   nextTick(() => {
     const headerElement = getElement(`.${dynamicClassName} .el-input__inner`);
@@ -595,7 +589,6 @@ function getElement(selector: string): HTMLInputElement | null {
 }
 function hidePopper() {
   popperVisible.value = false;
-  showTree.value = false;
   onHidePopper();
 }
 function hidePopperByClick(event: MouseEvent) {
