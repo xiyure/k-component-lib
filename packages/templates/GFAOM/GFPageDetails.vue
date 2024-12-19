@@ -23,13 +23,13 @@
                   <component :is="icon" v-if="icon" size="24" />
                   <span class="text-2xl font-bold">{{ title }}</span>
                   <div v-if="descriptions" class="KPageHead-info h-6 w-6">
-                    <KTooltip
+                    <k-tooltip
                       v-if="descriptions"
                       :content="descriptions"
                       @hide="() => (tips = false)"
                     >
                       <IconTips v-show="tips" color="#4193f2" size="24"></IconTips>
-                    </KTooltip>
+                    </k-tooltip>
                   </div>
                 </div>
               </slot>
@@ -51,7 +51,7 @@
             }"
             :style="`grid-template-columns:repeat(${columns},minmax(0, 1fr))`"
           >
-            <KDetailsItem
+            <k-details-item
               v-for="item in props.abstract"
               :key="item.label"
               :label="item.label"
@@ -59,7 +59,7 @@
               :render="item.render"
               :style="`grid-column: span ${item.column}`"
               :direction="direction"
-            ></KDetailsItem>
+            ></k-details-item>
           </div>
           <div v-if="useItemCollapse" class="!m-auto p-2">
             <k-button text @click="toggleShowDetailsAllStatus">
@@ -88,8 +88,6 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
-import { KTabs, KTabPane } from '../../components/tab';
-import { KDetailsItem } from '../KDetails';
 import { GFPageDetailProps } from './type';
 
 // console.log(KDetailsItem);

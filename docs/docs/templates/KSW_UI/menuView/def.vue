@@ -13,7 +13,7 @@
       default-active="option1"
     >
       <template #app-logo>
-        <img class="w-6 h-6" src="/vite.svg" alt="logo" />
+        <img class="w-6 h-6" src="../menuView/assets/vite.svg" alt="logo" />
         <span class="ml-2 !text-base text-white text-nowrap">菜单视图模板</span>
       </template>
       <template #header></template>
