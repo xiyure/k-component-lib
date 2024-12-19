@@ -32,7 +32,7 @@
     <!-- right -->
     <div
       id="KPageContent"
-      class="KPageContent h-full flex-1 flex flex-col pl-6 pr-3 pt-3"
+      class="KPageContent h-full flex-1 flex flex-col pl-6 pr-3 py-3"
       style="min-width: 0; min-height: 0"
     >
       <div id="KPageHead" class="KPageHead flex justify-between pb-1">
@@ -51,7 +51,7 @@
           <slot name="toolbar"></slot>
         </div>
       </div>
-      <div id="KPageBody" class="KPageBody h-full">
+      <div id="KPageBody" class="KPageBody flex-1 overflow-hidden">
         <slot></slot>
       </div>
     </div>
@@ -64,38 +64,38 @@ import { KPageViewBus } from '../KPageViewBus';
 import { KTooltip } from '../../components';
 
 defineOptions({
-  name: 'KPageTableView'
+  name: 'KPageTableView',
 });
 
 const props = defineProps({
   showAside: {
     type: Boolean,
-    default: false
+    default: false,
   },
   asideTitle: {
     type: String,
-    default: 'viewBus'
+    default: 'viewBus',
   },
   asideInfo: {
     type: String,
-    default: ''
+    default: '',
   },
   asideRefresh: {
     type: Boolean,
-    default: false
+    default: false,
   },
   pageIcon: {
     type: String,
-    default: ''
+    default: '',
   },
   pageTitle: {
     type: String,
-    default: '页面标题'
+    default: '页面标题',
   },
   pageInfo: {
     type: String,
-    default: ''
-  }
+    default: '',
+  },
 });
 
 const tips = ref(false);
@@ -103,9 +103,9 @@ const tips = ref(false);
 const isImgUrl = /.(jpg|jpeg|png|gif|svg)$/;
 
 // 判断 props.pageIcon 是否是图片链接
-const icon = isImgUrl.test(props.pageIcon) ?
-  () => <img src={props.pageIcon} alt='icon' class='KPageHead-icon' /> :
-  props.pageIcon;
+const icon = isImgUrl.test(props.pageIcon)
+  ? () => <img src={props.pageIcon} alt='icon' class='KPageHead-icon' />
+  : props.pageIcon;
 
 // 自定义事件
 const emitEvent = defineEmits(['refresh']);
