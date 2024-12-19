@@ -1,0 +1,45 @@
+{
+  "name": "",
+  "props": [
+    {
+      "displayName": "title",
+      "type": "string",
+      "description": "页面标题",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "info",
+      "type": "string",
+      "description": "页面信息"
+    },
+    {
+      "displayName": "refresh",
+      "type": "boolean",
+      "description": "页面刷新按钮显隐",
+      "defaultValue": "true"
+    }
+  ],
+  "events": [
+    {
+      "displayName": "refresh",
+      "description": "页面刷新事件",
+      "type": "Function",
+      "tip": "() => void"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "head",
+      "description": "页面头部插槽"
+    },
+    {
+      "displayName": "default",
+      "description": "页面默认内容插槽"
+    },
+    {
+      "displayName": "foot",
+      "description": "页面底部插槽"
+    }
+  ],
+  "methods": []
+}

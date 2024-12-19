@@ -37,7 +37,8 @@
     {
       "displayName": "options",
       "type": "menuViewOption[]",
-      "description": "菜单视图选项"
+      "description": "菜单视图选项",
+      "defaultValue": "[]"
     },
     {
       "displayName": "active",

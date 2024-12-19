@@ -4,27 +4,32 @@
     {
       "displayName": "pageIcon",
       "type": "string",
-      "description": "页面图标"
+      "description": "页面图标",
+      "defaultValue": ""
     },
     {
       "displayName": "pageTitle",
       "type": "string",
-      "description": "页面标题"
+      "description": "页面标题",
+      "defaultValue": "标题"
     },
     {
       "displayName": "pageDescriptions",
       "type": "string",
-      "description": "页面标题提示信息"
+      "description": "页面标题提示信息",
+      "defaultValue": ""
     },
     {
       "displayName": "abstract",
       "type": "array",
-      "description": "展示数据信息"
+      "description": "展示数据信息",
+      "defaultValue": "() => []"
     },
     {
       "displayName": "showLine",
       "type": "boolean",
-      "description": "展示数据信息下划线"
+      "description": "展示数据信息下划线",
+      "defaultValue": "false"
     },
     {
       "displayName": "direction",
@@ -35,7 +40,8 @@
     {
       "displayName": "useflex",
       "type": "true",
-      "description": "是否使用flex布局"
+      "description": "是否使用flex布局",
+      "defaultValue": "true"
     }
   ],
   "events": [],
