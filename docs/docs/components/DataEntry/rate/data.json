@@ -95,7 +95,7 @@
       "displayName": "text-color",
       "type": "string",
       "description": "辅助文字的颜色",
-      "defaultValue": "''"
+      "defaultValue": ""
     },
     {
       "displayName": "texts",
@@ -107,7 +107,7 @@
       "displayName": "score-template",
       "type": "string",
       "description": "分数显示模板",
-      "defaultValue": "''"
+      "defaultValue": ""
     },
     {
       "displayName": "clearable",

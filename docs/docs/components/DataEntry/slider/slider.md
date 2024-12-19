@@ -63,3 +63,7 @@ title: Slider 滑块
 设置 `marks` 属性可以在滑块上显示标记。
 
 <preview path="./showSlider.vue" />
+
+## API
+
+<API src="./data.json" lang="zh"></API>
