@@ -1,0 +1,174 @@
+{
+  "name": "",
+  "props": [
+    {
+      "displayName": "model-value / v-model",
+      "type": "boolean",
+      "description": "是否显示 Drawer",
+      "defaultValue": false
+    },
+    {
+      "displayName": "append-to-body",
+      "type": "boolean",
+      "description": "Drawer 自身是否插入至 body 元素上。嵌套的 Drawer 必须指定该属性并赋值为 true",
+      "defaultValue": false
+    },
+    {
+      "displayName": "lock-scroll",
+      "type": "boolean",
+      "description": "是否在 Drawer 出现时将 body 滚动锁定",
+      "defaultValue": true
+    },
+    {
+      "displayName": "before-close",
+      "type": "Function",
+      "description": "关闭前的回调，会暂停 Drawer 的关闭",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "close-on-click-modal",
+      "type": "boolean",
+      "description": "是否可以通过点击 modal 关闭 Drawer",
+      "defaultValue": true
+    },
+    {
+      "displayName": "close-on-press-escape",
+      "type": "boolean",
+      "description": "是否可以通过按下 ESC 关闭 Drawer",
+      "defaultValue": true
+    },
+    {
+      "displayName": "open-delay",
+      "type": "number",
+      "description": "Drawer 打开的延时时间，单位毫秒",
+      "defaultValue": 0
+    },
+    {
+      "displayName": "close-delay",
+      "type": "number",
+      "description": "Drawer 关闭的延时时间，单位毫秒",
+      "defaultValue": 0
+    },
+    {
+      "displayName": "destroy-on-close",
+      "type": "boolean",
+      "description": "控制是否在关闭 Drawer 之后将子元素全部销毁",
+      "defaultValue": false
+    },
+    {
+      "displayName": "modal",
+      "type": "boolean",
+      "description": "是否需要遮罩层",
+      "defaultValue": true
+    },
+    {
+      "displayName": "direction",
+      "type": "enum",
+      "description": "Drawer 打开的方向",
+      "defaultValue": "rtl"
+    },
+    {
+      "displayName": "show-close",
+      "type": "boolean",
+      "description": "是否显示关闭按钮",
+      "defaultValue": true
+    },
+    {
+      "displayName": "size",
+      "type": "number / string",
+      "description": "Drawer 窗体的大小, 当使用 number 类型时, 以像素为单位, 当使用 string 类型时, 请传入 'x%', 否则便会以 number 类型解释",
+      "defaultValue": "30%"
+    },
+    {
+      "displayName": "title",
+      "type": "string",
+      "description": "Drawer 的标题，也可通过具名 slot 传入",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "with-header",
+      "type": "boolean",
+      "description": "控制是否显示 header 栏, 默认为 true, 当此项为 false 时, title attribute 和 title slot 均不生效",
+      "defaultValue": true
+    },
+    {
+      "displayName": "modal-class",
+      "type": "string",
+      "description": "遮罩层的自定义类名",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "z-index",
+      "type": "number",
+      "description": "设置 z-index",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "header-aria-level",
+      "type": "string",
+      "description": "header 的 aria-level 属性",
+      "defaultValue": "2"
+    }
+  ],
+  "events": [
+    {
+      "displayName": "open",
+      "type": "Function",
+      "description": "Drawer 打开的回调",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "opened",
+      "type": "Function",
+      "description": "Drawer 打开动画结束时的回调",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "close",
+      "type": "Function",
+      "description": "Drawer 关闭的回调",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "closed",
+      "type": "Function",
+      "description": "Drawer 关闭动画结束时的回调",
+      "defaultValue": ""
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "default",
+      "type": "slot",
+      "description": "Drawer 的内容",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "header",
+      "type": "slot",
+      "description": "Drawer 标题的内容；会替换标题部分，但不会移除关闭按钮。",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "title",
+      "type": "slot",
+      "description": "与 header 作用相同，请使用 header",
+      "defaultValue": "",
+      "deprecated": true
+    },
+    {
+      "displayName": "footer",
+      "type": "slot",
+      "description": "Drawer 页脚部分",
+      "defaultValue": ""
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "handleClose",
+      "type": "Function",
+      "description": "用于关闭 Drawer，该方法会调用传入的 before-close 方法。",
+      "defaultValue": ""
+    }
+  ]
+}
