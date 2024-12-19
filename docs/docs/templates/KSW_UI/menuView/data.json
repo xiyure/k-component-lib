@@ -60,11 +60,15 @@
   "events": [
     {
       "displayName": "click",
-      "description": "菜单点击事件"
+      "description": "菜单点击事件",
+      "type": "Function",
+      "tip": "() => void"
     },
     {
       "displayName": "select",
-      "description": "菜单选择事件"
+      "description": "菜单选择事件",
+      "type": "Function",
+      "tip": "() => void"
     }
   ],
   "slots": [
