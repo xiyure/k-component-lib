@@ -1,0 +1,241 @@
+{
+  "name": "",
+  "props": [
+    {
+      "displayName": "model-value/v-model",
+      "type": "string",
+      "description": "选中项绑定值",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "placeholder",
+      "type": "string",
+      "description": "占位文本",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "clearable",
+      "type": "boolean",
+      "description": "是否可清空",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "disabled",
+      "type": "boolean",
+      "description": "自动补全组件是否被禁用",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "value-key",
+      "type": "string",
+      "description": "输入建议对象中用于显示的键名",
+      "defaultValue": "value"
+    },
+    {
+      "displayName": "debounce",
+      "type": "number",
+      "description": "获取输入建议的防抖延时，单位为毫秒",
+      "defaultValue": "300"
+    },
+    {
+      "displayName": "placement",
+      "type": "enum",
+      "description": "菜单弹出位置",
+      "defaultValue": "bottom-start"
+    },
+    {
+      "displayName": "fetch-suggestions",
+      "type": "Function",
+      "description": "获取输入建议的方法， 仅当你的输入建议数据 resolve 时，通过调用 callback(data:[]) 来返回它",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "trigger-on-focus",
+      "type": "boolean",
+      "description": "whether show suggestions when input focus",
+      "defaultValue": "true"
+    },
+    {
+      "displayName": "select-when-unmatched",
+      "type": "boolean",
+      "description": "在输入没有任何匹配建议的情况下，按下回车是否触发 select 事件",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "name",
+      "type": "string",
+      "description": "等价于原生 input name 属性",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "label",
+      "type": "string",
+      "description": "输入框关联的 label 文字",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "hide-loading",
+      "type": "boolean",
+      "description": "是否隐藏远程加载时的加载图标",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "popper-class",
+      "type": "string",
+      "description": "下拉列表的类名",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "popper-append-to-body",
+      "type": "boolean",
+      "description": "是否将下拉列表插入至 body 元素。 在下拉列表的定位出现问题时，可将该属性设置为 false",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "teleported",
+      "type": "boolean",
+      "description": "是否将下拉列表元素插入 append-to 指向的元素下",
+      "defaultValue": "true"
+    },
+    {
+      "displayName": "highlight-first-item",
+      "type": "boolean",
+      "description": "是否默认高亮远程搜索结果的第一项",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "fit-input-width",
+      "type": "boolean",
+      "description": "下拉框的宽度是否与输入框相同",
+      "defaultValue": "false"
+    }
+  ],
+  "events": [
+    {
+      "displayName": "change",
+      "description": "在Input值改变时触发",
+      "type": "Function",
+      "tip": "(value: string | number) => void"
+    },
+    {
+      "displayName": "select",
+      "description": "点击选中建议时触发",
+      "type": "Function",
+      "tip": "(item: typeof modelValue | any) => void"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "default",
+      "type": "object",
+      "description": "自定义输入建议的内容。",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "prefix",
+      "type": "string",
+      "description": "输入框头部内容",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "suffix",
+      "type": "string",
+      "description": "输入框尾部内容",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "prepend",
+      "type": "string",
+      "description": "输入框前置内容，在 prefix 之前",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "append",
+      "type": "string",
+      "description": "输入框后置内容，在 suffix 之后",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "loading",
+      "type": "string",
+      "description": "修改加载区域内容",
+      "defaultValue": "",
+      "deprecated": "2.5.0"
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "activated",
+      "type": "object",
+      "description": "自动补全输入框是否被激活",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "blur",
+      "type": "Function",
+      "description": "使 input 失去焦点",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "close",
+      "type": "Function",
+      "description": "折叠建议列表",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "focus",
+      "type": "Function",
+      "description": "使 input 获取焦点",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "handleSelect",
+      "type": "Function",
+      "description": "手动触发选中建议事件",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "handleKeyEnter",
+      "type": "Function",
+      "description": "手动触发键盘回车事件",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "highlightedIndex",
+      "type": "object",
+      "description": "当前高亮显示选项的索引",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "highlight",
+      "type": "Function",
+      "description": "在建议中高亮显示一个项目",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "inputRef",
+      "type": "object",
+      "description": "el-input 组件实例",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "loading",
+      "type": "object",
+      "description": "远程获取提示内容的加载状态指示器",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "popperRef",
+      "type": "object",
+      "description": "el-tooltip 组件实例",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "suggestions",
+      "type": "object",
+      "description": "获取自动补全结果",
+      "defaultValue": ""
+    }
+  ]
+  
+}

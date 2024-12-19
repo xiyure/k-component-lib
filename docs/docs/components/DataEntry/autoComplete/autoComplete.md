@@ -35,3 +35,5 @@ title: Autocomplete 自动补全输入框
 <preview path="./custom-loading.vue" />
 
 ## API
+
+<API src="./data.json" lang="zh"></API>
