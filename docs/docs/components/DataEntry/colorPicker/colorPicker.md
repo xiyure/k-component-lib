@@ -31,3 +31,7 @@ title: ColorPicker 颜色选择器
 ## 不同尺寸
 
 <preview path="./sizeColorPicker.vue" />
+
+## API
+
+<API src="./data.json" lang="zh"></API>
