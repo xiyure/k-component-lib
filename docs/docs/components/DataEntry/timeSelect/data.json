@@ -1,0 +1,136 @@
+{
+  "name": "",
+  "props": [
+    {
+      "displayName": "model-value / v-model",
+      "type": "string",
+      "description": "选中项绑定值",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "disabled",
+      "type": "boolean",
+      "description": "禁用状态",
+      "defaultValue": false
+    },
+    {
+      "displayName": "editable",
+      "type": "boolean",
+      "description": "文本框可输入",
+      "defaultValue": true
+    },
+    {
+      "displayName": "clearable",
+      "type": "boolean",
+      "description": "是否显示清除按钮",
+      "defaultValue": true
+    },
+    {
+      "displayName": "size",
+      "type": "enum",
+      "description": "输入框尺寸",
+      "defaultValue": "default"
+    },
+    {
+      "displayName": "placeholder",
+      "type": "string",
+      "description": "非范围选择时的占位内容",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "name",
+      "type": "string",
+      "description": "原生属性",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "effect",
+      "type": "string / enum",
+      "description": "Tooltip 主题，内置了 dark / light 两种主题",
+      "defaultValue": "light"
+    },
+    {
+      "displayName": "prefix-icon",
+      "type": "string / Component",
+      "description": "自定义前缀图标",
+      "defaultValue": "Clock"
+    },
+    {
+      "displayName": "clear-icon",
+      "type": "string / Component",
+      "description": "自定义清除图标",
+      "defaultValue": "CircleClose"
+    },
+    {
+      "displayName": "start",
+      "type": "string",
+      "description": "开始时间",
+      "defaultValue": "09:00"
+    },
+    {
+      "displayName": "end",
+      "type": "string",
+      "description": "结束时间",
+      "defaultValue": "18:00"
+    },
+    {
+      "displayName": "step",
+      "type": "string",
+      "description": "间隔时间",
+      "defaultValue": "00:30"
+    },
+    {
+      "displayName": "min-time",
+      "type": "string",
+      "description": "最早时间点，早于该时间的时间段将被禁用",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "max-time",
+      "type": "string",
+      "description": "最晚时间点，晚于该时间的时间段将被禁用",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "format",
+      "type": "string",
+      "description": "设置时间格式",
+      "defaultValue": "HH:mm"
+    }
+  ],
+  "events": [
+    {
+      "displayName": "change",
+      "type": "Function",
+      "description": "用户确认选定的值时触发",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "blur",
+      "type": "Function",
+      "description": "在组件 Input 失去焦点时触发",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "focus",
+      "type": "Function",
+      "description": "在组件 Input 获得焦点时触发",
+      "defaultValue": ""
+    }
+  ],
+  "slots": [],
+  "methods": [
+    {
+      "displayName": "focus",
+      "type": "Function",
+      "description": "使 input 获取焦点",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "blur",
+      "type": "Function",
+      "description": "使 input 失去焦点",
+      "defaultValue": ""
+    }
+  ]
+}

@@ -33,3 +33,7 @@ title: TimeSelect 时间选择
 如果先选中了开始（或结束）时间，则结束（或开始）时间的状态也将会随之改变。
 
 <preview path="./timeRang" />
+
+## API
+
+<API src="./data.json" lang="zh"></API>
