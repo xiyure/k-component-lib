@@ -4,7 +4,7 @@ title: TreeSelect 树形选择
 
 # TreeSelect 树形选择
 
-含有下拉菜单的树形选择器，结合了 el-tree 和 el-select 两个组件的功能。
+含有下拉菜单的树形选择器，结合了 k-tree 和 k-select 两个组件的功能。
 
 ## 基础用法
 
