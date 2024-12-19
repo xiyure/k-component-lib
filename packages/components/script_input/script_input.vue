@@ -21,30 +21,31 @@ template
             </k-button>
             <slot name="prepend"></slot>
           </div>
-          <div
-            ref="KScriptInput"
-            :class="['k-script-input', _styleModule]"
-            class="flex-1"
-            :style="{
-              height: height,
-            }"
-            contenteditable
-            :spellcheck="false"
-            @input="handleInput"
-            @blur="handleBlur"
-            @focus="handleFocus"
-            @compositionstart="
-              () => {
-                isAllowInput = false;
-              }
-            "
-            @compositionend="
-              (e: CompositionEvent) => {
-                isAllowInput = true;
-                handleInput(e);
-              }
-            "
-          ></div>
+          <div class="flex-1">
+            <div
+              ref="KScriptInput"
+              :class="['k-script-input', _styleModule]"
+              :style="{
+                height: height,
+              }"
+              contenteditable
+              :spellcheck="false"
+              @input="handleInput"
+              @blur="handleBlur"
+              @focus="handleFocus"
+              @compositionstart="
+                () => {
+                  allowInput = false;
+                }
+              "
+              @compositionend="
+                (e: CompositionEvent) => {
+                  allowInput = true;
+                  handleInput(e);
+                }
+              "
+            ></div>
+          </div>
           <div class="k-script-input-append">
             <slot name="append"></slot>
             <k-button v-if="showPopperSwitch" @click="showPopper">
@@ -56,7 +57,7 @@ template
       <div>
         <el-scrollbar>
           <k-tree-table
-            v-if="showTree"
+            v-if="allowShowTree"
             id="k-script-input-tree"
             class="mytable-scrollbar"
             ref="$tree"
@@ -65,11 +66,11 @@ template
             :use-tree="useTree"
             :column="columns"
             :data="options"
-            :show-search-input="isShowInput"
+            :show-search-input="showTreeSearch"
             :show-filter="false"
             :show-header="false"
             :show-page="false"
-            :show-header-tools="isShowInput"
+            :show-header-tools="showTreeSearch"
             :cell-click-toggle-highlight="false"
             :show-description="false"
             :show-refresh="false"
@@ -110,17 +111,18 @@ import {
   nextTick,
   onUnmounted,
 } from 'vue';
+import { ElScrollbar } from 'element-plus';
 import { ScriptInputProps, ScriptOptions } from './type';
 import Message from '../message';
 import { genRandomStr, allTreeDataToArray } from '../../utils';
 import { Row, RowData } from '../tree_table';
 
+type FocusRange = { node: Node | null | undefined; offset: number | undefined };
 defineOptions({
   name: 'KScriptInput',
 });
 
 const _styleModule = inject('_styleModule', '');
-const diff = inject<any>('__diffMatchPatch');
 
 const props = withDefaults(defineProps<ScriptInputProps>(), {
   options: () => [],
@@ -150,6 +152,7 @@ onBeforeUnmount(() => {
   document.removeEventListener('click', hidePopperByClick);
 });
 
+const focusRange: FocusRange = { node: undefined, offset: 0};
 // 动态类名
 const dynamicClassName = `_${genRandomStr(8)}`;
 // 列配置
@@ -160,17 +163,14 @@ const $tree = ref();
 const KScriptInputWrapper = ref();
 // 当前是否字符串模式
 const _isStringMode = ref(props.defaultMode === 'string');
-// @ts-ignore: unknown warning
-let preTextValue: string = '';
 let cacheRes = '';
 const curInput = ref('');
 const selectedIndex = ref<number>(0);
 let isManual = false;
 const popperVisible = ref(false);
-const isAllowInput = ref(true);
-let canFocus = false;
-const showTree = ref(false);
-const isShowInput = ref(false);
+const allowInput = ref(true);
+const allowShowTree = ref(false);
+const showTreeSearch = ref(false);
 const popoverWidth = ref(0);
 // 表达式相关
 const funcReg = /fx\((.*?)\)/;
@@ -203,6 +203,7 @@ watch(
     }
     $tree.value?.filter(curInput.value);
     if ($tree.value?.getVisibleData()?.length) {
+      updateFocusRange();
       popperVisible.value = true;
     } else {
       popperVisible.value = false;
@@ -225,9 +226,6 @@ watch(
       const innerText = parseModelValue(props.modelValue.toString());
       setEditorContent(innerText);
       cacheRes = props.modelValue.toString();
-      preTextValue = getEditorContent();
-      tempText = preTextValue;
-      resetCursor();
     });
   },
   { immediate: true, deep: true },
@@ -243,9 +241,8 @@ function getEditorContent() {
 function setEditorContent(value: string) {
   KScriptInput.value.innerHTML = value;
 }
-let tempText = '';
 function handleInput(event: InputEvent | CompositionEvent) {
-  if (!(event.target instanceof HTMLElement) || !isAllowInput.value) {
+  if (!(event.target instanceof HTMLElement) || !allowInput.value) {
     return;
   }
   if (event.data === ' ') {
@@ -255,14 +252,11 @@ function handleInput(event: InputEvent | CompositionEvent) {
   } else if (event.data !== null) {
     curInput.value += event.data ?? '';
   }
-  preTextValue = tempText;
-  tempText = getEditorContent();
   const { result = '' } = parseInputValue();
   updateModelValue(result);
 }
 function handleFocus() {
-  showTree.value = true;
-  canFocus = true;
+  allowShowTree.value = true;
   emits('focus');
 }
 function handleBlur(event: FocusEvent) {
@@ -271,10 +265,9 @@ function handleBlur(event: FocusEvent) {
   }
   const popperElem = getElement(`.${dynamicClassName}`);
   if (popperElem && !popperElem.contains(event.relatedTarget as Node)) {
-    canFocus = false;
     emits('blur');
     emits('change', parseInputValue());
-    showTree.value = false;
+    allowShowTree.value = false;
     popperVisible.value = false;
   }
 }
@@ -290,11 +283,8 @@ function cellClick({ row }: { row: Row }) {
   selectOption(row);
 }
 function selectOption(data: Row | RowData) {
-  const { value, key } = handleInputContent(data);
+  const key = handleInputContent(data);
   curInput.value = '';
-  setEditorContent(value);
-  preTextValue = getEditorContent();
-  tempText = preTextValue;
   resetCursor(key);
   emits('select', data);
   popperVisible.value = false;
@@ -304,45 +294,44 @@ function selectOption(data: Row | RowData) {
     emits('change', res);
   });
 }
+// 将选择的脚本标签转化成dom节点并插入到编辑框中，注意两种选择场景下的差异性
 function handleInputContent(data: Row | RowData) {
   const key = genRandomStr(8);
   const content = _isStringMode.value ? generateScriptTag(data.label, key) : data.value;
-  if (isManual) {
-    return {
-      value: getEditorContent() + content,
-      key,
-    };
-  }
-  const diffText = diff.diff_main(preTextValue, getEditorContent());
-  let replaceText = '';
-  const firstSameObj = diffText.find((diff: [number, string]) => diff[0] === 0);
-  const firstSameText = firstSameObj?.[1] ?? '';
-  const [firstDiffIndex, firstDiffText] = diffText.find(
-    (diff: [number, string]) => diff[0] !== 0,
-  ) ?? [-2, ''];
-  if (firstDiffIndex === 1) {
-    replaceText = (firstSameText + firstDiffText).slice(0, -curInput.value.length);
-  } else if (firstDiffIndex === -1) {
-    replaceText = firstSameText.slice(0, -curInput.value.length);
-  } else {
-    replaceText = firstSameText;
-  }
-  let validText = '';
-  if (firstSameObj) {
-    firstSameObj[1] = `${replaceText}${content}`;
-    validText = diffText
-      .filter((diff: [number, string]) => diff[0] === 0)
-      .map((diff: [number, string]) => diff[1])
-      .join('');
-  } else {
-    validText = content;
-  }
-
-  return {
-    value: validText,
-    key,
-  };
+  handleManualInput(content);
+  return key;
 }
+function handleManualInput(content: string) {
+  const domParser = new DOMParser();
+  const doc = domParser.parseFromString(content, 'text/html');
+  const targetNode = doc.body.firstChild as Node;
+  const { node, offset } = focusRange;
+  if (!node || offset === undefined) {
+    KScriptInput.value.appendChild(targetNode);
+    return;
+  }
+  if (node.nodeType === 3) {
+    const textContent = node.textContent ?? '';
+    let endIndex = isManual ? offset : offset - curInput.value.length;
+    const fontText = document.createTextNode(textContent.slice(0, endIndex));
+    const newContent = targetNode;
+    const behindText = document.createTextNode(textContent.slice(offset));
+    const parentNode = node.parentNode;
+    parentNode?.replaceChild(behindText, node);
+    parentNode?.insertBefore(newContent, behindText);
+    parentNode?.insertBefore(fontText, newContent);
+    return;
+  }
+  const childNodes = node.childNodes ?? [];
+  if (childNodes.length === 0 || !childNodes[offset]) {
+    node.appendChild(targetNode);
+    return;
+  }
+  if (offset > childNodes.length) {
+    return;
+  }
+  node.insertBefore(targetNode, childNodes[offset]);
+}  
 function parseInputValue() {
   if (!isStringMode()) {
     return {
@@ -446,6 +435,9 @@ function generateScriptTag(content: string, key: string, isError: boolean = fals
   return `<div class="k-script-tag ${isError ? 'is-error' : ''}" data-key="${key}"  contenteditable="false">${content}</div>`;
 }
 function toggleSelect(event: KeyboardEvent) {
+  if (!allowShowTree.value || !popperVisible.value) {
+    return;
+  }
   const dataLength = flattedOptions.value.length;
   const headerElement = getElement(`.${dynamicClassName} .el-input__inner`);
   // 为了防止事件冲突，使用方向键选择脚本时，脚本搜索输入框应失去焦点
@@ -494,7 +486,7 @@ function isHideNode(rowData: RowData) {
 }
 // 解决输入非字符内容时光标无法移到最后的问题
 function resetCursor(key?: string) {
-  if (!canFocus || window.getSelection === undefined) {
+  if (window.getSelection === undefined) {
     return;
   }
   const selection = window.getSelection();
@@ -566,15 +558,16 @@ function onHidePopper() {
   selectedIndex.value = 0;
   $tree.value?.setCurrentRow(null);
   $tree.value?.clearTreeExpand();
-  isShowInput.value = false;
+  showTreeSearch.value = false;
   if (isManual) {
     isManual = false;
   }
 }
 function showPopper() {
-  isShowInput.value = true;
+  showTreeSearch.value = true;
   popperVisible.value = true;
-  showTree.value = true;
+  allowShowTree.value = true;
+  updateFocusRange();
   setTimeout(() => {
     isManual = true;
     curInput.value = '';
@@ -586,6 +579,13 @@ function showPopper() {
 }
 function getElement(selector: string): HTMLInputElement | null {
   return document.querySelector(selector);
+}
+function updateFocusRange() {
+  const selection = window.getSelection();
+  if (selection) {
+    focusRange.node = selection.focusNode;
+    focusRange.offset = selection.focusOffset;
+  }
 }
 function hidePopper() {
   popperVisible.value = false;
@@ -600,7 +600,6 @@ function hidePopperByClick(event: MouseEvent) {
 }
 function clear() {
   setEditorContent('');
-  preTextValue = '';
   curInput.value = '';
 }
 function toggleMode() {

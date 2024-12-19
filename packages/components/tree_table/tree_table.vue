@@ -1123,14 +1123,15 @@ function disposeRowTooltip() {
 function getHeaderControllerData(): TableHeaderControl[] {
   const widthMap = new Map<string, string | undefined>();
   const columns = tableInstance.value?.getColumns();
+  if (!columns) {
+    return [];
+  }
   for (const col of columns) {
     const width = tableInstance.value?.getColumnWidth(col);
     widthMap.set(col.field, width);
   }
-  const { sourceData = [], selectData = [] } =
-    tableTransferRef.value?.[0]?.getTransferData?.() ?? [];
-  const selectSet = new Set(selectData.map((item: TableHeaderControl) => item.key));
-  const newTransferData = sourceData.map((item: TableHeaderControl) => ({
+  const selectSet = new Set(selectData.value.map((item: TableHeaderControl) => item.key));
+  const newTransferData = originData.value.map((item: TableHeaderControl) => ({
     label: item.label,
     key: item.key,
     width: widthMap.get(item.key) ?? '',

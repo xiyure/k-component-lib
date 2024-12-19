@@ -62,7 +62,6 @@
   "author": "zhj",
   "license": "MIT",
   "dependencies": {
-    "diff-match-patch": "^1.0.5",
     "dom-zindex": "^1.0.6",
     "i": "^0.3.7",
     "npm": "^10.8.3",
