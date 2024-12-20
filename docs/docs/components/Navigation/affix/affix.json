@@ -1,0 +1,61 @@
+{
+  "name": "affix",
+  "props": [
+    {
+      "displayName": "offset",
+      "type": "number",
+      "description": "偏移距离",
+      "defaultValue": 0
+    },
+    {
+      "displayName": "position",
+      "type": "enum",
+      "description": "固钉位置",
+      "defaultValue": "top"
+    },
+    {
+      "displayName": "target",
+      "type": "string",
+      "description": "指定容器（CSS 选择器）",
+      "defaultValue": null
+    },
+    {
+      "displayName": "z-index",
+      "type": "number",
+      "description": "z-index",
+      "defaultValue": 100
+    }
+  ],
+  "events": [
+    {
+      "displayName": "change",
+      "type": "Function",
+      "description": "固钉状态改变时触发的事件"
+    },
+    {
+      "displayName": "scroll",
+      "type": "Function",
+      "description": "滚动时触发的事件"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "default",
+      "type": "slot",
+      "description": "自定义默认内容",
+      "defaultValue": ""
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "update",
+      "type": "Function",
+      "description": "手动更新固钉状态"
+    },
+    {
+      "displayName": "updateRoot",
+      "type": "Function",
+      "description": "手动更新根元素的盒模型信息"
+    }
+  ]
+}
