@@ -1131,7 +1131,9 @@ function getHeaderControllerData(): TableHeaderControl[] {
     widthMap.set(col.field, width);
   }
   const selectSet = new Set(selectData.value.map((item: TableHeaderControl) => item.key));
-  const newTransferData = originData.value.map((item: TableHeaderControl) => ({
+  const transferInstance = tableTransferRef.value?.[0];
+  const _originData = transferInstance ? transferInstance.getTransferData().sourceData : originData.value;
+  const newTransferData = _originData.map((item: TableHeaderControl) => ({
     label: item.label,
     key: item.key,
     width: widthMap.get(item.key) ?? '',
