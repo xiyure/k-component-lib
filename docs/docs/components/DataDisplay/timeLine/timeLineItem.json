@@ -1,0 +1,73 @@
+{
+  "name": "TimeLine-Item",
+  "props": [
+    {
+      "displayName": "timestamp",
+      "type": "string",
+      "description": "时间戳",
+      "defaultValue": "''"
+    },
+    {
+      "displayName": "hide-timestamp",
+      "type": "boolean",
+      "description": "是否隐藏时间戳",
+      "defaultValue": false
+    },
+    {
+      "displayName": "center",
+      "type": "boolean",
+      "description": "是否垂直居中",
+      "defaultValue": false
+    },
+    {
+      "displayName": "placement",
+      "type": "enum",
+      "description": "时间戳位置",
+      "defaultValue": "bottom"
+    },
+    {
+      "displayName": "type",
+      "type": "enum",
+      "description": "节点类型",
+      "defaultValue": "''"
+    },
+    {
+      "displayName": "color",
+      "type": "enum",
+      "description": "节点颜色",
+      "defaultValue": "''"
+    },
+    {
+      "displayName": "size",
+      "type": "enum",
+      "description": "节点尺寸",
+      "defaultValue": "normal"
+    },
+    {
+      "displayName": "icon",
+      "type": "string / Component",
+      "description": "自定义图标",
+      "defaultValue": null
+    },
+    {
+      "displayName": "hollow",
+      "type": "boolean",
+      "description": "是否空心点",
+      "defaultValue": false
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "default",
+      "description": "customize default content for timeline item",
+      "parameters": ""
+    },
+    {
+      "displayName": "dot",
+      "description": "customize defined node for timeline item",
+      "parameters": ""
+    }
+  ],
+  "methods": []
+}
