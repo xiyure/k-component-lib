@@ -51,3 +51,5 @@ title: Carousel 走马灯
 ## API
 
 <API src="./data.json" lang="zh"></API>
+
+<API src="./itemData.json" lang="zh"></API>

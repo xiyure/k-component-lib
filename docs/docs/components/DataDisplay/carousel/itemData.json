@@ -1,0 +1,27 @@
+{
+  "name": "Carousel-Item",
+  "props": [
+    {
+      "displayName": "name",
+      "type": "string",
+      "description": "幻灯片的名字，可用作 `setActiveItem` 的参数",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "label",
+      "type": "string",
+      "description": "该幻灯片所对应指示器的文本",
+      "defaultValue": "0"
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "",
+      "type": "object",
+      "description": "自定义默认内容",
+      "defaultValue": ""
+    }
+  ],
+  "methods": []
+}
