@@ -45,3 +45,7 @@ title: Tag 标签
 `check-tag` 的基础使用方法，`check-tag` 提供的 API 非常简单。
 
 <preview path="./selectedTag.vue" />
+
+## API
+
+<API src="./tag.json" lang="zh"></API>

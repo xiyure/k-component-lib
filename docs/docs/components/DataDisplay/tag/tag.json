@@ -1,0 +1,77 @@
+{
+  "name": "Tag",
+  "props": [
+    {
+      "displayName": "type",
+      "type": "enum",
+      "description": "标签类型",
+      "defaultValue": "",
+      "tip": "'primary' | 'success' | 'warning' | 'danger' | 'info'"
+    },
+    {
+      "displayName": "closeable",
+      "type": "boolean",
+      "description": "是否可关闭",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "disable-transitions",
+      "type": "boolean",
+      "description": "是否禁用渐变动画",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "hit",
+      "type": "boolean",
+      "description": "是否有边框描边",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "color",
+      "type": "string",
+      "description": "标签背景颜色",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "size",
+      "type": "enum",
+      "description": "标签大小",
+      "defaultValue": "base",
+      "tip": "base' | 'sm'"
+    },
+    {
+      "displayName": "point",
+      "type": "boolean",
+      "description": "是否使用圆点标签",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "round",
+      "type": "boolean",
+      "description": "是否使用圆角标签",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "border",
+      "type": "boolean",
+      "description": "是否添加边框描边",
+      "defaultValue": "false",
+      "tip": ""
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "default",
+      "description": "默认插槽，用于放置标签内容",
+      "parameters": ""
+    }
+  ],
+  "methods": []
+}

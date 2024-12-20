@@ -36,5 +36,5 @@ Transfer 的数据通过 data 属性传入。 数据需要是一个对象数组�
 
 ## API
 
-<API src="./tree_transfer.json" lang="zh"></API>
+<API src="./transfer.json" lang="zh"></API>
 

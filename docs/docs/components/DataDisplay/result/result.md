@@ -16,4 +16,4 @@ title: Result 结果
 
 ## API
 
-<API src="./result.json" lang="zh"></API> -->
+<API src="./result.json" lang="zh"></API>
