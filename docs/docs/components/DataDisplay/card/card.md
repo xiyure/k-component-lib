@@ -35,3 +35,7 @@ title: card 卡片
 通过 `shadow` 属性设置卡片阴影出现的时机。 该属性的值可以是：`always`、`hover` 或 `never`。
 
 <preview path="./shadow.vue" />
+
+## API
+
+<API src="./data.json" lang="zh"></API>
