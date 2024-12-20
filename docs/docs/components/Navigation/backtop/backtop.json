@@ -1,0 +1,41 @@
+{
+  "name": "Backtop",
+  "props": [
+    {
+      "displayName": "target",
+      "type": "String",
+      "description": "触发滚动的对象"
+    },
+    {
+      "displayName": "visibility-height",
+      "type": "Number",
+      "description": "滚动高度达到此参数值才出现"
+    },
+    {
+      "displayName": "right",
+      "type": "Number",
+      "description": "控制其显示位置，距离页面右边距"
+    },
+    {
+      "displayName": "bottom",
+      "type": "Number",
+      "description": "控制其显示位置，距离页面底部距离"
+    }
+  ],
+  "events": [
+    {
+      "displayName": "click",
+      "type": "Function",
+      "description": "点击按钮触发的事件"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "default",
+      "type": "slot",
+      "description": "自定义默认内容",
+      "defaultValue": ""
+    }
+  ],
+  "methods": []
+}

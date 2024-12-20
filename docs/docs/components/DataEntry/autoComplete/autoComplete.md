@@ -36,4 +36,4 @@ title: Autocomplete 自动补全输入框
 
 ## API
 
-<API src="./data.json" lang="zh"></API>
+<API src="./autoComplete.json" lang="zh"></API>
