@@ -1,0 +1,33 @@
+{
+  "name": "",
+  "props": [
+    {
+      "displayName": "model-value / v-model",
+      "type": "Date",
+      "description": "选中项绑定值",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "range",
+      "type": "array",
+      "description": "时间范围，包括开始时间与结束时间。开始时间必须是周起始日，结束时间必须是周结束日，且时间跨度不能超过两个月。",
+      "defaultValue": ""
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "date-cell",
+      "type": "object",
+      "description": "包含日期单元格信息的对象。type 表示该日期的所属月份，可选值有 prev-month、current-month 和 next-month；isSelected 标明该日期是否被选中；day 是格式化的日期，格式为 yyyy-MM-dd；date 是单元格的日期。",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "header",
+      "type": "object",
+      "description": "卡片标题内容",
+      "defaultValue": ""
+    }
+  ],
+  "methods": []
+}

@@ -34,12 +34,6 @@ title: calendar 日历
 
 <preview path="./lunarCalendar.vue" />
 
-<!-- ## 国际化
+## API
 
-由于 Element Plus 的默认语言为英语，如果你需要设置其它的语言，请参考国际化文档。
-
-要注意的是：日期相关的文字（月份，每一周的第一天等等）也都是通过国际化来配置的。 -->
-
-<!-- <API src="./collapse.json" lang="zh"></API>
-
-<API src="./collapse_item.json" lang="zh"></API> -->
+<API src="./data.json" lang="zh"></API>
