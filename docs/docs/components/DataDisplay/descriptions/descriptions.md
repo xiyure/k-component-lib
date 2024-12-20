@@ -17,3 +17,9 @@ title: Descriptions 描述列表
 ## 垂直列表
 
 <preview path="./verticalDescriptions.vue" />
+
+## API
+
+<API src="./descriptions.json" lang="zh"></API>
+
+<API src="./descriptionsItem.json" lang="zh"></API>

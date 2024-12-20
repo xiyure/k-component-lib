@@ -33,3 +33,8 @@ Transfer 的数据通过 data 属性传入。 数据需要是一个对象数组�
 本例中的数据源没有 key 和 label 字段，在功能上与它们相同的字段名为 value 和 desc。 因此可以使用props 属性为 key 和 label 设置别名。
 
 <preview path="./propertyItemAlias" />
+
+## API
+
+<API src="./tree_transfer.json" lang="zh"></API>
+

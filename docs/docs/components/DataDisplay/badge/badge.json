@@ -1,0 +1,45 @@
+{
+  "name": "Badge",
+  "props": [
+    {
+      "displayName": "value",
+      "type": "string / number",
+      "description": "显示值",
+      "defaultValue": "''"
+    },
+    {
+      "displayName": "max",
+      "type": "number",
+      "description": "最大值，超过最大值会显示 {max}+。 只有当 value 是数字类型时起作用。",
+      "defaultValue": "99"
+    },
+    {
+      "displayName": "is-dot",
+      "type": "boolean",
+      "description": "是否显示小圆点。",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "hidden",
+      "type": "boolean",
+      "description": "是否隐藏 Badge。",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "type",
+      "type": "enum",
+      "description": "badge type.",
+      "defaultValue": "danger"
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "default",
+      "type": "slot",
+      "description": "自定义默认内容",
+      "defaultValue": ""
+    }
+  ],
+  "methods": []
+}

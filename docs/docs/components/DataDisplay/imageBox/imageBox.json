@@ -1,0 +1,166 @@
+{
+  "name": "Image",
+  "props": [
+    {
+      "displayName": "src",
+      "type": "string",
+      "description": "图片源地址，同原生属性一致",
+      "defaultValue": "''"
+    },
+    {
+      "displayName": "fit",
+      "type": "enum",
+      "description": "确定图片如何适应容器框，同原生 object-fit",
+      "defaultValue": "''"
+    },
+    {
+      "displayName": "hide-on-click-modal",
+      "type": "boolean",
+      "description": "当开启 preview 功能时，是否可以通过点击遮罩层关闭 preview",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "loading",
+      "type": "enum",
+      "description": "浏览器加载图像的策略，和浏览器原生能力一致",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "lazy",
+      "type": "boolean",
+      "description": "是否使用懒加载",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "scroll-container",
+      "type": "string / object",
+      "description": "开启懒加载功能后，监听 scroll 事件的容器",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "alt",
+      "type": "string",
+      "description": "原生属性 alt",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "referrerpolicy",
+      "type": "string",
+      "description": "原生属性 referrerPolicy。",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "crossorigin",
+      "type": "enum",
+      "description": "原生属性 crossorigin",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "preview-src-list",
+      "type": "object",
+      "description": "开启图片预览功能",
+      "defaultValue": "[]"
+    },
+    {
+      "displayName": "z-index",
+      "type": "number",
+      "description": "设置图片预览的 z-index",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "initial-index",
+      "type": "number",
+      "description": "初始预览图像索引，小于 url-list 的长度",
+      "defaultValue": "0"
+    },
+    {
+      "displayName": "close-on-press-escape",
+      "type": "boolean",
+      "description": "是否可以通过按下 ESC 关闭 Image Viewer",
+      "defaultValue": "true"
+    },
+    {
+      "displayName": "preview-teleported",
+      "type": "boolean",
+      "description": "image-viewer 是否插入至 body 元素上。",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "infinite",
+      "type": "boolean",
+      "description": "是否可以无限循环预览",
+      "defaultValue": "true"
+    },
+    {
+      "displayName": "zoom-rate",
+      "type": "number",
+      "description": "图像查看器缩放事件的缩放速率。",
+      "defaultValue": "1.2"
+    },
+    {
+      "displayName": "min-scale",
+      "type": "number",
+      "description": "图像查看器缩放事件的最小缩放比例",
+      "defaultValue": "0.2"
+    },
+    {
+      "displayName": "max-scale",
+      "type": "number",
+      "description": "图像查看器缩放事件的最大缩放比例",
+      "defaultValue": "7"
+    }
+  ],
+  "events": [
+    {
+      "displayName": "load",
+      "type": "Function",
+      "description": "图片加载成功触发",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "error",
+      "type": "Function",
+      "description": "图片加载失败触发",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "switch",
+      "type": "Function",
+      "description": "切换图像时触发。",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "close",
+      "type": "Function",
+      "description": "当点击 X 按钮或者在 hide-on-click-modal 为 true 时点击遮罩层时触发",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "show",
+      "type": "Function",
+      "description": "当 Viewer 显示时触发",
+      "defaultValue": ""
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "placeholder",
+      "type": "slot",
+      "description": "当图像尚未加载时，自定义的占位符内容",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "error",
+      "type": "slot",
+      "description": "自定义图像加载失败的内容",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "viewer",
+      "type": "slot",
+      "description": "当图像预览时自定义内容",
+      "defaultValue": ""
+    }
+  ],
+  "methods": []
+}

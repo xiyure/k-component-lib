@@ -46,4 +46,4 @@ title: badge 徽章
 
 ## API
 
-<API src="./data.json" lang="zh"></API>
+<API src="./badge.json" lang="zh"></API>

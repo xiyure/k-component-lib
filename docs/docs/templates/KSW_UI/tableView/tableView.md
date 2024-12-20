@@ -12,4 +12,4 @@ title: TableView 表格视图
 
 <preview path="./def.vue" />
 
-<API src="./data.json" lang="zh"></API>
+<API src="./table_view.json" lang="zh"></API>

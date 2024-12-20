@@ -1,0 +1,45 @@
+{
+  "name": "Empty",
+  "props": [
+    {
+      "displayName": "image",
+      "type": "string",
+      "description": "empty 组件的图像地址",
+      "defaultValue": "''"
+    },
+    {
+      "displayName": "image-size",
+      "type": "number",
+      "description": "empty 组件的图像尺寸（宽度）",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "description",
+      "type": "string",
+      "description": "empty 组件的描述信息",
+      "defaultValue": "''"
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "default",
+      "type": "slot",
+      "description": "作为底部内容的内容",
+      "defaultValue": "''"
+    },
+    {
+      "displayName": "image",
+      "type": "slot",
+      "description": "作为图像的内容",
+      "defaultValue": "''"
+    },
+    {
+      "displayName": "description",
+      "type": "slot",
+      "description": "作为描述的内容",
+      "defaultValue": "''"
+    }
+  ],
+  "methods": []
+}

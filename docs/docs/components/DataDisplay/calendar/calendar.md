@@ -36,4 +36,4 @@ title: calendar 日历
 
 ## API
 
-<API src="./data.json" lang="zh"></API>
+<API src="./calendar.json" lang="zh"></API>

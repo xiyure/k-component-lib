@@ -1,0 +1,34 @@
+{
+  "name": "Image",
+  "props": [],
+  "events": [
+    {
+      "displayName": "close",
+      "type": "Function",
+      "description": "当点击 X 按钮或者在 hide-on-click-modal 为 true 时点击遮罩层时触发",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "switch",
+      "type": "Function",
+      "description": "切换图像时触发。",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "rotate",
+      "type": "Function",
+      "description": "旋转图像时触发。",
+      "defaultValue": "",
+      "version": "2.3.13"
+    }
+  ],
+  "slots": [],
+  "methods": [
+    {
+      "displayName": "setActiveItem",
+      "type": "Function",
+      "description": "手动切换图片",
+      "defaultValue": ""
+    }
+  ]
+}

@@ -215,7 +215,7 @@
     {
       "displayName": "inputRef",
       "type": "object",
-      "description": "el-input 组件实例",
+      "description": "k-input 组件实例",
       "defaultValue": ""
     },
     {
@@ -227,7 +227,7 @@
     {
       "displayName": "popperRef",
       "type": "object",
-      "description": "el-tooltip 组件实例",
+      "description": "k-tooltip 组件实例",
       "defaultValue": ""
     },
     {

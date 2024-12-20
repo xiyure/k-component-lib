@@ -38,4 +38,4 @@ title: card 卡片
 
 ## API
 
-<API src="./data.json" lang="zh"></API>
+<API src="./card.json" lang="zh"></API>
