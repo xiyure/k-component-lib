@@ -1,0 +1,93 @@
+{
+  "name": "Progress",
+  "props": [
+    {
+      "displayName": "percentage",
+      "type": "number",
+      "description": "percentage",
+      "defaultValue": "0",
+      "required": true
+    },
+    {
+      "displayName": "type",
+      "type": "enum",
+      "description": "进度条类型",
+      "defaultValue": "line"
+    },
+    {
+      "displayName": "stroke-width",
+      "type": "number",
+      "description": "进度条的宽度",
+      "defaultValue": "6"
+    },
+    {
+      "displayName": "text-inside",
+      "type": "boolean",
+      "description": "进度条显示文字内置在进度条内（仅 type 为 'line' 时可用）",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "status",
+      "type": "enum",
+      "description": "进度条当前状态",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "indeterminate",
+      "type": "boolean",
+      "description": "是否为动画进度条",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "duration",
+      "type": "number",
+      "description": "控制动画进度条速度和条纹进度条流动速度",
+      "defaultValue": "3"
+    },
+    {
+      "displayName": "color",
+      "type": "string / function / Array",
+      "description": "进度条背景色（会覆盖 status 状态颜色）",
+      "defaultValue": "''"
+    },
+    {
+      "displayName": "width",
+      "type": "number",
+      "description": "环形进度条画布宽度（只在 type 为 circle 或 dashboard 时可用）",
+      "defaultValue": "126"
+    },
+    {
+      "displayName": "show-text",
+      "type": "boolean",
+      "description": "是否显示进度条文字内容",
+      "defaultValue": "true"
+    },
+    {
+      "displayName": "stroke-linecap",
+      "type": "enum",
+      "description": "circle/dashboard 类型路径两端的形状",
+      "defaultValue": "round"
+    },
+    {
+      "displayName": "format",
+      "type": "Function",
+      "description": "指定进度条文字内容",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "striped",
+      "type": "boolean",
+      "description": "在进度条上增加条纹",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "striped-flow",
+      "type": "boolean",
+      "description": "让进度条上的条纹流动起来",
+      "defaultValue": "false"
+    }
+  ],
+  "events": [],
+  "slots": [],
+  "methods": []
+}

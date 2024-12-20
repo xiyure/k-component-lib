@@ -55,3 +55,7 @@ title: Progress 进度条
 通过设置 `striped` 属性获取条纹进度条。 也可以使用 `striped-flow` 属性来使条纹流动起来。 使用`duration` 属性来控制条纹流动的速度。
 
 <preview path="./streakProgress.vue" />
+
+## API
+
+<API src="./progress.json" lang="zh"></API>
