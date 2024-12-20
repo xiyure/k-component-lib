@@ -13,3 +13,7 @@ title: Result 结果
 ## 自定义内容
 
 <preview path="./customResult.vue" />
+
+## API
+
+<API src="./result.json" lang="zh"></API> -->

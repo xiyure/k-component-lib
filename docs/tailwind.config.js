@@ -6,8 +6,7 @@ export default {
     './api/**/*.{js,ts,vue,md}',
     './components/**/*.{js,ts,vue,md}',
     './example/**/*.{js,ts,vue,md}',
-    './docs/**/*.{js,ts,vue,md}',
-    '../packages/**/*.{js,ts,vue,md}'
+    './docs/**/*.{js,ts,vue,md}'
   ],
   theme: {
     extend: {
