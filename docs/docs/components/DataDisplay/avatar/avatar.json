@@ -1,0 +1,63 @@
+{
+  "name": "Badge",
+  "props": [
+    {
+      "displayName": "icon",
+      "type": "string / Component",
+      "description": "设置 Avatar 的图标类型，具体参考 Icon 组件",
+      "defaultValue": null
+    },
+    {
+      "displayName": "size",
+      "type": "number / enum",
+      "description": "Avatar 大小",
+      "defaultValue": "default"
+    },
+    {
+      "displayName": "shape",
+      "type": "enum",
+      "description": "Avatar 形状",
+      "defaultValue": "circle"
+    },
+    {
+      "displayName": "src",
+      "type": "string",
+      "description": "Avatar 图片的源地址",
+      "defaultValue": null
+    },
+    {
+      "displayName": "src-set",
+      "type": "string",
+      "description": "图片 Avatar 的原生 srcset 属性",
+      "defaultValue": null
+    },
+    {
+      "displayName": "alt",
+      "type": "string",
+      "description": "图片 Avatar 的原生 alt 属性",
+      "defaultValue": null
+    },
+    {
+      "displayName": "fit",
+      "type": "enum",
+      "description": "当展示类型为图片的时候，设置图片如何适应容器",
+      "defaultValue": "cover"
+    }
+  ],
+  "events": [
+    {
+      "displayName": "error",
+      "type": "Function",
+      "description": "图片加载失败时触发"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "default",
+      "type": "slot",
+      "description": "自定义头像展示内容",
+      "defaultValue": ""
+    }
+  ],
+  "methods": []
+}
