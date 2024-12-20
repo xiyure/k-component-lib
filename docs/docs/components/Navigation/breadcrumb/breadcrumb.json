@@ -1,0 +1,25 @@
+{
+  "name": "Breadcrumb",
+  "props": [
+    {
+      "displayName": "separator",
+      "type": "String",
+      "description": "分隔符"
+    },
+    {
+      "displayName": "separator-icon",
+      "type": "String | Component",
+      "description": "图标分隔符的组件或组件名"
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "default",
+      "type": "slot",
+      "description": "自定义默认内容",
+      "defaultValue": ""
+    }
+  ],
+  "methods": []
+}
