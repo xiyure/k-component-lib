@@ -45,3 +45,7 @@ title: Pagination 分页
 此示例是一个完整的用例。 使用了 `size-change` 和 `current-change` 事件来处理页码大小和当前页变动时候触发的事件。 `page-sizes`接受一个整数类型的数组，数组元素为展示的选择每页显示个数的选项，`[100, 200, 300, 400]` 表示四个选项，每页显示 100 个，200 个，300 个或者 400 个。
 
 <preview path="./appendPagination.vue" />
+
+## API
+
+<API src="./pagination.json" lang="zh"></API>

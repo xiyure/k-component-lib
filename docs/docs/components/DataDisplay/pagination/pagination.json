@@ -1,0 +1,162 @@
+{
+  "name": "Pagination",
+  "props": [
+    {
+      "displayName": "small",
+      "type": "boolean",
+      "description": "是否使用小型分页样式",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "background",
+      "type": "boolean",
+      "description": "是否为分页按钮添加背景色",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "page-size / v-model:page-size",
+      "type": "number",
+      "description": "每页显示条目个数",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "default-page-size",
+      "type": "number",
+      "description": "每页默认的条目个数，不设置时默认为10",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "total",
+      "type": "number",
+      "description": "总条目数",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "page-count",
+      "type": "number",
+      "description": "总页数， total 和 page-count 设置任意一个就可以达到显示页码的功能；如果要支持 page-sizes 的更改，则需要使用 total 属性",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "pager-count",
+      "type": "number",
+      "description": "设置最大页码按钮数。 页码按钮的数量，当总页数超过该值时会折叠",
+      "defaultValue": "7"
+    },
+    {
+      "displayName": "current-page / v-model:current-page",
+      "type": "number",
+      "description": "当前页数",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "default-current-page",
+      "type": "number",
+      "description": "当前页数的默认初始值，不设置时默认为 1",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "layout",
+      "type": "string",
+      "description": "组件布局，子组件名用逗号分隔",
+      "defaultValue": "prev, pager, next, jumper, ->, total"
+    },
+    {
+      "displayName": "page-sizes",
+      "type": "object",
+      "description": "每页显示个数选择器的选项设置",
+      "defaultValue": "[10, 20, 30, 40, 50, 100]"
+    },
+    {
+      "displayName": "popper-class",
+      "type": "string",
+      "description": "每页显示个数选择器的下拉框类名",
+      "defaultValue": "''"
+    },
+    {
+      "displayName": "prev-text",
+      "type": "string",
+      "description": "替代图标显示的上一页文字",
+      "defaultValue": "''"
+    },
+    {
+      "displayName": "prev-icon",
+      "type": "string / Component",
+      "description": "上一页的图标， 比 prev-text 优先级更高",
+      "defaultValue": "ArrowLeft"
+    },
+    {
+      "displayName": "next-text",
+      "type": "string",
+      "description": "替代图标显示的下一页文字",
+      "defaultValue": "''"
+    },
+    {
+      "displayName": "next-icon",
+      "type": "string / Component",
+      "description": "下一页的图标， 比 next-text 优先级更低",
+      "defaultValue": "ArrowRight"
+    },
+    {
+      "displayName": "disabled",
+      "type": "boolean",
+      "description": "是否禁用分页",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "teleported",
+      "type": "boolean",
+      "description": "是否将下拉菜单teleport至 body",
+      "defaultValue": "true",
+      "version": "2.3.13"
+    },
+    {
+      "displayName": "hide-on-single-page",
+      "type": "boolean",
+      "description": "只有一页时是否隐藏",
+      "defaultValue": "false"
+    }
+  ],
+  "events": [
+    {
+      "displayName": "size-change",
+      "type": "Function",
+      "description": "page-size 改变时触发",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "current-change",
+      "type": "Function",
+      "description": "current-page 改变时触发",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "change",
+      "type": "Function",
+      "description": "current-page 或 page-size 更改时触发",
+      "defaultValue": "",
+      "version": "2.4.4"
+    },
+    {
+      "displayName": "prev-click",
+      "type": "Function",
+      "description": "用户点击上一页按钮改变当前页时触发",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "next-click",
+      "type": "Function",
+      "description": "用户点击下一页按钮改变当前页时触发",
+      "defaultValue": ""
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "default",
+      "type": "slot",
+      "description": "自定义内容 设置文案，需要在 layout 中列出 slot",
+      "defaultValue": ""
+    }
+  ],
+  "methods": []
+}
