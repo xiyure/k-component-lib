@@ -1,0 +1,119 @@
+{
+  "name": "SubMenu",
+  "props": [
+    {
+      "displayName": "index",
+      "type": "string",
+      "description": "唯一标志",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "popper-class",
+      "type": "string",
+      "description": "为 popper 添加类名",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "show-timeout",
+      "type": "number",
+      "description": "子菜单出现之前的延迟，(继承 menu 的 show-timeout 配置)",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "hide-timeout",
+      "type": "number",
+      "description": "子菜单消失之前的延迟，(继承 menu 的 hide-timeout 配置)",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "disabled",
+      "type": "boolean",
+      "description": "是否禁用",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "popper-append-to-body",
+      "type": "boolean",
+      "description": "（已废弃）是否将弹出菜单插入至 body 元素。在菜单的定位出现问题时，可尝试修改该属性",
+      "defaultValue": "一级子菜单：true / 非一级子菜单：false"
+    },
+    {
+      "displayName": "teleported",
+      "type": "boolean",
+      "description": "是否将 popup 的下拉列表插入至 body 元素",
+      "defaultValue": "一级子菜单：true / 非一级子菜单：false"
+    },
+    {
+      "displayName": "popper-offset",
+      "type": "number",
+      "description": "弹出窗口的偏移量 (覆盖 popper的菜单)",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "expand-close-icon",
+      "type": "string | Component",
+      "description": "父菜单展开且子菜单关闭时的图标，expand-close-icon 和 expand-open-icon 需要一起配置才能生效",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "expand-open-icon",
+      "type": "string | Component",
+      "description": "父菜单展开且子菜单打开时的图标，expand-open-icon 和 expand-close-icon 需要一起配置才能生效",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "collapse-close-icon",
+      "type": "string | Component",
+      "description": "父菜单收起且子菜单关闭时的图标，expand-close-icon 和 expand-open-icon 需要一起配置才能生效",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "collapse-open-icon",
+      "type": "string | Component",
+      "description": "父菜单收起且子菜单打开时的图标，expand-open-icon 和 expand-close-icon 需要一起配置才能生效",
+      "defaultValue": "—"
+    }
+  ]
+  ,
+  "events": [
+    {
+      "displayName": "select",
+      "type": "callback",
+      "description": "菜单激活回调"
+    },
+    {
+      "displayName": "open",
+      "type": "callback",
+      "description": "sub-menu 展开的回调"
+    },
+    {
+      "displayName": "close",
+      "type": "callback",
+      "description": "sub-menu 收起的回调"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "",
+      "type": "slot",
+      "description": "自定义默认内容"
+    },
+    {
+      "displayName": "title",
+      "type": "slot",
+      "description": "自定义标题 内容"
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "open",
+      "type": "method",
+      "description": "展开指定的 sub-menu"
+    },
+    {
+      "displayName": "close",
+      "type": "method",
+      "description": "收起指定的 sub-menu"
+    }
+  ]
+}

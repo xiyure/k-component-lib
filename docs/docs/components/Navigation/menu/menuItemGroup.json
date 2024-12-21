@@ -1,0 +1,25 @@
+{
+  "name": "menuItemGroup",
+  "props": [
+    {
+      "displayName": "title",
+      "type": "string",
+      "description": "组标题",
+      "defaultValue": "null"
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "",
+      "type": "slot",
+      "description": "默认默认内容"
+    },
+    {
+      "displayName": "title",
+      "type": "slot",
+      "description": "自定义组标题内容"
+    }
+  ],
+  "methods": []
+}

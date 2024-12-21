@@ -1,0 +1,43 @@
+{
+  "name": "MenuItem",
+  "props": [
+    {
+      "displayName": "index",
+      "type": "string | null",
+      "description": "唯一标志",
+      "defaultValue": "null"
+    },
+    {
+      "displayName": "route",
+      "type": "object",
+      "description": "Vue Router 路径对象",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "disabled",
+      "type": "boolean",
+      "description": "是否禁用",
+      "defaultValue": "false"
+    }
+  ],
+  "events": [
+    {
+      "displayName": "click",
+      "type": "Function",
+      "description": "菜单点击时的回调函数"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "",
+      "type": "slot",
+      "description": "自定义默认内容"
+    },
+    {
+      "displayName": "title",
+      "type": "slot",
+      "description": "自定义标题内容"
+    }
+  ],
+  "methods": []
+}
