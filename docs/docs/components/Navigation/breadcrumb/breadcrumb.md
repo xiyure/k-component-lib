@@ -24,4 +24,4 @@ title: Breadcrumb 面包屑
 
 ## BreadcrumbItem API
 
-<API src="./BreadcrumbItem.json" lang="zh"></API>
+<API src="./breadcrumbItem.json" lang="zh"></API>
