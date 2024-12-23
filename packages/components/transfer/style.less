@@ -16,12 +16,24 @@
       .el-transfer__list {
         padding: 0 !important;
       }
-      .el-transfer-panel__header {
+      .transfer-right-header {
+        display: flex;
         height: 32px;
         padding-left: 10px;
         background-color: var(--k-gray-50);
+        label:nth-child(1) {
+          flex: 1;
+          margin-right: 0;
+          .el-checkbox__label {
+            display: flex;
+            justify-content: space-between;
+            &:span {
+              right: 0;
+              margin-left: 5px;
+            }
+          }
+        }
         .transfer-restore__text {
-          flex-shrink: 0;
           padding-right: 5px;
           color: var(--k-theme-primary);
           cursor: pointer;

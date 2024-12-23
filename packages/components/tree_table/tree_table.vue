@@ -176,10 +176,15 @@
                 v-model="selectData"
                 :data="originData"
                 :default-keys="defaultHeader"
+                :format="{
+                  noChecked: ' ',
+                  hasChecked: ' ',
+                }"
                 :titles="[$t('unselectedFields'), $t('selectedFields')]"
+                :drag="true"
                 @change="updateColumn"
                 @reset="updateColumn"
-                @sort="sortTableHeader"
+                @drag="sortTableHeader"
               ></k-transfer>
             </k-popover>
           </template>
@@ -441,7 +446,7 @@ const xeTableData = ref<RowData[]>([]);
 const query = ref('');
 const searchStr = ref('');
 // 穿梭框
-const selectData = ref<{ label: string; key: string; value?: string }[]>([]);
+const selectData = ref<(string | number)[]>([]);
 const originData = ref<{ label: string; key: string; value?: string }[]>([]);
 const defaultHeader = ref<(string | number)[]>([]);
 // 高级筛选
@@ -917,18 +922,8 @@ function updateTransfer() {
   .filter((item: { label: string; key: string } | undefined) => item !== undefined);
   selectData.value = flatColumns.value
   .filter((col: ColumnConfig) => col.visible !== false)
-  .map((item: ColumnConfig) => {
-    if (item.field) {
-      return {
-        label: item.title || item.type || 'undefined',
-        key: item.field
-      };
-    }
-  })
-  .filter((item: { label: string; key: string } | undefined) => item !== undefined);
-  defaultHeader.value = selectData.value
-  .map((item: ColumnConfig) => item.key)
-  .filter((key: string | number | undefined) => key !== undefined);
+  .map((item: ColumnConfig) => item.field).filter((item) => item !== undefined);
+  defaultHeader.value = [...selectData.value]
 }
 function hideColumn(column: ColumnConfig) {
   if (!__showTransfer.value) {
@@ -943,10 +938,7 @@ function hideColumn(column: ColumnConfig) {
   .filter((col: ColumnConfig) => col.visible !== false)
   .map((item: ColumnConfig) => {
     if (item.title && item.field) {
-      return {
-        label: item.title,
-        key: item.field
-      };
+      return item.field;
     }
   })
   .filter((item) => item !== undefined);
@@ -1130,7 +1122,7 @@ function getHeaderControllerData(): TableHeaderControl[] {
     const width = tableInstance.value?.getColumnWidth(col);
     widthMap.set(col.field, width);
   }
-  const selectSet = new Set(selectData.value.map((item: TableHeaderControl) => item.key));
+  const selectSet = new Set(selectData.value);
   const transferInstance = tableTransferRef.value?.[0];
   const _originData = transferInstance ? transferInstance.getTransferData().sourceData : originData.value;
   const newTransferData = _originData.map((item: TableHeaderControl) => ({
@@ -1161,7 +1153,9 @@ function setHeaderControllerData(transferData: TableHeaderControl[]) {
       disabled: item.disabled ?? false,
       visible: item.visible !== false
     })) ?? [];
-  selectData.value = originData.value.filter((item: TableHeaderControl) => item.visible !== false);
+  selectData.value = originData.value
+   .filter((item: TableHeaderControl) => item.visible !== false)
+   .map((item: TableHeaderControl) => item.key);
   sortTableHeader(transferData);
   resetColumnWidth(transferData);
 }

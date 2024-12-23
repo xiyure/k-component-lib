@@ -1,5 +1,5 @@
 <template>
-  <div :id="id" :class="['k-transfer', _styleModule]">
+  <div :class="['k-transfer', _styleModule]">
     <div class="k-transfer_searcher">
       <k-input
         v-if="filterable"
@@ -9,15 +9,11 @@
       ></k-input>
     </div>
     <el-transfer
-      ref="kTransferRef"
+      ref="KTransferRef"
       v-model="modelValue"
       v-bind="$attrs"
       :data="sourceData"
       :props="props.props"
-      :format="{
-        noChecked: ' ',
-        hasChecked: ' ',
-      }"
       filterable
       @change="handleChange"
       @left-check-change="handleLeftCheckChange"
@@ -29,10 +25,11 @@
         >
           <span class="k-transfer-label">{{ option[defaultPropsConfig.label] }}</span>
           <span
-            id="draggable"
+            v-if="drag && modelValue.includes(option[defaultPropsConfig.key])"
             class="k-transfer-sort"
+            @click.prevent
           >
-            <IconDrag v-if="modelValue.includes(option[defaultPropsConfig.key])" />
+            <component :is="dragIcon ?? 'IconDrag'"></component>
           </span>
         </div>
       </template>
@@ -44,11 +41,11 @@
 import { ref, computed, watch, onMounted, onUnmounted, inject } from 'vue';
 import { ElTransfer, TransferKey, TransferDirection } from 'element-plus';
 import { VueI18nTranslation } from 'vue-i18n';
-import { IconSearch, IconDrag } from 'ksw-vue-icon';
+import { IconSearch } from 'ksw-vue-icon';
 import Sortable, { SortableEvent } from 'sortablejs';
 import { TransferProps } from './type';
 import { KInput } from '../input';
-import { genRandomStr, getExposeProxy, sortBySmallerList } from '../../utils';
+import { getExposeProxy, sortBySmallerList } from '../../utils';
 // @ts-expect-error 引入本地静态图片资源
 import ArrowToLeft from '../../assets/svg/arrow-to-left.svg';
 // @ts-expect-error 引入本地静态图片资源
@@ -70,7 +67,7 @@ const emits = defineEmits([
   'right-check-change',
   'input',
   'reset',
-  'sort'
+  'drag'
 ]);
 
 const _styleModule = inject('_styleModule', '');
@@ -78,10 +75,8 @@ const t = inject<VueI18nTranslation>('$t');
 const modelValue = ref<Array<any>>([]);
 const searchStr = ref('');
 const sourceData = ref<Array<any>>([]);
-let transferBox:HTMLElement | null = null;
-let filterInput: NodeListOf<HTMLInputElement> | undefined;
+const KTransferRef = ref();
 let defaultSourceKeys: string[] = [];
-const id = genRandomStr(8);
 
 onMounted(() => {
   // 根据需求扩展页面内容
@@ -100,25 +95,18 @@ const defaultPropsConfig = computed(() => ({ label: 'label',
 const filterablePlaceholder = computed(() => props.filterablePlaceholder ??
   t?.('searchHeaderName'));
 
-watch(() => [props.modelValue, props.matchKey], () => {
-  modelValue.value = [];
-  if (!Array.isArray(props.modelValue)) {
+watch(() => props.modelValue, (newValue) => {
+  if (!newValue || !Array.isArray(newValue)) {
+    modelValue.value = [];
     return;
   }
-  props.modelValue.forEach(valueItem => {
-    const targetData = props.data.find((item:any) => item[props.matchKey] === valueItem[props.matchKey]);
-    if (targetData) {
-      const { key } = defaultPropsConfig.value;
-      modelValue.value.push(targetData[key]);
-    }
-  });
+  if (JSON.stringify(newValue) === JSON.stringify(modelValue.value)) {
+    return;
+  }
+  modelValue.value = newValue;
 }, { immediate: true });
 watch(() => props.data, (newValue) => {
-  if (newValue) {
-    if (!Array.isArray(newValue)) {
-      sourceData.value = [];
-      defaultSourceKeys.length = 0;
-    }
+  if (Array.isArray(newValue)) {
     sourceData.value = newValue;
     defaultSourceKeys = sourceData.value.map((item: any) => item[defaultPropsConfig.value.key]);
     return;
@@ -127,23 +115,31 @@ watch(() => props.data, (newValue) => {
   defaultSourceKeys.length = 0;
 }, { immediate: true });
 watch(() => searchStr.value, (newValue) => {
+  const filterInput = KTransferRef.value.$el.querySelectorAll('.el-input__inner') as NodeListOf<HTMLInputElement>;
   if (!filterInput || !filterInput.length) {
     return;
   }
   for (let i = 0; i < filterInput.length; i++) {
-    if (filterInput[i]?.value) {
-      continue;
-    }
     filterInput[i].value = newValue;
     const event = new Event('input', { bubbles: true });
     filterInput[i].dispatchEvent(event);
   }
-}, { immediate: true });
+});
 
 function handleChange(value: TransferKey[], direction: TransferDirection, movedKeys?: TransferKey[]) {
-  const newModelValue:number[] = getNewModelValue(value);
-  emits('update:modelValue', newModelValue);
+  emits('update:modelValue', modelValue.value);
   emits('change', value, direction, movedKeys);
+  // todo: ElementPlus中Transfer组件配合sortablejs实现拖拽时存在问题，这里在modelValue为空时删除dom以维持正常显示
+  if (modelValue.value.length === 0) {
+    const rightPanelElem = KTransferRef.value.$el.querySelectorAll('.el-transfer-panel__list')[1];
+    const childrenNodes = rightPanelElem?.children ?? [];
+    for (let i = 0; i < childrenNodes.length; i++) {
+      if (childrenNodes[i].tagName.toLocaleUpperCase() === 'LABEL') {
+        rightPanelElem.removeChild(childrenNodes[i]);
+        i--;
+      }
+    }
+  }
 }
 function handleLeftCheckChange(value: TransferKey[], movedKeys?: TransferKey[]) {
   emits('left-check-change', value, movedKeys);
@@ -152,14 +148,13 @@ function handleRightCheckChange(value: TransferKey[], movedKeys?: TransferKey[])
   emits('right-check-change', value, movedKeys);
 }
 function extendContent() {
-  transferBox = document.getElementById(id);
-  if (transferBox === null) {
+  if (!KTransferRef.value) {
     return;
   }
-  // 获取第三方组件内部输入框节点，方便组件内直接操作
-  filterInput = transferBox.querySelectorAll('.el-transfer-panel__filter input');
   // 在第三方组件中添加自定义文本
-  const transferHeader = transferBox.querySelectorAll('.el-transfer-panel__header')[1];
+  const transferElem = KTransferRef.value.$el;
+  const transferHeader = transferElem.querySelectorAll('.el-transfer-panel__header')[1];
+  transferHeader.classList.add('transfer-right-header');
   const label = document.createElement('label');
   label.innerHTML = t?.('restoreDefault') as string;
   label.classList.add('transfer-restore__text');
@@ -168,7 +163,7 @@ function extendContent() {
   });
   transferHeader.appendChild(label);
   // 替换第三方组件内部图标
-  const transButton = transferBox.querySelectorAll('.el-transfer__button');
+  const transButton = transferElem.querySelectorAll('.el-transfer__button');
   transButton[0].innerHTML = `<img class="k-transfer__left-arrow" src="${ArrowToLeft}" />`;
   transButton[1].innerHTML = `<img class="k-transfer__right-arrow" src="${ArrowToRight}" />`;
 }
@@ -177,28 +172,18 @@ function resetTransferData() {
     return;
   }
   const { key } = defaultPropsConfig.value;
-  const newModelValue = props.data.filter(item => props.defaultKeys?.includes(item[key]));
   sourceData.value.sort((a: any, b: any) => defaultSourceKeys.indexOf(a[key]) - defaultSourceKeys.indexOf(b[key]));
-  emits('update:modelValue', newModelValue);
+  emits('update:modelValue', [...props.defaultKeys]);
   emits('reset', [...props.defaultKeys]);
-  emits('sort', sourceData.value);
-}
-function getNewModelValue(value:Array<any>) {
-  const newModelValue:number[] = [];
-  const { key } = defaultPropsConfig.value;
-  for (const index of value) {
-    const findItem = sourceData.value.find((item:any) => item[key] === index);
-    if (findItem) {
-      newModelValue.push(findItem);
-    }
-  }
-  return newModelValue;
 }
 
 // 拖拽排序
 let sortable: Sortable | null = null;
 function initSortable() {
-  const dragElem = document.getElementById(id)?.querySelectorAll('.el-transfer-panel__list')?.[1] as HTMLElement;
+  if (!props.drag) {
+    return;
+  }
+  const dragElem = KTransferRef.value.$el?.querySelectorAll('.el-transfer-panel__list')?.[1] as HTMLElement;
   if (!dragElem) {
     return;
   }
@@ -210,11 +195,15 @@ function initSortable() {
       if (newIndex === oldIndex || newIndex === undefined || oldIndex === undefined) {
         return;
       }
-      modelValue.value.splice(newIndex, 0, modelValue.value.splice(oldIndex, 1)[0]);
+      const deleteItem = modelValue.value.splice(oldIndex, 1)[0];
+      if (!deleteItem) {
+        return;
+      }
+      modelValue.value.splice(newIndex, 0, deleteItem)
+      modelValue.value = [...modelValue.value];
       sourceData.value = sortBySmallerList(sourceData.value, modelValue.value, props.props?.key ?? 'key');
-      const newModelValue:number[] = getNewModelValue(modelValue.value);
-      emits('update:modelValue', newModelValue);
-      emits('sort', sourceData.value);
+      emits('update:modelValue', modelValue.value);
+      emits('drag', sourceData.value);
     }
   });
 }
@@ -222,13 +211,11 @@ function initSortable() {
 function getTransferData() {
   return {
     sourceData: sourceData.value,
-    selectData: getNewModelValue(modelValue.value)
+    selectData: modelValue.value,
   };
 }
-
-const kTransferRef = ref(null);
 const instance: any = { getTransferData };
-defineExpose(getExposeProxy(instance, kTransferRef));
+defineExpose(getExposeProxy(instance, KTransferRef));
 </script>
 
 <style lang="less">

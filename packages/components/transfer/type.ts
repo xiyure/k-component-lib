@@ -1,5 +1,7 @@
+import { Component } from "vue"
+
 export interface TransferProps {
-  modelValue: Array<any>
+  modelValue: Array<string | number>
   data: any[]
   filterablePlaceholder?: string
   props?: {
@@ -10,4 +12,6 @@ export interface TransferProps {
   matchKey?: string
   defaultKeys?: (string | number)[]
   filterable?: boolean
+  drag?: boolean
+  dragIcon?: string | Component
 }
