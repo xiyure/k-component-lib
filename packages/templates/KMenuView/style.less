@@ -66,7 +66,7 @@
             background-color: #051627;
             color: hsla(0, 0%, 100%, 0.65);
             padding: 0 1.75rem;
-            &:hover:not(.is-disabled) {
+            &:hover:not(.is-disabled.is-active) {
               color: #fff;
             }
             & + .el-menu.el-menu--inline {
@@ -77,6 +77,10 @@
               .el-menu-item {
                 padding-left: calc(var(--el-menu-level) * 1.75rem + 1.75rem + 0.75rem);
               }
+            }
+            &.is-active {
+              color: #fff;
+              background-color: var(--k-theme-primary);
             }
           }
         }
@@ -103,4 +107,8 @@
   .os-scrollbar-handle {
     background: rgba(255, 255, 255, 0.2);
   }
+}
+.is-active {
+  color: #fff;
+  background-color: var(--k-theme-primary);
 }
