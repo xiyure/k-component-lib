@@ -1,0 +1,70 @@
+{
+  "name": "SubMenu",
+  "props": [
+    {
+      "displayName": "icon",
+      "type": "string / Component",
+      "description": "Page Header 的图标 Icon 组件",
+      "defaultValue": "Back"
+    },
+    {
+      "displayName": "title",
+      "type": "string",
+      "description": "Page Header 的主标题，默认是 Back (内置 a11y)",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "content",
+      "type": "string",
+      "description": "Page Header 的内容",
+      "defaultValue": ""
+    }
+  ],
+
+  "events": [
+    {
+      "displayName": "back",
+      "type": "Function",
+      "description": "点击左侧区域触发"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "icon",
+      "type": "string",
+      "description": "图标内容",
+      "defaultValue": "null"
+    },
+    {
+      "displayName": "title",
+      "type": "string",
+      "description": "标题内容",
+      "defaultValue": "null"
+    },
+    {
+      "displayName": "content",
+      "type": "string",
+      "description": "内容",
+      "defaultValue": "null"
+    },
+    {
+      "displayName": "extra",
+      "type": "string",
+      "description": "扩展设置",
+      "defaultValue": "null"
+    },
+    {
+      "displayName": "breadcrumb",
+      "type": "string",
+      "description": "面包屑导航内容",
+      "defaultValue": "null"
+    },
+    {
+      "displayName": "default",
+      "type": "string",
+      "description": "默认内容",
+      "defaultValue": "null"
+    }
+  ],
+  "methods": []
+}
