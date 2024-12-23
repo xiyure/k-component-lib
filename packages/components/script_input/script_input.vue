@@ -132,6 +132,7 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   showPopperSwitch: true,
   expandAll: false,
   defaultMode: 'string',
+  onlyOneInput: false,
 });
 
 const DEFAULT_TREE_CONFIG = {
@@ -152,7 +153,7 @@ onBeforeUnmount(() => {
   document.removeEventListener('click', hidePopperByClick);
 });
 
-const focusRange: FocusRange = { node: undefined, offset: 0};
+const focusRange: FocusRange = { node: undefined, offset: 0 };
 // 动态类名
 const dynamicClassName = `_${genRandomStr(8)}`;
 // 列配置
@@ -298,7 +299,11 @@ function selectOption(data: Row | RowData) {
 function handleInputContent(data: Row | RowData) {
   const key = genRandomStr(8);
   const content = _isStringMode.value ? generateScriptTag(data.label, key) : data.value;
-  handleManualInput(content);
+  if (props.onlyOneInput) {
+    KScriptInput.value.innerHTML = content;
+  } else {
+    handleManualInput(content);
+  }
   return key;
 }
 function handleManualInput(content: string) {
@@ -331,12 +336,13 @@ function handleManualInput(content: string) {
     return;
   }
   node.insertBefore(targetNode, childNodes[offset]);
-}  
+}
 function parseInputValue() {
   if (!isStringMode()) {
     return {
       result: getEditorContent(),
       scriptTags: [],
+      isStringMode: false,
     };
   }
   let text = '';
@@ -372,6 +378,7 @@ function parseInputValue() {
   return {
     result: res,
     scriptTags,
+    isStringMode: true,
   };
 }
 // 解析传入的值
