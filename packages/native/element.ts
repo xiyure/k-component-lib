@@ -43,7 +43,6 @@ import {
   ElMenu as KMenu,
   ElMenuItem as KMenuItem,
   ElMenuItemGroup as KMenuItemGroup,
-  ElMessageBox as KMessageBox,
   ElNotification as KNotification,
   ElOverlay as KOverlay,
   ElPageHeader as KPageHeader,
@@ -70,7 +69,7 @@ import {
   ElTourStep as KTourStep,
   ElWatermark as KWatermark,
   ElRadioButton as KRadioButton,
-  ElCheckboxButton as KCheckboxButton
+  ElCheckboxButton as KCheckboxButton,
 } from 'element-plus';
 
 export {
@@ -79,12 +78,12 @@ export {
   KAnchor,
   KAnchorLink,
   KAside,
-  KAutocomplete,    
+  KAutocomplete,
   KAutoResizer,
   KAvatar,
   KBacktop,
-  KBreadcrumb,    
-  KBreadcrumbItem,      
+  KBreadcrumb,
+  KBreadcrumbItem,
   KButtonGroup,
   KCard,
   KCarousel,
@@ -145,5 +144,5 @@ export {
   KTourStep,
   KWatermark,
   KRadioButton,
-  KCheckboxButton
+  KCheckboxButton,
 };
