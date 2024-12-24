@@ -75,7 +75,7 @@ template
             :show-description="false"
             :show-refresh="false"
             :row-config="{
-              keyField: 'value',
+              keyField: props.props.value,
               isCurrent: true,
               currentMethod: ({ row }) => {
                 return row.optional !== false;
@@ -110,6 +110,8 @@ import {
   onBeforeUnmount,
   nextTick,
   onUnmounted,
+  toRef,
+  toRefs
 } from 'vue';
 import { ElScrollbar } from 'element-plus';
 import { ScriptInputProps, ScriptOptions } from './type';
@@ -126,6 +128,7 @@ const _styleModule = inject('_styleModule', '');
 
 const props = withDefaults(defineProps<ScriptInputProps>(), {
   options: () => [],
+  props: () => ({ label: 'label', value: 'value', disabled: 'disabled' }),
   size: 'base',
   useTree: false,
   showModeSwitch: true,
@@ -137,7 +140,7 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
 
 const DEFAULT_TREE_CONFIG = {
   parentField: 'pid',
-  rowField: 'value',
+  rowField: getAttrProps().value,
   expandAll: false,
 };
 
@@ -153,11 +156,11 @@ onBeforeUnmount(() => {
   document.removeEventListener('click', hidePopperByClick);
 });
 
-const focusRange: FocusRange = { node: undefined, offset: 0 };
+const focusRange: FocusRange = { node: undefined, offset: 0 };;
 // 动态类名
 const dynamicClassName = `_${genRandomStr(8)}`;
 // 列配置
-const columns = [{ field: 'label', label: '', treeNode: true }];
+const columns = [{ field: getAttrProps().label, title: '', treeNode: true }];
 // ref
 const KScriptInput = ref();
 const $tree = ref();
@@ -276,7 +279,7 @@ function cellClick({ row }: { row: Row }) {
   if (row.optional === false) {
     return;
   }
-  const rowIndex = flattedOptions.value.findIndex((item) => item.value === row.value);
+  const rowIndex = flattedOptions.value.findIndex((item) => item[getAttrProps().value] === row[getAttrProps().value]);
   selectedIndex.value = rowIndex;
   if (row.children?.length) {
     return;
@@ -298,7 +301,9 @@ function selectOption(data: Row | RowData) {
 // 将选择的脚本标签转化成dom节点并插入到编辑框中，注意两种选择场景下的差异性
 function handleInputContent(data: Row | RowData) {
   const key = genRandomStr(8);
-  const content = _isStringMode.value ? generateScriptTag(data.label, key) : data.value;
+  const content = _isStringMode.value
+    ? generateScriptTag(data[getAttrProps().label], key)
+    : data[getAttrProps().value];
   if (props.onlyOneInput) {
     KScriptInput.value.innerHTML = content;
   } else {
@@ -362,8 +367,8 @@ function parseInputValue() {
           text += `fx(${label})`;
           scriptTags.push(null);
         } else {
-          const targetOption = props.options.find((item) => item.label === label);
-          text += `fx(${targetOption?.value ?? null})`;
+          const targetOption = props.options.find((item) => item[getAttrProps().label] === label);
+          text += `fx(${targetOption?.[getAttrProps().value] ?? null})`;
           scriptTags.push(targetOption ?? null);
         }
       } else if (node.tagName.toUpperCase() === 'DIV') {
@@ -395,8 +400,8 @@ function parseModelValue(value: string) {
       break;
     }
     const value = match[1];
-    const targetOption = props.options.find((item) => item.value === value);
-    let label = targetOption?.label ?? '';
+    const targetOption = props.options.find((item) => item[getAttrProps().value] === value);
+    let label = targetOption?.[getAttrProps().label] ?? '';
     let isError = false;
     if (!targetOption) {
       label = value;
@@ -468,7 +473,7 @@ function toggleSelect(event: KeyboardEvent) {
     }
   }
   const targetOption = flattedOptions.value[selectedIndex.value];
-  const row = $tree.value?.getRowById(targetOption?.value);
+  const row = $tree.value?.getRowById(targetOption?.[getAttrProps().value]);
   if (row) {
     $tree.value.setCurrentRow(row);
   }
@@ -555,7 +560,7 @@ function getRange(key: string) {
   return range;
 }
 function onShowPopper() {
-  const value = flattedOptions.value?.[0]?.value;
+  const value = flattedOptions.value?.[0]?.[getAttrProps().value];
   const row = $tree.value?.getRowById(value);
   if (row) {
     $tree.value.setCurrentRow(row);
@@ -657,6 +662,13 @@ function handleResize() {
 }
 function formatterEscape(str: string) {
   return str.replace(/&nbsp;/g, ' ');
+}
+function getAttrProps() {
+  return {
+    label: props.props.label,
+    value: props.props.value,
+    disabled: props.props.disabled
+  }
 }
 defineExpose({
   clear,
