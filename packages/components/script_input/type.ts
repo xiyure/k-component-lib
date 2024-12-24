@@ -18,6 +18,7 @@ export interface ScriptInputProps {
     value?: string 
     disabled?: string
   }
+  scriptKey?: string
 }
 
 export type ScriptOptions = {

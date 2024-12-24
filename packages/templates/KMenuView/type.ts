@@ -7,10 +7,11 @@ export interface menuViewOption {
   disabled?: boolean
   route?: object
   children?: menuViewOption[]
+  [key: string]: any
 }
 export interface menuViewProps {
   options?: menuViewOption[]
-  active?: number
+  defaultActive?: string
   showCollapse?: boolean
   collapse?: boolean
 }

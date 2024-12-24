@@ -2,6 +2,7 @@
   <template v-for="subMenu in props.options">
     <el-sub-menu
       v-if="Array.isArray(subMenu.children) && subMenu.children.length > 0"
+      :class="{'custom-class-name': activeSet.has(subMenu.index)}"
       :index="subMenu.index"
       v-bind="subMenuAttrs(subMenu)"
     >
@@ -21,6 +22,7 @@
     </el-sub-menu>
     <el-menu-item
       v-else
+      :class="{'custom-class-name': activeSet.has(subMenu.index)}"
       :index="subMenu.index"
       :disabled="subMenu.disabled"
       :route="subMenu.route"
@@ -41,7 +43,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, inject, Ref } from 'vue';
 import { ElSubMenu, ElIcon, ElMenuItem, MenuItemRegistered } from 'element-plus';
 import { menuViewOption, subMenuViewProps } from './type';
 
@@ -51,6 +53,7 @@ defineOptions({
 const props = defineProps<subMenuViewProps>();
 const emits = defineEmits(['click']);
 
+const activeSet = inject<Ref<Set<string | number>>>('__activeSet__', computed(() => new Set()));
 const subMenuAttrs = computed(() => (obj: menuViewOption) => {
   const { children, ...rest } = obj;
   return rest;

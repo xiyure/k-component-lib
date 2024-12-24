@@ -28,7 +28,7 @@ template
               :style="{
                 height: height,
               }"
-              contenteditable
+              contenteditable="plaintext-only"
               :spellcheck="false"
               @input="handleInput"
               @blur="handleBlur"
@@ -75,7 +75,7 @@ template
             :show-description="false"
             :show-refresh="false"
             :row-config="{
-              keyField: props.props.value,
+              keyField: getAttrProps().value,
               isCurrent: true,
               currentMethod: ({ row }) => {
                 return row.optional !== false;
@@ -109,14 +109,12 @@ import {
   onMounted,
   onBeforeUnmount,
   nextTick,
-  onUnmounted,
-  toRef,
-  toRefs
+  onUnmounted
 } from 'vue';
 import { ElScrollbar } from 'element-plus';
 import { ScriptInputProps, ScriptOptions } from './type';
 import Message from '../message';
-import { genRandomStr, allTreeDataToArray } from '../../utils';
+import { genRandomStr, transformTreeData } from '../../utils';
 import { Row, RowData } from '../tree_table';
 
 type FocusRange = { node: Node | null | undefined; offset: number | undefined };
@@ -128,14 +126,13 @@ const _styleModule = inject('_styleModule', '');
 
 const props = withDefaults(defineProps<ScriptInputProps>(), {
   options: () => [],
-  props: () => ({ label: 'label', value: 'value', disabled: 'disabled' }),
   size: 'base',
   useTree: false,
   showModeSwitch: true,
   showPopperSwitch: true,
   expandAll: false,
   defaultMode: 'string',
-  onlyOneInput: false,
+  onlyOneInput: false
 });
 
 const DEFAULT_TREE_CONFIG = {
@@ -195,7 +192,7 @@ const treeConfig = computed(() => {
 });
 const flattedOptions = computed(() => {
   const tableData = $tree.value?.getTableData().fullData ?? [];
-  return allTreeDataToArray(tableData, 'children') ?? [];
+  return transformTreeData(tableData, { parentField: getAttrProps().value, children: 'children' }) ?? [];
 });
 
 watch(
@@ -207,11 +204,11 @@ watch(
     }
     $tree.value?.filter(curInput.value);
     if ($tree.value?.getVisibleData()?.length) {
-      updateFocusRange();
       popperVisible.value = true;
     } else {
       popperVisible.value = false;
     }
+    updateFocusRange();
   },
   { immediate: true },
 );
@@ -368,7 +365,8 @@ function parseInputValue() {
           scriptTags.push(null);
         } else {
           const targetOption = props.options.find((item) => item[getAttrProps().label] === label);
-          text += `fx(${targetOption?.[getAttrProps().value] ?? null})`;
+          const attrName = getScriptKey();
+          text += `fx(${targetOption?.[attrName] ?? null})`;
           scriptTags.push(targetOption ?? null);
         }
       } else if (node.tagName.toUpperCase() === 'DIV') {
@@ -400,7 +398,8 @@ function parseModelValue(value: string) {
       break;
     }
     const value = match[1];
-    const targetOption = props.options.find((item) => item[getAttrProps().value] === value);
+    const attrName = getScriptKey();
+    const targetOption = props.options.find((item) => item[attrName] === value);
     let label = targetOption?.[getAttrProps().label] ?? '';
     let isError = false;
     if (!targetOption) {
@@ -594,10 +593,12 @@ function getElement(selector: string): HTMLInputElement | null {
 }
 function updateFocusRange() {
   const selection = window.getSelection();
-  if (selection) {
-    focusRange.node = selection.focusNode;
-    focusRange.offset = selection.focusOffset;
+  const { focusNode, focusOffset } = selection ?? {};
+  if (!selection || !KScriptInput.value.contains(focusNode as Node)) {
+    return;
   }
+  focusRange.node = focusNode;
+  focusRange.offset = focusOffset;
 }
 function hidePopper() {
   popperVisible.value = false;
@@ -664,11 +665,16 @@ function formatterEscape(str: string) {
   return str.replace(/&nbsp;/g, ' ');
 }
 function getAttrProps() {
+  const defaultConfig = { label: 'label', value: 'value', disabled: 'disabled' };
+  const attrProps = Object.assign(defaultConfig, props.props);
   return {
-    label: props.props.label,
-    value: props.props.value,
-    disabled: props.props.disabled
+    label: attrProps.label,
+    value: attrProps.value,
+    disabled: attrProps.disabled
   }
+}
+function getScriptKey() {
+  return props.scriptKey ?? getAttrProps().value;
 }
 defineExpose({
   clear,

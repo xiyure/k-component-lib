@@ -13,7 +13,12 @@
         class="OverlayScrollbarsComponent flex-1"
         :options="{ scrollbars: { autoHide: 'scroll', theme: 'os-theme-light' } }"
       >
-        <el-menu v-bind="$attrs" :collapse="useCollapse" @select="handleSelect">
+        <el-menu  
+          :collapse="useCollapse"
+          :default-active="defaultActive"
+          v-bind="$attrs" 
+          @select="handleSelect"
+        >
           <sub-menu :options="options" @click="handleClick">
             <template v-for="(_, name) in $slots" :key="name" #[name]="data">
               <slot :name="name" v-bind="data"></slot>
@@ -53,12 +58,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, watch, computed, provide } from 'vue';
 import { IconLeftMenuDisplay } from 'ksw-vue-icon';
 import { ElMenu, MenuItemRegistered } from 'element-plus';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue';
-import { menuViewProps } from './type';
+import { menuViewProps, menuViewOption } from './type';
 import SubMenu from './subMenu.vue';
+import { transformTreeData } from '../../utils'
 
 defineOptions({
   name: 'KMenuView'
@@ -71,6 +77,10 @@ const props = withDefaults(defineProps<menuViewProps>(), {
 });
 const emits = defineEmits(['click', 'select']);
 
+const isCollapse = ref(false);
+const activeSet = ref(new Set<string>([]));
+const flattenOptions: menuViewOption[] = [];
+
 const useCollapse = computed(() => {
   if (props.collapse !== undefined) {
     return props.collapse;
@@ -78,7 +88,15 @@ const useCollapse = computed(() => {
   return isCollapse.value;
 });
 
-const isCollapse = ref(false);
+watch(() => props.options, () => {
+  const array = transformTreeData(
+    props.options,
+    { parentField: 'index', children: 'children', addPid: true, deleteChildren: true }
+  );
+  flattenOptions.length = 0;
+  flattenOptions.push(...array);
+}, { immediate: true, deep: true });
+
 
 const handleClick = (menuItem: MenuItemRegistered) => {
   emits('click', menuItem);
@@ -101,9 +119,28 @@ const toggleCollapse = () => {
   }
   isCollapse.value = !isCollapse.value;
 };
-const handleSelect = (data: any) => {
-  emits('select', data);
+const handleSelect = (activeIndex: string) => {
+  updateActiveSet(activeIndex);
+  emits('select', activeIndex);
 };
+function updateActiveSet(activeIndex: string | undefined) {
+  if (!activeIndex) {
+    return;
+  }
+  activeSet.value.clear();
+  const optionsMap = new Map(flattenOptions.map((item) => [item.index, item]));
+  let curIndex = activeIndex;
+  while (curIndex) {
+    const option = optionsMap.get(curIndex);
+    if (option) {
+      activeSet.value.add(option.index);
+      curIndex = option.pid;
+    }
+  }
+}
+
+updateActiveSet(props.defaultActive);
+provide('__activeSet__', activeSet);
 
 defineExpose({ collapse, expand, toggleCollapse });
 </script>

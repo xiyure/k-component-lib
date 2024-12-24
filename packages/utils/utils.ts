@@ -133,18 +133,44 @@ export function treeDataToArray(treeData: any[] | undefined, childrenField: stri
   return result;
 }
 
-export function allTreeDataToArray(treeData: any[] | undefined, childrenField: string) {
-  if (!Array.isArray(treeData) || treeData.length === 0) {
-    return [];
-  }
-  let result: any[] = [];
-  for (const item of treeData) {
-    result.push(item);
-    if (Array.isArray(item[childrenField])) {
-      result = result.concat(allTreeDataToArray(item[childrenField], childrenField));
+type TransformTreeConfig = {
+  parentField?: string,
+  children?: string,
+  idField?: string,
+  addPid?: boolean,
+  deleteChildren?: boolean
+};
+export function transformTreeData(
+  treeData: any[] | undefined,
+  config: TransformTreeConfig = {}
+): any[] {
+  const defaultConfig = {
+    parentField: 'pid',
+    childrenField: 'children',
+    idField: 'id',
+    addPid: false,
+    deleteChildren: false
+  };
+  const { parentField, childrenField, addPid, deleteChildren } = Object.assign(defaultConfig, config ?? {});
+  const flatTreeData = (data: any[] | undefined, pid: string | number | null) => {
+    if (!Array.isArray(data) || data.length === 0) {
+      return [];
     }
-  }
-  return result;
+    let result: any[] = [];
+    for (const item of data) {
+      const newItem = addPid? {...item, pid } : {...item };
+      result.push(newItem);
+      if (!Array.isArray(item[childrenField])) {
+        continue;
+      }
+      result = result.concat(flatTreeData(item[childrenField], item[parentField]));
+      if (deleteChildren) {
+        delete newItem[childrenField];
+      }
+    }
+    return result;
+  } 
+  return flatTreeData(treeData, null);
 }
 
 export function getValidTreeData(
