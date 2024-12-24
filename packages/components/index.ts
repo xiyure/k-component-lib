@@ -18,6 +18,7 @@ export * from './popconfirm';
 export * from './result';
 export * from './empty';
 export * from './message';
+export * from './message_box';
 export * from './dialog';
 export * from './tooltip';
 export * from './filter';

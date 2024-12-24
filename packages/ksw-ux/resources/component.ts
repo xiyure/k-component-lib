@@ -19,6 +19,7 @@ import { KPopconfirm } from '../../components/popconfirm';
 import { KResult } from '../../components/result';
 import { KEmpty } from '../../components/empty';
 import { KMessage } from '../../components/message';
+import { KMessageBox } from '../../components/message_box';
 import { KDialog } from '../../components/dialog';
 import { KTooltip } from '../../components/tooltip';
 import { KFilter } from '../../components/filter';
@@ -69,6 +70,7 @@ export default [
   KResult,
   KEmpty,
   KMessage,
+  KMessageBox,
   KDialog,
   KTooltip,
   KFilter,
