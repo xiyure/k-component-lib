@@ -26,4 +26,4 @@ TreeTransfer组件可以通过以下属性进行自定义设置：expand-icon（
 
 ## API
 
-<API src="./treeTransfer.json" lang="zh"></API>
+<API src="./tree_transfer.json" lang="zh"></API>
