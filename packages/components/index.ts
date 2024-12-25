@@ -40,4 +40,4 @@ export * from './filter_form';
 export * from './button_container';
 export * from './slider_button';
 export * from './script_input';
-export * from './icon_popver';
+export * from './icon_popover';

@@ -52,7 +52,7 @@ declare module 'vue' {
     KPageDetails: typeof import('ksw-ux')['KPageDetails']
     KPageViewBus: typeof import('ksw-ux')['KPageViewBus']
     KPageTableView: typeof import('ksw-ux')['KPageTableView']
-    KIconPopver: typeof import('ksw-ux')['KIconPopver']
+    KIconPopover: typeof import('ksw-ux')['KIconPopover']
   }
 }
 
