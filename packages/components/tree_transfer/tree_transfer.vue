@@ -389,12 +389,33 @@ function handleTreeData(leafData: TreeTransferData[]) {
 }
 function addChildNodes(leafData: TreeTransferData[]) {
   const { parentField, rowField } = getTreeConfigField();
-  const childrenMap = new Map(leafData.map((item) => [item[rowField], item]));
+
+  // 创建一个 Map，用于存储父节点和其直接子节点的映射关系
+  const parentToChildrenMap = new Map<string, TreeTransferData[]>();
+
+  // 遍历所有数据，构建父节点 -> 子节点列表的映射
   for (const dataItem of props.data) {
     const parentKey = dataItem[parentField];
-    if (childrenMap.get(parentKey)) {
-      treeDataMap.set(dataItem[rowField], dataItem);
-      addChildNodes([dataItem]);
+    if (!parentToChildrenMap.has(parentKey)) {
+      parentToChildrenMap.set(parentKey, []);
+    }
+    parentToChildrenMap.get(parentKey)!.push(dataItem);
+  }
+
+  // 使用队列而非递归实现遍历，减少调用栈深度
+  const queue: TreeTransferData[] = [...leafData];
+
+  while (queue.length > 0) {
+    const currentItem = queue.shift()!; // 取出队列中的第一个元素
+    const currentKey = currentItem[rowField];
+
+    // 将当前节点存储到 treeDataMap 中
+    treeDataMap.set(currentKey, currentItem);
+
+    // 获取当前节点的子节点，如果存在，加入队列
+    const children = parentToChildrenMap.get(currentKey);
+    if (children) {
+      queue.push(...children);
     }
   }
 }
@@ -445,20 +466,7 @@ function sortTreeData(
     sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1,
   );
 }
-// function filterRightData() {
-//   const searchKey = query.value.trim();
-//   if (!searchKey) {
-//     rightData.value = rightData.value;
-//     return;
-//   }
-//   rightData.value = leftData.value.filter((item: TreeTransferData) => {
-//     if (props.defaultData?.includes(item.id) && !checkMethod({ row: item })) {
-//       return false;
-//     }
-//     return (!item.children || item.children?.length === 0) && true;
-//   });
-//   rightData.value = sortFunc(rightData.value, fullData.value);
-// }
+
 function getTreeConfigField() {
   const parentField = treeConfig.value?.parentField || 'pid';
   const rowField = treeConfig.value?.rowField || 'id';

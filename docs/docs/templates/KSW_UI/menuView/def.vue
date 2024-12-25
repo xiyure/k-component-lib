@@ -35,23 +35,23 @@ const viewOptions = [
     children: [
       {
         title: 'option1-1',
-        index: '',
+        index: 'option1-1',
         children: [
           {
             title: 'Option1-1-1',
-            index: '',
+            index: 'Option1-1-1',
             disabled: false,
             icon: 'IconFilter',
           },
           {
             title: 'Option1-1-2',
-            index: '',
+            index: 'Option1-1-2',
             disabled: false,
             icon: 'IconRanking',
           },
           {
             title: 'Option1-1-3',
-            index: '',
+            index: 'Option1-1-3',
             disabled: false,
             icon: 'IconOrganization',
           },
@@ -60,12 +60,12 @@ const viewOptions = [
       },
       {
         title: 'Option1-2',
-        index: '',
+        index: 'Option1-2',
         disabled: false,
       },
       {
         title: 'Option1-3',
-        index: '',
+        index: 'Option1-3',
         disabled: false,
       },
     ],

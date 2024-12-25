@@ -130,7 +130,7 @@
     {
       "displayName": "widgets",
       "type": "(string | {id: string, widget: Component | () => VNode})[]",
-      "description": "自定义表头组件，设置该参数时，showSearchInput、showFilter、showRefresh、showTransfer参数将失效,该参数数组提供了search、filter、refresh、transfer字段用于控制以上四个参数的显示与顺序，此外还可以自定义组件，参数的id字段用于标识组件，widget字段用于渲染组件，当widget字段为null时，会自动渲染名为id的插槽",
+      "description": "自定义表头组件，设置该参数时，showSearchInput、showFilter、showRefresh、showTransfer参数将失效,该参数数组提供了search、filter、refresh、transfer、sizeControl字段用于控制以上五个参数的显示与顺序，此外还可以自定义组件，参数的id字段用于标识组件，widget字段用于渲染组件，当widget字段为null时，会自动渲染名为id的插槽",
       "defaultValue": "",
       "tip": ""
     },

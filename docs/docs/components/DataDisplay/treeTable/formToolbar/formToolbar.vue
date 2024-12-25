@@ -19,6 +19,7 @@ const widgets = ref([
   'filter',
   'transfer',
   'custom1',
+  'sizeControl',
   {
     id: 'custom2',
     widget: () => <KButton>自定义按钮</KButton>
