@@ -109,7 +109,7 @@ import {
   onMounted,
   onBeforeUnmount,
   nextTick,
-  onUnmounted
+  onUnmounted,
 } from 'vue';
 import { ElScrollbar } from 'element-plus';
 import { ScriptInputProps, ScriptOptions } from './type';
@@ -132,7 +132,7 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   showPopperSwitch: true,
   expandAll: false,
   defaultMode: 'string',
-  onlyOneInput: false
+  onlyOneInput: false,
 });
 
 const DEFAULT_TREE_CONFIG = {
@@ -153,7 +153,7 @@ onBeforeUnmount(() => {
   document.removeEventListener('click', hidePopperByClick);
 });
 
-const focusRange: FocusRange = { node: undefined, offset: 0 };;
+const focusRange: FocusRange = { node: undefined, offset: 0 };
 // 动态类名
 const dynamicClassName = `_${genRandomStr(8)}`;
 // 列配置
@@ -192,7 +192,9 @@ const treeConfig = computed(() => {
 });
 const flattedOptions = computed(() => {
   const tableData = $tree.value?.getTableData().fullData ?? [];
-  return transformTreeData(tableData, { parentField: getAttrProps().value, children: 'children' }) ?? [];
+  return (
+    transformTreeData(tableData, { parentField: getAttrProps().value, children: 'children' }) ?? []
+  );
 });
 
 watch(
@@ -276,7 +278,9 @@ function cellClick({ row }: { row: Row }) {
   if (row.optional === false) {
     return;
   }
-  const rowIndex = flattedOptions.value.findIndex((item) => item[getAttrProps().value] === row[getAttrProps().value]);
+  const rowIndex = flattedOptions.value.findIndex(
+    (item) => item[getAttrProps().value] === row[getAttrProps().value],
+  );
   selectedIndex.value = rowIndex;
   if (row.children?.length) {
     return;
@@ -670,8 +674,8 @@ function getAttrProps() {
   return {
     label: attrProps.label,
     value: attrProps.value,
-    disabled: attrProps.disabled
-  }
+    disabled: attrProps.disabled,
+  };
 }
 function getScriptKey() {
   return props.scriptKey ?? getAttrProps().value;

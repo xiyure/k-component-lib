@@ -2,6 +2,7 @@
   <el-calendar
     ref="kCalendarRef"
     :class="['k-calendar', _styleModule, { 'k-calendar--adaptive': adaptive }, 'text-base']"
+    :class="['k-calendar', _styleModule, { 'k-calendar--adaptive': adaptive }, 'text-base']"
     v-bind="$attrs"
   >
     <template #header="{ date }">
@@ -66,13 +67,13 @@ import { getExposeProxy } from '../../utils';
 import type { IntRange } from '../../utils/typescript/common';
 
 defineOptions({
-  name: 'KCalendar'
+  name: 'KCalendar',
 });
 
 const props = withDefaults(defineProps<CalendarProps>(), {
   schedule: () => [],
   showLunar: false,
-  adaptive: false
+  adaptive: false,
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -81,40 +82,44 @@ const kCalendarRef = ref<CalendarInstance>();
 const isShowLunar = ref(false);
 
 const lunarDate = computed(
-  () => function (date: Date) {
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const lunarInfo = getLunar(year, month, day);
-    return {
-      ...lunarInfo,
-      lunarMonth_zh: lunarMonth[lunarInfo.lunarMonth as IntRange<1, 12>],
-      lunarDate_zh: lunarDay[lunarInfo.lunarDate as IntRange<1, 30>]
-    };
-  }
+  () =>
+    function (date: Date) {
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+      const lunarInfo = getLunar(year, month, day);
+      return {
+        ...lunarInfo,
+        lunarMonth_zh: lunarMonth[lunarInfo.lunarMonth as IntRange<1, 12>],
+        lunarDate_zh: lunarDay[lunarInfo.lunarDate as IntRange<1, 30>],
+      };
+    },
 );
 
-const scheduleContent = computed(() => props.schedule
-.map((item: Schedule) => {
-  const { date } = item;
-  let dateStr: string | undefined;
-  const newDate: Date = new Date(date);
-  if (newDate instanceof Date && !Number.isNaN(newDate?.getTime())) {
-    dateStr = formatDate(newDate);
-  }
-  return {
-    date: dateStr,
-    content: item.content
-  };
-})
-.filter((item: Schedule) => item.date));
+const scheduleContent = computed(() =>
+  props.schedule
+    .map((item: Schedule) => {
+      const { date } = item;
+      let dateStr: string | undefined;
+      const newDate: Date = new Date(date);
+      if (newDate instanceof Date && !Number.isNaN(newDate?.getTime())) {
+        dateStr = formatDate(newDate);
+      }
+      return {
+        date: dateStr,
+        content: item.content,
+      };
+    })
+    .filter((item: Schedule) => item.date),
+);
 const targetSchedule = computed(
-  () => function (date: Date) {
-    const targetContent = scheduleContent.value.find(
-      (item: Schedule) => item.date === formatDate(date)
-    );
-    return targetContent?.content || [];
-  }
+  () =>
+    function (date: Date) {
+      const targetContent = scheduleContent.value.find(
+        (item: Schedule) => item.date === formatDate(date),
+      );
+      return targetContent?.content || [];
+    },
 );
 
 function jumpDate(command: CalendarDateType) {
@@ -133,7 +138,7 @@ function formatDate(date: Date) {
 // expose instance
 const instance: any = {
   jumpDate,
-  handleLunar
+  handleLunar,
 };
 defineExpose(getExposeProxy(instance, kCalendarRef));
 </script>

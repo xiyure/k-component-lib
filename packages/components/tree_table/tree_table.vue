@@ -196,7 +196,7 @@
         </template>
       </div>
     </div>
-    <div ref="RefTableBox" class="table-box flex-1 overflow-auto">
+    <div ref="RefTableBox" class="table-box flex-1 overflow-hidden">
       <k-table
         ref="xTree"
         :border="useAntStyle ? 'inner' : border"
@@ -218,6 +218,7 @@
         :show-drag-column="showDragColumn"
         :align="align"
         :round="useAntStyle || round"
+        height="100%"
         v-bind="$attrs"
         @checkbox-change="
           (data: any) => {
