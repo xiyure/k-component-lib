@@ -2,7 +2,6 @@
   <el-calendar
     ref="kCalendarRef"
     :class="['k-calendar', _styleModule, { 'k-calendar--adaptive': adaptive }, 'text-base']"
-    :class="['k-calendar', _styleModule, { 'k-calendar--adaptive': adaptive }, 'text-base']"
     v-bind="$attrs"
   >
     <template #header="{ date }">
