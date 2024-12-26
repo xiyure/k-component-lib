@@ -15,3 +15,7 @@ title: Infinite Scroll 无限滚动
 ## 基础用法
 
 <preview path="./disableInfinite.vue" />
+
+## 指令
+
+<API src="./infinite.json" lang="zh"></API>

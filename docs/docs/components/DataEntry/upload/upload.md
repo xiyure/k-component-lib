@@ -23,3 +23,7 @@ title: Upload 上传
 在 `before-upload` 钩子中限制用户上传文件的格式和大小。
 
 🚧 待完善
+
+# API
+
+<API src="./upload.json" lang="zh"></API>

@@ -142,7 +142,7 @@ const getTmpl = (suffix: string, content: string, options: any) => {
   ${content}`;
 };
 const getApiTmpl = (componentDoc: any, lang: Lang) => {
-  const { name, props, subProps = [], events, methods, slots } = componentDoc;
+  const { name, props, subProps = [], directives, events, methods, slots } = componentDoc;
   const options = { name, lang };
   const subPropsTmpl: any[] = [];
   for (const key in subProps) {
@@ -150,10 +150,11 @@ const getApiTmpl = (componentDoc: any, lang: Lang) => {
     subPropsTmpl.push(subProp);
   }
   const propsTmpl =  getTmpl("Props", handleProps(props || [], lang), options);
+  const directivesTmpl =  getTmpl("Directives", handleProps(directives || [], lang), options);
   const eventsTmpl =  getTmpl("Events", handleEvents(events || [], lang), options);
   const methodsTmpl =  getTmpl("Methods", handleMethods(methods || [], lang), options);
   const slotsTmpl =  getTmpl("Slots", handleSlots(slots || [], lang), options);
-  const res = `${propsTmpl}\n${subPropsTmpl.join("\n")}\n${slotsTmpl}\n${eventsTmpl}\n${methodsTmpl}`;
+  const res = `${propsTmpl}\n${directivesTmpl}\n${subPropsTmpl.join("\n")}\n${slotsTmpl}\n${eventsTmpl}\n${methodsTmpl}`;
   return res;
 };
 
@@ -238,7 +239,7 @@ function escapeParams(params: any) {
     displayName: escapeCharacter(displayName),
     description: escapeCharacter(description),
     type: escapeCharacter(type),
-    defaultValue: escapeCharacter(defaultValue + '') || '-',
+    defaultValue: escapeCharacter((defaultValue ?? '').toString()) || '-',
     tip: escapeCharacter(genTooltip(tip ?? parameters)),
     parameters: parameters ? 'object' : '-' ,
     version: escapeCharacter(version)

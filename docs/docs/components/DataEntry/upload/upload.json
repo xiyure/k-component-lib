@@ -1,0 +1,265 @@
+{
+  "name": "Upload",
+  "props": [
+    {
+      "displayName": "action",
+      "type": "string",
+      "description": "请求URL",
+      "defaultValue": "#",
+      "required": true,
+      "tip": ""
+    },
+    {
+      "displayName": "headers",
+      "type": "object",
+      "description": "设置上传的请求头部",
+      "defaultValue": "",
+      "tip": "Headers | Record<string, any>"
+    },
+    {
+      "displayName": "method",
+      "type": "string",
+      "description": "设置上传的请求方法",
+      "defaultValue": "post",
+      "tip": ""
+    },
+    {
+      "displayName": "multiple",
+      "type": "boolean",
+      "description": "是否支持多选文件",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "data",
+      "type": "object | Function",
+      "description": "上传时附带的额外参数，支持Awaitable数据，和Function",
+      "defaultValue": "{}",
+      "tip": "[Record<string, any> | Awaitable<Record<string, any>>, (rawFile: UploadRawFile) => Awaitable<Record<string, any>>]"
+    },
+    {
+      "displayName": "name",
+      "type": "string",
+      "description": "上传的文件字段名",
+      "defaultValue": "file",
+      "tip": ""
+    },
+    {
+      "displayName": "with-credentials",
+      "type": "boolean",
+      "description": "支持发送cookie凭证信息",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "show-file-list",
+      "type": "boolean",
+      "description": "是否显示已上传文件列表",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "success-icon",
+      "type": "string | Component",
+      "description": "上传文件成功状态图标",
+      "defaultValue": "'IconCheck'",
+      "tip": ""
+    },
+    {
+      "displayName": "fail-icon",
+      "type": "string | Component",
+      "description": "上传文件失败状态图标",
+      "defaultValue": "'IconWarning'",
+      "tip": ""
+    },
+    {
+      "displayName": "remove-icon",
+      "type": "string | Component",
+      "description": "移除文件图标",
+      "defaultValue": "'IconDelete'",
+      "tip": ""
+    },
+    {
+      "displayName": "drag",
+      "type": "boolean",
+      "description": "是否支持拖拽上传",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "accept",
+      "type": "string",
+      "description": "接受上传的文件类型（thumbnail-mode模式下此参数无效）",
+      "defaultValue": "''",
+      "tip": ""
+    },
+    {
+      "displayName": "crossorigin",
+      "type": "enum",
+      "description": "原生属性crossorigin",
+      "defaultValue": "",
+      "tip": "'' | 'anonymous' | 'use-credentials'"
+    },
+    {
+      "displayName": "on-preview",
+      "type": "Function",
+      "description": "点击文件列表中已上传的文件时的钩子",
+      "defaultValue": "",
+      "tip": "(uploadFile: UploadFile) => void"
+    },
+    {
+      "displayName": "on-remove",
+      "type": "Function",
+      "description": "文件列表移除文件时的钩子",
+      "defaultValue": "",
+      "tip": "(uploadFile: UploadFile, uploadFiles: UploadFiles) => void"
+    },
+    {
+      "displayName": "on-success",
+      "type": "Function",
+      "description": "设置上传的请求头部",
+      "defaultValue": "",
+      "tip": "(response: any, uploadFile: UploadFile, uploadFiles: UploadFiles) => void"
+    },
+    {
+      "displayName": "on-error",
+      "type": "Function",
+      "description": "设置上传的请求方法",
+      "defaultValue": "",
+      "tip": "(error: Error, uploadFile: UploadFile, uploadFiles: UploadFiles) => void"
+    },
+    {
+      "displayName": "on-progress",
+      "type": "Function",
+      "description": "文件上传时的钩子",
+      "defaultValue": "",
+      "tip": "(evt: UploadProgressEvent, uploadFile: UploadFile, uploadFiles: UploadFiles) => void"
+    },
+    {
+      "displayName": "on-change",
+      "type": "Function",
+      "description": "文件状态改变时的钩子，添加文件、上传成功和上传失败时都会被调用",
+      "defaultValue": "",
+      "tip": "(uploadFile: UploadFile, uploadFiles: UploadFiles) => void"
+    },
+    {
+      "displayName": "on-exceed",
+      "type": "Function",
+      "description": "当超出限制时，执行的钩子函数",
+      "defaultValue": "",
+      "tip": "(files: File[], uploadFiles: UploadUserFile[]) => void"
+    },
+    {
+      "displayName": "before-upload",
+      "type": "Function",
+      "description": "上传文件之前的钩子，参数为上传的文件， 若返回false或者返回Promise且被reject，则停止上传。",
+      "defaultValue": "",
+      "tip": "(rawFile: UploadRawFile) => Awaitable<void | undefined | null | boolean | File | Blob>"
+    },
+    {
+      "displayName": "before-remove",
+      "type": "Function",
+      "description": "删除文件之前的钩子，参数为上传的文件和文件列表，若返回false或者返回Promise且被reject，则停止删除。",
+      "defaultValue": "",
+      "tip": "(uploadFile: UploadFile, uploadFiles: UploadFiles) => Awaitable<boolean>"
+    },
+    {
+      "displayName": "file-list / v-model:file-list",
+      "type": "Function",
+      "description": "默认上传文件",
+      "defaultValue": "[]",
+      "tip": "UploadUserFile[]"
+    },
+    {
+      "displayName": "list-type",
+      "type": "enum",
+      "description": "文件列表类型",
+      "defaultValue": "[]",
+      "tip": "'text' | 'picture' | 'picture-card'"
+    },
+    {
+      "displayName": "auto-upload",
+      "type": "boolean",
+      "description": "是否自动上传",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "http-request",
+      "type": "Function",
+      "description": "设置上传的请求头部",
+      "defaultValue": "",
+      "tip": "(options: UploadRequestOptions) => XMLHttpRequest | Promise<unknown>"
+    },
+    {
+      "displayName": "disabled",
+      "type": "boolean",
+      "description": "是否禁用上传",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "limit",
+      "type": "number",
+      "description": "限制上传数量",
+      "defaultValue": "",
+      "tip": ""
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "default",
+      "description": "自定义默认内容",
+      "parameters": ""
+    },
+    {
+      "displayName": "trigger",
+      "description": "自定义触发文件选择框的内容",
+      "parameters": ""
+    },
+    {
+      "displayName": "tip",
+      "description": "提示说明文字",
+      "parameters": ""
+    },
+    {
+      "displayName": "file",
+      "description": "缩略图模板的内容",
+      "parameters": "object",
+      "tip": "{ file: UploadFile, index: number }"
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "abort",
+      "description": "取消上传请求",
+      "type": "Function",
+      "tip": "(file: UploadFile) => void"
+    },
+    {
+      "displayName": "submit",
+      "description": "手动上传文件列表",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "clearFiles",
+      "description": "清空已上传的文件列表（该方法不支持在before-upload中调用）",
+      "type": "Function",
+      "tip": "(status?: UploadStatus[]) => void"
+    },
+    {
+      "displayName": "handleStart",
+      "description": "手动选择上传文件",
+      "type": "Function",
+      "tip": "(rawFile: UploadRawFile) => void"
+    },
+    {
+      "displayName": "handleRemove",
+      "description": "手动移除文件",
+      "type": "Function",
+      "tip": "(file: UploadFile | UploadRawFile, rawFile?: UploadRawFile) => void"
+    }
+  ]
+}

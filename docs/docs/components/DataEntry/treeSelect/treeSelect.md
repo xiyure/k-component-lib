@@ -53,3 +53,7 @@ title: TreeSelect 树形选择
 树节点懒加载，更加适合于数据量大的列表。
 
 <preview path="./lazyLoadingTreeSelect" />
+
+## API
+
+<API src="./tree_select.json" lang="zh"></API>
