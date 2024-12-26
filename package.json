@@ -30,7 +30,7 @@
     "vue": "^3.4.21",
     "vue-i18n": "^9.13.1",
     "vxe-pc-ui": "^4.0.82",
-    "vxe-table": "^4.9.22"
+    "vxe-table": "^4.9.35"
   },
   "devDependencies": {
     "@types/culori": "^2.1.1",
