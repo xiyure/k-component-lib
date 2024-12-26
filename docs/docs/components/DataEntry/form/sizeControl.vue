@@ -15,7 +15,6 @@
   <k-form
     style="max-width: 600px"
     :model="sizeForm"
-    label-width="auto"
     :label-position="labelPosition"
     :size="size"
   >

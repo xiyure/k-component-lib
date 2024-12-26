@@ -5,7 +5,6 @@
     :model="ruleForm"
     status-icon
     :rules="rules"
-    label-width="auto"
     class="demo-ruleForm"
   >
     <k-form-item label="Password" prop="pass">

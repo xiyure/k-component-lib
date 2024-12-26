@@ -3,7 +3,6 @@
     ref="formRef"
     style="max-width: 600px"
     :model="numberValidateForm"
-    label-width="auto"
     class="demo-ruleForm"
   >
     <k-form-item

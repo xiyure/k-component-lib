@@ -1,7 +1,6 @@
 <template>
   <k-form
     :label-position="labelPosition"
-    label-width="auto"
     :model="formLabelAlign"
     style="max-width: 600px"
   >

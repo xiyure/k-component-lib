@@ -1,11 +1,5 @@
 <template>
-  <k-form
-    ref="formRef"
-    style="max-width: 600px"
-    :model="dynamicValidateForm"
-    label-width="auto"
-    class="demo-dynamic"
-  >
+  <k-form ref="formRef" style="max-width: 600px" :model="dynamicValidateForm" class="demo-dynamic">
     <k-form-item
       prop="email"
       label="Email"
@@ -35,10 +29,10 @@
         trigger: 'blur',
       }"
     >
-      <k-input v-model="domain.value" />
-      <k-button class="mt-2" @click.prevent="removeDomain(domain)">
-        Delete
-      </k-button>
+      <div style="display: flex;">
+        <k-input v-model="domain.value" />
+        <k-button class="mt-2" @click.prevent="removeDomain(domain)">Delete</k-button>
+      </div>
     </k-form-item>
     <k-form-item>
       <k-button main @click="submitForm(formRef)">Submit</k-button>
@@ -54,21 +48,21 @@ import type { FormInstance } from '@ksware/ksw-ux';
 
 const formRef = ref<FormInstance>();
 const dynamicValidateForm = reactive<{
-  domains: DomainItem[]
-  email: string
+  domains: DomainItem[];
+  email: string;
 }>({
   domains: [
     {
       key: 1,
-      value: ''
-    }
+      value: '',
+    },
   ],
-  email: ''
+  email: '',
 });
 
 interface DomainItem {
-  key: number
-  value: string
+  key: number;
+  value: string;
 }
 
 const removeDomain = (item: DomainItem) => {
@@ -81,7 +75,7 @@ const removeDomain = (item: DomainItem) => {
 const addDomain = () => {
   dynamicValidateForm.domains.push({
     key: Date.now(),
-    value: ''
+    value: '',
   });
 };
 

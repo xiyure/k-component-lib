@@ -3,7 +3,7 @@
     <k-form-item label="Approved by">
       <k-input v-model="formInline.user" placeholder="Approved by" clearable />
     </k-form-item>
-    <k-form-item label="Activity zone">
+    <k-form-item label="Activity zone" style="width: 300px;">
       <k-select
         v-model="formInline.region"
         placeholder="Activity zone"
