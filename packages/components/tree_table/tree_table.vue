@@ -218,7 +218,7 @@
         :show-drag-column="showDragColumn"
         :align="align"
         :round="useAntStyle || round"
-        height="100%"
+        :height="adaptive ? undefined : '100%'"
         v-bind="$attrs"
         @checkbox-change="
           (data: any) => {
