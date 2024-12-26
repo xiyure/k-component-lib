@@ -99,4 +99,4 @@ export default [
   KSliderButton,
   KScriptInput,
   KIconPopover
-] as Plugin[];
+] as (Plugin & { name: string })[];

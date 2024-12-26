@@ -4,14 +4,15 @@ export interface KNewTransferInterface {
   getQuery: () => string;
 }
 
-export interface KNewTransfer {
-  treeTransferData?: any[]
+export interface KMTransferView {
+  treeTransferData?: TreeTransferData[]
   title?: string
   defaultVal?: string
   selectList?: any[]
   defaultData?: any[]
+  [key: string]: any
 }
 
-export interface KNewTransfer {
+type TreeTransferData = {
   [key: string]: any
 }

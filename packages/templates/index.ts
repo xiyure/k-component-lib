@@ -4,4 +4,4 @@ export * from './KPageTableView';
 export * from './KDetails';
 export * from './KMenuView';
 export * from './GFAOM';
-export * from './KNewTransfer';
+export * from './KTransferView';

@@ -53,6 +53,14 @@ declare module 'vue' {
     KPageViewBus: typeof import('@ksware/ksw-ux')['KPageViewBus']
     KPageTableView: typeof import('@ksware/ksw-ux')['KPageTableView']
     KIconPopover: typeof import('@ksware/ksw-ux')['KIconPopover']
+    KPageViewBus: typeof import('@ksware/ksw-ux')['KPageViewBus']
+    KPageDetails: typeof import('@ksware/ksw-ux')['KPageDetails']
+    KPageTableView: typeof import('@ksware/ksw-ux')['KPageTableView']
+    KDetails: typeof import('@ksware/ksw-ux')['KDetails']
+    KDetailsItem: typeof import('@ksware/ksw-ux')['KDetailsItem']
+    KMenuView: typeof import('@ksware/ksw-ux')['KMenuView']
+    GFPageDetails: typeof import('@ksware/ksw-ux')['GFPageDetails']
+    KTransferView: typeof import('@ksware/ksw-ux')['KTransferView']
   }
 }
 
