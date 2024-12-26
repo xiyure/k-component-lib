@@ -1,5 +1,5 @@
 <template>
-  <KNewTransfer
+  <KTransferView
     :tree-transfer-data="treeTransferData"
     :default-data="defaultList"
     default-val="windows"
@@ -20,7 +20,7 @@
         },
       },
     ]"
-  ></KNewTransfer>
+  ></KTransferView>
 </template>
 
 <script setup lang="tsx">

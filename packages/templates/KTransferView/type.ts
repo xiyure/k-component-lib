@@ -1,4 +1,4 @@
-export interface KNewTransferInterface {
+export interface KTransferViewInterface {
   clearData: () => void;
   clearQuery: () => void;
   getQuery: () => string;

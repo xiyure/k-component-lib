@@ -11,7 +11,7 @@
       style="max-width: 600px"
     >
       <k-form-item
-        label="选择机器类型"
+        value="选择机器类型"
         prop="machineType"
         :rules="{ required: true, message: '请选择类型' }"
       >
@@ -38,19 +38,19 @@
       </k-form-item>
     </k-form>
 
-    <div v-if="form.machineType" class="my-box">
+    <div v-if="form.machineType" class="transfer-view-box">
       <k-tree-transfer
         ref="myTreeTransfer"
         :data="treeTransferData"
         :titles="['待选IP', '已选IP']"
         :default-data="defaultData"
-        label="name"
+        value="name"
         expand-icon="IconFolderOpen"
         expand-icon-color="#f60"
         collapse-icon-color="red"
         icon-color="green"
         collapse-icon="IconFolderClose"
-        class="my-box-item"
+        class="transfer-view-box-item"
         v-bind="$attrs"
         @change="getSelectedData"
       >
@@ -74,7 +74,7 @@
 
 <script setup lang="tsx">
 import { ref, reactive, watch } from 'vue';
-import { KMTransferView, KNewTransferInterface } from './type';
+import { KMTransferView, KTransferViewInterface } from './type';
 
 defineOptions({
   name: 'KTransferView'
@@ -91,7 +91,7 @@ const props = withDefaults(defineProps<KMTransferView>(), {
 const form = reactive({
   machineType: props.defaultVal
 });
-const myTreeTransfer = ref<KNewTransferInterface | null>(null);
+const myTreeTransfer = ref<KTransferViewInterface | null>(null);
 
 const confirmEvent = () => {
   form.machineType = selectValue;

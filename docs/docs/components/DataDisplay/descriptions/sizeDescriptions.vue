@@ -1,8 +1,8 @@
 <template>
   <k-radio-group v-model="size">
-    <k-radio label="large">Large</k-radio>
+    <k-radio value="large">Large</k-radio>
     <k-radio>Default</k-radio>
-    <k-radio label="small">Small</k-radio>
+    <k-radio value="small">Small</k-radio>
   </k-radio-group>
 
   <k-descriptions
@@ -82,13 +82,13 @@
     <template #extra>
       <k-button type="primary" main>Operation</k-button>
     </template>
-    <k-descriptions-item label="Username">kooriookami</k-descriptions-item>
-    <k-descriptions-item label="Telephone">18100000000</k-descriptions-item>
-    <k-descriptions-item label="Place">Suzhou</k-descriptions-item>
-    <k-descriptions-item label="Remarks">
+    <k-descriptions-item value="Username">kooriookami</k-descriptions-item>
+    <k-descriptions-item value="Telephone">18100000000</k-descriptions-item>
+    <k-descriptions-item value="Place">Suzhou</k-descriptions-item>
+    <k-descriptions-item value="Remarks">
       <k-tag size="small">School</k-tag>
     </k-descriptions-item>
-    <k-descriptions-item label="Address"
+    <k-descriptions-item value="Address"
       >No.1188, Wuzhong Avenue, Wuzhong District, Suzhou, Jiangsu Province
     </k-descriptions-item>
   </k-descriptions>

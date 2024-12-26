@@ -1,9 +1,9 @@
 <template>
   <k-radio-group v-model="direction">
-    <k-radio label="ltr">left to right</k-radio>
-    <k-radio label="rtl">right to left</k-radio>
-    <k-radio label="ttb">top to bottom</k-radio>
-    <k-radio label="btt">bottom to top</k-radio>
+    <k-radio value="ltr">left to right</k-radio>
+    <k-radio value="rtl">right to left</k-radio>
+    <k-radio value="ttb">top to bottom</k-radio>
+    <k-radio value="btt">bottom to top</k-radio>
   </k-radio-group>
 
   <k-button type="primary" style="margin-left: 16px" @click="drawer = true">open</k-button>
@@ -23,8 +23,8 @@
     </template>
     <template #default>
       <div>
-        <k-radio v-model="radio1" label="Option 1" size="large">Option 1</k-radio>
-        <k-radio v-model="radio1" label="Option 2" size="large">Option 2</k-radio>
+        <k-radio v-model="radio1" value="Option 1" size="large">Option 1</k-radio>
+        <k-radio v-model="radio1" value="Option 2" size="large">Option 2</k-radio>
       </div>
     </template>
     <template #footer>

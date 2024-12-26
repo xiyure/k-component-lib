@@ -1,8 +1,8 @@
 y<template>
   <k-radio-group v-model="size">
-    <k-radio label="large">Large</k-radio>
+    <k-radio value="large">Large</k-radio>
     <k-radio>Default</k-radio>
-    <k-radio label="small">Small</k-radio>
+    <k-radio value="small">Small</k-radio>
   </k-radio-group>
 
   <k-descriptions

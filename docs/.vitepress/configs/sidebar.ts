@@ -34,7 +34,7 @@ const componentsGeneralSidebarOptions = {
   ...baseSidebarOptions,
   scanStartPath: 'components',
   resolvePath: '/components/',
-  manualSortFileNameByPriority: ['General', 'Navigation'], // 手动排序
+  manualSortFileNameByPriority: ['update','General', 'Navigation'], // 手动排序
 };
 
 const templatesGeneralSidebarOptions = {
