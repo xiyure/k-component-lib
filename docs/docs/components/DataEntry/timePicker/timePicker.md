@@ -36,4 +36,4 @@ title: TimePicker 时间选择器
 
 ## API
 
-<API src="./data.json" lang="zh"></API>
+<API src="./time_picker.json" lang="zh"></API>

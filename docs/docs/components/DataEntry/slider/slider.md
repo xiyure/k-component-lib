@@ -66,4 +66,4 @@ title: Slider 滑块
 
 ## API
 
-<API src="./data.json" lang="zh"></API>
+<API src="./slider.json" lang="zh"></API>

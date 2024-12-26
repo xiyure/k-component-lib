@@ -61,4 +61,4 @@ title: DateTimePicker 日期时间选择器
 
 ## API
 
-<API src="./data.json" lang="zh"></API>
+<API src="./date_time_picker.json" lang="zh"></API>

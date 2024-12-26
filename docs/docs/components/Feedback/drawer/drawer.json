@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "Drawer",
   "props": [
     {
       "displayName": "model-value / v-model",

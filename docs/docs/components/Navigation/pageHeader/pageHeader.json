@@ -1,5 +1,5 @@
 {
-  "name": "SubMenu",
+  "name": "PageHeader",
   "props": [
     {
       "displayName": "icon",

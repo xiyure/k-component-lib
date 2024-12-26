@@ -54,4 +54,4 @@ title: Rate 评分
 
 ## API
 
-<API src="./data.json" lang="zh"></API>
+<API src="./rate.json" lang="zh"></API>

@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "DateTimePicker",
   "props": [
     {
       "displayName": "model-value / v-model",

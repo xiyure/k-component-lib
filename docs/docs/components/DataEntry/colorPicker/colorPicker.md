@@ -34,4 +34,4 @@ title: ColorPicker 颜色选择器
 
 ## API
 
-<API src="./data.json" lang="zh"></API>
+<API src="./color_picker.json" lang="zh"></API>

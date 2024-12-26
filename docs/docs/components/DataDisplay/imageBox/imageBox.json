@@ -1,5 +1,5 @@
 {
-  "name": "Image",
+  "name": "ImageBox",
   "props": [
     {
       "displayName": "src",

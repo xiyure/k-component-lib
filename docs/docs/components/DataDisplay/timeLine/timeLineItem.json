@@ -1,5 +1,5 @@
 {
-  "name": "TimeLine-Item",
+  "name": "TimeLineItem",
   "props": [
     {
       "displayName": "timestamp",

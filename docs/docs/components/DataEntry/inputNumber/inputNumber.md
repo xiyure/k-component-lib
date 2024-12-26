@@ -69,4 +69,4 @@ title: Input Number 数字输入框
 
 ## API
 
-<API src="./inputNumber.json" lang="zh"></API>
+<API src="./input_number.json" lang="zh"></API>

@@ -1,5 +1,5 @@
 {
-  "name": "Skeleton",
+  "name": "SkeletonItem",
   "props": [
     {
       "displayName": "variant",

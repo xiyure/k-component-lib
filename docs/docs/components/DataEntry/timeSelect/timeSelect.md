@@ -36,4 +36,4 @@ title: TimeSelect 时间选择
 
 ## API
 
-<API src="./data.json" lang="zh"></API>
+<API src="./time_select.json" lang="zh"></API>

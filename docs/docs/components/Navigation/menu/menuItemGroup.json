@@ -1,5 +1,5 @@
 {
-  "name": "menuItemGroup",
+  "name": "MenuItemGroup",
   "props": [
     {
       "displayName": "title",
