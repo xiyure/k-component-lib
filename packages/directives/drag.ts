@@ -1,9 +1,10 @@
+type handleMouseDown = (event: MouseEvent) => void;
 export const drag = {
-  mounted(el) {
+  mounted(el: HTMLElement & { _handleMouseDown?: handleMouseDown }) {
     el.style.cursor = 'move';
     el.style.position = 'absolute';
     
-    const handleMouseDown = (event) => {
+    const handleMouseDown = (event: MouseEvent) => {
       event.preventDefault();
       event.stopPropagation();
       const startX = event.clientX;
@@ -11,9 +12,12 @@ export const drag = {
       const rect = el.getBoundingClientRect();
       const offsetX = startX - rect.left;
       const offsetY = startY - rect.top;
-      const parentRect = el.parentElement.getBoundingClientRect();
+      const parentRect = el.parentElement?.getBoundingClientRect();
+      if (!parentRect) {
+        return;
+      }
 
-      const handleMouseMove = (event) => {
+      const handleMouseMove = (event: MouseEvent) => {
         let moveX = event.clientX - offsetX;
         let moveY = event.clientY - offsetY;
 
@@ -47,7 +51,9 @@ export const drag = {
     el._handleMouseDown = handleMouseDown;
   },
 
-  beforeUnmount(el) {
-    el.removeEventListener('mousedown', el._handleMouseDown);
+  beforeUnmount(el: HTMLElement & { _handleMouseDown?: handleMouseDown }) {
+    if (el._handleMouseDown) {
+      el.removeEventListener('mousedown', el._handleMouseDown);
+    }
   }
 };

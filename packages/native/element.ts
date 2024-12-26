@@ -117,7 +117,6 @@ export {
   KMenu,
   KMenuItem,
   KMenuItemGroup,
-  KMessageBox,
   KNotification,
   KOverlay,
   KPageHeader,

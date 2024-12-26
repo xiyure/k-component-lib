@@ -26,7 +26,8 @@
     "baseUrl": ".",
     "paths": {
       "@ksw-ux/*": ["./packages/*"],
-      "ksw-ux": ["./packages"]
+      "ksw-ux": ["./packages"],
+      "@ksware/ksw-ux": ["./packages"]
     },
     "declaration": true
   },

@@ -1,11 +1,12 @@
+import { fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
 import _path from 'path';
-import fs from 'fs';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import dts from 'vite-plugin-dts';
 import autoprefixer from 'autoprefixer';
 import tailwindcss from 'tailwindcss';
+import copyFiles from './plugins/copy_files';
 
 // https://vitejs.dev/config/
 const name = 'kingsware-ui';
@@ -17,7 +18,17 @@ export default defineConfig({
       tsconfigPath: 'tsconfig.json',
       include: ['packages'],
     }),
-    copyFiles(),
+    copyFiles([
+      {
+        from: resolvePath('packages/static/tailwind'),
+        to: resolvePath(`${name}/tailwind`),
+        isDir: true,
+      },
+      {
+        from: resolvePath('typings/global.d.ts'),
+        to: resolvePath(`${name}/global.d.ts`)
+      }
+    ]),
   ],
   esbuild: {
     pure: ['console.log', 'alert', 'debugger'],
@@ -58,8 +69,9 @@ export default defineConfig({
   resolve: {
     // 配置路径别名
     alias: {
-      '@ksw-ux/*': _path.resolve(__dirname, 'packages/*'),
-      'ksw-ux': _path.resolve(__dirname, 'packages'),
+      '@ksw-ux/*': 'packages/*',
+      'ksw-ux': 'packages',
+      '@ksware/ksw-ux': 'packages'
     },
   },
   css: {
@@ -73,35 +85,6 @@ export default defineConfig({
   },
 });
 
-function copyFiles() {
-  const paths = [
-    {
-      from: resolvePath('packages/static/tailwind'),
-      to: resolvePath(`${name}/tailwind`),
-      isDir: true,
-    },
-    // {
-    //   from: resolvePath('typings/global.d.ts'),
-    //   to: resolvePath(`${name}/global.d.ts`)
-    // }
-  ];
-  return {
-    name: 'copy-file-plugin',
-    closeBundle() {
-      try {
-        for (const { from, to, isDir = false } of paths) {
-          fs.cp(from, to, { recursive: isDir }, (err) => {
-            if (err) {
-              console.error(err);
-            }
-          });
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    },
-  };
-}
 
 function resolvePath(path: string) {
   return _path.resolve(__dirname, path);

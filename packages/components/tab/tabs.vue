@@ -25,7 +25,7 @@
       </TabDropdownMenu>
     </div>
     <slot></slot>
-    <template v-if="$slots.addIcon" #add-icon>
+    <template v-if="$slots['add-icon']" #add-icon>
       <slot name="add-icon"></slot>
     </template>
   </el-tabs>
