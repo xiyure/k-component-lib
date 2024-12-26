@@ -21,7 +21,7 @@ template
             </k-button>
             <slot name="prepend"></slot>
           </div>
-          <div class="flex-1">
+          <div class="flex-1 overflow-hidden">
             <div
               ref="KScriptInput"
               :class="['k-script-input', _styleModule]"
