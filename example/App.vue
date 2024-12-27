@@ -2,6 +2,6 @@
   <Test />
 </template>
 <script setup lang="ts">
-import Test from './view/script.vue';
+import Test from './view/transferTest.vue';
 </script>
 <style scoped></style>
