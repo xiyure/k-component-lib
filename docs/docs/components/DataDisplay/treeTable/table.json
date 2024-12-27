@@ -51,35 +51,42 @@
       "tip": ""
     },
     {
-      "displayName": "showDescription",
+      "displayName": "show-description",
       "type": "boolean",
       "description": "表格数据描述，包含筛选条件、统计等内容",
       "defaultValue": "true",
       "tip": ""
     },
     {
-      "displayName": "showHeaderTools",
+      "displayName": "show-header-tools",
       "type": "boolean",
       "description": "是否显示表头工具栏",
       "defaultValue": "true",
       "tip": ""
     },
     {
-      "displayName": "showBatchOperation",
+      "displayName": "show-batch-operation",
       "type": "boolean",
       "description": "是否显示批量操作（只在type=checkbox时有效）",
       "defaultValue": "false",
       "tip": ""
     },
     {
-      "displayName": "showColumnMenu",
+      "displayName": "show-page",
+      "type": "boolean",
+      "description": "是否显示分页",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "show-column-menu",
       "type": "boolean",
       "description": "是否显示列头菜单",
       "defaultValue": "false",
       "tip": ""
     },
     {
-      "displayName": "showDragColumn",
+      "displayName": "show-drag-column",
       "type": "boolean",
       "description": "是否显示拖拽列",
       "defaultValue": "false",
@@ -100,28 +107,28 @@
       "tip": ""
     },
     {
-      "displayName": "showSearchInput",
+      "displayName": "show-search-input",
       "type": "boolean",
       "description": "是否显示搜索框",
       "defaultValue": "true",
       "tip": ""
     },
     {
-      "displayName": "showFilter",
+      "displayName": "show-filter",
       "type": "boolean",
       "description": "是否显示筛选功能按钮",
       "defaultValue": "true",
       "tip": ""
     },
     {
-      "displayName": "showRefresh",
+      "displayName": "show-refresh",
       "type": "boolean",
       "description": "是否显示刷新按钮",
       "defaultValue": "true",
       "tip": ""
     },
     {
-      "displayName": "showTransfer",
+      "displayName": "show-transfer",
       "type": "boolean",
       "description": "是否显示列头控制穿梭框",
       "defaultValue": "false",
@@ -130,7 +137,7 @@
     {
       "displayName": "widgets",
       "type": "(string | {id: string, widget: Component | () => VNode})[]",
-      "description": "自定义表头组件，设置该参数时，showSearchInput、showFilter、showRefresh、showTransfer参数将失效,该参数数组提供了search、filter、refresh、transfer、sizeControl字段用于控制以上五个参数的显示与顺序，此外还可以自定义组件，参数的id字段用于标识组件，widget字段用于渲染组件，当widget字段为null时，会自动渲染名为id的插槽",
+      "description": "自定义表头组件，设置该参数时，show-search-input、show-filter、show-refresh、show-transfer参数将失效,该参数数组提供了search、filter、refresh、transfer、sizeControl字段用于控制以上五个参数的显示与顺序，此外还可以自定义组件，参数的id字段用于标识组件，widget字段用于渲染组件，当widget字段为null时，会自动渲染名为id的插槽",
       "defaultValue": "",
       "tip": ""
     },
@@ -487,7 +494,7 @@
     },
     {
       "displayName": "drag",
-      "description": "用于showDragColumn=true, 拖拽结束时触发",
+      "description": "用于show-drag-column=true, 拖拽结束时触发",
       "type": "Function",
       "tip": "({ newData, oldData }) => void"
     },
