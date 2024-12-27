@@ -4,7 +4,6 @@
       :data="tableData"
       :column="column"
       :show-page="false"
-      :searchFunction="(a) => console.log(111, a)"
       :advanced-filter-config="{
         filterAll: true,
         exclude: ['id', 'name', 'role', 'address', 'sex'],
@@ -12,7 +11,6 @@
           {
             title: 'Age',
             field: 'age',
-            multiple: true,
             dataType: 'number',
             options: [
               {
