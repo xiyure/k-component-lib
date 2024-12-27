@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "pageViewBus",
   "props": [
     {
       "displayName": "title",

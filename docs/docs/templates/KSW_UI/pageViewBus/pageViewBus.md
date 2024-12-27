@@ -8,4 +8,4 @@ title: pageViewBus 页面视图
 
 <preview path="./def.vue" />
 
-<API src="./data.json" lang="zh"></API>
+<API src="./pageViewBus.json" lang="zh"></API>
