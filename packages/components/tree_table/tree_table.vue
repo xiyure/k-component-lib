@@ -998,6 +998,17 @@ function refreshAdvancedFilter(
   newTableData: RowData[],
   isEmit = true,
 ) {
+  let isReturn = false;
+  conditionInfo.conditionList?.forEach((item) => {
+    isReturn = Array.isArray(item.showValue) && typeof props.searchFunction === 'function';
+    if (isReturn && props.searchFunction) {
+      props.searchFunction(item.showValue);
+      return;
+    }
+  });
+  if (isReturn) {
+    return;
+  }
   filterConditionInfo.value = conditionInfo;
   newFilterData.value = newTableData;
   if (props.useTree) {

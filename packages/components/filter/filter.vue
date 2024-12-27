@@ -65,7 +65,7 @@
                 children: props.childrenField,
               }"
               clearable
-              @change="changeCondition(index)"
+              @change="changeCondition(index, item, options!)"
             ></k-cascader>
           </div>
           <div class="k-filter__logic">
@@ -85,7 +85,7 @@
               />
             </k-select>
           </div>
-          <div class="k-filter__value" :title="(item.value)?.toString()">
+          <div class="k-filter__value" :title="item.value?.toString()">
             <div v-if="instance(item.key)?.dataType === 'date'" class="k-filter__date-box">
               <k-select
                 v-model="item.dateRange"
@@ -102,7 +102,7 @@
                   :value="logicItem.value"
                   :disabled="
                     (item.logic === 'after' || item.logic === 'before') &&
-                      logicItem.value === 'range'
+                    logicItem.value === 'range'
                   "
                 />
               </k-select>
@@ -121,13 +121,30 @@
               />
             </div>
             <k-select
-              v-else-if="instance(item.key)?.options?.length"
+              v-else-if="instance(item.key)?.options?.length && !item.isMultiple"
               v-model="item.value"
               :size="formatSize.ownSize"
               :teleported="false"
               :disabled="disabledInput(item)"
               clearable
               @change="updateValue(item, 'select', instance(item.key).options)"
+            >
+              <k-option
+                v-for="optionItem in instance(item.key)?.options"
+                :key="optionItem.value"
+                :label="optionItem.label"
+                :value="optionItem.value"
+              />
+            </k-select>
+            <k-select
+              v-else-if="instance(item.key)?.options?.length && item.isMultiple"
+              v-model="item.multipleValue"
+              :size="formatSize.ownSize"
+              :teleported="false"
+              :disabled="disabledInput(item)"
+              clearable
+              multiple
+              @change="updateValue(item, 'multiple', instance(item.key).options)"
             >
               <k-option
                 v-for="optionItem in instance(item.key)?.options"
@@ -147,9 +164,12 @@
           </div>
           <i class="close-icon" @click="removeConditionItem(index)"><IconClose /></i>
         </div>
-        <div class="k-filter__operate" :class="formatSize.ownSize === 'sm' ? 'text-sm' : 'text-base'">
+        <div
+          class="k-filter__operate"
+          :class="formatSize.ownSize === 'sm' ? 'text-sm' : 'text-base'"
+        >
           <div class="k-filer__operate-left">
-            <span @click="addCondition">
+            <span @click="addCondition()">
               <IconAdd />
               {{ $t('addCondition') }}
             </span>
@@ -189,7 +209,7 @@ import { treeDataToArray, isValid, formatter } from '../../utils';
 import { useSize } from '../../hooks';
 
 defineOptions({
-  name: 'KFilter'
+  name: 'KFilter',
 });
 
 const props = withDefaults(defineProps<FilterProps>(), {
@@ -197,7 +217,7 @@ const props = withDefaults(defineProps<FilterProps>(), {
   filterKey: 'title',
   childrenField: 'children',
   ignoreCase: false,
-  data: () => []
+  data: () => [],
 });
 
 const formatSize = useSize<FilterProps>(props);
@@ -222,45 +242,54 @@ const filterRule = ref(0);
 
 const flatColumns = computed(() => treeDataToArray(cloneDeep(props.options), 'group'));
 const instance = computed(
-  () => function (value: string | null) {
-    const matchInstance: filterOptions = flatColumns.value?.find((item) => item[props.filterKey] === value);
-    return matchInstance;
-  }
+  () =>
+    function (value: string | null) {
+      const matchInstance: filterOptions = flatColumns.value?.find(
+        (item) => item[props.filterKey] === value,
+      );
+      return matchInstance;
+    },
 );
 const conditionList = computed(
-  () => function (item: FilterData) {
-    const columnItem = flatColumns.value?.find((col) => col[props.filterKey] === item.key);
-    const type = columnItem?.dataType || 'string';
-    return logicOptions.find((item) => item.type === type);
-  }
+  () =>
+    function (item: FilterData) {
+      const columnItem = flatColumns.value?.find((col) => col[props.filterKey] === item.key);
+      const type = columnItem?.dataType || 'string';
+      return logicOptions.find((item) => item.type === type);
+    },
 );
 
 const dateLogicList = computed(
-  () => function (item: FilterData) {
-    if (item.logic === 'equal') {
-      return dateTypeOptions;
-    }
-    const hideLogicList = ['past-seven-days', 'past-thirty-days'];
-    return dateTypeOptions.filter((item) => !hideLogicList.includes(item.value));
-  }
+  () =>
+    function (item: FilterData) {
+      if (item.logic === 'equal') {
+        return dateTypeOptions;
+      }
+      const hideLogicList = ['past-seven-days', 'past-thirty-days'];
+      return dateTypeOptions.filter((item) => !hideLogicList.includes(item.value));
+    },
 );
 
-const hasConfigCondition = computed(() => filterData.value.some(
-  (item) => item.key && item.logic && (item.value || ['empty', 'nonEmpty'].includes(item.logic))
-));
+const hasConfigCondition = computed(() =>
+  filterData.value.some(
+    (item) => item.key && item.logic && (item.value || ['empty', 'nonEmpty'].includes(item.logic)),
+  ),
+);
 
 // 日期禁用
 const disabledInput = computed(
-  () => function (item: FilterData) {
-    const disabledLogicTypes = ['empty', 'nonEmpty'];
-    return !item.logic || disabledLogicTypes.includes(item.logic);
-  }
+  () =>
+    function (item: FilterData) {
+      const disabledLogicTypes = ['empty', 'nonEmpty'];
+      return !item.logic || disabledLogicTypes.includes(item.logic);
+    },
 );
 const disabledDatePicker = computed(
-  () => function (item: FilterData) {
-    const notDisabledDateRanges = ['date', 'range'];
-    return disabledInput.value(item) || !notDisabledDateRanges.includes(item.dateRange as string);
-  }
+  () =>
+    function (item: FilterData) {
+      const notDisabledDateRanges = ['date', 'range'];
+      return disabledInput.value(item) || !notDisabledDateRanges.includes(item.dateRange as string);
+    },
 );
 const disableChangeMode = computed(() => {
   const fields = filterData.value.map((item) => item.key);
@@ -277,7 +306,7 @@ watch(
       filterRule.value = 1;
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 initData();
@@ -321,7 +350,9 @@ function addCondition() {
     key: '',
     handler: null,
     dateRange: 'date',
-    dateType: 'datetime'
+    dateType: 'datetime',
+    isMultiple: false,
+    multipleValue: [],
   };
   filterData.value.push(addItem);
 }
@@ -352,7 +383,7 @@ function filter(data?: any[]) {
   if (conditionInfo.conditionList.length === 0 || props.remote === true) {
     return {
       conditionInfo,
-      tableData: sourceData
+      tableData: sourceData,
     };
   }
   const remoteFieldMap = getRemoteFieldMap();
@@ -366,7 +397,11 @@ function filter(data?: any[]) {
         if (!targetColumn || !targetColumn[props.filterKey]) {
           return false;
         }
-        return item.handler?.(dataItem[targetColumn[props.filterKey]], item.value, props.ignoreCase);
+        return item.handler?.(
+          dataItem[targetColumn[props.filterKey]],
+          item.value,
+          props.ignoreCase,
+        );
       });
     }
     return conditionInfo.conditionList.every((item) => {
@@ -382,26 +417,27 @@ function filter(data?: any[]) {
   });
   return {
     conditionInfo,
-    tableData: newData ?? []
+    tableData: newData ?? [],
   };
 }
 function getConditionInfo() {
   const disabledLogicTypes = ['empty', 'nonEmpty'];
   const conditionList = filterData.value
-  .filter(
-    (item) => item.key && item.logic && (isValid(item.value) || disabledLogicTypes.includes(item.logic))
-  )
-  .map((item) => ({
-    title: item.title.join(' - '),
-    logic: t?.(item.logic),
-    key: item.key,
-    showValue: item.showValue,
-    value: item.value,
-    handler: item.handler
-  }));
+    .filter(
+      (item) =>
+        item.key && item.logic && (isValid(item.value) || disabledLogicTypes.includes(item.logic)),
+    )
+    .map((item) => ({
+      title: item.title.join(' - '),
+      logic: t?.(item.logic),
+      key: item.key,
+      showValue: item.showValue,
+      value: item.value,
+      handler: item.handler,
+    }));
   return {
     conditionList,
-    filterRule: filterRule.value
+    filterRule: filterRule.value,
   };
 }
 function getRemoteFieldMap() {
@@ -410,7 +446,14 @@ function getRemoteFieldMap() {
   }
   return new Map(props.remote.map((item: string, index: number) => [item, index]));
 }
-function changeCondition(index: number) {
+function changeCondition(index: number, item: FilterData, options: filterOptions[]) {
+  if (item && options && options.length > 0) {
+    options.map((option) => {
+      if (item.title.includes(option.title) && option.multiple) {
+        item.isMultiple = true;
+      }
+    });
+  }
   const targetItem = filterData.value[index];
   const titles = targetItem.title ?? [];
   if (titles.length === 0) {
@@ -429,7 +472,7 @@ function changeCondition(index: number) {
   targetItem.key = columnItem?.[props.filterKey];
   targetItem.logic = 'equal';
   const logicOptionItem = logicOptions.find(
-    (item) => item.type === (columnItem?.dataType || 'string')
+    (item) => item.type === (columnItem?.dataType || 'string'),
   );
   if (logicOptionItem) {
     const logicItem = logicOptionItem.logicList.find((item) => item.logic === 'equal');
@@ -501,13 +544,13 @@ function changeDateRange(item: FilterData) {
     case 'current-month':
       dateValue = [
         getTargetDay(-getDateDay() + 1),
-        getTargetDay(getCurMonthDayCount() - getDateDay(), true)
+        getTargetDay(getCurMonthDayCount() - getDateDay(), true),
       ];
       break;
     case 'last-month':
       dateValue = [
         getTargetDay(-getDateDay() - getCurMonthDayCount(true) + 1),
-        getTargetDay(-getDateDay(), true)
+        getTargetDay(-getDateDay(), true),
       ];
       break;
     case 'past-seven-days':
@@ -575,12 +618,18 @@ function setDatePickerType(item: FilterData) {
     item.dateType = !dateArray.includes(item.dateRange as string) ? 'datetime' : 'datetimerange';
   }
 }
-function updateValue(dataItem: FilterData, uiType: string, options?: {label: string, value: any}[]) {
+function updateValue(
+  dataItem: FilterData,
+  uiType: string,
+  options?: { label: string; value: any }[],
+) {
   if (uiType === 'input') {
     dataItem.showValue = dataItem.value;
   } else if (uiType === 'select') {
     const targetOption = options?.find((item) => item.value === dataItem.value);
     dataItem.showValue = targetOption?.label ?? '';
+  } else if (uiType === 'multiple') {
+    dataItem.showValue = dataItem.multipleValue;
   }
 }
 function dateChange(val: Date | Date[], item: FilterData) {

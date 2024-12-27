@@ -13,7 +13,7 @@ export interface FilterProps {
   showPopper?: boolean
 }
 
-export type FilterValue = string | number | Date | null
+export type FilterValue = string | number | Date | null | Array<string | number | Date>
 export type FilterData = {
   title: string[]
   logic: 'equal' | 'notEqual' | 'gt' | 'lt' | 'gte' | 'lte' 
@@ -25,11 +25,14 @@ export type FilterData = {
   dateType?: 'year' | 'month' | 'week' | 'date' | 'datetime' | 'datetimerange' | 'daterange' | undefined
   handler: ((a: FilterValue, b?: FilterValue, ignoreCase?: boolean) => boolean) | null
   _allowSelectLogic?: boolean
+  isMultiple?: boolean
+  multipleValue: string[]
 }
 
 export interface filterOptions {
   title: string
   value: string
+  multiple: boolean
   dataType?: 'string' | 'number' | 'date'
   options?: {
     label: string
