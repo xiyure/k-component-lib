@@ -16,6 +16,14 @@ const createTooltip = (el: any, binding: DirectiveBinding) => {
   _tipRoot.classList.add('_tipRoot');
   const { trigger, placement, content, showAfter, autoClose, visible } = binding?.value ?? {};
   const showContent = typeof binding.value === 'object' ? content : binding.value;
+
+  let toolTipVisible = true;
+  if (typeof visible === 'function') {
+    toolTipVisible = visible(el);
+  } else if (visible === false) {
+    toolTipVisible = false;
+  }
+
   // 通过createApp 创建实例组件
   const _tipApp = createApp(KTooltip, {
     virtualRef: el,
@@ -26,7 +34,7 @@ const createTooltip = (el: any, binding: DirectiveBinding) => {
     content: showContent ?? el.textContent,
     showAfter: showAfter ?? 500,
     autoClose: autoClose,
-    visible: visible == false ? false : true,
+    visible: toolTipVisible,
   });
   el._tipRoot = _tipRoot;
   el._tipApp = _tipApp;
