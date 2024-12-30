@@ -33,13 +33,17 @@
         right: -0.1rem;
       }
 
-      > span {
+      > span,
+      span {
         max-width: 100%;
+        max-height: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
         text-wrap: nowrap;
         color: var(--k-theme-form-item__label-color);
         // color: red;
+        -webkit-box-orient: vertical;
+        word-break: break-all;
       }
     }
     .el-form-item__content {

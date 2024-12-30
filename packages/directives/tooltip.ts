@@ -14,7 +14,7 @@ const createTooltip = (el: any, binding: DirectiveBinding) => {
   const _tipRoot = document.createElement('div');
   _tipRoot.id = TOOL_TIP_ID;
   _tipRoot.classList.add('_tipRoot');
-  const { trigger, placement, content, showAfter, autoClose } = binding?.value ?? {};
+  const { trigger, placement, content, showAfter, autoClose, visible } = binding?.value ?? {};
   const showContent = typeof binding.value === 'object' ? content : binding.value;
   // 通过createApp 创建实例组件
   const _tipApp = createApp(KTooltip, {
@@ -26,7 +26,7 @@ const createTooltip = (el: any, binding: DirectiveBinding) => {
     content: showContent ?? el.textContent,
     showAfter: showAfter ?? 500,
     autoClose: autoClose,
-    visible: true,
+    visible: visible == false ? false : true,
   });
   el._tipRoot = _tipRoot;
   el._tipApp = _tipApp;
@@ -48,6 +48,6 @@ export const tooltip: Directive = {
         GLOBAL_TOOL_TIP?.unmount();
         GLOBAL_TOOL_TIP = null;
       }
-    })
-  }
+    });
+  },
 };

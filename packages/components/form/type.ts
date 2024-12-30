@@ -5,4 +5,5 @@ export interface FormProps {
 
 export interface FormItemProps {
   size?: '' | 'lg' | 'base' | 'sm';
+  label?: string;
 }
