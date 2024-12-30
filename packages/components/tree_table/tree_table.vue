@@ -4,7 +4,7 @@
       'k-tree-table flex flex-col h-full',
       props.class,
       _styleModule,
-      { 'tree-table-use-ant-style': useAntStyle },
+      { 'tree-table-use-ant-style': useAntStyle, 'has-space-between': hasSpace },
     ]"
     :style="{ height: adaptive ? 'fit-content' : height, ...style }"
   >
@@ -352,6 +352,7 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
   showColumnMenu: false,
   cellClickToggleHighlight: true,
   round: false,
+  hasSpace: false,
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -1203,6 +1204,11 @@ provide('__showTransfer', __showTransfer);
 provide(
   SIZE_KEY,
   computed(() => getVailSize()),
+);
+
+provide(
+  '__hasSpace__',
+  computed(() => props.hasSpace),
 );
 
 const customMethods = {
