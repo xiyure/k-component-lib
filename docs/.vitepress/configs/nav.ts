@@ -7,7 +7,7 @@ export default [
   },
   {
     text: '模板',
-    link: '/templates/KSW_UI/tableView',
+    link: '/templates/KSW_UI/pageTableView',
     activeMatch: '^/templates/',
   },
   // { text: 'API 参考', link: '/api/' },
