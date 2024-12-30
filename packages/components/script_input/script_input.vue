@@ -391,7 +391,8 @@ function parseInputValue() {
 // 解析传入的值
 function parseModelValue(value: string) {
   fxSet.clear();
-  let originText = value.replace(/''/g, "'");
+  // let originText = value.replace(/''/g, "'");
+  let originText = value;
   if (!isStringMode()) {
     return originText;
   }
@@ -419,7 +420,7 @@ function parseModelValue(value: string) {
 }
 function formatter(str: string) {
   const reg = /fx\((.*?)\)/;
-  str = str.replace(/'/g, "''");
+  // str = str.replace(/'/g, "''");
   if (!_isStringMode.value) {
     return str;
   }
