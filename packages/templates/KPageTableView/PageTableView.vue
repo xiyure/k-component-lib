@@ -62,40 +62,20 @@
 import { ref } from 'vue';
 import { KPageViewBus } from '../KPageViewBus';
 import { KTooltip } from '../../components';
+import { PageTableViewProps } from './type';
 
 defineOptions({
   name: 'KPageTableView',
 });
 
-const props = defineProps({
-  showAside: {
-    type: Boolean,
-    default: false,
-  },
-  asideTitle: {
-    type: String,
-    default: 'viewBus',
-  },
-  asideInfo: {
-    type: String,
-    default: '',
-  },
-  asideRefresh: {
-    type: Boolean,
-    default: false,
-  },
-  pageIcon: {
-    type: String,
-    default: '',
-  },
-  pageTitle: {
-    type: String,
-    default: '页面标题',
-  },
-  pageInfo: {
-    type: String,
-    default: '',
-  },
+const props = withDefaults(defineProps<PageTableViewProps>(), {
+  showAside: false,
+  asideTitle: 'viewBus',
+  asideInfo: '',
+  asideRefresh: false,
+  pageIcon: '',
+  pageTitle: '页面标题',
+  pageInfo: '',
 });
 
 const tips = ref(false);

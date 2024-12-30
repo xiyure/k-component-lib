@@ -1,14 +1,17 @@
+import { JSX } from "vue/jsx-runtime";
+
 export interface PageDetailsProps {
-  /**
-   * 菜单图标
-   */
-  icon?: string;
-  /**
-   * 页面标题
-   */
-  title?: string;
-  /**
-   * 页面说明
-   */
-  info?: boolean;
+  pageIcon?: string,
+  pageTitle?: string,
+  pageDescription?: string,
+  abstract?: PageAbstract[],
+  showLine?: boolean,
+  direction?: string,
+  useflex?: boolean,
+}
+
+type PageAbstract = {
+  label: string,
+  value: string,
+  render: () => JSX.Element,
 }

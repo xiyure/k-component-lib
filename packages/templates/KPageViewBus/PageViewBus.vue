@@ -60,25 +60,16 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { KTooltip } from '../../components';
+import { PageHeadProps } from './type';
 
 defineOptions({
   name: 'KPageViewBus'
 });
 const tips = ref(false);
 const drawerStatus = ref(false);
-const props = defineProps({
-  title: {
-    type: String,
-    default: ''
-  },
-  info: {
-    type: String,
-    default: undefined
-  },
-  refresh: {
-    type: Boolean,
-    default: true
-  }
+const props = withDefaults(defineProps<PageHeadProps>(), {
+  title: '',
+  refresh: true
 });
 // 自定义事件
 const emitEvent = defineEmits(['refresh']);

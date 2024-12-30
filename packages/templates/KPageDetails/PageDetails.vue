@@ -53,40 +53,20 @@
 
 <script setup lang="ts">
 import DetailsItem from '../KDetails/DetailsItem.vue';
+import { PageDetailsProps } from './type';
 
 defineOptions({
   name: 'KPageDetails'
 });
 
-const props = defineProps({
-  pageIcon: {
-    type: String,
-    default: ''
-  },
-  pageTitle: {
-    type: String,
-    default: '标题'
-  },
-  pageDescriptions: {
-    type: String,
-    default: ''
-  },
-  abstract: {
-    type: Array,
-    default: () => []
-  },
-  showLine: {
-    type: Boolean,
-    default: false
-  },
-  direction: {
-    type: String,
-    default: 'vertical'
-  },
-  useflex: {
-    type: Boolean,
-    default: true
-  }
+const props = withDefaults(defineProps<PageDetailsProps>(), {
+  pageIcon: '',
+  pageTitle: '标题',
+  pageDescription: '',
+  abstract: () => [],
+  showLine: false,
+  direction: 'vertical',
+  useflex: true
 });
 </script>
 <style lang="less" scoped>

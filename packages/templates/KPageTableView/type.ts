@@ -1,14 +1,9 @@
 export interface PageTableViewProps {
-  /**
-   * 菜单图标
-   */
-  icon?: string;
-  /**
-   * 页面标题
-   */
-  title?: string;
-  /**
-   * 页面说明
-   */
-  info?: boolean;
+  showAside?: boolean,
+  asideTitle?: string,
+  asideInfo?: string,
+  asideRefresh?: boolean,
+  pageIcon?: string,
+  pageTitle?: string,
+  pageInfo?: string,
 }

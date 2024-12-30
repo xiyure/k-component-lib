@@ -15,7 +15,7 @@
 
       <!-- 默认插槽 -->
       <div class="KPageDetailsBody w-full flex flex-col bg-white rounded mt-3 flex-1">
-        <k-tabs v-model="activeName" class="demo-tabs flex" @tab-click="handleClick">
+        <k-tabs v-model="activeName" class="demo-tabs flex">
           <k-tab-pane label="User" name="first" class="flex">
             <div class="w-full grid grid-cols-2 gap-4 px-6 py-4 2xl:grid-cols-3">
               <div v-for="item in abstract" :key="item.label" class="item flex">
