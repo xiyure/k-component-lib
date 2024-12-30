@@ -6,3 +6,4 @@ export * from './const';
 export * from './key';
 export * from './install';
 export * from './typescript';
+export * from './dom';
