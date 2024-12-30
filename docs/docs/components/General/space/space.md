@@ -83,3 +83,7 @@ title: Space 间距
 用 `fillRatio` 自定义填充比例
 
 <preview path="./fillRatioSpace.vue" />
+
+## API
+
+<API src="./space.json" lang="zh"></API>
