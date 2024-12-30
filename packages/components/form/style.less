@@ -19,9 +19,11 @@
 .k-form {
   .k-form-item {
     margin-bottom: 1.375rem;
+    margin-bottom: 0;
     display: flex;
     align-items: center;
     position: relative;
+    margin-bottom: 1.25rem;
     .el-form-item__label {
       display: inline-flex;
       // overflow: hidden;
@@ -92,7 +94,7 @@
       }
     }
     &.k-form-item--colon {
-      .el-form-item__label::after {
+      > .el-form-item__label::after {
         content: ':';
       }
     }
@@ -102,8 +104,11 @@
         opacity: 1;
       }
     }
-    .k-form-item {
-      margin-bottom: 0;
+    &.k-form-item--no-label {
+      > .k-form-item__label,
+      > .el-form-item__label {
+        display: none;
+      }
     }
   }
   &.el-form-item--default {

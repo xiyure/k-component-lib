@@ -22,7 +22,9 @@ defineOptions({
   name: 'KForm',
 });
 
-const props = withDefaults(defineProps<FormProps>(), {});
+const props = withDefaults(defineProps<FormProps>(), {
+  showLabel: true,
+});
 
 const _styleModule = inject('_styleModule', '');
 
@@ -33,31 +35,19 @@ const KFormRef = ref<FormItemInstance>();
 const instance: any = {};
 defineExpose(getExposeProxy(instance, KFormRef));
 
-nextTick(() => {
-  // // 获取所有 el-form-item__label 的内容
-  // const labels = document.querySelectorAll('.el-form-item__label');
-  // for (let i = 0; i < labels.length; i++) {
-  //   const childNodes = labels[i].childNodes;
-  //   if (!childNodes || childNodes.length === 0) {
-  //     continue;
-  //   }
-  //   for (let j = 0; j < childNodes.length; j++) {
-  //     const text = childNodes[j].textContent;
-  //     if (childNodes[j].nodeType === 3 && text) {
-  //       const span = document.createElement('span');
-  //       span.textContent = text;
-  //       labels[i].replaceChild(span, childNodes[j]);
-  //     }
-  //   }
-  // }
-});
-
 provide(SIZE_KEY, formatSize);
 
 provide(
   '__showColon__',
   computed(() => props.showColon),
 );
+
+provide(
+  '__showLabel__',
+  computed(() => props.showLabel),
+);
+
+console.log(props.showColon);
 </script>
 
 <style lang="less">

@@ -1,7 +1,13 @@
 <template>
   <el-form-item
     ref="KFormItemRef"
-    :class="['k-form-item', _styleModule, { 'k-form-item--colon': injectShowColon }]"
+    :class="[
+      'k-form-item',
+      _styleModule,
+      { 'k-form-item--colon': injectShowColon },
+      { 'k-form-item--no-label': !injectShowLabel },
+      { 'k-form-item--no-label': !props.showLabel },
+    ]"
     v-bind="$attrs"
     :label="label"
     :size="formatSize.elSize"
@@ -38,6 +44,7 @@ defineOptions({
 
 const props = withDefaults(defineProps<FormItemProps>(), {
   label: '',
+  showLabel: true,
 });
 
 function isShowTooltip(el) {
@@ -62,6 +69,15 @@ const injectShowColon = inject(
   '__showColon__',
   computed(() => false),
 );
+
+const injectShowLabel = inject(
+  '__showLabel__',
+  computed(() => true),
+);
+
+// console.log(injectShowLabel);
+
+console.log(' item =>', injectShowColon.value);
 </script>
 
 <style lang="less">
