@@ -20,7 +20,7 @@ body = """
 
 {% macro print_commit(commit) -%}
     - {% if commit.scope %}*({{ commit.scope }})* {% endif %}\
-        {% if commit.breaking %}[**breaking**] {% endif %}\
+        {% if commit.breaking %}[**重大变更**] {% endif %}\
         {{ commit.message | upper_first }} - \
         ([{{ commit.id | truncate(length=7, end="") }}]({{ self::remote_url() }}/commit/{{ commit.id }}))\
 {% endmacro -%}
@@ -81,7 +81,7 @@ postprocessors = [
 # 根据 https://www.conventionalcommits.org 解析提交
 conventional_commits = true
 # 过滤掉非传统提交
-filter_unconventional = false
+filter_unconventional = true
 # 将每次提交的每一行视为一个单独的提交
 split_commits = false
 # 用于预处理提交消息的正则表示式
@@ -89,9 +89,9 @@ commit_preprocessors = [
   { pattern = '^[0-9]+\.(.*)', replace = "$1" },
   { pattern = "：", replace = ":"}
 ]
-# regex for parsing and grouping commits
+# 正则表达式用于解析和分组提交
 commit_parsers = [
-  { message = "^feat|^特性", group = "<!-- 0 -->🚀 特性" },
+  { message = "^feat|^特性|^新增", group = "<!-- 0 -->🚀 特性" },
   { message = "^fix|^Bug|^修复", group = "<!-- 1 -->🐛 Bug 修复" },
   { message = "^doc|^文档", group = "<!-- 3 -->📚 文档" },
   { message = "^perf|^性能", group = "<!-- 4 -->⚡ 性能" },
