@@ -380,10 +380,10 @@ function parseInputValue() {
   };
   domToText(KScriptInput.value);
   text = text.replace(/\u00A0/g, ' ');
-  const res = formatter(text);
-  emits('input', res);
+  // const res = formatter(text);
+  emits('input', text);
   return {
-    result: res,
+    result: text,
     scriptTags,
     isStringMode: true,
   };
@@ -396,7 +396,7 @@ function parseModelValue(value: string) {
   if (!isStringMode()) {
     return originText;
   }
-  originText = unFormatter(originText);
+  // originText = unFormatter(originText);
   while (funcReg.test(originText)) {
     const match = originText.match(funcReg);
     if (match?.[0] === undefined || match?.[1] === undefined) {
@@ -418,35 +418,37 @@ function parseModelValue(value: string) {
   }
   return originText;
 }
-function formatter(str: string) {
-  const reg = /fx\((.*?)\)/;
-  // str = str.replace(/'/g, "''");
-  if (!_isStringMode.value) {
-    return str;
-  }
-  let newStr = '';
-  while (reg.test(str)) {
-    const match = str.match(reg)?.[0] ?? '';
-    const index = str.indexOf(match);
-    const targetText = str.slice(0, index);
-    if (targetText.length) {
-      newStr += `'${targetText}'`;
-    }
-    newStr += `${match}`;
-    str = str.slice(index + match.length);
-  }
-  if (str?.length) {
-    newStr += `'${str}'`;
-  }
-  return newStr;
-}
-function unFormatter(str: string) {
-  const strArr = str.split("''");
-  strArr.forEach((item, index) => {
-    strArr[index] = item.replace(/'/g, '');
-  });
-  return strArr.join("'");
-}
+// 需求变更: 用于 ' 格式化
+// function formatter(str: string) {
+//   const reg = /fx\((.*?)\)/;
+//   // str = str.replace(/'/g, "''");
+//   if (!_isStringMode.value) {
+//     return str;
+//   }
+//   let newStr = '';
+//   while (reg.test(str)) {
+//     const match = str.match(reg)?.[0] ?? '';
+//     const index = str.indexOf(match);
+//     const targetText = str.slice(0, index);
+//     if (targetText.length) {
+//       newStr += `'${targetText}'`;
+//     }
+//     newStr += `${match}`;
+//     str = str.slice(index + match.length);
+//   }
+//   if (str?.length) {
+//     newStr += `'${str}'`;
+//   }
+//   return newStr;
+// }
+// 需求变更: 用于 ' 格式化回显, 暂时保留
+// function unFormatter(str: string) {
+//   const strArr = str.split("''");
+//   strArr.forEach((item, index) => {
+//     strArr[index] = item.replace(/'/g, '');
+//   });
+//   return strArr.join("'");
+// }
 function generateScriptTag(content: string, key: string, isError: boolean = false) {
   return `<div class="k-script-tag ${isError ? 'is-error' : ''}" data-key="${key}"  contenteditable="false">${content}</div>`;
 }
