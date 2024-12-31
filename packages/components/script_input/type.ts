@@ -10,6 +10,8 @@ export interface ScriptInputProps {
   defaultMode?: 'string' | 'expression'
   height?: string
   onlyOneInput?: boolean
+  resize?: boolean
+  showPassword?: boolean
   treeConfig?: {
     [key: string]: any
   }

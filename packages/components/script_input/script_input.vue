@@ -27,6 +27,7 @@ template
               :class="['k-script-input', _styleModule]"
               :style="{
                 height: height,
+                resize: resize ? 'vertical' : 'none',
               }"
               contenteditable="plaintext-only"
               :spellcheck="false"
@@ -108,13 +109,12 @@ import {
   inject,
   onMounted,
   onBeforeUnmount,
-  nextTick,
-  onUnmounted,
+  nextTick
 } from 'vue';
 import { ElScrollbar } from 'element-plus';
 import { ScriptInputProps, ScriptOptions } from './type';
 import Message from '../message';
-import { genRandomStr, transformTreeData } from '../../utils';
+import { genRandomStr, transformTreeData, getElement } from '../../utils';
 import { Row, RowData } from '../tree_table';
 
 type FocusRange = { node: Node | null | undefined; offset: number | undefined };
@@ -133,6 +133,8 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   expandAll: false,
   defaultMode: 'string',
   onlyOneInput: false,
+  resize: true,
+  showPassword: true
 });
 
 const DEFAULT_TREE_CONFIG = {
@@ -146,11 +148,13 @@ const emits = defineEmits(['change', 'input', 'focus', 'blur', 'select', 'update
 onMounted(() => {
   document.addEventListener('keydown', toggleSelect);
   document.addEventListener('click', hidePopperByClick);
+  window.addEventListener('resize', handleResize);
   handleResize();
 });
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', toggleSelect);
   document.removeEventListener('click', hidePopperByClick);
+  window.removeEventListener('resize', handleResize);
 });
 
 const focusRange: FocusRange = { node: undefined, offset: 0 };
@@ -176,13 +180,6 @@ const popoverWidth = ref(0);
 // 表达式相关
 const funcReg = /fx\((.*?)\)/;
 const fxSet = new Set();
-
-// 监测窗口发生变化后
-window.addEventListener('resize', handleResize);
-
-onUnmounted(() => {
-  window.removeEventListener('resize', handleResize);
-});
 
 const treeConfig = computed(() => {
   if (!props.useTree) {
@@ -225,6 +222,7 @@ watch(
     if (props.modelValue === cacheRes) {
       return;
     }
+    clearCurrentInput();
     nextTick(() => {
       const innerText = parseModelValue(props.modelValue.toString());
       setEditorContent(innerText);
@@ -249,7 +247,7 @@ function handleInput(event: InputEvent | CompositionEvent) {
     return;
   }
   if (event.data === ' ') {
-    curInput.value = '';
+    clearCurrentInput();
   } else if (event.data === null && curInput.value.length) {
     curInput.value = curInput.value.slice(0, -1);
   } else if (event.data !== null) {
@@ -289,7 +287,7 @@ function cellClick({ row }: { row: Row }) {
 }
 function selectOption(data: Row | RowData) {
   const key = handleInputContent(data);
-  curInput.value = '';
+  clearCurrentInput();
   resetCursor(key);
   emits('select', data);
   popperVisible.value = false;
@@ -457,7 +455,7 @@ function toggleSelect(event: KeyboardEvent) {
     return;
   }
   const dataLength = flattedOptions.value.length;
-  const headerElement = getElement(`.${dynamicClassName} .el-input__inner`);
+  const headerElement = getElement<HTMLInputElement>(`.${dynamicClassName} .el-input__inner`);
   // 为了防止事件冲突，使用方向键选择脚本时，脚本搜索输入框应失去焦点
   if (event.code === 'ArrowUp') {
     headerElement?.blur();
@@ -491,7 +489,7 @@ function toggleSelect(event: KeyboardEvent) {
       selectOption(targetOption);
     }
   } else if (event.code === 'Enter') {
-    curInput.value = '';
+    clearCurrentInput();
   }
 }
 
@@ -508,7 +506,7 @@ function resetCursor(key?: string) {
     return;
   }
   const selection = window.getSelection();
-  if (key === undefined) {
+  if (key === undefined || key === null) {
     KScriptInput.value.focus();
     selection?.selectAllChildren(KScriptInput.value);
     selection?.collapseToEnd();
@@ -523,9 +521,6 @@ function resetCursor(key?: string) {
   }
 }
 function getRange(key: string) {
-  if (!key) {
-    return { node: KScriptInput.value, offset: 0 };
-  }
   let isFound = false;
   const range = {
     node: KScriptInput.value,
@@ -563,7 +558,7 @@ function getRange(key: string) {
     }
   };
   getNodeInfo(KScriptInput.value);
-  return range;
+  return range as { node: Node; offset: number };
 }
 function onShowPopper() {
   const value = flattedOptions.value?.[0]?.[getAttrProps().value];
@@ -588,15 +583,12 @@ function showPopper() {
   updateFocusRange();
   setTimeout(() => {
     isManual = true;
-    curInput.value = '';
+    clearCurrentInput();
   });
   nextTick(() => {
-    const headerElement = getElement(`.${dynamicClassName} .el-input__inner`);
+    const headerElement = getElement<HTMLInputElement>(`.${dynamicClassName} .el-input__inner`);
     headerElement?.focus();
   });
-}
-function getElement(selector: string): HTMLInputElement | null {
-  return document.querySelector(selector);
 }
 function updateFocusRange() {
   const selection = window.getSelection();
@@ -618,9 +610,12 @@ function hidePopperByClick(event: MouseEvent) {
   }
   hidePopper();
 }
+function clearCurrentInput() {
+  curInput.value = '';
+}
 function clear() {
   setEditorContent('');
-  curInput.value = '';
+  clearCurrentInput();
 }
 function toggleMode() {
   saveTextValue();
