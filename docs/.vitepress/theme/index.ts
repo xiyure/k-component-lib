@@ -3,8 +3,8 @@ import DefaultTheme from 'vitepress/theme';
 import { Container } from '../plugin/container/index';
 import './style.less';
 import './tailwind.css';
-// import 'overlayscrollbars/overlayscrollbars.css';
-// import { OverlayScrollbars } from 'overlayscrollbars';
+import 'overlayscrollbars/overlayscrollbars.css';
+import { OverlayScrollbars } from 'overlayscrollbars';
 import {
   NolebaseEnhancedReadabilitiesMenu,
   NolebaseEnhancedReadabilitiesScreenMenu,
@@ -60,29 +60,29 @@ export default {
       },
     } as Options);
   },
-  // setup() {
-  // onMounted(() => {
+  setup() {
+  onMounted(() => {
   // 选择所有具有滚动条的元素
-  // const scrollableElements = document.querySelectorAll(
-  //   'body, aside, pre, div[class="vxe-table--body-wrapper body--wrapper"]',
-  // );
-  // // 对每个元素初始化 OverlayScrollbars
-  // scrollableElements.forEach((element) => {
-  //   OverlayScrollbars(element, {
-  //     // 这里可以设置 OverlayScrollbars 的选项
-  //     update: {
-  //       elementEvents: [
-  //         ['img', 'load'],
-  //         ['ul[id="localsearch-list"]', 'load']
-  //       ]
-  //     },
-  //     scrollbars: {
-  //       // theme: 'os-theme-dark',
-  //       autoHide: 'move', // 是否在某个用户操作之后自动隐藏可见的滚动条。有效值为：'never'、'scroll'和'leave', 'move'
-  //       autoHideSuspend: false //暂停自动隐藏功能，直到执行第一次滚动交互。
-  //     }
-  //   });
-  // });
-  // });
-  // },
+  const scrollableElements = document.querySelectorAll(
+    'body, aside, pre, div[class="vxe-table--body-wrapper body--wrapper"]',
+  );
+  // 对每个元素初始化 OverlayScrollbars
+  scrollableElements.forEach((element) => {
+    OverlayScrollbars(element, {
+      // 这里可以设置 OverlayScrollbars 的选项
+      update: {
+        elementEvents: [
+          ['img', 'load'],
+          ['ul[id="localsearch-list"]', 'load']
+        ]
+      },
+      scrollbars: {
+        // theme: 'os-theme-dark',
+        autoHide: 'move', // 是否在某个用户操作之后自动隐藏可见的滚动条。有效值为：'never'、'scroll'和'leave', 'move'
+        autoHideSuspend: false //暂停自动隐藏功能，直到执行第一次滚动交互。
+      }
+    });
+  });
+  });
+  },
 };

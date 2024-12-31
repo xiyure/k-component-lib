@@ -1,6 +1,6 @@
 ---
 layout: page
-gitChangelog: false
+# gitChangelog: false
 ---
 <script setup>
 import {

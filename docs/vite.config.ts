@@ -30,10 +30,14 @@ export default defineConfig({
       repoURL: () => 'https://github.com/xiyure/k-component-lib' 
     }), 
     GitChangelogMarkdownSection({
-      sections: { 
+      exclude: (id) => {
+        const excludedFiles = ['index.md', 'CHANGELOG.md', 'team.md'];
+        return excludedFiles.some(file => id.endsWith(file));
+      },
+      sections: {
         disableChangelog: true, 
         disableContributors: false 
-      } 
+      },
     })
   ],
   server: {

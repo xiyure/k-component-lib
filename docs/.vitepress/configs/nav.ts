@@ -10,7 +10,8 @@ export default [
     link: '/templates/KSW_UI/pageTableView',
     activeMatch: '^/templates/',
   },
-  // { text: 'API 参考', link: '/api/' },
+  { text: '更新日志', link: '/CHANGELOG' },
+  { text: '团队', link: '/team' },
   {
     text: '图标库',
     link: 'https://sengoku-f.github.io/KSW-vue-icon',
