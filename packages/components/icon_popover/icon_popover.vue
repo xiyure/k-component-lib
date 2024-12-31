@@ -8,7 +8,7 @@
             :is="item.componentName"
             v-for="item in componentNameOptions"
             class="icon-item"
-            @click="updataText(item.componentName)"
+            @click="updateText(item.componentName)"
           />
         </div>
       </div>
@@ -35,8 +35,8 @@ const instance: any = {};
 
 const componentName = ref('');
 
-const updataText = async (updataContent: string) => {
-  emits('updataIcon', updataContent);
+const updateText = async (updateContent: string) => {
+  emits('updateIcon', updateContent);
 };
 
 const componentNameOptions = computed(() => {
@@ -51,7 +51,7 @@ const componentNameOptions = computed(() => {
   });
 });
 
-const emits = defineEmits(['updataIcon']);
+const emits = defineEmits(['updateIcon']);
 
 defineExpose(getExposeProxy(instance, KIconPopover.value));
 </script>
