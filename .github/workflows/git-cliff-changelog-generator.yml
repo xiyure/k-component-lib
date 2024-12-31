@@ -3,6 +3,8 @@ name: "Generate changelog"
 on:
   workflow_dispatch:
   push:
+    # branches:
+    #   - dev
     tags:
       - "v*"
 
@@ -16,29 +18,51 @@ jobs:
   changelog:
     name: Generate changelog
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Generate changelog
+      # 生成完整的 Changelog
+      - name: Generate full changelog
         uses: orhun/git-cliff-action@v4
         with:
           config: cliff.toml
           args: --verbose
         env:
-          OUTPUT: docs/docs/components/upadate/CHANGELOG.md
+          OUTPUT: CHANGELOG.md
           GITHUB_REPO: ${{ github.repository }}
 
-      - name: Commit
+      # 生成最新版本的 Changelog
+      - name: Generate latest changelog
+        uses: orhun/git-cliff-action@v4
+        id: latest-changelog
+        with:
+          config: cliff.toml
+          args: --verbose --latest --strip header
+        env:
+          OUTPUT: LATEST_CHANGELOG.md
+          GITHUB_REPO: ${{ github.repository }}
+
+      # 提交完整的 Changelog
+      - name: Commit full changelog
         run: |
-          git checkout main
+          git checkout dev
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           set +e
           git add CHANGELOG.md
           git commit -m "Update changelog"
-          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git main
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git dev
+
+      # 发送企业微信通知
+      - name: WeChat Work notification
+        if: steps.latest-changelog.outputs.content != ''
+        uses: chf007/action-wechat-work@master
+        env:
+          WECHAT_WORK_BOT_WEBHOOK: ${{secrets.WECHAT_WORK_BOT_WEBHOOK}}
+        with:
+          msgtype: markdown
+          content: "${{ steps.latest-changelog.outputs.content }}"
