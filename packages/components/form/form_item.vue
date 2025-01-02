@@ -83,7 +83,7 @@ const _showLabel = computed(() => {
   }
 });
 
-console.log(props.label, injectShowLabel.value);
+// console.log(props.label, injectShowLabel.value);
 </script>
 
 <style lang="less">
