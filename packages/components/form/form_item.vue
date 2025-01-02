@@ -47,20 +47,19 @@ const props = withDefaults(defineProps<FormItemProps>(), {
   showLabel: true,
 });
 
-function isShowTooltip(el) {
-  const srollWidth = el?.scrollWidth;
-  // 获取  el 下的子元素
-  const clientWidth = el?.clientWidth;
-  if (srollWidth > clientWidth) {
-    return true;
-  }
-  return false;
-}
-
 const formatSize = useSize<FormItemProps>(props);
 
 const _styleModule = inject('_styleModule', '');
 const KFormItemRef = ref(null);
+
+function isShowTooltip(el: HTMLElement) {
+  const scrollWidth = el?.scrollWidth;
+  const clientWidth = el?.clientWidth;
+  if (scrollWidth > clientWidth) {
+    return true;
+  }
+  return false;
+}
 
 const instance: any = {};
 defineExpose(getExposeProxy(instance, KFormItemRef));
