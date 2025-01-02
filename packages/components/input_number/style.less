@@ -7,17 +7,12 @@
   box-sizing: border-box;
   .el-input-number__increase,
   .el-input-number__decrease {
-    svg {
-      // display: flex;
-      // justify-content: center;
-      // align-items: center;
-    }
     &:hover {
       & ~ .el-input:not(.is-disabled) > .el-input__wrapper {
         box-shadow: unset;
       }
       & ~ .el-input.el-input--default > .el-input__wrapper {
-        box-shadow: var(--k-theme-focue-style);
+        box-shadow: var(--k-theme-focus-style);
         border: 1px solid var(--k-theme-input-border-color--hover);
       }
     }
@@ -45,7 +40,7 @@
     &.is-focus {
       z-index: unset;
       border-color: var(--k-theme-input-border-color--active);
-      box-shadow: var(--k-theme-focue-style) !important;
+      box-shadow: var(--k-theme-focus-style) !important;
       .el-input__inner {
         text-align: center;
       }

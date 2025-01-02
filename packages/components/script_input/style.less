@@ -43,12 +43,19 @@
 
   &:has(.k-script-input:focus-visible) {
     border: 1px solid var(--k-theme-primary);
-    box-shadow: var(--k-theme-focue-style);
+    box-shadow: var(--k-theme-focus-style);
     transition: all 0.2s ease-in-out;
   }
 
   &:hover {
     border: 1px solid var(--k-theme-primary);
+  }
+
+  .k-input.el-input {
+    padding: 0;
+    .el-input__wrapper {
+      border: none;
+    }
   }
 
   .k-script-input {
@@ -115,20 +122,18 @@
   }
 }
 
-.mytable-scrollba {
-  .mytable-scrollbar {
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-    ::-webkit-scrollbar-thumb {
-      border-radius: 4px;
-    }
+.k-script-options-scrollbar {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
   }
 }
 
 [data-vxe-ui-theme='light'] {
-  .mytable-scrollbar {
+  .k-script-options-scrollbar {
     ::-webkit-scrollbar-track,
     ::-webkit-scrollbar-corner {
       background-color: #ffffff;
@@ -145,7 +150,7 @@
 
 /** 暗黑模式 */
 [data-vxe-ui-theme='dark'] {
-  .mytable-scrollbar {
+  .k-script-options-scrollbar {
     ::-webkit-scrollbar-track,
     ::-webkit-scrollbar-corner {
       background-color: #151518;

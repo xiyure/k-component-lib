@@ -143,8 +143,8 @@ body.GFAOM {
   --k-status-captured: var(--k-theme-captured);
 
   /* 组件焦点状态 */
-  --k-theme-focue-size: 0 0 0 0.125rem;
-  --k-theme-focue-style: 0 0 0 0.125rem rgba(var(--k-theme-primary-rgb), 0.2);
+  --k-theme-focus-size: 0 0 0 0.125rem;
+  --k-theme-focus-style: 0 0 0 0.125rem rgba(var(--k-theme-primary-rgb), 0.2);
 
   /* 动画 */
   --k-theme-transition-normal: 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);

@@ -23,6 +23,7 @@ template
           </div>
           <div class="flex-1 overflow-hidden">
             <div
+              v-if="!showPassword"
               ref="KScriptInput"
               :class="['k-script-input', _styleModule]"
               :style="{
@@ -46,6 +47,15 @@ template
                 }
               "
             ></div>
+            <k-input
+              v-else type="password"
+              :class="['k-script-input', _styleModule]"
+              v-model="pwd"
+              show-password
+              @input="updateModelValue"
+              @focus="handleFocus"
+              @blur="handleBlur"
+            ></k-input>
           </div>
           <div class="k-script-input-append">
             <slot name="append"></slot>
@@ -60,7 +70,7 @@ template
           <k-tree-table
             v-if="allowShowTree"
             id="k-script-input-tree"
-            class="mytable-scrollbar"
+            class="k-script-options-scrollbar"
             ref="$tree"
             border="none"
             height="320px"
@@ -114,6 +124,7 @@ import {
 import { ElScrollbar } from 'element-plus';
 import { ScriptInputProps, ScriptOptions } from './type';
 import Message from '../message';
+import { usePassword } from './hooks/use_password';
 import { genRandomStr, transformTreeData, getElement } from '../../utils';
 import { Row, RowData } from '../tree_table';
 
@@ -133,8 +144,7 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   expandAll: false,
   defaultMode: 'string',
   onlyOneInput: false,
-  resize: true,
-  showPassword: true
+  resize: true
 });
 
 const DEFAULT_TREE_CONFIG = {
@@ -181,6 +191,11 @@ const popoverWidth = ref(0);
 const funcReg = /fx\((.*?)\)/;
 const fxSet = new Set();
 
+// password
+const showPassword = defineModel<boolean | undefined>('showPassword', { default: false });
+const pwd = defineModel<string>('modelValue', { default: '' });
+const { _methods } = usePassword(showPassword, pwd);
+
 const treeConfig = computed(() => {
   if (!props.useTree) {
     return undefined;
@@ -207,13 +222,18 @@ watch(
     } else {
       popperVisible.value = false;
     }
-    updateFocusRange();
+    if (!showPassword.value) {
+      updateFocusRange();
+    }
   },
   { immediate: true },
 );
 watch(
   () => [props.modelValue, props.options],
   () => {
+    if (showPassword.value) {
+      return;
+    }
     const type = typeof props.modelValue;
     if ((type !== 'string' && type !== 'number') || props.modelValue === undefined) {
       console.warn(`'modelValue' must be a string or number, but got ${type}`);
@@ -285,20 +305,24 @@ function cellClick({ row }: { row: Row }) {
   }
   selectOption(row);
 }
-function selectOption(data: Row | RowData) {
-  const key = handleInputContent(data);
+async function selectOption(data: Row | RowData) {
+  const key = await handleInputContent(data);
   clearCurrentInput();
   resetCursor(key);
-  emits('select', data);
   popperVisible.value = false;
   nextTick(() => {
     const res = parseInputValue();
     updateModelValue(res?.result ?? '');
+    emits('select', data);
     emits('change', res);
   });
 }
 // 将选择的脚本标签转化成dom节点并插入到编辑框中，注意两种选择场景下的差异性
-function handleInputContent(data: Row | RowData) {
+async function handleInputContent(data: Row | RowData) {
+  if (showPassword.value) {
+    _methods.setPasswordMode(false);
+    await nextTick();
+  }
   const key = genRandomStr(8);
   const content = _isStringMode.value
     ? generateScriptTag(data[getAttrProps().label], key)
@@ -342,6 +366,13 @@ function handleManualInput(content: string) {
   node.insertBefore(targetNode, childNodes[offset]);
 }
 function parseInputValue() {
+  if (showPassword.value) {
+    return {
+      result: pwd.value,
+      scriptTags: [],
+      isStringMode: isStringMode(),
+    }
+  }
   if (!isStringMode()) {
     return {
       result: getEditorContent(),
@@ -378,7 +409,6 @@ function parseInputValue() {
   };
   domToText(KScriptInput.value);
   text = text.replace(/\u00A0/g, ' ');
-  // const res = formatter(text);
   emits('input', text);
   return {
     result: text,
@@ -389,12 +419,10 @@ function parseInputValue() {
 // 解析传入的值
 function parseModelValue(value: string) {
   fxSet.clear();
-  // let originText = value.replace(/''/g, "'");
   let originText = value;
   if (!isStringMode()) {
     return originText;
   }
-  // originText = unFormatter(originText);
   while (funcReg.test(originText)) {
     const match = originText.match(funcReg);
     if (match?.[0] === undefined || match?.[1] === undefined) {
@@ -416,37 +444,6 @@ function parseModelValue(value: string) {
   }
   return originText;
 }
-// 需求变更: 用于 ' 格式化
-// function formatter(str: string) {
-//   const reg = /fx\((.*?)\)/;
-//   // str = str.replace(/'/g, "''");
-//   if (!_isStringMode.value) {
-//     return str;
-//   }
-//   let newStr = '';
-//   while (reg.test(str)) {
-//     const match = str.match(reg)?.[0] ?? '';
-//     const index = str.indexOf(match);
-//     const targetText = str.slice(0, index);
-//     if (targetText.length) {
-//       newStr += `'${targetText}'`;
-//     }
-//     newStr += `${match}`;
-//     str = str.slice(index + match.length);
-//   }
-//   if (str?.length) {
-//     newStr += `'${str}'`;
-//   }
-//   return newStr;
-// }
-// 需求变更: 用于 ' 格式化回显, 暂时保留
-// function unFormatter(str: string) {
-//   const strArr = str.split("''");
-//   strArr.forEach((item, index) => {
-//     strArr[index] = item.replace(/'/g, '');
-//   });
-//   return strArr.join("'");
-// }
 function generateScriptTag(content: string, key: string, isError: boolean = false) {
   return `<div class="k-script-tag ${isError ? 'is-error' : ''}" data-key="${key}"  contenteditable="false">${content}</div>`;
 }
@@ -580,7 +577,9 @@ function showPopper() {
   showTreeSearch.value = true;
   popperVisible.value = true;
   allowShowTree.value = true;
-  updateFocusRange();
+  if (!showPassword.value) {
+    updateFocusRange();
+  }
   setTimeout(() => {
     isManual = true;
     clearCurrentInput();
@@ -685,6 +684,7 @@ defineExpose({
   toggleMode,
   setStringMode,
   isStringMode,
+  ..._methods
 });
 </script>
 <style lang="less">
