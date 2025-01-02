@@ -1,3 +1,4 @@
+<!--       { 'k-form-item--no-label': props.label === '' }, -->
 <template>
   <el-form-item
     ref="KFormItemRef"
@@ -5,8 +6,7 @@
       'k-form-item',
       _styleModule,
       { 'k-form-item--colon': injectShowColon },
-      { 'k-form-item--no-label': !injectShowLabel },
-      { 'k-form-item--no-label': !props.showLabel },
+      { 'k-form-item--no-label': _showLabel === true },
     ]"
     v-bind="$attrs"
     :label="label"
@@ -73,6 +73,17 @@ const injectShowLabel = inject(
   '__showLabel__',
   computed(() => true),
 );
+
+const _showLabel = computed(() => {
+  if (injectShowLabel.value === false) {
+    return true;
+  }
+  if (props.showLabel === false) {
+    return true;
+  }
+});
+
+console.log(props.label, injectShowLabel.value);
 </script>
 
 <style lang="less">

@@ -103,11 +103,41 @@
         content: '*';
         opacity: 1;
       }
+      .el-form-item__label-wrap {
+        margin-right: 0px !important;
+        .el-form-item__label::before {
+          content: '*';
+          opacity: 1;
+        }
+      }
+    }
+    // 适配嵌套样式
+    .el-form-item__content {
+      div {
+        .k-form-item {
+          &.is-required {
+            .el-form-item__label-wrap {
+              margin-right: 0px !important;
+              .el-form-item__label::before {
+                content: '*';
+                opacity: 1;
+                color: greenyellow;
+              }
+            }
+          }
+          &.k-form-item--no-label {
+            .el-form-item__label-wrap {
+              .el-form-item__label {
+                display: none;
+              }
+            }
+          }
+        }
+      }
     }
     &.k-form-item--no-label {
       > .k-form-item__label,
-      > .el-form-item__label,
-      > .el-form-item__label-wrap {
+      > .el-form-item__label {
         display: none;
       }
     }
