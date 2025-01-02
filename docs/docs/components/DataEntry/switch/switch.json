@@ -70,6 +70,16 @@
       "description": "off状态下显示的图标组件"
     },
     {
+      "displayName": "active-color",
+      "type": "string",
+      "description": "on状态下显示的图标组件"
+    },
+    {
+      "displayName": "inactive-color",
+      "type": "string",
+      "description": "off状态下显示的图标组件"
+    },
+    {
       "displayName": "active-text",
       "type": "string",
       "description": "switch状态为on时所显示的文字",
