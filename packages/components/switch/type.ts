@@ -1,5 +1,8 @@
+import { CSSProperties } from "vue"
+
 export interface SwitchProps {
-  switchOnColor?: string
-  switchOffColor?: string
+  activeColor?: string
+  inactiveColor?: string
   size?:'lg' | 'base' | 'sm' | ''
+  style?: CSSProperties
 }

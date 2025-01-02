@@ -56,7 +56,6 @@ defineOptions({
 });
 
 const props = withDefaults(defineProps<TransferProps>(), {
-  matchKey: 'label',
   filterable: true
 });
 

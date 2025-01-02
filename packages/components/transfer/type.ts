@@ -9,7 +9,6 @@ export interface TransferProps {
     key?: string
     disabled?: string
   }
-  matchKey?: string
   defaultKeys?: (string | number)[]
   filterable?: boolean
   drag?: boolean
