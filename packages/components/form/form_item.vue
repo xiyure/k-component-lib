@@ -74,10 +74,6 @@ const injectShowLabel = inject(
   '__showLabel__',
   computed(() => true),
 );
-
-// console.log(injectShowLabel);
-
-console.log(' item =>', injectShowColon.value);
 </script>
 
 <style lang="less">

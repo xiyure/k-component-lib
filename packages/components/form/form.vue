@@ -46,8 +46,6 @@ provide(
   '__showLabel__',
   computed(() => props.showLabel),
 );
-
-console.log(props.showColon);
 </script>
 
 <style lang="less">
