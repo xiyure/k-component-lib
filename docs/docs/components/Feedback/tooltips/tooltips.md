@@ -18,6 +18,12 @@ title: tooltips 气泡框
 
 <preview path="./def.vue" />
 
+## 自定义颜色
+
+使用`color`属性来自定义气泡框的颜色, 使用`textColor`属性来自定义提示信息的颜色。
+
+<preview path="./colorTooltips.vue" />
+
 ## 主题
 
 `Tooltip` 组件内置了两个主题：`dark`和`light`。
