@@ -14,12 +14,12 @@ module.exports = {
     ecmaVersion: 2020,
   },
   rules: {
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off', // 禁用 debugger
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off', // 禁用 console
-    'no-bitwise': 'off', // 禁用按位运算符
-    'no-tabs': 'off', // 禁用 tab
-    'array-element-newline': ['error', 'consistent'], // 强制数组元素间出现换行
-    indent: ['error', 2, { MemberExpression: 0, SwitchCase: 1, ignoredNodes: ['TemplateLiteral'] }], // 强制使用一致的缩进
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-bitwise': 'off',
+    'no-tabs': 'off',
+    'array-element-newline': ['error', 'consistent'],
+    indent: ['error', 2, { MemberExpression: 0, SwitchCase: 1, ignoredNodes: ['TemplateLiteral'] }],
     quotes: ['error', 'single'],
     'comma-dangle': ['error', 'never'],
     'object-curly-spacing': ['error', 'always'],
@@ -32,8 +32,8 @@ module.exports = {
     'no-unused-vars': ['warn', { args: 'none' }],
     'import/no-cycle': 'off',
     'arrow-parens': 'off',
-    semi: ['error', 'always'],
-    eqeqeq: 'error',
+    'semi': ['error', 'always'],
+    'eqeqeq': 'error',
     'no-param-reassign': 'off',
     'import/prefer-default-export': 'off',
     'no-use-before-define': 'off',
@@ -51,7 +51,7 @@ module.exports = {
     'default-case': 'off',
     'no-trailing-spaces': 'off',
     'func-names': 'off',
-    radix: 'off',
+    'radix': 'off',
     'no-unused-expressions': 'off',
     'no-underscore-dangle': 'off',
     'no-nested-ternary': 'off',

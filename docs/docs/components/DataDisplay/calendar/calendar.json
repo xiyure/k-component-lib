@@ -26,7 +26,7 @@
       "type": "array",
       "description": "日程列表",
       "defaultValue": "",
-      "tip": "[{date: Date, text: string}]"
+      "tip": "Array<{date: Date, content: Array<string>]}>"
     },
     {
       "displayName": "adaptive",
