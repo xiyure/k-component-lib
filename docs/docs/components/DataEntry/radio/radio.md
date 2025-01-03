@@ -14,6 +14,12 @@ title: Radio 单选框
 
 <preview path="./basic.vue" />
 
+## 自定义颜色
+
+使用`color`属性可以自定义单选框的颜色。
+
+<preview path="./colorRadio.vue" />
+
 ## 禁用状态
 
 `disabled` 属性可以用来控制单选框的禁用状态。
