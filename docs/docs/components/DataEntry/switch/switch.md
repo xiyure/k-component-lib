@@ -12,6 +12,12 @@ title: Switch 开关
 
 <preview path="./basic" />
 
+## on/off 自定义样式
+
+通过`activeColor`和`inactiveColor`属性设置开关的背景色。
+
+<preview path="./customColorSwitch" />
+
 ## 尺寸
 
 <preview path="./sizes" />
