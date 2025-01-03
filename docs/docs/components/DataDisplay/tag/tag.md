@@ -46,6 +46,18 @@ title: Tag 标签
 
 <preview path="./selectedTag.vue" />
 
+## 自定义颜色标签
+
+`color` 可以自定义标签的颜色，可以是十六进制颜色值，也可以是 CSS 颜色名。
+
+<preview path="./colorTag.vue" />
+
+## 点型标签
+
+`point` 属性可以设置标签的形状为点型。
+
+<preview path="./pointTag.vue" />
+
 ## API
 
 <API src="./tag.json" lang="zh"></API>
