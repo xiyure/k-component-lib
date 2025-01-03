@@ -10,7 +10,7 @@ title: badge 徽章
 
 可以用来展示新消息的数量。
 
-数量值可接受 Number 或 String。
+数量值可接受 `Number` 或 `String`。
 
 <preview path="./def.vue" />
 
@@ -18,7 +18,7 @@ title: badge 徽章
 
 你还可以自定义最大值
 
-由 max 属性定义，接受 Number 值。 请注意，仅在值也是 Number 时起作用。
+由 `max` 属性定义，接受 `Number` 值。 请注意，仅在值也是 `Number` 时起作用。
 
 <preview path="./badgeMax.vue" />
 
@@ -26,7 +26,7 @@ title: badge 徽章
 
 你也可以展示除数字以外你想要展示的任何值。
 
-当 value 是 String 时，可以显示自定义文字。
+当 `value` 是 `String` 时，可以显示自定义文字。
 
 <preview path="./customizeBadge.vue" />
 
@@ -34,7 +34,7 @@ title: badge 徽章
 
 通过一个小红点标记来告知用户有新内容。
 
-使用 is-dot 属性。 是个布尔值。
+使用 `is-dot` 属性。 是个布尔值。
 
 <preview path="./redDotBadge.vue" />
 

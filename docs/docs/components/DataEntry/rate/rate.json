@@ -113,8 +113,7 @@
       "displayName": "clearable",
       "type": "boolean",
       "description": "是否可以重置值为 0",
-      "defaultValue": false,
-      "version": "2.2.18"
+      "defaultValue": false
     },
     {
       "displayName": "id",

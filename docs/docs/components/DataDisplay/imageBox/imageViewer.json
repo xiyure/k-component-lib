@@ -18,8 +18,7 @@
       "displayName": "rotate",
       "type": "Function",
       "description": "旋转图像时触发。",
-      "defaultValue": "",
-      "version": "2.3.13"
+      "defaultValue": ""
     }
   ],
   "slots": [],

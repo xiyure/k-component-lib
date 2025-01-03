@@ -196,14 +196,12 @@
       "displayName": "handleOpen",
       "type": "Function",
       "description": "打开时间选择器弹窗",
-      "version": "2.2.16",
       "defaultValue": ""
     },
     {
       "displayName": "handleClose",
       "type": "Function",
       "description": "关闭时间选择器弹窗",
-      "version": "2.2.16",
       "defaultValue": ""
     }
   ]

@@ -72,7 +72,7 @@ Dialog 的内容是懒渲染的——在被第一次打开之前，传入的默�
 
 试着拖动一下header部分吧
 
-设置draggable属性为true以做到拖拽 设置 overflow<k-tag type="primary" round>2.5.4</k-tag>为 true 可以让拖拽范围超出可视区。
+设置draggable属性为true以做到拖拽 设置 overflow为 true 可以让拖拽范围超出可视区。
 
 <preview path="./dragDialog.vue" />
 

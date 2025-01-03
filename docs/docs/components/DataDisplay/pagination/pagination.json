@@ -108,7 +108,6 @@
       "type": "boolean",
       "description": "是否将下拉菜单teleport至 body",
       "defaultValue": "true",
-      "version": "2.3.13"
     },
     {
       "displayName": "hide-on-single-page",
@@ -134,8 +133,7 @@
       "displayName": "change",
       "type": "Function",
       "description": "current-page 或 page-size 更改时触发",
-      "defaultValue": "",
-      "version": "2.4.4"
+      "defaultValue": ""
     },
     {
       "displayName": "prev-click",
