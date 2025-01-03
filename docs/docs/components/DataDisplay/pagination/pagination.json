@@ -107,7 +107,7 @@
       "displayName": "teleported",
       "type": "boolean",
       "description": "是否将下拉菜单teleport至 body",
-      "defaultValue": "true",
+      "defaultValue": "true"
     },
     {
       "displayName": "hide-on-single-page",
