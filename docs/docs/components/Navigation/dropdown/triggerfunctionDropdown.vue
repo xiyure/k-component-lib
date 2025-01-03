@@ -10,13 +10,11 @@
           </span>
         </template>
         <template #default>
-          <k-dropdown-menu>
-            <k-dropdown-item icon="IconArrowLeft">Action 1</k-dropdown-item>
-            <k-dropdown-item icon="IconArrowRight">Action 2</k-dropdown-item>
-            <k-dropdown-item icon="IconArrowToLeft">Action 3</k-dropdown-item>
-            <k-dropdown-item icon="IconArrowTop">Action 4</k-dropdown-item>
-            <k-dropdown-item icon="IconArrowUpRights">Action 5</k-dropdown-item>
-          </k-dropdown-menu>
+          <k-dropdown-item icon="IconArrowLeft">Action 1</k-dropdown-item>
+          <k-dropdown-item icon="IconArrowRight">Action 2</k-dropdown-item>
+          <k-dropdown-item icon="IconArrowToLeft">Action 3</k-dropdown-item>
+          <k-dropdown-item icon="IconArrowTop">Action 4</k-dropdown-item>
+          <k-dropdown-item icon="IconArrowUpRights">Action 5</k-dropdown-item>
         </template>
       </k-dropdown>
     </k-col>
@@ -30,13 +28,11 @@
           </span>
         </template>
         <template #default>
-          <k-dropdown-menu>
-            <k-dropdown-item icon="IconArrowLeft">Action 1</k-dropdown-item>
-            <k-dropdown-item icon="IconArrowRight">Action 2</k-dropdown-item>
-            <k-dropdown-item icon="IconArrowToLeft">Action 3</k-dropdown-item>
-            <k-dropdown-item icon="IconArrowTop">Action 4</k-dropdown-item>
-            <k-dropdown-item icon="IconArrowUpRights">Action 5</k-dropdown-item>
-          </k-dropdown-menu>
+          <k-dropdown-item icon="IconArrowLeft">Action 1</k-dropdown-item>
+          <k-dropdown-item icon="IconArrowRight">Action 2</k-dropdown-item>
+          <k-dropdown-item icon="IconArrowToLeft">Action 3</k-dropdown-item>
+          <k-dropdown-item icon="IconArrowTop">Action 4</k-dropdown-item>
+          <k-dropdown-item icon="IconArrowUpRights">Action 5</k-dropdown-item>
         </template>
       </k-dropdown>
     </k-col>
@@ -50,13 +46,11 @@
           </span>
         </template>
         <template #default>
-          <k-dropdown-menu>
-            <k-dropdown-item icon="IconArrowLeft">Action 1</k-dropdown-item>
-            <k-dropdown-item icon="IconArrowRight">Action 2</k-dropdown-item>
-            <k-dropdown-item icon="IconArrowToLeft">Action 3</k-dropdown-item>
-            <k-dropdown-item icon="IconArrowTop">Action 4</k-dropdown-item>
-            <k-dropdown-item icon="IconArrowUpRights">Action 5</k-dropdown-item>
-          </k-dropdown-menu>
+          <k-dropdown-item icon="IconArrowLeft">Action 1</k-dropdown-item>
+          <k-dropdown-item icon="IconArrowRight">Action 2</k-dropdown-item>
+          <k-dropdown-item icon="IconArrowToLeft">Action 3</k-dropdown-item>
+          <k-dropdown-item icon="IconArrowTop">Action 4</k-dropdown-item>
+          <k-dropdown-item icon="IconArrowUpRights">Action 5</k-dropdown-item>
         </template>
       </k-dropdown>
     </k-col>

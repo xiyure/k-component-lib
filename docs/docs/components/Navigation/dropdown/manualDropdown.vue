@@ -10,13 +10,11 @@
       <span class="k-dropdown-link">Dropdown List1</span>
     </template>
     <template #default>
-      <k-dropdown-menu>
-        <k-dropdown-item>Action 1</k-dropdown-item>
-        <k-dropdown-item>Action 2</k-dropdown-item>
-        <k-dropdown-item>Action 3</k-dropdown-item>
-        <k-dropdown-item disabled>Action 4</k-dropdown-item>
-        <k-dropdown-item divided>Action 5</k-dropdown-item>
-      </k-dropdown-menu>
+      <k-dropdown-item>Action 1</k-dropdown-item>
+      <k-dropdown-item>Action 2</k-dropdown-item>
+      <k-dropdown-item>Action 3</k-dropdown-item>
+      <k-dropdown-item disabled>Action 4</k-dropdown-item>
+      <k-dropdown-item divided>Action 5</k-dropdown-item>
     </template>
   </k-dropdown>
 
@@ -25,13 +23,11 @@
       <span class="k-dropdown-link">Dropdown List2</span>
     </template>
     <template #default>
-      <k-dropdown-menu>
-        <k-dropdown-item>Action 1</k-dropdown-item>
-        <k-dropdown-item>Action 2</k-dropdown-item>
-        <k-dropdown-item>Action 3</k-dropdown-item>
-        <k-dropdown-item disabled>Action 4</k-dropdown-item>
-        <k-dropdown-item divided>Action 5</k-dropdown-item>
-      </k-dropdown-menu>
+      <k-dropdown-item>Action 1</k-dropdown-item>
+      <k-dropdown-item>Action 2</k-dropdown-item>
+      <k-dropdown-item>Action 3</k-dropdown-item>
+      <k-dropdown-item disabled>Action 4</k-dropdown-item>
+      <k-dropdown-item divided>Action 5</k-dropdown-item>
     </template>
   </k-dropdown>
 </template>

@@ -7,13 +7,11 @@
       </span>
     </template>
     <template #default>
-      <k-dropdown-menu>
-        <k-dropdown-item command="a">Action 1</k-dropdown-item>
-        <k-dropdown-item command="b">Action 2</k-dropdown-item>
-        <k-dropdown-item command="c">Action 3</k-dropdown-item>
-        <k-dropdown-item command="d" disabled>Action 4</k-dropdown-item>
-        <k-dropdown-item command="e" divided>Action 5</k-dropdown-item>
-      </k-dropdown-menu>
+      <k-dropdown-item command="a">Action 1</k-dropdown-item>
+      <k-dropdown-item command="b">Action 2</k-dropdown-item>
+      <k-dropdown-item command="c">Action 3</k-dropdown-item>
+      <k-dropdown-item command="d" disabled>Action 4</k-dropdown-item>
+      <k-dropdown-item command="e" divided>Action 5</k-dropdown-item>
     </template>
   </k-dropdown>
 </template>

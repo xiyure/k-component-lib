@@ -7,20 +7,17 @@
       </span>
     </template>
     <template #default>
-      <k-dropdown-menu>
-        <k-dropdown-item>Action 1</k-dropdown-item>
-        <k-dropdown-item>Action 2</k-dropdown-item>
-        <k-dropdown-item>Action 3</k-dropdown-item>
-        <k-dropdown-item disabled>Action 4</k-dropdown-item>
-        <k-dropdown-item divided>Action 5</k-dropdown-item>
-        <k-dropdown-item divided>Action 6</k-dropdown-item>
-      </k-dropdown-menu>
+      <k-dropdown-item>Action 1</k-dropdown-item>
+      <k-dropdown-item>Action 2</k-dropdown-item>
+      <k-dropdown-item>Action 3</k-dropdown-item>
+      <k-dropdown-item disabled>Action 4</k-dropdown-item>
+      <k-dropdown-item divided>Action 5</k-dropdown-item>
+      <k-dropdown-item divided>Action 6</k-dropdown-item>
     </template>
   </k-dropdown>
 </template>
 
-<script lang="ts" setup>
-</script>
+<script lang="ts" setup></script>
 <style scoped>
 .example-showcase .k-dropdown + .k-dropdown {
   margin-left: 15px;
