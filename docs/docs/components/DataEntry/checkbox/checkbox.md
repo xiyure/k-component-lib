@@ -20,6 +20,18 @@ title: checkbox 多选框
 
 <preview path="./def.vue" />
 
+## 自定义颜色多选框
+
+设置 `color` 属性可以自定义颜色。
+
+<preview path="./colorCheckbox.vue" />
+
+## 严格模式多选框
+
+设置 `strict` 属性可以启用严格模式。
+
+<preview path="./strictCheckbox.vue" />
+
 ## 禁用状态
 
 多选框不可用状态。
