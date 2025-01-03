@@ -59,8 +59,13 @@ Tabs 组件提供了选项卡功能， 默认选中第一个标签页，你也�
 
 <preview path="./customizedTrigger.vue" />
 
+## 标签溢出
+
+
+<preview path="./overflowTabs.vue" />
+
 ## API
 
-<API src="./_tabs.json" lang="zh"></API>
+<API src="./tabs.json" lang="zh"></API>
 
 <API src="./tab_item.json" lang="zh"></API>
