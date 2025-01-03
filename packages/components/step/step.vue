@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, inject, nextTick, Ref, computed } from 'vue';
+import { ref, watch, inject, nextTick } from 'vue';
 import { ElStep } from 'element-plus';
 import { isNumber } from 'lodash-es';
 import { StepProps, StepsProps } from './type';
@@ -46,10 +46,14 @@ const props = withDefaults(defineProps<StepProps>(), {
   status: ''
 });
 const stepsProps: StepsProps = inject('stepProps', {});
-const stepsInfo: Ref<any[]> = inject('stepsInfo', computed(() => []));
+const steps: string[] = inject('steps', []);
+const stepMethods = inject('stepMethods') as any;
+
+// 向父组件添加step信息
+stepMethods.registerStep(props.title);
+
 const _styleModule = inject('_styleModule', '');
 const id = genRandomStr(8);
-const key = stepsInfo.value.find((item) => item.name === props.title)?.key ?? '';
 const DEFAULT_STATUS_COLOR: {
   primary: string;
   success: string;
@@ -62,14 +66,20 @@ const DEFAULT_STATUS_COLOR: {
   error: '#EF4444',
   wait: '#EAE8EB'
 };
-
+watch(() => props.title, (newValue: string, oldValue: string) => {
+  if (newValue !== oldValue) {
+    stepMethods.updateStep(newValue, oldValue);
+  }
+})
 watch(
   () => stepsProps.active,
   (newValue) => {
+    const index = steps.indexOf(props.title);
     if (
       !isNumber(newValue) ||
+      index === -1 ||
       newValue < 0 ||
-      newValue >= stepsInfo.value.length ||
+      newValue > steps.length ||
       props.status ||
       props.color
     ) {
@@ -77,12 +87,12 @@ watch(
     }
     const typeKeys = Object.keys(DEFAULT_STATUS_COLOR);
     let color: string = '';
-    if (newValue === key) {
+    if (newValue === index) {
       const processStatus = getProcessStatus(stepsProps.processStatus);
       color = typeKeys.includes(processStatus) ?
         DEFAULT_STATUS_COLOR[processStatus] :
         DEFAULT_STATUS_COLOR.primary;
-    } else if (newValue > key) {
+    } else if (newValue > index) {
       const finishStatus = getProcessStatus(stepsProps.finishStatus);
       color = typeKeys.includes(finishStatus) ?
         DEFAULT_STATUS_COLOR[finishStatus] :

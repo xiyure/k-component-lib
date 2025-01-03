@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, provide, nextTick, useSlots, inject } from 'vue';
+import { ref, watch, provide, nextTick, inject } from 'vue';
 import { ElSteps } from 'element-plus';
 import { StepsProps } from './type';
 import { genRandomStr, getExposeProxy } from '../../utils';
@@ -36,23 +36,7 @@ const props = withDefaults(defineProps<StepsProps>(), {
 });
 
 const _styleModule = inject('_styleModule', '');
-const steps = ref<any>([]);
-const slots = useSlots();
-
-if (props.capsule) {
-  const children = slots.default?.()[0].children ?? [];
-  steps.value = (children as any[])
-  .map((item) => {
-    if (item.type && item.type.name === 'KStep') {
-      return {
-        key: item.key,
-        name: item.props?.title
-      };
-    }
-    return null;
-  })
-  .filter((item) => item);
-}
+const steps: any[] = [];
 
 const id = genRandomStr(8);
 
@@ -88,11 +72,24 @@ function getProcessStatus(type: string) {
       return 'finish';
   }
 }
+function registerStep(stepTitle: string) {
+  steps.push(stepTitle);
+}
+function updateStep(newTitle: string, oldTitle: string) {
+  const index = steps.indexOf(oldTitle);
+  if (index !== -1) {
+    steps.splice(index, 1, newTitle);
+  }
+}
 
 provide('stepProps', props);
-provide('stepsInfo', steps);
+provide('steps', steps);
+provide('stepMethods', {
+  registerStep,
+  updateStep
+});
 
-const KStepsRef = ref(null);
+const KStepsRef = ref();
 
 const instance: any = {};
 defineExpose(getExposeProxy(instance, KStepsRef));

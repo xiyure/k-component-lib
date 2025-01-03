@@ -1,8 +1,9 @@
-import { resolveLocaleConfigs, parseProps } from './utils.js';
+import fs from 'fs';
+import { dirname, resolve } from 'node:path';
+import type { Plugin } from 'vitepress';
 import MarkdownIt from 'markdown-it';
 import matter from 'gray-matter';
-import { dirname, resolve } from 'node:path';
-import fs from 'fs';
+import { resolveLocaleConfigs, parseProps } from './utils.js';
 import { componentProps, Props, Events, Methods, Slots } from './type.js';
 
 type Lang = 'zh' | 'en';
@@ -166,7 +167,8 @@ const parseParamsFile = async (filePath: string) => {
 
 const API_REG = /^<API (.*)(<\/API>|\/>)$/;
 const LOG_PREFIX = "[gen-doc-api]";
-function genApiDoc() {
+
+function genApiDoc<T>(): Plugin<T> {
   let localeConfigs: any;
   let md: any;
   return {
