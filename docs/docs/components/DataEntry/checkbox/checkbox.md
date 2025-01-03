@@ -28,7 +28,7 @@ title: checkbox 多选框
 
 ## 严格模式多选框
 
-设置 `strict` 属性可以启用严格模式。
+设置 `strict` 属性可以启用严格模式, 只有点击复选框时才能选中。
 
 <preview path="./strictCheckbox.vue" />
 

@@ -10,9 +10,15 @@ title: DatePicker 日期选择器
 
 以”日“为基本单位，基础的日期选择控件
 
-基本单位由 type 属性指定。 通过 shortcuts 配置快捷选项， 通过 disabledDate 函数，来设置禁用掉的日期。
+基本单位由 `type` 属性指定。 通过 `shortcuts` 配置快捷选项， 通过 `disabledDate` 函数，来设置禁用掉的日期。
 
 <preview path="./enter-date" />
+
+## 便捷型快捷日期选择
+
+当`type`为`daterange`或`datetimerange`时，可以使用`showDefaultShortcuts`设置快捷选项，快速选择某段时间。
+
+<preview path="./shortcutsPicker" />
 
 ## 其他日期单位
 
@@ -96,28 +102,6 @@ title: DatePicker 日期选择器
 使用插槽自定义图标。
 
 <preview path="./custom-icon" />
-
-更详细的数据类型，请查看下表:
-
-```ts
-interface DateCell {
-  column: number
-  customClass: string
-  disabled: boolean
-  end: boolean
-  inRange: boolean
-  row: number
-  selected: Dayjs
-  isCurrent: boolean
-  isSelected: boolean
-  start: boolean
-  text: number
-  timestamp: number
-  date: Date
-  dayjs: Dayjs
-  type: 'normal' | 'today' | 'week' | 'next-month' | 'prev-month'
-}
-```
 
 ## API
 

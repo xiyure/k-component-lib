@@ -14,6 +14,12 @@ title: Steps 步骤条
 
 <preview path="./basic.vue" />
 
+## 胶囊状步骤条
+
+步骤条可以变成胶囊状，设置 `capsule` 属性为 `true` 即可。
+
+<preview path="./capsuleSteps.vue" />
+
 ## 含状态的步骤条
 
 每一步骤显示出该步骤的状态。

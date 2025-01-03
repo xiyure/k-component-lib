@@ -203,6 +203,12 @@
       "description": "设置日期单元格的类名，接收一个Date对象",
       "defaultValue": "",
       "tip": "(data: Date) => string"
+    },
+    {
+      "displayName": "showDefaultShortcuts",
+      "type": "boolean",
+      "description": "是否显示默认快捷日期",
+      "defaultValue": "true"
     }
   ],
   "events": [
