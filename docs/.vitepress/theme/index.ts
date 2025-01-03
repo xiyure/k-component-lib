@@ -44,21 +44,25 @@ export default {
   enhanceApp(ctx) {
     // inject Third-party libraries
     // DefaultTheme.enhanceApp(ctx);
-    ctx.app.use(install);
-    ctx.app.use(KswIcon);
-    ctx.app.use(NolebaseGitChangelogPlugin);
-    ctx.app.component('demo-preview', Container);
-    ctx.app.component('DocTitle', DocTitle);
-    ctx.app.provide(InjectionKey, {
-      // 配置
-      layoutSwitch: {
-        disableAnimation: false,
-        defaultMode: 1,
-      },
-      spotlight: {
-        defaultToggle: true,
-      },
-    } as Options);
+    if (typeof window !== 'undefined') {
+      document.addEventListener('DOMContentLoaded', async () => {
+        ctx.app.use(install);
+        ctx.app.use(KswIcon);
+        ctx.app.use(NolebaseGitChangelogPlugin);
+        ctx.app.component('demo-preview', Container);
+        ctx.app.component('DocTitle', DocTitle);
+        ctx.app.provide(InjectionKey, {
+          // 配置
+          layoutSwitch: {
+            disableAnimation: false,
+            defaultMode: 1,
+          },
+          spotlight: {
+            defaultToggle: true,
+          },
+        } as Options);
+      });
+    }
   },
   setup() {
   onMounted(() => {
