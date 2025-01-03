@@ -54,6 +54,10 @@ title: TreeSelect 树形选择
 
 <preview path="./lazyLoadingTreeSelect" />
 
+:::tip
+由于这个组件是k-tree和k-select的结合体，他们的原始属性未被更改，故不在此重复。请跳转查看原组件的相应文档。
+:::
+
 ## API
 
 <API src="./tree_select.json" lang="zh"></API>
