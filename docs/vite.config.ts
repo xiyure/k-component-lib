@@ -2,8 +2,12 @@ import path from 'path';
 import { defineConfig } from 'vite';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import { chunkSplitPlugin } from 'vite-plugin-chunk-split';
-import { GitChangelog, GitChangelogMarkdownSection } from '@nolebase/vitepress-plugin-git-changelog/vite';
+import {
+  GitChangelog,
+  GitChangelogMarkdownSection,
+} from '@nolebase/vitepress-plugin-git-changelog/vite';
 import { genApiDoc } from './.vitepress/plugin/api-doc.config';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
   // esbuild: {
@@ -21,28 +25,32 @@ export default defineConfig({
         elementPlus: ['element-plus'],
         vxeTable: [/vxe-table/],
         vxePcUi: [/vxe-pc-ui/],
-        'ksw-ux': [/packages\/(components|templates|utils|style|interface|element-plus.ts)/, /vue-i18n/],
-        'ksw-icon': [/ksw-vue-icon/]
+        'ksw-ux': [
+          /packages\/(components|templates|utils|style|interface|element-plus.ts)/,
+          /vue-i18n/,
+        ],
+        'ksw-icon': [/ksw-vue-icon/],
         // '@nolebase': [/@nolebase/],
-      }
+      },
     }),
-    GitChangelog({ 
-      repoURL: () => 'https://github.com/xiyure/k-component-lib' 
-    }), 
+    GitChangelog({
+      repoURL: () => 'https://github.com/xiyure/k-component-lib',
+    }),
     GitChangelogMarkdownSection({
       exclude: (id) => {
         const excludedFiles = ['index.md', 'CHANGELOG.md', 'team.md'];
-        return excludedFiles.some(file => id.endsWith(file));
+        return excludedFiles.some((file) => id.endsWith(file));
       },
       sections: {
-        disableChangelog: true, 
-        disableContributors: false 
+        disableChangelog: true,
+        disableContributors: false,
       },
-    })
+    }),
+    visualizer(),
   ],
   server: {
     host: '0.0.0.0',
-    port: 12581
+    port: 12581,
   },
   // build: {
   //   rollupOptions: {
@@ -63,13 +71,13 @@ export default defineConfig({
       '@components': path.resolve(__dirname, './components'),
       '@data': path.resolve(__dirname, './data'),
       '@docs': path.resolve(__dirname, './docs'),
-      '@example': path.resolve(__dirname, './example')
-    }
+      '@example': path.resolve(__dirname, './example'),
+    },
   },
   optimizeDeps: {
-    exclude: ['@nolebase/vitepress-plugin-enhanced-readabilities/client', 'vitepress']
+    exclude: ['@nolebase/vitepress-plugin-enhanced-readabilities/client', 'vitepress'],
   },
   ssr: {
-    noExternal: ['ksw-vue-icon', '@ksware/ksw-ux', 'vue-i18n', '@nolebase/*']
-  }
+    noExternal: ['ksw-vue-icon', '@ksware/ksw-ux', 'vue-i18n', '@nolebase/*'],
+  },
 });
