@@ -22,7 +22,7 @@ title: Steps 步骤条
 
 ## 自定义胶囊状步骤条样式
 
-步骤条的高度和颜色可以自定义。
+当`capsule` 属性为 `true`时，步骤条的高度和颜色可以通过`color`和`height`属性来自定义。
 
 <preview path="./customCapsuleSteps.vue" />
 
