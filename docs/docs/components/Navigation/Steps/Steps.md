@@ -20,6 +20,12 @@ title: Steps 步骤条
 
 <preview path="./capsuleSteps.vue" />
 
+## 自定义胶囊状步骤条样式
+
+步骤条的高度和颜色可以自定义。
+
+<preview path="./customCapsuleSteps.vue" />
+
 ## 含状态的步骤条
 
 每一步骤显示出该步骤的状态。
