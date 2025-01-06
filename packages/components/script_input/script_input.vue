@@ -136,6 +136,7 @@ defineOptions({
 const _styleModule = inject('_styleModule', '');
 
 const props = withDefaults(defineProps<ScriptInputProps>(), {
+  modelValue: '',
   options: () => [],
   size: 'base',
   useTree: false,
@@ -193,7 +194,7 @@ const fxSet = new Set();
 
 // password
 const showPassword = defineModel<boolean | undefined>('showPassword', { default: false });
-const pwd = defineModel<string>('modelValue', { default: '' });
+const pwd = ref(props.modelValue.toString());
 const { _methods } = usePassword(showPassword, pwd);
 
 const treeConfig = computed(() => {
@@ -231,9 +232,6 @@ watch(
 watch(
   () => [props.modelValue, props.options],
   () => {
-    if (showPassword.value) {
-      return;
-    }
     const type = typeof props.modelValue;
     if ((type !== 'string' && type !== 'number') || props.modelValue === undefined) {
       console.warn(`'modelValue' must be a string or number, but got ${type}`);
@@ -243,10 +241,15 @@ watch(
       return;
     }
     clearCurrentInput();
+    const newModelValue = props.modelValue.toString();
+    cacheRes = newModelValue;
+    if (showPassword.value) {
+      pwd.value = newModelValue;
+      return;
+    }
     nextTick(() => {
-      const innerText = parseModelValue(props.modelValue.toString());
+      const innerText = parseModelValue(newModelValue);
       setEditorContent(innerText);
-      cacheRes = props.modelValue.toString();
     });
   },
   { immediate: true, deep: true },
