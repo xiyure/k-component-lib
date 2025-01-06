@@ -42,8 +42,8 @@ export default {
     });
   },
   enhanceApp(ctx) {
-    // inject Third-party libraries
-    // DefaultTheme.enhanceApp(ctx);
+    // 注入第三方库
+    DefaultTheme.enhanceApp(ctx);
     if (typeof window !== 'undefined') {
       document.addEventListener('DOMContentLoaded', async () => {
         ctx.app.use(install);
