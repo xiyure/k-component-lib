@@ -201,6 +201,7 @@ function resetTransferData() {
 // 拖拽排序
 let sortable: Sortable | null = null;
 function initSortable() {
+  console.log(props.drag);
   if (!props.drag) {
     return;
   }

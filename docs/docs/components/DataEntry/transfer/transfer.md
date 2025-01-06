@@ -34,6 +34,12 @@ Transfer 的数据通过 data 属性传入。 数据需要是一个对象数组�
 
 <preview path="./propertyItemAlias" />
 
+## 拖拽排序
+
+`Transfer` 支持拖拽排序。 开启拖拽排序需要设置 `drag` 为 `true`。 也可以使用`drag-icon`更换拖拽图标。
+
+<preview path="./dragSort" />
+
 ## API
 
 <API src="./transfer.json" lang="zh"></API>
