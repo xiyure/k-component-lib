@@ -50,7 +50,6 @@ export default defineConfig({
         'vxe-table',
         'vxe-pc-ui',
         'vue-i18n',
-        'chinese-lunar-calendar',
         'sortablejs',
       ],
       output: {
@@ -60,7 +59,6 @@ export default defineConfig({
           'vxe-table': 'VxeTable',
           'vxe-pc-ui': 'VxeUI',
           'vue-i18n': 'VueI18n',
-          'chinese-lunar-calendar': 'ChineseLunarCalendar',
           sortablejs: 'Sortable',
         },
       },
