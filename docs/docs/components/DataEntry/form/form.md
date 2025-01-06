@@ -68,6 +68,18 @@ title: Form 表单
 
 <preview path="./sizeControl.vue" />
 
+## 隐藏label
+
+如果不需要显示 `label` 标签，可以设置 `showLabel` 属性为 `false`, 如果需要隐藏单独的 `label` 标签，可以在Item上设置`showLabel` 属性为 `false`。
+
+<preview path="./hideLabel.vue" />
+
+## 隐藏冒号
+
+如果不需要显示冒号，可以设置 `showColon` 属性为 `false`。
+
+<preview path="./hideColon.vue" />
+
 ## API
 
 <API src="./form.json" lang="zh"></API>

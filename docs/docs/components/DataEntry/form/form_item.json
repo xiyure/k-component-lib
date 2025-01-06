@@ -84,6 +84,13 @@
       "description": "form原生属性",
       "defaultValue": "",
       "tip": ""
+    },
+    {
+      "displayName": "showLabel",
+      "type": "boolean",
+      "description": "是否显示label",
+      "defaultValue": "true",
+      "tip": ""
     }
   ],
   "events": [],

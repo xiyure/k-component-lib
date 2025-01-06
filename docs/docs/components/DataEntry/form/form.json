@@ -111,6 +111,20 @@
       "description": "是否显示右上角当校验有失败结果时，滚动到第一个失败的表单项目",
       "defaultValue": "",
       "tip": ""
+    },
+    {
+      "displayName": "showColon",
+      "type": "boolean",
+      "description": "是否显示冒号",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "showLabel",
+      "type": "boolean",
+      "description": "是否显示label",
+      "defaultValue": "true",
+      "tip": ""
     }
   ],
   "events": [
