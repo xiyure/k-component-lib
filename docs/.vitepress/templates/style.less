@@ -1,71 +1,43 @@
-html{
+html {
   font-size: calc(100vw / 1920 * 16px);
 }
 
-// .vw(@px) {
-//   width: (@px / 1920 * 100vw);
-// }
-
-// .vh(@px) {
-//   height: (@px / 1080 * 100vh);
-// }
-
-// .fontSize(@px) {
-//   font-size: (@px / 1920 * 100vw);
-// }
-
-// .LineHeight(@px) {
-//   line-height: (@px / 1080 * 100vh);
-// }
-
 .CVPHome {
-  @apply
-  w-4/5
-  h-full
-  mx-auto
-  my-0
-  bg-green-500
-  flex;
+  background-image: url(../../public/bg.svg);
 
-  .CVPHome-title {
-    width:589px;
-    height: 357px;
-    background-color: orange;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+  .CVPHome-content-carousel {
+    animation: run 20s ease infinite normal;
+    animation-play-state: running;
 
-    .CVPHome-title-hero-section {
-      font-family: Alibaba PuHuiTi 3.0;
-      font-size: 16px;
-      font-weight: 500;
-      line-height: 28px;
-      letter-spacing: 0em;
-      font-variation-settings: "opsz" auto;
-      font-feature-settings: "kern" on;
-      /* --k-status-primary */
-      color: #2882FF;
+    &.carousel-hover:hover {
+      animation-play-state: paused !important;
     }
-    .CVPHome-title-intro-text {
-      font-family: Alibaba PuHuiTi 3.0;
-      font-size: 72px;
-      font-weight: 800;
-      line-height: 72px;
-      letter-spacing: 0em;
-      font-variation-settings: "opsz" auto;
-      font-feature-settings: "kern" on;
-      color: #000000;
-      word-wrap: break-word;
-    }
-    .CVPHome-title-feature-highlight {
-      font-family: Alibaba PuHuiTi 3.0;
-      font-size: 18px;
-      font-weight: normal;
-      line-height: 28px;
-      letter-spacing: 0em;
-      font-variation-settings: "opsz" auto;
-      font-feature-settings: "kern" on;
-      color: #000000;
-    }
+  }
+
+  .CPVHome-icon-container {
+    animation: runIcon 15s linear infinite normal;
+  }
+}
+@keyframes runIcon {
+  0% {
+    transform: translateX(0); /* 初始位置 */
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+@keyframes run {
+  0%,
+  5% {
+    transform: translateX(0); /* 初始位置 */
+  }
+  33% {
+    transform: translateX(-100%); /* 第一阶段：滑动到-1400px */
+  }
+  66% {
+    transform: translateX(-200%); /* 第二阶段：滑动到-2800px */
+  }
+  100% {
+    transform: translateX(-300%); /* 第二阶段：滑动到-2800px */
   }
 }

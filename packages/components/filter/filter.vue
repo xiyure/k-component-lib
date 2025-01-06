@@ -7,6 +7,7 @@
     ]"
   >
     <k-popover
+      v-if="showPopper"
       trigger="click"
       width="auto"
       :teleported="false"
@@ -190,6 +191,169 @@
         </div>
       </div>
     </k-popover>
+
+    <k-card v-else-if="!showPopper">
+      <div class="k-filter__content" style="background-color: white">
+        <div class="k-filter__header">
+          <span :class="formatSize.ownSize === 'sm' ? 'text-base' : 'text-lg'" class="font-bold">
+            {{ $t('advancedFilter') }}
+          </span>
+          <span
+            :class="formatSize.ownSize === 'sm' ? 'text-sm' : 'text-base'"
+            @click="
+              () => {
+                clearFilter();
+                emits('clear');
+              }
+            "
+          >
+            <IconClearDate />
+            {{ $t('clearAll') }}
+          </span>
+        </div>
+        <div
+          v-for="(item, index) in filterData"
+          :key="index"
+          :title="item.title?.join('/')"
+          class="k-filter__item"
+        >
+          <div class="k-filter__condition">
+            <k-cascader
+              v-model="item.title"
+              :teleported="false"
+              :size="formatSize.ownSize"
+              :options="options"
+              :props="{
+                label: 'title',
+                value: 'title',
+                children: props.childrenField,
+              }"
+              clearable
+              @change="changeCondition(index, item, options!)"
+            ></k-cascader>
+          </div>
+          <div class="k-filter__logic">
+            <k-select
+              v-model="item.logic"
+              :size="formatSize.ownSize"
+              :teleported="false"
+              clearable
+              :disabled="item._allowSelectLogic === false"
+              @change="changeLogic(item)"
+            >
+              <k-option
+                v-for="conditionItem in conditionList(item)?.logicList"
+                :key="conditionItem.logic"
+                :label="$t(conditionItem.logic)"
+                :value="conditionItem.logic"
+              />
+            </k-select>
+          </div>
+          <div class="k-filter__value" :title="item.value?.toString()">
+            <div v-if="instance(item.key)?.dataType === 'date'" class="k-filter__date-box">
+              <k-select
+                v-model="item.dateRange"
+                :size="formatSize.ownSize"
+                :teleported="false"
+                clearable
+                :disabled="disabledInput(item)"
+                @change="changeDateRange(item)"
+              >
+                <k-option
+                  v-for="logicItem in dateLogicList(item)"
+                  :key="logicItem.value"
+                  :label="$t(logicItem.label)"
+                  :value="logicItem.value"
+                  :disabled="
+                    (item.logic === 'after' || item.logic === 'before') &&
+                    logicItem.value === 'range'
+                  "
+                />
+              </k-select>
+              <k-date-picker
+                v-model="item.value"
+                :type="item.dateType"
+                :teleported="false"
+                :size="formatSize.ownSize"
+                clearable
+                :disabled="disabledDatePicker(item)"
+                @change="
+                  (val: Date | Date[]) => {
+                    dateChange(val, item);
+                  }
+                "
+              />
+            </div>
+            <k-select
+              v-else-if="instance(item.key)?.options?.length && !item.isMultiple"
+              v-model="item.value"
+              :size="formatSize.ownSize"
+              :teleported="false"
+              :disabled="disabledInput(item)"
+              clearable
+              @change="updateValue(item, 'select', instance(item.key).options)"
+            >
+              <k-option
+                v-for="optionItem in instance(item.key)?.options"
+                :key="optionItem.value"
+                :label="optionItem.label"
+                :value="optionItem.value"
+              />
+            </k-select>
+            <k-select
+              v-else-if="instance(item.key)?.options?.length && item.isMultiple"
+              v-model="item.multipleValue"
+              :size="formatSize.ownSize"
+              :teleported="false"
+              :disabled="disabledInput(item)"
+              clearable
+              multiple
+              @change="updateValue(item, 'multiple', instance(item.key).options)"
+            >
+              <k-option
+                v-for="optionItem in instance(item.key)?.options"
+                :key="optionItem.value"
+                :label="optionItem.label"
+                :value="optionItem.value"
+              />
+            </k-select>
+            <k-input
+              v-else
+              v-model="item.value"
+              :size="formatSize.ownSize"
+              :disabled="disabledInput(item)"
+              clearable
+              @change="updateValue(item, 'input', instance(item.key).options)"
+            />
+          </div>
+          <i class="close-icon" @click="removeConditionItem(index)"><IconClose /></i>
+        </div>
+        <div
+          class="k-filter__operate"
+          :class="formatSize.ownSize === 'sm' ? 'text-sm' : 'text-base'"
+        >
+          <div class="k-filer__operate-left">
+            <span @click="addCondition()">
+              <IconAdd />
+              {{ $t('addCondition') }}
+            </span>
+          </div>
+          <div class="k-filer__operate-right">
+            <span class="select-label">{{ $t('aboveCondition') }}：</span>
+            <k-select
+              v-model="filterRule"
+              :size="formatSize.ownSize"
+              :disabled="disableChangeMode"
+              :teleported="false"
+            >
+              <k-option :label="$t('anyOne')" :value="0"></k-option>
+              <k-option :label="$t('all')" :value="1"></k-option>
+            </k-select>
+            <k-button :size="formatSize.ownSize" main @click="query">{{ $t('query') }}</k-button>
+          </div>
+        </div>
+      </div>
+    </k-card>
   </div>
 </template>
 
@@ -217,6 +381,7 @@ const props = withDefaults(defineProps<FilterProps>(), {
   filterKey: 'title',
   childrenField: 'children',
   ignoreCase: false,
+  showPopper: true,
   data: () => [],
 });
 
@@ -281,6 +446,7 @@ const disabledInput = computed(
   () =>
     function (item: FilterData) {
       const disabledLogicTypes = ['empty', 'nonEmpty'];
+      console.log(!item.logic || disabledLogicTypes.includes(item.logic));
       return !item.logic || disabledLogicTypes.includes(item.logic);
     },
 );
@@ -342,6 +508,9 @@ function initData() {
 }
 // 添加条件
 function addCondition() {
+  if (filterData.value.length >= 3 && !props.showPopper) {
+    return;
+  }
   const addItem: FilterData = {
     title: [],
     logic: '',
@@ -449,13 +618,14 @@ function getRemoteFieldMap() {
 function changeCondition(index: number, item: FilterData, options: filterOptions[]) {
   if (item && options && options.length > 0) {
     options.map((option) => {
-      if (item.title.includes(option.title) && option.multiple) {
+      if (item.title && item.title.includes(option.title) && option.multiple) {
         item.isMultiple = true;
       }
     });
   }
   const targetItem = filterData.value[index];
   const titles = targetItem.title ?? [];
+  console.log(1, titles);
   if (titles.length === 0) {
     targetItem.key = null;
     targetItem.logic = 'equal';
@@ -478,15 +648,9 @@ function changeCondition(index: number, item: FilterData, options: filterOptions
     const logicItem = logicOptionItem.logicList.find((item) => item.logic === 'equal');
     targetItem.handler = logicItem?.handler ?? null;
   }
-  if (columnItem?.options?.length) {
-    targetItem.value = columnItem.options[0].value;
-    targetItem.showValue = columnItem.options[0].label;
-    targetItem._allowSelectLogic = false;
-  } else {
-    targetItem.value = '';
-    targetItem.showValue = '';
-    targetItem._allowSelectLogic = true;
-  }
+  targetItem.value = '';
+  targetItem.showValue = '';
+  targetItem._allowSelectLogic = true;
 }
 function changeLogic(dataItem: FilterData) {
   if (

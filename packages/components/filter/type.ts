@@ -11,6 +11,7 @@ export interface FilterProps {
   formatter?: string
   ignoreCase?: boolean
   showPopper?: boolean
+  maxNumber?: number
 }
 
 export type FilterValue = string | number | Date | null | Array<string | number | Date>
