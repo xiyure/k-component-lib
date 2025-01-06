@@ -5,9 +5,22 @@ date: 2020-08-12 10:30:00
 
 # 介绍
 
-`@ksware/ksw-ux` 是一套面向企业级中后台的 UI 组件库，以 Element Plus 为基础进行二次封装。在保留 Element Plus 原有 API 的同时，进一步针对某些业务场景进行了封装与功能扩展，旨在提供高效且愉悦的开发体验。
+`@ksware/ksw-ux` 是金智维产品一部的前端组件库，旨在通过模块化的解决方案来降低冗余的生产成本。该项目集成了多种业务组件，专为企业级产品的开发而设计，以满足日益增长的用户体验需求。随着企业对用户体验的重视程度不断提升，KSW-UX 通过大量项目实践和总结，逐步形成了一个完善的设计体系。这一设计体系不仅提高了开发效率，还确保了组件的一致性和可复用性，从而为企业级产品提供了更高水平的用户体验。
 
 以 Vue 3.x 与 TypeScript 为开发基础。
+
+## 设计资源
+
+我们使用 master go 作为设计工具, 这里提供 KSW-UX 的设计资源：
+
+[k-pc-uikit 2.0 ](https://mastergo.com/file/107277830610746?fileOpenFrom=project)
+
+## 建议或者意见
+
+如果您有任何建议或者意见，欢迎通过企业微信联系我们：
+
+- 唐清伟(工号: 01270)
+- 周韩杰(工号: 01418)
 
 ## 特性
 
@@ -16,68 +29,3 @@ date: 2020-08-12 10:30:00
 - **增强的业务组件**：增加了许多常用的业务组件，如高级表单、数据表格、图表等，减少了重复开发的工作量。
 - **TypeScript 支持**：全量使用 TypeScript 进行开发，提供完整的类型定义，提升开发效率和代码质量。
 - **优秀的文档与示例**：详细的文档和丰富的示例代码，帮助开发者快速上手并充分利用组件库的功能。
-
-## 支持环境
-
-`Vue ^3.0.0`
-
-| Chrome | Edge | Firefox | Safari |
-| ------ | ---- | ------- | ------ |
-| 79 +   | 79 + | 72 +    | 13.1 + |
-
-## 安装
-
-::: code-group
-
-```sh [npm]
-npm install @ksware/ksw-ux --save
-```
-
-```sh [yarn]
-yarn add @ksware/ksw-ux
-```
-
-```sh [pnpm]
-pnpm install @ksware/ksw-ux
-```
-
-:::
-
-## 使用
-
-在你的 Vue 项目中引入并使用 `@ksware/ksw-ux`：
-
-1. **全局引入**
-
-在 `main.ts` 文件中引入 `@ksware/ksw-ux` 并进行注册：
-
-```typescript
-import { createApp } from 'vue';
-import App from './App.vue';
-import KswUx from '@ksware/ksw-ux';
-
-const app = createApp(App);
-
-app.use(KswUx);
-
-app.mount('#app');
-```
-
-2. **按需引入**
-
-如果你只需要使用部分组件，可以按需引入：
-
-```typescript
-import { createApp } from 'vue';
-import App from './App.vue';
-import { KButton, KTable } from '@ksware/ksw-ux';
-
-const app = createApp(App);
-
-app.component('KButton', KButton);
-app.component('KTable', KTable);
-
-app.mount('#app');
-```
-
-通过这种方式，你可以有效减少打包后的文件大小，提高应用的性能。

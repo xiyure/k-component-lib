@@ -11,7 +11,7 @@ export default [
     activeMatch: '^/templates/',
   },
   { text: '更新日志', link: '/CHANGELOG' },
-  { text: '团队', link: '/team' },
+  { text: '关于我们', link: '/team' },
   {
     text: '图标库',
     link: 'https://sengoku-f.github.io/KSW-vue-icon',
