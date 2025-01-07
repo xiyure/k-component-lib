@@ -1,4 +1,3 @@
-template
 <template>
   <div ref="KScriptInputWrapper" class="k-script-input-wrapper">
     <k-popover
@@ -21,7 +20,7 @@ template
             </k-button>
             <slot name="prepend"></slot>
           </div>
-          <div class="flex-1 overflow-hidden">
+          <div class="k-script-input-wrap flex-1">
             <div
               v-if="!showPassword"
               ref="KScriptInput"
@@ -48,7 +47,8 @@ template
               "
             ></div>
             <k-input
-              v-else type="password"
+              v-else
+              type="password"
               :class="['k-script-input', _styleModule]"
               v-model="pwd"
               show-password
@@ -112,15 +112,7 @@ template
 </template>
 
 <script setup lang="ts">
-import {
-  ref,
-  computed,
-  watch,
-  inject,
-  onMounted,
-  onBeforeUnmount,
-  nextTick
-} from 'vue';
+import { ref, computed, watch, inject, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import { ElScrollbar } from 'element-plus';
 import { ScriptInputProps, ScriptOptions } from './type';
 import Message from '../message';
@@ -145,7 +137,7 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   expandAll: false,
   defaultMode: 'string',
   onlyOneInput: false,
-  resize: true
+  resize: true,
 });
 
 const DEFAULT_TREE_CONFIG = {
@@ -374,7 +366,7 @@ function parseInputValue() {
       result: pwd.value,
       scriptTags: [],
       isStringMode: isStringMode(),
-    }
+    };
   }
   if (!isStringMode()) {
     return {
@@ -687,7 +679,7 @@ defineExpose({
   toggleMode,
   setStringMode,
   isStringMode,
-  ..._methods
+  ..._methods,
 });
 </script>
 <style lang="less">

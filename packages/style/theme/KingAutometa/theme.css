@@ -239,4 +239,10 @@ body.KingAutometa {
 
   /* el-form */
   --k-theme-form-item__label-color: var(--k-theme-info);
+
+  /* date-picker */
+  --k-theme-date-picker-size-height--sm: var(--k-theme-button-size-height--sm);
+  --k-theme-date-picker-size-height--base: var(--k-theme-button-size-height--base);
+  --k-theme-date-picker-size-height--lg: var(--k-theme-button-size-height--lg);
+  /* --k- */
 }

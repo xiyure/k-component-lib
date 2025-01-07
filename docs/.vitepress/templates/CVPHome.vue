@@ -6,67 +6,191 @@
 * @version V3.0.0
 !-->
 <template>
-  <div ref="CVPHome" class="CVPHome bg-no-repeat overflow-hidden">
-    <div class="CVPHome-header flex h-96 justify-around items-end px-32">
-      <div class="w-[570px] h-[340px] flex justify-around flex-col">
-        <div class="text-blue-500">By the makers of KSW Design</div>
-        <div class="break-words text-7xl">Design,develop,deliver</div>
-        <div>
-          Use KSW end-to-end design language to create simple, intuitive, and beautiful experiences.
-        </div>
-        <div>
-          <k-button main>Get started</k-button>
-          <k-button icon-right="IconCopy">$ npm i KSW-UI</k-button>
+  <div ref="CVPHome" class="CVPHome bg-white px-24 flex flex-col items-center">
+    <div style="width: 1280px">
+      <!-- 第一页 -->
+      <div class="CVPHome-header relative bg-blue-50" style="height: 775px">
+        <div class="flex items-center w-full h-full relative">
+          <div class="absolute" style="top: 10rem">
+            <div class="text-cyan-500 text-lg font-bold">By the makers of KSW</div>
+            <div class="break-words text-7xl font-bold text-gray-900 mt-8">
+              快速构建你的网页应用
+            </div>
+            <div class="text-gray-900 text-xl mt-8">
+              <span class="text-green-500">'@ksware/ksw-ux'</span>
+              包含大量业务组件，能够帮助你快速构建网页应用。
+            </div>
+            <div class="mt-8">
+              <k-button main>Get started</k-button>
+              <k-button icon-right="IconCopy" @click="copyCode()">$ npm i @ksware/ksw-ux</k-button>
+            </div>
+          </div>
+          <div class="exp-component w-full grid grid-cols-3 absolute gap-4" style="top: 9rem">
+            <div class="box flex justify-end items-end self-end h-fit" style="grid-column: 2/3">
+              <div
+                class="grid grid-cols-3 grid-rows items-center justify-self-center self-center gap-2"
+              >
+                <div style="grid-column: 3/4; justify-self: end">
+                  <k-switch size="lg" v-model="switchValue"></k-switch>
+                </div>
+                <div style="grid-column: 2/3; justify-self: end">
+                  <k-checkbox size="lg" v-model="checkValue"></k-checkbox>
+                </div>
+                <div>
+                  <k-button main>主要按钮</k-button>
+                </div>
+              </div>
+            </div>
+            <div class="box">
+              <messageWindow :message="messageValue"></messageWindow>
+            </div>
+            <div class="box h-fit justify-self-end" style="grid-column: 2/4">
+              <div class="" style="width: fit-content">
+                <k-filter
+                  size="sm"
+                  :showPopper="false"
+                  :options="[
+                    {
+                      title: '标题',
+                      field: 'title',
+                      dataType: 'number',
+                      options: [
+                        {
+                          label: '22',
+                          value: 22,
+                        },
+                        {
+                          label: '23',
+                          value: 23,
+                        },
+                      ],
+                    },
+                    {
+                      title: '优先级',
+                      field: 'grade',
+                      dataType: 'number',
+                      options: [
+                        {
+                          label: '1',
+                          value: 1,
+                        },
+                        {
+                          label: '2',
+                          value: 2,
+                        },
+                      ],
+                    },
+                  ]"
+                ></k-filter>
+              </div>
+            </div>
+            <div class="box justify-self-end">
+              <k-radio-group button v-model="radioValue">
+                <k-radio value="Years">Years</k-radio>
+                <k-radio value="Months">Months</k-radio>
+                <k-radio value="Days">Days</k-radio>
+                <k-radio value="Hours">Hours</k-radio>
+                <k-radio value="Minutes">Minutes</k-radio>
+              </k-radio-group>
+            </div>
+            <div class="box">
+              <k-date-picker
+                class="!w-full"
+                v-model="datePickerValue"
+                type="datetimerange"
+                start-placeholder="Start date"
+                end-placeholder="End date"
+                format="YYYY-MM-DD HH:mm:ss"
+                date-format="YYYY/MM/DD ddd"
+                time-format="A hh:mm:ss"
+              />
+            </div>
+            <div class="box h-8">
+              <k-script-input :height="'32px'" v-model="scriptValue"></k-script-input>
+            </div>
+            <div class="box" style="grid-column: 1/4">表格</div>
+            <div class="box" style="grid-column: 2/3">8</div>
+            <div class="box">9</div>
+          </div>
         </div>
       </div>
-      <div class="w-36 mx-5 flex flex-col items-end">
-        <div><k-switch v-model="switchOpen" /></div>
-        <div class="w-full flex justify-between">
-          <k-switch v-model="switchClose" />
-          <k-button main>Button</k-button>
+      <!-- 第二页, 组件 -->
+      <div class="CVPHome-header relative bg-blue-50 mt-8">
+        <div class="text-violet-500 text-xl font-bold">Components</div>
+        <div class="break-words text-xl font-bold text-gray-900 mt-2">
+          这里有诸多业务组件,方便你快速构建网页应用。
         </div>
-        <div class="w-48 h-9 bg-white my-1"></div>
+        <div class="text-gray-900 text-base mt-2">
+          <span class="text-green-500">'@ksware/ksw-ux'</span>
+          包含大量业务组件，能够帮助你快速构建网页应用。
+        </div>
+        <div class="grid grid-cols-4">
+          <div class="box">1</div>
+          <div class="box">2</div>
+          <div class="box">3</div>
+          <div class="box">4</div>
+          <div class="box">5</div>
+          <div class="box">6</div>
+          <div class="box">7</div>
+          <div class="box">8</div>
+          <div class="box">9</div>
+          <div class="box">10</div>
+          <div class="box">11</div>
+          <div class="box">12</div>
+        </div>
       </div>
-      <div class="w-[540px]">
-        <k-filter
-          size="sm"
-          :showPopper="false"
-          :options="[
-            {
-              title: '标题',
-              field: 'title',
-              dataType: 'number',
-              options: [
-                {
-                  label: '22',
-                  value: 22,
-                },
-                {
-                  label: '23',
-                  value: 23,
-                },
-              ],
-            },
-            {
-              title: '优先级',
-              field: 'grade',
-              dataType: 'number',
-              options: [
-                {
-                  label: '1',
-                  value: 1,
-                },
-                {
-                  label: '2',
-                  value: 2,
-                },
-              ],
-            },
-          ]"
-        ></k-filter>
+      <!-- 第三页, 模板 -->
+      <div class="CVPHome-header relative bg-blue-50 mt-8">
+        <div class="text-violet-500 text-xl font-bold">Templates</div>
+        <div class="break-words text-xl font-bold text-gray-900 mt-2">
+          此处模板都是实际项目中经过验证的最佳实践，可以直接使用。
+        </div>
+        <div class="text-gray-900 text-base mt-2">
+          <span class="text-green-500">'@ksware/ksw-ux'</span>
+          包含大量业务组件，能够帮助你快速构建网页应用。
+        </div>
+        <div class="grid grid-cols-4">
+          <div class="box">1</div>
+          <div class="box">2</div>
+          <div class="box">3</div>
+          <div class="box">4</div>
+          <div class="box">5</div>
+          <div class="box">6</div>
+          <div class="box">7</div>
+          <div class="box">8</div>
+          <div class="box">9</div>
+          <div class="box">10</div>
+          <div class="box">11</div>
+          <div class="box">12</div>
+        </div>
+      </div>
+      <!-- 第四页, icon库 -->
+      <div class="CVPHome-header relative bg-blue-50 mt-8">
+        <div class="text-violet-500 text-xl font-bold">Icons</div>
+        <div class="break-words text-xl font-bold text-gray-900 mt-2">
+          ksw-vue-icon 是一个专门为 KSW UI 设计的图标库，包含 800+ 个精美的图标, 并且在持续更新中。
+        </div>
+        <div class="text-gray-900 text-base mt-2">
+          <span class="text-green-500">'@ksware/ksw-ux'</span>
+          包含大量业务组件，能够帮助你快速构建网页应用。
+        </div>
+        <div class="grid grid-cols-4">
+          <div class="box">1</div>
+          <div class="box">2</div>
+          <div class="box">3</div>
+          <div class="box">4</div>
+          <div class="box">5</div>
+          <div class="box">6</div>
+          <div class="box">7</div>
+          <div class="box">8</div>
+          <div class="box">9</div>
+          <div class="box">10</div>
+          <div class="box">11</div>
+          <div class="box">12</div>
+        </div>
       </div>
     </div>
-    <div
+    <!-- <div
       class="text-center w-[1000px] mx-auto mt-40 h-48 flex justify-around flex-col items-center"
     >
       <div class="text-[#2882FF]">Components</div>
@@ -148,7 +272,7 @@
           />
         </div>
       </div>
-      <div style="background-color: red;" v-for="(item, index) in iconsDataBase" :key="item.id">
+      <div style="background-color: red" v-for="(item, index) in iconsDataBase" :key="item.id">
         <div class="w-32 h-24 m-8 bg-[#F5F5F5] relative" v-if="index < iconsDataBase.length / 2">
           <component
             :is="item.componentName"
@@ -169,7 +293,7 @@
           />
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -179,13 +303,52 @@ import carouselBlue from './assets/carouselBlue.svg';
 import carouselRed from './assets/carouselRed.svg';
 import carouselPurple from './assets/carouselPurple.svg';
 import { iconsDataBase } from 'ksw-vue-icon/icons-base.js';
+import messageWindow from './message_window.vue';
 
 const switchOpen = ref(true);
 const switchClose = ref(false);
 const carouselList = [carouselBlue, carouselRed, carouselPurple];
 
 const isHover = ref(false);
+
+const radioValue = ref('Years');
+const switchValue = ref(false);
+const checkValue = ref(false);
+const scriptValue = ref('');
+
+const datePickerValue = ref(['', '']);
+const messageValue = [
+  {
+    id: 1000001,
+    title: 'Moby Tang',
+    content: 'baobaomi900901@icloud.com',
+    time: '2022-01-01 12:00:00',
+    img: 'https://avatars.githubusercontent.com/u/16713018?v=4',
+  },
+  {
+    id: 1000002,
+    title: '标题2',
+    content: '内容2',
+    time: '2022-01-02 12:00:00',
+    img: 'https://avatars.githubusercontent.com/u/16713018?v=4',
+  },
+  {
+    id: 1000003,
+    title: '标题3',
+    content: '内容3',
+    time: '2022-01-03 12:00:00',
+    img: 'https://avatars.githubusercontent.com/u/16713018?v=4',
+  },
+];
+
+function copyCode(textToCopy: type) {
+  navigator.clipboard.writeText(textToCopy);
+}
 </script>
 <style scoped>
-@import './style.less';
+/* @import './style.less'; */
+
+.box {
+  border: 1px solid #fafafa;
+}
 </style>
