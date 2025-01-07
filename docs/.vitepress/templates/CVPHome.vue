@@ -9,9 +9,9 @@
   <div ref="CVPHome" class="CVPHome bg-white px-24 flex flex-col items-center">
     <div style="width: 1280px">
       <!-- 第一页 -->
-      <div class="CVPHome-header relative bg-blue-50" style="height: 775px">
+      <div class="CVPHome-header relative" style="min-height: 775px; height: fit-content">
         <div class="flex items-center w-full h-full relative">
-          <div class="absolute" style="top: 10rem">
+          <div class="absolute z-10" style="top: 10rem">
             <div class="text-cyan-500 text-lg font-bold">By the makers of KSW</div>
             <div class="break-words text-7xl font-bold text-gray-900 mt-8">
               快速构建你的网页应用
@@ -22,7 +22,9 @@
             </div>
             <div class="mt-8">
               <k-button main>Get started</k-button>
-              <k-button icon-right="IconCopy" @click="copyCode()">$ npm i @ksware/ksw-ux</k-button>
+              <k-button icon-right="IconCopy" @click="copyCode('npm i @ksware/ksw-ux')">
+                $ npm i @ksware/ksw-ux
+              </k-button>
             </div>
           </div>
           <div class="exp-component w-full grid grid-cols-3 absolute gap-4" style="top: 9rem">
@@ -108,14 +110,41 @@
             <div class="box h-8">
               <k-script-input :height="'32px'" v-model="scriptValue"></k-script-input>
             </div>
-            <div class="box" style="grid-column: 1/4">表格</div>
+            <div class="box" style="grid-column: 1/4">
+              <k-tree-table
+                :data="tableData"
+                :column="column"
+                :widgets="widgets"
+                :paginationConfig="{
+                  layout: 'total,->, sizes, prev, pager, next, jumper',
+                  pageSize: 10,
+                }"
+                use-ant-style
+                hasSpace
+              >
+                <template #enabled="{ row }">
+                  {{ row.enabled === 1 ? '启用' : '禁用' }}
+                </template>
+                <template #collectType="{ row }">
+                  {{ row.collectType === 0 ? '全部采集' : '部分采集' }}
+                </template>
+                <template #opt="{ row }">
+                  <KButton text @click="onEdit(row)">编辑</KButton>
+                  <KPopconfirm title="您确定要删除吗?" @confirm="onDel(row)">
+                    <template #reference>
+                      <KButton text type="danger">删除</KButton>
+                    </template>
+                  </KPopconfirm>
+                </template>
+              </k-tree-table>
+            </div>
             <div class="box" style="grid-column: 2/3">8</div>
             <div class="box">9</div>
           </div>
         </div>
       </div>
       <!-- 第二页, 组件 -->
-      <div class="CVPHome-header relative bg-blue-50 mt-8">
+      <!-- <div class="CVPHome-header relative bg-blue-50 mt-8">
         <div class="text-violet-500 text-xl font-bold">Components</div>
         <div class="break-words text-xl font-bold text-gray-900 mt-2">
           这里有诸多业务组件,方便你快速构建网页应用。
@@ -138,9 +167,9 @@
           <div class="box">11</div>
           <div class="box">12</div>
         </div>
-      </div>
+      </div> -->
       <!-- 第三页, 模板 -->
-      <div class="CVPHome-header relative bg-blue-50 mt-8">
+      <!-- <div class="CVPHome-header relative bg-blue-50 mt-8">
         <div class="text-violet-500 text-xl font-bold">Templates</div>
         <div class="break-words text-xl font-bold text-gray-900 mt-2">
           此处模板都是实际项目中经过验证的最佳实践，可以直接使用。
@@ -163,9 +192,9 @@
           <div class="box">11</div>
           <div class="box">12</div>
         </div>
-      </div>
+      </div> -->
       <!-- 第四页, icon库 -->
-      <div class="CVPHome-header relative bg-blue-50 mt-8">
+      <!-- <div class="CVPHome-header relative bg-blue-50 mt-8">
         <div class="text-violet-500 text-xl font-bold">Icons</div>
         <div class="break-words text-xl font-bold text-gray-900 mt-2">
           ksw-vue-icon 是一个专门为 KSW UI 设计的图标库，包含 800+ 个精美的图标, 并且在持续更新中。
@@ -188,7 +217,7 @@
           <div class="box">11</div>
           <div class="box">12</div>
         </div>
-      </div>
+      </div> -->
     </div>
     <!-- <div
       class="text-center w-[1000px] mx-auto mt-40 h-48 flex justify-around flex-col items-center"
@@ -297,13 +326,14 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="tsx" setup>
 import { ref, computed } from 'vue';
 import carouselBlue from './assets/carouselBlue.svg';
 import carouselRed from './assets/carouselRed.svg';
 import carouselPurple from './assets/carouselPurple.svg';
 import { iconsDataBase } from 'ksw-vue-icon/icons-base.js';
 import messageWindow from './message_window.vue';
+import { KMessage } from '@ksware/ksw-ux';
 
 const switchOpen = ref(true);
 const switchClose = ref(false);
@@ -341,8 +371,118 @@ const messageValue = [
   },
 ];
 
+const tableData = [
+  { id: 10001, name: 'Test1', role: '       Develop123', sex: 'Man', age: 28, address: 'test abc' },
+  { id: 10002, name: 'Test2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
+  { id: 10003, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
+  { id: 10004, name: 'Test4', role: 'Designer', sex: 'Women', age: 23, address: 'test abc' },
+  { id: 10005, name: 'Test5', role: 'Develop', sex: 'Man', age: 39, address: 'Guangzhou' },
+  { id: 10006, name: 'Test6', role: 'Test', sex: 'Women', age: 22, address: 'Shanghai' },
+  { id: 10007, name: 'Test7', role: 'PM', sex: 'Man', age: 9, address: 'test abc' },
+  { id: 10008, name: 'Test8', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
+  { id: 10009, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
+  { id: 10010, name: 'Test2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
+  { id: 10011, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
+  { id: 10012, name: 'Test4', role: 'Designer', sex: 'Women', age: 23, address: 'test abc' },
+  { id: 10013, name: 'Test5', role: 'Develop', sex: 'Man', age: 39, address: 'Guangzhou' },
+  { id: 10014, name: 'Test6', role: 'Test', sex: 'Women', age: 22, address: 'Shanghai' },
+  { id: 10015, name: 'Test7', role: 'PM', sex: 'Man', age: 9, address: 'test abc' },
+  { id: 10016, name: 'Test8', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
+  { id: 10017, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
+  { id: 10018, name: 'Test2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
+  { id: 10019, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
+  { id: 10020, name: 'Test4', role: 'Designer', sex: 'Women', age: 23, address: 'test abc' },
+  { id: 10021, name: 'Test5', role: 'Develop', sex: 'Man', age: 39, address: 'Guangzhou' },
+  { id: 10022, name: 'Test6', role: 'Test', sex: 'Women', age: 22, address: 'Shanghai' },
+  { id: 10023, name: 'Test7', role: 'PM', sex: 'Man', age: 9, address: 'test abc' },
+  { id: 10024, name: 'Test8', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
+  { id: 10025, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
+  { id: 10026, name: 'Test2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
+  { id: 10027, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
+  { id: 10028, name: 'Test4', role: 'Designer', sex: 'Women', age: 23, address: 'test abc' },
+  { id: 10029, name: 'Test5', role: 'Develop', sex: 'Man', age: 39, address: 'Guangzhou' },
+  { id: 10030, name: 'Test6', role: 'Test', sex: 'Women', age: 22, address: 'Shanghai' },
+  { id: 10031, name: 'Test7', role: 'PM', sex: 'Man', age: 9, address: 'test abc' },
+  { id: 10032, name: 'Test8', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
+  { id: 10033, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
+  { id: 10034, name: 'Test2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
+  { id: 10035, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
+  { id: 10036, name: 'Test4', role: 'Designer', sex: 'Women', age: 23, address: 'test abc' },
+  { id: 10037, name: 'Test5', role: 'Develop', sex: 'Man', age: 39, address: 'Guangzhou' },
+  { id: 10038, name: 'Test6', role: 'Test', sex: 'Women', age: 22, address: 'Shanghai' },
+  { id: 10039, name: 'Test7', role: 'PM', sex: 'Man', age: 9, address: 'test abc' },
+  { id: 10040, name: 'Test8', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
+  { id: 10041, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
+  { id: 10042, name: 'Test2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
+  { id: 10043, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
+  { id: 10044, name: 'Test4', role: 'Designer', sex: 'Women', age: 23, address: 'test abc' },
+  { id: 10045, name: 'Test5', role: 'Develop', sex: 'Man', age: 39, address: 'Guangzhou' },
+  { id: 10046, name: 'Test6', role: 'Test', sex: 'Women', age: 22, address: 'Shanghai' },
+  { id: 10047, name: 'Test7', role: 'PM', sex: 'Man', age: 9, address: 'test abc' },
+  { id: 10048, name: 'Test8', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
+  { id: 10049, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
+  { id: 10050, name: 'Test2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
+  { id: 10051, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
+  { id: 10052, name: 'Test4', role: 'Designer', sex: 'Women', age: 23, address: 'test abc' },
+  { id: 10053, name: 'Test5', role: 'Develop', sex: 'Man', age: 39, address: 'Guangzhou' },
+  { id: 10054, name: 'Test6', role: 'Test', sex: 'Women', age: 22, address: 'Shanghai' },
+  { id: 10055, name: 'Test7', role: 'PM', sex: 'Man', age: 9, address: 'test abc' },
+  { id: 10056, name: 'Test8', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
+  { id: 10057, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
+  { id: 10058, name: 'Test2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
+  { id: 10059, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
+  { id: 10060, name: 'Test4', role: 'Designer', sex: 'Women', age: 23, address: 'test abc' },
+  { id: 10061, name: 'Test5', role: 'Develop', sex: 'Man', age: 39, address: 'Guangzhou' },
+  { id: 10062, name: 'Test6', role: 'Test', sex: 'Women', age: 22, address: 'Shanghai' },
+  { id: 10063, name: 'Test7', role: 'PM', sex: 'Man', age: 9, address: 'test abc' },
+  { id: 10064, name: 'Test8', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
+  { id: 10065, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
+  { id: 10066, name: 'Test2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
+  { id: 10067, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
+];
+const widgets = ref(['filter', 'sizeControl', 'transfer']);
+
+const column = ref([
+  // {
+  // type: 'checkbox',
+  // width: '48px',
+  // },
+  {
+    title: 'Id',
+    field: 'id',
+    width: '100',
+    dataType: 'number',
+  },
+  {
+    title: 'Name',
+    field: 'name',
+  },
+  {
+    title: 'Role',
+    field: 'role',
+  },
+  {
+    title: 'Sex',
+    field: 'sex',
+  },
+  {
+    title: 'Age',
+    field: 'age',
+    dataType: 'number',
+  },
+  {
+    title: 'Address',
+    field: 'address',
+  },
+]);
+
 function copyCode(textToCopy: type) {
   navigator.clipboard.writeText(textToCopy);
+  KMessage({
+    message: '复制成功',
+    type: 'success',
+    offset: 80,
+  });
 }
 </script>
 <style scoped>
