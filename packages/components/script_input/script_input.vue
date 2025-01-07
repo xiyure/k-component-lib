@@ -24,7 +24,13 @@
             <div class="k-script-input-wrap flex-1" v-if="!showPassword">
               <div
                 ref="KScriptInput"
-                :class="['k-script-input', _styleModule]"
+                :class="[
+                  'k-script-input',
+                  _styleModule,
+                  {
+                    'no-checkVariableName ': !checkVariableNameResult,
+                  },
+                ]"
                 :style="{
                   height: height,
                   resize: resize ? 'vertical' : 'none',
@@ -67,7 +73,7 @@
           </div>
           <div
             v-if="!checkVariableNameResult"
-            class="k-script-input-check-result text-red-500 text-xs mt-1 flex items-center gap-0.5 w-fit"
+            class="k-script-input-check-result ml-2 text-red-500 text-xs mt-1 flex items-center gap-0.5 w-fit"
             v-ksw_tooltip="
               '1.名称只能是中文、英文、数字和下划线。<br/>2.名称不能以数字开头。<br>3.名称不能仅由下划线和数字组成。'
             "
