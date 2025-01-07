@@ -69,7 +69,7 @@
             v-if="!checkVariableNameResult"
             class="k-script-input-check-result text-red-500 text-xs mt-1 flex items-center gap-0.5 w-fit"
             v-ksw_tooltip="
-              '1.字符串必须包含中文、英文、数字和下划线。<br/>2.字符串不能以数字开头。<br>3.字符串不能仅由下划线和数字组成。'
+              '1.名称只能是中文、英文、数字和下划线。<br/>2.名称不能以数字开头。<br>3.名称不能仅由下划线和数字组成。'
             "
           >
             <component is="IconStatusWarning" />
