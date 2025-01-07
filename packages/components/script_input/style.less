@@ -3,7 +3,6 @@
 
 .k-script-input-wrapper {
   width: 100%;
-  // border: 1px solid var(--k-gray-200);
   border-radius: var(--k-theme-button-size-rounded--base);
   display: flex;
   gap: 0.25rem;
@@ -13,8 +12,10 @@
   .k-script-input-prepend,
   .k-script-input-append {
     display: flex;
+    gap: 0.5px;
+    background: var(--k-gray-200);
     align-items: center;
-    flex-shrink: 1;
+    flex-shrink: 0;
     .k-button {
       border-radius: unset;
       border: unset;
@@ -58,9 +59,10 @@
   // }
 
   .k-input.el-input {
-    padding: 0;
+    //   padding: 0;
     .el-input__wrapper {
-      border: none;
+      //     border: none;
+      border-radius: 0;
     }
   }
 
@@ -72,7 +74,7 @@
     .k-script-input {
       width: 100%;
       height: 100%;
-      padding: 0.25rem 0.5rem;
+      padding: 0.1875rem 0.5rem;
       line-height: 1.5rem;
       overflow: auto;
       min-height: 2rem;

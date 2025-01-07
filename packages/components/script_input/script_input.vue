@@ -1,5 +1,5 @@
 <template>
-  <div ref="KScriptInputWrapper" class="k-script-input-wrapper">
+  <div ref="KScriptInputWrapper" class="k-script-input-wrapper box-border">
     <k-popover
       :width="popoverWidth"
       :show-arrow="false"
@@ -10,58 +10,70 @@
       class="overflow-hidden"
     >
       <template #reference>
-        <div class="flex w-full">
-          <div class="k-script-input-prepend">
-            <k-button v-if="showModeSwitch" @click="toggleMode">
-              <component
-                :is="!_isStringMode ? 'IconModeExpressionColor' : 'IconModeExpression'"
-                color="var(--k-gray-400)"
-              />
-            </k-button>
-            <slot name="prepend"></slot>
-          </div>
-          <div class="k-script-input-wrap flex-1">
-            <div
-              v-if="!showPassword"
-              ref="KScriptInput"
-              :class="['k-script-input', _styleModule]"
-              :style="{
-                height: height,
-                resize: resize ? 'vertical' : 'none',
-              }"
-              contenteditable="plaintext-only"
-              :spellcheck="false"
-              @input="handleInput"
-              @blur="handleBlur"
-              @focus="handleFocus"
-              @compositionstart="
-                () => {
-                  allowInput = false;
-                }
-              "
-              @compositionend="
-                (e: CompositionEvent) => {
-                  allowInput = true;
-                  handleInput(e);
-                }
-              "
-            ></div>
+        <div class="flex flex-col w-full min-h-8">
+          <div class="flex w-full min-h-8">
+            <div class="k-script-input-prepend">
+              <k-button v-if="showModeSwitch" @click="toggleMode">
+                <component
+                  :is="!_isStringMode ? 'IconModeExpressionColor' : 'IconModeExpression'"
+                  color="var(--k-gray-400)"
+                />
+              </k-button>
+              <slot name="prepend"></slot>
+            </div>
+            <div class="k-script-input-wrap flex-1" v-if="!showPassword">
+              <div
+                ref="KScriptInput"
+                :class="['k-script-input', _styleModule]"
+                :style="{
+                  height: height,
+                  resize: resize ? 'vertical' : 'none',
+                }"
+                contenteditable="plaintext-only"
+                :spellcheck="false"
+                @input="handleInput"
+                @blur="handleBlur"
+                @focus="handleFocus"
+                @compositionstart="
+                  () => {
+                    allowInput = false;
+                  }
+                "
+                @compositionend="
+                  (e: CompositionEvent) => {
+                    allowInput = true;
+                    handleInput(e);
+                  }
+                "
+              ></div>
+            </div>
             <k-input
               v-else
               type="password"
               :class="['k-script-input', _styleModule]"
+              class="showPassword !h-8 z-10 !p-0 flex-1"
               v-model="pwd"
               show-password
               @input="updateModelValue"
               @focus="handleFocus"
               @blur="handleBlur"
             ></k-input>
+            <div class="k-script-input-append">
+              <slot name="append"></slot>
+              <k-button v-if="showPopperSwitch" @click="showPopper">
+                <IconVariable />
+              </k-button>
+            </div>
           </div>
-          <div class="k-script-input-append">
-            <slot name="append"></slot>
-            <k-button v-if="showPopperSwitch" @click="showPopper">
-              <IconVariable />
-            </k-button>
+          <div
+            v-if="!checkVariableNameResult"
+            class="k-script-input-check-result text-red-500 text-xs mt-1 flex items-center gap-0.5 w-fit"
+            v-ksw_tooltip="
+              '1.字符串必须包含中文、英文、数字和下划线。<br/>2.字符串不能以数字开头。<br>3.字符串不能仅由下划线和数字组成。'
+            "
+          >
+            <component is="IconStatusWarning" />
+            请按照变量规则命名
           </div>
         </div>
       </template>
@@ -138,6 +150,7 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   defaultMode: 'string',
   onlyOneInput: false,
   resize: true,
+  checkVariableName: false,
 });
 
 const DEFAULT_TREE_CONFIG = {
@@ -183,6 +196,9 @@ const popoverWidth = ref(0);
 // 表达式相关
 const funcReg = /fx\((.*?)\)/;
 const fxSet = new Set();
+
+//  校验结果
+const checkVariableNameResult = ref(false);
 
 // password
 const showPassword = defineModel<boolean | undefined>('showPassword', { default: false });
@@ -270,6 +286,16 @@ function handleInput(event: InputEvent | CompositionEvent) {
   }
   const { result = '' } = parseInputValue();
   updateModelValue(result);
+
+  if (props.checkVariableName) {
+    const regex = /^(?!\d)(?![_\d]+$)[\u4e00-\u9fa5A-Za-z0-9_]+$/;
+    if (regex.test(result)) {
+      checkVariableNameResult.value = true;
+      regex.test('bbm');
+    } else {
+      checkVariableNameResult.value = false;
+    }
+  }
 }
 function handleFocus() {
   allowShowTree.value = true;
@@ -407,6 +433,7 @@ function parseInputValue() {
   emits('input', text);
   return {
     result: text,
+    checkVariableNameResult: checkVariableNameResult.value,
     scriptTags,
     isStringMode: true,
   };
@@ -608,7 +635,11 @@ function clearCurrentInput() {
   curInput.value = '';
 }
 function clear() {
-  setEditorContent('');
+  if (showPassword.value) {
+    pwd.value = '';
+  } else {
+    setEditorContent('');
+  }
   clearCurrentInput();
 }
 function toggleMode() {

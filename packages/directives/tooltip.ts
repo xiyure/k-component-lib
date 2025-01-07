@@ -2,19 +2,30 @@ import { createApp, DirectiveBinding, Directive, App } from 'vue';
 import { isObject } from 'lodash-es';
 import { KTooltip } from '../components/tooltip';
 
-type BindingValue = {
-  trigger?: 'hover' | 'click',
-  placement?: 'top' | 'top-start' | 'top-end'
-    | 'bottom' | 'bottom-start' | 'bottom-end'
-    | 'left' | 'left-start' | 'left-end' | 'right'
-    | 'right-start' | 'right-end',
-  content?: string,
-  showAfter?: number,
-  hideAfter?: number,
-  autoClose?: boolean,
-  visible?: boolean | ((el: HTMLElement) => boolean),
-  [key: string]: any
-} | string;
+type BindingValue =
+  | {
+      trigger?: 'hover' | 'click';
+      placement?:
+        | 'top'
+        | 'top-start'
+        | 'top-end'
+        | 'bottom'
+        | 'bottom-start'
+        | 'bottom-end'
+        | 'left'
+        | 'left-start'
+        | 'left-end'
+        | 'right'
+        | 'right-start'
+        | 'right-end';
+      content?: string;
+      showAfter?: number;
+      hideAfter?: number;
+      autoClose?: boolean;
+      visible?: boolean | ((el: HTMLElement) => boolean);
+      [key: string]: any;
+    }
+  | string;
 
 let GLOBAL_TOOL_TIP: App | null = null;
 const TOOL_TIP_ID = '_tooltip_root';
@@ -30,14 +41,9 @@ const createTooltip = (el: any, binding: DirectiveBinding<BindingValue>) => {
   const _tipRoot = document.createElement('div');
   _tipRoot.id = TOOL_TIP_ID;
   _tipRoot.classList.add('_tipRoot');
-  const {
-    trigger,
-    placement,
-    content,
-    showAfter,
-    autoClose,
-    visible
-  } = isObject(binding.value) ? binding.value : {};
+  const { trigger, placement, content, showAfter, autoClose, visible } = isObject(binding.value)
+    ? binding.value
+    : {};
   const showContent = ['string', 'number'].includes(typeof binding.value)
     ? binding.value
     : content ?? el.textContent ?? '';
@@ -71,17 +77,21 @@ const createTooltip = (el: any, binding: DirectiveBinding<BindingValue>) => {
     return;
   }
   if (GLOBAL_TOOL_TIP) {
-    disposeGlobalTooltip()
+    disposeGlobalTooltip();
   }
   el._tipApp.mount(`#${TOOL_TIP_ID}`);
   GLOBAL_TOOL_TIP = el._tipApp;
 };
 const disposeGlobalTooltip = () => {
+  if (timer) {
+    clearTimeout(timer);
+    timer = null;
+  }
   if (GLOBAL_TOOL_TIP) {
     GLOBAL_TOOL_TIP.unmount();
     GLOBAL_TOOL_TIP = null;
   }
-}
+};
 export const tooltip: Directive = {
   mounted(el: HTMLElement, binding: DirectiveBinding<BindingValue>) {
     const { showAfter = 500, trigger = 'hover' } = isObject(binding.value) ? binding.value : {};
