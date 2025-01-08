@@ -220,7 +220,6 @@
           <div class="k-filter__condition">
             <k-cascader
               v-model="item.title"
-              :teleported="false"
               :size="formatSize.ownSize"
               :options="options"
               :props="{
@@ -236,7 +235,6 @@
             <k-select
               v-model="item.logic"
               :size="formatSize.ownSize"
-              :teleported="false"
               clearable
               :disabled="item._allowSelectLogic === false"
               @change="changeLogic(item)"
@@ -254,7 +252,6 @@
               <k-select
                 v-model="item.dateRange"
                 :size="formatSize.ownSize"
-                :teleported="false"
                 clearable
                 :disabled="disabledInput(item)"
                 @change="changeDateRange(item)"
@@ -273,7 +270,6 @@
               <k-date-picker
                 v-model="item.value"
                 :type="item.dateType"
-                :teleported="false"
                 :size="formatSize.ownSize"
                 clearable
                 :disabled="disabledDatePicker(item)"
@@ -288,7 +284,6 @@
               v-else-if="instance(item.key)?.options?.length && !item.isMultiple"
               v-model="item.value"
               :size="formatSize.ownSize"
-              :teleported="false"
               :disabled="disabledInput(item)"
               clearable
               @change="updateValue(item, 'select', instance(item.key).options)"
@@ -304,7 +299,6 @@
               v-else-if="instance(item.key)?.options?.length && item.isMultiple"
               v-model="item.multipleValue"
               :size="formatSize.ownSize"
-              :teleported="false"
               :disabled="disabledInput(item)"
               clearable
               multiple
@@ -344,7 +338,6 @@
               v-model="filterRule"
               :size="formatSize.ownSize"
               :disabled="disableChangeMode"
-              :teleported="false"
             >
               <k-option :label="$t('anyOne')" :value="0"></k-option>
               <k-option :label="$t('all')" :value="1"></k-option>
