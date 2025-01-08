@@ -46,7 +46,13 @@ jobs:
           OUTPUT: LATEST_CHANGELOG.md
           GITHUB_REPO: ${{ github.repository }}
 
-      # 提交完整的 Changelog
+      # 将 CHANGELOG.md 复制到 docs/docs/CHANGELOG.md
+      - name: Copy CHANGELOG.md to docs directory
+        run: |
+          mkdir -p docs/docs
+          cp CHANGELOG.md docs/docs/CHANGELOG.md
+
+      # 提交完整的 Changelog 和复制的文件
       - name: Commit full changelog
         run: |
           git checkout dev
@@ -54,7 +60,8 @@ jobs:
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           set +e
           git add CHANGELOG.md
-          git commit -m "Update changelog"
+          git add docs/docs/CHANGELOG.md
+          git commit -m "Update changelog and copy to docs directory"
           git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git dev
 
       # 发送企业微信通知
