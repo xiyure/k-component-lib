@@ -1,5 +1,5 @@
 <template>
-  <div ref="KIconPopover">
+  <div ref="KIconPopoverRef">
     <k-popover trigger="click" :width="470" placement="bottom">
       <div class="icon-container">
         <k-input v-model="componentName"></k-input>
@@ -7,6 +7,7 @@
           <component
             :is="item.componentName"
             v-for="item in componentNameOptions"
+            :key="item.id"
             class="icon-item"
             @click="updateText(item.componentName)"
           />
@@ -30,7 +31,7 @@ defineOptions({
   name: 'KIconPopover'
 });
 
-const KIconPopover = ref(null);
+const KIconPopoverRef = ref(null);
 const instance: any = {};
 
 const componentName = ref('');
@@ -53,7 +54,7 @@ const componentNameOptions = computed(() => {
 
 const emits = defineEmits(['updateIcon']);
 
-defineExpose(getExposeProxy(instance, KIconPopover.value));
+defineExpose(getExposeProxy(instance, KIconPopoverRef));
 </script>
 
 <style lang="less">

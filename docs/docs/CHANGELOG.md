@@ -258,7 +258,7 @@ All notable changes to this project will be documented in this file.
 - 优化script_input 渲染性能问题 - ([bd767b4](https://github.com/xiyure/k-component-lib/commit/bd767b4d761b5993eb1b5e566d75b25181efc12c))
 - 1.ScriptInput组件性能优化，解决在同一页面存在多个该组件时页面加载缓慢问题； - ([fc89c06](https://github.com/xiyure/k-component-lib/commit/fc89c067154724a74dc72dd268d5d167e87679d4))
 - 优化button-group 插入dropdown 样式 - ([6c893e6](https://github.com/xiyure/k-component-lib/commit/6c893e62a4968cb78cc7d9157f872fc84391e6dc))
-- 1.新增icon-popver组件。2script-input组件新增函数 - ([5005f14](https://github.com/xiyure/k-component-lib/commit/5005f1407c97e2eb7757803c4e889300ee435e1a))
+- 1.新增icon-popover组件。2script-input组件新增函数 - ([5005f14](https://github.com/xiyure/k-component-lib/commit/5005f1407c97e2eb7757803c4e889300ee435e1a))
 - 1.scriptInput组件事件拓展（change、focus、blur、select、input）；
 2.tag组件代码优化； - ([a2ee7fe](https://github.com/xiyure/k-component-lib/commit/a2ee7fe15ef190ed6aaf07d71f78ed21db53fb97))
 - V->0.0.99 - ([95b5d7f](https://github.com/xiyure/k-component-lib/commit/95b5d7fbdcc5bdd8030de7b62bc99b6c0a93b2c8))
@@ -273,7 +273,7 @@ All notable changes to this project will be documented in this file.
 - 优化插槽样式 - ([06dbaa2](https://github.com/xiyure/k-component-lib/commit/06dbaa283abe12bbb08ab9641988f03d41b16208))
 - 1.修改ScriptInput组件路径； - ([e109e99](https://github.com/xiyure/k-component-lib/commit/e109e99c7eb3b3feb92241a995f33bc77d312779))
 - 1.fix：ScriptInput双向绑定失效问题； - ([728337a](https://github.com/xiyure/k-component-lib/commit/728337a1f392d4a0a39ddd17d3305aa822c00892))
-- 1.新增icon-popver组件。2script-input组件新增函数 - ([1351411](https://github.com/xiyure/k-component-lib/commit/13514113ad1454903ae7ab3a686c0ecfe5df3a90))
+- 1.新增icon-popover组件。2script-input组件新增函数 - ([1351411](https://github.com/xiyure/k-component-lib/commit/13514113ad1454903ae7ab3a686c0ecfe5df3a90))
 - 实现script_input点击搜索按钮时自动聚焦搜索框 - ([1553e1b](https://github.com/xiyure/k-component-lib/commit/1553e1bfe6b6a85819132d4f6c4b9ec2dd2a9822))
 - 1.ScriptInput组价新增自定义popper类名; - ([69c4197](https://github.com/xiyure/k-component-lib/commit/69c4197c7e0081b1a10ab355d02e95ae5b1ec962))
 - Merge branch 'dev' of github.com:xiyure/k-component-lib into dev - ([85c7c4b](https://github.com/xiyure/k-component-lib/commit/85c7c4b282c0b1b5907addac145c2565fec6b6f2))
