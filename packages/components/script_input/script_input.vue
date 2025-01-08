@@ -74,7 +74,7 @@
           </div>
           <div
             v-if="checkVariableNameResult === false"
-            class="k-script-input-check-result ml-2 text-red-500 text-xs mt-1 flex items-center gap-0.5 w-fit"
+            class="k-script-input-check-result absolute top-8 ml-2 text-red-500 text-xs mt-0.5 flex items-center gap-0.5 w-fit"
             v-ksw_tooltip="
               '1.名称只能是中文、英文、数字和下划线。<br/>2.名称不能以数字开头。<br>3.名称不能仅由下划线和数字组成。'
             "
