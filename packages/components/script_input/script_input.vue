@@ -55,6 +55,7 @@
             </div>
             <k-input
               v-else
+              ref="KScriptInputPassword"
               type="password"
               :class="['k-script-input', _styleModule]"
               class="showPassword !h-8 z-10 !p-0 flex-1"
@@ -189,6 +190,7 @@ const dynamicClassName = `_${genRandomStr(8)}`;
 const columns = [{ field: getAttrProps().label, title: '', treeNode: true }];
 // ref
 const KScriptInput = ref();
+const KScriptInputPassword = ref();
 const $tree = ref();
 const KScriptInputWrapper = ref();
 // 当前是否字符串模式
@@ -712,6 +714,25 @@ function getAttrProps() {
 function getScriptKey() {
   return props.scriptKey ?? getAttrProps().value;
 }
+
+function focus() {
+  const instance = showPassword.value ? KScriptInputPassword.value : KScriptInput.value;
+  if (!instance) {
+    return;
+  }
+  setTimeout(() => {
+    instance?.focus();
+  });
+}
+function blur() {
+  const instance = showPassword.value ? KScriptInputPassword.value : KScriptInput.value;
+  if (!instance) {
+    return;
+  }
+  setTimeout(() => {
+    instance?.blur();
+  });
+}
 defineExpose({
   clear,
   showPopper,
@@ -719,6 +740,8 @@ defineExpose({
   toggleMode,
   setStringMode,
   isStringMode,
+  focus,
+  blur,
   ..._methods,
 });
 </script>
