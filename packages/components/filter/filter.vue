@@ -334,11 +334,7 @@
           </div>
           <div class="k-filer__operate-right">
             <span class="select-label">{{ $t('aboveCondition') }}：</span>
-            <k-select
-              v-model="filterRule"
-              :size="formatSize.ownSize"
-              :disabled="disableChangeMode"
-            >
+            <k-select v-model="filterRule" :size="formatSize.ownSize" :disabled="disableChangeMode">
               <k-option :label="$t('anyOne')" :value="0"></k-option>
               <k-option :label="$t('all')" :value="1"></k-option>
             </k-select>
@@ -439,7 +435,6 @@ const disabledInput = computed(
   () =>
     function (item: FilterData) {
       const disabledLogicTypes = ['empty', 'nonEmpty'];
-      console.log(!item.logic || disabledLogicTypes.includes(item.logic));
       return !item.logic || disabledLogicTypes.includes(item.logic);
     },
 );
@@ -618,7 +613,6 @@ function changeCondition(index: number, item: FilterData, options: filterOptions
   }
   const targetItem = filterData.value[index];
   const titles = targetItem.title ?? [];
-  console.log(1, titles);
   if (titles.length === 0) {
     targetItem.key = null;
     targetItem.logic = 'equal';
