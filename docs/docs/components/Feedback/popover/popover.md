@@ -31,3 +31,8 @@ Popover 弹出框
 当然，你还可以嵌套操作， 它比使用dialog更加轻量。
 
 <preview path="./nestedPopover.vue" />
+
+## API
+
+<API src="./popover.json" lang="zh"></API>
+
