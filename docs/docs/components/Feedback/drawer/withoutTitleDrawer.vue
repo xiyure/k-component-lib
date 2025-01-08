@@ -1,5 +1,8 @@
 <template>
-  <k-button type="primary" main style="margin-left: 16px" @click="drawer = true">
+  <k-button
+    type="primary" main style="margin-left: 16px"
+    @click="drawer = true"
+  >
     open
   </k-button>
 
@@ -9,6 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-const drawer = ref(false)
+import { ref } from 'vue';
+
+const drawer = ref(false);
 </script>

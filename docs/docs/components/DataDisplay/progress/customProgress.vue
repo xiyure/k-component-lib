@@ -12,7 +12,10 @@
     >
       <span>Content</span>
     </k-progress>
-    <k-progress class="k-progress--circle" type="circle" :percentage="100" status="success">
+    <k-progress
+      class="k-progress--circle" type="circle" :percentage="100"
+      status="success"
+    >
       <k-button type="success" main text>
         <component is="IconStatusSuccess" color="#13ce66" style="font-size: 32px" />
       </k-button>

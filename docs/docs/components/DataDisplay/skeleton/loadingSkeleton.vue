@@ -43,8 +43,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const loading = ref(true)
-const currentDate = new Date().toDateString()
+const loading = ref(true);
+const currentDate = new Date().toDateString();
 </script>

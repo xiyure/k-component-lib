@@ -13,40 +13,39 @@
           color: var(--k-text-color-secondary);
           font-size: 13px;
         "
-        >{{ item.value }}</span
-      >
+      >{{ item.value }}</span>
     </k-option>
   </k-select>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const value = ref('')
+const value = ref('');
 const cities = [
   {
     value: 'Beijing',
-    label: 'Beijing',
+    label: 'Beijing'
   },
   {
     value: 'Shanghai',
-    label: 'Shanghai',
+    label: 'Shanghai'
   },
   {
     value: 'Nanjing',
-    label: 'Nanjing',
+    label: 'Nanjing'
   },
   {
     value: 'Chengdu',
-    label: 'Chengdu',
+    label: 'Chengdu'
   },
   {
     value: 'Shenzhen',
-    label: 'Shenzhen',
+    label: 'Shenzhen'
   },
   {
     value: 'Guangzhou',
-    label: 'Guangzhou',
-  },
-]
+    label: 'Guangzhou'
+  }
+];
 </script>

@@ -10,10 +10,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const color1 = ref('#409EFF')
-const color2 = ref()
+const color1 = ref('#409EFF');
+const color2 = ref();
 </script>
 
 <style>

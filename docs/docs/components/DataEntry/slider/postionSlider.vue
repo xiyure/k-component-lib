@@ -1,15 +1,15 @@
 <template>
   <div class="slider-demo-block">
-    <k-slider class="k-slider" v-model="value1" />
+    <k-slider v-model="value1" class="k-slider" />
   </div>
   <div class="slider-demo-block">
-    <k-slider class="k-slider" v-model="value2" placement="bottom" />
+    <k-slider v-model="value2" class="k-slider" placement="bottom" />
   </div>
   <div class="slider-demo-block">
-    <k-slider class="k-slider" v-model="value3" placement="right" />
+    <k-slider v-model="value3" class="k-slider" placement="right" />
   </div>
   <div class="slider-demo-block">
-    <k-slider class="k-slider" v-model="value4" placement="left" />
+    <k-slider v-model="value4" class="k-slider" placement="left" />
   </div>
 </template>
 

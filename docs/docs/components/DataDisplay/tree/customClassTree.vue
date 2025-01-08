@@ -13,8 +13,9 @@
 </template>
 
 <script lang="ts" setup>
-import type Node from 'element-plus/es/components/tree/src/model/node'
-import type { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type'
+import type Node from 'element-plus/es/components/tree/src/model/node';
+import type { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type';
+
 interface Tree {
   id: number
   label: string
@@ -22,8 +23,7 @@ interface Tree {
   children?: Tree[]
 }
 
-const customNodeClass = ({ isPenultimate }: TreeNodeData, node: Node) =>
-  isPenultimate ? 'is-penultimate' : ''
+const customNodeClass = ({ isPenultimate }: TreeNodeData, node: Node) => (isPenultimate ? 'is-penultimate' : '');
 
 const data: Tree[] = [
   {
@@ -37,15 +37,15 @@ const data: Tree[] = [
         children: [
           {
             id: 9,
-            label: 'Level three 1-1-1',
+            label: 'Level three 1-1-1'
           },
           {
             id: 10,
-            label: 'Level three 1-1-2',
-          },
-        ],
-      },
-    ],
+            label: 'Level three 1-1-2'
+          }
+        ]
+      }
+    ]
   },
   {
     id: 2,
@@ -54,13 +54,13 @@ const data: Tree[] = [
     children: [
       {
         id: 5,
-        label: 'Level two 2-1',
+        label: 'Level two 2-1'
       },
       {
         id: 6,
-        label: 'Level two 2-2',
-      },
-    ],
+        label: 'Level two 2-2'
+      }
+    ]
   },
   {
     id: 3,
@@ -69,15 +69,15 @@ const data: Tree[] = [
     children: [
       {
         id: 7,
-        label: 'Level two 3-1',
+        label: 'Level two 3-1'
       },
       {
         id: 8,
-        label: 'Level two 3-2',
-      },
-    ],
-  },
-]
+        label: 'Level two 3-2'
+      }
+    ]
+  }
+];
 </script>
 
 <style>

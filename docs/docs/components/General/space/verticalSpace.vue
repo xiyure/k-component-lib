@@ -1,6 +1,9 @@
 <template>
   <k-space direction="vertical">
-    <k-card v-for="i in 2" :key="i" class="box-card" style="width: 250px">
+    <k-card
+      v-for="i in 2" :key="i" class="box-card"
+      style="width: 250px"
+    >
       <template #header>
         <div class="card-header">
           <span>Card name</span>

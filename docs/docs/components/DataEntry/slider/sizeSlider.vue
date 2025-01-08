@@ -1,13 +1,19 @@
 <template>
-  <k-slider class="k-slider" v-model="value" show-input size="large" />
-  <k-slider class="k-slider" v-model="value" show-input />
-  <k-slider class="k-slider" v-model="value" show-input size="small" />
+  <k-slider
+    v-model="value" class="k-slider" show-input
+    size="large"
+  />
+  <k-slider v-model="value" class="k-slider" show-input />
+  <k-slider
+    v-model="value" class="k-slider" show-input
+    size="small"
+  />
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const value = ref(0)
+const value = ref(0);
 </script>
 
 <style scoped>

@@ -5,9 +5,9 @@
       :show-arrow="false"
       :visible="popperVisible"
       :popper-class="`k-script-input-popper ${dynamicClassName}`"
+      class="overflow-hidden"
       @show="onShowPopper"
       @hide="onHidePopper"
-      class="overflow-hidden"
     >
       <template #reference>
         <div class="flex flex-col w-full min-h-8">
@@ -21,7 +21,7 @@
               </k-button>
               <slot name="prepend"></slot>
             </div>
-            <div class="k-script-input-wrap flex-1" v-if="!showPassword">
+            <div v-if="!showPassword" class="k-script-input-wrap flex-1">
               <div
                 ref="KScriptInput"
                 :class="[
@@ -56,10 +56,10 @@
             <k-input
               v-else
               ref="KScriptInputPassword"
+              v-model="pwd"
               type="password"
               :class="['k-script-input', _styleModule]"
               class="showPassword !h-8 z-10 !p-0 flex-1"
-              v-model="pwd"
               show-password
               @input="updateModelValue"
               @focus="handleFocus"
@@ -74,10 +74,10 @@
           </div>
           <div
             v-if="checkVariableNameResult === false"
-            class="k-script-input-check-result absolute top-8 ml-2 text-red-500 text-xs mt-0.5 flex items-center gap-0.5 w-fit"
             v-ksw_tooltip="
               '1.名称只能是中文、英文、数字和下划线。<br/>2.名称不能以数字开头。<br>3.名称不能仅由下划线和数字组成。'
             "
+            class="k-script-input-check-result ml-2 text-red-500 text-xs mt-1 flex items-center gap-0.5 w-fit"
           >
             <component is="IconStatusWarning" />
             请按照变量规则命名
@@ -89,11 +89,11 @@
           <k-tree-table
             v-if="allowShowTree"
             id="k-script-input-tree"
+            ref="$tree"
             class="k-script-options-scrollbar"
             :class="{
               'input-tips': !showTreeSearch,
             }"
-            ref="$tree"
             border="none"
             height="320px"
             :use-tree="useTree"
@@ -144,7 +144,7 @@ import { Row, RowData } from '../tree_table';
 
 type FocusRange = { node: Node | null | undefined; offset: number | undefined };
 defineOptions({
-  name: 'KScriptInput',
+  name: 'KScriptInput'
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -160,13 +160,13 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   defaultMode: 'string',
   onlyOneInput: false,
   resize: true,
-  checkVariableName: false,
+  checkVariableName: false
 });
 
 const DEFAULT_TREE_CONFIG = {
   parentField: 'pid',
   rowField: getAttrProps().value,
-  expandAll: false,
+  expandAll: false
 };
 
 const emits = defineEmits(['change', 'input', 'focus', 'blur', 'select', 'update:modelValue']);
@@ -246,7 +246,7 @@ watch(
       updateFocusRange();
     }
   },
-  { immediate: true },
+  { immediate: true }
 );
 watch(
   () => [props.modelValue, props.options],
@@ -271,7 +271,7 @@ watch(
       setEditorContent(innerText);
     });
   },
-  { immediate: true, deep: true },
+  { immediate: true, deep: true }
 );
 
 function updateModelValue(res: string) {
@@ -329,7 +329,7 @@ function cellClick({ row }: { row: Row }) {
     return;
   }
   const rowIndex = flattedOptions.value.findIndex(
-    (item) => item[getAttrProps().value] === row[getAttrProps().value],
+    (item) => item[getAttrProps().value] === row[getAttrProps().value]
   );
   selectedIndex.value = rowIndex;
   if (row.children?.length) {
@@ -356,9 +356,9 @@ async function handleInputContent(data: Row | RowData) {
     await nextTick();
   }
   const key = genRandomStr(8);
-  const content = _isStringMode.value
-    ? generateScriptTag(data[getAttrProps().label], key)
-    : data[getAttrProps().value];
+  const content = _isStringMode.value ?
+    generateScriptTag(data[getAttrProps().label], key) :
+    data[getAttrProps().value];
   if (props.onlyOneInput) {
     KScriptInput.value.innerHTML = content;
   } else {
@@ -377,7 +377,7 @@ function handleManualInput(content: string) {
   }
   if (node.nodeType === 3) {
     const textContent = node.textContent ?? '';
-    let endIndex = isManual ? offset : offset - curInput.value.length;
+    const endIndex = isManual ? offset : offset - curInput.value.length;
     const fontText = document.createTextNode(textContent.slice(0, endIndex));
     const newContent = targetNode;
     const behindText = document.createTextNode(textContent.slice(offset));
@@ -402,14 +402,14 @@ function parseInputValue() {
     return {
       result: pwd.value,
       scriptTags: [],
-      isStringMode: isStringMode(),
+      isStringMode: isStringMode()
     };
   }
   if (!isStringMode()) {
     return {
       result: getEditorContent(),
       scriptTags: [],
-      isStringMode: false,
+      isStringMode: false
     };
   }
   let text = '';
@@ -446,7 +446,7 @@ function parseInputValue() {
     result: text,
     checkVariableNameResult: checkVariableNameResult.value,
     scriptTags,
-    isStringMode: true,
+    isStringMode: true
   };
 }
 // 解析传入的值
@@ -554,7 +554,7 @@ function getRange(key: string) {
   let isFound = false;
   const range = {
     node: KScriptInput.value,
-    offset: 0,
+    offset: 0
   };
   const getNodeInfo = (node: HTMLElement) => {
     if (isFound) {
@@ -672,11 +672,11 @@ function isStringMode() {
 }
 const caches = {
   expression: '',
-  string: '',
+  string: ''
 };
 const tempCaches = {
   expression: '',
-  string: '',
+  string: ''
 };
 function saveTextValue() {
   const attrName = isStringMode() ? 'string' : 'expression';
@@ -708,7 +708,7 @@ function getAttrProps() {
   return {
     label: attrProps.label,
     value: attrProps.value,
-    disabled: attrProps.disabled,
+    disabled: attrProps.disabled
   };
 }
 function getScriptKey() {
@@ -742,7 +742,7 @@ defineExpose({
   isStringMode,
   focus,
   blur,
-  ..._methods,
+  ..._methods
 });
 </script>
 <style lang="less">

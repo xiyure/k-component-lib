@@ -39,12 +39,12 @@ import { getExposeProxy } from '../../utils';
 import { useSize } from '../../hooks';
 
 defineOptions({
-  name: 'KFormItem',
+  name: 'KFormItem'
 });
 
 const props = withDefaults(defineProps<FormItemProps>(), {
   label: '',
-  showLabel: true,
+  showLabel: true
 });
 
 const formatSize = useSize<FormItemProps>(props);
@@ -66,12 +66,12 @@ defineExpose(getExposeProxy(instance, KFormItemRef));
 
 const injectShowColon = inject(
   '__showColon__',
-  computed(() => false),
+  computed(() => false)
 );
 
 const injectShowLabel = inject(
   '__showLabel__',
-  computed(() => true),
+  computed(() => true)
 );
 
 const _showLabel = computed(() => {

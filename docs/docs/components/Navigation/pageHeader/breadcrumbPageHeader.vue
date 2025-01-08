@@ -5,9 +5,9 @@
         <k-breadcrumb-item :to="{ path: './page-header.html' }">
           homepage
         </k-breadcrumb-item>
-        <k-breadcrumb-item
-          ><a href="./page-header.html">route 1</a></k-breadcrumb-item
-        >
+        <k-breadcrumb-item>
+          <a href="./page-header.html">route 1</a>
+        </k-breadcrumb-item>
         <k-breadcrumb-item>route 2</k-breadcrumb-item>
       </k-breadcrumb>
     </template>

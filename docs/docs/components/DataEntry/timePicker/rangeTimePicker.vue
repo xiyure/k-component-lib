@@ -1,16 +1,16 @@
 <template>
   <div class="demo-range">
     <k-time-picker
-      class="k-date-editor"
       v-model="value1"
+      class="k-date-editor"
       is-range
       range-separator="To"
       start-placeholder="Start time"
       end-placeholder="End time"
     />
     <k-time-picker
-      class="k-range-separator"
       v-model="value2"
+      class="k-range-separator"
       is-range
       arrow-control
       range-separator="To"

@@ -23,6 +23,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
+
 const treeTransferData = ref([
   { id: 10000, pid: null, name: 'Test1' },
   { id: 10050, pid: null, name: 'Test2' },
@@ -41,6 +42,6 @@ const treeTransferData = ref([
   { id: 23682, pid: 23688, name: 'Test15' },
   { id: 24555, pid: null, name: 'Test16' },
   { id: 24566, pid: 24555, name: 'Test17' },
-  { id: 24577, pid: 24555, name: 'Test18' },
+  { id: 24577, pid: 24555, name: 'Test18' }
 ]);
 </script>

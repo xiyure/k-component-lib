@@ -48,20 +48,20 @@ const tableData = reactive([
   { id: 13, name: 'Test13', role: 'Develop', sex: 'Man', age: 39, address: 'test abc' },
   { id: 14, name: 'Test14', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
   { id: 15, name: 'Test15', role: 'PM', sex: 'Man', age: 9, address: 'Shanghai' },
-  { id: 16, name: 'Test16', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
+  { id: 16, name: 'Test16', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' }
 ]);
 
 const column = ref([
   {
     type: 'checkbox',
-    width: '50',
+    width: '50'
   },
   {
     title: 'Id',
     field: 'id',
     width: '50',
     sortable: true,
-    dataType: 'number',
+    dataType: 'number'
   },
   {
     title: 'Name',
@@ -73,7 +73,7 @@ const column = ref([
         <k-tag point>标签</k-tag>
       </span>
     ),
-    dataType: 'string',
+    dataType: 'string'
   },
   {
     title: 'Role',
@@ -81,14 +81,14 @@ const column = ref([
     showIcon: true,
     dataType: 'string',
     formatter: ({ cellValue, row, column }) => `${cellValue}-${row.id}-${column.field}`,
-    align: 'center',
+    align: 'center'
   },
   {
     title: 'Sex',
     field: 'sex',
     dataType: 'string',
     formatter: ({ cellValue }) => (cellValue === 'Man' ? '男' : '女'),
-    align: 'left',
+    align: 'left'
   },
   {
     title: 'Age',
@@ -96,13 +96,13 @@ const column = ref([
     dataType: 'number',
     showIcon: true,
     __folder: true,
-    align: 'right',
+    align: 'right'
   },
   {
     title: 'Address',
     field: 'address',
-    dataType: 'string',
-  },
+    dataType: 'string'
+  }
 ]);
 </script>
 <style scoped></style>

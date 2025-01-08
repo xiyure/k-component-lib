@@ -14,15 +14,15 @@
 const activities = [
   {
     content: 'Event start',
-    timestamp: '2018-04-15',
+    timestamp: '2018-04-15'
   },
   {
     content: 'Approved',
-    timestamp: '2018-04-13',
+    timestamp: '2018-04-13'
   },
   {
     content: 'Success',
-    timestamp: '2018-04-11',
-  },
-]
+    timestamp: '2018-04-11'
+  }
+];
 </script>

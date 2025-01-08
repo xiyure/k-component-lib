@@ -1,15 +1,15 @@
 <template>
   <div class="demo-color-sizes">
-    <k-color-picker class="k-color-picker" v-model="color" size="large" />
-    <k-color-picker class="k-color-picker" v-model="color" />
-    <k-color-picker class="k-color-picker" v-model="color" size="small" />
+    <k-color-picker v-model="color" class="k-color-picker" size="large" />
+    <k-color-picker v-model="color" class="k-color-picker" />
+    <k-color-picker v-model="color" class="k-color-picker" size="small" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const color = ref('409EFF')
+const color = ref('409EFF');
 </script>
 
 <style>

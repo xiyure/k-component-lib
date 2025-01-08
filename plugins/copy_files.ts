@@ -20,7 +20,7 @@ function copyFiles(paths: Paths[]) {
       } catch (error) {
         console.error(error);
       }
-    },
+    }
   };
 }
 

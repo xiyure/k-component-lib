@@ -46,23 +46,23 @@ const direction = ref('rtl');
 const radio1 = ref('Option 1');
 const handleClose = (done: () => void) => {
   KMessageBox.confirm('Are you sure you want to close this?')
-    .then(() => {
-      done();
-    })
-    .catch(() => {
-      // catch error
-    });
+  .then(() => {
+    done();
+  })
+  .catch(() => {
+    // catch error
+  });
 };
 function cancelClick() {
   drawer2.value = false;
 }
 function confirmClick() {
   KMessageBox.confirm(`Are you confirm to chose ${radio1.value} ?`)
-    .then(() => {
-      drawer2.value = false;
-    })
-    .catch(() => {
-      // catch error
-    });
+  .then(() => {
+    drawer2.value = false;
+  })
+  .catch(() => {
+    // catch error
+  });
 }
 </script>

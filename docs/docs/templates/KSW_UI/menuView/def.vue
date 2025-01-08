@@ -41,59 +41,59 @@ const viewOptions = [
             title: 'Option1-1-1',
             index: 'Option1-1-1',
             disabled: false,
-            icon: 'IconFilter',
+            icon: 'IconFilter'
           },
           {
             title: 'Option1-1-2',
             index: 'Option1-1-2',
             disabled: false,
-            icon: 'IconRanking',
+            icon: 'IconRanking'
           },
           {
             title: 'Option1-1-3',
             index: 'Option1-1-3',
             disabled: false,
-            icon: 'IconOrganization',
-          },
+            icon: 'IconOrganization'
+          }
         ],
-        disabled: false,
+        disabled: false
       },
       {
         title: 'Option1-2',
         index: 'Option1-2',
-        disabled: false,
+        disabled: false
       },
       {
         title: 'Option1-3',
         index: 'Option1-3',
-        disabled: false,
-      },
-    ],
+        disabled: false
+      }
+    ]
   },
   {
     title: 'cardView',
     index: 'card-view',
     disabled: false,
-    icon: 'IconMenuDefColor',
+    icon: 'IconMenuDefColor'
   },
   {
     title: 'tableView',
     index: 'table-view',
     disabled: false,
-    icon: 'IconMenuDefColor',
+    icon: 'IconMenuDefColor'
   },
   {
     title: 'detailsView',
     index: 'details-view',
     disabled: false,
-    icon: 'IconMenuDefColor',
+    icon: 'IconMenuDefColor'
   },
   {
     title: 'toolMarket',
     index: 'tool-market',
     disabled: false,
-    icon: 'IconMenuDefColor',
-  },
+    icon: 'IconMenuDefColor'
+  }
 ];
 
 </script>

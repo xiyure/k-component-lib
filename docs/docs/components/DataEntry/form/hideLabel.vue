@@ -1,5 +1,8 @@
 <template>
-  <k-form :model="form" labk-width="auto" style="max-width: 600px" :show-label="false">
+  <k-form
+    :model="form" labk-width="auto" style="max-width: 600px"
+    :show-label="false"
+  >
     <k-form-item label="Activity name">
       <k-input v-model="form.name" />
     </k-form-item>

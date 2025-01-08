@@ -1,5 +1,5 @@
 <template>
-  <k-transfer v-model="value" :data="data" :drag="true"  />
+  <k-transfer v-model="value" :data="data" :drag="true" />
 </template>
 
 <script lang="ts" setup>

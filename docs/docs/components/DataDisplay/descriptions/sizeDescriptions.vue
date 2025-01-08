@@ -88,43 +88,43 @@
     <k-descriptions-item value="Remarks">
       <k-tag size="small">School</k-tag>
     </k-descriptions-item>
-    <k-descriptions-item value="Address"
-      >No.1188, Wuzhong Avenue, Wuzhong District, Suzhou, Jiangsu Province
+    <k-descriptions-item value="Address">
+      No.1188, Wuzhong Avenue, Wuzhong District, Suzhou, Jiangsu Province
     </k-descriptions-item>
   </k-descriptions>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref } from 'vue';
 import {
   Iphone,
   Location,
   OfficeBuilding,
   Tickets,
-  User,
-} from '@element-plus/icons-vue'
+  User
+} from '@element-plus/icons-vue';
 
-const size = ref('')
+const size = ref('');
 const iconStyle = computed(() => {
   const marginMap = {
     large: '8px',
     default: '6px',
-    small: '4px',
-  }
+    small: '4px'
+  };
   return {
-    marginRight: marginMap[size.value] || marginMap.default,
-  }
-})
+    marginRight: marginMap[size.value] || marginMap.default
+  };
+});
 const blockMargin = computed(() => {
   const marginMap = {
     large: '32px',
     default: '28px',
-    small: '24px',
-  }
+    small: '24px'
+  };
   return {
-    marginTop: marginMap[size.value] || marginMap.default,
-  }
-})
+    marginTop: marginMap[size.value] || marginMap.default
+  };
+});
 </script>
 
 <style scoped>

@@ -41,12 +41,12 @@ const createTooltip = (el: any, binding: DirectiveBinding<BindingValue>) => {
   const _tipRoot = document.createElement('div');
   _tipRoot.id = TOOL_TIP_ID;
   _tipRoot.classList.add('_tipRoot');
-  const { trigger, placement, content, showAfter, autoClose, visible } = isObject(binding.value)
-    ? binding.value
-    : {};
-  const showContent = ['string', 'number'].includes(typeof binding.value)
-    ? binding.value
-    : content ?? el.textContent ?? '';
+  const { trigger, placement, content, showAfter, autoClose, visible } = isObject(binding.value) ?
+    binding.value :
+    {};
+  const showContent = ['string', 'number'].includes(typeof binding.value) ?
+    binding.value :
+    content ?? el.textContent ?? '';
   let toolTipVisible: boolean | undefined = true;
   if (trigger === 'click') {
     toolTipVisible = undefined;
@@ -66,7 +66,7 @@ const createTooltip = (el: any, binding: DirectiveBinding<BindingValue>) => {
     content: showContent,
     showAfter,
     autoClose,
-    visible: toolTipVisible,
+    visible: toolTipVisible
   });
   el._tipRoot = _tipRoot;
   el._tipApp = _tipApp;
@@ -108,5 +108,5 @@ export const tooltip: Directive = {
       }, showAfter);
     });
     el.addEventListener('mouseleave', disposeGlobalTooltip);
-  },
+  }
 };

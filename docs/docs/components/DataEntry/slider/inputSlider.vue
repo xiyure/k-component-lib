@@ -1,13 +1,13 @@
 <template>
   <div class="slider-demo-block">
-    <k-slider class="k-slider" v-model="value" show-input />
+    <k-slider v-model="value" class="k-slider" show-input />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const value = ref(0)
+const value = ref(0);
 </script>
 <style scoped>
 .slider-demo-block {

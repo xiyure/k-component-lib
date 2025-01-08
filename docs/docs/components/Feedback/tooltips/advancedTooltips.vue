@@ -5,16 +5,16 @@
     placement="bottom"
     effect="light"
   >
-    <k-button @click="disabled = !disabled"
-      >click to {{ disabled ? 'active' : 'close' }} tooltip function</k-button
-    >
+    <k-button @click="disabled = !disabled">
+      click to {{ disabled ? 'active' : 'close' }} tooltip function
+    </k-button>
   </k-tooltip>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const disabled = ref(false)
+const disabled = ref(false);
 </script>
 
 <style>

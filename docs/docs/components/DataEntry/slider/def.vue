@@ -1,23 +1,23 @@
 <template>
   <div class="slider-demo-block">
     <span class="demonstration">Default value</span>
-    <k-slider class="k-slider" v-model="value1" />
+    <k-slider v-model="value1" class="k-slider" />
   </div>
   <div class="slider-demo-block">
     <span class="demonstration">Customized initial value</span>
-    <k-slider class="k-slider" v-model="value2" />
+    <k-slider v-model="value2" class="k-slider" />
   </div>
   <div class="slider-demo-block">
     <span class="demonstration">Hide Tooltip</span>
-    <k-slider class="k-slider" v-model="value3" :show-tooltip="false" />
+    <k-slider v-model="value3" class="k-slider" :show-tooltip="false" />
   </div>
   <div class="slider-demo-block">
     <span class="demonstration">Format Tooltip</span>
-    <k-slider class="k-slider" v-model="value4" :format-tooltip="formatTooltip" />
+    <k-slider v-model="value4" class="k-slider" :format-tooltip="formatTooltip" />
   </div>
   <div class="slider-demo-block">
     <span class="demonstration">Disabled</span>
-    <k-slider class="k-slider" v-model="value5" disabled />
+    <k-slider v-model="value5" class="k-slider" disabled />
   </div>
 </template>
 
@@ -30,9 +30,7 @@ const value3 = ref(0);
 const value4 = ref(0);
 const value5 = ref(0);
 
-const formatTooltip = (val: number) => {
-  return val / 100;
-};
+const formatTooltip = (val: number) => val / 100;
 </script>
 <style scoped>
 .slider-demo-block {

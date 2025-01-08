@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const fill = ref(true)
+const fill = ref(true);
 </script>

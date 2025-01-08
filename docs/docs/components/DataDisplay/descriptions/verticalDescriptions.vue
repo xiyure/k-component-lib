@@ -18,8 +18,8 @@ y<template>
     <k-descriptions-item label="Remarks">
       <k-tag size="small">School</k-tag>
     </k-descriptions-item>
-    <k-descriptions-item label="Address"
-      >No.1188, Wuzhong Avenue, Wuzhong District, Suzhou, Jiangsu Province
+    <k-descriptions-item label="Address">
+      No.1188, Wuzhong Avenue, Wuzhong District, Suzhou, Jiangsu Province
     </k-descriptions-item>
   </k-descriptions>
 
@@ -36,26 +36,26 @@ y<template>
     <k-descriptions-item label="Remarks">
       <k-tag size="small">School</k-tag>
     </k-descriptions-item>
-    <k-descriptions-item label="Address"
-      >No.1188, Wuzhong Avenue, Wuzhong District, Suzhou, Jiangsu Province
+    <k-descriptions-item label="Address">
+      No.1188, Wuzhong Avenue, Wuzhong District, Suzhou, Jiangsu Province
     </k-descriptions-item>
   </k-descriptions>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref } from 'vue';
 
-const size = ref('')
+const size = ref('');
 const blockMargin = computed(() => {
   const marginMap = {
     large: '32px',
     default: '28px',
-    small: '24px',
-  }
+    small: '24px'
+  };
   return {
-    marginTop: marginMap[size.value] || marginMap.default,
-  }
-})
+    marginTop: marginMap[size.value] || marginMap.default
+  };
+});
 </script>
 
 <style scoped>

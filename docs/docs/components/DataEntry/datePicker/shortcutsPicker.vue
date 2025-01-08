@@ -6,7 +6,7 @@
         v-model="value"
         type="daterange"
         placeholder="选择日期"
-        :showDefaultShortcuts="true"
+        :show-default-shortcuts="true"
         :disabled-date="disabledDate"
         :size="size"
       />

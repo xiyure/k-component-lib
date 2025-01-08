@@ -9,5 +9,5 @@
 </template>
 
 <script lang="ts" setup>
-const errorHandler = () => true
+const errorHandler = () => true;
 </script>

@@ -15,7 +15,10 @@
         <k-dropdown-item>Action 5</k-dropdown-item>
       </template>
     </k-dropdown>
-    <k-dropdown split-button type="primary" @click="handleClick" class="k-dropdown">
+    <k-dropdown
+      split-button type="primary" class="k-dropdown"
+      @click="handleClick"
+    >
       <template #title>Dropdown List</template>
       <template #default>
         <k-dropdown-item>Action 1</k-dropdown-item>

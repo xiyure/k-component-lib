@@ -19,21 +19,21 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const value = ref<string[]>([])
+const value = ref<string[]>([]);
 const options = [
   {
     value: 'HTML',
-    label: 'HTML',
+    label: 'HTML'
   },
   {
     value: 'CSS',
-    label: 'CSS',
+    label: 'CSS'
   },
   {
     value: 'JavaScript',
-    label: 'JavaScript',
-  },
-]
+    label: 'JavaScript'
+  }
+];
 </script>

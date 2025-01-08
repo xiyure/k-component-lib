@@ -64,7 +64,7 @@ import { ElMenu, MenuItemRegistered } from 'element-plus';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue';
 import { menuViewProps, menuViewOption } from './type';
 import SubMenu from './subMenu.vue';
-import { transformTreeData } from '../../utils'
+import { transformTreeData } from '../../utils';
 
 defineOptions({
   name: 'KMenuView'
@@ -96,7 +96,6 @@ watch(() => props.options, () => {
   flattenOptions.length = 0;
   flattenOptions.push(...array);
 }, { immediate: true, deep: true });
-
 
 const handleClick = (menuItem: MenuItemRegistered) => {
   emits('click', menuItem);

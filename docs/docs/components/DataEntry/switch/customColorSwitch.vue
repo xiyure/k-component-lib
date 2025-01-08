@@ -1,5 +1,5 @@
 <template>
-  <k-switch v-model="value1" activeColor="red" inactiveColor="orange" />
+  <k-switch v-model="value1" active-color="red" inactive-color="orange" />
 </template>
 
 <script lang="ts" setup>

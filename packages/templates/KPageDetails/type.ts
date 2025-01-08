@@ -1,4 +1,4 @@
-import { JSX } from "vue/jsx-runtime";
+import { JSX } from 'vue/jsx-runtime';
 
 export interface PageDetailsProps {
   pageIcon?: string,

@@ -93,7 +93,7 @@ import { GFPageDetailProps } from './type';
 // console.log(KDetailsItem);
 
 defineOptions({
-  name: 'GFPageDetails',
+  name: 'GFPageDetails'
 });
 const props = withDefaults(defineProps<GFPageDetailProps>(), {
   icon: '',
@@ -103,7 +103,7 @@ const props = withDefaults(defineProps<GFPageDetailProps>(), {
   abstract: () => [],
   tabs: () => [],
   direction: 'horizontal',
-  useItemCollapse: false,
+  useItemCollapse: false
 });
 
 const showDetailsAllStatus = ref(true);
@@ -144,7 +144,7 @@ function computeMaxColumn() {
   if (!RefHeadAbstract?.value) return;
   let count = 1;
   const gridTemplateColumns = getComputedStyle(RefHeadAbstract?.value).gridTemplateColumns.split(
-    ' ',
+    ' '
   );
   for (let i = 1; i < gridTemplateColumns.length; i++) {
     const abs = Math.abs(parseInt(gridTemplateColumns[i]) - parseInt(gridTemplateColumns[i - 1]));
@@ -166,7 +166,7 @@ function getAutoSize() {
   const __formTrueHeight = RefHeadAbstract.value?.clientHeight ?? 0;
   // 网格布局行数
   const __gridTemplateRowsArr = getComputedStyle(RefHeadAbstract?.value).gridTemplateRows.split(
-    ' ',
+    ' '
   );
 
   // 第一行高度

@@ -70,7 +70,7 @@ watch(() => props.title, (newValue: string, oldValue: string) => {
   if (newValue !== oldValue) {
     stepMethods.updateStep(newValue, oldValue);
   }
-})
+});
 watch(
   () => stepsProps.active,
   (newValue) => {

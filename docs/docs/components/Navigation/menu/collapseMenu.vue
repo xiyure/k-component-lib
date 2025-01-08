@@ -7,9 +7,9 @@
     default-active="2"
     class="k-menu-vertical-demo"
     :collapse="isCollapse"
+    :class="{ 'k-menu--collapse': isCollapse }"
     @open="handleOpen"
     @close="handleClose"
-    :class="{ 'k-menu--collapse': isCollapse }"
   >
     <k-sub-menu index="1">
       <template #title>
@@ -45,21 +45,21 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 import {
   Document,
   Menu as IconMenu,
   Location,
-  Setting,
-} from '@element-plus/icons-vue'
+  Setting
+} from '@element-plus/icons-vue';
 
-const isCollapse = ref(true)
+const isCollapse = ref(true);
 const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
+  console.log(key, keyPath);
+};
 const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
+  console.log(key, keyPath);
+};
 </script>
 
 <style>

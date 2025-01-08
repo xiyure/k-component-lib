@@ -1004,7 +1004,6 @@ function refreshAdvancedFilter(
     isReturn = Array.isArray(item.showValue) && typeof props.searchFunction === 'function';
     if (isReturn && props.searchFunction) {
       props.searchFunction(item.showValue);
-      return;
     }
   });
   if (isReturn) {

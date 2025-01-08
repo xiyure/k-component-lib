@@ -26,7 +26,7 @@ const props = withDefaults(defineProps<SwitchProps>(), {
 });
 const DEFAULT_STYLE = {
   '--el-switch-on-color': props.activeColor,
-  '--el-switch-off-color': props.inactiveColor,
+  '--el-switch-off-color': props.inactiveColor
 };
 
 const switchStyle = computed(() => Object.assign(DEFAULT_STYLE, props.style ?? {}));

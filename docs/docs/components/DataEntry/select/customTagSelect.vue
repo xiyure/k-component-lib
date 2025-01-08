@@ -1,5 +1,8 @@
 <template>
-  <k-select v-model="value" multiple placeholder="Select" style="width: 240px">
+  <k-select
+    v-model="value" multiple placeholder="Select"
+    style="width: 240px"
+  >
     <k-option
       v-for="item in colors"
       :key="item.value"
@@ -18,42 +21,42 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
 const value = ref<string[]>([]);
 const colors = ref([
   {
     value: '#E63415',
-    label: 'red',
+    label: 'red'
   },
   {
     value: '#FF6600',
-    label: 'orange',
+    label: 'orange'
   },
   {
     value: '#FFDE0A',
-    label: 'yellow',
+    label: 'yellow'
   },
   {
     value: '#1EC79D',
-    label: 'green',
+    label: 'green'
   },
   {
     value: '#14CCCC',
-    label: 'cyan',
+    label: 'cyan'
   },
   {
     value: '#4167F0',
-    label: 'blue',
+    label: 'blue'
   },
   {
     value: '#6222C9',
-    label: 'purple',
-  },
-])
+    label: 'purple'
+  }
+]);
 colors.value.forEach((color) => {
-  value.value.push(color.value)
-})
+  value.value.push(color.value);
+});
 </script>
 
 <style scoped>

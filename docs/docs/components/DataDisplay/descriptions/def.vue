@@ -6,9 +6,9 @@
     <k-descriptions-item label="Remarks">
       <k-tag size="small">School</k-tag>
     </k-descriptions-item>
-    <k-descriptions-item label="Address"
-      >No.1188, Wuzhong Avenue, Wuzhong District, Suzhou, Jiangsu
-      Province</k-descriptions-item
-    >
+    <k-descriptions-item label="Address">
+      No.1188, Wuzhong Avenue, Wuzhong District, Suzhou, Jiangsu
+      Province
+    </k-descriptions-item>
   </k-descriptions>
 </template>

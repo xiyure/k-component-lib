@@ -13,7 +13,7 @@
         defaultActive: 'desc',
       }"
       descriptions="自定义描述信息"
-      useItemCollapse
+      use-item-collapse
     >
       <!-- <template #head-title>123</template> -->
       <template #head-toolbar>
@@ -35,39 +35,35 @@ const ks = ref();
 const abstract = [
   {
     label: '姓名',
-    value: '张三',
+    value: '张三'
   },
   {
     label: '性别',
-    value: '男',
+    value: '男'
   },
   {
     label: '职业',
     column: 2,
-    render: () => {
-      return <k-tag>设计师</k-tag>;
-    },
+    render: () => <k-tag>设计师</k-tag>
   },
   {
     label: '年龄',
-    value: '25',
+    value: '25'
   },
   {
     label: '职业',
-    render: () => {
-      return <k-tag>设计师</k-tag>;
-    },
+    render: () => <k-tag>设计师</k-tag>
   },
   {
     label: '年龄',
-    value: '25',
-  },
+    value: '25'
+  }
 ];
 
 const tabs = ref([
   { label: '基本信息', name: 'basic' },
   { label: '描述信息', name: 'desc' },
-  { label: '其他信息', name: 'other' },
+  { label: '其他信息', name: 'other' }
 ]);
 
 const data = [
@@ -77,7 +73,7 @@ const data = [
   { label: '地址:', value: '广州市天河区' },
   { label: '手机号:', value: '13800138000' },
   { label: 'email:', value: '13800138000@qq.com' },
-  { label: '描述:', value: '这是一个描述' },
+  { label: '描述:', value: '这是一个描述' }
 ];
 </script>
 <style lang="less">

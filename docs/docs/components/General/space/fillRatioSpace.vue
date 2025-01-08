@@ -31,8 +31,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const direction = ref('horizontal')
-const fillRatio = ref(30)
+const direction = ref('horizontal');
+const fillRatio = ref(30);
 </script>

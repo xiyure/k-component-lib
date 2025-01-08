@@ -3,7 +3,7 @@
     <k-tree-table
       :data="tableData" :column="column1" :show-page="false"
       border
-      :show-drag-column=true
+      :show-drag-column="true"
       @drag="console.log('拖拽完成')"
     ></k-tree-table>
   </div>

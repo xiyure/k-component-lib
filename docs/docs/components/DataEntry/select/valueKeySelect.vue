@@ -21,18 +21,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from 'vue';
 
 type Option = {
   id: number
   label: string
   desc: string
 }
-const value = ref<Option>()
+const value = ref<Option>();
 const options = ref([
   { id: 1, label: 'Option A', desc: 'Option A - 230506' },
   { id: 2, label: 'Option B', desc: 'Option B - 230506' },
   { id: 3, label: 'Option C', desc: 'Option C - 230506' },
-  { id: 4, label: 'Option A', desc: 'Option A - 230507' },
-])
+  { id: 4, label: 'Option A', desc: 'Option A - 230507' }
+]);
 </script>

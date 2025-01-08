@@ -19,7 +19,7 @@ const BOX_TYPES = ['confirm', 'prompt', 'alert'] as const;
 const BOX_TYPES_DEFAULT_OPTS: Record<(typeof BOX_TYPES)[number], Partial<MessageBoxOptions>> = {
   alert: { closeOnPressEscape: false, closeOnClickModal: false },
   confirm: { showCancelButton: true },
-  prompt: { showCancelButton: true, showInput: true },
+  prompt: { showCancelButton: true, showInput: true }
 };
 BOX_TYPES.forEach((type) => {
   (KMessageBox as IMessageBox)[type] = messageBoxFactory(type) as MessageBoxShortcutMethod;
@@ -30,7 +30,7 @@ function messageBoxFactory(boxType: (typeof BOX_TYPES)[number]) {
     message: string | VNode,
     title: string | MessageBoxOptions,
     options?: MessageBoxOptions,
-    appContext?: AppContext | null | undefined,
+    appContext?: AppContext | null | undefined
   ) => {
     let titleOrOpts = '';
     if (typeof title === 'object') {
@@ -44,19 +44,15 @@ function messageBoxFactory(boxType: (typeof BOX_TYPES)[number]) {
     options = extendOptions(options || {});
 
     return KMessageBox(
-      Object.assign(
-        {
-          title: titleOrOpts,
-          message,
-          type: '',
-          ...BOX_TYPES_DEFAULT_OPTS[boxType],
-        },
-        options,
-        {
-          boxType,
-        },
-      ),
-      appContext,
+      {
+        title: titleOrOpts,
+        message,
+        type: '',
+        ...BOX_TYPES_DEFAULT_OPTS[boxType],
+        ...options,
+        boxType
+      },
+      appContext
     );
   };
 }

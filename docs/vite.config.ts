@@ -4,10 +4,10 @@ import vueJsx from '@vitejs/plugin-vue-jsx';
 import { chunkSplitPlugin } from 'vite-plugin-chunk-split';
 import {
   GitChangelog,
-  GitChangelogMarkdownSection,
+  GitChangelogMarkdownSection
 } from '@nolebase/vitepress-plugin-git-changelog/vite';
-import { genApiDoc } from './.vitepress/plugin/api-doc.config';
 import { visualizer } from 'rollup-plugin-visualizer';
+import { genApiDoc } from './.vitepress/plugin/api-doc.config';
 
 export default defineConfig({
   // esbuild: {
@@ -27,14 +27,14 @@ export default defineConfig({
         vxePcUi: [/vxe-pc-ui/],
         'ksw-ux': [
           /packages\/(components|templates|utils|style|interface|element-plus.ts)/,
-          /vue-i18n/,
+          /vue-i18n/
         ],
-        'ksw-icon': [/ksw-vue-icon/],
+        'ksw-icon': [/ksw-vue-icon/]
         // '@nolebase': [/@nolebase/],
-      },
+      }
     }),
     GitChangelog({
-      repoURL: () => 'https://github.com/xiyure/k-component-lib',
+      repoURL: () => 'https://github.com/xiyure/k-component-lib'
     }),
     GitChangelogMarkdownSection({
       exclude: (id) => {
@@ -43,14 +43,14 @@ export default defineConfig({
       },
       sections: {
         disableChangelog: true,
-        disableContributors: false,
-      },
+        disableContributors: false
+      }
     }),
-    visualizer(),
+    visualizer()
   ],
   server: {
     host: '0.0.0.0',
-    port: 12581,
+    port: 12581
   },
   // build: {
   //   rollupOptions: {
@@ -71,13 +71,13 @@ export default defineConfig({
       '@components': path.resolve(__dirname, './components'),
       '@data': path.resolve(__dirname, './data'),
       '@docs': path.resolve(__dirname, './docs'),
-      '@example': path.resolve(__dirname, './example'),
-    },
+      '@example': path.resolve(__dirname, './example')
+    }
   },
   optimizeDeps: {
-    exclude: ['@nolebase/vitepress-plugin-enhanced-readabilities/client', 'vitepress'],
+    exclude: ['@nolebase/vitepress-plugin-enhanced-readabilities/client', 'vitepress']
   },
   ssr: {
-    noExternal: ['ksw-vue-icon', '@ksware/ksw-ux', 'vue-i18n', '@nolebase/*'],
-  },
+    noExternal: ['ksw-vue-icon', '@ksware/ksw-ux', 'vue-i18n', '@nolebase/*']
+  }
 });

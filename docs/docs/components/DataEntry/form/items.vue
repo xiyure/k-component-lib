@@ -1,5 +1,8 @@
 <template>
-  <k-form ref="formRef" style="max-width: 600px" :model="dynamicValidateForm" class="demo-dynamic">
+  <k-form
+    ref="formRef" style="max-width: 600px" :model="dynamicValidateForm"
+    class="demo-dynamic"
+  >
     <k-form-item
       prop="email"
       label="Email"
@@ -54,10 +57,10 @@ const dynamicValidateForm = reactive<{
   domains: [
     {
       key: 1,
-      value: '',
-    },
+      value: ''
+    }
   ],
-  email: '',
+  email: ''
 });
 
 interface DomainItem {
@@ -75,7 +78,7 @@ const removeDomain = (item: DomainItem) => {
 const addDomain = () => {
   dynamicValidateForm.domains.push({
     key: Date.now(),
-    value: '',
+    value: ''
   });
 };
 

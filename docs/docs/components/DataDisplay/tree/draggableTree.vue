@@ -17,59 +17,56 @@
 </template>
 
 <script lang="ts" setup>
-import type Node from 'element-plus/es/components/tree/src/model/node'
-import type { DragEvents } from 'element-plus/es/components/tree/src/model/useDragNode'
+import type Node from 'element-plus/es/components/tree/src/model/node';
+import type { DragEvents } from 'element-plus/es/components/tree/src/model/useDragNode';
 import type {
   AllowDropType,
-  NodeDropType,
-} from 'element-plus/es/components/tree/src/tree.type'
+  NodeDropType
+} from 'element-plus/es/components/tree/src/tree.type';
 
 const handleDragStart = (node: Node, ev: DragEvents) => {
-  console.log('drag start', node)
-}
+  console.log('drag start', node);
+};
 const handleDragEnter = (
   draggingNode: Node,
   dropNode: Node,
   ev: DragEvents
 ) => {
-  console.log('tree drag enter:', dropNode.label)
-}
+  console.log('tree drag enter:', dropNode.label);
+};
 const handleDragLeave = (
   draggingNode: Node,
   dropNode: Node,
   ev: DragEvents
 ) => {
-  console.log('tree drag leave:', dropNode.label)
-}
+  console.log('tree drag leave:', dropNode.label);
+};
 const handleDragOver = (draggingNode: Node, dropNode: Node, ev: DragEvents) => {
-  console.log('tree drag over:', dropNode.label)
-}
+  console.log('tree drag over:', dropNode.label);
+};
 const handleDragEnd = (
   draggingNode: Node,
   dropNode: Node,
   dropType: NodeDropType,
   ev: DragEvents
 ) => {
-  console.log('tree drag end:', dropNode && dropNode.label, dropType)
-}
+  console.log('tree drag end:', dropNode && dropNode.label, dropType);
+};
 const handleDrop = (
   draggingNode: Node,
   dropNode: Node,
   dropType: NodeDropType,
   ev: DragEvents
 ) => {
-  console.log('tree drop:', dropNode.label, dropType)
-}
+  console.log('tree drop:', dropNode.label, dropType);
+};
 const allowDrop = (draggingNode: Node, dropNode: Node, type: AllowDropType) => {
   if (dropNode.data.label === 'Level two 3-1') {
-    return type !== 'inner'
-  } else {
-    return true
-  }
-}
-const allowDrag = (draggingNode: Node) => {
-  return !draggingNode.data.label.includes('Level three 3-1-1')
-}
+    return type !== 'inner';
+  } 
+  return true;
+};
+const allowDrag = (draggingNode: Node) => !draggingNode.data.label.includes('Level three 3-1-1');
 
 const data = [
   {
@@ -79,11 +76,11 @@ const data = [
         label: 'Level two 1-1',
         children: [
           {
-            label: 'Level three 1-1-1',
-          },
-        ],
-      },
-    ],
+            label: 'Level three 1-1-1'
+          }
+        ]
+      }
+    ]
   },
   {
     label: 'Level one 2',
@@ -92,19 +89,19 @@ const data = [
         label: 'Level two 2-1',
         children: [
           {
-            label: 'Level three 2-1-1',
-          },
-        ],
+            label: 'Level three 2-1-1'
+          }
+        ]
       },
       {
         label: 'Level two 2-2',
         children: [
           {
-            label: 'Level three 2-2-1',
-          },
-        ],
-      },
-    ],
+            label: 'Level three 2-2-1'
+          }
+        ]
+      }
+    ]
   },
   {
     label: 'Level one 3',
@@ -113,19 +110,19 @@ const data = [
         label: 'Level two 3-1',
         children: [
           {
-            label: 'Level three 3-1-1',
-          },
-        ],
+            label: 'Level three 3-1-1'
+          }
+        ]
       },
       {
         label: 'Level two 3-2',
         children: [
           {
-            label: 'Level three 3-2-1',
-          },
-        ],
-      },
-    ],
-  },
-]
+            label: 'Level three 3-2-1'
+          }
+        ]
+      }
+    ]
+  }
+];
 </script>

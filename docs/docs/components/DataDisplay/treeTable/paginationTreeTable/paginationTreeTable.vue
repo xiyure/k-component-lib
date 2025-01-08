@@ -4,7 +4,7 @@
       :data="tableData" :column="column1"
       border
       use
-      :paginationConfig="{ layout: 'total, sizes, prev, pager, next, jumper' }"
+      :pagination-config="{ layout: 'total, sizes, prev, pager, next, jumper' }"
     ></k-tree-table>
   </div>
 </template>

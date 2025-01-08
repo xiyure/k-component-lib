@@ -1,7 +1,10 @@
 <template>
   <div class="demo-progress">
     <k-progress class="k-progress--line" :percentage="50" :indeterminate="true" />
-    <k-progress class="k-progress--line" :percentage="100" :format="format" :indeterminate="true" />
+    <k-progress
+      class="k-progress--line" :percentage="100" :format="format"
+      :indeterminate="true"
+    />
     <k-progress
       class="k-progress--line"
       :percentage="100"

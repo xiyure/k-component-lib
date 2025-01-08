@@ -5,11 +5,17 @@
       class="mr-4"
       color="orange"
     />
-    <k-checkbox v-model="checked2" label="Option 2" color="purple" size="large" />
+    <k-checkbox
+      v-model="checked2" label="Option 2" color="purple"
+      size="large"
+    />
   </div>
   <div class="my-2">
-    <k-checkbox v-model="checked3" label="Option 1" color="green" class="mr-4" />
-    <k-checkbox v-model="checked4" label="Option 2" color="red"/>
+    <k-checkbox
+      v-model="checked3" label="Option 1" color="green"
+      class="mr-4"
+    />
+    <k-checkbox v-model="checked4" label="Option 2" color="red" />
   </div>
   <div class="mt-2">
     <k-checkbox
@@ -17,7 +23,10 @@
       class="mr-4"
       color="pink"
     />
-    <k-checkbox v-model="checked6" label="Option 2" size="small" color="yellow"/>
+    <k-checkbox
+      v-model="checked6" label="Option 2" size="small"
+      color="yellow"
+    />
   </div>
 </template>
 

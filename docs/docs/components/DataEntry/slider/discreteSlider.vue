@@ -1,11 +1,14 @@
 <template>
   <div class="slider-demo-block">
     <span class="demonstration">Breakpoints not displayed</span>
-    <k-slider class="k-slider" v-model="value1" :step="10" />
+    <k-slider v-model="value1" class="k-slider" :step="10" />
   </div>
   <div class="slider-demo-block">
     <span class="demonstration">Breakpoints displayed</span>
-    <k-slider class="k-slider" v-model="value2" :step="10" show-stops />
+    <k-slider
+      v-model="value2" class="k-slider" :step="10"
+      show-stops
+    />
   </div>
 </template>
 

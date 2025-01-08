@@ -65,7 +65,7 @@ import { KTooltip } from '../../components';
 import { PageTableViewProps } from './type';
 
 defineOptions({
-  name: 'KPageTableView',
+  name: 'KPageTableView'
 });
 
 const props = withDefaults(defineProps<PageTableViewProps>(), {
@@ -75,7 +75,7 @@ const props = withDefaults(defineProps<PageTableViewProps>(), {
   asideRefresh: false,
   pageIcon: '',
   pageTitle: '页面标题',
-  pageInfo: '',
+  pageInfo: ''
 });
 
 const tips = ref(false);
@@ -83,9 +83,9 @@ const tips = ref(false);
 const isImgUrl = /.(jpg|jpeg|png|gif|svg)$/;
 
 // 判断 props.pageIcon 是否是图片链接
-const icon = isImgUrl.test(props.pageIcon)
-  ? () => <img src={props.pageIcon} alt='icon' class='KPageHead-icon' />
-  : props.pageIcon;
+const icon = isImgUrl.test(props.pageIcon) ?
+  () => <img src={props.pageIcon} alt='icon' class='KPageHead-icon' /> :
+  props.pageIcon;
 
 // 自定义事件
 const emitEvent = defineEmits(['refresh']);

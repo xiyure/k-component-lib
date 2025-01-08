@@ -16,43 +16,43 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const value = ref('')
+const value = ref('');
 const options = [
   {
     label: 'Popular cities',
     options: [
       {
         value: 'Shanghai',
-        label: 'Shanghai',
+        label: 'Shanghai'
       },
       {
         value: 'Beijing',
-        label: 'Beijing',
-      },
-    ],
+        label: 'Beijing'
+      }
+    ]
   },
   {
     label: 'City name',
     options: [
       {
         value: 'Chengdu',
-        label: 'Chengdu',
+        label: 'Chengdu'
       },
       {
         value: 'Shenzhen',
-        label: 'Shenzhen',
+        label: 'Shenzhen'
       },
       {
         value: 'Guangzhou',
-        label: 'Guangzhou',
+        label: 'Guangzhou'
       },
       {
         value: 'Dalian',
-        label: 'Dalian',
-      },
-    ],
-  },
-]
+        label: 'Dalian'
+      }
+    ]
+  }
+];
 </script>

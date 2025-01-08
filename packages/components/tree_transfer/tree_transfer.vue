@@ -129,7 +129,7 @@ import { KInput } from '../input';
 import { sortBySmallerList } from '../../utils';
 
 defineOptions({
-  name: 'KTreeTransfer',
+  name: 'KTreeTransfer'
 });
 
 type Row = VxeTablePropTypes.Row;
@@ -139,7 +139,7 @@ const props = withDefaults(defineProps<TreeTransferProps>(), {
   useTree: false,
   label: 'label',
   showDrag: false,
-  defaultData: () => [],
+  defaultData: () => []
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -153,7 +153,7 @@ const defaultTreeConfig = {
   trigger: 'cell',
   hasChildField: 'hasChild',
   indent: 0,
-  showIcon: false,
+  showIcon: false
 };
 const fullData = ref<TreeTransferData[]>([]);
 const leftData = ref<TreeTransferData[]>([]);
@@ -169,23 +169,22 @@ onMounted(() => {
 });
 
 const columnIcon = computed(
-  () =>
-    function (row: Row) {
-      const expand = treeLeftRef.value?.tableInstance.isTreeExpandByRow(row);
-      const isLeafNode = !(row.children && row.children.length);
-      if (isLeafNode && row.nodeType === 1) {
-        return { icon: getIcon(props.collapseIcon, row), color: props.collapseIconColor };
-      }
-      if (props.icon && isLeafNode) {
-        return { icon: getIcon(props.icon, row), color: props.iconColor };
-      }
-      if (props.expandIcon && expand && !isLeafNode) {
-        return { icon: getIcon(props.expandIcon, row), color: props.expandIconColor };
-      }
-      if (props.collapseIcon && !expand && !isLeafNode) {
-        return { icon: getIcon(props.collapseIcon, row), color: props.collapseIconColor };
-      }
-    },
+  () => function (row: Row) {
+    const expand = treeLeftRef.value?.tableInstance.isTreeExpandByRow(row);
+    const isLeafNode = !(row.children && row.children.length);
+    if (isLeafNode && row.nodeType === 1) {
+      return { icon: getIcon(props.collapseIcon, row), color: props.collapseIconColor };
+    }
+    if (props.icon && isLeafNode) {
+      return { icon: getIcon(props.icon, row), color: props.iconColor };
+    }
+    if (props.expandIcon && expand && !isLeafNode) {
+      return { icon: getIcon(props.expandIcon, row), color: props.expandIconColor };
+    }
+    if (props.collapseIcon && !expand && !isLeafNode) {
+      return { icon: getIcon(props.collapseIcon, row), color: props.collapseIconColor };
+    }
+  }
 );
 const treeConfig = computed(() => {
   if (props.useTree) {
@@ -199,22 +198,21 @@ const scrollY = computed(() => ({ enabled: true, ...(props.scrollY || {}) }));
 const rowLevel = computed(() => (row: Row) => getTreeNodeLevel(row));
 
 const parentData = computed(
-  () =>
-    function (row: Row) {
-      let data = row;
-      while (data.pid) {
-        const parent = leftData.value.find((item) => item.id === data.pid);
-        if (parent) {
-          data = parent;
-        } else {
-          break;
-        }
+  () => function (row: Row) {
+    let data = row;
+    while (data.pid) {
+      const parent = leftData.value.find((item) => item.id === data.pid);
+      if (parent) {
+        data = parent;
+      } else {
+        break;
       }
-      const name = data.name;
-      const labelData = row[props.label];
+    }
+    const name = data.name;
+    const labelData = row[props.label];
 
-      return { data: labelData, name };
-    },
+    return { data: labelData, name };
+  }
 );
 
 watch(
@@ -226,7 +224,7 @@ watch(
       initCheckDataMap();
     });
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 function initCheckDataMap() {
@@ -266,7 +264,7 @@ function checkboxChange(row: Row | Row[], checked: boolean, isAll: boolean = fal
 function updateSelectData() {
   // const newData = getSelectedData();
   const newData = leftData.value.filter(
-    (item: TreeTransferData) => checkDataMap.get(item.id)?.checked ?? false,
+    (item: TreeTransferData) => checkDataMap.get(item.id)?.checked ?? false
   );
   rightData.value = newData.filter((item: TreeTransferData) => {
     if (props.defaultData?.includes(item.id) && !checkMethod({ row: item })) {
@@ -347,7 +345,7 @@ async function filterLeftData() {
     tableData = await props.searchMethod(searchKey, props.data);
   } else {
     tableData = props.data.filter(
-      (dataItem: TreeTransferData) => dataItem[props.label].toString().indexOf(searchKey) !== -1,
+      (dataItem: TreeTransferData) => dataItem[props.label].toString().indexOf(searchKey) !== -1
     );
     // 当表格数据为树时，筛选后的数据应展示完整的子树
     if (props.useTree) {
@@ -459,12 +457,10 @@ function getTreeNodeLevel(row: Row): number {
 function sortTreeData(
   targetData: TreeTransferData[],
   sortData: TreeTransferData,
-  key: string | number,
+  key: string | number
 ) {
   const sortKeyList = sortData.map((item: TreeTransferData) => item[key]);
-  return targetData.sort((a, b) =>
-    sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1,
-  );
+  return targetData.sort((a, b) => (sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1));
 }
 
 function getTreeConfigField() {
@@ -495,13 +491,11 @@ function dragSort(sortEvent: SortableEvent) {
 }
 function sortFunc(targetData: TreeTransferData[], sortData: TreeTransferData) {
   const sortKeyList = sortData.map((item: TreeTransferData) => item.id);
-  return targetData.sort((a, b) =>
-    sortKeyList.indexOf(a.id) < sortKeyList.indexOf(b.id) ? -1 : 1,
-  );
+  return targetData.sort((a, b) => (sortKeyList.indexOf(a.id) < sortKeyList.indexOf(b.id) ? -1 : 1));
 }
 function getSelectedData() {
   return fullData.value.filter(
-    (item: TreeTransferData) => checkDataMap.get(item.id)?.checked ?? false,
+    (item: TreeTransferData) => checkDataMap.get(item.id)?.checked ?? false
   );
 }
 function getIcon(icon: any, row: Row) {
@@ -520,14 +514,14 @@ function isLeafNode(row: Row) {
 async function setCheckboxRow(id: number | string | (number | string)[], checked: boolean) {
   const ids = Array.isArray(id) ? id : [id];
   const rows = ids
-    .map((id: number | string) => {
-      const row = treeLeftRef.value.tableInstance.getRowById(id);
-      if (row && checkMethod({ row }) && !row.disabled) {
-        return row;
-      }
-      return null;
-    })
-    .filter((item: Row | null) => item !== null);
+  .map((id: number | string) => {
+    const row = treeLeftRef.value.tableInstance.getRowById(id);
+    if (row && checkMethod({ row }) && !row.disabled) {
+      return row;
+    }
+    return null;
+  })
+  .filter((item: Row | null) => item !== null);
   await treeLeftRef.value.tableInstance.setCheckboxRow(rows, checked);
   checkboxChange(rows, checked);
 }
@@ -554,7 +548,7 @@ defineExpose({
   setCheckboxRow,
   isCheckedRow,
   clearQuery,
-  getQuery,
+  getQuery
 });
 </script>
 

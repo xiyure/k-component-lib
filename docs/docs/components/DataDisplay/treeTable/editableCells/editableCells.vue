@@ -24,7 +24,7 @@ const tableData = reactive([
     sex: 'Women',
     age: 18,
     address: 'Shanghai',
-    status: true,
+    status: true
   },
   { id: 5, name: 'Test5', role: 'Develop', sex: 'Man', age: 39, address: 'test abc', status: true },
   { id: 6, name: 'Test6', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou', status: true },
@@ -36,7 +36,7 @@ const tableData = reactive([
     sex: 'Women',
     age: 24,
     address: 'Shanghai',
-    status: true,
+    status: true
   },
   { id: 9, name: 'Test9', role: 'Develop', sex: 'Man', age: 28, address: 'test abc', status: true },
   {
@@ -46,7 +46,7 @@ const tableData = reactive([
     sex: 'Women',
     age: 42,
     address: 'Guangzhou',
-    status: true,
+    status: true
   },
   { id: 11, name: 'Test11', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai', status: true },
   {
@@ -56,7 +56,7 @@ const tableData = reactive([
     sex: 'Women',
     age: 18,
     address: 'Shanghai',
-    status: true,
+    status: true
   },
   {
     id: 13,
@@ -65,7 +65,7 @@ const tableData = reactive([
     sex: 'Man',
     age: 39,
     address: 'test abc',
-    status: true,
+    status: true
   },
   {
     id: 14,
@@ -74,7 +74,7 @@ const tableData = reactive([
     sex: 'Women',
     age: 22,
     address: 'Guangzhou',
-    status: true,
+    status: true
   },
   { id: 15, name: 'Test15', role: 'PM', sex: 'Man', age: 9, address: 'Shanghai', status: true },
   {
@@ -84,8 +84,8 @@ const tableData = reactive([
     sex: 'Women',
     age: 24,
     address: 'Shanghai',
-    status: true,
-  },
+    status: true
+  }
 ]);
 
 const column3 = ref([
@@ -93,13 +93,13 @@ const column3 = ref([
     title: 'Id',
     field: 'id',
     width: '100',
-    dataType: 'number',
+    dataType: 'number'
   },
   {
     title: 'Name',
     field: 'name',
     editRender: {},
-    renderEdit: ({ row, column }) => <k-input teleported={false} v-model={row.name} />,
+    renderEdit: ({ row, column }) => <k-input teleported={false} v-model={row.name} />
   },
   {
     title: 'Role',
@@ -111,7 +111,7 @@ const column3 = ref([
         <k-option label='PM' value='PM' />
         <k-option label='Designer' value='Designer' />
       </k-select>
-    ),
+    )
   },
   {
     title: 'Sex',
@@ -121,22 +121,22 @@ const column3 = ref([
         <k-option label='Man' value='Man' />
         <k-option label='Women' value='Women' />
       </k-select>
-    ),
+    )
   },
   {
     title: 'Age',
     field: 'age',
-    dataType: 'number',
+    dataType: 'number'
   },
   {
     title: 'Address',
-    field: 'address',
+    field: 'address'
   },
   {
     title: 'Status',
     field: 'status',
-    render: ({ row, column }) => <k-switch v-model={row.status}></k-switch>,
-  },
+    render: ({ row, column }) => <k-switch v-model={row.status}></k-switch>
+  }
 ]);
 </script>
 <style scoped></style>

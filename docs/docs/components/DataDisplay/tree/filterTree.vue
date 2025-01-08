@@ -17,29 +17,29 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
-import { ElTree } from 'element-plus'
+import { ref, watch } from 'vue';
+import { ElTree } from 'element-plus';
 
 interface Tree {
   [key: string]: any
 }
 
-const filterText = ref('')
-const treeRef = ref<InstanceType<typeof ElTree>>()
+const filterText = ref('');
+const treeRef = ref<InstanceType<typeof ElTree>>();
 
 const defaultProps = {
   children: 'children',
-  label: 'label',
-}
+  label: 'label'
+};
 
 watch(filterText, (val) => {
-  treeRef.value!.filter(val)
-})
+  treeRef.value!.filter(val);
+});
 
 const filterNode = (value: string, data: Tree) => {
-  if (!value) return true
-  return data.label.includes(value)
-}
+  if (!value) return true;
+  return data.label.includes(value);
+};
 
 const data: Tree[] = [
   {
@@ -52,15 +52,15 @@ const data: Tree[] = [
         children: [
           {
             id: 9,
-            label: 'Level three 1-1-1',
+            label: 'Level three 1-1-1'
           },
           {
             id: 10,
-            label: 'Level three 1-1-2',
-          },
-        ],
-      },
-    ],
+            label: 'Level three 1-1-2'
+          }
+        ]
+      }
+    ]
   },
   {
     id: 2,
@@ -68,13 +68,13 @@ const data: Tree[] = [
     children: [
       {
         id: 5,
-        label: 'Level two 2-1',
+        label: 'Level two 2-1'
       },
       {
         id: 6,
-        label: 'Level two 2-2',
-      },
-    ],
+        label: 'Level two 2-2'
+      }
+    ]
   },
   {
     id: 3,
@@ -82,13 +82,13 @@ const data: Tree[] = [
     children: [
       {
         id: 7,
-        label: 'Level two 3-1',
+        label: 'Level two 3-1'
       },
       {
         id: 8,
-        label: 'Level two 3-2',
-      },
-    ],
-  },
-]
+        label: 'Level two 3-2'
+      }
+    ]
+  }
+];
 </script>

@@ -158,7 +158,7 @@ export function transformTreeData(
     }
     let result: any[] = [];
     for (const item of data) {
-      const newItem = addPid? {...item, pid } : {...item };
+      const newItem = addPid ? { ...item, pid } : { ...item };
       result.push(newItem);
       if (!Array.isArray(item[childrenField])) {
         continue;
@@ -169,7 +169,7 @@ export function transformTreeData(
       }
     }
     return result;
-  } 
+  }; 
   return flatTreeData(treeData, null);
 }
 

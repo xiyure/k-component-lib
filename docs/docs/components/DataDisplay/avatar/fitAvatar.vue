@@ -2,7 +2,10 @@
   <div class="demo-fit">
     <div v-for="fit in fits" :key="fit" class="block">
       <span class="title">{{ fit }}</span>
-      <k-avatar shape="square" :size="100" :fit="fit" :src="url" />
+      <k-avatar
+        shape="square" :size="100" :fit="fit"
+        :src="url"
+      />
     </div>
   </div>
 </template>
@@ -11,7 +14,7 @@ import { reactive, toRefs } from 'vue';
 
 const state = reactive({
   fits: ['fill', 'contain', 'cover', 'none', 'scale-down'],
-  url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+  url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
 });
 
 const { fits, url } = toRefs(state);

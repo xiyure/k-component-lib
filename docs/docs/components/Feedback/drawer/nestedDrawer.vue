@@ -1,5 +1,8 @@
 <template>
-  <k-button type="primary" main style="margin-left: 16px" @click="drawer = true">
+  <k-button
+    type="primary" main style="margin-left: 16px"
+    @click="drawer = true"
+  >
     open
   </k-button>
 
@@ -19,19 +22,19 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { ElMessageBox } from 'element-plus'
+import { ref } from 'vue';
+import { ElMessageBox } from 'element-plus';
 
-const drawer = ref(false)
-const innerDrawer = ref(false)
+const drawer = ref(false);
+const innerDrawer = ref(false);
 
 const handleClose = (done: () => void) => {
   ElMessageBox.confirm('You still have unsaved data, proceed?')
-    .then(() => {
-      done()
-    })
-    .catch(() => {
-      // catch error
-    })
-}
+  .then(() => {
+    done();
+  })
+  .catch(() => {
+    // catch error
+  });
+};
 </script>

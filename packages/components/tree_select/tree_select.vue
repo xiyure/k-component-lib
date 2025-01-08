@@ -52,7 +52,7 @@ import { getExposeProxy, genRandomStr, SIZE_KEY } from '../../utils';
 import { useSize } from '../../hooks';
 
 defineOptions({
-  name: 'KTreeSelect',
+  name: 'KTreeSelect'
 });
 
 const customSlots = ['empty', 'default'];
@@ -60,7 +60,7 @@ const customSlots = ['empty', 'default'];
 const props = withDefaults(defineProps<TreeSelectProps>(), {
   expandIcon: 'IconFolderOpen',
   collapseIcon: 'IconFlowNested',
-  debounce: 500,
+  debounce: 500
 });
 
 const formatSize = useSize<TreeSelectProps>(props);
@@ -70,7 +70,7 @@ const emits = defineEmits(['input', 'blur']);
 
 const KTreeSelectRef = ref();
 const query = ref({
-  value: '',
+  value: ''
 });
 const randomName = genRandomStr(8);
 

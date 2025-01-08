@@ -28,60 +28,60 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { ref, watch } from 'vue';
 
-import type { CheckboxValueType } from 'element-plus'
+import type { CheckboxValueType } from 'element-plus';
 
-const checkAll = ref(false)
-const indeterminate = ref(false)
-const value = ref<CheckboxValueType[]>([])
+const checkAll = ref(false);
+const indeterminate = ref(false);
+const value = ref<CheckboxValueType[]>([]);
 const cities = ref([
   {
     value: 'Beijing',
-    label: 'Beijing',
+    label: 'Beijing'
   },
   {
     value: 'Shanghai',
-    label: 'Shanghai',
+    label: 'Shanghai'
   },
   {
     value: 'Nanjing',
-    label: 'Nanjing',
+    label: 'Nanjing'
   },
   {
     value: 'Chengdu',
-    label: 'Chengdu',
+    label: 'Chengdu'
   },
   {
     value: 'Shenzhen',
-    label: 'Shenzhen',
+    label: 'Shenzhen'
   },
   {
     value: 'Guangzhou',
-    label: 'Guangzhou',
-  },
-])
+    label: 'Guangzhou'
+  }
+]);
 
 watch(value, (val) => {
   if (val.length === 0) {
-    checkAll.value = false
-    indeterminate.value = false
+    checkAll.value = false;
+    indeterminate.value = false;
   } else if (val.length === cities.value.length) {
-    checkAll.value = true
-    indeterminate.value = false
+    checkAll.value = true;
+    indeterminate.value = false;
   } else {
-    indeterminate.value = true
+    indeterminate.value = true;
   }
-})
+});
 
 const handleCheckAll = (val: CheckboxValueType) => {
-  indeterminate.value = false
+  indeterminate.value = false;
   if (val) {
-    value.value = cities.value.map((_) => _.value)
+    value.value = cities.value.map((_) => _.value);
   } else {
-    value.value = []
+    value.value = [];
   }
-}
+};
 </script>
 
 <style lang="less">

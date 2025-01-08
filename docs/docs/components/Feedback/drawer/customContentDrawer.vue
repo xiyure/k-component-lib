@@ -1,10 +1,10 @@
 <template>
-  <k-button text @click="table = true"
-    >Open Drawer with nested table</k-button
-  >
-  <k-button text @click="dialog = true"
-    >Open Drawer with nested form</k-button
-  >
+  <k-button text @click="table = true">
+    Open Drawer with nested table
+  </k-button>
+  <k-button text @click="dialog = true">
+    Open Drawer with nested form
+  </k-button>
   <k-drawer
     v-model="table"
     title="I have a nested table inside!"
@@ -43,24 +43,26 @@
       </k-form>
       <div class="demo-drawer__footer">
         <k-button @click="cancelForm">Cancel</k-button>
-        <k-button type="primary" :loading="loading" @click="onClick">{{
-          loading ? 'Submitting ...' : 'Submit'
-        }}</k-button>
+        <k-button type="primary" :loading="loading" @click="onClick">
+          {{
+            loading ? 'Submitting ...' : 'Submit'
+          }}
+        </k-button>
       </div>
     </div>
   </k-drawer>
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref } from 'vue';
 import { KMessageBox } from '@ksware/ksw-ux';
 
-const formLabelWidth = '80px'
-let timer
+const formLabelWidth = '80px';
+let timer;
 
-const table = ref(false)
-const dialog = ref(false)
-const loading = ref(false)
+const table = ref(false);
+const dialog = ref(false);
+const loading = ref(false);
 
 const form = reactive({
   name: '',
@@ -70,60 +72,60 @@ const form = reactive({
   delivery: false,
   type: [],
   resource: '',
-  desc: '',
-})
+  desc: ''
+});
 
 const gridData = [
   {
     date: '2016-05-02',
     name: 'Peter Parker',
-    address: 'Queens, New York City',
+    address: 'Queens, New York City'
   },
   {
     date: '2016-05-04',
     name: 'Peter Parker',
-    address: 'Queens, New York City',
+    address: 'Queens, New York City'
   },
   {
     date: '2016-05-01',
     name: 'Peter Parker',
-    address: 'Queens, New York City',
+    address: 'Queens, New York City'
   },
   {
     date: '2016-05-03',
     name: 'Peter Parker',
-    address: 'Queens, New York City',
-  },
-]
+    address: 'Queens, New York City'
+  }
+];
 
-const drawerRef = ref()
+const drawerRef = ref();
 const onClick = () => {
-  drawerRef.value!.close()
-}
+  drawerRef.value!.close();
+};
 
 const handleClose = (done) => {
   if (loading.value) {
-    return
+    return;
   }
   KMessageBox.confirm('Do you want to submit?')
-    .then(() => {
-      loading.value = true
-      timer = setTimeout(() => {
-        done()
-        // 动画关闭需要一定的时间
-        setTimeout(() => {
-          loading.value = false
-        }, 400)
-      }, 2000)
-    })
-    .catch(() => {
-      // catch error
-    })
-}
+  .then(() => {
+    loading.value = true;
+    timer = setTimeout(() => {
+      done();
+      // 动画关闭需要一定的时间
+      setTimeout(() => {
+        loading.value = false;
+      }, 400);
+    }, 2000);
+  })
+  .catch(() => {
+    // catch error
+  });
+};
 
 const cancelForm = () => {
-  loading.value = false
-  dialog.value = false
-  clearTimeout(timer)
-}
+  loading.value = false;
+  dialog.value = false;
+  clearTimeout(timer);
+};
 </script>

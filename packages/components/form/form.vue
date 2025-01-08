@@ -19,11 +19,11 @@ import { getExposeProxy, SIZE_KEY } from '../../utils';
 import { useSize } from '../../hooks';
 
 defineOptions({
-  name: 'KForm',
+  name: 'KForm'
 });
 
 const props = withDefaults(defineProps<FormProps>(), {
-  showLabel: true,
+  showLabel: true
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -39,12 +39,12 @@ provide(SIZE_KEY, formatSize);
 
 provide(
   '__showColon__',
-  computed(() => props.showColon),
+  computed(() => props.showColon)
 );
 
 provide(
   '__showLabel__',
-  computed(() => props.showLabel),
+  computed(() => props.showLabel)
 );
 </script>
 

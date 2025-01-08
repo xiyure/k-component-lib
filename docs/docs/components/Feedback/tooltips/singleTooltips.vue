@@ -5,8 +5,9 @@
       :key="i"
       @mouseover="(e) => (buttonRef = e.currentTarget)"
       @click="visible = !visible"
-      >Click to open tooltip</k-button
     >
+      Click to open tooltip
+    </k-button>
   </div>
 
   <k-tooltip
@@ -34,11 +35,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-const buttonRef = ref()
-const tooltipRef = ref()
+import { ref } from 'vue';
 
-const visible = ref(false)
+const buttonRef = ref();
+const tooltipRef = ref();
+
+const visible = ref(false);
 </script>
 
 <style>

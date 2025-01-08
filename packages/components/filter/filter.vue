@@ -103,7 +103,7 @@
                   :value="logicItem.value"
                   :disabled="
                     (item.logic === 'after' || item.logic === 'before') &&
-                    logicItem.value === 'range'
+                      logicItem.value === 'range'
                   "
                 />
               </k-select>
@@ -263,7 +263,7 @@
                   :value="logicItem.value"
                   :disabled="
                     (item.logic === 'after' || item.logic === 'before') &&
-                    logicItem.value === 'range'
+                      logicItem.value === 'range'
                   "
                 />
               </k-select>
@@ -362,7 +362,7 @@ import { treeDataToArray, isValid, formatter } from '../../utils';
 import { useSize } from '../../hooks';
 
 defineOptions({
-  name: 'KFilter',
+  name: 'KFilter'
 });
 
 const props = withDefaults(defineProps<FilterProps>(), {
@@ -371,7 +371,7 @@ const props = withDefaults(defineProps<FilterProps>(), {
   childrenField: 'children',
   ignoreCase: false,
   showPopper: true,
-  data: () => [],
+  data: () => []
 });
 
 const formatSize = useSize<FilterProps>(props);
@@ -396,54 +396,47 @@ const filterRule = ref(0);
 
 const flatColumns = computed(() => treeDataToArray(cloneDeep(props.options), 'group'));
 const instance = computed(
-  () =>
-    function (value: string | null) {
-      const matchInstance: filterOptions = flatColumns.value?.find(
-        (item) => item[props.filterKey] === value,
-      );
-      return matchInstance;
-    },
+  () => function (value: string | null) {
+    const matchInstance: filterOptions = flatColumns.value?.find(
+      (item) => item[props.filterKey] === value
+    );
+    return matchInstance;
+  }
 );
 const conditionList = computed(
-  () =>
-    function (item: FilterData) {
-      const columnItem = flatColumns.value?.find((col) => col[props.filterKey] === item.key);
-      const type = columnItem?.dataType || 'string';
-      return logicOptions.find((item) => item.type === type);
-    },
+  () => function (item: FilterData) {
+    const columnItem = flatColumns.value?.find((col) => col[props.filterKey] === item.key);
+    const type = columnItem?.dataType || 'string';
+    return logicOptions.find((item) => item.type === type);
+  }
 );
 
 const dateLogicList = computed(
-  () =>
-    function (item: FilterData) {
-      if (item.logic === 'equal') {
-        return dateTypeOptions;
-      }
-      const hideLogicList = ['past-seven-days', 'past-thirty-days'];
-      return dateTypeOptions.filter((item) => !hideLogicList.includes(item.value));
-    },
+  () => function (item: FilterData) {
+    if (item.logic === 'equal') {
+      return dateTypeOptions;
+    }
+    const hideLogicList = ['past-seven-days', 'past-thirty-days'];
+    return dateTypeOptions.filter((item) => !hideLogicList.includes(item.value));
+  }
 );
 
-const hasConfigCondition = computed(() =>
-  filterData.value.some(
-    (item) => item.key && item.logic && (item.value || ['empty', 'nonEmpty'].includes(item.logic)),
-  ),
-);
+const hasConfigCondition = computed(() => filterData.value.some(
+  (item) => item.key && item.logic && (item.value || ['empty', 'nonEmpty'].includes(item.logic))
+));
 
 // 日期禁用
 const disabledInput = computed(
-  () =>
-    function (item: FilterData) {
-      const disabledLogicTypes = ['empty', 'nonEmpty'];
-      return !item.logic || disabledLogicTypes.includes(item.logic);
-    },
+  () => function (item: FilterData) {
+    const disabledLogicTypes = ['empty', 'nonEmpty'];
+    return !item.logic || disabledLogicTypes.includes(item.logic);
+  }
 );
 const disabledDatePicker = computed(
-  () =>
-    function (item: FilterData) {
-      const notDisabledDateRanges = ['date', 'range'];
-      return disabledInput.value(item) || !notDisabledDateRanges.includes(item.dateRange as string);
-    },
+  () => function (item: FilterData) {
+    const notDisabledDateRanges = ['date', 'range'];
+    return disabledInput.value(item) || !notDisabledDateRanges.includes(item.dateRange as string);
+  }
 );
 const disableChangeMode = computed(() => {
   const fields = filterData.value.map((item) => item.key);
@@ -460,7 +453,7 @@ watch(
       filterRule.value = 1;
     }
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 initData();
@@ -509,7 +502,7 @@ function addCondition() {
     dateRange: 'date',
     dateType: 'datetime',
     isMultiple: false,
-    multipleValue: [],
+    multipleValue: []
   };
   filterData.value.push(addItem);
 }
@@ -540,7 +533,7 @@ function filter(data?: any[]) {
   if (conditionInfo.conditionList.length === 0 || props.remote === true) {
     return {
       conditionInfo,
-      tableData: sourceData,
+      tableData: sourceData
     };
   }
   const remoteFieldMap = getRemoteFieldMap();
@@ -557,7 +550,7 @@ function filter(data?: any[]) {
         return item.handler?.(
           dataItem[targetColumn[props.filterKey]],
           item.value,
-          props.ignoreCase,
+          props.ignoreCase
         );
       });
     }
@@ -574,27 +567,26 @@ function filter(data?: any[]) {
   });
   return {
     conditionInfo,
-    tableData: newData ?? [],
+    tableData: newData ?? []
   };
 }
 function getConditionInfo() {
   const disabledLogicTypes = ['empty', 'nonEmpty'];
   const conditionList = filterData.value
-    .filter(
-      (item) =>
-        item.key && item.logic && (isValid(item.value) || disabledLogicTypes.includes(item.logic)),
-    )
-    .map((item) => ({
-      title: item.title.join(' - '),
-      logic: t?.(item.logic),
-      key: item.key,
-      showValue: item.showValue,
-      value: item.value,
-      handler: item.handler,
-    }));
+  .filter(
+    (item) => item.key && item.logic && (isValid(item.value) || disabledLogicTypes.includes(item.logic))
+  )
+  .map((item) => ({
+    title: item.title.join(' - '),
+    logic: t?.(item.logic),
+    key: item.key,
+    showValue: item.showValue,
+    value: item.value,
+    handler: item.handler
+  }));
   return {
     conditionList,
-    filterRule: filterRule.value,
+    filterRule: filterRule.value
   };
 }
 function getRemoteFieldMap() {
@@ -629,7 +621,7 @@ function changeCondition(index: number, item: FilterData, options: filterOptions
   targetItem.key = columnItem?.[props.filterKey];
   targetItem.logic = 'equal';
   const logicOptionItem = logicOptions.find(
-    (item) => item.type === (columnItem?.dataType || 'string'),
+    (item) => item.type === (columnItem?.dataType || 'string')
   );
   if (logicOptionItem) {
     const logicItem = logicOptionItem.logicList.find((item) => item.logic === 'equal');
@@ -695,13 +687,13 @@ function changeDateRange(item: FilterData) {
     case 'current-month':
       dateValue = [
         getTargetDay(-getDateDay() + 1),
-        getTargetDay(getCurMonthDayCount() - getDateDay(), true),
+        getTargetDay(getCurMonthDayCount() - getDateDay(), true)
       ];
       break;
     case 'last-month':
       dateValue = [
         getTargetDay(-getDateDay() - getCurMonthDayCount(true) + 1),
-        getTargetDay(-getDateDay(), true),
+        getTargetDay(-getDateDay(), true)
       ];
       break;
     case 'past-seven-days':
@@ -772,7 +764,7 @@ function setDatePickerType(item: FilterData) {
 function updateValue(
   dataItem: FilterData,
   uiType: string,
-  options?: { label: string; value: any }[],
+  options?: { label: string; value: any }[]
 ) {
   if (uiType === 'input') {
     dataItem.showValue = dataItem.value;

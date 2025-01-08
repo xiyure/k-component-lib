@@ -1,8 +1,6 @@
 <template>
   <div class="block text-center">
-    <span class="demonstration"
-      >Switch when indicator is hovered (default)</span
-    >
+    <span class="demonstration">Switch when indicator is hovered (default)</span>
     <k-carousel height="150px">
       <k-carousel-item v-for="item in 4" :key="item" class="k-carousel__item">
         <h3 class="small justify-center" text="2xl">{{ item }}</h3>

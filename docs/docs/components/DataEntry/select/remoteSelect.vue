@@ -47,37 +47,33 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue';
 
 interface ListItem {
   value: string
   label: string
 }
 
-const list = ref<ListItem[]>([])
-const options = ref<ListItem[]>([])
-const value = ref<string[]>([])
-const loading = ref(false)
+const list = ref<ListItem[]>([]);
+const options = ref<ListItem[]>([]);
+const value = ref<string[]>([]);
+const loading = ref(false);
 
 onMounted(() => {
-  list.value = states.map((item) => {
-    return { value: `value:${item}`, label: `label:${item}` }
-  })
-})
+  list.value = states.map((item) => ({ value: `value:${item}`, label: `label:${item}` }));
+});
 
 const remoteMethod = (query: string) => {
   if (query) {
-    loading.value = true
+    loading.value = true;
     setTimeout(() => {
-      loading.value = false
-      options.value = list.value.filter((item) => {
-        return item.label.toLowerCase().includes(query.toLowerCase())
-      })
-    }, 200)
+      loading.value = false;
+      options.value = list.value.filter((item) => item.label.toLowerCase().includes(query.toLowerCase()));
+    }, 200);
   } else {
-    options.value = []
+    options.value = [];
   }
-}
+};
 
 const states = [
   'Alabama',
@@ -129,6 +125,6 @@ const states = [
   'Washington',
   'West Virginia',
   'Wisconsin',
-  'Wyoming',
-]
+  'Wyoming'
+];
 </script>

@@ -1,5 +1,8 @@
 <template>
-  <k-steps capsule style="max-width: 600px" :active="active" :height=60>
+  <k-steps
+    capsule style="max-width: 600px" :active="active"
+    :height="60"
+  >
     <k-step
       v-for="item in [
         { title: 'Step 1', color: 'orange' },

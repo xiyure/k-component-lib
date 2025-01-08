@@ -21,7 +21,10 @@
         />
         <template #loading>
           <svg class="circular" viewBox="0 0 50 50">
-            <circle class="path" cx="25" cy="25" r="20" fill="none" />
+            <circle
+              class="path" cx="25" cy="25"
+              r="20" fill="none"
+            />
           </svg>
         </template>
       </k-select>
@@ -53,10 +56,22 @@
                 stroke-width="0"
                 style="animation: none; stroke: none"
               >
-                <circle r="3.375" class="dot1" rx="0" ry="0" />
-                <circle r="3.375" class="dot2" rx="0" ry="0" />
-                <circle r="3.375" class="dot4" rx="0" ry="0" />
-                <circle r="3.375" class="dot3" rx="0" ry="0" />
+                <circle
+                  r="3.375" class="dot1" rx="0"
+                  ry="0"
+                />
+                <circle
+                  r="3.375" class="dot2" rx="0"
+                  ry="0"
+                />
+                <circle
+                  r="3.375" class="dot4" rx="0"
+                  ry="0"
+                />
+                <circle
+                  r="3.375" class="dot3" rx="0"
+                  ry="0"
+                />
               </g>
             </svg>
           </k-icon>
@@ -67,37 +82,33 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue';
 
 interface ListItem {
   value: string
   label: string
 }
 
-const list = ref<ListItem[]>([])
-const options = ref<ListItem[]>([])
-const value = ref<string[]>([])
-const loading = ref(false)
+const list = ref<ListItem[]>([]);
+const options = ref<ListItem[]>([]);
+const value = ref<string[]>([]);
+const loading = ref(false);
 
 onMounted(() => {
-  list.value = states.map((item) => {
-    return { value: `value:${item}`, label: `label:${item}` }
-  })
-})
+  list.value = states.map((item) => ({ value: `value:${item}`, label: `label:${item}` }));
+});
 
 const remoteMethod = (query: string) => {
   if (query) {
-    loading.value = true
+    loading.value = true;
     setTimeout(() => {
-      loading.value = false
-      options.value = list.value.filter((item) => {
-        return item.label.toLowerCase().includes(query.toLowerCase())
-      })
-    }, 3000)
+      loading.value = false;
+      options.value = list.value.filter((item) => item.label.toLowerCase().includes(query.toLowerCase()));
+    }, 3000);
   } else {
-    options.value = []
+    options.value = [];
   }
-}
+};
 
 const states = [
   'Alabama',
@@ -149,8 +160,8 @@ const states = [
   'Washington',
   'West Virginia',
   'Wisconsin',
-  'Wyoming',
-]
+  'Wyoming'
+];
 </script>
 
 <style>

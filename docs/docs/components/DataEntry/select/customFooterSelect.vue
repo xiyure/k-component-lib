@@ -7,7 +7,10 @@
       :value="item.value"
     />
     <template #footer>
-      <k-button v-if="!isAdding" text bg size="small" @click="onAddOption">
+      <k-button
+        v-if="!isAdding" text bg
+        size="small" @click="onAddOption"
+      >
         Add an option
       </k-button>
       <template v-else>
@@ -27,58 +30,58 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-import type { CheckboxValueType } from 'element-plus'
+import type { CheckboxValueType } from 'element-plus';
 
-const isAdding = ref(false)
-const value = ref<CheckboxValueType[]>([])
-const optionName = ref('')
+const isAdding = ref(false);
+const value = ref<CheckboxValueType[]>([]);
+const optionName = ref('');
 const cities = ref([
   {
     value: 'Beijing',
-    label: 'Beijing',
+    label: 'Beijing'
   },
   {
     value: 'Shanghai',
-    label: 'Shanghai',
+    label: 'Shanghai'
   },
   {
     value: 'Nanjing',
-    label: 'Nanjing',
+    label: 'Nanjing'
   },
   {
     value: 'Chengdu',
-    label: 'Chengdu',
+    label: 'Chengdu'
   },
   {
     value: 'Shenzhen',
-    label: 'Shenzhen',
+    label: 'Shenzhen'
   },
   {
     value: 'Guangzhou',
-    label: 'Guangzhou',
-  },
-])
+    label: 'Guangzhou'
+  }
+]);
 
 const onAddOption = () => {
-  isAdding.value = true
-}
+  isAdding.value = true;
+};
 
 const onConfirm = () => {
   if (optionName.value) {
     cities.value.push({
       label: optionName.value,
-      value: optionName.value,
-    })
-    clear()
+      value: optionName.value
+    });
+    clear();
   }
-}
+};
 
 const clear = () => {
-  optionName.value = ''
-  isAdding.value = false
-}
+  optionName.value = '';
+  isAdding.value = false;
+};
 </script>
 
 <style lang="less" scoped>

@@ -7,6 +7,6 @@
 </template>
 <script lang="ts" setup>
 const goBack = () => {
-  console.log('go back')
-}
+  console.log('go back');
+};
 </script>

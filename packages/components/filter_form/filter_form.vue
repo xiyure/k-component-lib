@@ -123,7 +123,7 @@ import { getExposeProxy } from '../../utils';
 import { useSize } from '../../hooks';
 
 defineOptions({
-  name: 'KFilterForm',
+  name: 'KFilterForm'
 });
 
 const DEFAULT_SIZES = ['base', 'sm'];
@@ -132,7 +132,7 @@ const props = withDefaults(defineProps<FilterFormProps>(), {
   items: () => [],
   collapse: true,
   reserve: false,
-  visible: false,
+  visible: false
 });
 
 const formatSize = useSize<FilterFormProps>(props);
@@ -195,7 +195,7 @@ watch(
   () => props.items,
   () => {
     preItems = {};
-  },
+  }
 );
 watch(
   () => props.items,
@@ -208,7 +208,7 @@ watch(
       }
     });
   },
-  { deep: true, immediate: true },
+  { deep: true, immediate: true }
 );
 watch(
   () => formData.value,
@@ -226,7 +226,7 @@ watch(
       rowMax.value = gridTemplateRows.length;
     }, 100);
   },
-  { deep: true },
+  { deep: true }
 );
 
 function toggle() {

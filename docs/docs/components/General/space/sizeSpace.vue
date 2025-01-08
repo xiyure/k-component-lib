@@ -7,7 +7,10 @@
     </k-radio-group>
 
     <k-space wrap :size="size">
-      <k-card v-for="i in 3" :key="i" class="box-card" style="width: 250px">
+      <k-card
+        v-for="i in 3" :key="i" class="box-card"
+        style="width: 250px"
+      >
         <template #header>
           <div class="card-header">
             <span>Card name</span>
@@ -23,7 +26,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const size = ref('default')
+const size = ref('default');
 </script>

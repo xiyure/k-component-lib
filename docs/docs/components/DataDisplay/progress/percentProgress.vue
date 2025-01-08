@@ -1,6 +1,9 @@
 <template>
   <div class="demo-progress">
-    <k-progress :text-inside="true" :stroke-width="26" :percentage="70" class="k-progress--line" />
+    <k-progress
+      :text-inside="true" :stroke-width="26" :percentage="70"
+      class="k-progress--line"
+    />
     <k-progress
       :text-inside="true"
       :stroke-width="24"

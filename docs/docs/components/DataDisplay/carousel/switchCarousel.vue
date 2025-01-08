@@ -1,6 +1,6 @@
 <template>
   <k-carousel :interval="5000" arrow="always">
-    <k-carousel-item class="k-carousel__item" v-for="item in 4" :key="item">
+    <k-carousel-item v-for="item in 4" :key="item" class="k-carousel__item">
       <h3 text="2xl" justify="center">{{ item }}</h3>
     </k-carousel-item>
   </k-carousel>

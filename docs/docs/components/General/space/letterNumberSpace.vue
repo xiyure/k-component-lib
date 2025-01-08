@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const size = ref(10)
+const size = ref(10);
 </script>

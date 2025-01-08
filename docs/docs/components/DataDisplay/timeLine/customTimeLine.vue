@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import { MoreFilled } from '@element-plus/icons-vue'
+import { MoreFilled } from '@element-plus/icons-vue';
 
 const activities = [
   {
@@ -24,27 +24,27 @@ const activities = [
     timestamp: '2018-04-12 20:46',
     size: 'large',
     type: 'primary',
-    icon: MoreFilled,
+    icon: MoreFilled
   },
   {
     content: 'Custom color',
     timestamp: '2018-04-03 20:46',
-    color: '#0bbd87',
+    color: '#0bbd87'
   },
   {
     content: 'Custom size',
     timestamp: '2018-04-03 20:46',
-    size: 'large',
+    size: 'large'
   },
   {
     content: 'Custom hollow',
     timestamp: '2018-04-03 20:46',
     type: 'primary',
-    hollow: true,
+    hollow: true
   },
   {
     content: 'Default node',
-    timestamp: '2018-04-03 20:46',
-  },
-]
+    timestamp: '2018-04-03 20:46'
+  }
+];
 </script>

@@ -1,6 +1,9 @@
 <template>
   <div class="example-showcase">
-    <k-dropdown size="large" split-button type="primary" class="k-dropdown">
+    <k-dropdown
+      size="large" split-button type="primary"
+      class="k-dropdown"
+    >
       <template #title>Large</template>
       <template #default>
         <k-dropdown-item>Action 1</k-dropdown-item>
@@ -20,7 +23,10 @@
       </template>
     </k-dropdown>
 
-    <k-dropdown size="small" split-button type="primary" class="k-dropdown">
+    <k-dropdown
+      size="small" split-button type="primary"
+      class="k-dropdown"
+    >
       <template #title>Small</template>
       <template #default>
         <k-dropdown-item>Action 1</k-dropdown-item>
