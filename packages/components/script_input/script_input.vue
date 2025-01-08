@@ -89,6 +89,9 @@
             v-if="allowShowTree"
             id="k-script-input-tree"
             class="k-script-options-scrollbar"
+            :class="{
+              'input-tips': !showTreeSearch,
+            }"
             ref="$tree"
             border="none"
             height="320px"
