@@ -1,0 +1,47 @@
+{
+  "name": "Result",
+  "props": [
+    {
+      "displayName": "title",
+      "type": "string",
+      "description": "标题",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "status",
+      "type": "enum",
+      "description": "状态",
+      "defaultValue": "",
+      "tip": "'' | 'success' | 'warning' | 'info' | 'error' | '403' | '404' | '500'"
+    },
+    {
+      "displayName": "content",
+      "type": "string",
+      "description": "内容",
+      "defaultValue": "",
+      "tip": ""
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "title",
+      "description": "自定义标题内容",
+      "parameters": ""
+    },
+    {
+      "displayName": "content",
+      "description": "自定义内容",
+      "parameters": "",
+      "tip": ""
+    },
+    {
+      "displayName": "icon",
+      "description": "自定义图标",
+      "parameters": "",
+      "tip": ""
+    }
+  ],
+  "methods": []
+}

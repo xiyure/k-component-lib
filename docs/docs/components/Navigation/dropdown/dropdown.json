@@ -1,0 +1,138 @@
+{
+  "name": "Dropdown",
+  "props": [
+    {
+      "displayName": "type",
+      "type": "string",
+      "description": "菜单按钮类型，同 Button 组件一样，仅在 split-button 为 true 的情况下有效。",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "size",
+      "type": "string",
+      "description": "菜单尺寸，在 split-button 为 true 的情况下也对触发按钮生效。",
+      "defaultValue": "default"
+    },
+    {
+      "displayName": "max-height",
+      "type": "string | Number",
+      "description": "菜单最大高度",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "split-button",
+      "type": "boolean",
+      "description": "下拉触发元素呈现为按钮组",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "disabled",
+      "type": "boolean",
+      "description": "是否禁用",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "placement",
+      "type": "string",
+      "description": "菜单弹出位置",
+      "defaultValue": "bottom"
+    },
+    {
+      "displayName": "trigger",
+      "type": "string",
+      "description": "触发下拉的行为",
+      "defaultValue": "hover"
+    },
+    {
+      "displayName": "hide-on-click",
+      "type": "boolean",
+      "description": "是否在点击菜单项后隐藏菜单",
+      "defaultValue": "true"
+    },
+    {
+      "displayName": "show-timeout",
+      "type": "number",
+      "description": "展开下拉菜单的延时，仅在 trigger 为 hover 时有效",
+      "defaultValue": "250"
+    },
+    {
+      "displayName": "hide-timeout",
+      "type": "number",
+      "description": "收起下拉菜单的延时（仅在 trigger 为 hover 时有效）",
+      "defaultValue": "150"
+    },
+    {
+      "displayName": "role",
+      "type": "string",
+      "description": "下拉菜单的 ARIA 属性。根据具体场景，您可能想要将此更改为“navigation”",
+      "defaultValue": "'menu'"
+    },
+    {
+      "displayName": "tabindex",
+      "type": "number",
+      "description": "Dropdown 组件的 tabindex",
+      "defaultValue": "0"
+    },
+    {
+      "displayName": "popper-class",
+      "type": "string",
+      "description": "自定义浮层类名",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "popper-options",
+      "type": "object",
+      "description": "popper.js 参数",
+      "defaultValue": "{modifiers: [{name: 'computeStyles', options: {gpuAcceleration: false}}]}"
+    },
+    {
+      "displayName": "teleported",
+      "type": "boolean",
+      "description": "是否将下拉列表插入至 body 元素",
+      "defaultValue": "true"
+    }
+  ],
+  "events": [
+    {
+      "displayName": "click",
+      "description": "split-button 为 true 时，点击左侧按钮的回调。",
+      "parameters": "—"
+    },
+    {
+      "displayName": "command",
+      "description": "点击菜单项触发的事件回调。",
+      "parameters": "dropdown-item 的指令"
+    },
+    {
+      "displayName": "visible-change",
+      "description": "下拉框出现/隐藏时触发。",
+      "parameters": "出现则为 true，隐藏则为 false。"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "default",
+      "type": "slot",
+      "description": "下拉菜单的内容",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "title",
+      "type": "slot",
+      "description": "下拉列表",
+      "defaultValue": ""
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "handleOpen",
+      "description": "打开下拉菜单。",
+      "type": "Function"
+    },
+    {
+      "displayName": "handleClose",
+      "description": "关闭下拉菜单。",
+      "type": "Function"
+    }
+  ]
+}

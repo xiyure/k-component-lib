@@ -1,0 +1,128 @@
+@import '../../style/variable.css';
+@import '../../style/general.less';
+@import '../../style/global.less';
+
+.k-result {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: fit-content;
+  gap: 1rem;
+
+  margin-bottom: 8vw;
+  .def-bg {
+    position: relative;
+    h1 {
+      font-size: 3.5vw;
+      line-height: 5vw;
+      font-weight: 900;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -55%);
+      margin: 0 0;
+      padding: 0;
+      &:after {
+        content: attr(data-h1);
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        color: transparent;
+        /* webkit only for graceful degradation to IE */
+        background: -webkit-repeating-linear-gradient(
+          -45deg,
+          #71b7e6,
+          #69a6ce,
+          #b98acc,
+          #ee8176,
+          #b98acc,
+          #69a6ce,
+          #9b59b6
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 400%;
+        text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.25);
+        animation: animateTextBackground 10s ease-in-out infinite;
+      }
+      .presuppose-icon {
+        background: #000;
+        width: 3vw;
+        height: 3vw;
+        position: absolute;
+        bottom: -45%;
+        right: -35%;
+        border-radius: 100%;
+        z-index: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        color: #fff;
+        font-size: 2vw;
+      }
+    }
+    svg {
+      width: 12vw;
+      height: 12vw;
+    }
+    .presuppose-icon {
+      background: #000;
+      width: 3vw;
+      height: 3vw;
+      border-radius: 100%;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      color: #fff;
+      font-size: 2vw;
+    }
+  }
+
+  .base-title {
+    color: #38363c;
+    font-size: 1vw;
+    line-height: 1.5vw;
+    font-weight: bold;
+  }
+  .base-subTitle {
+    font-size: 0.5vw;
+    line-height: 0.8vw;
+    font-weight: bold;
+  }
+
+  @keyframes animateTextBackground {
+    0% {
+      background-position: 0 0;
+    }
+    25% {
+      background-position: 100% 0;
+    }
+    50% {
+      background-position: 100% 100%;
+    }
+    75% {
+      background-position: 0 100%;
+    }
+    100% {
+      background-position: 0 0;
+    }
+  }
+}
+
+@media screen and (max-width: 1920px) {
+  .k-result {
+    .base-title {
+      .text-2xl();
+    }
+    .base-subTitle {
+      .text-base();
+    }
+  }
+}

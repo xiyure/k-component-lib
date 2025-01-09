@@ -1,0 +1,13 @@
+{
+  "name": "Timeline",
+  "props": [],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "default",
+      "description": "timeline 组件的自定义默认内容",
+      "parameters": ""
+    }
+  ],
+  "methods": []
+}

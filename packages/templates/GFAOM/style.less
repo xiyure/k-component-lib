@@ -1,0 +1,62 @@
+@import '../../style/variable.css';
+@import '../../style/general.less';
+
+.GFPageDetails {
+  .GFPageDetailsHead-content {
+    .head-abstract {
+      .RefHeadAbstract {
+        height: fit-content;
+        overflow: hidden;
+        transition: height 0.2s ease-in-out;
+        position: relative;
+        &.is-collapse {
+          transition: height 0.2s ease-in-out;
+          height: var(--expandHeight);
+        }
+        &.use-collapse {
+          height: var(--firstRowHeight);
+        }
+        &::after {
+          background: var(--k-gray-200);
+          width: 100%;
+          height: 1px;
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+        }
+      }
+    }
+  }
+}
+.GFPageDetails-slot--default {
+  .el-tabs {
+    .el-tabs__header {
+      background-color: #fff;
+      margin-bottom: 1.5rem;
+      .el-tabs__nav-wrap {
+        padding: 0 2.5rem;
+        border-bottom: unset;
+        &::after {
+          background-color: #fff !important;
+        }
+      }
+    }
+    .el-tabs__content {
+      padding: 0 2.5rem;
+    }
+  }
+}
+
+.RefHeadAbstract {
+  position: relative;
+  &::after {
+    background: red;
+    width: 100%;
+    height: 1px;
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+}

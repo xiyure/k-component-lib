@@ -1,0 +1,64 @@
+@import '../../style/variable.css';
+@import '../../style/general.less';
+
+.el-date-editor.el-date-editor--daterange.el-input__wrapper.el-range-editor.k-date-picker.el-tooltip__trigger.el-tooltip__trigger {
+  border: unset;
+  border-color: var(--k-theme-input-border-color--normal);
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: unset;
+  background-color: #fff;
+  border-radius: var(--k-theme-input-rounded--base);
+
+  transition: box-shadow var(--k-theme-transition-normal);
+
+  .el-range-separator {
+    color: var(--k-theme-info);
+  }
+
+  .el-range-input {
+    background-color: transparent;
+  }
+
+  &:hover:not(.is-disabled) {
+    border-color: var(--k-theme-input-border-color--hover);
+  }
+
+  &.is-active {
+    border-color: var(--k-theme-input-border-color--active);
+    box-shadow: var(--k-theme-focus-style);
+    transition: box-shadow var(--k-theme-transition-normal);
+  }
+
+  &.is-disabled {
+    background-color: var(--k-theme-input-bg-color--disabled);
+    .el-range-input {
+      background-color: transparent;
+    }
+  }
+
+  // size
+  &.el-range-editor--small {
+    border-radius: var(--k-theme-input-rounded--sm);
+  }
+  &.el-range-editor--large {
+    border-radius: var(--k-theme-input-rounded--lg);
+  }
+}
+
+.el-date-editor.el-date-editor--datetime.k-date-picker.el-tooltip__trigger {
+  --paddingt: var(--k-theme-input-size-padding--base);
+  .el-input__wrapper {
+    padding: var(--k-theme-input-size-padding--base);
+  }
+  .el-input__wrapper:hover,
+  .el-input__wrapper.is-focus {
+    padding: var(--k-theme-input-size-padding--base);
+  }
+  &.el-input--large {
+    --paddingt: var(--k-theme-input-size-padding--lg);
+  }
+  &.el-input--small {
+    --paddingt: var(--k-theme-input-size-padding--sm);
+  }
+}

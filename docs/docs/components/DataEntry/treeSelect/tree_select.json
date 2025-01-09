@@ -1,0 +1,57 @@
+{
+  "name": "TreeSelect",
+  "props": [
+    {
+      "displayName": "icon",
+      "type": "string | Component",
+      "description": "节点图标",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "expand-icon",
+      "type": "string | Component",
+      "description": "节点展开图标，优先级高于icon",
+      "defaultValue": "'IconFolderOpen'",
+      "tip": ""
+    },
+    {
+      "displayName": "collapse-icon",
+      "type": "string | Component",
+      "description": "节点收起图标，优先级高于icon",
+      "defaultValue": "'IconFlowNested'",
+      "tip": ""
+    },
+    {
+      "displayName": "debounce",
+      "type": "number",
+      "description": "输入框防抖时间，单位ms",
+      "defaultValue": "500",
+      "tip": ""
+    },
+    {
+      "displayName": "class-name",
+      "type": "string",
+      "description": "自定义节点类名",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "node-style",
+      "type": "object",
+      "description": "自定义节点样式",
+      "defaultValue": "",
+      "tip": "CSSProperties"
+    },
+    {
+      "displayName": "cacheData",
+      "type": "object",
+      "description": "懒加载节点的缓存数据，结构与数据相同，用于获取未加载数据的标签",
+      "defaultValue": "",
+      "tip": "[]"
+    }
+  ],
+  "events": [],
+  "slots": [],
+  "methods": []
+}

@@ -1,0 +1,326 @@
+{
+  "name": "Tree",
+  "props": [
+    {
+      "displayName": "data",
+      "description": "展示数据",
+      "parameters": "object"
+    },
+    {
+      "displayName": "empty-text",
+      "description": "内容为空的时候展示的文本",
+      "parameters": "string"
+    },
+    {
+      "displayName": "node-key",
+      "description": "每个树节点用来作为唯一标识的属性，整棵树应该是唯一的",
+      "parameters": "string"
+    },
+    {
+      "displayName": "props",
+      "description": "配置选项，具体看下表",
+      "parameters": "Props"
+    },
+    {
+      "displayName": "render-after-expand",
+      "description": "是否在第一次展开某个树节点后才渲染其子节点",
+      "parameters": "boolean (default: true)"
+    },
+    {
+      "displayName": "load",
+      "description": "加载子树数据的方法，仅当 lazy 属性为true 时生效",
+      "parameters": "Function"
+    },
+    {
+      "displayName": "render-content",
+      "description": "树节点的内容区的渲染",
+      "parameters": "Function"
+    },
+    {
+      "displayName": "highlight-current",
+      "description": "是否高亮当前选中节点，默认值是 false。",
+      "parameters": "boolean (default: false)"
+    },
+    {
+      "displayName": "default-expand-all",
+      "description": "是否默认展开所有节点",
+      "parameters": "boolean (default: false)"
+    },
+    {
+      "displayName": "expand-on-click-node",
+      "description": "是否在点击节点的时候展开或者收缩节点， 默认值为 true，如果为 false，则只有点箭头图标的时候才会展开或者收缩节点。",
+      "parameters": "boolean (default: true)"
+    },
+    {
+      "displayName": "check-on-click-node",
+      "description": "是否在点击节点的时候选中节点，默认值为 false，即只有在点击复选框时才会选中节点。",
+      "parameters": "boolean (default: false)"
+    },
+    {
+      "displayName": "auto-expand-parent",
+      "description": "展开子节点的时候是否自动展开父节点",
+      "parameters": "boolean (default: true)"
+    },
+    {
+      "displayName": "default-expanded-keys",
+      "description": "默认展开的节点的 key 的数组",
+      "parameters": "object"
+    },
+    {
+      "displayName": "show-checkbox",
+      "description": "节点是否可被选择",
+      "parameters": "boolean (default: false)"
+    },
+    {
+      "displayName": "check-strictly",
+      "description": "在显示复选框的情况下，是否严格的遵循父子不互相关联的做法，默认为 false",
+      "parameters": "boolean (default: false)"
+    },
+    {
+      "displayName": "default-checked-keys",
+      "description": "默认勾选的节点的 key 的数组",
+      "parameters": "object"
+    },
+    {
+      "displayName": "current-node-key",
+      "description": "当前选中的节点",
+      "parameters": "string / number"
+    },
+    {
+      "displayName": "filter-node-method",
+      "description": "对树节点进行筛选时执行的方法， 返回 false 则表示这个节点会被隐藏",
+      "parameters": "Function"
+    },
+    {
+      "displayName": "accordion",
+      "description": "是否每次只打开一个同级树节点展开",
+      "parameters": "boolean (default: false)"
+    },
+    {
+      "displayName": "indent",
+      "description": "相邻级节点间的水平缩进，单位为像素",
+      "parameters": "number (default: 18)"
+    },
+    {
+      "displayName": "icon",
+      "description": "自定义树节点图标组件",
+      "parameters": "string / Component"
+    },
+    {
+      "displayName": "lazy",
+      "description": "是否懒加载子节点，需与 load 方法结合使用",
+      "parameters": "boolean (default: false)"
+    },
+    {
+      "displayName": "draggable",
+      "description": "是否开启拖拽节点功能",
+      "parameters": "boolean (default: false)"
+    },
+    {
+      "displayName": "allow-drag",
+      "description": "判断节点能否被拖拽 如果返回 false ，节点不能被拖动",
+      "parameters": "Function"
+    },
+    {
+      "displayName": "allow-drop",
+      "description": "拖拽时判定目标节点能否成为拖动目标位置。 如果返回 false ，拖动节点不能被拖放到目标节点。 type 参数有三种情况：'prev'、'inner' 和 'next'，分别表示放置在目标节点前、插入至目标节点和放置在目标节点后",
+      "parameters": "Function"
+    },
+    {
+      "displayName": "label",
+      "description": "指定节点标签为节点对象的某个属性值",
+      "parameters": "string | Function"
+    },
+    {
+      "displayName": "children",
+      "description": "指定子树为节点对象的某个属性值",
+      "parameters": "string"
+    },
+    {
+      "displayName": "disabled",
+      "description": "指定节点选择框是否禁用为节点对象的某个属性值",
+      "parameters": "string | Function"
+    },
+    {
+      "displayName": "isLeaf",
+      "description": "指定节点是否为叶子节点，仅在指定了 lazy 属性的情况下生效",
+      "parameters": "string | Function"
+    },
+    {
+      "displayName": "class",
+      "description": "自定义节点类名",
+      "parameters": "string | Function"
+    }
+  ],
+  "events": [
+    {
+      "displayName": "node-click",
+      "description": "当节点被点击时触发",
+      "parameters": "当前被点击的节点对象, node 属性, TreeNode 对象, 事件对象"
+    },
+    {
+      "displayName": "node-contextmenu",
+      "description": "当某一节点被右键点击时触发",
+      "parameters": "事件对象, 当前节点数据, 当前节点 Node 对象, 节点组件"
+    },
+    {
+      "displayName": "check-change",
+      "description": "当复选框状态发生变化时触发",
+      "parameters": "当前节点数据, 是否被选中, 子树节点状态"
+    },
+    {
+      "displayName": "check",
+      "description": "点击节点复选框时触发",
+      "parameters": "当前节点数据, 树的选中状态对象 (checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys)"
+    },
+    {
+      "displayName": "current-change",
+      "description": "当当前选中的节点发生变化时触发",
+      "parameters": "当前选中节点的数据, 当前选中节点的 Node 对象"
+    },
+    {
+      "displayName": "node-expand",
+      "description": "当节点被展开时触发",
+      "parameters": "当前展开节点的数据, 当前展开节点的 Node 对象, 节点组件"
+    },
+    {
+      "displayName": "node-collapse",
+      "description": "当节点被收起时触发",
+      "parameters": "当前收起节点的数据, 当前收起节点的 Node 对象, 节点组件"
+    },
+    {
+      "displayName": "node-drag-start",
+      "description": "当节点开始拖拽时触发",
+      "parameters": "被拖拽节点的 Node 对象, 事件对象"
+    },
+    {
+      "displayName": "node-drag-enter",
+      "description": "当拖拽节点进入其他节点时触发",
+      "parameters": "被拖拽节点的 Node 对象, 目标节点的 Node 对象, 事件对象"
+    },
+    {
+      "displayName": "node-drag-leave",
+      "description": "当拖拽节点离开某个节点时触发",
+      "parameters": "被拖拽节点的 Node 对象, 离开节点的 Node 对象, 事件对象"
+    },
+    {
+      "displayName": "node-drag-over",
+      "description": "在拖拽节点时触发",
+      "parameters": "被拖拽节点的 Node 对象, 当前进入节点的 Node 对象, 事件对象"
+    },
+    {
+      "displayName": "node-drag-end",
+      "description": "拖拽结束时触发，可能未成功完成",
+      "parameters": "被拖拽节点的 Node 对象, 最后进入的目标节点, 放置位置 (before, after, inner), 事件对象"
+    },
+    {
+      "displayName": "node-drop",
+      "description": "拖拽成功完成时触发",
+      "parameters": "被拖拽节点的 Node 对象, 最后进入的目标节点, 放置位置 (before, after, inner), 事件对象"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "default",
+      "description": "自定义树节点的内容， 自定义树节点的内容",
+      "parameters": ""
+    },
+    {
+      "displayName": "empty",
+      "description": "当数据为空时自定义的内容",
+      "parameters": ""
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "filter",
+      "description": "用于过滤树中的节点，过滤后的节点会被隐藏，显示符合条件的节点。",
+      "parameters": "filter-node-method: 用于指定过滤条件的函数"
+    },
+    {
+      "displayName": "updateKeyChildren",
+      "description": "更新指定节点的子节点数据。必须设置 `node-key` 属性以唯一标识节点。",
+      "parameters": "node-key: 节点的唯一标识符，newChildren: 新的子节点数据"
+    },
+    {
+      "displayName": "getCheckedNodes",
+      "description": "获取当前选中的节点列表，包括叶子节点和半选中的节点。",
+      "parameters": "leafOnly: 可选，是否只获取叶子节点"
+    },
+    {
+      "displayName": "getCheckedKeys",
+      "description": "获取当前选中节点的 `key` 值列表。",
+      "parameters": ""
+    },
+    {
+      "displayName": "getHalfCheckedNodes",
+      "description": "获取当前半选中的节点列表。",
+      "parameters": ""
+    },
+    {
+      "displayName": "getHalfCheckedKeys",
+      "description": "获取当前半选中的节点的 `key` 值列表。",
+      "parameters": ""
+    },
+    {
+      "displayName": "setCheckedNodes",
+      "description": "设置当前选中的节点数组。",
+      "parameters": "nodes: 要设置为选中的节点数组"
+    },
+    {
+      "displayName": "setCheckedKeys",
+      "description": "设置当前选中的节点的 `key` 数组。",
+      "parameters": "keys: 要设置为选中的节点 `key` 数组"
+    },
+    {
+      "displayName": "setChecked",
+      "description": "设置单个节点的选中状态，并可递归选中其子节点。",
+      "parameters": "node: 要设置选中的节点，checked: 是否选中"
+    },
+    {
+      "displayName": "getCurrentKey",
+      "description": "获取当前选中节点的 `key`。",
+      "parameters": ""
+    },
+    {
+      "displayName": "getCurrentNode",
+      "description": "获取当前选中节点的完整数据。",
+      "parameters": ""
+    },
+    {
+      "displayName": "setCurrentKey",
+      "description": "设置某个节点为当前选中状态。",
+      "parameters": "key: 要设置为当前选中的节点 `key`"
+    },
+    {
+      "displayName": "setCurrentNode",
+      "description": "设置某个节点为当前选中状态。",
+      "parameters": "node: 要设置为当前选中的节点数据"
+    },
+    {
+      "displayName": "getNode",
+      "description": "根据节点的数据或 `key` 获取树中的节点对象。",
+      "parameters": "key: 节点的唯一标识符"
+    },
+    {
+      "displayName": "remove",
+      "description": "删除树中的一个节点。",
+      "parameters": "key: 要删除的节点的唯一标识符"
+    },
+    {
+      "displayName": "append",
+      "description": "在某个节点下追加子节点。",
+      "parameters": "parentKey: 父节点的 `key`，newNode: 要追加的子节点数据"
+    },
+    {
+      "displayName": "insertBefore",
+      "description": "在指定节点前插入一个节点。",
+      "parameters": "referenceKey: 参考节点的 `key`，newNode: 要插入的新节点数据"
+    },
+    {
+      "displayName": "insertAfter",
+      "description": "在指定节点后插入一个节点。",
+      "parameters": "referenceKey: 参考节点的 `key`，newNode: 要插入的新节点数据"
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "name": "Descriptions",
+  "props": [
+    {
+      "displayName": "border",
+      "type": "boolean",
+      "description": "是否带有边框",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "column",
+      "type": "number",
+      "description": "一行 Descriptions Item 的数量",
+      "defaultValue": "3"
+    },
+    {
+      "displayName": "direction",
+      "type": "enum",
+      "description": "排列的方向",
+      "defaultValue": "horizontal"
+    },
+    {
+      "displayName": "size",
+      "type": "enum",
+      "description": "列表的尺寸",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "title",
+      "type": "string",
+      "description": "标题文本，显示在左上方",
+      "defaultValue": "''"
+    },
+    {
+      "displayName": "extra",
+      "type": "string",
+      "description": "操作区文本，显示在右上方",
+      "defaultValue": ""
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "default",
+      "type": "slot",
+      "description": "自定义默认内容",
+      "defaultValue": "Descriptions Item"
+    },
+    {
+      "displayName": "title",
+      "type": "slot",
+      "description": "自定义标题，显示在左上方",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "extra",
+      "type": "slot",
+      "description": "自定义操作区，显示在右上方",
+      "defaultValue": "—"
+    }
+  ],
+  "methods": []
+}

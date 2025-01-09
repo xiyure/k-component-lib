@@ -1,0 +1,186 @@
+{
+  "name": "TreeTransfer",
+  "props": [
+    {
+      "displayName": "data",
+      "type": "any[]",
+      "description": "绑定的数据",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "default-data",
+      "type": "string[] | number[]",
+      "description": "默认选中数据",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "titles",
+      "type": "array",
+      "description": "视图标题",
+      "defaultValue": "",
+      "tip": "[string, string]"
+    },
+    {
+      "displayName": "showSearchInput",
+      "type": "boolean",
+      "description": "是否显示搜索框",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "useTree",
+      "type": "boolean",
+      "description": "是否使用树形结构",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "treeConfig",
+      "type": "object",
+      "description": "树形结构配置",
+      "defaultValue": "",
+      "tip": "VxeTablePropTypes.TreeConfig"
+    },
+    {
+      "displayName": "scrollY",
+      "type": "object",
+      "description": "滚动条配置",
+      "defaultValue": "",
+      "tip": "VxeTablePropTypes.ScrollY"
+    },
+    {
+      "displayName": "showDrag",
+      "type": "boolean",
+      "description": "是否启用拖拽排序",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "icon",
+      "type": "string | Component",
+      "description": "叶子节点图标",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "icon-color",
+      "type": "string",
+      "description": "叶子节点icon颜色",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "expand-icon",
+      "type": "string | Component",
+      "description": "展开图标",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "expand-icon-color",
+      "type": "string",
+      "description": "展开icon颜色",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "collapse-icon",
+      "type": "string | Component",
+      "description": "收起图标",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "collapse-icon-color",
+      "type": "string | Component",
+      "description": "收起icon颜色",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "checkMethod",
+      "type": "Function",
+      "description": "自定义选中方法",
+      "defaultValue": "",
+      "tip": "(data: any) => boolean"
+    },
+    {
+      "displayName": "searchMethod",
+      "type": "Function",
+      "description": "自定义搜索方法",
+      "defaultValue": "",
+      "tip": "(keyword: string, data: any[]) => Promise<any[]>"
+    }
+  ],
+  "events": [
+    {
+      "displayName": "change",
+      "description": "选中数据变化时触发",
+      "type": "Function",
+      "tip": "(data: any[]) => void"
+    },
+    {
+      "displayName": "sort",
+      "description": "拖拽排序时触发",
+      "type": "Function",
+      "tip": "(data: any[]) => void"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "right-cell",
+      "description": "自定义右侧单元格内容",
+      "parameters": ""
+    },
+    {
+      "displayName": "right-header",
+      "description": "自定义右侧头部内容",
+      "parameters": ""
+    },
+    {
+      "displayName": "right-label",
+      "description": "自定义右侧文本内容",
+      "parameters": ""
+    },
+    {
+      "displayName": "empty",
+      "description": "自定义空数据内容",
+      "parameters": "object",
+      "tip": "{ query: string }"
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "clearData",
+      "description": "清空选择的数据",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "setCheckboxRow",
+      "description": "设置某一行的选中状态",
+      "type": "Function",
+      "tip": "(row: Row, checked: boolean) => void"
+    },
+    {
+      "displayName": "isCheckedRow",
+      "description": "获取某一行的选中状态",
+      "type": "Function",
+      "tip": "(row: Row) => boolean"
+    },
+    {
+      "displayName": "clearQuery",
+      "description": "清空搜索框内容",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "getQuery",
+      "description": "获取搜索框内容",
+      "type": "Function",
+      "tip": "() => string"
+    }
+  ]
+}

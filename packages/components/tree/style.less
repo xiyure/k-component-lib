@@ -1,0 +1,57 @@
+@import '../../style/variable.css';
+@import '../../style/general.less';
+@import '../../style/global.less';
+
+.k-tree.el-tree {
+  .el-tree-node {
+    .el-tree-node__content {
+      padding: 0 0.5rem;
+      margin-bottom: 0.25rem;
+      .el-icon.el-tree-node__expand-icon {
+        padding: 0;
+        &.expanded {
+          transform: rotate(90deg);
+        }
+      }
+      .k-tree-node-label {
+        margin-left: 0.25rem;
+      }
+    }
+  }
+  .el-tree-node__children {
+    height: fit-content;
+  }
+
+  .el-tree-node__expand-icon {
+    font-size: 0;
+    padding: 0 0 0 0.5rem;
+    margin-left: 0.25rem;
+    svg {
+      display: none;
+    }
+  }
+  &.k-tree-show-arrow {
+    .el-tree-node__expand-icon {
+      font-size: 1rem;
+      padding: 0 0 0 0.5rem;
+      svg {
+        display: inline-block;
+      }
+    }
+  }
+  .ksw-icon.ksw-icon-FolderOpen,
+  .ksw-icon.ksw-icon-FolderClose {
+    font-size: 1rem;
+    color: var(--k-yellow-500);
+    transform: unset;
+  }
+  .el-icon + .ksw-icon {
+    margin-left: 0.25rem;
+  }
+
+  .el-select-dropdown__item.is-disabled {
+    .ksw-icon.ksw-icon-FlowNested {
+      color: var(--k-gray-200);
+    }
+  }
+}

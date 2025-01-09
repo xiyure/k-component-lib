@@ -1,0 +1,117 @@
+{
+  "name": "Popconfirm",
+  "props": [
+    {
+      "displayName": "title",
+      "type": "string",
+      "description": "标题",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "confirm-button-text",
+      "type": "string",
+      "description": "确认按钮文字",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "cancel-button-text",
+      "type": "string",
+      "description": "取消按钮文字",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "confirm-button-type",
+      "type": "enum",
+      "description": "确认按钮类型",
+      "defaultValue": "primary",
+      "tip": "'primary' | 'success' | 'warning' | 'danger' | 'info' | 'text'"
+    },
+    {
+      "displayName": "cancel-button-type",
+      "type": "enum",
+      "description": "取消按钮类型",
+      "defaultValue": "text",
+      "tip": ""
+    },
+    {
+      "displayName": "icon",
+      "type": "string | Component",
+      "description": "自定义图标",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "icon-color",
+      "type": "string",
+      "description": "图标颜色",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "hide-icon",
+      "type": "boolean",
+      "description": "是否隐藏图标",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "hide-after",
+      "type": "number",
+      "description": "关闭时的延迟",
+      "defaultValue": "200",
+      "tip": ""
+    },
+    {
+      "displayName": "teleported",
+      "type": "boolean",
+      "description": "是否将popover的下拉列表插入至body元素",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "persistent",
+      "type": "boolean",
+      "description": "当popover组件长时间不触发且persistent属性设置为false时, popover将会被删除",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "width",
+      "type": "string | number",
+      "description": "弹层宽度",
+      "defaultValue": "150",
+      "tip": ""
+    }
+  ],
+  "events": [
+    {
+      "displayName": "confirm",
+      "description": "点击确认按钮时触发",
+      "type": "Function",
+      "tip": "(e: MouseEvent) => void"
+    },
+    {
+      "displayName": "cancel",
+      "description": "点击取消按钮时触发",
+      "type": "Function",
+      "tip": "(e: MouseEvent) => void"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "reference",
+      "description": "触发Popconfirm显示的HTML元素",
+      "parameters": ""
+    },
+    {
+      "displayName": "actions",
+      "description": "页脚的内容",
+      "parameters": "object",
+      "tip": "{ confirm: (e: MouseEvent) => void, cancel: (e: MouseEvent) => void }"
+    }
+  ],
+  "methods": []
+}

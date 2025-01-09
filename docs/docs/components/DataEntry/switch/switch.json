@@ -1,0 +1,141 @@
+{
+  "name": "Switch",
+  "props": [
+    {
+      "displayName": "model-value / v-model",
+      "type": "绑定值，必须等于 active-value或inactive-value，默认为Boolean类型",
+      "description": "筛选配置项，包含字段、标题、数据类型、等信息，目前支持的类型有：string、number、date，默认为string",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "disabled",
+      "type": "boolean",
+      "description": "是否禁用",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "loading",
+      "type": "boolean",
+      "description": "是否显示加载中",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "size",
+      "type": "enum",
+      "description": "switch尺寸",
+      "defaultValue": "base",
+      "tip": "'base' | 'sm'"
+    },
+    {
+      "displayName": "width",
+      "type": "string  | number",
+      "description": "switch宽度",
+      "defaultValue": "''"
+    },
+    {
+      "displayName": "size",
+      "type": "enum",
+      "description": "尺寸",
+      "defaultValue": "base",
+      "tip": "'base' | 'sm'"
+    },
+    {
+      "displayName": "inline-prompt",
+      "type": "boolean",
+      "description": "无论图标或文本是否显示在点内，只会呈现文本的第一个字符",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "active-icon",
+      "type": "string | Component",
+      "description": "switch状态为on时所显示图标，设置此项会忽略active-text",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "inactive-icon",
+      "type": "string | Component",
+      "description": "switch状态为off时所显示图标，设置此项会忽略inactive-text",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "active-action-icon",
+      "type": "string | Component",
+      "description": "on状态下显示的图标组件"
+    },
+    {
+      "displayName": "inactive-action-icon",
+      "type": "string | Component",
+      "description": "off状态下显示的图标组件"
+    },
+    {
+      "displayName": "active-color",
+      "type": "string",
+      "description": "on状态下显示的图标组件"
+    },
+    {
+      "displayName": "inactive-color",
+      "type": "string",
+      "description": "off状态下显示的图标组件"
+    },
+    {
+      "displayName": "active-text",
+      "type": "string",
+      "description": "switch状态为on时所显示的文字",
+      "defaultValue": "''"
+    },
+    {
+      "displayName": "inactive-text",
+      "type": "string",
+      "description": "switch状态为off时所显示的文字",
+      "defaultValue": "''"
+    },
+    {
+      "displayName": "active-value",
+      "type": "string | number | boolean",
+      "description": "switch状态为on时所绑定的值",
+      "defaultValue": "true"
+    },
+    {
+      "displayName": "inactive-value",
+      "type": "string | number | boolean",
+      "description": "switch状态为off时所绑定的值",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "before-change",
+      "type": "boolean | Function",
+      "description": "switch 状态改变前的钩子，返回false或者返回Promise且被reject则停止切换",
+      "tip": "() => Promise<boolean>"
+    }
+  ],
+  "events": [
+    {
+      "displayName": "change",
+      "description": "switch状态发生变化时的回调函数",
+      "type": "Function",
+      "tip": "(value: boolean | string | number) => void"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "active-action",
+      "description": "自定义active行为",
+      "parameters": ""
+    },
+    {
+      "displayName": "inactive-action",
+      "description": "自定义inactive行为",
+      "parameters": ""
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "focus",
+      "description": "使switch获得焦点",
+      "type": "Function",
+      "tip": "() => void"
+    }
+  ]
+}

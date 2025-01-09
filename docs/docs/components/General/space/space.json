@@ -1,0 +1,84 @@
+{
+  "name": "Space",
+  "props": [
+    {
+      "displayName": "alignment",
+      "type": "enum",
+      "description": "对齐的方式",
+      "defaultValue": "center",
+      "tip": ""
+    },
+    {
+      "displayName": "class",
+      "type": "string | object | array",
+      "description": "类名",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "direction",
+      "type": "enum",
+      "description": "排列的方向",
+      "defaultValue": "horizontal",
+      "tip": ""
+    },
+    {
+      "displayName": "prefix-cls",
+      "type": "string",
+      "description": "给 space-items 的类名前缀",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "style",
+      "type": "string | object",
+      "description": "额外样式",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "spacer",
+      "type": "string | number | VNode",
+      "description": "间隔符",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "size",
+      "type": "enum | number | array",
+      "description": "间隔大小",
+      "defaultValue": "small",
+      "tip": ""
+    },
+    {
+      "displayName": "wrap",
+      "type": "boolean",
+      "description": "设置是否自动折行",
+      "defaultValue": false,
+      "tip": ""
+    },
+    {
+      "displayName": "fill",
+      "type": "boolean",
+      "description": "子元素是否填充父容器",
+      "defaultValue": false,
+      "tip": ""
+    },
+    {
+      "displayName": "fill-ratio",
+      "type": "number",
+      "description": "填充父容器的比例",
+      "defaultValue": 100,
+      "tip": ""
+    }
+  ]
+  ,
+  "events": [],
+  "slots": [
+    {
+      "displayName": "default",
+      "description": "需要添加间隔的元素"
+    }
+  ],
+  "methods": []
+}

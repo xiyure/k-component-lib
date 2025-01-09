@@ -1,0 +1,67 @@
+{
+  "name": "Avatar",
+  "props": [
+    {
+      "displayName": "icon",
+      "type": "string / Component",
+      "description": "设置 Avatar 的图标类型，具体参考 Icon 组件",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "size",
+      "type": "number / enum",
+      "description": "Avatar 大小",
+      "defaultValue": "default",
+      "tip": "'large' | 'default' | 'small'"
+    },
+    {
+      "displayName": "shape",
+      "type": "enum",
+      "description": "Avatar 形状",
+      "defaultValue": "circle",
+      "tip": "'circle' |'square'"
+    },
+    {
+      "displayName": "src",
+      "type": "string",
+      "description": "Avatar 图片的源地址",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "src-set",
+      "type": "string",
+      "description": "图片 Avatar 的原生 srcset 属性",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "alt",
+      "type": "string",
+      "description": "图片 Avatar 的原生 alt 属性",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "fit",
+      "type": "enum",
+      "description": "当展示类型为图片的时候，设置图片如何适应容器",
+      "defaultValue": "cover",
+      "tip": "'fill' | 'contain' | 'cover' | 'none' | 'scale-down'"
+    }
+  ],
+  "events": [
+    {
+      "displayName": "error",
+      "type": "Function",
+      "description": "图片加载失败时触发",
+      "tip": "(e: Event) => void"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "default",
+      "type": "slot",
+      "description": "自定义头像展示内容",
+      "defaultValue": ""
+    }
+  ],
+  "methods": []
+}

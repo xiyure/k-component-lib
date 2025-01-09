@@ -1,0 +1,136 @@
+@import '../../style/variable.css';
+@import '../../style/global.less';
+
+.k-tree-transfer {
+  .k-transfer__body {
+    display: flex;
+    justify-content: space-between;
+  }
+  .k-transfer__filter {
+    margin-bottom: 10px;
+    .k-input {
+      border-radius: 8px;
+    }
+  }
+  .k-transfer-content__left {
+    .vxe-cell--checkbox {
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .vxe-checkbox--label {
+      flex: 1;
+    }
+    .vxe-checkbox--label,
+    .tree-transfer__cell-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+  .k-transfer-content__right {
+    margin-left: 10px;
+    .column-content {
+      overflow: hidden;
+      margin-right: 7%;
+    }
+    .vxe-cell {
+      .vxe-cell--drag-handle {
+        position: absolute;
+        transform: rotate(90deg);
+        right: 6%;
+        i {
+          font-size: 15px;
+          font-weight: 900;
+        }
+      }
+    }
+  }
+  .k-transfer-content__left,
+  .k-transfer-content__right {
+    width: 200px;
+  }
+  .k-transfer-content {
+    flex-grow: 1;
+    background-color: #f5f5f5;
+    .k-transfer-title {
+      padding-left: 10px;
+    }
+    .k-table-column__header {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    .k-transfer__list {
+      overflow: auto;
+      height: 300px;
+      border-radius: 4px;
+    }
+    .transfer-tree-table {
+      .vxe-table--body-wrapper {
+        .vxe-cell {
+          padding-left: 0;
+        }
+      }
+    }
+  }
+  .tree-transfer__cell-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .k-transfer__operate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .k-button {
+      margin-left: 12px;
+      margin-right: 12px;
+      &:first-child {
+        margin-bottom: 10px;
+      }
+    }
+  }
+  .el-checkbox__input.is-disabled .el-checkbox__inner {
+    display: none;
+  }
+  .el-tree__empty-block {
+    background-color: #f5f5f5;
+  }
+  .column-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    .column-operate {
+      display: flex;
+      align-items: center;
+      .column-close {
+        cursor: pointer;
+        &:hover {
+          color: var(--k-theme-primary);
+        }
+        svg {
+          width: 13px;
+          height: 13px;
+        }
+      }
+      svg {
+        width: 15px;
+        height: 15px;
+      }
+    }
+  }
+}
+.right-data-header {
+  display: flex;
+  justify-content: space-between;
+  .clear-data {
+    color: var(--k-theme-primary);
+    cursor: pointer;
+    &:hover {
+      color: var(--k-blue-400);
+    }
+  }
+}

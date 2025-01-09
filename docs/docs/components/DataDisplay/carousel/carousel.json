@@ -1,0 +1,113 @@
+{
+  "name": "Carousel",
+  "props": [
+    {
+      "displayName": "height",
+      "type": "string",
+      "description": "carousel 的高度",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "initial-index",
+      "type": "number",
+      "description": "初始状态激活的幻灯片的索引，从 0 开始",
+      "defaultValue": "0"
+    },
+    {
+      "displayName": "trigger",
+      "type": "enum",
+      "description": "指示器的触发方式",
+      "defaultValue": "hover",
+      "tip": "'hover' | 'click'"
+    },
+    {
+      "displayName": "autoplay",
+      "type": "boolean",
+      "description": "是否自动切换",
+      "defaultValue": "true"
+    },
+    {
+      "displayName": "interval",
+      "type": "number",
+      "description": "自动切换的时间间隔，单位为毫秒",
+      "defaultValue": "3000"
+    },
+    {
+      "displayName": "indicator-position",
+      "type": "enum",
+      "description": "指示器的位置",
+      "defaultValue": "",
+      "tip": "'' | 'none' | 'outside'"
+    },
+    {
+      "displayName": "arrow",
+      "type": "enum",
+      "description": "切换箭头的显示时机",
+      "defaultValue": "hover",
+      "tip": "'' | 'card'"
+    },
+    {
+      "displayName": "type",
+      "type": "enum",
+      "description": "carousel 的类型",
+      "defaultValue": "",
+      "tip": "'' | 'card'"
+    },
+    {
+      "displayName": "loop",
+      "type": "boolean",
+      "description": "是否循环显示",
+      "defaultValue": "true"
+    },
+    {
+      "displayName": "direction",
+      "type": "enum",
+      "description": "展示的方向",
+      "defaultValue": "horizontal",
+      "tip": "'horizontal' | 'vertical'"
+    },
+    {
+      "displayName": "pause-on-hover",
+      "type": "boolean",
+      "description": "鼠标悬浮时暂停自动切换",
+      "defaultValue": "true"
+    }
+  ],
+  "events": [
+    {
+      "displayName": "change",
+      "type": "Function",
+      "description": "幻灯片切换时触发，包含目前激活的幻灯片的索引和原幻灯片的索引。",
+      "defaultValue": "",
+      "tip": "(current: number, prev: number) => boolean"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "default",
+      "type": "object",
+      "description": "自定义默认内容",
+      "defaultValue": ""
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "setActiveItem",
+      "type": "Function",
+      "description": "手动切换幻灯片，需要切换的幻灯片的索引，从 0 开始；或相应 el-carousel-item 的 name 属性值",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "prev",
+      "type": "Function",
+      "description": "切换至上一张幻灯片",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "next",
+      "type": "Function",
+      "description": "切换至下一张幻灯片",
+      "defaultValue": ""
+    }
+  ]
+}

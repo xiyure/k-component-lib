@@ -1,0 +1,131 @@
+{
+  "name": "View",
+  "props": [
+    {
+      "displayName": "data",
+      "type": "ViewData[]",
+      "description": "绑定的数据",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "defaultActive",
+      "type": "string | number",
+      "description": "默认激活视图项",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "draggable",
+      "type": "boolean",
+      "description": "是否可拖拽",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "collapse",
+      "type": "boolean",
+      "description": "是否折叠",
+      "defaultValue": "false",
+      "tip": ""
+    }
+  ],
+  "events": [
+    {
+      "displayName": "refresh",
+      "description": "点击刷新按钮时触发",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "change",
+      "description": "视图切换时触发",
+      "type": "Function",
+      "tip": "({ value: string | number, data: ViewData }) => void"
+    },
+    {
+      "displayName": "remove",
+      "description": "点击删除视图按钮时触发",
+      "type": "Function",
+      "tip": "({ value: string | number, data: ViewData }) => void"
+    },
+    {
+      "displayName": "drag",
+      "description": "视图拖拽后触发",
+      "type": "Function",
+      "tip": "({ value: string | number, data: ViewData }) => void"
+    },
+    {
+      "displayName": "visible",
+      "description": "视图显示/隐藏时触发",
+      "type": "Function",
+      "tip": "(isVisible: boolean) => void"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "default",
+      "description": "默认视图内容",
+      "parameters": ""
+    },
+    {
+      "displayName": "[active]",
+      "description": "自定义激活视内容， active为视图项的value",
+      "parameters": ""
+    },
+    {
+      "displayName": "header",
+      "description": "自定义头部内容",
+      "parameters": ""
+    },
+    {
+      "displayName": "refresh",
+      "description": "自定义刷新按钮",
+      "parameters": "object",
+      "tip": "{ data: ViewData }"
+    },
+    {
+      "displayName": "label",
+      "description": "自定义视图项",
+      "parameters": "",
+      "tip": ""
+    },
+    {
+      "displayName": "custom-header",
+      "description": "自定义视图内容",
+      "parameters": ""
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "expand",
+      "description": "展开视图",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "collapse",
+      "description": "收起视图",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "toggle",
+      "description": "切换视图展开/收起状态",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "isExpand",
+      "description": "获取视图是否展开",
+      "type": "Function",
+      "tip": "() => boolean"
+    },
+    {
+      "displayName": "isCollapse",
+      "description": "获取视图是否收起",
+      "type": "Function",
+      "tip": "() => boolean"
+    }
+  ]
+}

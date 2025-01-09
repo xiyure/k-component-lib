@@ -1,0 +1,44 @@
+.el-popper {
+  &:has(.el-select-dropdown) {
+    margin-top: -0.5rem;
+    .el-select-dropdown {
+      .el-scrollbar {
+      }
+    }
+    .el-popper__arrow {
+      display: none;
+    }
+  }
+}
+
+.GFAOM.k-tree-table {
+  &.GFAOM.tree-table-use-ant-style {
+    .pagination-box {
+      width: 100%;
+      display: inline-flex;
+      justify-content: end;
+    }
+    .k-table-func {
+      > .el-button.k-button,
+      .k-filter > .el-tooltip__trigger > .el-button.k-button,
+      .k-dropdown > .el-tooltip__trigger > .el-button.k-button,
+      .el-tooltip__trigger > .el-button.k-button {
+        border: none;
+        font-size: 1rem;
+        color: var(--k-theme-text--normal);
+        &:hover {
+          color: var(--k-theme-primary);
+          background: transparent;
+        }
+      }
+    }
+  }
+}
+.GFAOM.k-form {
+  .el-form-item__label {
+    color: var(--k-theme-text--normal);
+    span {
+      color: var(--k-theme-text--normal);
+    }
+  }
+}

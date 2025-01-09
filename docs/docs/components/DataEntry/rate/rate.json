@@ -1,0 +1,158 @@
+{
+  "name": "Rate",
+  "props": [
+    {
+      "displayName": "model-value / v-model",
+      "type": "number",
+      "description": "选中项绑定值",
+      "defaultValue": 0
+    },
+    {
+      "displayName": "max",
+      "type": "number",
+      "description": "最大分值",
+      "defaultValue": 5
+    },
+    {
+      "displayName": "size",
+      "type": "enum",
+      "description": "尺寸",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "disabled",
+      "type": "boolean",
+      "description": "是否为只读",
+      "defaultValue": false
+    },
+    {
+      "displayName": "allow-half",
+      "type": "boolean",
+      "description": "是否允许半选",
+      "defaultValue": false
+    },
+    {
+      "displayName": "low-threshold",
+      "type": "number",
+      "description": "低分和中等分数的界限值，值本身被划分在低分中",
+      "defaultValue": 2
+    },
+    {
+      "displayName": "high-threshold",
+      "type": "number",
+      "description": "高分和中等分数的界限值，值本身被划分在高分中",
+      "defaultValue": 4
+    },
+    {
+      "displayName": "colors",
+      "type": "object",
+      "description": "icon 的颜色。若传入数组，共有 3 个元素，为 3 个分段所对应的颜色；若传入对象，可自定义分段，键名为分段的界限值，键值为对应的颜色",
+      "defaultValue": "['#F7BA2A', '#F7BA2A', '#F7BA2A']"
+    },
+    {
+      "displayName": "void-color",
+      "type": "string",
+      "description": "未选中 icon 的颜色",
+      "defaultValue": "#C6D1DE"
+    },
+    {
+      "displayName": "disabled-void-color",
+      "type": "string",
+      "description": "只读时未选中 icon 的颜色",
+      "defaultValue": "#EFF2F7"
+    },
+    {
+      "displayName": "icons",
+      "type": "object",
+      "description": "图标组件。若传入数组，则需要传入 3 个元素，分别为 3 个部分所对应的类名；若传入对象，则可自定义分段，键名为分段的界限值，键值为对应的类名",
+      "defaultValue": "[StarFilled, StarFilled, StarFilled]"
+    },
+    {
+      "displayName": "void-icon",
+      "type": "string / Component",
+      "description": "未被选中的图标组件",
+      "defaultValue": "Star"
+    },
+    {
+      "displayName": "disabled-void-icon",
+      "type": "string / Component",
+      "description": "禁用状态的未选择图标",
+      "defaultValue": "StarFilled"
+    },
+    {
+      "displayName": "show-text",
+      "type": "boolean",
+      "description": "是否显示辅助文字，若为真，则会从 texts 数组中选取当前分数对应的文字内容",
+      "defaultValue": false
+    },
+    {
+      "displayName": "show-score",
+      "type": "boolean",
+      "description": "是否显示当前分数，show-score 和 show-text 不能同时为真",
+      "defaultValue": false
+    },
+    {
+      "displayName": "text-color",
+      "type": "string",
+      "description": "辅助文字的颜色",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "texts",
+      "type": "array",
+      "description": "辅助文字数组",
+      "defaultValue": "['Extremely bad', 'Disappointed', 'Fair', 'Satisfied', 'Surprise']"
+    },
+    {
+      "displayName": "score-template",
+      "type": "string",
+      "description": "分数显示模板",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "clearable",
+      "type": "boolean",
+      "description": "是否可以重置值为 0",
+      "defaultValue": false
+    },
+    {
+      "displayName": "id",
+      "type": "string",
+      "description": "原生 id 属性",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "label",
+      "type": "string",
+      "description": "和 Rate 的 aria-label 属性保持一致",
+      "defaultValue": ""
+    }
+  ]
+  ,
+  "events": [
+    {
+      "displayName": "change",
+      "type": "Function",
+      "description": "分值改变时触发",
+      "defaultValue": "",
+      "tip": "(value: number) => void"
+    }
+  ],
+  "slots": [],
+  "methods": [
+    {
+      "displayName": "setCurrentValue",
+      "type": "Function",
+      "description": "设置当前值",
+      "tip": "(value: number) => void"
+    },
+    {
+      "displayName": "resetCurrentValue",
+      "type": "Function",
+      "description": "重置当前值",
+      "defaultValue": "",
+      "tip": "() => void"
+    }
+  ]
+  
+}

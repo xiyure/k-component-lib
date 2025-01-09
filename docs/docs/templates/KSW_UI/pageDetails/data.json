@@ -1,0 +1,71 @@
+{
+  "name": "",
+  "props": [
+    {
+      "displayName": "pageIcon",
+      "type": "string",
+      "description": "页面图标",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "pageTitle",
+      "type": "string",
+      "description": "页面标题",
+      "defaultValue": "标题"
+    },
+    {
+      "displayName": "pageDescriptions",
+      "type": "string",
+      "description": "页面标题提示信息",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "abstract",
+      "type": "array",
+      "description": "展示数据信息",
+      "defaultValue": "() => []"
+    },
+    {
+      "displayName": "showLine",
+      "type": "boolean",
+      "description": "展示数据信息下划线",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "direction",
+      "type": "string",
+      "description": "数据展示方向",
+      "defaultValue": "vertical"
+    },
+    {
+      "displayName": "useflex",
+      "type": "true",
+      "description": "是否使用flex布局",
+      "defaultValue": "true"
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "extra-head",
+      "description": "页面头部额外插槽"
+    },
+    {
+      "displayName": "head-title",
+      "description": "页面头部标题插槽"
+    },
+    {
+      "displayName": "head-toolbar",
+      "description": "页面头部工具栏插槽"
+    },
+    {
+      "displayName": "head-abstract",
+      "description": "页面信息数据插槽"
+    },
+    {
+      "displayName": "default",
+      "description": "页面默认插槽"
+    }
+  ],
+  "methods": []
+}

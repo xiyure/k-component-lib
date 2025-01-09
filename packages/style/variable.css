@@ -1,0 +1,916 @@
+:root {
+  /* 
+   * @基础调色盘🎨
+   */
+
+  /* slate */
+  --k-slate-50: #f8fafc;
+  --k-slate-100: #f1f5f9;
+  --k-slate-200: #e2e8f0;
+  --k-slate-300: #cbd5e1;
+  --k-slate-400: #94a3b8;
+  --k-slate-500: #64748b;
+  --k-slate-600: #475569;
+  --k-slate-700: #334155;
+  --k-slate-800: #1e293b;
+  --k-slate-900: #0f172a;
+  --k-slate-950: #020617;
+  /* slate-rgb */
+  --k-slate-50: rgb(248, 250, 252);
+  --k-slate-100: rgb(241, 245, 249);
+  --k-slate-200: rgb(226, 232, 240);
+  --k-slate-300: rgb(203, 213, 225);
+  --k-slate-400: rgb(148, 163, 184);
+  --k-slate-500: rgb(100, 116, 139);
+  --k-slate-600: rgb(71, 85, 105);
+  --k-slate-700: rgb(51, 65, 85);
+  --k-slate-800: rgb(30, 41, 59);
+  --k-slate-900: rgb(15, 23, 42);
+  --k-slate-950: rgb(2, 6, 23);
+  /* slate-rgb-value */
+  --k-slate-rgb-50: 248, 250, 252;
+  --k-slate-rgb-100: 241, 245, 249;
+  --k-slate-rgb-200: 226, 232, 240;
+  --k-slate-rgb-300: 203, 213, 225;
+  --k-slate-rgb-400: 148, 163, 184;
+  --k-slate-rgb-500: 100, 116, 139;
+  --k-slate-rgb-600: 71, 85, 105;
+  --k-slate-rgb-700: 51, 65, 85;
+  --k-slate-rgb-800: 30, 41, 59;
+  --k-slate-rgb-900: 15, 23, 42;
+  --k-slate-rgb-950: 2, 6, 23;
+
+  /* gray */
+  --k-gray-50: #f9fafb;
+  --k-gray-100: #f3f4f6;
+  --k-gray-200: #e5e7eb;
+  --k-gray-300: #d1d5db;
+  --k-gray-400: #9ca3af;
+  --k-gray-500: #6b7280;
+  --k-gray-600: #4b5563;
+  --k-gray-700: #374151;
+  --k-gray-800: #1f2937;
+  --k-gray-900: #111827;
+  --k-gray-950: #030712;
+  /* gray-rgb */
+  --k-gray-50: rgb(249, 250, 251);
+  --k-gray-100: rgb(243, 244, 246);
+  --k-gray-200: rgb(229, 231, 235);
+  --k-gray-300: rgb(209, 213, 219);
+  --k-gray-400: rgb(156, 163, 175);
+  --k-gray-500: rgb(107, 114, 128);
+  --k-gray-600: rgb(75, 85, 99);
+  --k-gray-700: rgb(55, 65, 79);
+  --k-gray-800: rgb(31, 41, 55);
+  --k-gray-900: rgb(17, 24, 39);
+  --k-gray-950: rgb(3, 7, 18);
+  /* gray-rgb-value */
+  --k-gray-rgb-50: 249, 250, 251;
+  --k-gray-rgb-100: 243, 244, 246;
+  --k-gray-rgb-200: 229, 231, 235;
+  --k-gray-rgb-300: 209, 213, 219;
+  --k-gray-rgb-400: 156, 163, 175;
+  --k-gray-rgb-500: 107, 114, 128;
+  --k-gray-rgb-600: 75, 85, 99;
+  --k-gray-rgb-700: 55, 65, 79;
+  --k-gray-rgb-800: 31, 41, 55;
+  --k-gray-rgb-900: 17, 24, 39;
+  --k-gray-rgb-950: 3, 7, 18;
+
+  /* zinc */
+  --k-zinc-50: #fafafa;
+  --k-zinc-100: #f4f4f5;
+  --k-zinc-200: #e4e4e7;
+  --k-zinc-300: #d4d4d8;
+  --k-zinc-400: #a1a1aa;
+  --k-zinc-500: #71717a;
+  --k-zinc-600: #52525b;
+  --k-zinc-700: #3f3f46;
+  --k-zinc-800: #27272a;
+  --k-zinc-900: #18181b;
+  --k-zinc-950: #09090b;
+  /* zinc-rgb */
+  --k-zinc-50: rgb(250, 250, 250);
+  --k-zinc-100: rgb(244, 244, 245);
+  --k-zinc-200: rgb(228, 228, 231);
+  --k-zinc-300: rgb(212, 212, 216);
+  --k-zinc-400: rgb(161, 161, 170);
+  --k-zinc-500: rgb(113, 113, 122);
+  --k-zinc-600: rgb(82, 82, 91);
+  --k-zinc-700: rgb(63, 63, 70);
+  --k-zinc-800: rgb(39, 39, 42);
+  --k-zinc-900: rgb(24, 24, 27);
+  --k-zinc-950: rgb(9, 9, 11);
+  /* zinc-rgb-value */
+  --k-zinc-rgb-50: 250, 250, 250;
+  --k-zinc-rgb-100: 244, 244, 245;
+  --k-zinc-rgb-200: 228, 228, 231;
+  --k-zinc-rgb-300: 212, 212, 216;
+  --k-zinc-rgb-400: 161, 161, 170;
+  --k-zinc-rgb-500: 113, 113, 122;
+  --k-zinc-rgb-600: 82, 82, 91;
+  --k-zinc-rgb-700: 63, 63, 70;
+  --k-zinc-rgb-800: 39, 39, 42;
+  --k-zinc-rgb-900: 24, 24, 27;
+  --k-zinc-rgb-950: 9, 9, 11;
+
+  /* neutral */
+  --k-neutral-50: #fafafa;
+  --k-neutral-100: #f5f5f5;
+  --k-neutral-200: #e5e5e5;
+  --k-neutral-300: #d4d4d4;
+  --k-neutral-400: #a3a3a3;
+  --k-neutral-500: #737373;
+  --k-neutral-600: #525252;
+  --k-neutral-700: #404040;
+  --k-neutral-800: #262626;
+  --k-neutral-900: #171717;
+  --k-neutral-950: #0a0a0a;
+  /* neutral-rgb */
+  --k-neutral-50: rgb(250, 250, 250);
+  --k-neutral-100: rgb(245, 245, 245);
+  --k-neutral-200: rgb(229, 229, 229);
+  --k-neutral-300: rgb(212, 212, 212);
+  --k-neutral-400: rgb(163, 163, 163);
+  --k-neutral-500: rgb(115, 115, 115);
+  --k-neutral-600: rgb(82, 82, 82);
+  --k-neutral-700: rgb(64, 64, 64);
+  --k-neutral-800: rgb(38, 38, 38);
+  --k-neutral-900: rgb(23, 23, 23);
+  --k-neutral-950: rgb(10, 10, 10);
+  /* neutral-rgb-value */
+  --k-neutral-rgb-50: 250, 250, 250;
+  --k-neutral-rgb-100: 245, 245, 245;
+  --k-neutral-rgb-200: 229, 229, 229;
+  --k-neutral-rgb-300: 212, 212, 212;
+  --k-neutral-rgb-400: 163, 163, 163;
+  --k-neutral-rgb-500: 115, 115, 115;
+  --k-neutral-rgb-600: 82, 82, 82;
+  --k-neutral-rgb-700: 64, 64, 64;
+  --k-neutral-rgb-800: 38, 38, 38;
+  --k-neutral-rgb-900: 23, 23, 23;
+  --k-neutral-rgb-950: 10, 10, 10;
+
+  /* stone */
+  --k-stone-50: #fafaf9;
+  --k-stone-100: #f5f5f4;
+  --k-stone-200: #e7e5e4;
+  --k-stone-300: #d6d3d1;
+  --k-stone-400: #a8a29e;
+  --k-stone-500: #78716c;
+  --k-stone-600: #57534e;
+  --k-stone-700: #44403c;
+  --k-stone-800: #292524;
+  --k-stone-900: #1c1917;
+  --k-stone-950: #0c0a09;
+  /* stone-rgb */
+  --k-stone-50: rgb(250, 250, 249);
+  --k-stone-100: rgb(245, 245, 244);
+  --k-stone-200: rgb(231, 229, 228);
+  --k-stone-300: rgb(214, 211, 209);
+  --k-stone-400: rgb(168, 162, 158);
+  --k-stone-500: rgb(120, 113, 108);
+  --k-stone-600: rgb(87, 83, 78);
+  --k-stone-700: rgb(68, 64, 60);
+  --k-stone-800: rgb(41, 37, 36);
+  --k-stone-900: rgb(28, 25, 23);
+  --k-stone-950: rgb(12, 10, 9);
+  /* stone-rgb-value */
+  --k-stone-rgb-50: 250, 250, 249;
+  --k-stone-rgb-100: 245, 245, 244;
+  --k-stone-rgb-200: 231, 229, 228;
+  --k-stone-rgb-300: 214, 211, 209;
+  --k-stone-rgb-400: 168, 162, 158;
+  --k-stone-rgb-500: 120, 113, 108;
+  --k-stone-rgb-600: 87, 83, 78;
+  --k-stone-rgb-700: 68, 64, 60;
+  --k-stone-rgb-800: 41, 37, 36;
+  --k-stone-rgb-900: 28, 25, 23;
+  --k-stone-rgb-950: 12, 10, 9;
+
+  /* red */
+  --k-red-50: #fef2f2;
+  --k-red-100: #fee2e2;
+  --k-red-200: #fecaca;
+  --k-red-300: #fca5a5;
+  --k-red-400: #f87171;
+  --k-red-500: #ef4444;
+  --k-red-600: #dc2626;
+  --k-red-700: #b91c1c;
+  --k-red-800: #991b1b;
+  --k-red-900: #7f1d1d;
+  --k-red-950: #450a0a;
+  /* red-rgb */
+  --k-red-50: rgb(254, 242, 242);
+  --k-red-100: rgb(254, 226, 226);
+  --k-red-200: rgb(254, 202, 170);
+  --k-red-300: rgb(252, 165, 165);
+  --k-red-400: rgb(248, 113, 113);
+  --k-red-500: rgb(239, 68, 68);
+  --k-red-600: rgb(220, 38, 38);
+  --k-red-700: rgb(185, 28, 28);
+  --k-red-800: rgb(153, 27, 27);
+  --k-red-900: rgb(127, 29, 29);
+  --k-red-950: rgb(69, 10, 10);
+  /* red-rgb-value */
+  --k-red-rgb-50: 254, 242, 242;
+  --k-red-rgb-100: 254, 226, 226;
+  --k-red-rgb-200: 254, 202, 170;
+  --k-red-rgb-300: 252, 165, 165;
+  --k-red-rgb-400: 248, 113, 113;
+  --k-red-rgb-500: 239, 68, 68;
+  --k-red-rgb-600: 220, 38, 38;
+  --k-red-rgb-700: 185, 28, 28;
+  --k-red-rgb-800: 153, 27, 27;
+  --k-red-rgb-900: 127, 29, 29;
+  --k-red-rgb-950: 69, 10, 10;
+
+  /* orange */
+  --k-orange-50: #fff7ed;
+  --k-orange-100: #ffedd5;
+  --k-orange-200: #fed7aa;
+  --k-orange-300: #fdba74;
+  --k-orange-400: #fb923c;
+  --k-orange-500: #f97316;
+  --k-orange-600: #ea580c;
+  --k-orange-700: #c2410c;
+  --k-orange-800: #9a3412;
+  --k-orange-900: #7c2d12;
+  --k-orange-950: #431407;
+  /* orange-rgb */
+  --k-orange-50: rgb(255, 247, 237);
+  --k-orange-100: rgb(255, 237, 213);
+  --k-orange-200: rgb(254, 215, 170);
+  --k-orange-300: rgb(253, 186, 116);
+  --k-orange-400: rgb(251, 146, 60);
+  --k-orange-500: rgb(249, 115, 22);
+  --k-orange-600: rgb(234, 88, 12);
+  --k-orange-700: rgb(194, 65, 12);
+  --k-orange-800: rgb(154, 52, 18);
+  --k-orange-900: rgb(124, 45, 18);
+  --k-orange-950: rgb(67, 20, 7);
+  /* orange-rgb-value */
+  --k-orange-rgb-50: 255, 247, 237;
+  --k-orange-rgb-100: 255, 237, 213;
+  --k-orange-rgb-200: 254, 215, 170;
+  --k-orange-rgb-300: 253, 186, 116;
+  --k-orange-rgb-400: 251, 146, 60;
+  --k-orange-rgb-500: 249, 115, 22;
+  --k-orange-rgb-600: 234, 88, 12;
+  --k-orange-rgb-700: 194, 65, 12;
+  --k-orange-rgb-800: 154, 52, 18;
+  --k-orange-rgb-900: 124, 45, 18;
+  --k-orange-rgb-950: 67, 20, 7;
+
+  /* amber */
+  --k-amber-50: #fffbeb;
+  --k-amber-100: #fef3c7;
+  --k-amber-200: #fde68a;
+  --k-amber-300: #fcd34d;
+  --k-amber-400: #fbbf24;
+  --k-amber-500: #f59e0b;
+  --k-amber-600: #d97706;
+  --k-amber-700: #b45309;
+  --k-amber-800: #92400e;
+  --k-amber-900: #78350f;
+  --k-amber-950: #451a03;
+  /* amber-rgb */
+  --k-amber-50: rgb(255, 251, 235);
+  --k-amber-100: rgb(254, 243, 199);
+  --k-amber-200: rgb(253, 230, 138);
+  --k-amber-300: rgb(252, 211, 77);
+  --k-amber-400: rgb(251, 191, 36);
+  --k-amber-500: rgb(245, 158, 11);
+  --k-amber-600: rgb(217, 119, 6);
+  --k-amber-700: rgb(180, 83, 9);
+  --k-amber-800: rgb(146, 64, 14);
+  --k-amber-900: rgb(120, 53, 15);
+  --k-amber-950: rgb(69, 26, 3);
+  /* amber-rgb-value */
+  --k-amber-rgb-50: 255, 251, 235;
+  --k-amber-rgb-100: 254, 243, 199;
+  --k-amber-rgb-200: 253, 230, 138;
+  --k-amber-rgb-300: 252, 211, 77;
+  --k-amber-rgb-400: 251, 191, 36;
+  --k-amber-rgb-500: 245, 158, 11;
+  --k-amber-rgb-600: 217, 119, 6;
+  --k-amber-rgb-700: 180, 83, 9;
+  --k-amber-rgb-800: 146, 64, 14;
+  --k-amber-rgb-900: 120, 53, 15;
+  --k-amber-rgb-950: 69, 26, 3;
+
+  /* yellow */
+  --k-yellow-50: #fefce8;
+  --k-yellow-100: #fef9c3;
+  --k-yellow-200: #fef08a;
+  --k-yellow-300: #fde047;
+  --k-yellow-400: #facc15;
+  --k-yellow-500: #eab308;
+  --k-yellow-600: #ca8a04;
+  --k-yellow-700: #a16207;
+  --k-yellow-800: #854d0e;
+  --k-yellow-900: #713f12;
+  --k-yellow-950: #422006;
+  /* yellow-rgb */
+  --k-yellow-50: rgb(254, 252, 232);
+  --k-yellow-100: rgb(254, 249, 195);
+  --k-yellow-200: rgb(254, 240, 138);
+  --k-yellow-300: rgb(253, 224, 71);
+  --k-yellow-400: rgb(250, 204, 21);
+  --k-yellow-500: rgb(234, 179, 8);
+  --k-yellow-600: rgb(202, 138, 4);
+  --k-yellow-700: rgb(161, 98, 7);
+  --k-yellow-800: rgb(133, 77, 14);
+  --k-yellow-900: rgb(113, 63, 18);
+  --k-yellow-950: rgb(66, 32, 6);
+  /* yellow-rgb-value */
+  --k-yellow-rgb-50: 254, 252, 232;
+  --k-yellow-rgb-100: 254, 249, 195;
+  --k-yellow-rgb-200: 254, 240, 138;
+  --k-yellow-rgb-300: 253, 224, 71;
+  --k-yellow-rgb-400: 250, 204, 21;
+  --k-yellow-rgb-500: 234, 179, 8;
+  --k-yellow-rgb-600: 202, 138, 4;
+  --k-yellow-rgb-700: 161, 98, 7;
+  --k-yellow-rgb-800: 133, 77, 14;
+  --k-yellow-rgb-900: 113, 63, 18;
+  --k-yellow-rgb-950: 66, 32, 6;
+
+  /* lime */
+  --k-lime-50: #f7fee7;
+  --k-lime-100: #ecfccb;
+  --k-lime-200: #d9f99d;
+  --k-lime-300: #bef264;
+  --k-lime-400: #a3e635;
+  --k-lime-500: #84cc16;
+  --k-lime-600: #65a30d;
+  --k-lime-700: #4d7c0f;
+  --k-lime-800: #3f6212;
+  --k-lime-900: #365314;
+  --k-lime-950: #1a2e05;
+  /* lime-rgb */
+  --k-lime-50: rgb(247, 254, 231);
+  --k-lime-100: rgb(236, 252, 203);
+  --k-lime-200: rgb(217, 249, 157);
+  --k-lime-300: rgb(190, 242, 100);
+  --k-lime-400: rgb(163, 230, 53);
+  --k-lime-500: rgb(132, 204, 22);
+  --k-lime-600: rgb(101, 163, 13);
+  --k-lime-700: rgb(77, 124, 15);
+  --k-lime-800: rgb(63, 98, 18);
+  --k-lime-900: rgb(54, 83, 20);
+  --k-lime-950: rgb(26, 46, 5);
+  /* lime-rgb-value */
+  --k-lime-rgb-50: 247, 254, 231;
+  --k-lime-rgb-100: 236, 252, 203;
+  --k-lime-rgb-200: 217, 249, 157;
+  --k-lime-rgb-300: 190, 242, 100;
+  --k-lime-rgb-400: 163, 230, 53;
+  --k-lime-rgb-500: 132, 204, 22;
+  --k-lime-rgb-600: 101, 163, 13;
+  --k-lime-rgb-700: 77, 124, 15;
+  --k-lime-rgb-800: 63, 98, 18;
+  --k-lime-rgb-900: 54, 83, 20;
+  --k-lime-rgb-950: 26, 46, 5;
+
+  /* green */
+  --k-green-50: #f0fdf4;
+  --k-green-100: #dcfce7;
+  --k-green-200: #bbf7d0;
+  --k-green-300: #86efac;
+  --k-green-400: #4ade80;
+  --k-green-500: #22c55e;
+  --k-green-600: #16a34a;
+  --k-green-700: #15803d;
+  --k-green-800: #166534;
+  --k-green-900: #14532d;
+  --k-green-950: #052e16;
+  /* green-rgb */
+  --k-green-50: rgb(240, 253, 244);
+  --k-green-100: rgb(220, 252, 231);
+  --k-green-200: rgb(191, 247, 208);
+  --k-green-300: rgb(134, 239, 172);
+  --k-green-400: rgb(74, 222, 128);
+  --k-green-500: rgb(34, 197, 94);
+  --k-green-600: rgb(22, 163, 74);
+  --k-green-700: rgb(21, 128, 61);
+  --k-green-800: rgb(22, 101, 52);
+  --k-green-900: rgb(20, 83, 45);
+  --k-green-950: rgb(5, 46, 22);
+  /* green-rgb-value */
+  --k-green-rgb-50: 240, 253, 244;
+  --k-green-rgb-100: 220, 252, 231;
+  --k-green-rgb-200: 191, 247, 208;
+  --k-green-rgb-300: 134, 239, 172;
+  --k-green-rgb-400: 74, 222, 128;
+  --k-green-rgb-500: 34, 197, 94;
+  --k-green-rgb-600: 22, 163, 74;
+  --k-green-rgb-700: 21, 128, 61;
+  --k-green-rgb-800: 22, 101, 52;
+  --k-green-rgb-900: 20, 83, 45;
+  --k-green-rgb-950: 5, 46, 22;
+
+  /* emerald */
+  --k-emerald-50: #ecfdf5;
+  --k-emerald-100: #d1fae5;
+  --k-emerald-200: #a7f3d0;
+  --k-emerald-300: #6ee7b7;
+  --k-emerald-400: #34d399;
+  --k-emerald-500: #10b981;
+  --k-emerald-600: #059669;
+  --k-emerald-700: #047857;
+  --k-emerald-800: #065f46;
+  --k-emerald-900: #064e3b;
+  --k-emerald-950: #022c22;
+  /* emerald-rgb */
+  --k-emerald-50: rgb(236, 253, 245);
+  --k-emerald-100: rgb(209, 250, 229);
+  --k-emerald-200: rgb(167, 243, 208);
+  --k-emerald-300: rgb(110, 231, 183);
+  --k-emerald-400: rgb(52, 211, 153);
+  --k-emerald-500: rgb(16, 185, 129);
+  --k-emerald-600: rgb(5, 150, 105);
+  --k-emerald-700: rgb(4, 120, 87);
+  --k-emerald-800: rgb(6, 95, 70);
+  --k-emerald-900: rgb(6, 78, 59);
+  --k-emerald-950: rgb(2, 44, 34);
+  /* emerald-rgb-value */
+  --k-emerald-rgb-50: 236, 253, 245;
+  --k-emerald-rgb-100: 209, 250, 229;
+  --k-emerald-rgb-200: 167, 243, 208;
+  --k-emerald-rgb-300: 110, 231, 183;
+  --k-emerald-rgb-400: 52, 211, 153;
+  --k-emerald-rgb-500: 16, 185, 129;
+  --k-emerald-rgb-600: 5, 150, 105;
+  --k-emerald-rgb-700: 4, 120, 87;
+  --k-emerald-rgb-800: 6, 95, 70;
+  --k-emerald-rgb-900: 6, 78, 59;
+  --k-emerald-rgb-950: 2, 44, 34;
+
+  /* teal */
+  --k-teal-50: #f0fdfa;
+  --k-teal-100: #ccfbf1;
+  --k-teal-200: #99f6e4;
+  --k-teal-300: #5eead4;
+  --k-teal-400: #2dd4bf;
+  --k-teal-500: #14b8a6;
+  --k-teal-600: #0d9488;
+  --k-teal-700: #0f766e;
+  --k-teal-800: #115e59;
+  --k-teal-900: #134e4a;
+  --k-teal-950: #042f2e;
+  /* teal-rgb */
+  --k-teal-50: rgb(240, 253, 250);
+  --k-teal-100: rgb(204, 251, 241);
+  --k-teal-200: rgb(153, 246, 228);
+  --k-teal-300: rgb(94, 234, 212);
+  --k-teal-400: rgb(45, 212, 191);
+  --k-teal-500: rgb(20, 184, 166);
+  --k-teal-600: rgb(13, 148, 136);
+  --k-teal-700: rgb(15, 118, 110);
+  --k-teal-800: rgb(17, 94, 89);
+  --k-teal-900: rgb(19, 78, 74);
+  --k-teal-950: rgb(4, 47, 46);
+  /* teal-rgb-value */
+  --k-teal-rgb-50: 240, 253, 250;
+  --k-teal-rgb-100: 204, 251, 241;
+  --k-teal-rgb-200: 153, 246, 228;
+  --k-teal-rgb-300: 94, 234, 212;
+  --k-teal-rgb-400: 45, 212, 191;
+  --k-teal-rgb-500: 20, 184, 166;
+  --k-teal-rgb-600: 13, 148, 136;
+  --k-teal-rgb-700: 15, 118, 110;
+  --k-teal-rgb-800: 17, 94, 89;
+  --k-teal-rgb-900: 19, 78, 74;
+  --k-teal-rgb-950: 4, 47, 46;
+
+  /* cyan */
+  --k-cyan-50: #ecfeff;
+  --k-cyan-100: #cffafe;
+  --k-cyan-200: #a5f3fc;
+  --k-cyan-300: #67e8f9;
+  --k-cyan-400: #22d3ee;
+  --k-cyan-500: #06b6d4;
+  --k-cyan-600: #0891b2;
+  --k-cyan-700: #0e7490;
+  --k-cyan-800: #155e75;
+  --k-cyan-900: #164e63;
+  --k-cyan-950: #083344;
+  /* cyan-rgb */
+  --k-cyan-50: rgb(236, 254, 255);
+  --k-cyan-100: rgb(207, 250, 254);
+  --k-cyan-200: rgb(165, 243, 252);
+  --k-cyan-300: rgb(103, 232, 249);
+  --k-cyan-400: rgb(34, 211, 238);
+  --k-cyan-500: rgb(6, 182, 212);
+  --k-cyan-600: rgb(8, 145, 178);
+  --k-cyan-700: rgb(14, 116, 144);
+  --k-cyan-800: rgb(21, 94, 101);
+  --k-cyan-900: rgb(22, 78, 83);
+  --k-cyan-950: rgb(8, 51, 68);
+  /* cyan-rgb-value */
+  --k-cyan-rgb-50: 236, 254, 255;
+  --k-cyan-rgb-100: 207, 250, 254;
+  --k-cyan-rgb-200: 165, 243, 252;
+  --k-cyan-rgb-300: 103, 232, 249;
+  --k-cyan-rgb-400: 34, 211, 238;
+  --k-cyan-rgb-500: 6, 182, 212;
+  --k-cyan-rgb-600: 8, 145, 178;
+  --k-cyan-rgb-700: 14, 116, 144;
+  --k-cyan-rgb-800: 21, 94, 101;
+  --k-cyan-rgb-900: 22, 78, 83;
+  --k-cyan-rgb-950: 8, 51, 68;
+
+  /* sky */
+  --k-sky-50: #f0f9ff;
+  --k-sky-100: #e0f2fe;
+  --k-sky-200: #bae6fd;
+  --k-sky-300: #7dd3fc;
+  --k-sky-400: #38bdf8;
+  --k-sky-500: #0ea5e9;
+  --k-sky-600: #0284c7;
+  --k-sky-700: #0369a1;
+  --k-sky-800: #075985;
+  --k-sky-900: #0c4a6e;
+  --k-sky-950: #082f49;
+  /* sky-rgb */
+  --k-sky-50: rgb(240, 249, 255);
+  --k-sky-100: rgb(224, 242, 254);
+  --k-sky-200: rgb(186, 230, 253);
+  --k-sky-300: rgb(125, 211, 252);
+  --k-sky-400: rgb(56, 189, 248);
+  --k-sky-500: rgb(14, 165, 233);
+  --k-sky-600: rgb(2, 132, 199);
+  --k-sky-700: rgb(3, 105, 161);
+  --k-sky-800: rgb(7, 89, 133);
+  --k-sky-900: rgb(12, 74, 110);
+  --k-sky-950: rgb(8, 47, 73);
+  /* sky-rgb-value */
+  --k-sky-rgb-50: 240, 249, 255;
+  --k-sky-rgb-100: 224, 242, 254;
+  --k-sky-rgb-200: 186, 230, 253;
+  --k-sky-rgb-300: 125, 211, 252;
+  --k-sky-rgb-400: 56, 189, 248;
+  --k-sky-rgb-500: 14, 165, 233;
+  --k-sky-rgb-600: 2, 132, 199;
+  --k-sky-rgb-700: 3, 105, 161;
+  --k-sky-rgb-800: 7, 89, 133;
+  --k-sky-rgb-900: 12, 74, 110;
+  --k-sky-rgb-950: 8, 47, 73;
+
+  /* blue */
+  --k-blue-50: #eff6ff;
+  --k-blue-100: #dbeafe;
+  --k-blue-200: #bfdbfe;
+  --k-blue-300: #93c5fd;
+  --k-blue-400: #60a5fa;
+  --k-blue-500: #3b82f6;
+  --k-blue-600: #2563eb;
+  --k-blue-700: #1d4ed8;
+  --k-blue-800: #1e40af;
+  --k-blue-900: #1e3a8a;
+  --k-blue-950: #172554;
+  /* blue-rgb */
+  --k-blue-50: rgb(239, 246, 255);
+  --k-blue-100: rgb(219, 234, 254);
+  --k-blue-200: rgb(191, 219, 254);
+  --k-blue-300: rgb(147, 197, 253);
+  --k-blue-400: rgb(96, 165, 250);
+  --k-blue-500: rgb(59, 130, 246);
+  --k-blue-600: rgb(37, 99, 235);
+  --k-blue-700: rgb(29, 77, 216);
+  --k-blue-800: rgb(30, 64, 175);
+  --k-blue-900: rgb(30, 58, 160);
+  --k-blue-950: rgb(23, 37, 84);
+  /* blue-rgb-value */
+  --k-blue-rgb-50: 239, 246, 255;
+  --k-blue-rgb-100: 219, 234, 254;
+  --k-blue-rgb-200: 191, 219, 254;
+  --k-blue-rgb-300: 147, 197, 253;
+  --k-blue-rgb-400: 96, 165, 250;
+  --k-blue-rgb-500: 59, 130, 246;
+  --k-blue-rgb-600: 37, 99, 235;
+  --k-blue-rgb-700: 29, 77, 216;
+  --k-blue-rgb-800: 30, 64, 175;
+  --k-blue-rgb-900: 30, 58, 160;
+  --k-blue-rgb-950: 23, 37, 84;
+
+  /* indigo */
+  --k-indigo-50: #eef2ff;
+  --k-indigo-100: #e0e7ff;
+  --k-indigo-200: #c7d2fe;
+  --k-indigo-300: #a5b4fc;
+  --k-indigo-400: #818cf8;
+  --k-indigo-500: #6366f1;
+  --k-indigo-600: #4f46e5;
+  --k-indigo-700: #4338ca;
+  --k-indigo-800: #3730a3;
+  --k-indigo-900: #312e81;
+  --k-indigo-950: #1e1b4b;
+  /* indigo-rgb */
+  --k-indigo-50: rgb(238, 242, 255);
+  --k-indigo-100: rgb(224, 231, 255);
+  --k-indigo-200: rgb(199, 210, 254);
+  --k-indigo-300: rgb(165, 180, 252);
+  --k-indigo-400: rgb(129, 140, 248);
+  --k-indigo-500: rgb(99, 102, 241);
+  --k-indigo-600: rgb(79, 70, 229);
+  --k-indigo-700: rgb(67, 56, 202);
+  --k-indigo-800: rgb(55, 48, 163);
+  --k-indigo-900: rgb(49, 46, 129);
+  --k-indigo-950: rgb(30, 31, 75);
+  /* indigo-rgb-value */
+  --k-indigo-rgb-50: 238, 242, 255;
+  --k-indigo-rgb-100: 224, 231, 255;
+  --k-indigo-rgb-200: 199, 210, 254;
+  --k-indigo-rgb-300: 165, 180, 252;
+  --k-indigo-rgb-400: 129, 140, 248;
+  --k-indigo-rgb-500: 99, 102, 241;
+  --k-indigo-rgb-600: 79, 70, 229;
+  --k-indigo-rgb-700: 67, 56, 202;
+  --k-indigo-rgb-800: 55, 48, 163;
+  --k-indigo-rgb-900: 49, 46, 129;
+  --k-indigo-rgb-950: 30, 31, 75;
+
+  /* violet */
+  --k-violet-50: #f5f3ff;
+  --k-violet-100: #ede9fe;
+  --k-violet-200: #ddd6fe;
+  --k-violet-300: #c4b5fd;
+  --k-violet-400: #a78bfa;
+  --k-violet-500: #8b5cf6;
+  --k-violet-600: #7c3aed;
+  --k-violet-700: #6d28d9;
+  --k-violet-800: #5b21b6;
+  --k-violet-900: #4c1d95;
+  --k-violet-950: #2e1065;
+  /* violet-rgb */
+  --k-violet-50: rgb(245, 243, 255);
+  --k-violet-100: rgb(237, 233, 254);
+  --k-violet-200: rgb(221, 214, 254);
+  --k-violet-300: rgb(196, 181, 253);
+  --k-violet-400: rgb(167, 139, 250);
+  --k-violet-500: rgb(139, 92, 246);
+  --k-violet-600: rgb(124, 58, 237);
+  --k-violet-700: rgb(109, 40, 217);
+  --k-violet-800: rgb(91, 33, 182);
+  --k-violet-900: rgb(76, 29, 149);
+  --k-violet-950: rgb(46, 16, 101);
+  /* violet-rgb-value */
+  --k-violet-rgb-50: 245, 243, 255;
+  --k-violet-rgb-100: 237, 233, 254;
+  --k-violet-rgb-200: 221, 214, 254;
+  --k-violet-rgb-300: 196, 181, 253;
+  --k-violet-rgb-400: 167, 139, 250;
+  --k-violet-rgb-500: 139, 92, 246;
+  --k-violet-rgb-600: 124, 58, 237;
+  --k-violet-rgb-700: 109, 40, 217;
+  --k-violet-rgb-800: 91, 33, 182;
+  --k-violet-rgb-900: 76, 29, 149;
+  --k-violet-rgb-950: 46, 16, 101;
+
+  /* purple */
+  --k-purple-50: #faf5ff;
+  --k-purple-100: #f3e8ff;
+  --k-purple-200: #e9d5ff;
+  --k-purple-300: #d8b4fe;
+  --k-purple-400: #c084fc;
+  --k-purple-500: #a855f7;
+  --k-purple-600: #9333ea;
+  --k-purple-700: #7e22ce;
+  --k-purple-800: #6b21a8;
+  --k-purple-900: #581c87;
+  --k-purple-950: #3b0764;
+  /* purple-rgb */
+  --k-purple-50: rgb(250, 245, 255);
+  --k-purple-100: rgb(243, 232, 255);
+  --k-purple-200: rgb(233, 213, 254);
+  --k-purple-300: rgb(216, 180, 254);
+  --k-purple-400: rgb(192, 132, 252);
+  --k-purple-500: rgb(168, 85, 247);
+  --k-purple-600: rgb(147, 51, 234);
+  --k-purple-700: rgb(126, 34, 206);
+  --k-purple-800: rgb(107, 33, 168);
+  --k-purple-900: rgb(88, 28, 135);
+  --k-purple-950: rgb(59, 7, 100);
+  /* purple-rgb-value */
+  --k-purple-rgb-50: 250, 245, 255;
+  --k-purple-rgb-100: 243, 232, 255;
+  --k-purple-rgb-200: 233, 213, 254;
+  --k-purple-rgb-300: 216, 180, 254;
+  --k-purple-rgb-400: 192, 132, 252;
+  --k-purple-rgb-500: 168, 85, 247;
+  --k-purple-rgb-600: 147, 51, 234;
+  --k-purple-rgb-700: 126, 34, 206;
+  --k-purple-rgb-800: 107, 33, 168;
+  --k-purple-rgb-900: 88, 28, 135;
+  --k-purple-rgb-950: 59, 7, 100;
+
+  /* fuchsia */
+  --k-fuchsia-50: #fdf4ff;
+  --k-fuchsia-100: #fae8ff;
+  --k-fuchsia-200: #f5d0fe;
+  --k-fuchsia-300: #f0abfc;
+  --k-fuchsia-400: #e879f9;
+  --k-fuchsia-500: #d946ef;
+  --k-fuchsia-600: #c026d3;
+  --k-fuchsia-700: #a21caf;
+  --k-fuchsia-800: #86198f;
+  --k-fuchsia-900: #701a75;
+  --k-fuchsia-950: #4a044e;
+  /* fuchsia-rgb */
+  --k-fuchsia-50: rgb(253, 244, 255);
+  --k-fuchsia-100: rgb(250, 232, 255);
+  --k-fuchsia-200: rgb(245, 208, 254);
+  --k-fuchsia-300: rgb(240, 171, 252);
+  --k-fuchsia-400: rgb(232, 121, 249);
+  --k-fuchsia-500: rgb(217, 70, 239);
+  --k-fuchsia-600: rgb(192, 38, 211);
+  --k-fuchsia-700: rgb(162, 26, 175);
+  --k-fuchsia-800: rgb(134, 25, 143);
+  --k-fuchsia-900: rgb(112, 22, 117);
+  --k-fuchsia-950: rgb(74, 4, 78);
+  /* fuchsia-rgb-value */
+  --k-fuchsia-rgb-50: 253, 244, 255;
+  --k-fuchsia-rgb-100: 250, 232, 255;
+  --k-fuchsia-rgb-200: 245, 208, 254;
+  --k-fuchsia-rgb-300: 240, 171, 252;
+  --k-fuchsia-rgb-400: 232, 121, 249;
+  --k-fuchsia-rgb-500: 217, 70, 239;
+  --k-fuchsia-rgb-600: 192, 38, 211;
+  --k-fuchsia-rgb-700: 162, 26, 175;
+  --k-fuchsia-rgb-800: 134, 25, 143;
+  --k-fuchsia-rgb-900: 112, 22, 117;
+  --k-fuchsia-rgb-950: 74, 4, 78;
+
+  /* pink */
+  --k-pink-50: #fdf2f8;
+  --k-pink-100: #fce7f3;
+  --k-pink-200: #fbcfe8;
+  --k-pink-300: #f9a8d4;
+  --k-pink-400: #f472b6;
+  --k-pink-500: #ec4899;
+  --k-pink-600: #db2777;
+  --k-pink-700: #be185d;
+  --k-pink-800: #9d174d;
+  --k-pink-900: #831843;
+  --k-pink-950: #500724;
+  /* pink-rgb */
+  --k-pink-50: rgb(253, 242, 248);
+  --k-pink-100: rgb(252, 231, 243);
+  --k-pink-200: rgb(251, 207, 232);
+  --k-pink-300: rgb(249, 168, 212);
+  --k-pink-400: rgb(244, 114, 182);
+  --k-pink-500: rgb(236, 72, 153);
+  --k-pink-600: rgb(219, 39, 119);
+  --k-pink-700: rgb(190, 24, 93);
+  --k-pink-800: rgb(157, 23, 77);
+  --k-pink-900: rgb(131, 24, 67);
+  --k-pink-950: rgb(80, 7, 36);
+  /* pink-rgb-value */
+  --k-pink-rgb-50: 253, 242, 248;
+  --k-pink-rgb-100: 252, 231, 243;
+  --k-pink-rgb-200: 251, 207, 232;
+  --k-pink-rgb-300: 249, 168, 212;
+  --k-pink-rgb-400: 244, 114, 182;
+  --k-pink-rgb-500: 236, 72, 153;
+  --k-pink-rgb-600: 219, 39, 119;
+  --k-pink-rgb-700: 190, 24, 93;
+  --k-pink-rgb-800: 157, 23, 77;
+  --k-pink-rgb-900: 131, 24, 67;
+  --k-pink-rgb-950: 80, 7, 36;
+
+  /* rose */
+  --k-rose-50: #fff1f2;
+  --k-rose-100: #ffe4e6;
+  --k-rose-200: #fecdd3;
+  --k-rose-300: #fda4af;
+  --k-rose-400: #fb7185;
+  --k-rose-500: #f43f5e;
+  --k-rose-600: #e11d48;
+  --k-rose-700: #be123c;
+  --k-rose-800: #9f1239;
+  --k-rose-900: #881337;
+  --k-rose-950: #4c0519;
+  /* rose-rgb */
+  --k-rose-50: rgb(255, 241, 242);
+  --k-rose-100: rgb(255, 228, 230);
+  --k-rose-200: rgb(254, 205, 211);
+  --k-rose-300: rgb(253, 164, 175);
+  --k-rose-400: rgb(251, 113, 133);
+  --k-rose-500: rgb(244, 63, 94);
+  --k-rose-600: rgb(225, 29, 72);
+  --k-rose-700: rgb(190, 18, 60);
+  --k-rose-800: rgb(159, 17, 57);
+  --k-rose-900: rgb(136, 19, 55);
+  --k-rose-950: rgb(76, 5, 25);
+  /* rose-rgb-value */
+  --k-rose-rgb-50: 255, 241, 242;
+  --k-rose-rgb-100: 255, 228, 230;
+  --k-rose-rgb-200: 254, 205, 211;
+  --k-rose-rgb-300: 253, 164, 175;
+  --k-rose-rgb-400: 251, 113, 133;
+  --k-rose-rgb-500: 244, 63, 94;
+  --k-rose-rgb-600: 225, 29, 72;
+  --k-rose-rgb-700: 190, 18, 60;
+  --k-rose-rgb-800: 159, 17, 57;
+  --k-rose-rgb-900: 136, 19, 55;
+  --k-rose-rgb-950: 76, 5, 25;
+
+  /* 
+   * 基础间距 spacing 📏
+   */
+  --k-spacing-none: 0;
+  --k-spacing-px: 1px; /* 1px */
+  --k-spacing-2px: 2px; /* 2px */
+  --k-spacing-1: 0.25rem; /* 4px */
+  --k-spacing-2: 0.5rem;
+  --k-spacing-3: 0.75rem;
+  --k-spacing-4: 1rem;
+  --k-spacing-5: 1.25rem;
+  --k-spacing-6: 1.5rem;
+  --k-spacing-8: 2rem;
+  --k-spacing-10: 2.5rem;
+  --k-spacing-12: 3rem;
+  --k-spacing-16: 4rem;
+  --k-spacing-20: 5rem;
+  --k-spacing-24: 6rem;
+  --k-spacing-32: 8rem;
+  --k-spacing-40: 10rem;
+  --k-spacing-48: 12rem;
+  --k-spacing-56: 14rem;
+  --k-spacing-64: 16rem;
+  --k-spacing-80: 20rem;
+
+  /* 
+   * 基础 size 📏
+   */
+  --k-size-none: 0;
+  --k-size-px: 1px; /* 1px */
+  --k-size-2px: 2px; /* 2px */
+  --k-size-1: 0.25rem; /* 4px */
+  --k-size-2: 0.5rem;
+  --k-size-3: 0.75rem;
+  --k-size-4: 1rem;
+  --k-size-5: 1.25rem;
+  --k-size-6: 1.5rem;
+  --k-size-8: 2rem;
+  --k-size-10: 2.5rem;
+  --k-size-12: 3rem;
+  --k-size-16: 4rem;
+  --k-size-20: 5rem;
+  --k-size-24: 6rem;
+  --k-size-32: 8rem;
+  --k-size-40: 10rem;
+  --k-size-48: 12rem;
+  --k-size-56: 14rem;
+  --k-size-64: 16rem;
+  --k-size-80: 20rem;
+
+  /* 
+   * 基础圆角 borderRadius 🍪
+   */
+
+  --k-rounded-none: 0;
+  --k-rounded-sm: 0.125rem;
+  --k-rounded-base: 0.25rem;
+  --k-rounded-lg: 0.5rem;
+  --k-rounded-xl: 0.75rem;
+  --k-rounded-2xl: 1rem;
+  --k-rounded-3xl: 1.5rem;
+  --k-rounded-full: 9999px;
+
+  /* 
+   * 字体size  fontSize 🅰🅱
+   * 行高 lineHeight
+   */
+  --k-font-xs: 0.625rem;
+  --k-font-xs-line: 0.875rem;
+  --k-font-sm: 0.75rem;
+  --k-font-sm-line: 1rem;
+  --k-font-base: 0.875rem;
+  --k-font-base-line: 1.25rem;
+  --k-font-lg: 1rem;
+  --k-font-lg-line: 1.5rem;
+  --k-font-xl: 1.125rem;
+  --k-font-xl-line: 1.75rem;
+  --k-font-2xl: 1.25rem;
+  --k-font-2xl-line: 1.75rem;
+  --k-font-3xl: 1.5rem;
+  --k-font-3xl-line: 2rem;
+  --k-font-4xl: 1.75rem;
+  --k-font-4xl-line: 2.25rem;
+
+  /* 
+   * 基础阴影 👻
+   */
+  --k-shadow-none: none;
+  --k-shadow-sm: 0 1px 2px 0 rgb(0, 0, 0, 0.05);
+  --k-shadow-base: 0 1px 3px 0 rgb(0, 0, 0, 0.1), 0 1px 2px -1px rgb(0, 0, 0, 0.1);
+  --k-shadow-lg: 0 10px 15px -3px rgb(0, 0, 0, 0.1), 0 4px 6px -4px rgb(0, 0, 0, 0.1);
+  --k-shadow-xl: 0 20px 25px -5px rgb(0, 0, 0, 0.1), 0 8px 10px -6px rgb(0, 0, 0, 0.1);
+  --k-shadow-2xl: 0 25px 50px -12px rgb(0, 0, 0, 0.25);
+  --k-shadow-inner: inset inset 0 2px 4px 0 rgb(0, 0, 0, 0.05);
+
+  /* ---------------------------------------------------------------------------------------- */
+}

@@ -1,0 +1,362 @@
+@import '../../style/variable.css';
+@import '../../style/general.less';
+@import '../../style/global.less';
+
+// 类选择器方案
+.k-tabs {
+  --icon-size: 1rem;
+  --icon-skew: 0.625rem;
+  --icon-Space: 2rem;
+  --more-width: 2rem;
+  --left-layout-width: 2rem;
+  --plane-max-width: 4rem;
+}
+.k-tabs {
+  --icon-size: 1rem;
+  --icon-skew: 0.625rem;
+  --icon-Space: 2rem;
+
+  position: relative;
+
+  .el-tabs__header {
+    .el-tabs__nav-wrap {
+      &::after {
+        background-color: var(--k-gray-200);
+      }
+      &.is-top,
+      &.is-bottom {
+        padding: 0;
+        padding-right: 16px;
+      }
+      &.is-left,
+      &.is-right {
+        padding-top: 2.5rem;
+        padding-bottom: 0;
+      }
+      .el-tabs__nav-scroll {
+        .el-tabs__nav {
+          .el-tabs__active-bar {
+            background-color: var(--k-theme-primary);
+          }
+          .el-tabs__item {
+            max-width: 14rem;
+            // padding-left: 1rem;
+            // padding-right: 1rem;
+            padding: 0 1rem;
+
+            &.is-top {
+              &:nth-child(2) {
+                padding-left: 0;
+              }
+            }
+
+            color: var(--k-theme-text--normal);
+
+            .el-tooltip__trigger {
+              .text-base();
+              display: inline-block;
+              width: 100%;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              gap: 0.25rem;
+
+              padding: 0 0.75rem;
+
+              transition: all var(--el-transition-duration) var(--el-transition-function-ease-in-out-bezier);
+
+              &.k-tab-item-closeable {
+                padding-right: 0;
+              }
+
+              // span:first-child {
+              //   padding-left: 1rem;
+              // }
+              // span:last-child:not(:first-child) {
+              //   padding-right: 1rem;
+              //   display: inline-block;
+              //   flex: 1;
+              //   overflow: hidden;
+              //   text-overflow: ellipsis;
+              //   white-space: nowrap;
+              // }
+              span + span {
+                margin-left: 0.25rem;
+              }
+              // &.k-tab-item-closeable {
+              //   padding-right: 0;
+              // }
+
+              // &:hover {
+              //   color: var(--k-theme-primary-400);
+              // }
+            }
+
+            .el-icon.is-icon-close {
+              margin-left: 0.25rem;
+              margin-right: 0.75rem;
+              // padding-right: 1rem;
+              flex-shrink: 1;
+
+              &:hover {
+                background: transparent !important;
+                color: var(--k-theme-primary) !important;
+              }
+            }
+
+            &:hover:not(.is-disabled, .is-active) {
+              color: var(--k-theme-primary-400);
+            }
+            &.is-active {
+              color: var(--k-theme-primary);
+            }
+          }
+          // .el-tabs__item.is-left {
+          //   width: calc(var(--plane-max-width) + 2rem);
+          // }
+          // .el-tabs__item.is-closable {
+          //   position: relative;
+
+          //   .el-icon.is-icon-close {
+          //     width: var(--icon-size);
+          //     height: var(--icon-size);
+          //     &:hover {
+          //       background: unset;
+          //       color: unset;
+          //       border-radius: unset;
+
+          //       background: var(--k-blue-100);
+          //       border-radius: var(--k-rounded-full);
+          //     }
+          //   }
+          // }
+        }
+      }
+    }
+    &.el-tabs__header-vertical.is-left {
+      .el-tabs__nav-wrap.is-left {
+        padding-top: 0;
+        .el-tabs__nav-scroll {
+          .el-tabs__nav.is-left {
+            .el-tabs__item.is-left {
+              padding-right: 0.5rem;
+            }
+          }
+        }
+      }
+    }
+  }
+  .el-tabs__content {
+    position: unset;
+    .k-tabs-more {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+      position: absolute;
+      width: var(--more-width);
+      height: 2.5rem;
+      background-color: #fff;
+      z-index: 3;
+      cursor: pointer;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: calc(var(--more-width) / 2 * -1);
+        width: calc(var(--more-width) / 2);
+        height: 100%;
+        background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.05));
+        pointer-events: none;
+      }
+      &.tab-left-layout {
+        top: 0;
+        left: 0;
+        width: calc(var(--plane-max-width) + 2rem);
+
+        border-bottom: unset;
+
+        border-right: 2px solid #e4e7ed;
+
+        &::after {
+          background: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.05));
+
+          left: 0;
+          height: calc(var(--more-width) / 2);
+          width: calc(var(--plane-max-width) + 2rem);
+          top: 2.5rem;
+        }
+      }
+      &.tab-right-layout {
+        top: 0;
+        right: 0;
+        width: calc(var(--plane-max-width) + 2rem);
+        border-bottom: unset;
+
+        &::after {
+          background: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.05));
+
+          right: 0;
+          height: calc(var(--more-width) / 2);
+          width: calc(var(--plane-max-width) + 2rem);
+          top: 2.5rem;
+        }
+      }
+      &.tab-top-layout {
+        top: 0;
+        right: var(--more-width);
+      }
+      &.tab-bottom-layout {
+        bottom: 0;
+        right: var(--more-width);
+      }
+      .k-dropdown {
+        width: 100%;
+        height: 100%;
+        .el-tooltip__trigger {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+  }
+
+  // 左侧布局
+  &.el-tabs--left {
+    .el-tabs__content {
+      .k-tabs-more.tab-left-layout {
+        display: none;
+      }
+    }
+  }
+
+  // 卡片风格
+  &.el-tabs--card {
+    height: 100%;
+    .el-tabs__header {
+      border: unset;
+      .el-tabs__nav-wrap {
+        border: unset;
+        border-top-left-radius: var(--k-rounded-base);
+        border-top-right-radius: var(--k-rounded-base);
+        box-shadow:
+          inset 0 -1px 0px 0px var(--k-gray-200),
+          inset 1px 0 0 var(--k-gray-200),
+          inset -1px 0 0 var(--k-gray-200);
+        &::after {
+          background-color: var(--k-gray-200);
+        }
+        &.is-top,
+        &.is-bottom {
+          padding: 0;
+        }
+        &.is-left,
+        &.is-right {
+          padding-top: 2.5rem;
+          padding-bottom: 0;
+        }
+        .el-tabs__nav-scroll {
+          border-top-left-radius: var(--k-rounded-base);
+          .el-tabs__nav {
+            border: unset;
+            .el-tabs__active-bar {
+              background-color: var(--k-theme-primary);
+            }
+            .el-tabs__item {
+              max-width: 14rem;
+              padding: 0 1rem;
+              display: flex;
+              width: fit-content;
+
+              color: var(--k-theme-text--normal);
+              border: 1px solid var(--k-gray-200);
+
+              &:first-child {
+                border-top-left-radius: var(--k-rounded-base);
+              }
+              &:last-child {
+                border-top-right-radius: var(--k-rounded-base);
+              }
+
+              & + .el-tabs__item {
+                border-left-color: #fff;
+              }
+
+              &.is-top {
+                // 用来屏蔽掉普通选项卡的样式
+                &:nth-child(2) {
+                  padding-left: 1rem;
+                  // background: red;
+                }
+                &.is-active {
+                  // border: unset;
+                  border-bottom: 1px solid #fff;
+                  box-shadow: inset 0 -1px 0 #fff;
+                }
+              }
+
+              .el-tooltip__trigger {
+                padding: 0;
+                // margin-right: 0.25rem;
+                // background: blue;
+                width: unset;
+                flex: unset;
+                // flex-shrink: 0;
+              }
+              .el-icon.is-icon-close {
+                // width: 1rem;
+                margin: 0;
+                flex-shrink: 0;
+              }
+            }
+          }
+        }
+      }
+    }
+    .el-tabs__content {
+      .k-tabs-more.tab-top-layout {
+        display: none;
+      }
+    }
+
+    &.el-tabs--left {
+      .el-tabs__header.el-tabs__header-vertical.is-left {
+        height: 100%;
+        // background: #000;
+        border-right: 1px solid var(--k-gray-200);
+        .el-tabs__nav-wrap.is-left {
+          box-shadow: unset;
+          border-radius: unset;
+          .el-tabs__nav-scroll {
+            .el-tabs__nav.is-left {
+              width: 12rem;
+              .el-tabs__item.is-left {
+                width: 100%;
+                &.is-active {
+                  border-right: 1px solid #fff;
+                }
+                & + .el-tabs__item.is-left {
+                  border-left: 1px solid var(--k-gray-200);
+                  border-top: unset;
+                }
+                &:last-child {
+                  border-bottom-left-radius: var(--k-rounded-base);
+                  border-top-right-radius: unset;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .el-tabs__nav-next,
+  .el-tabs__nav-prev {
+    display: none;
+  }
+}

@@ -1,0 +1,1 @@
+export const SIZE_KEY = Symbol('__size__');

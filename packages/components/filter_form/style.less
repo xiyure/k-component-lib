@@ -1,0 +1,94 @@
+@import '../../style/variable.css';
+@import '../../style/general.less';
+
+.filterForm {
+  height: calc(2rem + 0.25rem);
+  overflow: hidden;
+  padding: 0.125rem;
+  transition: all var(--transition-duration) ease-in-out;
+  &.is-expand {
+    transition: all var(--transition-duration) ease-in-out;
+    height: calc(var(--expandHeight) + 0.25rem);
+    .filtr-items::after {
+      display: none;
+    }
+  }
+
+  .filtr-items {
+    column-gap: 1.5rem;
+    row-gap: 0.75rem;
+    grid-auto-rows: auto;
+
+    // grid row 高度取决于内容
+    // grid-auto-rows: 2rem;
+    // overflow: hidden;
+    height: fit-content;
+    transition: all var(--transition-duration) ease-in-out;
+
+    &::after {
+      content: '';
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+      top: calc(var(--firstRowHeight) + 0.25rem);
+      left: 0;
+      background: #fff;
+      z-index: 10;
+    }
+
+    .el-form-item {
+      margin-bottom: 0;
+      height: fit-content;
+
+      // padding: 2px 0;
+      align-items: flex-start;
+
+      // &.el-form-item--default.asterisk-left.el-form-item--label-right.k-form-item.k-form-item--colon {
+      //   label.el-form-item__label {
+      //     // max-width: 4rem;
+      //     background: #000 !important;
+      //   }
+      // }
+    }
+
+    .markers {
+      // width: 30%;
+      // 让元素在第一行 最后一个
+      grid-row: 1 / 2;
+      align-self: center;
+
+      display: flex;
+      justify-content: flex-end;
+
+      width: 100%;
+
+      &.is-expand {
+        grid-row: unset;
+      }
+    }
+
+    .filtr-btns {
+      --top: 0;
+      // width: 30%;
+      // 让元素在第一行 最后一个
+      // grid-row: 1 / 2;
+      align-self: center;
+
+      display: flex;
+      justify-content: flex-end;
+
+      position: absolute;
+      top: var(--top);
+      right: 0;
+
+      z-index: 20;
+
+      transition: all 0.3s ease-in-out;
+
+      &.is-expand {
+        top: var(--top-new);
+        transition: all 0.3s ease-in-out;
+      }
+    }
+  }
+}

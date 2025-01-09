@@ -1,0 +1,293 @@
+@import '../../style/variable.css';
+@import '../../style/general.less';
+// @import '../../style/theme/AOM/theme.css';
+
+// @TODO 还不支持 size 控制插槽中的组件 size
+
+.k-input,
+.el-input,
+.k-input.el-input,
+.el-textarea {
+  // 所有样式设置为unset
+  .init-style();
+
+  --bg-color: #fff;
+  --height: var(--k-theme-input-size-height--base);
+  --padding: var(--k-theme-input-size-padding--base);
+  --border-radius: var(--k-theme-input-rounded--base);
+  --border-color--normal: var(--k-theme-input-border-color--normal);
+  --border-color--hover: var(--k-theme-input-border-color--hover);
+  --border-color--checked: var(--k-theme-input-border-color--checked);
+  --input-offset: 0;
+
+  cursor: text;
+  box-sizing: content-box;
+
+  height: fit-content;
+
+  .el-input__wrapper {
+    .init-style();
+    cursor: text;
+    height: var(--height);
+    padding: var(--padding);
+    border-radius: var(--border-radius);
+    border: var(--border-color--normal) 1px solid;
+    background: var(--bg-color);
+
+    .el-input__inner {
+      .init-style();
+      .text-base();
+      cursor: text;
+      color: var(--k-normal);
+      caret-color: var(--border-color--checked);
+    }
+    .el-input__inner::placeholder {
+      color: var(--k-theme-input-placeholder-color);
+    }
+    &:hover {
+      .init-style();
+      height: var(--height);
+      padding: var(--padding);
+      background-color: #fff;
+      border-radius: var(--border-radius);
+      border: var(--border-color--hover) 1px solid;
+    }
+    &.is-focus {
+      .init-style();
+      height: var(--height);
+      padding: var(--padding);
+      background-color: #fff;
+      border-radius: var(--border-radius);
+      border: var(--k-theme-input-border-color--active) 1px solid;
+      box-shadow: 0 0 0 2px rgba(40, 130, 255, 0.1);
+      z-index: 10;
+    }
+  }
+
+  &.is-disabled {
+    cursor: not-allowed;
+    // 禁止点击事件
+
+    .el-input__wrapper {
+      // 禁用状态下
+      cursor: not-allowed;
+      pointer-events: none;
+      border: var(--border-color--normal) 1px solid;
+      background: var(--k-theme-input-bg-color--disabled);
+      box-shadow: unset;
+
+      .el-input__inner {
+        cursor: not-allowed;
+      }
+    }
+    .el-input__prefix-inner,
+    .el-input__suffix-inner {
+      pointer-events: none;
+    }
+  }
+
+  .el-input__wrapper {
+    margin-right: calc(var(--input-offset));
+    transform: translateX(var(--input-offset));
+  }
+
+  // 左右插槽 公共属性
+  &.k-input-has-prepend,
+  &.k-input-has-append {
+    --input-offset: -0.0625rem;
+    --append-offset: -0.0625rem;
+    .el-input__wrapper {
+      margin-right: calc(var(--input-offset));
+      // transform: translateX(var(--input-offset));
+      &:hover {
+        z-index: 2;
+        border-left: var(--k-theme-input-border-color--hover) 1px solid;
+        border-right: var(--k-theme-input-border-color--hover) 1px solid;
+      }
+      &.is-focus {
+        z-index: 2;
+        border-left: var(--k-theme-input-border-color--active) 1px solid;
+        border-right: var(--k-theme-input-border-color--active) 1px solid;
+      }
+    }
+    .el-input-group__prepend,
+    .el-input-group__append {
+      .init-style();
+      .text-base();
+      height: var(--height);
+      padding: 0;
+      z-index: 1;
+      .k-input-slot--string,
+      .k-input-slot--htmlTag {
+        .text-base();
+        height: var(--height);
+        color: var(--k-theme-info);
+        background-color: var(--k-gray-50);
+        padding: 0.3125rem 0.625rem;
+        border: 1px solid var(--border-color--normal);
+        cursor: text;
+        user-select: all;
+      }
+      .k-input-slot--component {
+        height: var(--height);
+        .k-button {
+          margin: 0;
+          // border: 1px solid var(--border-color--normal);
+          // padding-top: 2px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .k-button--base,
+        .el-button--icon {
+          // display: inline-flex;
+          border: 1px solid var(--border-color--normal);
+          &:hover:not(.is-disabled) {
+            background: var(--k-gray-50);
+          }
+          &:hover:active {
+            background-color: var(--k-gray-100);
+          }
+        }
+        .el-button-group {
+          display: inline-flex;
+          height: 100%;
+          align-items: center;
+          justify-content: center;
+        }
+        .el-select.k-select {
+          margin: 0;
+          .el-select__wrapper {
+            box-shadow: unset;
+            border: 1px solid var(--border-color--normal);
+            &.is-disabled {
+              background: var(--k-gray-100);
+            }
+          }
+        }
+        .k-button + .k-button {
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  // 左插槽样式
+  &.k-input-has-prepend {
+    .el-input__wrapper {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+    .el-input-group__prepend {
+      .k-input-slot--string,
+      .k-input-slot--htmlTag {
+        border-top-left-radius: var(--border-radius);
+        border-bottom-left-radius: var(--border-radius);
+      }
+      .k-input-slot--component {
+        .k-button,
+        .el-button,
+        .k-select,
+        .el-select,
+        .k-button-group,
+        .el-button-group {
+          border-top-left-radius: var(--border-radius);
+          border-bottom-left-radius: var(--border-radius);
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+          .el-button + .el-button {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+          }
+        }
+      }
+    }
+  }
+  &.k-input-has-append {
+    .el-input__wrapper {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    .el-input-group__append {
+      transform: translateX(-1px);
+      .k-input-slot--string,
+      .k-input-slot--htmlTag {
+        border-top-right-radius: var(--border-radius);
+        border-bottom-right-radius: var(--border-radius);
+      }
+      .k-input-slot--component {
+        .k-button,
+        .el-button,
+        .k-select,
+        .el-select,
+        .k-button-group,
+        .el-button-group {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+          .el-button + .el-button {
+            border-top-right-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
+          }
+        }
+      }
+    }
+  }
+
+  &.el-input--small {
+    --height: var(--k-theme-input-size-height--sm);
+    --border-radius: var(--k-theme-input-rounded--sm);
+    --padding: var(--k-theme-input-size-padding--sm);
+    .el-input__wrapper {
+      .el-input__inner {
+        .text-sm();
+      }
+    }
+    .el-input-group__prepend,
+    .el-input-group__append {
+      .k-input-slot--string,
+      .k-input-slot--htmlTag {
+        .text-sm();
+        display: flex;
+        align-items: center;
+        padding: var(--padding);
+      }
+      .k-input-slot--component {
+      }
+    }
+  }
+  &.el-input--large {
+    --height: var(--k-theme-input-size-height--lg);
+    --border-radius: var(--k-theme-input-rounded--lg);
+    --padding: var(--k-theme-input-size-padding--lg);
+    .el-input__wrapper {
+      .el-input__inner {
+        .text-lg();
+      }
+    }
+    .el-textarea__inner {
+      .text-lg();
+    }
+  }
+
+  // 文本域样式
+  .el-textarea__inner {
+    .text-base();
+    box-shadow: unset;
+    border: 1px solid var(--border-color--normal);
+    border-radius: var(--border-radius);
+    &:hover {
+      box-shadow: unset;
+      border: 1px solid var(--border-color--hover);
+    }
+    &:focus {
+      border: 1px solid var(--k-theme-input-border-color--active);
+      box-shadow: 0 0 0 2px rgba(40, 130, 255, 0.1);
+    }
+  }
+
+  &.el-input--small {
+    .el-textarea__inner {
+      .text-sm();
+    }
+  }
+}

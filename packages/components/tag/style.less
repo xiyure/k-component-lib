@@ -1,0 +1,198 @@
+@import '../../style/variable.css';
+@import '../../style/general.less';
+@import '../../style/global.less';
+
+.k-tag {
+  width: fit-content;
+  display: inline-flex;
+  .text-base();
+  .k-tag__point {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    .k-tag__sign {
+      margin-right: 5px;
+      border-radius: 50% 50%;
+    }
+  }
+  .el-tag {
+    --bgc: var(--k-theme-primary-100);
+    --color: var(--k-theme-primary);
+    --border-color: transparent;
+    --closable-color: var(--color);
+
+    background: var(--bgc);
+    color: var(--color);
+    border: 1px solid var(--border-color);
+
+    .el-tag__content {
+      .text-base();
+      user-select: none;
+    }
+
+    .el-icon.el-tag__close {
+      background: transparent;
+      margin-left: 0.25rem;
+
+      svg {
+        color: var(--closable-color);
+        opacity: 0.5;
+        width: 0.75rem;
+        height: 0.75rem;
+      }
+      &:hover {
+        background: transparent;
+        svg {
+          opacity: 1;
+        }
+      }
+    }
+
+    &.k-tag__primary {
+      --bgc: var(--k-theme-primary);
+      --color: #fff;
+      --border-color: var(--k-theme-primary);
+    }
+    &.k-tag__success {
+      --bgc: var(--k-theme-success);
+      --color: #fff;
+      --border-color: var(--k-theme-success);
+    }
+    &.k-tag__warning {
+      --bgc: var(--k-theme-warning);
+      --color: #fff;
+      --border-color: var(--k-theme-warning);
+    }
+    &.k-tag__danger {
+      --bgc: var(--k-theme-danger);
+      --color: #fff;
+      --border-color: var(--k-theme-danger);
+    }
+    &.k-tag__info {
+      --bgc: var(--k-theme-info);
+      --color: #fff;
+      --border-color: var(--k-theme-info);
+    }
+
+    &.is-border {
+      --bgc: var(--k-theme-primary-50);
+      --color: var(--k-theme-primary-400);
+      --border-color: var(--color);
+      --closable-color: var(--color);
+
+      background: var(--bgc);
+      color: var(--color);
+      border: 1px solid var(--border-color);
+
+      .el-icon.el-tag__close {
+        svg {
+          color: var(--closable-color);
+        }
+      }
+
+      &.k-tag__primary {
+        --bgc: var(--k-theme-primary-50);
+        --color: var(--k-theme-primary);
+      }
+      &.k-tag__success {
+        --bgc: var(--k-theme-success-50);
+        --color: var(--k-theme-success);
+      }
+      &.k-tag__warning {
+        --bgc: var(--k-theme-warning-50);
+        --color: var(--k-theme-warning);
+      }
+      &.k-tag__danger {
+        --bgc: var(--k-theme-danger-50);
+        --color: var(--k-theme-danger);
+      }
+      &.k-tag__info {
+        --bgc: var(--k-theme-info-50);
+        --color: var(--k-theme-info);
+      }
+    }
+
+    &.is-point {
+      --point-color: var(--k-theme-primary-400);
+      --bgc: transparent;
+      --color: var(--point-color);
+      --border-color: transparent;
+
+      background: var(--bgc);
+      border: 1px solid var(--border-color);
+      color: var(--color);
+
+      position: relative;
+      padding-left: 1rem;
+      padding-right: 0;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translate(0, -50%);
+        width: 0.75rem;
+        height: 0.75rem;
+        border-radius: 50%;
+        background: var(--point-color);
+      }
+
+      &.k-tag__primary {
+        --point-color: var(--k-theme-primary);
+        --color: var(--point-color);
+      }
+      &.k-tag__success {
+        --point-color: var(--k-theme-success);
+        --color: var(--point-color);
+      }
+      &.k-tag__warning {
+        --point-color: var(--k-theme-warning);
+        --color: var(--point-color);
+      }
+      &.k-tag__danger {
+        --point-color: var(--k-theme-danger);
+        --color: var(--point-color);
+      }
+      &.k-tag__info {
+        --point-color: var(--k-theme-info);
+        --color: var(--point-color);
+      }
+    }
+
+    &.is-custom {
+      --bgc: var(--tag__block__bg-color--normal);
+      --color: #fff;
+      &.is-border {
+        --bgc: var(--tag__border__bg-color--normal);
+        --color: var(--tag__border__border-color--normal);
+      }
+      &.is-point {
+        --point-color: var(--tag__point-color--normal);
+        --bgc: transparent;
+        --color: var(--point-color);
+        --border-color: transparent;
+      }
+    }
+
+    &.el-tag--small {
+      .el-tag__content {
+        .text-sm();
+      }
+      .el-icon.el-tag__close {
+        margin-left: 0.125rem;
+      }
+    }
+    &.el-tag--large {
+      .el-tag__content {
+        .text-lg();
+      }
+      .el-icon.el-tag__close {
+        svg {
+          width: 1rem;
+          height: 1rem;
+        }
+      }
+    }
+  }
+}

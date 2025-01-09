@@ -1,0 +1,42 @@
+{
+  "name": "Menu",
+  "props": [
+    {
+      "displayName": "index",
+      "type": "string | null",
+      "description": "唯一标志",
+      "defaultValue": "null"
+    },
+    {
+      "displayName": "route",
+      "type": "object",
+      "description": "Vue Router 路径对象",
+      "defaultValue": "—"
+    },
+    {
+      "displayName": "disabled",
+      "type": "boolean",
+      "description": "是否禁用",
+      "defaultValue": "false"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "default",
+      "type": "slot",
+      "description": "自定义默认内容"
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "open",
+      "type": "method",
+      "description": "展开指定的 sub-menu"
+    },
+    {
+      "displayName": "close",
+      "type": "method",
+      "description": "收起指定的 sub-menu"
+    }
+  ]
+}

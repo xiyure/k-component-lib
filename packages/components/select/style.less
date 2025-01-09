@@ -1,0 +1,79 @@
+@import '../../style/variable.css';
+@import '../../style/general.less';
+
+.k-select.el-select {
+  --bg-color: #fff;
+  --height: var(--k-theme-select-size-height--base);
+  --padding: var(--k-theme-select-size-padding--base);
+  --border-radius: var(--k-theme-select-rounded--base);
+  --border-color--normal: var(--k-theme-select-border-color--normal);
+  --border-color--hover: var(--k-theme-select-border-color--hover);
+  --border-color--checked: var(--k-theme-select-border-color--active);
+
+  // 所有样式设置为unset
+  .init-style();
+  min-width: 4rem;
+  width: 100%;
+
+  .el-select__wrapper {
+    .init-style();
+    .text-base();
+    min-height: var(--height);
+    padding: var(--padding);
+    border-radius: var(--border-radius);
+    border: var(--border-color--normal) 1px solid;
+    background: #fff;
+
+    &.is-hovering:not(.is-focused, .is-disabled) {
+      box-shadow: unset;
+      border: var(--border-color--hover) 1px solid;
+    }
+    &.is-focused {
+      box-shadow: unset;
+      border: var(--border-color--checked) 1px solid;
+      box-shadow: 0 0 0 2px rgba(40, 130, 255, 0.1);
+    }
+
+    &.is-disabled {
+      background: var(--k-gray-50);
+      cursor: not-allowed;
+      border-color: var(--border-color--normal);
+      &:hover {
+        box-shadow: unset;
+      }
+      &.is-focused {
+        box-shadow: unset;
+      }
+    }
+    &.is-disabled.is-hovering {
+      border-color: var(--border-color--normal);
+    }
+  }
+
+  &.el-select--small {
+    --height: var(--k-theme-select-size-height--sm);
+    --padding: var(--k-theme-select-size-padding--sm);
+    --border-radius: var(--k-theme-select-rounded--sm);
+    .el-select__wrapper {
+      .text-sm();
+      // border-radius:;
+    }
+  }
+  &.el-select--large {
+    --height: var(--k-theme-select-size-height--lg);
+    --padding: var(--k-theme-select-size-padding--lg);
+    --border-radius: var(--k-theme-select-rounded--lg);
+    .el-select__wrapper {
+      .text-lg();
+    }
+  }
+}
+
+.el-select-dropdown__item.k-option {
+  border-radius: var(--k-theme-select-rounded--base);
+  padding: 0 0.75rem;
+  margin: 0 0.5rem;
+  &.is-selected {
+    background: var(--k-blue-50);
+  }
+}

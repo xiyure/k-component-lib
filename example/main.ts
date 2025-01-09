@@ -1,25 +1,11 @@
 import { createApp } from 'vue';
-import KUi from '../package/index';
+import KUi from '../packages/index';
 import App from './App.vue';
-import { createRouter, createWebHistory } from 'vue-router';
+import { KswIcon } from 'ksw-vue-icon';
 
-import Hello from './view/Hello.vue';
-import World from './view/World.vue';
-import Cors from './view/Cors.vue';
-
-const routes = [
-  { path: '/world', component: World, meta: {title: 'World', path: '/world'} },
-  { path: '/hello', component: Hello, meta: {title: 'Hello', path: '/hello'} },
-  { path: '/cors', component: Cors, meta: {title: 'Cors', path: '/cors'} },
-];
- 
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
-});
 const app = createApp(App);
-app.use(router);
 app.use(KUi, {
-  localeLang: 'zh'
+  locale: 'zh',
 });
+app.use(KswIcon);
 app.mount('#app');

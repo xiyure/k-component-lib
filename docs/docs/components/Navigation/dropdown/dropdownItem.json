@@ -1,0 +1,39 @@
+{
+  "name": "Dropdown-Item",
+  "props": [
+    {
+      "displayName": "command",
+      "description": "派发到 command 回调函数的指令参数。",
+      "type": "string/number/object",
+      "default": "—"
+    },
+    {
+      "displayName": "disabled",
+      "description": "是否禁用。",
+      "type": "boolean",
+      "default": "false"
+    },
+    {
+      "displayName": "divided",
+      "description": "是否显示分隔符。",
+      "type": "boolean",
+      "default": "false"
+    },
+    {
+      "displayName": "icon",
+      "description": "自定义图标。",
+      "type": "string | Component",
+      "default": "—"
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "default",
+      "type": "slot",
+      "description": "自定义Dropdown-Item内容",
+      "defaultValue": ""
+    }
+  ],
+  "methods": []
+}

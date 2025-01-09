@@ -1,0 +1,228 @@
+{
+  "name": "DateTimePicker",
+  "props": [
+    {
+      "displayName": "model-value / v-model",
+      "type": "Date / number / string / Array",
+      "description": "绑定值，如果它是数组，长度应该是 2",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "readonly",
+      "type": "boolean",
+      "description": "只读",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "disabled",
+      "type": "boolean",
+      "description": "禁用",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "editable",
+      "type": "boolean",
+      "description": "文本框可输入",
+      "defaultValue": "true"
+    },
+    {
+      "displayName": "clearable",
+      "type": "boolean",
+      "description": "是否显示清除按钮",
+      "defaultValue": "true"
+    },
+    {
+      "displayName": "size",
+      "type": "string",
+      "description": "输入框尺寸",
+      "defaultValue": "default",
+      "options": ["large", "default", "small"]
+    },
+    {
+      "displayName": "placeholder",
+      "type": "string",
+      "description": "非范围选择时的占位内容",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "start-placeholder",
+      "type": "string",
+      "description": "范围选择时开始日期的占位内容",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "end-placeholder",
+      "type": "string",
+      "description": "范围选择时结束日期的占位内容",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "arrow-control",
+      "type": "boolean",
+      "description": "是否使用箭头进行时间选择",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "type",
+      "type": "string",
+      "description": "显示类型",
+      "defaultValue": "date",
+      "options": ["year", "month", "date", "datetime", "week", "datetimerange", "daterange"]
+    },
+    {
+      "displayName": "format",
+      "type": "string",
+      "description": "显示在输入框中的格式",
+      "defaultValue": "YYYY-MM-DD HH:mm:ss"
+    },
+    {
+      "displayName": "popper-class",
+      "type": "string",
+      "description": "DateTimePicker 下拉框的类名",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "range-separator",
+      "type": "string",
+      "description": "选择范围时的分隔符",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "default-value",
+      "type": "Date / [Date, Date]",
+      "description": "可选，选择器打开时默认显示的时间",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "default-time",
+      "type": "Date / [Date, Date]",
+      "description": "选择日期后的默认时间值。如未指定则默认时间值为 00:00:00",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "value-format",
+      "type": "string",
+      "description": "可选，绑定值的格式。不指定则绑定值为 Date 对象",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "date-format",
+      "type": "string",
+      "description": "可选，时间选择器下拉列表中显示的日期格式",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "time-format",
+      "type": "string",
+      "description": "可选，时间选择器下拉列表中显示的时间格式",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "id",
+      "type": "string / [string, string]",
+      "description": "等价于原生 input id 属性",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "name",
+      "type": "string",
+      "description": "等价于原生 input name 属性",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "unlink-panels",
+      "type": "boolean",
+      "description": "在范围选择器里取消两个日期面板之间的联动",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "prefix-icon",
+      "type": "string | Component",
+      "description": "自定义前缀图标组件",
+      "defaultValue": "Date"
+    },
+    {
+      "displayName": "clear-icon",
+      "type": "string | Component",
+      "description": "自定义清除图标",
+      "defaultValue": "CircleClose"
+    },
+    {
+      "displayName": "shortcuts",
+      "type": "object[{ text: string, value: date / function }]",
+      "description": "设置快捷选项，需要传入数组对象",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "disabled-date",
+      "type": "Function(Date)",
+      "description": "一个用来判断该日期是否被禁用的函数，接受一个 Date 对象作为参数。应该返回一个 Boolean 值。",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "cell-class-name",
+      "type": "Function(Date)",
+      "description": "设置自定义类名",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "teleported",
+      "type": "boolean",
+      "description": "是否将 datetime-picker 的下拉列表插入至 body 元素",
+      "defaultValue": "true"
+    }
+  ],
+  "events": [
+    {
+      "displayName": "change",
+      "type": "Function",
+      "description": "用户确认选定的值时触发",
+      "defaultValue": "value"
+    },
+    {
+      "displayName": "blur",
+      "type": "Function",
+      "description": "在组件 Input 失去焦点时触发",
+      "defaultValue": "(e: FocusEvent)"
+    },
+    {
+      "displayName": "focus",
+      "type": "Function",
+      "description": "在组件 Input 获得焦点时触发",
+      "defaultValue": "(e: FocusEvent)"
+    },
+    {
+      "displayName": "calendar-change",
+      "type": "Function",
+      "description": "选中日历日期后会执行的回调。如果用户没有选择日期，则默认展示当前日的月份，仅在 datetimerange 模式下生效",
+      "defaultValue": "[Date, Date]"
+    },
+    {
+      "displayName": "visible-change",
+      "type": "Function",
+      "description": "当 DateTimePicker 的下拉列表出现/消失时触发，出现时为 true，隐藏时为 false",
+      "defaultValue": "true | false"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "default",
+      "type": "any",
+      "description": "自定义单元格内容",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "range-separator",
+      "type": "string",
+      "description": "自定义范围分割符内容",
+      "defaultValue": ""
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "focus",
+      "description": "使 input 获取焦点",
+      "defaultValue": ""
+    }
+  ]
+}

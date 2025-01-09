@@ -1,0 +1,55 @@
+{
+  "name": "Calendar",
+  "props": [
+    {
+      "displayName": "model-value / v-model",
+      "type": "Date",
+      "description": "选中日期",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "range",
+      "type": "array",
+      "description": "日期范围",
+      "defaultValue": "",
+      "tip": "[Date, Date]"
+    },
+    {
+      "displayName": "showLunar",
+      "type": "boolean",
+      "description": "是否显示农历",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "schedule",
+      "type": "array",
+      "description": "日程列表",
+      "defaultValue": "",
+      "tip": "Array<{date: Date, content: Array<string>]}>"
+    },
+    {
+      "displayName": "adaptive",
+      "type": "boolean",
+      "description": "是否自适应内容高度",
+      "defaultValue": "false",
+      "version": "0.0.77"
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "date-cell",
+      "description": "type表示该日期的所属月份，可选值有prev-month、current-month和next-month；isSelected标明该日期是否被选中；day是格式化的日期，格式为yyyy-MM-dd；date是单元格的日期",
+      "parameters": "object",
+      "tip": "{ type: string, isSelected: boolean, day: string, date: Date }"
+    },
+    {
+      "displayName": "header",
+      "description": "日历头部的内容",
+      "parameters": "object",
+      "tip": "{ date: string }"
+    }
+  ],
+  "methods": []
+}

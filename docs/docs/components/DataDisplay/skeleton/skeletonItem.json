@@ -1,0 +1,14 @@
+{
+  "name": "SkeletonItem",
+  "props": [
+    {
+      "displayName": "variant",
+      "type": "enum",
+      "description": "当前渲染 skeleton 类型",
+      "defaultValue": "text"
+    }
+  ],
+  "events": [],
+  "slots": [],
+  "methods": []
+}

@@ -1,0 +1,286 @@
+{
+  "name": "DatePicker",
+  "props": [
+    {
+      "displayName": "model-value / v-model",
+      "type": "number | string | Object",
+      "description": "绑定值，如果它是数组，长度应该是2",
+      "defaultValue": "",
+      "tip": "Date | [Date, Date] | [string, string]"
+    },
+    {
+      "displayName": "readonly",
+      "type": "boolean",
+      "description": "是否只读",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "disabled",
+      "type": "boolean",
+      "description": "是否禁用",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "editable",
+      "type": "boolean",
+      "description": "文本框是否可编辑",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "clearable",
+      "type": "boolean",
+      "description": "是否显示清除按钮",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "show-default-shortcuts",
+      "type": "boolean",
+      "description": "是否显示默认快捷日期",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "size",
+      "type": "enum",
+      "description": "输入框尺寸",
+      "defaultValue": "base",
+      "tip": "'base' | 'sm'"
+    },
+    {
+      "displayName": "placeholder",
+      "type": "string",
+      "description": "输入框占位符",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "start-placeholder",
+      "type": "string",
+      "description": "开始日期输入框占位符",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "end-placeholder",
+      "type": "string",
+      "description": "结束日期输入框占位符",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "arrow-control",
+      "type": "boolean",
+      "description": "是否使用箭头选择日期",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "type",
+      "type": "enum",
+      "description": "日期类型",
+      "defaultValue": "date",
+      "tip": "'year' | 'month' | 'date' | 'datetime' | 'week' | 'datetimerange' | 'daterange'"
+    },
+    {
+      "displayName": "format",
+      "type": "string",
+      "description": "输入框日期格式",
+      "defaultValue": "YYYY-MM-DD HH:mm:ss",
+      "tip": ""
+    },
+    {
+      "displayName": "popper-class",
+      "type": "string",
+      "description": "下拉框类名",
+      "defaultValue": "''",
+      "tip": ""
+    },
+    {
+      "displayName": "range-separator",
+      "type": "string",
+      "description": "日期范围分隔符",
+      "defaultValue": "-",
+      "tip": ""
+    },
+    {
+      "displayName": "default-value",
+      "type": "object",
+      "description": "选择器打开时默认显示的时间",
+      "defaultValue": "",
+      "tip": "Date | [Date, Date]"
+    },
+    {
+      "displayName": "default-time",
+      "type": "object",
+      "description": "选择器打开时默认显示的时间，如未指定则默认时间值为00:00:00",
+      "defaultValue": "",
+      "tip": "Date | [Date, Date]"
+    },
+    {
+      "displayName": "value-format",
+      "type": "string",
+      "description": "绑定值的格式。不指定则绑定值为Date对象",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "date-format",
+      "type": "string",
+      "description": "时间选择器下拉列表中显示的时间格式",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "time-format",
+      "type": "string",
+      "description": "时间选择器下拉列表中显示的时间格式",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "id",
+      "type": "string | [string, string]",
+      "description": "input原生id属性",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "name",
+      "type": "string | [string, string]",
+      "description": "input原生name属性",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "unlink-panels",
+      "type": "boolean",
+      "description": "在范围选择器里取消两个日期面板之间的联动",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "prefix-icon",
+      "type": "string | Component",
+      "description": "日期输入框前缀图标",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "clear-icon",
+      "type": "string | Component",
+      "description": "清除按钮图标",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "shortcuts",
+      "type": "object",
+      "description": "设置快捷选项，需要传入数组对象",
+      "defaultValue": "",
+      "tip": "Array<{ text: string, value: Date | Function }>"
+    },
+    {
+      "displayName": "disabled-date",
+      "type": "Function",
+      "description": "设置不可选择的日期，接收一个Date对象，返回true表示禁用",
+      "defaultValue": "",
+      "tip": "(data: Date) => boolean"
+    },
+    {
+      "displayName": "teleported",
+      "type": "boolean",
+      "description": "是否将弹出层放置于body内",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "cell-class-name",
+      "type": "Function",
+      "description": "设置日期单元格的类名，接收一个Date对象",
+      "defaultValue": "",
+      "tip": "(data: Date) => string"
+    },
+    {
+      "displayName": "showDefaultShortcuts",
+      "type": "boolean",
+      "description": "是否显示默认快捷日期",
+      "defaultValue": "true"
+    }
+  ],
+  "events": [
+    {
+      "displayName": "change",
+      "description": "当绑定值变化时触发",
+      "type": "Function",
+      "tip": "(value: string | Date | [Date, Date]) => void"
+    },
+    {
+      "displayName": "blur",
+      "description": "当输入框失去焦点时触发",
+      "type": "Function",
+      "tip": "(e: FocusEvent)"
+    },
+    {
+      "displayName": "focus",
+      "description": "当输入框获得焦点时触发",
+      "type": "Function",
+      "tip": "(e: FocusEvent)"
+    },
+    {
+      "displayName": "clear",
+      "description": "点击输入框清除图标时触发",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "calendar-change",
+      "description": "当绑定值变化时触发",
+      "type": "Function",
+      "tip": "(value: string | Date | [Date, Date]) => void"
+    },
+    {
+      "displayName": "visible-change",
+      "description": "type为datetimerange生效,选中日历日期后触发",
+      "type": "Function",
+      "tip": "(isVisible: boolean) => void"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "default",
+      "description": "自定义单元格内容"
+    },
+    {
+      "displayName": "range-separator",
+      "description": "自定义范围分割符内容"
+    },
+    {
+      "displayName": "prev-month",
+      "description": "自定义上个月按钮图标"
+    },
+    {
+      "displayName": "next-month",
+      "description": "自定义下个月按钮图标"
+    },
+    {
+      "displayName": "prev-year",
+      "description": "自定义上一年按钮图标"
+    },
+    {
+      "displayName": "next-year",
+      "description": "自定义下一年按钮图标"
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "focus",
+      "description": "使输入框获得焦点",
+      "type": "Function",
+      "tip": "() => void"
+    }
+  ]
+}

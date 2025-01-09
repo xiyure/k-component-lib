@@ -1,0 +1,51 @@
+{
+  "name": "Skeleton",
+  "props": [
+    {
+      "displayName": "animated",
+      "type": "boolean",
+      "description": "是否使用动画",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "count",
+      "type": "number",
+      "description": "渲染多少个 template, 建议使用尽可能小的数字",
+      "defaultValue": "1"
+    },
+    {
+      "displayName": "loading",
+      "type": "boolean",
+      "description": "是否显示加载结束后的 DOM 结构",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "rows",
+      "type": "number",
+      "description": "骨架屏段落数量",
+      "defaultValue": "3"
+    },
+    {
+      "displayName": "throttle",
+      "type": "number",
+      "description": "渲染延迟（以毫秒为单位）",
+      "defaultValue": "0"
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "default",
+      "type": "object",
+      "description": "真正渲染的 DOM",
+      "defaultValue": "{}"
+    },
+    {
+      "displayName": "template",
+      "type": "object",
+      "description": "渲染 skeleton 模板的内容",
+      "defaultValue": "{}"
+    }
+  ],
+  "methods": []
+}

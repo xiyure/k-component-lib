@@ -1,37 +1,71 @@
 {
-  "name": "k-component-lib",
-  "private": true,
-  "version": "0.0.0",
+  "name": "@ksware/ksw-ux",
+  "private": false,
+  "version": "1.0.7",
+  "description": "Kingsware Component Library",
+  "main": "kingsware-ui/index.umd.js",
+  "module": "kingsware-ui/index.js",
+  "style": "kingsware-ui/style.css",
   "type": "module",
+  "types": "kingsware-ui/index.d.ts",
+  "files": [
+    "kingsware-ui/*"
+  ],
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint --fix . --ext .ts,.js,.vue",
-    "fix": "eslint --fix"
+    "fix": "eslint --fix",
+    "docs:dev": "npm run -C docs dev",
+    "docs:build": "npm run -C docs build",
+    "docs:preview": "npm run -C docs preview"
   },
-  "dependencies": {
-    "@types/vue-router": "^2.0.0",
-    "element-plus": "^2.6.3",
+  "peerDependencies": {
+    "element-plus": "^2.9.2",
     "ksw-vue-icon": "latest",
-    "less": "^4.2.0",
-    "less-loader": "^12.2.0",
+    "lodash-es": "^4.17.21",
+    "sortablejs": "^1.15.2",
     "vue": "^3.4.21",
-    "vue-router": "^4.3.0"
+    "vue-i18n": "^9.13.1",
+    "vxe-pc-ui": "^4.0.82",
+    "vxe-table": "^4.10.1"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^7.6.0",
-    "@typescript-eslint/parser": "^7.6.0",
-    "@vitejs/plugin-vue": "^5.0.4",
-    "eslint": "^8.57.0",
+    "@types/culori": "^2.1.1",
+    "@types/diff-match-patch": "^1.0.36",
+    "@types/node": "^22.5.5",
+    "@types/sortablejs": "^1.15.8",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "@vitejs/plugin-vue": "^5.1.4",
+    "@vitejs/plugin-vue-jsx": "^4.0.1",
+    "autoprefixer": "^10.4.20",
+    "culori": "^4.0.1",
+    "eslint": "^8.57.1",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-vue": "^9.24.1",
+    "eslint-plugin-vue": "^9.28.0",
     "fast-glob": "^3.3.2",
-    "globals": "^15.0.0",
-    "typescript": "^5.4.5",
-    "unplugin-auto-import": "^0.17.5",
-    "unplugin-vue-components": "^0.26.0",
-    "vite": "^5.2.0",
-    "vue-tsc": "^2.0.6"
+    "globals": "^15.9.0",
+    "ksw-vue-icon": "^2.3.9",
+    "less": "^4.2.0",
+    "less-loader": "^12.2.0",
+    "overlayscrollbars-vue": "^0.5.9",
+    "postcss": "^8.4.47",
+    "prettier": "3.3.2",
+    "tailwindcss": "^3.4.12",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.6",
+    "vite-plugin-dts": "^4.2.4",
+    "vue-tsc": "^2.1.6"
+  },
+  "author": "zhj",
+  "license": "MIT",
+  "dependencies": {
+    "chinese-lunar-calendar": "^1.0.1",
+    "dom-zindex": "^1.0.6",
+    "i": "^0.3.7",
+    "npm": "^10.8.3",
+    "overlayscrollbars": "^2.10.0"
   }
 }

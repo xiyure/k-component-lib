@@ -1,0 +1,104 @@
+{
+  "name": "Filter",
+  "props": [
+    {
+      "displayName": "options",
+      "type": "filterOptions[]",
+      "description": "筛选配置项，包含字段、标题、数据类型、等信息，目前支持的类型有：string、number、date，默认为string",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "data",
+      "type": "any[]",
+      "description": "待筛选数据",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "filterKey",
+      "type": "string",
+      "description": "数据筛选字段",
+      "defaultValue": "title"
+    },
+    {
+      "displayName": "childrenField",
+      "type": "string",
+      "description": "用于树形数据场景，指定子节点字段名",
+      "defaultValue": "children"
+    },
+    {
+      "displayName": "size",
+      "type": "enum",
+      "description": "尺寸",
+      "defaultValue": "base",
+      "tip": "'base' | 'sm'"
+    },
+    {
+      "displayName": "border",
+      "type": "boolean",
+      "description": "是否显示默认触发按钮的边框",
+      "defaultValue": "true"
+    },
+    {
+      "displayName": "remote",
+      "type": "boolean | string[]",
+      "description": "指定远程筛选字段，为true时默认远程筛选所有字段，也可以指定字段数组",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "formatter",
+      "type": "string",
+      "description": "用于dataType=date，用于格式化日期值"
+    },
+    {
+      "displayName": "ignore-case",
+      "type": "boolean",
+      "description": "是否忽略大小写",
+      "defaultValue": "false",
+      "version": "0.0.80"
+    }
+  ],
+  "events": [
+    {
+      "displayName": "confirm",
+      "description": "确认筛选条件时触发",
+      "type": "Function",
+      "tip": "({ conditionInfo, tableData }) => void"
+    },
+    {
+      "displayName": "clear",
+      "description": "清除筛选条件时触发",
+      "type": "Function",
+      "tip": "() => void"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "reference",
+      "description": "自定义触发按钮",
+      "parameters": "object",
+      "tip": "{ hasConfigCondition: boolean }"
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "filter",
+      "description": "筛选数据",
+      "type": "Function",
+      "tip": "() => { conditionInfo, tableData }"
+    },
+    {
+      "displayName": "clearFilter",
+      "description": "清除筛选条件",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "getConditionInfo",
+      "description": "获取筛选条件",
+      "type": "Function",
+      "tip": "() => { conditionList, filterRule }"
+    }
+  ]
+}

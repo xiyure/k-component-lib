@@ -1,0 +1,43 @@
+html {
+  font-size: calc(100vw / 1920 * 16px);
+}
+
+.CVPHome {
+  background-image: url(../../public/bg.svg);
+
+  .CVPHome-content-carousel {
+    animation: run 20s ease infinite normal;
+    animation-play-state: running;
+
+    &.carousel-hover:hover {
+      animation-play-state: paused !important;
+    }
+  }
+
+  .CPVHome-icon-container {
+    animation: runIcon 15s linear infinite normal;
+  }
+}
+@keyframes runIcon {
+  0% {
+    transform: translateX(0); /* 初始位置 */
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+@keyframes run {
+  0%,
+  5% {
+    transform: translateX(0); /* 初始位置 */
+  }
+  33% {
+    transform: translateX(-100%); /* 第一阶段：滑动到-1400px */
+  }
+  66% {
+    transform: translateX(-200%); /* 第二阶段：滑动到-2800px */
+  }
+  100% {
+    transform: translateX(-300%); /* 第二阶段：滑动到-2800px */
+  }
+}
