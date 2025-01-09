@@ -1,7 +1,7 @@
-import { Component } from 'vue';
+import { Component, VNode } from 'vue';
 
 export interface MessageProps {
-  message?: string | (() => string)
+  message?: VNode | string | (() => string)
   type?: 'success' | 'info' | 'warning' | 'error'
   plain?: boolean
   icon?: string | Component
