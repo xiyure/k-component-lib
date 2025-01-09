@@ -1,0 +1,263 @@
+{
+  "name": "messageBox",
+  "props": [
+    {
+      "displayName": "autofocus",
+      "type": "boolean",
+      "description": "打开 MessageBox 时是否自动获得焦点",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "title",
+      "type": "string",
+      "description": "MessageBox 的标题",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "message",
+      "type": "string | VNode | Function",
+      "description": "MessageBox 的正文内容",
+      "defaultValue": "",
+      "tip": "() => VNode"
+    },
+    {
+      "displayName": "dangerouslyUseHTMLString",
+      "type": "boolean",
+      "description": "是否将 message 作为 HTML 片段处理",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "type",
+      "type": "enum",
+      "description": "消息类型，用于图标显示",
+      "defaultValue": "",
+      "tip": "'success' | 'info' | 'warning' | 'error'"
+    },
+    {
+      "displayName": "icon",
+      "type": "string | Component",
+      "description": "自定义图标组件，会覆盖 type 的类型",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "customClass",
+      "type": "string",
+      "description": "MessageBox 的自定义类名",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "customStyle",
+      "type": "CSSProperties",
+      "description": "MessageBox 的自定义内联样式",
+      "defaultValue": "{}",
+      "tip": ""
+    },
+    {
+      "displayName": "modalClass",
+      "type": "string",
+      "description": "遮罩的自定义类名",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "callback",
+      "type": "Function",
+      "description": "若不使用 Promise，可以使用此参数指定 MessageBox 关闭后的回调",
+      "defaultValue": "null",
+      "tip": "(value: string, action: Action) => any | (action: Action) => any"
+    },
+    {
+      "displayName": "show-close",
+      "type": "boolean",
+      "description": "MessageBox 是否显示右上角关闭按钮",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "beforeClose",
+      "type": "Function",
+      "description": "messageBox 关闭前的回调，会暂停消息弹出框的关闭过程。",
+      "defaultValue": "null",
+      "tip": "(action: Action, instance: MessageBoxState, done: () => void) => void"
+    },
+    {
+      "displayName": "distinguishCancelAndClose",
+      "type": "boolean",
+      "description": "是否将取消（点击取消按钮）与关闭（点击关闭按钮或遮罩层、按下 Esc 键）进行区分",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "lockScroll",
+      "type": "boolean",
+      "description": "是否在 MessageBox 出现时将 body 滚动锁定",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "showCancelButton",
+      "type": "boolean",
+      "description": "是否显示取消按钮",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "showConfirmButton",
+      "type": "boolean",
+      "description": "是否显示确定按钮",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "cancelButtonText",
+      "type": "string",
+      "description": "取消按钮的文本内容",
+      "defaultValue": "取消",
+      "tip": ""
+    },
+    {
+      "displayName": "confirmButtonText",
+      "type": "string",
+      "description": "确定按钮的文本内容",
+      "defaultValue": "确定"
+    },
+    {
+      "displayName": "cancelButtonLoadingIcon",
+      "type": "string | Component",
+      "description": "取消按钮的加载图标内容",
+      "defaultValue": "Loading"
+    },
+    {
+      "displayName": "confirmButtonLoadingIcon",
+      "type": "string | Component",
+      "description": "确认按钮的加载图标内容",
+      "defaultValue": "Loading"
+    },
+    {
+      "displayName": "cancelButtonClass",
+      "type": "string",
+      "description": "取消按钮的自定义类名",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "confirmButtonClass",
+      "type": "string",
+      "description": "确定按钮的自定义类名",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "closeOnClickModal",
+      "type": "boolean",
+      "description": "是否可通过点击遮罩层关闭 MessageBox",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "closeOnPressEscape",
+      "type": "boolean",
+      "description": "是否可通过按下 ESC 键关闭 MessageBox",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "closeOnHashChange",
+      "type": "boolean",
+      "description": "是否在 hash 改变时关闭 MessageBox",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "showInput",
+      "type": "boolean",
+      "description": "是否显示输入框",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "inputPlaceholder",
+      "type": "string",
+      "description": "输入框占位文本",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "inputType",
+      "type": "string",
+      "description": "输入框的类型",
+      "defaultValue": "text"
+    },
+    {
+      "displayName": "inputValue",
+      "type": "string",
+      "description": "输入框的初始文本",
+      "defaultValue": "null"
+    },
+    {
+      "displayName": "inputPattern",
+      "type": "regexp",
+      "description": "输入框的校验表达式",
+      "defaultValue": "null",
+      "tip": "regexp"
+    },
+    {
+      "displayName": "inputValidator",
+      "type": "Function",
+      "description": "输入框的校验函数。应该返回一个 boolean 或者 string， 如果返回的是一个 string 类型，那么该返回值会被赋值给 inputErrorMessage 用于向用户展示错误消息。",
+      "defaultValue": "null",
+      "tip": "() => boolean | string"
+    },
+    {
+      "displayName": "inputErrorMessage",
+      "type": "string",
+      "description": "校验未通过时的提示文本",
+      "defaultValue": "输入的数据不合法!"
+    },
+    {
+      "displayName": "center",
+      "type": "boolean",
+      "description": "是否居中布局",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "draggable",
+      "type": "boolean",
+      "description": "MessageBox 是否可拖放",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "overflow",
+      "type": "boolean",
+      "description": "MessageBox 拖动范围可以超出可视区",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "roundButton",
+      "type": "boolean",
+      "description": "是否使用圆角按钮",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "buttonSize",
+      "type": "string",
+      "description": "自定义确认按钮及取消按钮的大小",
+      "defaultValue": "default",
+      "tip": "'default' |'small' | 'large'"
+    },
+    {
+      "displayName": "appendTo",
+      "type": "string | HTMLElement",
+      "description": "设置组件的根元素",
+      "defaultValue": "null",
+      "tip": ""
+    }
+  ],
+  "methods": []
+}

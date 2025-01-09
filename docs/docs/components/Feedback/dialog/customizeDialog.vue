@@ -1,18 +1,10 @@
 <template>
-  <k-button plain @click="dialogTableVisible = true">
-    Open a Table nested Dialog
-  </k-button>
+  <k-button plain @click="dialogTableVisible = true">Open a Table nested Dialog</k-button>
 
-  <k-button plain @click="dialogFormVisible = true">
-    Open a Form nested Dialog
-  </k-button>
+  <k-button plain @click="dialogFormVisible = true">Open a Form nested Dialog</k-button>
 
   <k-dialog v-model="dialogTableVisible" title="Shipping address" width="800">
-    <k-table :data="gridData">
-      <k-table-column property="date" label="Date" width="150" />
-      <k-table-column property="name" label="Name" width="200" />
-      <k-table-column property="address" label="Address" />
-    </k-table>
+    <k-tree-table :data="gridData" :column="column"></k-tree-table>
   </k-dialog>
 
   <k-dialog v-model="dialogFormVisible" title="Shipping address" width="500">
@@ -30,9 +22,7 @@
     <template #footer>
       <div class="dialog-footer">
         <k-button @click="dialogFormVisible = false">Cancel</k-button>
-        <k-button main @click="dialogFormVisible = false">
-          Confirm
-        </k-button>
+        <k-button main @click="dialogFormVisible = false">Confirm</k-button>
       </div>
     </template>
   </k-dialog>
@@ -78,4 +68,23 @@ const gridData = [
     address: 'No.1518,  Jinshajiang Road, Putuo District'
   }
 ];
+
+const column = ref([
+  {
+    title: 'Date',
+    field: 'date',
+    width: '150',
+    dataType: 'string'
+  },
+  {
+    title: 'Name',
+    field: 'name',
+    width: '200',
+    dataType: 'string'
+  },
+  {
+    title: 'Address',
+    field: 'address'
+  }
+]);
 </script>
