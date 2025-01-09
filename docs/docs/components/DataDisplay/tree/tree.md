@@ -90,6 +90,13 @@ title: Tree 树形控件
 
 <preview path="./draggableTree.vue" />
 
+## 自定义节点图标
+
+通过`icon`，`expand-icon`，`collapse-icon`属性分别可以自定义叶子节点、展开节点、收起节点的图标。
+设置`showArrow`为`false`可以隐藏图标
+
+<preview path="./customIconTree.vue" />
+
 ## API
 
 <API src="./tree.json" lang="zh"></API>
