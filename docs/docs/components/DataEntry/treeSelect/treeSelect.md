@@ -48,6 +48,12 @@ title: TreeSelect 树形选择
 
 <preview path="./customTreeSelect" />
 
+## 自定义Icon
+
+自定义树节点的内容。
+
+<preview path="./customIconTreeSelect" />
+
 ## 懒加载
 
 树节点懒加载，更加适合于数据量大的列表。
