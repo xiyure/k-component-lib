@@ -4,14 +4,13 @@
       'k-view-item',
       _styleModule,
       {
-        'k-view-active': activeView === props.value,
-        'k-view-disabled': props.disabled,
-      },
+        'k-view-active': activeView === value,
+        'k-view-disabled': disabled,
+        'k-view-custom': custom,
+        'k-view-common': !custom
+      }
     ]"
-    :draggable="parentProps.draggable"
-    @dragstart="handleDragStart"
-    @dragover="handleDragOver"
-    @drop="handleDrop"
+    :data-view-value="value"
     @click="handleChange"
   >
     <div class="k-view-item__label">
@@ -44,7 +43,7 @@ defineOptions({
 });
 
 const props = defineProps<ViewItemProps>();
-const emits = defineEmits(['change', 'remove', '_drag-start', '_drag-drop']);
+const emits = defineEmits(['change', 'remove']);
 
 const activeView = inject<Ref<string | number>>('activeView', ref(0));
 const _styleModule = inject('_styleModule', '');
@@ -64,25 +63,6 @@ function handleChange() {
 }
 function handleRemove() {
   emits('remove', props.originData);
-}
-// 拖拽
-function handleDragStart(e: Event) {
-  if (!parentProps.draggable) {
-    return;
-  }
-  emits('_drag-start', e.currentTarget, props.originData);
-}
-function handleDragOver(e: Event) {
-  if (!parentProps.draggable) {
-    return;
-  }
-  e.preventDefault();
-}
-function handleDrop(e: Event) {
-  if (!parentProps.draggable) {
-    return;
-  }
-  emits('_drag-drop', e.currentTarget);
 }
 </script>
 

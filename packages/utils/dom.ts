@@ -1,3 +1,3 @@
-export function getElement<T extends Element>(selector: string): T | null {
-  return document.querySelector(selector) as T | null;
+export function getElement<T extends Element>(selector: string, parent: Element | Document = document): T | null {
+  return parent.querySelector(selector) as T | null;
 }

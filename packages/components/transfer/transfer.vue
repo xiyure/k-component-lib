@@ -40,7 +40,7 @@ import { ref, computed, watch, onMounted, onUnmounted, inject } from 'vue';
 import { ElTransfer, TransferKey, TransferDirection } from 'element-plus';
 import { VueI18nTranslation } from 'vue-i18n';
 import { IconSearch } from 'ksw-vue-icon';
-import Sortable, { SortableEvent } from 'sortablejs';
+import { Sortable, SortableInstance, SortableEvent } from '../../utils/event/sortable';
 import { TransferProps } from './type';
 import { KInput } from '../input';
 import { getExposeProxy, sortBySmallerList } from '../../utils';
@@ -199,7 +199,7 @@ function resetTransferData() {
 }
 
 // 拖拽排序
-let sortable: Sortable | null = null;
+let sortable: SortableInstance | null = null;
 function initSortable() {
   if (!props.drag) {
     return;
@@ -210,7 +210,7 @@ function initSortable() {
   if (!dragElem) {
     return;
   }
-  sortable = new Sortable(dragElem, {
+  sortable = Sortable(dragElem, {
     handle: '.k-transfer-sort',
     animation: 150,
     onEnd: (sortableEvent: SortableEvent) => {
