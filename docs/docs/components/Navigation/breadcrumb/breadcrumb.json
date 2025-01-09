@@ -3,12 +3,12 @@
   "props": [
     {
       "displayName": "separator",
-      "type": "String",
+      "type": "string",
       "description": "分隔符"
     },
     {
       "displayName": "separator-icon",
-      "type": "String | Component",
+      "type": "string | Component",
       "description": "图标分隔符的组件或组件名"
     }
   ],

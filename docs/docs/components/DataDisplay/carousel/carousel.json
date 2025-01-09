@@ -15,9 +15,10 @@
     },
     {
       "displayName": "trigger",
-      "type": "string",
+      "type": "enum",
       "description": "指示器的触发方式",
-      "defaultValue": "hover"
+      "defaultValue": "hover",
+      "tip": "'hover' | 'click'"
     },
     {
       "displayName": "autoplay",
@@ -33,21 +34,24 @@
     },
     {
       "displayName": "indicator-position",
-      "type": "string",
+      "type": "enum",
       "description": "指示器的位置",
-      "defaultValue": ""
+      "defaultValue": "",
+      "tip": "'' | 'none' | 'outside'"
     },
     {
       "displayName": "arrow",
-      "type": "string",
+      "type": "enum",
       "description": "切换箭头的显示时机",
-      "defaultValue": "hover"
+      "defaultValue": "hover",
+      "tip": "'' | 'card'"
     },
     {
       "displayName": "type",
-      "type": "string",
+      "type": "enum",
       "description": "carousel 的类型",
-      "defaultValue": ""
+      "defaultValue": "",
+      "tip": "'' | 'card'"
     },
     {
       "displayName": "loop",
@@ -57,9 +61,10 @@
     },
     {
       "displayName": "direction",
-      "type": "string",
+      "type": "enum",
       "description": "展示的方向",
-      "defaultValue": "horizontal"
+      "defaultValue": "horizontal",
+      "tip": "'horizontal' | 'vertical'"
     },
     {
       "displayName": "pause-on-hover",
@@ -71,14 +76,15 @@
   "events": [
     {
       "displayName": "change",
-      "type": "function",
+      "type": "Function",
       "description": "幻灯片切换时触发，包含目前激活的幻灯片的索引和原幻灯片的索引。",
-      "defaultValue": ""
+      "defaultValue": "",
+      "tip": "(current: number, prev: number) => boolean"
     }
   ],
   "slots": [
     {
-      "displayName": "",
+      "displayName": "default",
       "type": "object",
       "description": "自定义默认内容",
       "defaultValue": ""
@@ -87,19 +93,19 @@
   "methods": [
     {
       "displayName": "setActiveItem",
-      "type": "function",
+      "type": "Function",
       "description": "手动切换幻灯片，需要切换的幻灯片的索引，从 0 开始；或相应 el-carousel-item 的 name 属性值",
       "defaultValue": ""
     },
     {
       "displayName": "prev",
-      "type": "function",
+      "type": "Function",
       "description": "切换至上一张幻灯片",
       "defaultValue": ""
     },
     {
       "displayName": "next",
-      "type": "function",
+      "type": "Function",
       "description": "切换至下一张幻灯片",
       "defaultValue": ""
     }

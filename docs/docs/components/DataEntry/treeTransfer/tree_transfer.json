@@ -17,7 +17,7 @@
     },
     {
       "displayName": "titles",
-      "type": "Array",
+      "type": "array",
       "description": "视图标题",
       "defaultValue": "",
       "tip": "[string, string]"

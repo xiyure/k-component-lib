@@ -3,22 +3,22 @@
   "props": [
     {
       "displayName": "target",
-      "type": "String",
+      "type": "string",
       "description": "触发滚动的对象"
     },
     {
       "displayName": "visibility-height",
-      "type": "Number",
+      "type": "number",
       "description": "滚动高度达到此参数值才出现"
     },
     {
       "displayName": "right",
-      "type": "Number",
+      "type": "number",
       "description": "控制其显示位置，距离页面右边距"
     },
     {
       "displayName": "bottom",
-      "type": "Number",
+      "type": "number",
       "description": "控制其显示位置，距离页面底部距离"
     }
   ],

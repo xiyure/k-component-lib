@@ -17,7 +17,7 @@
   "events": [],
   "slots": [
     {
-      "displayName": "",
+      "displayName": "default",
       "type": "object",
       "description": "自定义默认内容",
       "defaultValue": ""

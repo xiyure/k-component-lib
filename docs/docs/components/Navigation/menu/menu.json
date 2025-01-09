@@ -22,7 +22,7 @@
   ],
   "slots": [
     {
-      "displayName": "",
+      "displayName": "default",
       "type": "slot",
       "description": "自定义默认内容"
     }

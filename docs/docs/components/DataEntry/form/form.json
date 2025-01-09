@@ -176,7 +176,7 @@
     {
       "displayName": "fields",
       "description": "获取所有字段的context",
-      "type": "Array",
+      "type": "array",
       "tip": ""
     }
   ]

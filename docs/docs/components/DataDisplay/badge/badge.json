@@ -5,7 +5,7 @@
       "displayName": "value",
       "type": "string / number",
       "description": "显示值",
-      "defaultValue": "''"
+      "defaultValue": ""
     },
     {
       "displayName": "max",
@@ -29,7 +29,8 @@
       "displayName": "type",
       "type": "enum",
       "description": "badge type.",
-      "defaultValue": "danger"
+      "defaultValue": "danger",
+      "tip": "'primary' | 'success' | 'warning' | 'danger' | 'info'"
     }
   ],
   "events": [],

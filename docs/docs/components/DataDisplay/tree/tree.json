@@ -221,7 +221,7 @@
   ],
   "slots": [
     {
-      "displayName": "",
+      "displayName": "default",
       "description": "自定义树节点的内容， 自定义树节点的内容",
       "parameters": ""
     },

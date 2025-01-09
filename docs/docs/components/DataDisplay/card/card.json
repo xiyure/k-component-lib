@@ -11,27 +11,27 @@
       "displayName": "footer",
       "type": "string",
       "description": "卡片页脚。你既可以通过设置 footer 来修改页脚内容，也可以通过 slot#footer 传入 DOM 节点。",
-      "defaultValue": "",
-      "since": "2.4.3"
+      "defaultValue": ""
     },
     {
       "displayName": "body-style",
       "type": "object",
       "description": "body 的 CSS 样式。",
-      "defaultValue": ""
+      "defaultValue": "",
+      "tip": "CSSProperties"
     },
     {
       "displayName": "body-class",
       "type": "string",
       "description": "body 的自定义类名。",
-      "defaultValue": "",
-      "since": "2.3.10"
+      "defaultValue": ""
     },
     {
       "displayName": "shadow",
       "type": "enum",
       "description": "卡片阴影显示时机。",
-      "defaultValue": "always"
+      "defaultValue": "always",
+      "tip": "always | never | hover"
     }
   ],
   "events": [],

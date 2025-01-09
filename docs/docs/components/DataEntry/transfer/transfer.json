@@ -45,14 +45,14 @@
     },
     {
       "displayName": "titles",
-      "type": "Array",
+      "type": "array",
       "description": "左右两侧标题",
       "defaultValue": "[]",
       "tip": "[string, string]"
     },
     {
       "displayName": "button-texts",
-      "type": "Array",
+      "type": "array",
       "description": "按钮文案",
       "defaultValue": "[]",
       "tip": "[string, string]"
