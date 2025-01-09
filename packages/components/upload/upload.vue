@@ -1,8 +1,9 @@
 <template>
-  <div :class="['k-upload', _styleModule, {'k-dragger': props.drag}]">
+  <div :class="['k-upload', _styleModule, {'k-dragger': drag}]">
     <el-upload
       ref="KUploadRef"
       v-bind="$attrs"
+      :action="action"
       :on-preview="handlePreview"
       :auto-upload="autoUpload"
       :disabled="disabled"
@@ -92,7 +93,9 @@ defineOptions({
   name: 'KUpload'
 });
 
-const props = withDefaults(defineProps<UploadProps>(), {});
+const props = withDefaults(defineProps<UploadProps>(), {
+  autoUpload: true
+});
 
 const _styleModule = inject('_styleModule', '');
 const KUploadRef = ref();
