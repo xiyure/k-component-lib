@@ -1,0 +1,99 @@
+name: Trigger Deploy Docs site to Pages
+on:
+  repository_dispatch:
+    types: [trigger-deploy]
+
+# 设置 GITHUB_TOKEN 的权限，以允许部署到 GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 只允许同时进行一次部署，跳过正在运行和最新队列之间的运行队列
+# 但是，不要取消正在进行的运行，因为我们希望允许这些生产部署完成
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  # 构建工作
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.client_payload.ref }}
+          fetch-depth: 0
+      
+      - run: echo ${{ github.event.client_payload.sha }}
+      
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        
+      - name: Install dependencies
+        run: |
+          npm i
+          cd docs
+          npm i
+      - name: Build with VitePress
+        run: |
+          cd docs
+          npm run build
+      # - name: Upload pages artifact
+      #   uses: actions/upload-pages-artifact@v3
+      #   with:
+      #     path: docs/.vitepress/dist
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: VitePress-artifact
+          path: docs/.vitepress/dist
+
+  # 部署 GitHub Pages
+  # deploy-github-pages:
+  #   environment:
+  #     name: github-pages
+  #     url: ${{ steps.deployment.outputs.page_url }}
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   name: Deploy
+  #   steps:
+  #     - name: Deploy to GitHub Pages
+  #       id: deployment
+  #       uses: actions/deploy-pages@v4
+  #       continue-on-error: true  # 即使失败，也继续下一个步骤
+
+  # 部署到 Centos 服务器
+  deploy-centos:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download project files
+        uses: actions/download-artifact@v4
+        with:
+          name: VitePress-artifact
+      - name: Deploy to Centos server
+        uses: easingthemes/ssh-deploy@main
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ARGS: "-rlgoDzvc -i --delete"
+          SOURCE: "./"
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_PORT: ${{ secrets.REMOTE_PORT }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          TARGET: ${{ secrets.TARGET }}
+          EXCLUDE: "/dist/, /docs/.vitepress/dist/, /node_modules/"
+          SCRIPT_BEFORE: |
+            whoami
+            ls -al
+          SCRIPT_AFTER: |
+            whoami
+            ls -al
+            echo $RSYNC_STDOUT
+        continue-on-error: true  # 即使失败，也继续下一个步骤
