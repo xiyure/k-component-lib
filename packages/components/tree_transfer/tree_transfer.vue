@@ -68,18 +68,19 @@
       <div class="k-transfer-content k-transfer-content__right">
         <div class="k-transfer__list">
           <k-table
+            ref="tableRightRef"
             size="mini"
             :border="false"
             height="100%"
             :data="rightData"
-            :row-config="{ useKey: true }"
+            :row-config="{ useKey: true, drag: showDrag }"
             :scroll-y="scrollY"
-            @drag="dragSort"
+            @row-dragend="dragSort"
           >
             <template v-if="$slots.empty && query" #empty>
               <slot name="empty" :query="query"></slot>
             </template>
-            <k-table-column :field="label">
+            <k-table-column :field="label" drag-sort>
               <template #header="data">
                 <slot name="rightHeader" v-bind="data">
                   <div class="right-data-header">
@@ -97,15 +98,14 @@
                         v-if="props.icon"
                         class="column-icon"
                       />
-                      <slot name="right-label" :parent-data="parentData(row)">
-                        <span class="tree-transfer__cell-label" :title="row[props.label]">
+                      <span class="tree-transfer__cell-label" :title="row[props.label]">
+                        <slot name="right-label" :parent-data="parentData(row)">
                           {{ row[props.label] }}
-                        </span>
-                      </slot>
+                        </slot>
+                      </span>
                     </slot>
                   </span>
                   <div class="column-operate">
-                    <IconDrag v-if="props.showDrag" class="__column-drag-icon" />
                     <IconClose class="column-close" @click="removeRightData(row)" />
                   </div>
                 </div>
@@ -120,13 +120,13 @@
 
 <script setup lang="tsx">
 import { ref, computed, watch, nextTick, inject, onMounted } from 'vue';
-import { SortableEvent } from 'sortablejs';
-import { IconSearch, IconDrag, IconClose } from 'ksw-vue-icon';
+import { IconSearch, IconClose } from 'ksw-vue-icon';
 import { VxeTablePropTypes } from 'vxe-table';
 import { TreeTransferProps, TreeTransferData } from './type';
 import { KTable, KTableColumn } from '../table';
 import { KInput } from '../input';
 import { sortBySmallerList } from '../../utils';
+import { RowData } from '../tree_table';
 
 defineOptions({
   name: 'KTreeTransfer'
@@ -160,6 +160,7 @@ const leftData = ref<TreeTransferData[]>([]);
 const rightData = ref<TreeTransferData[]>([]);
 const query = ref('');
 const treeLeftRef = ref();
+const tableRightRef = ref();
 const KTransferInputRef = ref();
 const treeDataMap: Map<string | number, TreeTransferData> = new Map();
 const checkDataMap: Map<string | number, { row: Row; checked: boolean }> = new Map();
@@ -196,7 +197,6 @@ const treeConfig = computed(() => {
 });
 const scrollY = computed(() => ({ enabled: true, ...(props.scrollY || {}) }));
 const rowLevel = computed(() => (row: Row) => getTreeNodeLevel(row));
-
 const parentData = computed(
   () => function (row: Row) {
     let data = row;
@@ -247,10 +247,7 @@ function initCheckDataMap() {
   if (tableInstance) {
     const checkedRows = tableInstance.getCheckboxRecords();
     for (const row of checkedRows) {
-      const mapItem = checkDataMap.get(row.id);
-      if (mapItem) {
-        mapItem.checked = true;
-      }
+      updateCheckedMap(row, true);
     }
   }
   updateSelectData();
@@ -262,7 +259,6 @@ function checkboxChange(row: Row | Row[], checked: boolean, isAll: boolean = fal
   emits('change', getSelectedData());
 }
 function updateSelectData() {
-  // const newData = getSelectedData();
   const newData = leftData.value.filter(
     (item: TreeTransferData) => checkDataMap.get(item.id)?.checked ?? false
   );
@@ -276,27 +272,30 @@ function updateSelectData() {
 }
 function handleSelectData(row: Row, checked: boolean, isAll: boolean) {
   if (isAll) {
-    const checkedNodes = treeLeftRef.value.tableInstance.getCheckboxRecords();
-    const leafNodes = checkedNodes.filter((item: Row) => !item.children || !item.children.length);
-    for (const leafNode of leafNodes) {
-      const mapItem = checkDataMap.get(leafNode.id);
-      if (mapItem) {
-        mapItem.checked = checked;
-      }
+    const $table = treeLeftRef.value.tableInstance;
+    const checkedNodes = checked
+      ?  $table.getCheckboxRecords()
+        .filter((item: Row) => !item.children || !item.children.length)
+      : rightData.value;
+    for (const node of checkedNodes) {
+      updateCheckedMap(node, checked);
     }
     return;
   }
   const rows = Array.isArray(row) ? row : [row];
   for (const rowItem of rows) {
-    const mapItem = checkDataMap.get(row.id);
-    if (mapItem) {
-      mapItem.checked = checked;
-    }
+    updateCheckedMap(rowItem, checked);
     if (rowItem.children && rowItem.children.length) {
       for (const childRow of rowItem.children) {
         handleSelectData(childRow, checked, isAll);
       }
     }
+  }
+}
+function updateCheckedMap(row: Row | RowData, checked: boolean) {
+  const mapItem = checkDataMap.get(row.id);
+  if (mapItem) {
+    mapItem.checked = checked;
   }
 }
 function removeRightData(row: Row) {
@@ -476,13 +475,9 @@ function toggleTreeExpand(row: Row, e: Event) {
   }
 }
 // 拖拽排序
-function dragSort(sortEvent: SortableEvent) {
-  const { oldIndex, newIndex } = sortEvent;
-  if (newIndex === undefined || oldIndex === undefined || newIndex === oldIndex) {
-    return;
-  }
-  const ids = rightData.value.map((item) => item.id);
-  ids.splice(newIndex, 0, ids.splice(oldIndex, 1)[0]);
+function dragSort() {
+  const fullTableData = tableRightRef.value.tableInstance.getTableData().fullData;
+  const ids = fullTableData.map((item: Row) => item.id);
   fullData.value = sortBySmallerList(fullData.value, ids);
   const selectedData = getSelectedData();
   emits('change', selectedData);

@@ -1,8 +1,7 @@
 import { ref, computed, Ref } from 'vue';
 import { VxeTablePropTypes, VxeTableInstance } from 'vxe-table';
-import { SortableEvent } from 'sortablejs';
 import { Store, TreeTableProps, RowData } from '../type';
-import { multiFieldSort } from '../../../utils';
+import { multiFieldSort, transformTreeData, sortBySmallerList } from '../../../utils';
 
 // 重定义vxe-table的部分方法
 export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>) {
@@ -30,13 +29,13 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     } else {
       for (let i = 0; i < newRows.length; i++) {
         const row = newRows[i];
-        const pid = props.treeConfig?.parentField ?? 'pid';
-        const parentRow = xeTableData.value.find((item: RowData) => item[keyField.value] === row[pid]);
+        const { parentField } = getTreeField();
+        const parentRow = xeTableData.value.find((item: RowData) => item[keyField.value] === row[parentField]);
         if (!parentRow) {
           xeTableData.value.unshift(row);
           return;
         }
-        const insertIndex = xeTableData.value.findIndex((item: RowData) => item[pid] === parentRow[keyField.value]);
+        const insertIndex = xeTableData.value.findIndex((item: RowData) => item[parentField] === parentRow[keyField.value]);
         if (insertIndex === -1) {
           xeTableData.value.unshift(row);
         } else {
@@ -74,18 +73,18 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
       let insertIndex: number = -1;
       for (let i = 0; i < newRows.length; i++) {
         const rowItem = newRows[i];
-        const pid = props.treeConfig?.parentField ?? 'pid';
-        if (typeof row === 'object' && (row[pid] === rowItem[pid] || (!row[pid] && !rowItem[pid]))) {
+        const { parentField } = getTreeField();
+        if (typeof row === 'object' && (row[parentField] === rowItem[parentField] || (!row[parentField] && !rowItem[parentField]))) {
           insertIndex = xeTableData.value.findIndex((item: RowData) => item[keyField.value] === row[keyField.value]);
           if (insertIndex !== -1) {
             validRows.push(rowItem);
           }
         } else {
-          const parentRow = xeTableData.value.find((item: RowData) => item[keyField.value] === rowItem[pid]);
+          const parentRow = xeTableData.value.find((item: RowData) => item[keyField.value] === rowItem[parentField]);
           if (!parentRow) {
             invalidRows.push(rowItem);
           } else {
-            insertIndex = xeTableData.value.findIndex((item: RowData) => item[pid] === parentRow[keyField.value]);
+            insertIndex = xeTableData.value.findIndex((item: RowData) => item[parentField] === parentRow[keyField.value]);
             if (insertIndex === -1) {
               invalidRows.push(rowItem);
             } else {
@@ -206,73 +205,24 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
       expandRows.length = 0;
     });
   }
-  // 拖拽排序
-  function dragSort(sortableEvent: SortableEvent) {
+  // 为确保高级筛选和搜索功能正常
+  function dragSort() {
+    if (props.useTree && props.treeConfig?.lazy) {
+      return;
+    }
     getTreeExpandRecords();
-    const targetTrElem = sortableEvent.item;
-    const prevTrElem = targetTrElem.previousElementSibling as HTMLElement;
-    const targetRowNode = $table.value?.getRowNode(targetTrElem);
-    if (!targetRowNode) {
-      return false;
-    }
-    const selfRow = targetRowNode.item;
-    const curRowIndex = xeTableData.value
-    ?.findIndex((row: RowData) => row.id === selfRow.id) as number;
-    const curRow = xeTableData.value?.splice(curRowIndex, 1)[0];
-    // 更新插入索引
-    let insertIndex = 0;
-    if (prevTrElem) {
-      // 移动到节点
-      const prevRowNode = $table.value?.getRowNode(prevTrElem);
-      if (!prevRowNode) {
-        return false;
-      }
-      const prevRow = prevRowNode.item;
-      if (isMoveToChild(curRow, prevRow)) {
-        console.warn('Can not move to child node');
-        updateDragData(curRow, curRowIndex);
-        return false;
-      }
-      const prevRowIndex = xeTableData.value
-      ?.findIndex((row: RowData) => row.id === prevRow.id) as number;
-      const prevParentRow = $table.value?.getRowById(prevRow.parentId);
-      // 更新插入索引
-      insertIndex = prevRowIndex + 1;
-      if ($table.value?.isTreeExpandByRow(prevRow)) {
-        // 移动到当前的子节点
-        curRow.parentId = prevRow.id;
-      } else if ($table.value?.isTreeExpandByRow(prevParentRow)) {
-        // 移动到相邻节点
-        curRow.parentId = prevRow.parentId ?? null;
-      } else {
-        // 移动到父节点的相邻节点
-        curRow.parentId = prevParentRow?.parentId ?? null;
-      }
-    } else {
-      // 移动到第一行
-      curRow.parentId = null;
-      insertIndex = 0;
-    }
-    updateDragData(curRow, insertIndex);
-    return true;
-  }
-  function updateDragData(row: Row, index: number) {
+    const { rowField, parentField } = getTreeField();
+    const { fullData = [] } = $table.value?.getTableData();
+    const currentIds = transformTreeData(
+      fullData,
+      { idField: rowField, parentField }
+    ).map((item: RowData) => item[rowField]);
+    const newData = sortBySmallerList(xeTableData.value, currentIds, rowField);
+    xeTableData.value.length = 0;
+    xeTableData.value.push(...newData);
     setTimeout(() => {
-      xeTableData.value?.splice(index, 0, row);
       restoreTreeExpandRecords();
     });
-  }
-  function isMoveToChild(node: Row, target: RowData | undefined) {
-    const pid = props.treeConfig?.parentField ?? 'pid';
-    const id = keyField.value;
-    if (!node[id] || !target || !target[pid]) {
-      return false;
-    }
-    if (node[id] === target[pid]) {
-      return true;
-    }
-    const parentRow = xeTableData.value.find((item: RowData) => item[id] === target[pid]);
-    return isMoveToChild(node, parentRow);
   }
   /* TODO: vxe-table的setTreeExpand方法存在问题，这里暂时重写该方法
     issue:https://github.com/x-extends/vxe-table/issues/2650
@@ -315,6 +265,11 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     xeTableData.value = Array.from(newData);
     store.data = [...xeTableData.value];
     return xeTableData.value;
+  }
+  function getTreeField() {
+    const rowField = props.treeConfig?.rowField ?? 'id';
+    const parentField = props.treeConfig?.parentField ?? 'pid';
+    return { rowField, parentField };
   }
 
   return {

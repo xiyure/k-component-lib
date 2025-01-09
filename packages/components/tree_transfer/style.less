@@ -32,9 +32,18 @@
     margin-left: 10px;
     .column-content {
       overflow: hidden;
+      margin-right: 7%;
     }
-    .tree-transfer__cell-label {
-      margin-right: 8px;
+    .vxe-cell {
+      .vxe-cell--drag-handle {
+        position: absolute;
+        transform: rotate(90deg);
+        right: 6%;
+        i {
+          font-size: 15px;
+          font-weight: 900;
+        }
+      }
     }
   }
   .k-transfer-content__left,
@@ -97,10 +106,6 @@
     .column-operate {
       display: flex;
       align-items: center;
-      .__column-drag-icon {
-        cursor: move;
-        margin-right: 5px;
-      }
       .column-close {
         cursor: pointer;
         &:hover {

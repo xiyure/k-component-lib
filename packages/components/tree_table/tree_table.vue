@@ -215,7 +215,6 @@
         :show-overflow="showOverflow"
         :auto-resize="autoResize"
         :show-column-menu="showColumnMenu"
-        :show-drag-column="showDragColumn"
         :align="align"
         :round="useAntStyle || round"
         :height="adaptive ? undefined : '100%'"
@@ -246,7 +245,7 @@
           }
         "
         @sort-change="onSortChange"
-        @drag="drag"
+        @row-dragend="drag"
       >
         <template v-for="(item, index) in columns" :key="index">
           <KColumnGroup :column="item" :size="size" :align="align">
@@ -257,9 +256,6 @@
         </template>
         <template v-if="slots.empty" #empty>
           <slot name="empty"></slot>
-        </template>
-        <template v-if="slots.dragIcon" #dragIcon>
-          <slot name="dragIcon"></slot>
         </template>
         <template v-if="slots.loading" #loading>
           <slot name="loading"></slot>
@@ -309,7 +305,6 @@ import {
   IconSizeControls
 } from 'ksw-vue-icon';
 import { cloneDeep } from 'lodash-es';
-import { SortableEvent } from 'sortablejs';
 import KColumnGroup from './column_group';
 import { KInput } from '../input';
 import { KButton } from '../button';
@@ -421,7 +416,7 @@ const emits = defineEmits([
   'hide-column',
   'checkbox-change',
   'checkbox-all',
-  'drag',
+  'row-dragend',
   'sort-change',
   'advanced-filter-confirm',
   'advanced-filter-clear',
@@ -1062,10 +1057,9 @@ function cellClick({ row, rowid }: { row: VxeTablePropTypes.Row; rowid: string |
   }
   emits('highlight-change', row, isHighlight);
 }
-function drag(sortEvent: SortableEvent) {
-  if (dragSort(sortEvent)) {
-    emits('drag', xeTableData.value);
-  }
+function drag(data: any) {
+  dragSort();
+  emits('row-dragend', data);
 }
 
 // 刷新高级筛选的表格数据

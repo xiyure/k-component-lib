@@ -5,15 +5,6 @@
     :data="data"
     v-bind="$attrs"
   >
-    <vxe-column v-if="showDragColumn" width="25" class="drag-column">
-      <template #default>
-        <span class="__column-drag-icon">
-          <slot name="dragIcon">
-            <IconDrag />
-          </slot>
-        </span>
-      </template>
-    </vxe-column>
     <slot v-bind="data"></slot>
     <template v-if="slots.empty" #empty="data">
       <slot name="empty" v-bind="data"></slot>
@@ -26,9 +17,7 @@
 
 <script setup lang="ts">
 import { ref, provide, computed, onMounted, onUnmounted, nextTick, inject } from 'vue';
-import { VxeTable, VxeColumn, VxeColumnProps, VxeTableInstance } from 'vxe-table';
-import Sortable, { SortableEvent } from 'sortablejs';
-import { IconDrag } from 'ksw-vue-icon';
+import { VxeTable, VxeColumnProps, VxeTableInstance } from 'vxe-table';
 import domZIndex from 'dom-zindex';
 import { KTableProps } from './type';
 import { genRandomStr } from '../../utils';
@@ -93,7 +82,6 @@ for (const key in eventMap) {
 const emits = defineEmits([
   'desc-change',
   'hide-column',
-  'drag',
   'sort-change',
   'clear-sort',
   'filter-change',
@@ -105,13 +93,8 @@ onMounted(() => {
   initZIndex();
 });
 const vxeTableRef = ref<VxeTableInstance>();
-// 拖拽
-let timer: any;
-let sortable: any;
+
 nextTick(() => {
-  timer = setTimeout(() => {
-    rowDrop();
-  }, 500);
   if (!tableInstance.value) {
     return;
   }
@@ -124,35 +107,10 @@ onUnmounted(() => {
     const { name } = eventMap[key];
     emitter.remove(name, id);
   }
-  clearTimeout(timer);
-  if (sortable) {
-    sortable.destroy();
-  }
 });
 function initZIndex() {
   const maxZIndex = domZIndex.getMax();
   domZIndex.setCurrent(maxZIndex + 1);
-}
-function rowDrop() {
-  const $table = vxeTableRef.value;
-  if (!$table || !$table.$el) {
-    // console.error('Table element is not available.');
-    return;
-  }
-
-  const tbodyElement = $table.$el.querySelector('.body--wrapper > .vxe-table--body tbody');
-  if (!tbodyElement) {
-    // console.error('Tbody element not found.');
-    return;
-  }
-
-  sortable = Sortable.create(tbodyElement, {
-    handle: '.__column-drag-icon',
-    animation: 150,
-    onEnd: (sortableEvent: SortableEvent) => {
-      emits('drag', sortableEvent);
-    }
-  });
 }
 function updateDescription(column:VxeColumnProps, desc:string) {
   emits(DESC_EVENT_NAME, column, desc);
@@ -217,8 +175,4 @@ defineExpose({
 @import './style.less';
 // 临时解决方案，vxe-table上游样式问题，重写tooltip样式
 @import './tooltip.less';
-.__column-drag-icon {
-  cursor: move;
-  font-size: 16px;
-}
 </style>

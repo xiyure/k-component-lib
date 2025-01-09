@@ -90,7 +90,11 @@ export function GetColorLevel(hex: any) {
 }
 
 // 较大长度数组依据较小长度数组排序
-export function sortBySmallerList(targetData: any[], sourceData: string[], key: string = 'id') {
+export function sortBySmallerList(
+  targetData: any[],
+  sourceData: string[],
+  key: string = 'id'
+): any[] {
   const indexMap = new Map(targetData.map((v, i) => [v[key], i]));
   const dataMap = new Map(targetData.map((v) => [v[key], v]));
   const indexList: any = [];
@@ -117,7 +121,7 @@ export function sortBySmallerList(targetData: any[], sourceData: string[], key: 
   return newData;
 }
 
-// 树形数据转数组
+// Tree => Array
 export function treeDataToArray(treeData: any[] | undefined, childrenField: string) {
   if (!Array.isArray(treeData) || treeData.length === 0) {
     return [];
@@ -133,6 +137,7 @@ export function treeDataToArray(treeData: any[] | undefined, childrenField: stri
   return result;
 }
 
+// Tree => Array(plus)
 type TransformTreeConfig = {
   parentField?: string,
   children?: string,
@@ -173,6 +178,7 @@ export function transformTreeData(
   return flatTreeData(treeData, null);
 }
 
+// 过滤无效树形数据
 export function getValidTreeData(
   treeData: any[],
   childrenField: string,
@@ -242,30 +248,24 @@ export function multiFieldSort(data: any[], fields: SortFields[]) {
   return data.sort((a, b) => {
     for (let i = 0; i < fields.length; i++) {
       const { field, order } = fields[i];
-
-      // 比较 a 和 b 当前字段的值
       let result = 0;
-
       if (typeof a[field] === 'string') {
         result = a[field].localeCompare(b[field]);
       } else {
         result = a[field] - b[field];
       }
-
-      // 如果是降序排列，则反转结果
       if (order === 'desc') {
         result = -result;
       }
-
-      // 如果该字段结果不为 0，说明排序已经有了结果，直接返回
       if (result !== 0) {
         return result;
       }
     }
-    return 0; // 如果所有字段都相等，则返回 0
+    return 0;
   });
 }
 
+// 格式化日期
 export function formatter(date: Date | Date[], formatter: any) {
   if (typeof formatter !== 'string') {
     return date;
@@ -298,6 +298,7 @@ export function formatter(date: Date | Date[], formatter: any) {
   return result;
 }
 
+// 补零
 export function padZero(num: number, length: number) {
   let str = `${num}`;
   while (str.length < length) {
@@ -306,6 +307,7 @@ export function padZero(num: number, length: number) {
   return str;
 }
 
+// 获取CSS变量值
 export function getCSSVar(el: HTMLElement | null, varName: string) {
   if (!(el instanceof HTMLElement) && el !== null) {
     console.warn('getCSSVar: el is not a HTMLElement');
@@ -315,6 +317,7 @@ export function getCSSVar(el: HTMLElement | null, varName: string) {
   return getComputedStyle(targetElem).getPropertyValue(varName);
 }
 
+// 设置CSS变量值
 export function setCSSVar(el: HTMLElement | null, varName: string, value: string) {
   if (!(el instanceof HTMLElement) && el !== null) {
     console.warn('setCSSVar: el is not a HTMLElement');
