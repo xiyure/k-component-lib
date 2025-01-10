@@ -1,0 +1,28 @@
+{
+  "name": "sliderButton",
+  "props": [
+    {
+      "displayName": "items",
+      "type": "SliderButtonPaneProps[]",
+      "description": "需要展示的数据项",
+      "defaultValue": 0
+    },
+    {
+      "displayName": "active",
+      "type": "string | number",
+      "description": "当前激活的按钮",
+      "defaultValue": 0
+    }
+  ],
+  "events": [
+    {
+      "displayName": "change",
+      "type": "Function",
+      "description": "值改变时触发",
+      "defaultValue": "",
+      "tip": "(value: string) => void"
+    }
+  ],
+  "slots": [],
+  "methods": []
+}

@@ -1,6 +1,6 @@
 // SwitchButtonProps
 export interface SliderButtonProps {
-  items?: SliderButtonPaneProps[]
+  items: SliderButtonPaneProps[]
   active?: string | number
 }
 

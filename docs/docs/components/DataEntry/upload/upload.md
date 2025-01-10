@@ -18,11 +18,11 @@ title: Upload 上传
 
 <preview path="./coverUpload" />
 
-## 用户头像
+## 自定义图标
 
-在 `before-upload` 钩子中限制用户上传文件的格式和大小。
+设置`success-icon`、`fail-icon`、`remove-icon`可分别定义上传文件成功状态图标、上传文件失败状态图标、移除文件图标。
 
-🚧 待完善
+<preview path="./iconUpload" />
 
 # API
 

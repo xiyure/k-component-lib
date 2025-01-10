@@ -9,6 +9,9 @@
     :before-remove="beforeRemove"
     :limit="3"
     :on-exceed="handleExceed"
+    success-icon="IconStepStatusSuccess"
+    fail-icon="IconStepStatusFailure"
+    remove-icon="IconForbid"
   >
     <template #trigger>
       <k-button type="primary" main>Click to upload</k-button>

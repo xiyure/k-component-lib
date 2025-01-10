@@ -9,6 +9,7 @@
   <div ref="sliderButton" class="k-slider-button p-1 rounded-lg flex w-full bg-gray-100">
     <div
       v-for="item in props.items"
+      :key="item.name"
       :class="{ 'is-active': active === item.name }"
       class="k-slider-button-pane w-full rounded flex justify-center items-center text-center text-gray-500 cursor-pointer relative"
       @click="handleClick(item)"
@@ -19,7 +20,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, nextTick } from 'vue';
+import { ref, onMounted, nextTick, onBeforeUnmount } from 'vue';
 import { SliderButtonProps, SliderButtonPaneProps } from './type';
 
 defineOptions({
@@ -39,8 +40,16 @@ const sliderButton = ref();
 window.addEventListener('resize', getActiveItemPosition);
 
 onMounted(() => {
-  getActiveItemPosition();
+  timer;
 });
+
+onBeforeUnmount(() => {
+  clearTimeout(timer);
+});
+
+const timer = setTimeout(() => {
+  getActiveItemPosition();
+}, 500);
 
 function getActiveItemPosition() {
   const activeElement: HTMLElement | null = document.querySelector('.k-slider-button-pane.is-active');
