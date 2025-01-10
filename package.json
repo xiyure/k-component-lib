@@ -22,7 +22,7 @@
     "docs:preview": "npm run -C docs preview"
   },
   "peerDependencies": {
-    "element-plus": "^2.9.2",
+    "element-plus": "2.9.0",
     "ksw-vue-icon": "latest",
     "lodash-es": "^4.17.21",
     "sortablejs": "^1.15.2",
