@@ -114,10 +114,10 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="k-view-content">
-    <slot></slot>
-    <slot :name="active"></slot>
+    <div class="k-view-content">
+      <slot></slot>
+      <slot :name="active"></slot>
+    </div>
   </div>
 </template>
 

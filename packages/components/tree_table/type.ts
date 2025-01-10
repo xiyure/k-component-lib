@@ -3,6 +3,7 @@ import { VxeTablePropTypes, VxeColgroupProps, VxeColumnPropTypes } from 'vxe-tab
 import { PaginationProps as ElPaginationProps } from 'element-plus';
 import { OperateData } from '../operate/type';
 import { Condition, FilterValue, ConditionInfo } from '../filter/type';
+import { RequireToOptional } from '../../utils/typescript';
 
 export type Row = VxeTablePropTypes.Row;
 export interface TreeTableProps {
@@ -96,7 +97,7 @@ type FilterColumn = {
     value: FilterValue;
   }[];
 };
-export interface PaginationConfig extends Omit<ElPaginationProps, 'size'> {
+export interface PaginationConfig extends RequireToOptional<Omit<ElPaginationProps, 'size'>> {
   size?: 'base' | 'sm';
   isRemotePaging?: boolean;
 }
