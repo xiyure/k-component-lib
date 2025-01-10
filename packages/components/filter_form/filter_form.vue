@@ -224,6 +224,7 @@ watch(
       const gridTemplateRows = getComputedStyle(KFormRef?.value?.$el).gridTemplateRows.split(' ');
       firstRowHeight.value = gridTemplateRows[0];
       rowMax.value = gridTemplateRows.length;
+      computeMaxColumn();
     }, 100);
   },
   { deep: true }
