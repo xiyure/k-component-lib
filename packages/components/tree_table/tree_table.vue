@@ -227,7 +227,7 @@
         "
         @checkbox-all="
           (data: any) => {
-            checkboxAll(data);
+            checkboxAllChange(data);
             emits('checkbox-all', data);
           }
         "
@@ -605,7 +605,7 @@ const {
   checkboxConfig,
   closeBatchOperation,
   checkBoxChange,
-  checkboxAll,
+  checkboxAllChange,
   clearCheckedData,
   resetCheckboxStatus,
   _checkboxMethods

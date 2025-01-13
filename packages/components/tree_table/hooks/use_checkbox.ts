@@ -134,9 +134,8 @@ export function useCheckbox($table: Ref<VxeTableInstance>, tableData: Ref<RowDat
     handleCheckboxData(row, checked);
   }
   // 表格头部复选框点击事件
-  function checkboxAll({ checked }: { checked: boolean }) {
-    const checkedRows = $table.value?.getCheckboxRecords() ?? [];
-    const childrenRows = checkedRows.filter((row) => !row.children || !row.children.length);
+  function checkboxAllChange({ checked }: { checked: boolean }) {
+    const childrenRows = tableData.value.filter((row) => !row.children || !row.children.length);
     handleCheckboxData(childrenRows, checked);
   }
   // 关闭批量操作
@@ -170,7 +169,7 @@ export function useCheckbox($table: Ref<VxeTableInstance>, tableData: Ref<RowDat
       clearCheckboxReserve
     },
     checkBoxChange,
-    checkboxAll,
+    checkboxAllChange,
     closeBatchOperation,
     isCheckboxDisabled,
     clearCheckedData,

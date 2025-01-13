@@ -86,13 +86,6 @@
       "tip": ""
     },
     {
-      "displayName": "show-drag-column",
-      "type": "boolean",
-      "description": "是否显示拖拽列",
-      "defaultValue": "false",
-      "tip": ""
-    },
-    {
       "displayName": "batchOperations",
       "type": "object",
       "description": "批量操作配置",
@@ -493,12 +486,6 @@
       "tip": "({ column, field, order }) => void"
     },
     {
-      "displayName": "drag",
-      "description": "用于show-drag-column=true, 拖拽结束时触发",
-      "type": "Function",
-      "tip": "({ newData, oldData }) => void"
-    },
-    {
       "displayName": "advanced-filter-confirm",
       "description": "确认高级筛选条件时触发",
       "type": "Function",
@@ -514,31 +501,31 @@
       "displayName": "page-current-change",
       "description": "用于show-page为true，当前页变化时触发",
       "type": "Function",
-      "tip": "({ newData, oldData }) => void"
+      "tip": "(value: number) => void"
     },
     {
       "displayName": "page-size-change",
       "description": "用于show-page为true，当前分页大小变化时触发",
       "type": "Function",
-      "tip": "({ newData, oldData }) => void"
+      "tip": "(value: number) => void"
     },
     {
       "displayName": "page-change",
       "description": "用于show-page为true，页码变化时触发",
       "type": "Function",
-      "tip": "({ newData, oldData }) => void"
+      "tip": "(currentPage: number, pageSize: number) => void"
     },
     {
       "displayName": "prev-click",
       "description": "用于show-page为true，点击上一页按钮时触发",
       "type": "Function",
-      "tip": "({ newData, oldData }) => void"
+      "tip": "(value: number) => void"
     },
     {
       "displayName": "next-click",
       "description": "用于show-page为true，点击下一页按钮时触发",
       "type": "Function",
-      "tip": "({ newData, oldData }) => void"
+      "tip": "(value: number) => void"
     }
   ],
   "slots": [
@@ -570,10 +557,6 @@
       "tip": "{ column, row }"
     },
     {
-      "displayName": "drag-icon",
-      "description": "自定义拖拽列图标"
-    },
-    {
       "displayName": "empty",
       "description": "自定义空数据时显示的内容"
     },
@@ -600,6 +583,16 @@
     {
       "displayName": "sizeControlTrigger",
       "description": "自定义表格size切换触发按钮"
+    },
+    {
+      "displayName": "row-drag-icon",
+      "description": "自定义行拖拽图标",
+      "version": "1.0.12"
+    },
+    {
+      "displayName": "column-drag-icon",
+      "description": "自定义列拖拽图标",
+      "version": "1.0.12"
     }
   ],
   "methods": [

@@ -386,11 +386,8 @@ function handleTreeData(leafData: TreeTransferData[]) {
 }
 function addChildNodes(leafData: TreeTransferData[]) {
   const { parentField, rowField } = getTreeConfigField();
-
-  // 创建一个 Map，用于存储父节点和其直接子节点的映射关系
   const parentToChildrenMap = new Map<string, TreeTransferData[]>();
 
-  // 遍历所有数据，构建父节点 -> 子节点列表的映射
   for (const dataItem of props.data) {
     const parentKey = dataItem[parentField];
     if (!parentToChildrenMap.has(parentKey)) {
@@ -399,17 +396,11 @@ function addChildNodes(leafData: TreeTransferData[]) {
     parentToChildrenMap.get(parentKey)!.push(dataItem);
   }
 
-  // 使用队列而非递归实现遍历，减少调用栈深度
   const queue: TreeTransferData[] = [...leafData];
-
   while (queue.length > 0) {
-    const currentItem = queue.shift()!; // 取出队列中的第一个元素
+    const currentItem = queue.shift()!;
     const currentKey = currentItem[rowField];
-
-    // 将当前节点存储到 treeDataMap 中
     treeDataMap.set(currentKey, currentItem);
-
-    // 获取当前节点的子节点，如果存在，加入队列
     const children = parentToChildrenMap.get(currentKey);
     if (children) {
       queue.push(...children);
