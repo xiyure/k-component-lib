@@ -47,8 +47,6 @@ const props = withDefaults(defineProps<TagProps>(), {
   showOverflow: false,
 });
 
-// console.log(props.showOverflow, '123');
-
 const _styleModule = inject('_styleModule', '');
 
 const formatSize = useSize<TagProps>(props);
@@ -73,7 +71,6 @@ watch(
     nextTick(() => {
       isOverflow.value = isShowTooltip(KTagRef.value.$el.childNodes[0].children[0]);
     });
-    console.log(1);
   },
   { immediate: true },
 );

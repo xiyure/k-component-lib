@@ -144,6 +144,6 @@ export interface SearchConfig {
 export interface RowData {
   icon?: string;
   __folder__?: boolean;
-  iconStyle?: CSSProperties & { empty: boolean; size: number };
+  iconStyle?: CSSProperties & { empty?: boolean; size?: number };
   [key: string]: any;
 }

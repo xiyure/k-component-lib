@@ -134,12 +134,12 @@ const getApiContent = (componentDoc: any, lang: Lang) => {
     { title: 'Props', data: props, handler: handleProps },
     { title: 'Directives', data: directives, handler: handleProps },
     { title: 'Events', data: events, handler: handleEvents },
-    { title: 'Methods', data: methods, handleMethods },
-    { title: 'Slots', data: slots, handleSlots }
+    { title: 'Methods', data: methods, handler: handleMethods },
+    { title: 'Slots', data: slots, handler: handleSlots }
   ];
   const result = contentsInfo.map((item) => {
     const { title, data, handler } = item;
-    if (!data || typeof handler !== 'function') {
+    if (typeof handler !== 'function') {
       return '';
     }
     const content = generateCommonTpl(title, handler(data ?? [], lang), options);
