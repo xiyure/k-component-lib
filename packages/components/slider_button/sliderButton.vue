@@ -20,16 +20,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, nextTick, onBeforeUnmount } from 'vue';
+import { ref, nextTick, onBeforeUnmount } from 'vue';
 import { SliderButtonProps, SliderButtonPaneProps } from './type';
 
 defineOptions({
   name: 'KSliderButton'
 });
 
-const props = withDefaults(defineProps<SliderButtonProps>(), {
-  items: () => []
-});
+const props = withDefaults(defineProps<SliderButtonProps>(), {});
 
 const emits = defineEmits(['change']);
 
@@ -39,20 +37,12 @@ const sliderButton = ref();
 // 监测窗口发生变化后
 window.addEventListener('resize', getActiveItemPosition);
 
-onMounted(() => {
-  timer;
-});
-
-onBeforeUnmount(() => {
-  clearTimeout(timer);
-});
-
 const timer = setTimeout(() => {
   getActiveItemPosition();
-}, 500);
+}, 1000);
 
 function getActiveItemPosition() {
-  const activeElement: HTMLElement | null = document.querySelector('.k-slider-button-pane.is-active');
+  const activeElement: HTMLElement | null = sliderButton?.value?.querySelector('.k-slider-button-pane.is-active');
   const { width } = activeElement?.getBoundingClientRect() || { width: 0, height: 0 };
   const top = activeElement?.offsetTop || 0;
   const left = activeElement?.offsetLeft || 0;
@@ -70,6 +60,10 @@ function handleClick(item: SliderButtonPaneProps) {
     });
   }
 }
+
+onBeforeUnmount(() => {
+  clearTimeout(timer);
+});
 </script>
 <style lang="less">
 @import './style.less';
