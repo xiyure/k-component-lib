@@ -11,7 +11,7 @@
       v-for="item in props.items"
       :key="item.name"
       :class="{ 'is-active': active === item.name }"
-      class="k-slider-button-pane w-full rounded flex justify-center items-center text-center text-gray-500 cursor-pointer relative"
+      class="k-slider-button-pane"
       @click="handleClick(item)"
     >
       {{ item.label }}
