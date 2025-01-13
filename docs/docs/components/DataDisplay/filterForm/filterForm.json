@@ -1,0 +1,74 @@
+{
+  "name": "FilterForm",
+  "props": [
+    {
+      "displayName": "items",
+      "type": "FilterFormItem[]",
+      "description": "展示的数据项",
+      "defaultValue": "[]",
+      "tip": ""
+    },
+    {
+      "displayName": "size",
+      "type": "enum",
+      "description": "尺寸",
+      "defaultValue": "",
+      "tip": "'base' | 'sm' | undefined"
+    },
+    {
+      "displayName": "collapse",
+      "type": "boolean",
+      "description": "是否折叠",
+      "defaultValue": "true"
+    },
+    {
+      "displayName": "reserve",
+      "type": "boolean",
+      "description": "是否保留已选条件",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "visible",
+      "type": "boolean",
+      "description": "是否显示表单数据项",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "showColon",
+      "type": "boolean",
+      "description": "是否显示冒号",
+      "defaultValue": ""
+    }
+  ],
+  "events": [
+    {
+      "displayName": "search",
+      "description": "搜索时触发",
+      "type": "Function",
+      "tip": "(value: FormValidateCallback) => void"
+    },
+    {
+      "displayName": "reset",
+      "description": "重置时触发",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "change",
+      "description": "重置时触发",
+      "type": "Function",
+      "tip": "(vale: FormValidateCallback) => void"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "[column.prop]",
+      "description": "自定义渲染列"
+    },
+    {
+      "displayName": "action",
+      "description": "自定义操作按钮"
+    }
+  ],
+  "methods": []
+}

@@ -13,7 +13,9 @@
           v-if="compVisible(item)"
           :key="item.prop"
           v-bind="item"
-          :style="`grid-column: span ${item.column === undefined ? 1 : item.column < maxColumn ? item.column : maxColumn}`"
+          :style="`grid-column: span ${
+            item.column === undefined ? 1 : item.column < maxColumn ? item.column : maxColumn
+          }`"
           class="grid-auto-rows:max-content;"
         >
           <slot :name="item.prop" :form-data="formData">
@@ -223,6 +225,7 @@ watch(
 
       const gridTemplateRows = getComputedStyle(KFormRef?.value?.$el).gridTemplateRows.split(' ');
       firstRowHeight.value = gridTemplateRows[0];
+      console.log(firstRowHeight);
       rowMax.value = gridTemplateRows.length;
       computeMaxColumn();
     }, 100);

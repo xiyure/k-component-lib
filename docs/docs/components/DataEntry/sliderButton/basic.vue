@@ -1,5 +1,5 @@
 <template>
-  <KSliderButton :items="value" active="btn1"></KSliderButton>
+  <k-slider-button :items="value" active="btn1"></k-slider-button>
 </template>
 
 <script lang="ts" setup>

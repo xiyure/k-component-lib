@@ -18,7 +18,7 @@ title: calendar 日历
 
 <preview path="./customizeCalendar.vue" />
 
-## 范围
+## 日历范围
 
 设置 `range` 属性指定日历的显示范围。 开始时间必须是周起始日，结束时间必须是周结束日，且时间跨度不能超过两个月。
 
@@ -28,13 +28,13 @@ title: calendar 日历
 
 <preview path="./CustomizeTheCalendarHeader.vue" />
 
-## 自定义农历日历
+## 自定义农历
 
 设置 `show-lunar` 属性指定是否显示农历日历。
 
 <preview path="./lunarCalendar.vue" />
 
-## 自定义日程表日历
+## 自定义日程表
 
 设置 `schedule` 属性指定日程表数据。
 
