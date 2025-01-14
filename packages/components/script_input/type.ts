@@ -22,6 +22,7 @@ export interface ScriptInputProps {
   };
   scriptKey?: string;
   checkVariableName?: boolean;
+  valueType?: 'number' | 'boolean' | 'string' | '';
 }
 
 export type ScriptOptions = {

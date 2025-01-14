@@ -28,7 +28,7 @@
                   'k-script-input',
                   _styleModule,
                   {
-                    'no-checkVariableName ': checkVariableNameResult === false,
+                    'hidden-result ': showResult === true,
                   },
                 ]"
                 :style="{
@@ -73,14 +73,12 @@
             </div>
           </div>
           <div
-            v-if="checkVariableNameResult === false"
-            v-ksw_tooltip="
-              '1.名称只能是中文、英文、数字和下划线。<br/>2.名称不能以数字开头。<br>3.名称不能仅由下划线和数字组成。'
-            "
+            v-if="showResult"
+            v-ksw_tooltip="resultTooltip"
             class="k-script-input-check-result ml-2 text-red-500 text-xs mt-1 flex items-center gap-0.5 w-fit"
           >
             <component is="IconStatusWarning" />
-            请按照变量规则命名
+            {{ resultMessage }}
           </div>
         </div>
       </template>
@@ -144,7 +142,7 @@ import { Row, RowData } from '../tree_table';
 
 type FocusRange = { node: Node | null | undefined; offset: number | undefined };
 defineOptions({
-  name: 'KScriptInput'
+  name: 'KScriptInput',
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -160,13 +158,14 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   defaultMode: 'string',
   onlyOneInput: false,
   resize: true,
-  checkVariableName: false
+  checkVariableName: false,
+  valueType: '',
 });
 
 const DEFAULT_TREE_CONFIG = {
   parentField: 'pid',
   rowField: getAttrProps().value,
-  expandAll: false
+  expandAll: false,
 };
 
 const emits = defineEmits(['change', 'input', 'focus', 'blur', 'select', 'update:modelValue']);
@@ -209,7 +208,17 @@ const funcReg = /fx\((.*?)\)/;
 const fxSet = new Set();
 
 //  校验结果
+const showResult = ref(false);
 const checkVariableNameResult = ref();
+const resultMessage = ref('');
+const resultTooltip = ref({
+  content: '',
+  visible: false,
+});
+const checkValueType = ref({
+  type: props.valueType,
+  res: false,
+});
 
 // password
 const showPassword = defineModel<boolean | undefined>('showPassword', { default: false });
@@ -246,7 +255,7 @@ watch(
       updateFocusRange();
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 watch(
   () => [props.modelValue, props.options],
@@ -271,7 +280,7 @@ watch(
       setEditorContent(innerText);
     });
   },
-  { immediate: true, deep: true }
+  { immediate: true, deep: true },
 );
 
 function updateModelValue(res: string) {
@@ -301,12 +310,56 @@ function handleInput(event: InputEvent | CompositionEvent) {
   if (props.checkVariableName) {
     const regex = /^(?!\d)(?![_\d]+$)[\u4e00-\u9fa5A-Za-z0-9_]+$/;
     if (regex.test(result)) {
+      showResult.value = false;
       checkVariableNameResult.value = true;
-      regex.test('bbm');
+      resultMessage.value = '';
+      resultTooltip.value.content = '';
+      resultTooltip.value.visible = false;
     } else {
+      showResult.value = true;
       checkVariableNameResult.value = false;
+      resultMessage.value = '请按照变量规则命名';
+      resultTooltip.value.content =
+        '1.名称只能是中文、英文、数字和下划线。<br/>2.名称不能以数字开头。<br>3.名称不能仅由下划线和数字组成。';
+      resultTooltip.value.visible = true;
     }
   }
+
+  if (props.valueType !== '') {
+    if (props.valueType === 'number') {
+      // 正则, 校验是否为数字
+      const regex = /^-?\d+(\.\d+)?$/;
+      if (regex.test(result)) {
+        showResult.value = false;
+        // checkVariableNameResult.value = true;
+        checkValueType.value.res = true;
+      } else {
+        resultMessage.value = '必须输入数字';
+        showResult.value = true;
+        // checkVariableNameResult.value = false;
+        checkValueType.value.res = false;
+        resultTooltip.value.visible = true;
+      }
+    }
+
+    if (props.valueType === 'boolean') {
+      // 正则, 校验是否为布尔值
+      const regex = /^(true|false)$/;
+      if (regex.test(result)) {
+        showResult.value = false;
+        // checkVariableNameResult.value = true;
+        checkValueType.value.res = true;
+      } else {
+        resultMessage.value = '必须输入布尔值';
+        showResult.value = true;
+        // checkVariableNameResult.value = false;
+        checkValueType.value.res = false;
+        resultTooltip.value.visible = true;
+      }
+    }
+  }
+
+  // console.log('@', props.valueType);
 }
 function handleFocus() {
   allowShowTree.value = true;
@@ -329,7 +382,7 @@ function cellClick({ row }: { row: Row }) {
     return;
   }
   const rowIndex = flattedOptions.value.findIndex(
-    (item) => item[getAttrProps().value] === row[getAttrProps().value]
+    (item) => item[getAttrProps().value] === row[getAttrProps().value],
   );
   selectedIndex.value = rowIndex;
   if (row.children?.length) {
@@ -356,9 +409,9 @@ async function handleInputContent(data: Row | RowData) {
     await nextTick();
   }
   const key = genRandomStr(8);
-  const content = _isStringMode.value ?
-    generateScriptTag(data[getAttrProps().label], key) :
-    data[getAttrProps().value];
+  const content = _isStringMode.value
+    ? generateScriptTag(data[getAttrProps().label], key)
+    : data[getAttrProps().value];
   if (props.onlyOneInput) {
     KScriptInput.value.innerHTML = content;
   } else {
@@ -402,14 +455,14 @@ function parseInputValue() {
     return {
       result: pwd.value,
       scriptTags: [],
-      isStringMode: isStringMode()
+      isStringMode: isStringMode(),
     };
   }
   if (!isStringMode()) {
     return {
       result: getEditorContent(),
       scriptTags: [],
-      isStringMode: false
+      isStringMode: false,
     };
   }
   let text = '';
@@ -445,8 +498,9 @@ function parseInputValue() {
   return {
     result: text,
     checkVariableNameResult: checkVariableNameResult.value,
+    checkValueType: checkValueType.value,
     scriptTags,
-    isStringMode: true
+    isStringMode: true,
   };
 }
 // 解析传入的值
@@ -554,7 +608,7 @@ function getRange(key: string) {
   let isFound = false;
   const range = {
     node: KScriptInput.value,
-    offset: 0
+    offset: 0,
   };
   const getNodeInfo = (node: HTMLElement) => {
     if (isFound) {
@@ -672,11 +726,11 @@ function isStringMode() {
 }
 const caches = {
   expression: '',
-  string: ''
+  string: '',
 };
 const tempCaches = {
   expression: '',
-  string: ''
+  string: '',
 };
 function saveTextValue() {
   const attrName = isStringMode() ? 'string' : 'expression';
@@ -708,7 +762,7 @@ function getAttrProps() {
   return {
     label: attrProps.label,
     value: attrProps.value,
-    disabled: attrProps.disabled
+    disabled: attrProps.disabled,
   };
 }
 function getScriptKey() {
@@ -742,7 +796,7 @@ defineExpose({
   isStringMode,
   focus,
   blur,
-  ..._methods
+  ..._methods,
 });
 </script>
 <style lang="less">
