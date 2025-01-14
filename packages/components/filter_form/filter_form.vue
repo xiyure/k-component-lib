@@ -2,7 +2,7 @@
   <div ref="filterForm" class="filterForm is-expand">
     <k-form
       ref="KFormRef"
-      class="filtr-items w-full relative grid grid-cols-1 2xs:grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 base:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
+      class="filter-items w-full relative grid grid-cols-1 2xs:grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 base:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
       :model="formData"
       :size="size"
       :class="['k-form', _styleModule]"
@@ -12,7 +12,7 @@
         <k-form-item
           v-if="compVisible(item)"
           :key="item.prop"
-          v-bind="item"
+          v-bind="item"  
           :style="`grid-column: span ${
             item.column === undefined ? 1 : item.column < maxColumn ? item.column : maxColumn
           }`"
@@ -93,7 +93,7 @@
         class="markers flex w-full h-8 is-expand"
         :style="`grid-column: ${maxColumn} / ${maxColumn + 1}; `"
       ></div>
-      <div ref="filterBtn" class="filtr-btns flex bg-white">
+      <div ref="filterBtn" class="filter-btns flex bg-white">
         <slot name="action">
           <k-button :size="compSize()" @click="reset">{{ $t('reset') }}</k-button>
           <k-button :size="compSize()" main @click="search">{{ $t('query') }}</k-button>
@@ -225,7 +225,6 @@ watch(
 
       const gridTemplateRows = getComputedStyle(KFormRef?.value?.$el).gridTemplateRows.split(' ');
       firstRowHeight.value = gridTemplateRows[0];
-      console.log(firstRowHeight);
       rowMax.value = gridTemplateRows.length;
       computeMaxColumn();
     }, 100);
@@ -314,7 +313,7 @@ function getAutoSize() {
 }
 
 // expose instance
-const instance: any = { reset, getFormData, search, toggle, expand, collapse };
+const instance: any = { reset, getFormData, toggle, expand, collapse };
 defineExpose(getExposeProxy(instance, KFormRef));
 </script>
 

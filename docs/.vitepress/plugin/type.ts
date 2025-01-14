@@ -44,3 +44,5 @@ export interface Methods extends BaseProps {
 export interface Slots extends BaseProps {
   parameters: string
 }
+
+export type Lang = 'zh' | 'en'

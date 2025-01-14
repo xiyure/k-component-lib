@@ -3,17 +3,15 @@ import type { Plugin } from 'vitepress';
 import MarkdownIt from 'markdown-it';
 import matter from 'gray-matter';
 import { resolveLocaleConfigs, parseProps } from './utils.js';
-import { componentProps, Props, Events, Methods, Slots } from './type.js';
+import type{ componentProps, Props, Events, Methods, Slots, Lang } from './type';
 import { escapeCharacter, readFile } from '../../utils';
-
-type Lang = 'zh' | 'en';
 
 // 生成Props模板
 const createPropsTpl = (props: Props[]) => {
   const displayableProps = props;
   const content = displayableProps.map((prop) => {
     const { displayName, description, type, defaultValue, tip, version } = escapeParams(prop);
-    let lineContent = `|${displayName} ${genTag(version)}|${description}|\`${type}\`${tip}|\`${defaultValue}\`|`;
+    let lineContent = `|${displayName} ${generateTag(version)}|${description}|\`${type}\`${tip}|\`${defaultValue}\`|`;
     return lineContent;
   }).join("\n");
   return {
@@ -43,7 +41,7 @@ const createEventsTpl = (events: Events[]) => {
   const displayableEvents = events;
   const content = displayableEvents.map((event) => {
     const { displayName, description, type, tip, version } =  escapeParams(event);
-    let lineContent = `|${displayName} ${genTag(version)}|${description}|\`${type}\`${tip}|`;
+    let lineContent = `|${displayName} ${generateTag(version)}|${description}|\`${type}\`${tip}|`;
     return lineContent;
   }).join("\n");
   return {
@@ -68,7 +66,7 @@ const createMethodsTpl = (methods: Methods[]) => {
   const displayableMethods = methods;
   const content = displayableMethods.map((method) => {
     const { displayName, description, type, tip, version } =  escapeParams(method);
-    let lineContent = `|${displayName} ${genTag(version)}|${description}|\`${type}\`${tip}|`;
+    let lineContent = `|${displayName} ${generateTag(version)}|${description}|\`${type}\`${tip}|`;
     return lineContent;
   }).join("\n");
   return {
@@ -93,7 +91,7 @@ const createSlotsTpl = (slots: Slots[]) => {
   const displayableSlots = slots;
   const content = displayableSlots.map((slot) => {
     const { displayName, description, parameters, tip, version } =  escapeParams(slot);
-    let lineContent = `|${displayName} ${genTag(version)}|${description}|\`${parameters}\`${tip}|`;
+    let lineContent = `|${displayName} ${generateTag(version)}|${description}|\`${parameters}\`${tip}|`;
     return lineContent;
   }).join("\n");
   return {
@@ -205,14 +203,14 @@ async function getApiMarkdown(apiComponent: any, localeConfigs: any, baseDir: st
   return apiMdContents || `${srcPath}'s api is empty!`;
 }
 
-function genTooltip(content: string) {
+function generateTooltip(content: string) {
   if (!content) {
     return '';
   }
   const html = `<KTooltip content="${content.toString()}" effect="light" trigger="click"></KTooltip>`;
   return html;
 }
-function genTag(content: string) {
+function generateTag(content: string) {
   if (!content) {
     return '';
   }
@@ -226,7 +224,7 @@ function escapeParams(params: any) {
     description: escapeCharacter(description),
     type: escapeCharacter(type),
     defaultValue: escapeCharacter((defaultValue ?? '').toString()) || '-',
-    tip: escapeCharacter(genTooltip(tip ?? parameters)),
+    tip: escapeCharacter(generateTooltip(tip ?? parameters)),
     parameters: parameters ? 'object' : '-' ,
     version: escapeCharacter(version)
   }
