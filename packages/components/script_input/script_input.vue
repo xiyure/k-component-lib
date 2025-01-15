@@ -28,7 +28,7 @@
                   'k-script-input',
                   _styleModule,
                   {
-                    'hidden-result ': showResult === true,
+                    'hidden-result ': showMessage === true,
                   },
                 ]"
                 :style="{
@@ -73,8 +73,8 @@
             </div>
           </div>
           <div
-            v-if="showResult"
-            v-ksw_tooltip="resultTooltip"
+            v-if="showMessage"
+            v-ksw_tooltip="VTooltipConfig"
             class="k-script-input-check-result ml-2 text-red-500 text-xs mt-1 flex items-center gap-0.5 w-fit"
           >
             <component is="IconStatusWarning" />
@@ -139,6 +139,7 @@ import Message from '../message';
 import { usePassword } from './hooks/use_password';
 import { genRandomStr, transformTreeData, getElement } from '../../utils';
 import { Row, RowData } from '../tree_table';
+import { checkInputMessage, typeRules } from './const';
 
 type FocusRange = { node: Node | null | undefined; offset: number | undefined };
 defineOptions({
@@ -158,8 +159,8 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   defaultMode: 'string',
   onlyOneInput: false,
   resize: true,
-  checkVariableName: false,
-  valueType: '',
+  checkContentType: false,
+  contentType: 'string',
 });
 
 const DEFAULT_TREE_CONFIG = {
@@ -208,17 +209,9 @@ const funcReg = /fx\((.*?)\)/;
 const fxSet = new Set();
 
 //  校验结果
-const showResult = ref(false);
-const checkVariableNameResult = ref();
+const showMessage = ref(false);
+let checkVariableResult = true;
 const resultMessage = ref('');
-const resultTooltip = ref({
-  content: '',
-  visible: false,
-});
-const checkValueType = ref({
-  type: props.valueType,
-  res: false,
-});
 
 // password
 const showPassword = defineModel<boolean | undefined>('showPassword', { default: false });
@@ -237,7 +230,14 @@ const flattedOptions = computed(() => {
     transformTreeData(tableData, { parentField: getAttrProps().value, children: 'children' }) ?? []
   );
 });
+const VTooltipConfig = computed(() => {
+  return {
+    content: checkInputMessage.tooltip,
+    visible: showMessage.value && props.contentType !== 'number' && props.contentType !== 'boolean'
+  }
+});
 
+// 输入框内容发生变化时，需要更新下拉列表的显示状态以及光标位置
 watch(
   () => curInput.value,
   () => {
@@ -306,60 +306,23 @@ function handleInput(event: InputEvent | CompositionEvent) {
   }
   const { result = '' } = parseInputValue();
   updateModelValue(result);
-
-  if (props.checkVariableName) {
-    const regex = /^(?!\d)(?![_\d]+$)[\u4e00-\u9fa5A-Za-z0-9_]+$/;
-    if (regex.test(result)) {
-      showResult.value = false;
-      checkVariableNameResult.value = true;
-      resultMessage.value = '';
-      resultTooltip.value.content = '';
-      resultTooltip.value.visible = false;
-    } else {
-      showResult.value = true;
-      checkVariableNameResult.value = false;
-      resultMessage.value = '请按照变量规则命名';
-      resultTooltip.value.content =
-        '1.名称只能是中文、英文、数字和下划线。<br/>2.名称不能以数字开头。<br>3.名称不能仅由下划线和数字组成。';
-      resultTooltip.value.visible = true;
-    }
+  checkInputContentType(result);
+}
+function checkInputContentType(result: string) {
+  if (!props.checkContentType) {
+    return;
   }
-
-  if (props.valueType !== '') {
-    if (props.valueType === 'number') {
-      // 正则, 校验是否为数字
-      const regex = /^-?\d+(\.\d+)?$/;
-      if (regex.test(result)) {
-        showResult.value = false;
-        // checkVariableNameResult.value = true;
-        checkValueType.value.res = true;
-      } else {
-        resultMessage.value = '必须输入数字';
-        showResult.value = true;
-        // checkVariableNameResult.value = false;
-        checkValueType.value.res = false;
-        resultTooltip.value.visible = true;
-      }
-    }
-
-    if (props.valueType === 'boolean') {
-      // 正则, 校验是否为布尔值
-      const regex = /^(true|false)$/;
-      if (regex.test(result)) {
-        showResult.value = false;
-        // checkVariableNameResult.value = true;
-        checkValueType.value.res = true;
-      } else {
-        resultMessage.value = '必须输入布尔值';
-        showResult.value = true;
-        // checkVariableNameResult.value = false;
-        checkValueType.value.res = false;
-        resultTooltip.value.visible = true;
-      }
-    }
+  const typeInfo = typeRules.has(props.contentType)
+    ? typeRules.get(props.contentType)
+    : typeRules.get('string');
+  if (typeInfo?.reg.test(result)) {
+    showMessage.value = false;
+    checkVariableResult = true;
+  } else {
+    resultMessage.value = typeInfo?.message ?? '';
+    showMessage.value = true;
+    checkVariableResult = false;
   }
-
-  // console.log('@', props.valueType);
 }
 function handleFocus() {
   allowShowTree.value = true;
@@ -416,7 +379,7 @@ async function handleInputContent(data: Row | RowData) {
     KScriptInput.value.innerHTML = content;
   } else {
     handleManualInput(content);
-  }
+  }1
   return key;
 }
 function handleManualInput(content: string) {
@@ -497,8 +460,7 @@ function parseInputValue() {
   emits('input', text);
   return {
     result: text,
-    checkVariableNameResult: checkVariableNameResult.value,
-    checkValueType: checkValueType.value,
+    checkVariableResult,
     scriptTags,
     isStringMode: true,
   };

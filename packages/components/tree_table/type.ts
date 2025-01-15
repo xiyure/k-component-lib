@@ -46,7 +46,7 @@ export interface TreeTableProps {
   advancedFilterConfig?: AdvancedFilterConfig;
   searchConfig?: SearchConfig;
   style?: CSSProperties;
-  class?: string;
+  class?: string | { [className: string]: boolean } | Array<string | { [className: string]: boolean }>;
   simple?: boolean;
   defaultTransferData?:
     | (() => TableHeaderControl[] | Promise<TableHeaderControl[]>)
