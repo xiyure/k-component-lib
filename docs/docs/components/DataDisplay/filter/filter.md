@@ -8,9 +8,9 @@ title: filter 过滤器
 
 🚧 待完善
 
-## 示例
+<!-- ## 示例
 
-<preview path="./def.vue" />
+<preview path="./def.vue" /> -->
 
 ## API
 
