@@ -1,0 +1,75 @@
+{
+  "name": "buttonContainer",
+  "props": [
+    {
+      "displayName": "max-height",
+      "type": "string | Number",
+      "description": "菜单最大高度",
+      "defaultValue": "300"
+    },
+    {
+      "displayName": "placement",
+      "type": "string",
+      "description": "菜单弹出位置",
+      "defaultValue": "bottom"
+    },
+    {
+      "displayName": "trigger",
+      "type": "string",
+      "description": "触发下拉的行为",
+      "defaultValue": "click"
+    },
+    {
+      "displayName": "hide-on-click",
+      "type": "boolean",
+      "description": "是否在点击菜单项后隐藏菜单",
+      "defaultValue": "true"
+    },
+    {
+      "displayName": "show-timeout",
+      "type": "number",
+      "description": "展开下拉菜单的延时，仅在 trigger 为 hover 时有效",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "hide-timeout",
+      "type": "number",
+      "description": "收起下拉菜单的延时（仅在 trigger 为 hover 时有效）",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "popper-class",
+      "type": "string",
+      "description": "自定义浮层类名",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "teleported",
+      "type": "boolean",
+      "description": "是否将下拉列表插入至 body 元素",
+      "defaultValue": "true"
+    },
+    {
+      "displayName": "triggerIcon",
+      "type": "string | Component",
+      "description": "自定义触发按钮图标",
+      "defaultValue": "IconMore"
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "default",
+      "type": "slot",
+      "description": "触发容器插槽",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "trigger",
+      "type": "slot",
+      "description": "触发按钮插槽",
+      "defaultValue": ""
+    }
+  ],
+  "methods": []
+}
