@@ -40,6 +40,62 @@
       "defaultValue": ""
     }
   ],
+  "subProps": [
+    {
+      "displayName": "label",
+      "description": "标签内容",
+      "type": "string",
+      "tip": ""
+    },
+    {
+      "displayName": "prop",
+      "description": "数据项对应字段",
+      "type": "string",
+      "tip": ""
+    },
+    {
+      "displayName": "value",
+      "description": "数据项对应值",
+      "type": "any",
+      "tip": ""
+    },
+    {
+      "displayName": "type",
+      "description": "数据项类型",
+      "type": "enum",
+      "tip": "'input' | 'select' | 'date' | 'checkbox' | 'radio' | 'cascader' | 'tree-select'"
+    },
+    {
+      "displayName": "attrs",
+      "description": "透传的数据",
+      "type": "any",
+      "tip": ""
+    },
+    {
+      "displayName": "render",
+      "description": "自定义渲染",
+      "type": "Function",
+      "tip": "(item: any) => VNode | Component"
+    },
+    {
+      "displayName": "options",
+      "description": "选项数据",
+      "type": "any[]",
+      "tip": ""
+    },
+    {
+      "displayName": "column",
+      "description": "列数量",
+      "type": "number",
+      "tip": ""
+    },
+    {
+      "displayName": "visible",
+      "description": "是否显示该数据项",
+      "type": "boolean",
+      "tip": ""
+    }
+  ],
   "events": [
     {
       "displayName": "search",
