@@ -166,7 +166,7 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
 const DEFAULT_TREE_CONFIG = {
   parentField: 'pid',
   rowField: getAttrProps().value,
-  expandAll: false,
+  expandAll: false
 };
 
 const emits = defineEmits(['change', 'input', 'focus', 'blur', 'select', 'update:modelValue']);
@@ -462,7 +462,7 @@ function parseInputValue() {
     result: text,
     checkVariableResult,
     scriptTags,
-    isStringMode: true,
+    isStringMode: true
   };
 }
 // 解析传入的值
@@ -758,7 +758,7 @@ defineExpose({
   isStringMode,
   focus,
   blur,
-  ..._methods,
+  ..._methods
 });
 </script>
 <style lang="less">

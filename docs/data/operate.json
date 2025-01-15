@@ -27,6 +27,29 @@
       "defaultValue": "true"
     }
   ],
+  "subProps": {
+    "OperateData": [
+      {
+        "displayName": "label",
+        "type": "string",
+        "description": "按钮文字",
+        "defaultValue": ""
+      },
+      {
+        "displayName": "handler",
+        "type": "Function",
+        "description": "按钮点击事件",
+        "defaultValue": "",
+        "tip": "<T>(data?: T) => void"
+      },
+      {
+        "displayName": "disabled",
+        "type": "boolean",
+        "description": "按钮是否禁用",
+        "defaultValue": ""
+      }
+    ]
+  },
   "events": [
     {
       "displayName": "close",
