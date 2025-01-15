@@ -2,10 +2,8 @@
   <k-filter
     :options="options"
     :data="data"
-    @confirm="refreshAdvancedFilter"
-    filterKey="value"
+    filter-key="value"
   ></k-filter>
-  <div v-for="(item, index) in data" :key="index">{{ item.title }}</div>
 </template>
 
 <script lang="ts" setup>
@@ -54,11 +52,4 @@ const data = ref([
     grade: 2
   }
 ]);
-
-const refreshAdvancedFilter = (conditionInfo, newTableData) => {
-  console.log(12, conditionInfo);
-  data.value.filter((item) => {
-    return item.grade === conditionInfo;
-  });
-};
 </script>

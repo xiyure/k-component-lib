@@ -4,13 +4,13 @@ title: filter 过滤器
 
 # filter 过滤器
 
-## 适用
+## 基本示例
 
-🚧 待完善
+<preview path="./def.vue" />
 
-<!-- ## 示例
+## 格式化日期
 
-<preview path="./def.vue" /> -->
+<preview path="./formatDate.vue" />
 
 ## API
 
