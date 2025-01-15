@@ -1,0 +1,64 @@
+{
+  "name": "Operate",
+  "props": [
+    {
+      "displayName": "data",
+      "type": "OperateData[]",
+      "description": "数据源",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "max",
+      "type": "number",
+      "description": "最大展示按钮数量",
+      "defaultValue": "5",
+      "tip": ""
+    },
+    {
+      "displayName": "total",
+      "type": "number",
+      "description": "操作数据数量",
+      "defaultValue": "0"
+    },
+    {
+      "displayName": "hideOnClick",
+      "type": "boolean",
+      "description": "点击按钮时是否隐藏操作面板",
+      "defaultValue": "true"
+    }
+  ],
+  "subProps": {
+    "OperateData": [
+      {
+        "displayName": "label",
+        "type": "string",
+        "description": "按钮文字",
+        "defaultValue": ""
+      },
+      {
+        "displayName": "handler",
+        "type": "Function",
+        "description": "按钮点击事件",
+        "defaultValue": "",
+        "tip": "<T>(data?: T) => void"
+      },
+      {
+        "displayName": "disabled",
+        "type": "boolean",
+        "description": "按钮是否禁用",
+        "defaultValue": ""
+      }
+    ]
+  },
+  "events": [
+    {
+      "displayName": "close",
+      "description": "点击关闭按钮时触发",
+      "type": "Function",
+      "tip": "() => void"
+    }
+  ],
+  "slots": [],
+  "methods": []
+}
