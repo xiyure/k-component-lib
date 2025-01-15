@@ -40,7 +40,8 @@
       "defaultValue": ""
     }
   ],
-  "subProps": [
+  "subProps": {
+    "FilterFormItem": [
     {
       "displayName": "label",
       "description": "标签内容",
@@ -94,8 +95,8 @@
       "description": "是否显示该数据项",
       "type": "boolean",
       "tip": ""
-    }
-  ],
+    }]
+  },
   "events": [
     {
       "displayName": "search",
