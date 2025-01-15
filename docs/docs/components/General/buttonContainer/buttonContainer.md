@@ -28,6 +28,10 @@ title: ButtonContainer 按钮容器
 
 <preview path="./customTrigger.vue" />
 
+:::tip
+由于这个组件是k-button和k-Dropdown的结合体，他们的原始属性未被更改，故不在此重复。请跳转查看原组件的相应文档。
+:::
+
 ## API
 
 <API src="./buttonContainer.json" lang="zh"></API>
