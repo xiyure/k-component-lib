@@ -6,6 +6,8 @@ title: View 视图
 
 ## 基础用法
 
+通过v-slot绑定dataItem中value字段可实现自定义视图渲染。
+
 <preview path="./def.vue" />
 
 ## 树形结构

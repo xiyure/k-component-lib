@@ -6,7 +6,7 @@
 * @version V3.0.0
 !-->
 <template>
-  <div ref="sliderButton" class="k-slider-button p-1 rounded-lg flex w-full bg-gray-100">
+  <div ref="sliderButton" class="k-slider-button">
     <div
       v-for="item in props.items"
       :key="item.name"

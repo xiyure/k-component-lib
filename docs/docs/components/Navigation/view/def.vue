@@ -7,11 +7,6 @@
     @refresh="() => console.log('refresh')"
     @drag="(value) => console.log('drag', value)"
   >
-    <template #label="{ data }">
-      <k-tag :color="data.color" size="sm" text-color="#000" point>
-        {{ data.label }}
-      </k-tag>
-    </template>
     <template #all>all</template>
     <template #free>free</template>
     <template #active>active</template>
@@ -23,7 +18,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+
+onMounted(() => {
+  sessionStorage.setItem('a', '111');
+});
+
+console.log(123, sessionStorage.getItem('a'));
 
 const viewData = ref([
   {

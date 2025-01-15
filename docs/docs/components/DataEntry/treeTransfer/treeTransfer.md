@@ -24,6 +24,12 @@ TreeTransfer组件可以通过以下属性进行自定义设置：expand-icon（
 
 <preview path="./customTreeTransfer" />
 
+## 拖拽
+
+设置`showDrag`属性为`true`可以开启右侧列表的拖拽功能。
+
+<preview path="./dragTreeTransfer" />
+
 ## API
 
 <API src="./tree_transfer.json" lang="zh"></API>

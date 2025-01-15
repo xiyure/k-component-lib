@@ -50,7 +50,7 @@ title: TreeSelect 树形选择
 
 ## 自定义Icon
 
-自定义树节点的内容。
+自定义树节点的Icon。
 
 <preview path="./customIconTreeSelect" />
 
