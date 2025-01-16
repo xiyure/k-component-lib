@@ -574,7 +574,7 @@
       "displayName": "filterTrigger",
       "description": "自定义高级筛选触发按钮",
       "parameters": "object",
-      "tip": "{ isFilter: boolean"
+      "tip": "{ isFilter: boolean }"
     },
     {
       "displayName": "transferTrigger",

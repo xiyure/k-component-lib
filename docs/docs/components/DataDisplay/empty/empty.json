@@ -5,19 +5,19 @@
       "displayName": "image",
       "type": "string",
       "description": "empty 组件的图像地址",
-      "defaultValue": "''"
+      "defaultValue": ""
     },
     {
       "displayName": "image-size",
       "type": "number",
       "description": "empty 组件的图像尺寸（宽度）",
-      "defaultValue": "—"
+      "defaultValue": ""
     },
     {
       "displayName": "description",
       "type": "string",
       "description": "empty 组件的描述信息",
-      "defaultValue": "''"
+      "defaultValue": ""
     }
   ],
   "events": [],
@@ -26,19 +26,19 @@
       "displayName": "default",
       "type": "slot",
       "description": "作为底部内容的内容",
-      "defaultValue": "''"
+      "defaultValue": ""
     },
     {
-      "displayName": "image",
+      "displayName": "icon",
       "type": "slot",
       "description": "作为图像的内容",
-      "defaultValue": "''"
+      "defaultValue": ""
     },
     {
       "displayName": "description",
       "type": "slot",
       "description": "作为描述的内容",
-      "defaultValue": "''"
+      "defaultValue": ""
     }
   ],
   "methods": []
