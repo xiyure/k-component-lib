@@ -34,7 +34,34 @@ export default defineConfig({
       }
     }),
     GitChangelog({
-      repoURL: () => 'https://github.com/xiyure/k-component-lib'
+      repoURL: () => 'https://github.com/xiyure/k-component-lib',
+      mapAuthors: [
+        {
+          name: 'mobytang',
+          username: 'baobaomi900901',
+          mapByEmailAliases: [
+            'tangqingwei@kingsware.cn',
+            'baobaomi900901@icloud.com',
+            'lugs@kingsware.cn',
+          ],
+        },
+        {
+          name: '周韩杰',
+          username: 'xiyure',
+          mapByEmailAliases: [
+            'zhouhanjie@kingsware.cn',
+            '100740223+xiyure@users.noreply.github.com',
+          ],
+        },
+        {
+          name: '莫启健',
+          username: 'QijianMo',
+          mapByEmailAliases: [
+            'moqijian@kingsware.cn',
+            'qijian_mo@163.com',
+          ],
+        },
+      ],
     }),
     GitChangelogMarkdownSection({
       exclude: (id) => {
