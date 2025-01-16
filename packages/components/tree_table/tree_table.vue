@@ -245,7 +245,7 @@
           }
         "
         @sort-change="onSortChange"
-        @row-dragend="drag"
+        @row-dragend="rowDragEnd"
       >
         <template v-for="(item, index) in columns" :key="index">
           <KColumnGroup :column="item" :size="size" :align="align">
@@ -294,7 +294,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, nextTick, inject, provide } from 'vue';
-import VXETable, { VxeTablePropTypes } from 'vxe-table';
+import VXETable from 'vxe-table';
 import { VueI18nTranslation } from 'vue-i18n';
 import {
   IconSearch,
@@ -315,7 +315,7 @@ import { KTable } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
 import { KDropdown, KDropdownItem } from '../dropdown';
-import type { TreeTableProps, ColumnConfig, TableHeaderControl, RowData } from './type';
+import type { TreeTableProps, ColumnConfig, TableHeaderControl, RowData, Row } from './type';
 import type { ConditionInfo, Condition } from '../filter';
 import {
   genRandomStr,
@@ -830,7 +830,7 @@ function updatePageNum(length: number) {
   }
   paginationConfig.value.currentPage = currentPage;
 }
-function getRowStyle(rowInfo: { row: VxeTablePropTypes.Row; rowIndex: number; $rowIndex: number }) {
+function getRowStyle(rowInfo: { row: Row; rowIndex: number; $rowIndex: number }) {
   if (!props.rowStyle) {
     const { row } = rowInfo;
     return row.style || {};
@@ -1038,7 +1038,7 @@ function advancedFilterHide() {
 // 行高亮
 let isHighlight = false;
 let preRowKey: string | number | null = null;
-function cellClick({ row, rowid }: { row: VxeTablePropTypes.Row; rowid: string | number }) {
+function cellClick({ row, rowid }: { row: Row; rowid: string | number }) {
   if (!props.cellClickToggleHighlight) {
     return;
   }
@@ -1057,7 +1057,7 @@ function cellClick({ row, rowid }: { row: VxeTablePropTypes.Row; rowid: string |
   }
   emits('highlight-change', row, isHighlight);
 }
-function drag(data: any) {
+function rowDragEnd(data: any) {
   dragSort();
   emits('row-dragend', data);
 }
@@ -1111,7 +1111,7 @@ function getRowById(id: string | number) {
   }
   const tempRecords = tableInstance.value.getInsertRecords();
   const tempRow = tempRecords.find(
-    (item: VxeTablePropTypes.Row) => item[rowConfig.value.keyField] === id
+    (item: Row) => item[rowConfig.value.keyField] === id
   );
   return tempRow ?? null;
 }

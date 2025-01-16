@@ -20,6 +20,7 @@
         :hide-timeout="hideTimeout"
         :popper-class="popperClass"
         v-bind="$attrs"
+        @command="handleCommand"
       >
         <template #title>
           <span class="k-button-more-trigger">
@@ -127,6 +128,12 @@ function resize() {
     }
   });
   hideTabs.value = res;
+}
+function handleCommand(command: number) {
+  const targetButton = buttonsElem?.[command];
+  if (targetButton) {
+    targetButton.click();
+  }
 }
 </script>
 

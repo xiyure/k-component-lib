@@ -9,19 +9,24 @@ export default defineComponent({
       default: () => ([])
     },
   },
-  setup(props, { slots, attrs }) {
+  emits: ['command'],
+  setup(props, { slots, attrs, emit }) {
     return () => (
       <>
        <KDropdown
           {...attrs}
           disabled={props.tabs.length === 0}
           v-slots={slots}
+          onCommand={(command: number) => {
+            emit('command', command)
+          }}
         >
         {
-          props.tabs.map((tab: any) => (
+          props.tabs.map((tab: any, index: number) => (
             <KDropdownItem
               key={tab}
               disabled={tab.disabled}
+              command={index}
             >
               { typeof tab?.label ==='function'? tab.label() : tab.label }
             </KDropdownItem>
