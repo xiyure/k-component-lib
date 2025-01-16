@@ -23,7 +23,7 @@
             </div>
             <div v-if="!showPassword" class="k-script-input-wrap flex-1">
               <div
-                ref="KScriptInput"
+                ref="KScriptInputWrapper"
                 :class="[
                   'k-script-input-wrapper',
                   _styleModule,
