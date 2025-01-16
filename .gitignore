@@ -12,6 +12,7 @@ kingsware-ui
 dist
 dist-ssr
 *.local
+tag_message.text
 
 # Editor directories and files
 .vscode/*
