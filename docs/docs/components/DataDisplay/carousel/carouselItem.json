@@ -9,9 +9,9 @@
     },
     {
       "displayName": "label",
-      "type": "string",
+      "type": "string | number",
       "description": "该幻灯片所对应指示器的文本",
-      "defaultValue": "0"
+      "defaultValue": ""
     }
   ],
   "events": [],
