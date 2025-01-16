@@ -23,4 +23,8 @@ export interface InputProps {
    * el属性,右边图标
    */
   suffixIcon?: Component | string | undefined;
+
+  showPassword?: boolean;
+
+  type?: string;
 }

@@ -1,7 +1,7 @@
 <template>
   <k-form>
     <k-form-item label="密码">
-      <KInput
+      <k-input
         v-model="input"
         style="width: 240px"
         type="password"
