@@ -13,7 +13,7 @@
         <div class="flex flex-col w-full min-h-8">
           <div class="flex w-full min-h-8">
             <div class="k-script-input-prepend">
-              <k-button v-if="showModeSwitch" @click="toggleMode">
+              <k-button v-if="showModeSwitch" :disabled @click="toggleMode">
                 <component
                   :is="!_isStringMode ? 'IconModeExpressionColor' : 'IconModeExpression'"
                   color="var(--k-gray-400)"
@@ -28,15 +28,18 @@
                   'k-script-input',
                   _styleModule,
                   {
+                    'k-script-input-placeholder': true,
                     'hidden-result ': showMessage === true,
                   },
                 ]"
+                :disabled="disabled"
                 :style="{
                   height: height,
                   resize: resize ? 'vertical' : 'none',
                 }"
-                contenteditable="plaintext-only"
+                :contenteditable="disabled ? false : 'plaintext-only'"
                 :spellcheck="false"
+                :placeholder
                 @input="handleInput"
                 @blur="handleBlur"
                 @focus="handleFocus"
@@ -58,6 +61,7 @@
               ref="KScriptInputPassword"
               v-model="pwd"
               type="password"
+              :disabled
               :class="['k-script-input', _styleModule]"
               class="showPassword !h-8 z-10 !p-0 flex-1"
               show-password
@@ -67,7 +71,7 @@
             ></k-input>
             <div class="k-script-input-append">
               <slot name="append"></slot>
-              <k-button v-if="showPopperSwitch" @click="showPopper">
+              <k-button v-if="showPopperSwitch" :disabled @click="showPopper">
                 <IconVariable />
               </k-button>
             </div>
@@ -153,6 +157,7 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   options: () => [],
   size: 'base',
   useTree: false,
+  disabled: false,
   showModeSwitch: true,
   showPopperSwitch: true,
   expandAll: false,
@@ -161,7 +166,8 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   resize: true,
   checkContentType: false,
   contentType: 'string',
-  optionRepeatable: true
+  optionRepeatable: true,
+  placeholder: ''
 });
 
 const DEFAULT_TREE_CONFIG = {
@@ -306,6 +312,9 @@ function handleInput(event: InputEvent | CompositionEvent) {
     curInput.value += event.data ?? '';
   }
   const { result = '' } = parseInputValue();
+  if (!result?.length) {
+    setEditorContent('');
+  }
   updateModelValue(result);
   checkInputContentType(result);
 }
@@ -373,7 +382,7 @@ async function handleInputContent(data: Row | RowData) {
     await nextTick();
   }
   const key = genRandomStr(8);
-  const content = _isStringMode.value
+  const content = (_isStringMode.value && data[getAttrProps().tag] !== false)
     ? generateScriptTag(data[getAttrProps().label], key)
     : data[getAttrProps().value];
   if (props.onlyOneInput) {
@@ -640,6 +649,9 @@ function onHidePopper() {
   }
 }
 function showPopper() {
+  if (props.disabled) {
+    return;
+  }
   showTreeSearch.value = true;
   popperVisible.value = true;
   allowShowTree.value = true;
@@ -700,6 +712,22 @@ function setStringMode(stringMode: boolean) {
   _isStringMode.value = stringMode;
   restoreTextValue();
 }
+function setCurrentMode(mode: 'password' |'string' | 'expression') {
+  if (mode === 'password') {
+    showPassword.value = true;
+    _methods.setPasswordMode(true);
+  } else if (mode ==='string') {
+    setStringMode(true);
+  } else {
+    setStringMode(false);
+  }
+}
+function getCurrentMode() {
+  if (showPassword.value) {
+    return 'password';
+  }
+  return isStringMode() ? 'string' : 'expression';
+}
 function isStringMode() {
   return _isStringMode.value;
 }
@@ -712,10 +740,16 @@ const tempCaches = {
   string: '',
 };
 function saveTextValue() {
+  if (showPassword.value) {
+    return;
+  }
   const attrName = isStringMode() ? 'string' : 'expression';
   tempCaches[attrName] = getEditorContent();
 }
 function restoreTextValue() {
+  if (showPassword.value) {
+    return;
+  }
   clear();
   const attrName = isStringMode() ? 'string' : 'expression';
   setEditorContent(caches[attrName]);
@@ -736,12 +770,13 @@ function formatterEscape(str: string) {
   return str.replace(/&nbsp;/g, ' ');
 }
 function getAttrProps() {
-  const defaultConfig = { label: 'label', value: 'value', disabled: 'disabled' };
+  const defaultConfig = { label: 'label', value: 'value', disabled: 'disabled', tag: 'tag' };
   const attrProps = Object.assign(defaultConfig, props.props);
   return {
     label: attrProps.label,
     value: attrProps.value,
     disabled: attrProps.disabled,
+    tag: attrProps.tag
   };
 }
 function getScriptKey() {
@@ -766,12 +801,15 @@ function blur() {
     instance?.blur();
   });
 }
+
 defineExpose({
   clear,
   showPopper,
   hidePopper,
   toggleMode,
   setStringMode,
+  getCurrentMode,
+  setCurrentMode,
   isStringMode,
   focus,
   blur,
