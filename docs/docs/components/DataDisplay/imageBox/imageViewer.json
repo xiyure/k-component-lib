@@ -1,24 +1,71 @@
 {
   "name": "imageViewer",
-  "props": [],
+  "props": [
+    {
+      "displayName": "url-list",
+      "type": "object",
+      "description": "用于预览的图片链接列表",
+      "defaultValue": "[]",
+      "tip": "string[]"
+    },
+    {
+      "displayName": "z-index",
+      "type": "number | string",
+      "description": "预览时遮罩层的 z-index",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "initial-index",
+      "type": "number",
+      "description": "初始预览图像索引，小于 url-list 的长度",
+      "defaultValue": "0"
+    },
+    {
+      "displayName": "infinite",
+      "type": "boolean",
+      "description": "是否可以无限循环预览",
+      "defaultValue": "true"
+    },
+    {
+      "displayName": "hide-on-click-modal",
+      "type": "boolean",
+      "description": "是否可以通过点击遮罩层关闭预览",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "teleported",
+      "type": "boolean",
+      "description": "mage 自身是否插入至 body 元素上。 嵌套的父元素属性会发生修改时应该将此属性设置为 true",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "close-on-press-escape",
+      "type": "boolean",
+      "description": "是否可以通过按下 ESC 关闭 Image Viewer",
+      "defaultValue": "true"
+    }
+  ],
   "events": [
     {
       "displayName": "close",
       "type": "Function",
       "description": "当点击 X 按钮或者在 hide-on-click-modal 为 true 时点击遮罩层时触发",
-      "defaultValue": ""
+      "defaultValue": "",
+      "tip": "() => void"
     },
     {
       "displayName": "switch",
       "type": "Function",
       "description": "切换图像时触发。",
-      "defaultValue": ""
+      "defaultValue": "",
+      "tip": "(index: number) => void"
     },
     {
       "displayName": "rotate",
       "type": "Function",
       "description": "旋转图像时触发。",
-      "defaultValue": ""
+      "defaultValue": "",
+      "tip": "(deg: number) => void"
     }
   ],
   "slots": [],
@@ -27,7 +74,8 @@
       "displayName": "setActiveItem",
       "type": "Function",
       "description": "手动切换图片",
-      "defaultValue": ""
+      "defaultValue": "",
+      "tip": "(index: number) => void"
     }
   ]
 }
