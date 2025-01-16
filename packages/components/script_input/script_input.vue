@@ -161,6 +161,7 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   resize: true,
   checkContentType: false,
   contentType: 'string',
+  optionRepeatable: true
 });
 
 const DEFAULT_TREE_CONFIG = {
@@ -194,7 +195,7 @@ const KScriptInputPassword = ref();
 const $tree = ref();
 const KScriptInputWrapper = ref();
 // 当前是否字符串模式
-const _isStringMode = ref(props.defaultMode === 'string');
+const _isStringMode = ref(props.defaultMode !== 'expression');
 let cacheRes = '';
 const curInput = ref('');
 const selectedIndex = ref<number>(0);
@@ -324,9 +325,9 @@ function checkInputContentType(result: string) {
     checkVariableResult = false;
   }
 }
-function handleFocus() {
+function handleFocus(event: FocusEvent) {
   allowShowTree.value = true;
-  emits('focus');
+  emits('focus', event);
 }
 function handleBlur(event: FocusEvent) {
   if (!(event.target instanceof HTMLElement)) {
@@ -334,7 +335,7 @@ function handleBlur(event: FocusEvent) {
   }
   const popperElem = getElement(`.${dynamicClassName}`);
   if (popperElem && !popperElem.contains(event.relatedTarget as Node)) {
-    emits('blur');
+    emits('blur', event);
     emits('change', parseInputValue());
     allowShowTree.value = false;
     popperVisible.value = false;
@@ -387,6 +388,9 @@ function handleManualInput(content: string) {
   const doc = domParser.parseFromString(content, 'text/html');
   const targetNode = doc.body.firstChild as Node;
   const { node, offset } = focusRange;
+  if (!props.optionRepeatable) {
+    removeSameNode(targetNode as Element);
+  }
   if (!node || offset === undefined) {
     KScriptInput.value.appendChild(targetNode);
     return;
@@ -394,13 +398,19 @@ function handleManualInput(content: string) {
   if (node.nodeType === 3) {
     const textContent = node.textContent ?? '';
     const endIndex = isManual ? offset : offset - curInput.value.length;
-    const fontText = document.createTextNode(textContent.slice(0, endIndex));
-    const newContent = targetNode;
-    const behindText = document.createTextNode(textContent.slice(offset));
+    const fontText = textContent.slice(0, endIndex);
+    const behindText = textContent.slice(offset);
     const parentNode = node.parentNode;
-    parentNode?.replaceChild(behindText, node);
-    parentNode?.insertBefore(newContent, behindText);
-    parentNode?.insertBefore(fontText, newContent);
+    if (!behindText?.length) {
+      parentNode?.replaceChild(targetNode, node);
+    } else {
+      const behindTextNode = document.createTextNode(behindText);
+      parentNode?.replaceChild(behindTextNode, node);
+      parentNode?.insertBefore(targetNode, behindTextNode);
+    }
+    if (fontText?.length) {
+      parentNode?.insertBefore(document.createTextNode(fontText), targetNode);
+    }
     return;
   }
   const childNodes = node.childNodes ?? [];
@@ -412,6 +422,13 @@ function handleManualInput(content: string) {
     return;
   }
   node.insertBefore(targetNode, childNodes[offset]);
+}
+function removeSameNode(targetNode: Element) {
+  const dataValue = targetNode.getAttribute('data-value');
+  const sameNodes = Array.from(KScriptInput.value.querySelectorAll(`[data-value="${dataValue}"]`));
+  sameNodes.forEach((node) => {
+    KScriptInput.value.removeChild(node);
+  });
 }
 function parseInputValue() {
   if (showPassword.value) {
@@ -494,7 +511,7 @@ function parseModelValue(value: string) {
   return originText;
 }
 function generateScriptTag(content: string, key: string, isError: boolean = false) {
-  return `<div class="k-script-tag ${isError ? 'is-error' : ''}" data-key="${key}"  contenteditable="false">${content}</div>`;
+  return `<div class="k-script-tag ${isError ? 'is-error' : ''}" data-key="${key}" data-value="${content}" contenteditable="false">${content}</div>`;
 }
 function toggleSelect(event: KeyboardEvent) {
   if (!allowShowTree.value || !popperVisible.value) {
