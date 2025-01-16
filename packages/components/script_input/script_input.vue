@@ -399,7 +399,7 @@ function handleManualInput(content: string) {
   const doc = domParser.parseFromString(content, 'text/html');
   const targetNode = doc.body.firstChild as Node;
   const { node, offset } = focusRange;
-  if (!props.optionRepeatable) {
+  if (!props.optionRepeatable && targetNode?.nodeType === 1) {
     removeSameNode(targetNode as Element);
   }
   if (!node || offset === undefined) {
