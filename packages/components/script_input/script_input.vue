@@ -1,5 +1,5 @@
 <template>
-  <div ref="KScriptInputWrapper" class="k-script-input-wrapper box-border">
+  <div ref="KScriptInput" class="k-script-input box-border" :class="{ 'is-disabled': disabled }">
     <k-popover
       :width="popoverWidth"
       :show-arrow="false"
@@ -25,17 +25,17 @@
               <div
                 ref="KScriptInput"
                 :class="[
-                  'k-script-input',
+                  'k-script-input-wrapper',
                   _styleModule,
                   {
                     'k-script-input-placeholder': true,
                     'hidden-result ': showMessage === true,
-                  },
+                    'is-disabled': disabled
+                  }
                 ]"
-                :disabled="disabled"
                 :style="{
                   height: height,
-                  resize: resize ? 'vertical' : 'none',
+                  resize: resize ? 'vertical' : 'none'
                 }"
                 :contenteditable="disabled ? false : 'plaintext-only'"
                 :spellcheck="false"
@@ -62,7 +62,7 @@
               v-model="pwd"
               type="password"
               :disabled
-              :class="['k-script-input', _styleModule]"
+              :class="['k-script-input-wrapper', _styleModule]"
               class="showPassword !h-8 z-10 !p-0 flex-1"
               show-password
               @input="updateModelValue"
@@ -94,7 +94,7 @@
             ref="$tree"
             class="k-script-options-scrollbar"
             :class="{
-              'input-tips': !showTreeSearch,
+              'input-tips': !showTreeSearch
             }"
             border="none"
             height="320px"
@@ -114,7 +114,7 @@
               isCurrent: true,
               currentMethod: ({ row }) => {
                 return row.optional !== false;
-              },
+              }
             }"
             :row-class-name="
               ({ row }: any) => {
@@ -147,7 +147,7 @@ import { checkInputMessage, typeRules } from './const';
 
 type FocusRange = { node: Node | null | undefined; offset: number | undefined };
 defineOptions({
-  name: 'KScriptInput',
+  name: 'KScriptInput'
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -197,9 +197,9 @@ const dynamicClassName = `_${genRandomStr(8)}`;
 const columns = [{ field: getAttrProps().label, title: '', treeNode: true }];
 // ref
 const KScriptInput = ref();
+const KScriptInputWrapper = ref();
 const KScriptInputPassword = ref();
 const $tree = ref();
-const KScriptInputWrapper = ref();
 // 当前是否字符串模式
 const _isStringMode = ref(props.defaultMode !== 'expression');
 let cacheRes = '';
@@ -241,7 +241,7 @@ const VTooltipConfig = computed(() => {
   return {
     content: checkInputMessage.tooltip,
     visible: showMessage.value && props.contentType !== 'number' && props.contentType !== 'boolean'
-  }
+  };
 });
 
 // 输入框内容发生变化时，需要更新下拉列表的显示状态以及光标位置
@@ -262,7 +262,7 @@ watch(
       updateFocusRange();
     }
   },
-  { immediate: true },
+  { immediate: true }
 );
 watch(
   () => [props.modelValue, props.options],
@@ -287,7 +287,7 @@ watch(
       setEditorContent(innerText);
     });
   },
-  { immediate: true, deep: true },
+  { immediate: true, deep: true }
 );
 
 function updateModelValue(res: string) {
@@ -295,10 +295,10 @@ function updateModelValue(res: string) {
   emits('update:modelValue', res);
 }
 function getEditorContent() {
-  return formatterEscape(KScriptInput.value.innerHTML);
+  return formatterEscape(KScriptInputWrapper.value.innerHTML);
 }
 function setEditorContent(value: string) {
-  KScriptInput.value.innerHTML = value;
+  KScriptInputWrapper.value.innerHTML = value;
 }
 function handleInput(event: InputEvent | CompositionEvent) {
   if (!(event.target instanceof HTMLElement) || !allowInput.value) {
@@ -355,7 +355,7 @@ function cellClick({ row }: { row: Row }) {
     return;
   }
   const rowIndex = flattedOptions.value.findIndex(
-    (item) => item[getAttrProps().value] === row[getAttrProps().value],
+    (item) => item[getAttrProps().value] === row[getAttrProps().value]
   );
   selectedIndex.value = rowIndex;
   if (row.children?.length) {
@@ -382,14 +382,16 @@ async function handleInputContent(data: Row | RowData) {
     await nextTick();
   }
   const key = genRandomStr(8);
-  const content = (_isStringMode.value && data[getAttrProps().tag] !== false)
-    ? generateScriptTag(data[getAttrProps().label], key)
-    : data[getAttrProps().value];
+  const content =
+    _isStringMode.value && data[getAttrProps().tag] !== false
+      ? generateScriptTag(data[getAttrProps().label], key)
+      : data[getAttrProps().value];
   if (props.onlyOneInput) {
-    KScriptInput.value.innerHTML = content;
+    KScriptInputWrapper.value.innerHTML = content;
   } else {
     handleManualInput(content);
-  }1
+  }
+  1;
   return key;
 }
 function handleManualInput(content: string) {
@@ -401,7 +403,7 @@ function handleManualInput(content: string) {
     removeSameNode(targetNode as Element);
   }
   if (!node || offset === undefined) {
-    KScriptInput.value.appendChild(targetNode);
+    KScriptInputWrapper.value.appendChild(targetNode);
     return;
   }
   if (node.nodeType === 3) {
@@ -434,9 +436,11 @@ function handleManualInput(content: string) {
 }
 function removeSameNode(targetNode: Element) {
   const dataValue = targetNode.getAttribute('data-value');
-  const sameNodes = Array.from(KScriptInput.value.querySelectorAll(`[data-value="${dataValue}"]`));
+  const sameNodes = Array.from(
+    KScriptInputWrapper.value.querySelectorAll(`[data-value="${dataValue}"]`)
+  );
   sameNodes.forEach((node) => {
-    KScriptInput.value.removeChild(node);
+    KScriptInputWrapper.value.removeChild(node);
   });
 }
 function parseInputValue() {
@@ -444,14 +448,14 @@ function parseInputValue() {
     return {
       result: pwd.value,
       scriptTags: [],
-      isStringMode: isStringMode(),
+      isStringMode: isStringMode()
     };
   }
   if (!isStringMode()) {
     return {
       result: getEditorContent(),
       scriptTags: [],
-      isStringMode: false,
+      isStringMode: false
     };
   }
   let text = '';
@@ -481,7 +485,7 @@ function parseInputValue() {
       }
     }
   };
-  domToText(KScriptInput.value);
+  domToText(KScriptInputWrapper.value);
   text = text.replace(/\u00A0/g, ' ');
   emits('input', text);
   return {
@@ -579,12 +583,12 @@ function resetCursor(key?: string) {
   }
   const selection = window.getSelection();
   if (key === undefined || key === null) {
-    KScriptInput.value.focus();
-    selection?.selectAllChildren(KScriptInput.value);
+    KScriptInputWrapper.value.focus();
+    selection?.selectAllChildren(KScriptInputWrapper.value);
     selection?.collapseToEnd();
   } else {
     const range = document.createRange();
-    range.selectNodeContents(KScriptInput.value);
+    range.selectNodeContents(KScriptInputWrapper.value);
     const { node, offset } = getRange(key);
     range.setStart(node, offset);
     range.collapse(true);
@@ -595,8 +599,8 @@ function resetCursor(key?: string) {
 function getRange(key: string) {
   let isFound = false;
   const range = {
-    node: KScriptInput.value,
-    offset: 0,
+    node: KScriptInputWrapper.value,
+    offset: 0
   };
   const getNodeInfo = (node: HTMLElement) => {
     if (isFound) {
@@ -629,7 +633,7 @@ function getRange(key: string) {
       }
     }
   };
-  getNodeInfo(KScriptInput.value);
+  getNodeInfo(KScriptInputWrapper.value);
   return range as { node: Node; offset: number };
 }
 function onShowPopper() {
@@ -670,7 +674,7 @@ function showPopper() {
 function updateFocusRange() {
   const selection = window.getSelection();
   const { focusNode, focusOffset } = selection ?? {};
-  if (!selection || !KScriptInput.value.contains(focusNode as Node)) {
+  if (!selection || !KScriptInputWrapper.value.contains(focusNode as Node)) {
     return;
   }
   focusRange.node = focusNode;
@@ -712,11 +716,11 @@ function setStringMode(stringMode: boolean) {
   _isStringMode.value = stringMode;
   restoreTextValue();
 }
-function setCurrentMode(mode: 'password' |'string' | 'expression') {
+function setCurrentMode(mode: 'password' | 'string' | 'expression') {
   if (mode === 'password') {
     showPassword.value = true;
     _methods.setPasswordMode(true);
-  } else if (mode ==='string') {
+  } else if (mode === 'string') {
     setStringMode(true);
   } else {
     setStringMode(false);
@@ -733,11 +737,11 @@ function isStringMode() {
 }
 const caches = {
   expression: '',
-  string: '',
+  string: ''
 };
 const tempCaches = {
   expression: '',
-  string: '',
+  string: ''
 };
 function saveTextValue() {
   if (showPassword.value) {
@@ -762,8 +766,8 @@ function restoreTextValue() {
 }
 function handleResize() {
   nextTick(() => {
-    // 获取 KScriptInputWrapper 的 宽度
-    popoverWidth.value = KScriptInputWrapper.value?.offsetWidth ?? 0;
+    // 获取 KScriptInput 的 宽度
+    popoverWidth.value = KScriptInput.value?.offsetWidth ?? 0;
   });
 }
 function formatterEscape(str: string) {
@@ -784,7 +788,7 @@ function getScriptKey() {
 }
 
 function focus() {
-  const instance = showPassword.value ? KScriptInputPassword.value : KScriptInput.value;
+  const instance = showPassword.value ? KScriptInputPassword.value : KScriptInputWrapper.value;
   if (!instance) {
     return;
   }
@@ -793,7 +797,7 @@ function focus() {
   });
 }
 function blur() {
-  const instance = showPassword.value ? KScriptInputPassword.value : KScriptInput.value;
+  const instance = showPassword.value ? KScriptInputPassword.value : KScriptInputWrapper.value;
   if (!instance) {
     return;
   }
