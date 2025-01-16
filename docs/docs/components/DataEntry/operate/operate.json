@@ -41,7 +41,7 @@
         "type": "Function",
         "description": "按钮点击事件",
         "defaultValue": "",
-        "tip": "<T>(data?: T) => void"
+        "tip": "(data?: any) => void"
       },
       {
         "displayName": "disabled",

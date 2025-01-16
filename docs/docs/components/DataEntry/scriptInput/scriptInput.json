@@ -41,19 +41,19 @@
       "defaultValue": "false"
     },
     {
-      "displayName": "showPopperSwitch",
+      "displayName": "show-popper-switch",
       "type": "boolean",
       "description": "是否显示下拉按钮",
       "defaultValue": "true"
     },
     {
-      "displayName": "showModeSwitch",
+      "displayName": "show-mode-switch",
       "type": "boolean",
       "description": "是否显示模式切换按钮",
       "defaultValue": "true"
     },
     {
-      "displayName": "defaultMode",
+      "displayName": "default-mode",
       "type": "enum",
       "description": "默认模式",
       "defaultValue": "true",
@@ -78,67 +78,45 @@
       "defaultValue": "true"
     },
     {
-      "displayName": "showPassword",
+      "displayName": "show-password",
       "type": "boolean",
       "description": "是否显示密码输入框",
-      "defaultValue": ""
+      "defaultValue": "false"
     },
     {
-      "displayName": "treeConfig",
+      "displayName": "tree-config",
       "type": "object",
-      "description": "树形结构配置",
+      "description": "树形结构配置，参考KTreeTable组件treeConfig配置",
       "defaultValue": "",
-      "tip": "{[key: string]: any}"
+      "tip": "TreeConfig"
     },
     {
       "displayName": "props",
       "type": "object",
       "description": "输入框属性",
       "defaultValue": "",
-      "tip": "propsConfig"
+      "tip": "{label?: string, value?: string, disabled?: boolean}"
     },
     {
-      "displayName": "scriptKey",
+      "displayName": "script-key",
       "type": "string",
       "description": "脚本key",
       "defaultValue": ""
     },
     {
-      "displayName": "checkVariableName",
+      "displayName": "check-content-type",
       "type": "boolean",
       "description": "是否检查变量名",
       "defaultValue": "false"
     },
     {
-      "displayName": "valueType",
+      "displayName": "content-type",
       "type": "enum",
-      "description": "值类型",
+      "description": "文本类型",
       "defaultValue": "",
       "tip": "'number' | 'boolean' | 'string' | ''"
     }
   ],
-  "subProps": {
-    "propsConfig": [
-      {
-        "displayName": "label",
-        "type": "string",
-        "description": "输入框标签",
-        "defaultValue": ""
-      },
-      {
-        "displayName": "value",
-        "type": "string",
-        "description": "输入框值",
-        "defaultValue": ""
-      },
-      {
-        "displayName": "disabled",
-        "type": "string",
-        "description": "是否禁用",
-        "defaultValue": ""
-      }
-    ]
-  },
   "events": [
     {
       "displayName": "change",
@@ -169,12 +147,6 @@
       "description": "选项被选中时触发",
       "type": "Function",
       "tip": "(data: Row | RowData) => void"
-    },
-    {
-      "displayName": "update:modelValue",
-      "description": "值改变时触发",
-      "type": "Function",
-      "tip": "(data: string) => void"
     }
   ],
   "slots": [
@@ -216,7 +188,7 @@
       "displayName": "setStringMode",
       "description": "切换为字符串模式",
       "type": "Function",
-      "tip": "() => void"
+      "tip": "(isStringMode: boolean) => void"
     },
     {
       "displayName": "isStringMode",
