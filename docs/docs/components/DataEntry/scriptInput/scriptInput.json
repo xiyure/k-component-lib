@@ -9,13 +9,6 @@
       "tip": ""
     },
     {
-      "displayName": "size",
-      "type": "enum",
-      "description": "输入框大小",
-      "defaultValue": "",
-      "tip": "'lg' | 'base' | 'sm' | ''"
-    },
-    {
       "displayName": "placeholder",
       "type": "string",
       "description": "输入框占位符",
@@ -115,6 +108,13 @@
       "description": "文本类型",
       "defaultValue": "",
       "tip": "'number' | 'boolean' | 'string' | ''"
+    },
+    {
+      "displayName": "option-repeatable",
+      "type": "boolean",
+      "description": "标签是否可重复选择",
+      "defaultValue": "true",
+      "tip": "'"
     }
   ],
   "events": [
@@ -189,6 +189,18 @@
       "description": "切换为字符串模式",
       "type": "Function",
       "tip": "(isStringMode: boolean) => void"
+    },
+    {
+      "displayName": "getCurrentMode",
+      "description": "获取当前模式",
+      "type": "Function",
+      "tip": "() => 'string' | 'expression' | 'password'"
+    },
+    {
+      "displayName": "setCurrentMode",
+      "description": "设置当前模式",
+      "type": "Function",
+      "tip": "(mode: 'string' | 'expression' | 'password) => void"
     },
     {
       "displayName": "isStringMode",
