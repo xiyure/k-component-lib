@@ -49,7 +49,7 @@
       "displayName": "default-mode",
       "type": "enum",
       "description": "默认模式",
-      "defaultValue": "true",
+      "defaultValue": "string",
       "tip": "'string' | 'expression'"
     },
     {
