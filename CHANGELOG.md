@@ -2,6 +2,45 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0](https://github.com/xiyure/k-component-lib/compare/v1.0.6..v1.1.0) - 2025-01-16
+
+### 🚀 特性
+
+- *(script_input)* 新增 valueType, 用于正则校验是否为 数字 或 布尔值 - ([a69568c](https://github.com/xiyure/k-component-lib/commit/a69568c26631be2ad37f0e5decd2e26d6b8b4ba8))
+- *(tag)* 新增 showOverflow 来控制最大宽度, 建议比table 单元格预留 140px - ([2d377b7](https://github.com/xiyure/k-component-lib/commit/2d377b73f5c19cb1c6cc21292723672834ed0bf3))
+
+### 🐛 Bug 修复
+
+- *(ButtonContainer)* 修复隐藏按钮点击事件失效问题； - ([77e2d50](https://github.com/xiyure/k-component-lib/commit/77e2d50353f2125c2c2ff4b89c6eb6edc43c56fb))
+- *(script_input)* 优化节点判断 - ([791b16a](https://github.com/xiyure/k-component-lib/commit/791b16a6efa4d8eb942dcb4f7ae751173f772943))
+- *(script_input)* 修改提示文字 - ([bc9a08f](https://github.com/xiyure/k-component-lib/commit/bc9a08f3e7a00e9c0588df02032c6dbb085a6034))
+- *(script_input)* 优化中英文混合输入导致换行的 bug - ([5e208b2](https://github.com/xiyure/k-component-lib/commit/5e208b25707f65d7378e74c6bac3a061ee34ae1f))
+- Upload组件使用trigger插槽时before-upload事件不触发的问题； - ([44e988c](https://github.com/xiyure/k-component-lib/commit/44e988c6f6094dc74793cea199e5e7c5669fa986))
+
+### 🚜 重构
+
+- Element-plus 降低版本至 2.9.0 并锁定 - ([7e3b632](https://github.com/xiyure/k-component-lib/commit/7e3b6324af8e79bb1b1e6d59dd939faedfe03a95))
+
+### 📚 文档
+
+- *(carousel)* 补充Function提示 - ([67487a1](https://github.com/xiyure/k-component-lib/commit/67487a1e0d41b438cec0b8dd0d314ca16985e936))
+- *(collapse)* 补充API描述 - ([e8631a0](https://github.com/xiyure/k-component-lib/commit/e8631a0bdc3fe64eb21023fb90972b4cc2250101))
+- *(descriptions)* 补充API提示 - ([e456a47](https://github.com/xiyure/k-component-lib/commit/e456a474a4809c0096b9724d36c4c97521e132a5))
+- *(image)* ImageViewer扩充API - ([d14b84d](https://github.com/xiyure/k-component-lib/commit/d14b84def3e9e5b7ed9ac4cf8289766c3fdf0990))
+- *(scriptInput)* 完成文档以及API编写 - ([b2dc9b4](https://github.com/xiyure/k-component-lib/commit/b2dc9b4d278a51d1cea1fd845d78e0a5b8d6b7a3))
+- 贡献者添加数据映射 - ([0d909d2](https://github.com/xiyure/k-component-lib/commit/0d909d21b519230f272d8b4de3d2e15973d1e99f))
+
+### 🎨 样式
+
+- *(script_input)* 增加 disabled 样式 - ([3826277](https://github.com/xiyure/k-component-lib/commit/3826277c04ff992d1b9ab9826d3cdcd15ed03fea))
+- *(script_input)* 增加字间距, 规避英文符号',光标问题 - ([917510e](https://github.com/xiyure/k-component-lib/commit/917510ee5fc194d2757f34f3e52f3890c56ccf53))
+
+## 新贡献者 ❤️
+
+* @sengoku-f 做出了他们的第一次贡献
+* @ 做出了他们的第一次贡献
+* @baobaomi900901 做出了他们的第一次贡献
+* @github-actions[bot] 做出了他们的第一次贡献
 ## [1.0.6](https://github.com/xiyure/k-component-lib/compare/v1.0.0..v1.0.6) - 2025-01-08
 
 ### 💼 修改
@@ -25,6 +64,9 @@ All notable changes to this project will be documented in this file.
 - 添加团队页和变更页面 - ([f61d99b](https://github.com/xiyure/k-component-lib/commit/f61d99bea95e0bf20dbcbeadd52cc68829c90247))
 - 新增提交规范 - ([4b29f83](https://github.com/xiyure/k-component-lib/commit/4b29f83c5b0d9d0a5000e5c35c77049707402812))
 
+## 新贡献者 ❤️
+
+* @github-actions[bot] 做出了他们的第一次贡献
 ## [0.0.120] - 2024-12-25
 
 ### 🚀 特性
@@ -193,4 +235,6 @@ All notable changes to this project will be documented in this file.
 ## 新贡献者 ❤️
 
 * @ 做出了他们的第一次贡献
-* @xiyure 做出了他们的第一次贡献
+* @QijianMo 做出了他们的第一次贡献
+* @sengoku-f 做出了他们的第一次贡献
+* @baobaomi900901 做出了他们的第一次贡献
