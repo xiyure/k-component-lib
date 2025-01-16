@@ -17,19 +17,21 @@
       "displayName": "direction",
       "type": "enum",
       "description": "排列的方向",
-      "defaultValue": "horizontal"
+      "defaultValue": "horizontal",
+      "tip": "'vertical' | 'horizontal'"
     },
     {
       "displayName": "size",
       "type": "enum",
       "description": "列表的尺寸",
-      "defaultValue": ""
+      "defaultValue": "",
+      "tip": "'' | 'large' | 'default' | 'small'"
     },
     {
       "displayName": "title",
       "type": "string",
       "description": "标题文本，显示在左上方",
-      "defaultValue": "''"
+      "defaultValue": ""
     },
     {
       "displayName": "extra",
@@ -50,13 +52,13 @@
       "displayName": "title",
       "type": "slot",
       "description": "自定义标题，显示在左上方",
-      "defaultValue": "—"
+      "defaultValue": ""
     },
     {
       "displayName": "extra",
       "type": "slot",
       "description": "自定义操作区，显示在右上方",
-      "defaultValue": "—"
+      "defaultValue": ""
     }
   ],
   "methods": []
