@@ -13,6 +13,7 @@ dist
 dist-ssr
 *.local
 tag_message.txt
+tag_message.md
 
 
 # Editor directories and files
