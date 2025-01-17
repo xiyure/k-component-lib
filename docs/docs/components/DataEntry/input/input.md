@@ -46,7 +46,7 @@ title: Input 输入框
 
 文本域高度可通过 `rows` 属性控制
 
-<preview path="./textarea.vue" />
+<preview path="./textareaInput.vue" />
 
 ### 自适应文本域
 
