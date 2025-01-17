@@ -1,5 +1,5 @@
 <template>
-  <KInput
+  <k-input
     v-model="textarea"
     style="width: 240px"
     :rows="2"
