@@ -33,6 +33,7 @@ export interface ScriptInputProps {
    *   值是否可重复, 默认值为true; 改为false, 则值不可重复
    */
   optionRepeatable?: boolean;
+  maxHeight?: string;
 }
 
 export type ScriptOptions = {

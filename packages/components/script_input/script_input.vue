@@ -35,6 +35,7 @@
                 ]"
                 :style="{
                   height: height,
+                  maxHeight: maxHeight,
                   resize: resize ? 'vertical' : 'none'
                 }"
                 :contenteditable="disabled ? false : 'plaintext-only'"
