@@ -25,8 +25,12 @@
     </template>
     <template #suffix>
       <slot name="suffix"></slot>
-      <IconShow v-if="!isText && isPasswordVisible" @click="switchPassword" />
-      <IconHide v-if="isText && isPasswordVisible" @click="switchPassword" />
+      <div @click="switchPassword">
+        <IconShow v-if="!isText && isPasswordVisible" />
+      </div>
+      <div @click="switchPassword">
+        <IconHide v-if="isText && isPasswordVisible" />
+      </div>
     </template>
     <template v-if="slots.append" #append>
       <div :class="slotClass(appendSlotType)">
