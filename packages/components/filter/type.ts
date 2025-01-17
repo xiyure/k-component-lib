@@ -1,7 +1,6 @@
 export interface FilterProps {
   data?: any[],
-  column?: filterOptions[]
-  options?: filterOptions[]
+  options?: FilterOptions[]
   border?: boolean
   size?: 'base' | 'sm'
   childrenField?: string
@@ -27,19 +26,20 @@ export type FilterData = {
   handler: ((a: FilterValue, b?: FilterValue, ignoreCase?: boolean) => boolean) | null
   _allowSelectLogic?: boolean
   isMultiple?: boolean
-  multipleValue: string[]
+  multipleValue?: string[]
 }
 
-export interface filterOptions {
+export interface FilterOptions {
   title: string
-  value: string
-  multiple: boolean
+  value?: string | number | boolean
+  multiple?: boolean
   dataType?: 'string' | 'number' | 'date'
   options?: {
     label: string
-    value: string
+    value: string | number | boolean
   }[]
-  group?: filterOptions[]
+  group?: FilterOptions[]
+  [key: string]: any
 }
 
 export interface Condition {

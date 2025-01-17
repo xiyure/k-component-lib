@@ -132,7 +132,7 @@
             >
               <k-option
                 v-for="optionItem in instance(item.key)?.options"
-                :key="optionItem.value"
+                :key="optionItem.label"
                 :label="optionItem.label"
                 :value="optionItem.value"
               />
@@ -149,7 +149,7 @@
             >
               <k-option
                 v-for="optionItem in instance(item.key)?.options"
-                :key="optionItem.value"
+                :key="optionItem.label"
                 :label="optionItem.label"
                 :value="optionItem.value"
               />
@@ -290,7 +290,7 @@
             >
               <k-option
                 v-for="optionItem in instance(item.key)?.options"
-                :key="optionItem.value"
+                :key="optionItem.label"
                 :label="optionItem.label"
                 :value="optionItem.value"
               />
@@ -306,7 +306,7 @@
             >
               <k-option
                 v-for="optionItem in instance(item.key)?.options"
-                :key="optionItem.value"
+                :key="optionItem.label"
                 :label="optionItem.label"
                 :value="optionItem.value"
               />
@@ -347,11 +347,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, inject, onMounted, watch } from 'vue';
+import { ref, computed, inject, onMounted, watch, useAttrs } from 'vue';
 import { VueI18nTranslation } from 'vue-i18n';
 import { IconClose, IconClearDate, IconAdd, IconFilter, IconFilterFill } from 'ksw-vue-icon';
 import { cloneDeep } from 'lodash-es';
-import { FilterProps, FilterData, filterOptions } from './type';
+import { FilterProps, FilterData, FilterOptions } from './type';
 import { KInput } from '../input';
 import { KSelect, KOption } from '../select';
 import { KButton } from '../button';
@@ -375,13 +375,13 @@ const props = withDefaults(defineProps<FilterProps>(), {
 });
 
 const formatSize = useSize<FilterProps>(props);
+const attrs = useAttrs();
 
 onMounted(() => {
-  const deprecatedFields = ['column'];
-  deprecatedFields.forEach((field: string) => {
-    // @ts-ignore
-    if (props[field]) {
-      console.warn(`[KFilter] The "${field}" field is deprecated, please use "options" instead.`);
+  const deprecatedFields = [{oName: 'column', nName: 'options'}];
+  deprecatedFields.forEach((p: { oName: string, nName: string }) => {
+    if (attrs[p.oName]) {
+      console.warn(`[KFilter] The "${p.oName}" field is deprecated, please use "${p.nName}" instead.`);
     }
   });
 });
@@ -397,7 +397,7 @@ const filterRule = ref(0);
 const flatColumns = computed(() => treeDataToArray(cloneDeep(props.options), 'group'));
 const instance = computed(
   () => function (value: string | null) {
-    const matchInstance: filterOptions = flatColumns.value?.find(
+    const matchInstance: FilterOptions = flatColumns.value?.find(
       (item) => item[props.filterKey] === value
     );
     return matchInstance;
@@ -595,7 +595,7 @@ function getRemoteFieldMap() {
   }
   return new Map(props.remote.map((item: string, index: number) => [item, index]));
 }
-function changeCondition(index: number, item: FilterData, options: filterOptions[]) {
+function changeCondition(index: number, item: FilterData, options: FilterOptions[]) {
   if (item && options && options.length > 0) {
     options.forEach((option) => {
       if (item.title && item.title.includes(option.title) && option.multiple) {
@@ -612,8 +612,8 @@ function changeCondition(index: number, item: FilterData, options: filterOptions
     targetItem.showValue = '';
     return;
   }
-  let columns: filterOptions[] = props.options ?? [];
-  let columnItem: filterOptions | undefined;
+  let columns: FilterOptions[] = props.options ?? [];
+  let columnItem: FilterOptions | undefined;
   for (const title of titles) {
     columnItem = columns?.find((item) => item.title === title);
     columns = columnItem?.group ?? [];
@@ -772,7 +772,7 @@ function updateValue(
     const targetOption = options?.find((item) => item.value === dataItem.value);
     dataItem.showValue = targetOption?.label ?? '';
   } else if (uiType === 'multiple') {
-    dataItem.showValue = dataItem.multipleValue;
+    dataItem.showValue = dataItem.multipleValue ?? [];
   }
 }
 function dateChange(val: Date | Date[], item: FilterData) {

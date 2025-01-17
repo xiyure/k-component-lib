@@ -141,7 +141,7 @@ function handleChange(
 ) {
   emits('update:modelValue', modelValue.value);
   emits('change', value, direction, movedKeys);
-  // todo: ElementPlus中Transfer组件配合sortablejs实现拖拽时存在问题，这里在modelValue为空时删除dom以维持正常显示
+  // todo: ElementPlus中Transfer组件配合sortable.js实现拖拽时存在问题，这里在modelValue为空时删除dom以维持正常显示
   if (modelValue.value.length === 0) {
     const rightPanelElem = KTransferRef.value.$el.querySelectorAll('.el-transfer-panel__list')[1];
     const childrenNodes = rightPanelElem?.children ?? [];
@@ -160,8 +160,6 @@ function handleRightCheckChange(value: TransferKey[], movedKeys?: TransferKey[])
   emits('right-check-change', value, movedKeys);
 }
 
-const IconArrowToRight = '<span class="ksw-icon ksw-icon-ArrowToRight"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="m18.397 12-6.91 6.976a.58.58 0 0 0-.173.409c0 .34.307.615.686.615a.72.72 0 0 0 .513-.207l7.314-7.384a.57.57 0 0 0 0-.818l-7.314-7.384A.72.72 0 0 0 12 4c-.379 0-.686.276-.686.615 0 .151.062.297.173.41z"></path><path fill-rule="evenodd" d="m11.083 12-6.91 6.976a.58.58 0 0 0-.173.409c0 .34.307.615.686.615a.72.72 0 0 0 .512-.207l7.315-7.384a.57.57 0 0 0 0-.818L5.199 4.207A.72.72 0 0 0 4.686 4C4.307 4 4 4.276 4 4.615c0 .151.062.297.173.41z"></path></svg></span>';
-const IconArrowToLeft = '<span class="ksw-icon ksw-icon-ArrowToLeft"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="m5.477 12 6.363-6.976a.6.6 0 0 0 .16-.409.624.624 0 0 0-.632-.615.64.64 0 0 0-.472.207L4.16 11.59a.604.604 0 0 0 0 .818l6.736 7.384a.64.64 0 0 0 .472.207.624.624 0 0 0 .632-.615.6.6 0 0 0-.16-.41z"></path><path fill-rule="evenodd" d="m13.477 12 6.363-6.976a.6.6 0 0 0 .16-.409.624.624 0 0 0-.632-.615.64.64 0 0 0-.472.207L12.16 11.59a.604.604 0 0 0 0 .818l6.736 7.384a.64.64 0 0 0 .472.207.624.624 0 0 0 .632-.615.6.6 0 0 0-.16-.41z"></path></svg></span>';
 function extendContent() {
   if (!KTransferRef.value) {
     return;
@@ -179,8 +177,8 @@ function extendContent() {
   transferHeader.appendChild(label);
   // 替换第三方组件内部图标
   const transButton = transferElem.querySelectorAll('.el-transfer__button');
-  transButton[0].innerHTML = IconArrowToLeft;
-  transButton[1].innerHTML = IconArrowToRight;
+  transButton[0].innerHTML = '<span class="ksw-icon ksw-icon-ArrowToRight"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="m18.397 12-6.91 6.976a.58.58 0 0 0-.173.409c0 .34.307.615.686.615a.72.72 0 0 0 .513-.207l7.314-7.384a.57.57 0 0 0 0-.818l-7.314-7.384A.72.72 0 0 0 12 4c-.379 0-.686.276-.686.615 0 .151.062.297.173.41z"></path><path fill-rule="evenodd" d="m11.083 12-6.91 6.976a.58.58 0 0 0-.173.409c0 .34.307.615.686.615a.72.72 0 0 0 .512-.207l7.315-7.384a.57.57 0 0 0 0-.818L5.199 4.207A.72.72 0 0 0 4.686 4C4.307 4 4 4.276 4 4.615c0 .151.062.297.173.41z"></path></svg></span>';
+  transButton[1].innerHTML = '<span class="ksw-icon ksw-icon-ArrowToLeft"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="m5.477 12 6.363-6.976a.6.6 0 0 0 .16-.409.624.624 0 0 0-.632-.615.64.64 0 0 0-.472.207L4.16 11.59a.604.604 0 0 0 0 .818l6.736 7.384a.64.64 0 0 0 .472.207.624.624 0 0 0 .632-.615.6.6 0 0 0-.16-.41z"></path><path fill-rule="evenodd" d="m13.477 12 6.363-6.976a.6.6 0 0 0 .16-.409.624.624 0 0 0-.632-.615.64.64 0 0 0-.472.207L12.16 11.59a.604.604 0 0 0 0 .818l6.736 7.384a.64.64 0 0 0 .472.207.624.624 0 0 0 .632-.615.6.6 0 0 0-.16-.41z"></path></svg></span>';
 }
 function resetTransferData() {
   if (!Array.isArray(props.defaultKeys)) {
