@@ -53,7 +53,7 @@ const labelText = computed(() => {
   }
   return props.label;
 });
-let timer: NodeJS.Timeout | null = null;
+let timer: any = null;
 function handleMouseEnter(e: Event) {
   const target = e.target as HTMLElement;
   if (target.clientWidth < target.scrollWidth) {

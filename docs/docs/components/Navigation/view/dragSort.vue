@@ -9,7 +9,10 @@
     @drag="(value) => console.log('drag', value)"
   >
     <template #label="{ data }">
-      <k-tag :color="data.color" size="sm" text-color="#000" point>
+      <k-tag
+        :color="data.color" size="sm" text-color="#000"
+        point
+      >
         {{ data.label }}
       </k-tag>
     </template>

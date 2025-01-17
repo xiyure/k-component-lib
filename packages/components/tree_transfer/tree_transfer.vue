@@ -273,10 +273,10 @@ function updateSelectData() {
 function handleSelectData(row: Row, checked: boolean, isAll: boolean) {
   if (isAll) {
     const $table = treeLeftRef.value.tableInstance;
-    const checkedNodes = checked
-      ?  $table.getCheckboxRecords()
-        .filter((item: Row) => !item.children || !item.children.length)
-      : rightData.value;
+    const checkedNodes = checked ?
+      $table.getCheckboxRecords()
+      .filter((item: Row) => !item.children || !item.children.length) :
+      rightData.value;
     for (const node of checkedNodes) {
       updateCheckedMap(node, checked);
     }

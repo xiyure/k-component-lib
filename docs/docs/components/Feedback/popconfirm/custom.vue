@@ -11,7 +11,12 @@
     </template>
     <template #actions="{ confirm, cancel }">
       <k-button size="small" @click="cancel">No!</k-button>
-      <k-button type="danger" size="small" :disabled="!clicked" @click="confirm">Yes?</k-button>
+      <k-button
+        type="danger" size="small" :disabled="!clicked"
+        @click="confirm"
+      >
+        Yes?
+      </k-button>
     </template>
   </k-popconfirm>
 </template>

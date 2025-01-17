@@ -125,15 +125,15 @@
 import { ref, watch, computed, provide, inject, onMounted, onBeforeUnmount } from 'vue';
 import { ElScrollbar } from 'element-plus';
 import { IconRefresh, IconArrowRight } from 'ksw-vue-icon';
+import { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type';
 import { Sortable, SortableInstance } from '../../utils/event/sortable';
 import { getElement } from '../../utils';
-import { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type';
 import KViewItem from './view_item.vue';
 import { ViewProps, ViewData } from './type';
 import { KTree } from '../tree';
 
 defineOptions({
-  name: 'KView',
+  name: 'KView'
 });
 
 const DEFAULT_PROPS = {
@@ -142,7 +142,7 @@ const DEFAULT_PROPS = {
   count: 'count',
   children: 'children',
   disabled: 'disabled',
-  custom: 'custom',
+  custom: 'custom'
 };
 const props = withDefaults(defineProps<ViewProps>(), {
   draggable: false,
@@ -151,7 +151,7 @@ const props = withDefaults(defineProps<ViewProps>(), {
   useTree: false,
   treeConfig: () => ({}),
   showArrow: false,
-  showCount: true,
+  showCount: true
 });
 const emits = defineEmits([
   'refresh',
@@ -160,7 +160,7 @@ const emits = defineEmits([
   'drag',
   'visible',
   'node-expand',
-  'node-collapse',
+  'node-collapse'
 ]);
 const _styleModule = inject('_styleModule', '');
 const active = ref<string | number>('');
@@ -192,7 +192,7 @@ watch(
     defaultExpandedKeys.value = [activeValue ?? ''];
     currentNodeKey.value = activeValue ?? '';
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 function handleFresh() {
@@ -227,8 +227,8 @@ type SortableInstances = {
 }
 const sortableInstances: SortableInstances = {
   common: null,
-  custom: null,
-}
+  custom: null
+};
 let preRow: Element | null = null;
 function initSortable() {
   const commonDragElem = getElement<HTMLElement>(
@@ -244,23 +244,23 @@ function initSortable() {
   }
   if (commonDragElem) {
     sortableInstances.common = Sortable(commonDragElem as HTMLElement, {
-    handle: '.k-view-common',
-    animation: 150,
-    onMove: (evt: any) => {
-      preRow = evt.related;
-    },
-    onEnd: dragEnd
-  });
+      handle: '.k-view-common',
+      animation: 150,
+      onMove: (evt: any) => {
+        preRow = evt.related;
+      },
+      onEnd: dragEnd
+    });
   }
   if (customDragElem) {
     sortableInstances.custom = Sortable(customDragElem as HTMLElement, {
-    handle: '.k-view-custom',
-    animation: 150,
-    onMove: (evt: any) => {
-      preRow = evt.related;
-    },
-    onEnd: dragEnd
-  });
+      handle: '.k-view-custom',
+      animation: 150,
+      onMove: (evt: any) => {
+        preRow = evt.related;
+      },
+      onEnd: dragEnd
+    });
   }
 }
 function dragEnd(targetNode: any, lastOverNode?: any, position?: 'after' | 'before' | 'inner') {
@@ -268,7 +268,7 @@ function dragEnd(targetNode: any, lastOverNode?: any, position?: 'after' | 'befo
     targetNode,
     lastOverNode,
     position
-  }
+  };
   if (!props.useTree) {
     if (!preRow || preRow === targetNode) {
       return;
@@ -317,7 +317,7 @@ function formatter(data: ViewData) {
     count: data[config.value.count] ?? 0,
     disabled: data[config.value.disabled] ?? false,
     custom: data[config.value.custom] ?? false,
-    showCustomControl: data.showCustomControl ?? false,
+    showCustomControl: data.showCustomControl ?? false
   };
 }
 
@@ -329,7 +329,7 @@ defineExpose({
   collapse,
   toggle,
   isExpand,
-  isCollapse,
+  isCollapse
 });
 </script>
 

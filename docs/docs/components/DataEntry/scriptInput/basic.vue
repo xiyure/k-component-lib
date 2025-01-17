@@ -95,7 +95,7 @@ function onChange(value: any) {
 }
 
 function change() {
-  text.value += `'''fx(C5C20FD0C698406185E647197D8A8AED)'''`;
+  text.value += '\'\'\'fx(C5C20FD0C698406185E647197D8A8AED)\'\'\'';
 }
 
 function changeMode() {

@@ -44,10 +44,6 @@ import { Sortable, SortableInstance, SortableEvent } from '../../utils/event/sor
 import { TransferProps } from './type';
 import { KInput } from '../input';
 import { getExposeProxy, sortBySmallerList } from '../../utils';
-// @ts-expect-error 引入本地静态图片资源
-import ArrowToLeft from '../../assets/svg/arrow-to-left.svg';
-// @ts-expect-error 引入本地静态图片资源
-import ArrowToRight from '../../assets/svg/arrow-to-right.svg';
 
 defineOptions({
   name: 'KTransfer'

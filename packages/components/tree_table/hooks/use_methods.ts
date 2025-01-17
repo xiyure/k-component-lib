@@ -212,7 +212,7 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     }
     getTreeExpandRecords();
     const { rowField, parentField } = getTreeField();
-    const { fullData = [] } = $table.value?.getTableData();
+    const { fullData = [] } = $table.value?.getTableData() ?? {};
     const currentIds = transformTreeData(
       fullData,
       { idField: rowField, parentField }

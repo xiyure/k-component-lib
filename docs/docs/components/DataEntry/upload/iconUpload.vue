@@ -54,9 +54,8 @@ const handleExceed: UploadProps['onExceed'] = (files, uploadFiles) => {
   );
 };
 
-const beforeRemove: UploadProps['beforeRemove'] = (uploadFile, uploadFiles) =>
-  ElMessageBox.confirm(`Cancel the transfer of ${uploadFile.name} ?`).then(
-    () => true,
-    () => false
-  );
+const beforeRemove: UploadProps['beforeRemove'] = (uploadFile, uploadFiles) => ElMessageBox.confirm(`Cancel the transfer of ${uploadFile.name} ?`).then(
+  () => true,
+  () => false
+);
 </script>

@@ -65,7 +65,7 @@ const items = ref([
     label: '自我评价',
     prop: 'comment',
     // 自定义渲染
-    render: (item: any) => <k-input type={'textarea'} v-model={item['comment']} />,
+    render: (item: any) => <k-input type={'textarea'} v-model={item.comment} />,
     value: '这是一个示例评论'
   }
 ]);

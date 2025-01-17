@@ -56,7 +56,7 @@
 import { ref, computed, inject } from 'vue';
 import { ElCalendar } from 'element-plus';
 import type { CalendarDateType, CalendarInstance } from 'element-plus';
-// @ts-ignore chinese-lunar-calendar has not declare dependencies
+// @ts-expect-error chinese-lunar-calendar has not declare dependencies
 import { getLunar } from 'chinese-lunar-calendar';
 import { IconArrowLeft, IconArrowRight } from 'ksw-vue-icon';
 import { CalendarProps, Schedule } from './type';

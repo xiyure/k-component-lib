@@ -81,7 +81,7 @@
             v-ksw_tooltip="VTooltipConfig"
             class="k-script-input-check-result ml-2 text-red-500 text-xs mt-1 flex items-center gap-0.5 w-fit"
           >
-            <component is="IconStatusWarning" />
+            <component :is="'IconStatusWarning'" />
             {{ resultMessage }}
           </div>
         </div>
@@ -237,12 +237,10 @@ const flattedOptions = computed(() => {
     transformTreeData(tableData, { parentField: getAttrProps().value, children: 'children' }) ?? []
   );
 });
-const VTooltipConfig = computed(() => {
-  return {
-    content: checkInputMessage.tooltip,
-    visible: showMessage.value && props.contentType !== 'number' && props.contentType !== 'boolean'
-  };
-});
+const VTooltipConfig = computed(() => ({
+  content: checkInputMessage.tooltip,
+  visible: showMessage.value && props.contentType !== 'number' && props.contentType !== 'boolean'
+}));
 
 // 输入框内容发生变化时，需要更新下拉列表的显示状态以及光标位置
 watch(
@@ -322,9 +320,9 @@ function checkInputContentType(result: string) {
   if (!props.checkContentType) {
     return;
   }
-  const typeInfo = typeRules.has(props.contentType)
-    ? typeRules.get(props.contentType)
-    : typeRules.get('string');
+  const typeInfo = typeRules.has(props.contentType) ?
+    typeRules.get(props.contentType) :
+    typeRules.get('string');
   if (typeInfo?.reg.test(result)) {
     showMessage.value = false;
     checkVariableResult = true;
@@ -383,9 +381,9 @@ async function handleInputContent(data: Row | RowData) {
   }
   const key = genRandomStr(8);
   const content =
-    _isStringMode.value && data[getAttrProps().tag] !== false
-      ? generateScriptTag(data[getAttrProps().label], key)
-      : data[getAttrProps().value];
+    _isStringMode.value && data[getAttrProps().tag] !== false ?
+      generateScriptTag(data[getAttrProps().label], key) :
+      data[getAttrProps().value];
   if (props.onlyOneInput) {
     KScriptInputWrapper.value.innerHTML = content;
   } else {

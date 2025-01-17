@@ -1,4 +1,3 @@
-<!--       { 'k-form-item--no-label': props.label === '' }, -->
 <template>
   <el-form-item
     ref="KFormItemRef"
@@ -81,9 +80,8 @@ const _showLabel = computed(() => {
   if (props.showLabel === false) {
     return true;
   }
+  return false;
 });
-
-// console.log(props.label, injectShowLabel.value);
 </script>
 
 <style lang="less">

@@ -516,8 +516,7 @@ const filterColumns = computed(() => {
   const validColumns = getValidTreeData(
     cloneDeep(columns.value),
     'group',
-    (dataItem) =>
-      !dataItem.type &&
+    (dataItem) => !dataItem.type &&
       dataItem.title &&
       dataItem.field &&
       (filterAll !== false || dataItem.visible !== false) &&
@@ -669,9 +668,9 @@ watch(
 let tableDataMap: Map<string | number, RowData> = new Map();
 const treeDataMap: Map<string | number, RowData> = new Map();
 function filterTableData() {
-  const filterData = filterConditionInfo.value?.conditionList?.length
-    ? newFilterData.value
-    : xeTableData.value;
+  const filterData = filterConditionInfo.value?.conditionList?.length ?
+    newFilterData.value :
+    xeTableData.value;
   const { strict, searchMethod, ignoreCase = false } = props.searchConfig ?? {};
   const searchKey = query.value.trim().replace(/\\/g, '\\\\');
   if (props.isRemoteQuery || props.searchConfig?.isRemoteQuery) {
@@ -686,25 +685,23 @@ function filterTableData() {
   }
   const visibleColumns = flatColumns.value.filter((col: ColumnConfig) => col.visible !== false);
   const fieldList = visibleColumns
-    .map((col: ColumnConfig) => {
-      if (col.field && !col.type) {
-        return col.field;
-      }
-      return null;
-    })
-    .filter((field: string | null) => field !== null);
-  let tableData = filterData.filter((dataItem: any) =>
-    fieldList.some((field: string) => {
-      const cellLabel = tableInstance.value.getCellLabel(dataItem, field);
-      if (strict === true) {
-        return cellLabel === searchKey;
-      }
-      if (ignoreCase) {
-        return String(cellLabel).toLowerCase().indexOf(searchKey.toLowerCase()) !== -1;
-      }
-      return String(cellLabel).indexOf(searchKey) !== -1;
-    })
-  ) as any;
+  .map((col: ColumnConfig) => {
+    if (col.field && !col.type) {
+      return col.field;
+    }
+    return null;
+  })
+  .filter((field: string | null) => field !== null);
+  let tableData = filterData.filter((dataItem: any) => fieldList.some((field: string) => {
+    const cellLabel = tableInstance.value.getCellLabel(dataItem, field);
+    if (strict === true) {
+      return cellLabel === searchKey;
+    }
+    if (ignoreCase) {
+      return String(cellLabel).toLowerCase().indexOf(searchKey.toLowerCase()) !== -1;
+    }
+    return String(cellLabel).indexOf(searchKey) !== -1;
+  })) as any;
   // 当表格数据为树时，筛选后的数据应展示完整的子树
   if (props.useTree) {
     const { rowField } = getTreeConfigField();
@@ -784,9 +781,7 @@ function getParentNode(dataItem: RowData, parentField: string, rowField: string)
 // 筛选后的数据与用户输入数据的顺序保持一致
 function sortFunc(targetData: any[], sortData: any, key: string | number) {
   const sortKeyList = sortData.map((item: any) => item[key]);
-  return targetData.sort((a, b) =>
-    sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1
-  );
+  return targetData.sort((a, b) => (sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1));
 }
 
 function clearSearch() {
@@ -914,19 +909,20 @@ async function initTransfer() {
 function updateTransfer() {
   flatColumns.value = treeDataToArray(columns.value, 'group');
   originData.value = flatColumns.value
-    .map((item: ColumnConfig) => {
-      if (item.field) {
-        return {
-          label: item.title || item.type || 'undefined',
-          key: item.field
-        };
-      }
-    })
-    .filter((item: { label: string; key: string } | undefined) => item !== undefined);
+  .map((item: ColumnConfig) => {
+    if (item.field) {
+      return {
+        label: item.title || item.type || 'undefined',
+        key: item.field
+      };
+    }
+    return null;
+  })
+  .filter((item: { label: string; key: string } | null) => item !== null);
   selectData.value = flatColumns.value
-    .filter((col: ColumnConfig) => col.visible !== false)
-    .map((item: ColumnConfig) => item.field)
-    .filter((item) => item !== undefined);
+  .filter((col: ColumnConfig) => col.visible !== false)
+  .map((item: ColumnConfig) => item.field)
+  .filter((item) => item !== undefined);
   defaultHeader.value = [...selectData.value];
 }
 function hideColumn(column: ColumnConfig) {
@@ -939,13 +935,14 @@ function hideColumn(column: ColumnConfig) {
   }
   columnItem.visible = false;
   selectData.value = flatColumns.value
-    .filter((col: ColumnConfig) => col.visible !== false)
-    .map((item: ColumnConfig) => {
-      if (item.title && item.field) {
-        return item.field;
-      }
-    })
-    .filter((item) => item !== undefined);
+  .filter((col: ColumnConfig) => col.visible !== false)
+  .map((item: ColumnConfig) => {
+    if (item.title && item.field) {
+      return item.field;
+    }
+    return null;
+  })
+  .filter((item) => item !== null);
   emits('hide-column', column);
 }
 function sortTableHeader(fieldList: { label: string; key: string }[]) {
@@ -1137,9 +1134,9 @@ function getHeaderControllerData(): TableHeaderControl[] {
   }
   const selectSet = new Set(selectData.value);
   const transferInstance = tableTransferRef.value?.[0];
-  const _originData = transferInstance
-    ? transferInstance.getTransferData().sourceData
-    : originData.value;
+  const _originData = transferInstance ?
+    transferInstance.getTransferData().sourceData :
+    originData.value;
   const newTransferData = _originData.map((item: TableHeaderControl) => ({
     label: item.label,
     key: item.key,
@@ -1169,8 +1166,8 @@ function setHeaderControllerData(transferData: TableHeaderControl[]) {
       visible: item.visible !== false
     })) ?? [];
   selectData.value = originData.value
-    .filter((item: TableHeaderControl) => item.visible !== false)
-    .map((item: TableHeaderControl) => item.key);
+  .filter((item: TableHeaderControl) => item.visible !== false)
+  .map((item: TableHeaderControl) => item.key);
   sortTableHeader(transferData);
   resetColumnWidth(transferData);
 }

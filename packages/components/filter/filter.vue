@@ -597,7 +597,7 @@ function getRemoteFieldMap() {
 }
 function changeCondition(index: number, item: FilterData, options: filterOptions[]) {
   if (item && options && options.length > 0) {
-    options.map((option) => {
+    options.forEach((option) => {
       if (item.title && item.title.includes(option.title) && option.multiple) {
         item.isMultiple = true;
       }

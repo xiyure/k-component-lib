@@ -42,26 +42,26 @@ export default defineConfig({
           mapByEmailAliases: [
             'tangqingwei@kingsware.cn',
             'baobaomi900901@icloud.com',
-            'lugs@kingsware.cn',
-          ],
+            'lugs@kingsware.cn'
+          ]
         },
         {
           name: '周韩杰',
           username: 'xiyure',
           mapByEmailAliases: [
             'zhouhanjie@kingsware.cn',
-            '100740223+xiyure@users.noreply.github.com',
-          ],
+            '100740223+xiyure@users.noreply.github.com'
+          ]
         },
         {
           name: '莫启健',
           username: 'QijianMo',
           mapByEmailAliases: [
             'moqijian@kingsware.cn',
-            'qijian_mo@163.com',
-          ],
-        },
-      ],
+            'qijian_mo@163.com'
+          ]
+        }
+      ]
     }),
     GitChangelogMarkdownSection({
       exclude: (id) => {

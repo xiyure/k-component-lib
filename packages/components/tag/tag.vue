@@ -1,5 +1,5 @@
 <template>
-  <div :class="['k-tag', _styleModule]" v-ksw_tooltip="props.text">
+  <div v-ksw_tooltip="props.text" :class="['k-tag', _styleModule]">
     <el-tag
       ref="KTagRef"
       :class="[
@@ -37,14 +37,14 @@ import { useSize } from '../../hooks';
 import { colors } from './const';
 
 defineOptions({
-  name: 'KTag',
+  name: 'KTag'
 });
 
 const props = withDefaults(defineProps<TagProps>(), {
   point: false,
   type: undefined,
   text: undefined,
-  showOverflow: false,
+  showOverflow: false
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -72,7 +72,7 @@ watch(
       isOverflow.value = isShowTooltip(KTagRef.value.$el.childNodes[0].children[0]);
     });
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 // watch props.color 变化, 更新颜色变量
@@ -91,13 +91,13 @@ watch(
         colors.forEach((item) => {
           KTagRef.value.$el?.style.setProperty(
             `--tag${item.name}`,
-            getColorS?.[`--k-oklch-${item.value}`],
+            getColorS?.[`--k-oklch-${item.value}`]
           );
         });
       }
     });
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 const instance: any = {};

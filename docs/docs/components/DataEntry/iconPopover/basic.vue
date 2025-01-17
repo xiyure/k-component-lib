@@ -1,7 +1,7 @@
 <template>
-  <k-icon-popover @updateIcon="handleUpdate">
+  <k-icon-popover @update-icon="handleUpdate">
     <div class="icon-box">
-      <component v-if="searchContent" :is="searchContent" />
+      <component :is="searchContent" v-if="searchContent" />
     </div>
   </k-icon-popover>
 </template>
@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-let searchContent = ref('');
+const searchContent = ref('');
 const handleUpdate = (copyContent: string) => {
   searchContent.value = copyContent;
 };
