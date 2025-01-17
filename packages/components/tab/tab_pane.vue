@@ -46,10 +46,11 @@ const KTabPaneRef = ref(null);
 const slots = useSlots();
 const isOverflow = ref(false);
 
-const labelText = computed(() => {
+const labelText = computed((): string => {
   if (slots.label) {
+    // @ts-expect-error Not Error
     const labelSlotContent = slots.label?.()?.[0]?.children ?? '';
-    return typeof labelSlotContent === 'string' ? labelSlotContent : null;
+    return typeof labelSlotContent === 'string' ? labelSlotContent : '';
   }
   return props.label;
 });
