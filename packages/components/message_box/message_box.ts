@@ -1,13 +1,17 @@
 import { AppContext, VNode } from 'vue';
-import { ElMessageBox } from 'element-plus';
+import { ElMessageBox, useZIndex } from 'element-plus';
 import { MessageBoxOptions, IMessageBox, MessageBox, MessageBoxShortcutMethod } from './type';
 import './style.less';
+
+const { nextZIndex } = useZIndex();
 
 const extendOptions = (options: MessageBoxOptions = {}) => {
   const newOptions: MessageBoxOptions = { ...options };
   newOptions.customClass = `k-message-box ${options.customClass || ''}`;
   newOptions.cancelButtonClass = `k-message-box-cancel k-button ${options.cancelButtonClass || ''}`;
   newOptions.confirmButtonClass = `k-message-box-confirm k-button el-button--main ${options.confirmButtonClass || ''}`;
+  let index = nextZIndex();
+  newOptions.zIndex = index++;
   return newOptions;
 };
 const KMessageBox = (options: MessageBoxOptions, AppContext?: AppContext | null) => {

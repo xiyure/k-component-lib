@@ -17,7 +17,7 @@ export interface MessageBox {
   alert: ElMessageBoxShortcutMethod
 }
 export type IMessageBox = IElMessageBox
-export type MessageBoxOptions = ElMessageBoxOptions
+export type MessageBoxOptions = ElMessageBoxOptions & { zIndex?: number };
 export type MessageBoxType = messageBoxType
 export type MessageBoxData = messageBoxData
 export type MessageBoxInputData = messageBoxInputData
