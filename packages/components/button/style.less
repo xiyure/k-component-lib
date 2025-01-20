@@ -2,6 +2,7 @@
 @import '../../style/general.less';
 // @import '../../style/theme/AOM/theme.css';
 
+.el-tour .el-button,
 .el-button.k-button,
 .k-button,
 .k-button--base {
@@ -315,6 +316,50 @@
 
   // // 内置颜色
   &.el-button--primary {
+    // background-color: var(--k-theme-primary);
+    // color: #fff;
+    // bg
+    --k-button-bg-color-main: var(--k-theme-primary);
+    --k-button-bg-color-main--hover: var(--k-theme-primary-400);
+    --k-button-bg-color-main--active: var(--k-theme-primary-600);
+    --k-button-bg-color-main--disabled: var(--k-gray-200);
+    --k-button-bg-color-main--loading: var(--k-theme-primary-300);
+    // content
+    --k-button-content-color-main: var(--k-theme--fontColor);
+    --k-button-content-color-main--hover: var(--k-theme--fontColor);
+    --k-button-content-color-main--active: var(--k-theme--fontColor);
+    --k-button-content-color-main--disabled: var(--k-theme--fontColor);
+    --k-button-content-color-main--loading: var(--k-theme--fontColor);
+    // border
+    --k-button-border-color-main: var(--k-theme-primary);
+    --k-button-border-color-main--hover: var(--k-theme-primary-400);
+    --k-button-border-color-main--active: var(--k-theme-primary-600);
+    --k-button-border-color-main--disabled: var(--k-gray-200);
+    --k-button-border-color-main--loading: var(--k-theme-primary-300);
+    background: var(--k-button-bg-color-main);
+    color: var(--k-button-content-color-main);
+    border-color: var(--k-button-border-color-main);
+
+    &:hover:not(.is-disabled, .is-loading) {
+      background: var(--k-button-bg-color-main--hover);
+      color: var(--k-button-content-color-main--hover);
+      border-color: var(--k-button-border-color-main--hover);
+    }
+    &:active:not(.is-disabled, .is-loading) {
+      background: var(--k-button-bg-color-main--active);
+      color: var(--k-button-content-color-main--active);
+      border-color: var(--k-button-border-color-main--active);
+    }
+    &.is-loading {
+      background: var(--k-button-bg-color-main--loading);
+      color: var(--k-button-content-color-main--loading);
+      border-color: var(--k-button-border-color-main--loading);
+    }
+    &.is-disabled {
+      background: var(--k-button-bg-color-main--disabled);
+      color: var(--k-button-content-color-main--disabled);
+      border-color: var(--k-button-border-color-main--disabled);
+    }
   }
   &.el-button--info {
     &.el-button--main {
