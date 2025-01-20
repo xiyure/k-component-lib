@@ -9,6 +9,13 @@
       "tip": "'primary' | 'success' | 'warning' | 'danger' | 'info'"
     },
     {
+      "displayName": "text",
+      "type": "string",
+      "description": "悬浮窗提示文字",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
       "displayName": "closeable",
       "type": "boolean",
       "description": "是否可关闭",

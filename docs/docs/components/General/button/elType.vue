@@ -20,7 +20,7 @@
   <k-button type="warning" text>警告按钮</k-button>
   <k-button type="danger" text>危险按钮</k-button>
 
-  <DocTitle>如果不想使用没有边框的icon 按钮, 则需要再 text 中添加图标</DocTitle>
+  <DocTitle>如果想使用没有边框的icon 按钮, 则需要再 text 中添加图标</DocTitle>
   <k-button type="primary" text>
     <IconSearch />
   </k-button>

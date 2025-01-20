@@ -19,7 +19,7 @@ import { KswIcon } from 'ksw-vue-icon';
 /*
  *  源码
  */
-import install from '../../../packages/index';
+// import install from '../../../packages/index';
 /*
  *  本地 build
  */
@@ -28,8 +28,8 @@ import install from '../../../packages/index';
 /*
  *  npm
  */
-// import install from '@ksware/ksw-ux';
-// import '@ksware/ksw-ux/kingsware-ui/style.css';
+import install from '@ksware/ksw-ux';
+import '@ksware/ksw-ux/kingsware-ui/style.css';
 
 export default {
   ...DefaultTheme,
