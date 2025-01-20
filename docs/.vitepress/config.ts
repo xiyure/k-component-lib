@@ -96,7 +96,7 @@ export default defineConfig({
       alias: [
         {
           find: /^.*\/VPHome\.vue$/,
-          replacement: fileURLToPath(new URL('./templates/CVPHome.vue', import.meta.url)),
+          replacement: fileURLToPath(new URL('./templates/CVPHome/CVPHome.vue', import.meta.url)),
         },
       ],
     },

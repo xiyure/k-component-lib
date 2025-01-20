@@ -5,6 +5,7 @@
   --vp-c-brand-3: hsl(237, 100%, 70%);
 
   --vp-code-block-bg: #f9fafb;
+  --vp-c-divider: rgba(0, 0, 0, 0.1);
 }
 
 html.dark {
@@ -48,6 +49,11 @@ div.VPLocalNav.has-sidebar > div > div > div > div.outline {
 // 重写样式
 .VPNav {
   .VPNavBar {
+    &.home {
+      background: rgba(255, 255, 255, 0.1);
+      // 背景毛玻璃
+      backdrop-filter: blur(10px);
+    }
     &.home.top,
     &.has-sidebar.top {
       .wrapper {
@@ -56,12 +62,39 @@ div.VPLocalNav.has-sidebar > div > div > div > div.outline {
             transition: unset;
           }
           .content {
-            // background: #000;
             padding-left: max(32px, var(--vp-sidebar-width));
             transition: unset;
           }
         }
       }
     }
+  }
+}
+
+//
+.VPContent.is-home {
+  padding-top: 0;
+}
+
+@media (min-width: 960px) {
+  .VPNavBar:not(.has-sidebar):not(.home.top) {
+    background-color: transparent !important;
+    .divider {
+      display: none !important;
+    }
+  }
+  .VPContent.is-home {
+    padding-top: 0 !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .VPNavBarSearch {
+    flex-grow: unset;
+    padding-right: 24px;
+  }
+  .DocSearch-Button {
+    background: transparent;
+    border: 1px solid var(--vp-c-divider);
   }
 }
