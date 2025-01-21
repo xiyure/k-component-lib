@@ -46,20 +46,36 @@ div.VPLocalNav.has-sidebar > div > div > div > div.outline {
   outline-style: none;
 }
 
-// 重写样式
-.VPNav {
+// 重写样式 VPNav
+header.VPNav {
   .VPNavBar {
     &.home {
       background: rgba(255, 255, 255, 0.1);
       // 背景毛玻璃
       backdrop-filter: saturate(180%) blur(20px);
+      backdrop-filter: blur(10px);
+      position: relative;
     }
-    &.home.top, {
-      background: transparent;
-      backdrop-filter: blur(20px);
+    &.home.top {
+      .wrapper {
+        position: relative;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+
+        width: 1280px;
+        padding: 0;
+      }
     }
     &.has-sidebar.top {
       .wrapper {
+        position: relative;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+
+        width: 1280px;
+        padding: 0;
         .container {
           .title {
             transition: unset;

@@ -20,7 +20,10 @@
       <div
         class="w-full h-24 flex justify-between items-center py-4 border-t border-gray-200 mt-20"
       >
-        <div>Copyright ©2025 Kingsware Inc. All Rights reserved.</div>
+        <div class="flex items-center gap-2">
+          <img src="/klogo.svg" alt="" class="w-6 h-6" />
+          <span>Copyright ©2025 Kingsware Inc. All Rights reserved.</span>
+        </div>
         <div>MobyTang</div>
       </div>
     </div>

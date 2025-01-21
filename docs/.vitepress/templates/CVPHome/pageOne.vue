@@ -18,7 +18,10 @@
           包含大量业务组件，能够帮助你快速构建网页应用。
         </div>
         <div class="mt-8">
-          <k-button size="lg" main>从这里开始</k-button>
+          <k-button size="lg" color="#38363c" main class="main-btn">
+            从这里开始
+            <IconArrowUpRight rotate="45" />
+          </k-button>
           <k-button size="lg" icon-right="IconCopy" @click="copyCode('npm i @ksware/ksw-ux')">
             $ npm i @ksware/ksw-ux
           </k-button>
@@ -57,13 +60,13 @@
                   options: [
                     {
                       label: '22',
-                      value: 22
+                      value: 22,
                     },
                     {
                       label: '23',
-                      value: 23
-                    }
-                  ]
+                      value: 23,
+                    },
+                  ],
                 },
                 {
                   title: '优先级',
@@ -72,14 +75,14 @@
                   options: [
                     {
                       label: '1',
-                      value: 1
+                      value: 1,
                     },
                     {
                       label: '2',
-                      value: 2
-                    }
-                  ]
-                }
+                      value: 2,
+                    },
+                  ],
+                },
               ]"
             ></k-filter>
           </div>
@@ -116,7 +119,7 @@
               :widgets="widgets"
               :paginationConfig="{
                 layout: 'total,->, sizes, prev, pager, next, jumper',
-                pageSize: 10
+                pageSize: 10,
               }"
               use-ant-style
               hasSpace
@@ -163,22 +166,22 @@ const messageValue = [
     title: 'MobyTang',
     content: 'baobaomi900901@icloud.com',
     time: '2022-01-01 12:00:00',
-    img: 'https://avatars.githubusercontent.com/u/16713018?v=4'
+    img: 'https://avatars.githubusercontent.com/u/16713018?v=4',
   },
   {
     id: 1000002,
     title: 'Xiyure',
     content: 'Xiyure@gmail.com',
     time: '2022-01-02 12:00:00',
-    img: 'https://avatars.githubusercontent.com/u/100740223?v=4'
+    img: 'https://avatars.githubusercontent.com/u/100740223?v=4',
   },
   {
     id: 1000003,
     title: 'sengoku-f',
     content: 'sengoku@gmail.com',
     time: '2022-01-03 12:00:00',
-    img: 'https://avatars.githubusercontent.com/u/31064651?v=4'
-  }
+    img: 'https://avatars.githubusercontent.com/u/31064651?v=4',
+  },
 ];
 
 const tableData = [
@@ -248,42 +251,42 @@ const tableData = [
   { id: 10064, name: 'Test8', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
   { id: 10065, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
   { id: 10066, name: 'Test2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
-  { id: 10067, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' }
+  { id: 10067, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
 ];
 const widgets = ref(['filter', 'sizeControl', 'transfer']);
 
 const column = ref([
   {
     type: 'checkbox',
-    width: '48px'
+    width: '48px',
   },
   {
     title: 'Id',
     field: 'id',
     width: '100',
-    dataType: 'number'
+    dataType: 'number',
   },
   {
     title: 'Name',
-    field: 'name'
+    field: 'name',
   },
   {
     title: 'Role',
-    field: 'role'
+    field: 'role',
   },
   {
     title: 'Sex',
-    field: 'sex'
+    field: 'sex',
   },
   {
     title: 'Age',
     field: 'age',
-    dataType: 'number'
+    dataType: 'number',
   },
   {
     title: 'Address',
-    field: 'address'
-  }
+    field: 'address',
+  },
 ]);
 
 function copyCode(textToCopy: type) {
@@ -291,7 +294,7 @@ function copyCode(textToCopy: type) {
   KMessage({
     message: '复制成功',
     type: 'success',
-    offset: 80
+    offset: 80,
   });
 }
 </script>
