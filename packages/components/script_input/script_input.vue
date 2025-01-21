@@ -316,14 +316,15 @@ function handleInput(event: InputEvent | CompositionEvent) {
   }
   updateModelValue(result);
   checkInputContentType(result);
+  checkInputLength(result);
 }
 function checkInputContentType(result: string) {
   if (!props.checkContentType) {
     return;
   }
-  const typeInfo = typeRules.has(props.contentType) ?
-    typeRules.get(props.contentType) :
-    typeRules.get('string');
+  const typeInfo = typeRules.has(props.contentType)
+    ? typeRules.get(props.contentType)
+    : typeRules.get('string');
   if (typeInfo?.reg.test(result)) {
     showMessage.value = false;
     checkVariableResult = true;
@@ -331,6 +332,25 @@ function checkInputContentType(result: string) {
     resultMessage.value = typeInfo?.message ?? '';
     showMessage.value = true;
     checkVariableResult = false;
+  }
+}
+function checkInputLength(result: string) {
+  if (!props.checkContentType) {
+    return;
+  }
+  if (props.contentType === 'limit') {
+    const isMax = props.max ? result.length > props.max : false;
+    const isMin = props.min ? result.length < props.min : false;
+    const isLimit = isMax || isMin;
+    const typeInfo = typeRules.get('limit');
+    if (!isLimit) {
+      showMessage.value = false;
+      checkVariableResult = true;
+    } else {
+      resultMessage.value = typeInfo?.message ?? '';
+      showMessage.value = true;
+      checkVariableResult = false;
+    }
   }
 }
 function handleFocus(event: FocusEvent) {
@@ -382,9 +402,9 @@ async function handleInputContent(data: Row | RowData) {
   }
   const key = genRandomStr(8);
   const content =
-    _isStringMode.value && data[getAttrProps().tag] !== false ?
-      generateScriptTag(data[getAttrProps().label], key) :
-      data[getAttrProps().value];
+    _isStringMode.value && data[getAttrProps().tag] !== false
+      ? generateScriptTag(data[getAttrProps().label], key)
+      : data[getAttrProps().value];
   if (props.onlyOneInput) {
     KScriptInputWrapper.value.innerHTML = content;
   } else {
@@ -523,7 +543,9 @@ function parseModelValue(value: string) {
   return originText;
 }
 function generateScriptTag(content: string, key: string, isError: boolean = false) {
-  return `<div class="k-script-tag ${isError ? 'is-error' : ''}" data-key="${key}" data-value="${content}" contenteditable="false">${content}</div>`;
+  return `<div class="k-script-tag ${
+    isError ? 'is-error' : ''
+  }" data-key="${key}" data-value="${content}" contenteditable="false">${content}</div>`;
 }
 function toggleSelect(event: KeyboardEvent) {
   if (!allowShowTree.value || !popperVisible.value) {

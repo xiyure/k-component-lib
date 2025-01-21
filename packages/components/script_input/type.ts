@@ -28,12 +28,14 @@ export interface ScriptInputProps {
   /**
    *   校验输入字符串是否合规, number判断是否为数字, 包含浮点; boolean判断是否为true/false;
    */
-  contentType?: 'number' | 'boolean' | 'string' | '';
+  contentType?: 'number' | 'boolean' | 'string' | '' | 'limit';
   /**
    *   值是否可重复, 默认值为true; 改为false, 则值不可重复
    */
   optionRepeatable?: boolean;
   maxHeight?: string;
+  max?: number;
+  min?: number;
 }
 
 export type ScriptOptions = {
