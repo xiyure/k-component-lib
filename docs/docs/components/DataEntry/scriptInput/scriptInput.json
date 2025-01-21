@@ -107,13 +107,34 @@
       "type": "enum",
       "description": "文本类型",
       "defaultValue": "",
-      "tip": "'number' | 'boolean' | 'string' | ''"
+      "tip": "'number' | 'boolean' | 'string' | '' | 'limit'"
     },
     {
       "displayName": "option-repeatable",
       "type": "boolean",
       "description": "标签是否可重复选择",
       "defaultValue": "true",
+      "tip": "'"
+    },
+    {
+      "displayName": "max-height",
+      "type": "string",
+      "description": "最大高度",
+      "defaultValue": "",
+      "tip": "'"
+    },
+    {
+      "displayName": "max",
+      "type": "number",
+      "description": "可输入的最大值，仅在content-type为limit时有效",
+      "defaultValue": "",
+      "tip": "'"
+    },
+    {
+      "displayName": "min",
+      "type": "number",
+      "description": "可输入的最小值，仅在content-type为limit时有效",
+      "defaultValue": "",
       "tip": "'"
     }
   ],
