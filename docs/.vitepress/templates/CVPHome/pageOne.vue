@@ -9,10 +9,12 @@
   <div class="page-one CVPHome-header relative" style="min-height: 775px; height: fit-content">
     <div class="flex items-center w-full h-fit relative">
       <div class="absolute z-10" style="top: 10rem">
-        <div class="text-cyan-500 text-lg font-bold">By the makers of KSW</div>
-        <div class="break-words text-7xl font-bold text-gray-900 mt-8">快速构建你的网页应用</div>
-        <div class="text-gray-900 text-xl mt-8">
-          <span class="text-green-500">'ksw-ux'</span>
+        <div class="text-cyan-500 dark:text-white text-lg font-bold">By the makers of KSW</div>
+        <div class="neonText break-words text-7xl font-bold text-gray-900 dark:text-white mt-8">
+          快速构建你的网页应用
+        </div>
+        <div class="text-gray-900 dark:text-white text-xl mt-8">
+          <span class="text-green-500 dark:text-purple-200">'ksw-ux'</span>
           包含大量业务组件，能够帮助你快速构建网页应用。
         </div>
         <div class="mt-8">
@@ -55,13 +57,13 @@
                   options: [
                     {
                       label: '22',
-                      value: 22,
+                      value: 22
                     },
                     {
                       label: '23',
-                      value: 23,
-                    },
-                  ],
+                      value: 23
+                    }
+                  ]
                 },
                 {
                   title: '优先级',
@@ -70,14 +72,14 @@
                   options: [
                     {
                       label: '1',
-                      value: 1,
+                      value: 1
                     },
                     {
                       label: '2',
-                      value: 2,
-                    },
-                  ],
-                },
+                      value: 2
+                    }
+                  ]
+                }
               ]"
             ></k-filter>
           </div>
@@ -114,7 +116,7 @@
               :widgets="widgets"
               :paginationConfig="{
                 layout: 'total,->, sizes, prev, pager, next, jumper',
-                pageSize: 10,
+                pageSize: 10
               }"
               use-ant-style
               hasSpace
@@ -161,22 +163,22 @@ const messageValue = [
     title: 'MobyTang',
     content: 'baobaomi900901@icloud.com',
     time: '2022-01-01 12:00:00',
-    img: 'https://avatars.githubusercontent.com/u/16713018?v=4',
+    img: 'https://avatars.githubusercontent.com/u/16713018?v=4'
   },
   {
     id: 1000002,
     title: 'Xiyure',
     content: 'Xiyure@gmail.com',
     time: '2022-01-02 12:00:00',
-    img: 'https://avatars.githubusercontent.com/u/100740223?v=4',
+    img: 'https://avatars.githubusercontent.com/u/100740223?v=4'
   },
   {
     id: 1000003,
     title: 'sengoku-f',
     content: 'sengoku@gmail.com',
     time: '2022-01-03 12:00:00',
-    img: 'https://avatars.githubusercontent.com/u/31064651?v=4',
-  },
+    img: 'https://avatars.githubusercontent.com/u/31064651?v=4'
+  }
 ];
 
 const tableData = [
@@ -246,42 +248,42 @@ const tableData = [
   { id: 10064, name: 'Test8', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
   { id: 10065, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
   { id: 10066, name: 'Test2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
-  { id: 10067, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
+  { id: 10067, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' }
 ];
 const widgets = ref(['filter', 'sizeControl', 'transfer']);
 
 const column = ref([
   {
     type: 'checkbox',
-    width: '48px',
+    width: '48px'
   },
   {
     title: 'Id',
     field: 'id',
     width: '100',
-    dataType: 'number',
+    dataType: 'number'
   },
   {
     title: 'Name',
-    field: 'name',
+    field: 'name'
   },
   {
     title: 'Role',
-    field: 'role',
+    field: 'role'
   },
   {
     title: 'Sex',
-    field: 'sex',
+    field: 'sex'
   },
   {
     title: 'Age',
     field: 'age',
-    dataType: 'number',
+    dataType: 'number'
   },
   {
     title: 'Address',
-    field: 'address',
-  },
+    field: 'address'
+  }
 ]);
 
 function copyCode(textToCopy: type) {
@@ -289,8 +291,73 @@ function copyCode(textToCopy: type) {
   KMessage({
     message: '复制成功',
     type: 'success',
-    offset: 80,
+    offset: 80
   });
 }
 </script>
-<style scoped></style>
+<style scoped>
+.dark .neonText {
+  color: white;
+  /* background: linear-gradient(90deg, #007aff, #5856d6, #af52de, #ff3b30, #ff9500);
+  background-clip: text;
+  -webkit-text-fill-color: transparent; */
+  position: relative;
+}
+.dark .neonText::before {
+  content: '快速构建你的网页应用';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, #007aff, #5856d6, #af52de, #ff3b30, #ff9500);
+  -webkit-text-stroke: 2px transparent;
+  filter: blur(10px);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  z-index: -1;
+  animation: glow1 2s infinite alternate;
+}
+
+.dark .neonText::after {
+  content: '快速构建你的网页应用';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, #007aff, #5856d6, #af52de, #ff3b30, #ff9500);
+  -webkit-text-stroke: 10px transparent;
+  filter: blur(40px);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  z-index: -1;
+  animation: glow 2s infinite alternate;
+}
+
+@keyframes glow1 {
+  0% {
+    filter: blur(5px);
+  }
+  100% {
+    filter: blur(10px);
+  }
+}
+
+@keyframes glow {
+  0% {
+    filter: blur(20px);
+    /* text-shadow:
+      0 0 10px rgba(255, 255, 255, 0.5),
+      0 0 20px rgba(255, 255, 255, 0.3); */
+  }
+  100% {
+    filter: blur(40px);
+    /* text-shadow:
+      0 0 20px rgba(255, 255, 255, 0.8),
+      0 0 40px rgba(255, 255, 255, 0.5); */
+  }
+}
+</style>

@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'selector',
   content: [
     './index.md',
     './.vitepress/**/*.{js,ts,vue}',

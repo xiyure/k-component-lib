@@ -7,11 +7,11 @@
 !-->
 <template>
   <div class="page-two CVPHome-header relative mt-8">
-    <div class="text-violet-500 text-xl font-bold">Components</div>
-    <div class="break-words text-xl font-bold text-gray-900 mt-2">
+    <div class="text-violet-500 dark:text-violet-300 text-xl font-bold">Components</div>
+    <div class="break-words text-xl font-bold text-gray-900 dark:text-white mt-2">
       超过 90 个 UI 组件，为你的项目做好准备。
     </div>
-    <div class="text-gray-900 text-base mt-2">
+    <div class="text-gray-900 dark:text-white text-base mt-2">
       支持主题, 使用 tailwindcss, 也可以使用传统 CSS;
       <br />
       使用 TypeScript, 有完整的类型定义文件。
@@ -26,7 +26,9 @@
             :dec="item.dec"
             :image="item.image"
             :total="item.total"
-          ></card>
+          >
+          <img class="w-full h-full bg-slate-100 rounded-2xl" :src="item.image" alt="">
+        </card>
         </div>
       </div>
     </div>

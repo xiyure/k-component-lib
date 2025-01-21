@@ -7,11 +7,11 @@
 !-->
 <template>
   <div class="page-two CVPHome-header relative mt-8">
-    <div class="text-violet-500 text-xl font-bold">Template</div>
-    <div class="break-words text-xl font-bold text-gray-900 mt-2">
+    <div class="text-violet-500 dark:text-violet-300 text-xl font-bold">Template</div>
+    <div class="break-words text-xl font-bold text-gray-900 dark:text-white mt-2">
       这里有各种客户案例，帮助你快速上手。
     </div>
-    <div class="text-gray-900 text-base mt-2">项目模板会持续增加, 欢迎关注公众号获取最新消息。</div>
+    <div class="text-gray-900 dark:text-white text-base mt-2">项目模板会持续增加, 欢迎关注公众号获取最新消息。</div>
 
     <div class="h-full mt-8 w-full">
       <ul class="slides">

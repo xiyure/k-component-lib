@@ -7,7 +7,8 @@
 !-->
 <template>
   <div ref="CVPHome" class="CVPHome bg-white px-24 flex flex-col items-center overflow-x-hidden">
-    <div class="home-page1-bg h-screen w-screen opacity-50 fixed"></div>
+    <div class="home-page1-bg h-screen w-screen opacity-50 fixed">
+    </div>
     <div class="h-fit z-10" style="width: 1280px">
       <!-- 第一页 -->
       <page-one></page-one>
@@ -96,6 +97,11 @@ const componentValue = [
 <style lang="less" scoped>
 /* @import './style.less'; */
 
+.dark .home-page1-bg{
+  background-color: rgb(0 3 25);
+  opacity: 1;
+}
+
 .box {
   // border: 1px solid #fafafa;
 }
@@ -104,7 +110,7 @@ const componentValue = [
   font-family: 'Quicksand', sans-serif;
   margin: 0;
   min-height: 100vh;
-  background-color: #fff;
+  background-color: #ffffff;
   background-image: radial-gradient(closest-side, rgba(235, 105, 78, 0.2), rgba(235, 105, 78, 0)),
     radial-gradient(closest-side, rgba(243, 11, 164, 0.3), rgba(243, 11, 164, 0)),
     radial-gradient(closest-side, rgba(254, 234, 131, 0.2), rgba(254, 234, 131, 0)),
