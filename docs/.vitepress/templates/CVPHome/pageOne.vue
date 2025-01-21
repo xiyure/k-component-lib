@@ -296,11 +296,15 @@ function copyCode(textToCopy: type) {
 }
 </script>
 <style scoped>
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
 .dark .neonText {
+  --angle:0deg;
   color: white;
-  /* background: linear-gradient(90deg, #007aff, #5856d6, #af52de, #ff3b30, #ff9500);
-  background-clip: text;
-  -webkit-text-fill-color: transparent; */
   position: relative;
 }
 .dark .neonText::before {
@@ -310,14 +314,14 @@ function copyCode(textToCopy: type) {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(90deg, #007aff, #5856d6, #af52de, #ff3b30, #ff9500);
+  background: linear-gradient(var(--angle), #007aff, #5856d6, #af52de, #ff3b30, #ff9500, #ff3b30, #af52de, #5856d6, #007aff);
   -webkit-text-stroke: 2px transparent;
-  filter: blur(10px);
+  filter: saturate(180%) blur(8px);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   z-index: -1;
-  animation: glow1 2s infinite alternate;
+  animation: rotateGradient 10s linear infinite;
 }
 
 .dark .neonText::after {
@@ -327,37 +331,38 @@ function copyCode(textToCopy: type) {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(90deg, #007aff, #5856d6, #af52de, #ff3b30, #ff9500);
-  -webkit-text-stroke: 10px transparent;
-  filter: blur(40px);
+  background: linear-gradient(var(--angle), #007aff, #5856d6, #af52de, #ff3b30, #ff9500, #ff3b30, #af52de, #5856d6, #007aff);
+  -webkit-text-stroke: 6px transparent;
+  filter: saturate(180%) blur(32px);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   z-index: -1;
-  animation: glow 2s infinite alternate;
+  background-size: 200%;
+  animation: rotateGradient 10s linear infinite;
+  opacity: 0.8;
 }
 
-@keyframes glow1 {
-  0% {
-    filter: blur(5px);
+@keyframes rotateGradient {
+	0% {
+		background-position: 0% 50%;
+    --angle:0deg;
+    background-size: 100% 1000%;
+	}
+  25% {
+    /* background-size: 100% 400%; */
   }
-  100% {
-    filter: blur(10px);
+	50% {
+		background-position: 100% 100%;
+    --angle:180deg;
+	}
+  75% {
+    /* background-size: 100% 400%; */
   }
-}
-
-@keyframes glow {
-  0% {
-    filter: blur(20px);
-    /* text-shadow:
-      0 0 10px rgba(255, 255, 255, 0.5),
-      0 0 20px rgba(255, 255, 255, 0.3); */
-  }
-  100% {
-    filter: blur(40px);
-    /* text-shadow:
-      0 0 20px rgba(255, 255, 255, 0.8),
-      0 0 40px rgba(255, 255, 255, 0.5); */
-  }
+	100% {
+		background-position: 200% 50%;
+    --angle:360deg;
+    background-size: 100% 1000%;
+	}
 }
 </style>

@@ -52,9 +52,12 @@ div.VPLocalNav.has-sidebar > div > div > div > div.outline {
     &.home {
       background: rgba(255, 255, 255, 0.1);
       // 背景毛玻璃
-      backdrop-filter: blur(10px);
+      backdrop-filter: saturate(180%) blur(20px);
     }
-    &.home.top,
+    &.home.top, {
+      background: transparent;
+      backdrop-filter: blur(20px);
+    }
     &.has-sidebar.top {
       .wrapper {
         .container {
@@ -71,7 +74,6 @@ div.VPLocalNav.has-sidebar > div > div > div > div.outline {
   }
 }
 
-//
 .VPContent.is-home {
   padding-top: 0;
 }

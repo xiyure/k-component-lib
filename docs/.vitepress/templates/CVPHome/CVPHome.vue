@@ -111,6 +111,7 @@ const componentValue = [
   margin: 0;
   min-height: 100vh;
   background-color: #ffffff;
+  /* filter: saturate(120%); */
   background-image: radial-gradient(closest-side, rgba(235, 105, 78, 0.2), rgba(235, 105, 78, 0)),
     radial-gradient(closest-side, rgba(243, 11, 164, 0.3), rgba(243, 11, 164, 0)),
     radial-gradient(closest-side, rgba(254, 234, 131, 0.2), rgba(254, 234, 131, 0)),
