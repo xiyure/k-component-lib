@@ -6,7 +6,7 @@ title: 拖拽树表格
 
 ## 拖拽树表格
 
-设置show-drag-column属性为true，即可开启拖拽功能，拖拽完成会触发drag回调。
+设置列配置`dragSort`，并传递`row-config="{drag: true}"`即可开启拖拽功能。
 
 <preview path="./dragTable.vue" />
 

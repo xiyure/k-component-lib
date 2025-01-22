@@ -3,6 +3,7 @@
     <k-tree-table
       :data="tableData" :column="column1" :show-page="false"
       border
+      :row-config="{drag: true}"
       :show-drag-column="true"
       @drag="console.log('拖拽完成')"
     ></k-tree-table>
@@ -17,7 +18,8 @@ const column1 = ref([
     title: 'Id',
     field: 'id',
     width: '100',
-    dataType: 'number'
+    dataType: 'number',
+    dragSort: true
   },
   {
     title: 'Name',
