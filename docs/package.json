@@ -32,9 +32,7 @@
   "dependencies": {
     "@ksware/ksw-ux": "^1.1.2",
     "@vitejs/plugin-vue-jsx": "^4.0.1",
-    "i": "^0.3.7",
     "ksw-vue-icon": "^2.2.35",
-    "npm": "^10.9.2",
     "three": "^0.172.0"
   }
 }
