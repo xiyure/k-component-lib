@@ -4,6 +4,8 @@
       :data="tableData"
       :column="column"
       :show-page="false"
+      :sort-config="{ showIcon: false }"
+      :filter-config="{ showIcon: false }"
       align="center"
       border
     ></k-tree-table>
