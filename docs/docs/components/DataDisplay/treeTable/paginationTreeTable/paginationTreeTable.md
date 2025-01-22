@@ -10,9 +10,7 @@ title: 表格分页
 
 ## 自定义顺序与间隔
 
-通过配置`layout`属性中`prev, pager, next, jumper, ->, total`的顺序，可以分别定义`回滚`、`分页器`、`前进`、`跳转`和`总数`的顺序
-
-使用`->`符号来自定义分页器的间隔。
+通过配置`layout`属性可以自定义`prev:回滚`, `pager:分页器`, `next:前进`, `jumper:跳转`, `->:间隔`, `total:总数`的顺序
 
 <preview path="./customOrderAndSpace.vue" />
 

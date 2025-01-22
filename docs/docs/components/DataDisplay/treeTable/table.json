@@ -399,7 +399,7 @@
         "displayName": "layout",
         "description": "分页布局",
         "type": "enum",
-        "tip": "'sizes' | 'total' | 'prev' | 'pager' | 'next' | 'jumper' | '->' | '<-'"
+        "tip": "'sizes' | 'total' | 'prev' | 'pager' | 'next' | 'jumper' | '->'"
       },
       {
         "displayName": "isRemotePaging",
