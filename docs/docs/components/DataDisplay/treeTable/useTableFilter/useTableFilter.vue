@@ -36,7 +36,6 @@ const column7 = ref([
     field: 'id',
     width: '100',
     dataType: 'number',
-    showColumnMenu: true
   },
   {
     title: 'Name',
@@ -50,7 +49,6 @@ const column7 = ref([
   {
     title: 'Sex',
     field: 'sex',
-    showColumnMenu: true,
     filters: [
       { label: '男', value: 'Man' },
       { label: '女', value: 'Women' }

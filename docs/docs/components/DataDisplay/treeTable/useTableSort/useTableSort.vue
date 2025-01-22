@@ -40,7 +40,6 @@ const column6 = ref([
     width: '100',
     dataType: 'number',
     sortable: true,
-    showColumnMenu: true
   },
   {
     title: 'Name',
