@@ -88,6 +88,14 @@ title: Form 表单
 
 <preview path="./hideColon.vue" />
 
+## 嵌套item
+
+<preview path="./nestedItem.vue" />
+
+## 嵌套form
+
+<preview path="./nestedForm.vue" />
+
 ## API
 
 <API src="./form.json" lang="zh"></API>

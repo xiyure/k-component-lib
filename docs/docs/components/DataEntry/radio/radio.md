@@ -40,7 +40,7 @@ title: Radio 单选框
 
 你可以让单选框看起来像一个按钮一样。
 
-只需要把 `k-radio` 元素换成 `k-radio-button` 元素即可， 此外，还提供了 size 属性用来控制单选框的大小。
+只需要添加`button`属性即可， 此外，还提供了 size 属性用来控制单选框的大小。
 
 <preview path="./buttonStyle.vue" />
 

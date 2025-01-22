@@ -1,8 +1,8 @@
 <template>
-  <k-radio-group v-model="size" aria-label="size control">
-    <k-radio-button value="lg">large</k-radio-button>
-    <k-radio-button value="base">default</k-radio-button>
-    <k-radio-button value="sm">small</k-radio-button>
+  <k-radio-group v-model="size" aria-label="size control" button>
+    <k-radio value="lg">large</k-radio>
+    <k-radio value="base">default</k-radio>
+    <k-radio value="sm">small</k-radio>
   </k-radio-group>
   <div class="demo-date-picker">
     <div class="block">
