@@ -1,27 +1,10 @@
 <template>
-  <div>
+  <div style="display: flex; gap: 1rem; flex-direction: column">
     <k-script-input v-model="text" :options="data">
-      <template #prepend>Http://</template>
+      <template #prepend><k-button>Http://</k-button></template>
     </k-script-input>
     <k-script-input v-model="text" :options="data">
-      <template #append>.com</template>
-    </k-script-input>
-    <k-script-input v-model="text" :options="data">
-      <template #append>
-        <KButton icon>
-          <IconSearch />
-        </KButton>
-      </template>
-    </k-script-input>
-    <k-script-input v-model="text" :options="data">
-      <template #append>
-        <k-button-group>
-          <k-button main>运行</k-button>
-          <k-button color="primary" main>
-            <IconArrowBottom />
-          </k-button>
-        </k-button-group>
-      </template>
+      <template #append><k-button>.com</k-button></template>
     </k-script-input>
   </div>
 </template>

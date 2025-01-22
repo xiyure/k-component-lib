@@ -32,7 +32,7 @@ title: ScriptInput 脚本输入框
 
 <preview path="./treeScriptInput" />
 
-## 复合型输入框
+## 前后插槽
 
 可以在输入框中前置或后置一个元素，通常是标签或按钮。
 可通过 slot 来指定在 Input 中分发的前置或者后置的内容。
@@ -60,6 +60,8 @@ title: ScriptInput 脚本输入框
 ## 文本校验
 
 设置`check-content-type`属性为`true`即可限制输入框只能输入`content-type`指定类型。
+
+`content-type`可以选择`string（是否是字符串）`、`boolean（是否是布尔值）`、`number（是否是数字）`、`tooltip（变量名是否合规）`等值
 
 <preview path="./validate" />
 
