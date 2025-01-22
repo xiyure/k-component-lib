@@ -1,5 +1,6 @@
 ---
 title: 基础用法
+order: 1
 ---
 
 # treeTable 树表格

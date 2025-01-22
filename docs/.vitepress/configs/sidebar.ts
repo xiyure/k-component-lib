@@ -10,7 +10,7 @@ const baseSidebarOptions = {
   // folderLinkNotIncludesFileName: true,
   underscoreToSpace: true, // _转为空格
   capitalizeFirst: true, //首字母强制大写
-  sortMenusByFrontmatterDate: true, // 启用日期排序
+  // sortMenusByFrontmatterDate: true, // 启用日期排序
   // sortMenusOrderByDescending: true, // 升序
   collapsed: false, // 文件夹折叠
   // debugPrint: true,
@@ -32,6 +32,8 @@ const KnowledgeSidebarOptions = {
 
 const componentsGeneralSidebarOptions = {
   ...baseSidebarOptions,
+  sortMenusByFrontmatterOrder: true,
+  sortMenusOrderByDescending : true,
   scanStartPath: 'components',
   resolvePath: '/components/',
   manualSortFileNameByPriority: ['General', 'Navigation'], // 手动排序
