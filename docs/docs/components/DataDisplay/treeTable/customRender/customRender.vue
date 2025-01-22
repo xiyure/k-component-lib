@@ -44,7 +44,16 @@ const column4 = ref([
   },
   {
     title: 'Role',
-    field: 'role'
+    field: 'role',
+    render: ({ row }) => {
+      if (row.role === 'Develop') {
+        return <k-tag>{row.role}</k-tag>;
+      } else if (row.role === 'Test') {
+        return <k-tag type="success">{row.role}</k-tag>;
+      } else {
+        return <k-tag type="warning">{row.role}</k-tag>;
+      }
+    }
   },
   {
     title: 'Sex',
@@ -61,12 +70,21 @@ const column4 = ref([
   {
     title: 'Age',
     field: 'age',
-    dataType: 'number'
+    dataType: 'string'
   },
   {
     title: 'Address',
     field: 'address'
-  }
+  },
+  {
+    title: '操作',
+    field: 'operation',
+    fixed: 'right',
+    width: '200',
+    render: ({ row }) => {
+      return <k-button onClick={() => console.log(row)}>操作</k-button>;
+    }
+  },
 ]);
 </script>
 <style scoped></style>

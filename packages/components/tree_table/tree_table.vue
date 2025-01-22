@@ -695,7 +695,7 @@ function filterTableData() {
   let tableData = filterData.filter((dataItem: any) => fieldList.some((field: string) => {
     const cellLabel = tableInstance.value.getCellLabel(dataItem, field);
     if (strict === true) {
-      return cellLabel === searchKey;
+      return cellLabel.toString() === searchKey;
     }
     if (ignoreCase) {
       return String(cellLabel).toLowerCase().indexOf(searchKey.toLowerCase()) !== -1;

@@ -123,7 +123,7 @@
     },
     {
       "displayName": "indicators",
-      "description": "自定义指示器, scope 参数是 { current, total }",
+      "description": "自定义指示器",
       "parameters": ""
     }
   ],
