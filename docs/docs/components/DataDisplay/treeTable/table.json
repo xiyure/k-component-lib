@@ -13,7 +13,7 @@
       "type": "object",
       "description": "表格列配置",
       "defaultValue": "",
-      "tip": "ColumnConfig[]"
+      "tip": "Column[]"
     },
     {
       "displayName": "size",
@@ -226,7 +226,7 @@
     }
   ],
   "subProps": {
-    "ColumnConfig": [
+    "Column": [
       {
         "displayName": "title",
         "description": "列头显示文字",
@@ -279,7 +279,7 @@
       {
         "displayName": "group",
         "description": "用于多级表头分组，参数配置与列配置一致",
-        "type": "ColumnConfig[]"
+        "type": "Column[]"
       },
       {
         "displayName": "render",
@@ -465,7 +465,7 @@
       "displayName": "hide-column",
       "description": "隐藏列时触发",
       "type": "Function",
-      "tip": "(column: ColumnConfig) => void"
+      "tip": "(column: Column) => void"
     },
     {
       "displayName": "checkbox-all",

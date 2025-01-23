@@ -315,7 +315,7 @@ import { KTable } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
 import { KDropdown, KDropdownItem } from '../dropdown';
-import type { TreeTableProps, ColumnConfig, TableHeaderControl, RowData, Row } from './type';
+import type { TreeTableProps, Column, TableHeaderControl, RowData, Row } from './type';
 import type { ConditionInfo, Condition } from '../filter';
 import {
   genRandomStr,
@@ -436,8 +436,8 @@ const sizeList = [
 ];
 const tableTransferRef = ref();
 // 列配置
-const columns = ref<ColumnConfig[]>([]);
-const flatColumns = ref<ColumnConfig[]>([]);
+const columns = ref<Column[]>([]);
+const flatColumns = ref<Column[]>([]);
 // 表格数据
 const xeTableData = ref<RowData[]>([]);
 // 搜索框关键词
@@ -683,9 +683,9 @@ function filterTableData() {
   if (typeof searchMethod === 'function') {
     return searchMethod(searchKey, filterData);
   }
-  const visibleColumns = flatColumns.value.filter((col: ColumnConfig) => col.visible !== false);
+  const visibleColumns = flatColumns.value.filter((col: Column) => col.visible !== false);
   const fieldList = visibleColumns
-  .map((col: ColumnConfig) => {
+  .map((col: Column) => {
     if (col.field && !col.type) {
       return col.field;
     }
@@ -873,7 +873,7 @@ function getTreeConfigField() {
   return { parentField, rowField };
 }
 function updateColumn(ids: string[]) {
-  flatColumns.value.forEach((col: ColumnConfig) => {
+  flatColumns.value.forEach((col: Column) => {
     if (ids.includes(col.field as string)) {
       col.visible = true;
     } else {
@@ -909,7 +909,7 @@ async function initTransfer() {
 function updateTransfer() {
   flatColumns.value = treeDataToArray(columns.value, 'group');
   originData.value = flatColumns.value
-  .map((item: ColumnConfig) => {
+  .map((item: Column) => {
     if (item.field) {
       return {
         label: item.title || item.type || 'undefined',
@@ -920,23 +920,23 @@ function updateTransfer() {
   })
   .filter((item: { label: string; key: string } | null) => item !== null);
   selectData.value = flatColumns.value
-  .filter((col: ColumnConfig) => col.visible !== false)
-  .map((item: ColumnConfig) => item.field)
+  .filter((col: Column) => col.visible !== false)
+  .map((item: Column) => item.field)
   .filter((item) => item !== undefined);
   defaultHeader.value = [...selectData.value];
 }
-function hideColumn(column: ColumnConfig) {
+function hideColumn(column: Column) {
   if (!__showTransfer.value) {
     return;
   }
-  const columnItem = flatColumns.value.find((item: ColumnConfig) => item.field === column.field);
+  const columnItem = flatColumns.value.find((item: Column) => item.field === column.field);
   if (!columnItem) {
     return;
   }
   columnItem.visible = false;
   selectData.value = flatColumns.value
-  .filter((col: ColumnConfig) => col.visible !== false)
-  .map((item: ColumnConfig) => {
+  .filter((col: Column) => col.visible !== false)
+  .map((item: Column) => {
     if (item.title && item.field) {
       return item.field;
     }
@@ -950,8 +950,8 @@ function sortTableHeader(fieldList: { label: string; key: string }[]) {
     return;
   }
   let keyIndex = 0;
-  const map = new Map(flatColumns.value.map((v: ColumnConfig) => [v.field, v]));
-  const setData = (columns: ColumnConfig[]) => {
+  const map = new Map(flatColumns.value.map((v: Column) => [v.field, v]));
+  const setData = (columns: Column[]) => {
     for (const [index, col] of columns.entries()) {
       if (Array.isArray(col.group) && col.group.length > 0) {
         setData(col.group);
@@ -1148,7 +1148,7 @@ function getHeaderControllerData(): TableHeaderControl[] {
 }
 function setHeaderControllerData(transferData: TableHeaderControl[]) {
   transferData.forEach?.((item: TableHeaderControl) => {
-    const column = flatColumns.value.find((col: ColumnConfig) => col.field === item.key);
+    const column = flatColumns.value.find((col: Column) => col.field === item.key);
     if (!column) {
       return;
     }

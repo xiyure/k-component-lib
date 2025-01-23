@@ -1,3 +1,5 @@
+import { TreeConfig } from '../tree_table';
+
 export interface ScriptInputProps {
   modelValue: string | number;
   size?: 'lg' | 'base' | 'sm' | '';
@@ -12,9 +14,7 @@ export interface ScriptInputProps {
   onlyOneInput?: boolean | ScriptInputMode[];
   resize?: boolean;
   showPassword?: boolean;
-  treeConfig?: {
-    [key: string]: any;
-  };
+  treeConfig?: TreeConfig
   props?: {
     label?: string;
     value?: string;

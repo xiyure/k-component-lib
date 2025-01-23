@@ -6,17 +6,25 @@ import { Condition, FilterValue, ConditionInfo } from '../filter/type';
 import { RequireToOptional } from '../../utils/typescript';
 
 export type Row = VxeTablePropTypes.Row;
+export type TreeConfig = VxeTablePropTypes.TreeConfig;
+export type RowConfig = VxeTablePropTypes.RowConfig;
+export type SortConfig = VxeTablePropTypes.SortConfig;
+export type EditConfig = VxeTablePropTypes.EditConfig;
+export type ScrollY = VxeTablePropTypes.ScrollY;
+export type CheckboxConfig = VxeTablePropTypes.CheckboxConfig;
+export type ColumnConfig = VxeTablePropTypes.ColumnConfig;
+
 export interface TreeTableProps {
   data?: RowData[];
   size?: string;
-  sortConfig?: VxeTablePropTypes.SortConfig;
+  sortConfig?: SortConfig;
   seqConfig?: SeqConfig;
-  rowConfig?: VxeTablePropTypes.RowConfig;
-  editConfig?: VxeTablePropTypes.EditConfig;
-  scrollY?: VxeTablePropTypes.ScrollY;
-  columnConfig?: VxeTablePropTypes.ColumnConfig;
-  checkboxConfig?: VxeTablePropTypes.CheckboxConfig;
-  treeConfig?: VxeTablePropTypes.TreeConfig;
+  rowConfig?: RowConfig;
+  editConfig?: EditConfig;
+  scrollY?: ScrollY;
+  columnConfig?: ColumnConfig;
+  checkboxConfig?: CheckboxConfig;
+  treeConfig?: TreeConfig;
   showOverflow?: string | boolean;
   autoResize?: boolean;
   height?: string | number;
@@ -24,7 +32,7 @@ export interface TreeTableProps {
   border?: boolean | string;
   emptyText?: string;
   rowStyle?: CSSProperties | ((rowInfo: Row) => CSSProperties);
-  column: ColumnConfig[];
+  column: Column[];
   showPage?: boolean;
   useTree?: boolean;
   isRemoteQuery?: boolean;
@@ -63,7 +71,7 @@ export interface TreeTableProps {
   hasSpace?: boolean;
 }
 
-export interface ColumnConfig {
+export interface Column {
   visible?: boolean;
   key?: string | number;
   field?: string;
@@ -77,7 +85,7 @@ export interface ColumnConfig {
   sortable?: boolean;
   showIcon?: boolean;
   showColumnMenu?: boolean;
-  group?: (ColumnConfig & VxeColgroupProps)[];
+  group?: (Column & VxeColgroupProps)[];
   dataType?: string;
   render?: (...arg: any) => VNode;
   renderEdit?: (data: any) => VNode;
@@ -103,7 +111,7 @@ export interface PaginationConfig extends RequireToOptional<Omit<ElPaginationPro
 }
 
 export interface SeqConfig {
-  seqMethod?: (rowConfig: VxeTablePropTypes.RowConfig) => string | number;
+  seqMethod?: (rowConfig: RowConfig) => string | number;
   startIndex?: number;
 }
 

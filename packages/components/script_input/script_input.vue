@@ -396,7 +396,7 @@ function handleBlur(event: FocusEvent) {
   }
 }
 function cellClick({ row }: { row: Row }) {
-  if (row.optional === false) {
+  if (row.children?.length && !row.optional) {
     return;
   }
   const rowIndex = flattedOptions.value.findIndex(
