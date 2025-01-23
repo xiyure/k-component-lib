@@ -14,7 +14,7 @@ export interface ScriptInputProps {
   onlyOneInput?: boolean | ScriptInputMode[];
   resize?: boolean;
   showPassword?: boolean;
-  treeConfig?: TreeConfig
+  treeConfig?: TreeConfig;
   props?: {
     label?: string;
     value?: string;
@@ -41,4 +41,4 @@ export interface ScriptInputProps {
 export type ScriptOptions = {
   [key: string]: any;
 };
-export type ScriptInputMode = 'expression' |'string'
+export type ScriptInputMode = 'expression' | 'string';
