@@ -24,7 +24,7 @@
   <k-button color="blue" text>
     <IconSearch />
   </k-button>
-  <k-button color="green" text><IconSearch /></k-button>
+  <k-button :loading="true"><IconSearch /></k-button>
   <k-button color="gray" text><IconSearch /></k-button>
   <k-button color="orange" text><IconSearch /></k-button>
   <k-button color="red" text><IconSearch /></k-button>

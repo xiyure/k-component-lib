@@ -5,8 +5,8 @@
       "displayName": "type",
       "type": "enum",
       "description": "按钮类型",
-      "defaultValue": "info",
-      "tip": "'primary' | 'success' | 'info' | 'warning' | 'danger'"
+      "defaultValue": "",
+      "tip": "'primary' | 'success' | 'info' | 'warning' | 'danger' | ''"
     },
     {
       "displayName": "main",
@@ -41,41 +41,55 @@
       "type": "enum",
       "description": "按钮尺寸",
       "defaultValue": "base",
-      "tip": "'base' | 'sm'"
+      "tip": "'base' | 'sm' | 'lg' | 'default' | 'small' | 'large'"
     },
     {
       "displayName": "iconLeft",
       "type": "string | Component",
       "description": "按钮文字左侧图标",
-      "defaultValue": "-",
+      "defaultValue": "",
       "tip": ""
     },
     {
       "displayName": "iconRight",
       "type": "string | Component",
       "description": "按钮文字右侧图标",
-      "defaultValue": "-",
+      "defaultValue": "",
       "tip": ""
     },
     {
       "displayName": "value",
       "type": "string | number",
       "description": "按钮展示内容",
-      "defaultValue": "-",
+      "defaultValue": "",
       "tip": ""
     },
     {
       "displayName": "loadingIcon",
-      "type": "Component",
+      "type": "string",
       "description": "加载图标",
-      "defaultValue": "-",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "loading",
+      "type": "boolean",
+      "description": "是否显示加载中状态",
+      "defaultValue": "false",
       "tip": ""
     },
     {
       "displayName": "color",
       "type": "string",
-      "description": "按钮主题颜色",
-      "defaultValue": "-",
+      "description": "按钮颜色",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "disabled",
+      "type": "boolean",
+      "description": "是否禁用按钮",
+      "defaultValue": "false",
       "tip": ""
     }
   ],
@@ -86,12 +100,16 @@
       "description": "默认插槽内容"
     },
     {
-      "displayName": "loading",
-      "description": "自定义加载中组件"
+      "displayName": "iconRight",
+      "description": "自定义右侧图标组件"
     },
     {
-      "displayName": "icon",
-      "description": "自定义图标组件"
+      "displayName": "iconLeft",
+      "description": "自定义左侧图标组件"
+    },
+    {
+      "displayName": "slot-content",
+      "description": "自定义按钮内容"
     }
   ],
   "methods": []

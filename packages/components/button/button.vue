@@ -41,7 +41,6 @@
 <script setup lang="ts">
 import { computed, ref, nextTick, watch, inject } from 'vue';
 import { ElButton } from 'element-plus';
-import { IconLoading } from 'ksw-vue-icon';
 import { ButtonProps } from './type';
 import { genRandomStr, getExposeProxy, GetColorLevelNew } from '../../utils';
 import { btnTypes } from './const';
@@ -56,7 +55,7 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   value: '',
   disabled: false,
   loading: false,
-  loadingIcon: IconLoading,
+  loadingIcon: 'IconLoading',
   iconLeft: '',
   iconRight: '',
   color: '',

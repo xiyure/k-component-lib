@@ -48,7 +48,7 @@ export interface ButtonProps {
   /**
    * 加载图标
    */
-  loadingIcon?: Component;
+  loadingIcon?: string;
   /**
    *  十六进制颜色: 例如 #ff5500
    */
