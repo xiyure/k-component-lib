@@ -21,7 +21,7 @@
               </k-button>
               <slot name="prepend"></slot>
             </div>
-            <div v-if="!showPassword" class="k-script-input-wrap flex-1">
+            <div v-if="!_showPassword" class="k-script-input-wrap flex-1">
               <div
                 ref="KScriptInputWrapper"
                 :class="[
@@ -174,7 +174,8 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
 const DEFAULT_TREE_CONFIG = {
   parentField: 'pid',
   rowField: getAttrProps().value,
-  expandAll: false
+  expandAll: false,
+  trigger: 'default'
 };
 
 const emits = defineEmits(['change', 'input', 'focus', 'blur', 'select', 'update:modelValue']);
@@ -222,9 +223,9 @@ let checkVariableResult = true;
 const resultMessage = ref('');
 
 // password
-const showPassword = defineModel<boolean | undefined>('showPassword', { default: false });
+const _showPassword = ref(false);
 const pwd = ref(props.modelValue.toString());
-const { _methods } = usePassword(showPassword, pwd);
+const { _methods } = usePassword(_showPassword, pwd);
 
 const treeConfig = computed(() => {
   if (!props.useTree) {
@@ -255,7 +256,6 @@ const onlyOneInputMode = computed(() => {
       modeMap.set(mode, exist);
     })
   }
-  console.log(modeMap.values());
   return modeMap;
 });
 
@@ -273,7 +273,7 @@ watch(
     } else {
       popperVisible.value = false;
     }
-    if (!showPassword.value) {
+    if (!_showPassword.value) {
       updateFocusRange();
     }
   },
@@ -293,7 +293,7 @@ watch(
     clearCurrentInput();
     const newModelValue = props.modelValue.toString();
     cacheRes = newModelValue;
-    if (showPassword.value) {
+    if (_showPassword.value) {
       pwd.value = newModelValue;
       return;
     }
@@ -304,6 +304,9 @@ watch(
   },
   { immediate: true, deep: true }
 );
+watch(() => props.showPassword, (newVal: boolean) =>{
+  _methods.setPasswordMode(newVal);
+}, { immediate: true })
 
 function updateModelValue(res: string) {
   cacheRes = res;
@@ -328,7 +331,14 @@ function handleInput(event: InputEvent | CompositionEvent) {
   }
   const { result = '' } = parseInputValue();
   if (!result?.length) {
-    setEditorContent('');
+    if (props.showPassword) {
+      _methods.setPasswordMode(true);
+      nextTick(() => {
+        KScriptInputPassword.value?.focus?.();
+      });
+    } else {
+      setEditorContent('');
+    }
   }
   updateModelValue(result);
   checkInputContentType(result);
@@ -393,9 +403,6 @@ function cellClick({ row }: { row: Row }) {
     (item) => item[getAttrProps().value] === row[getAttrProps().value]
   );
   selectedIndex.value = rowIndex;
-  if (row.children?.length) {
-    return;
-  }
   selectOption(row);
 }
 async function selectOption(data: Row | RowData) {
@@ -412,7 +419,7 @@ async function selectOption(data: Row | RowData) {
 }
 // 将选择的脚本标签转化成dom节点并插入到编辑框中，注意两种选择场景下的差异性
 async function handleInputContent(data: Row | RowData) {
-  if (showPassword.value) {
+  if (_showPassword.value) {
     _methods.setPasswordMode(false);
     await nextTick();
   }
@@ -479,7 +486,7 @@ function removeSameNode(targetNode: Element) {
   });
 }
 function parseInputValue() {
-  if (showPassword.value) {
+  if (_showPassword.value) {
     return {
       result: pwd.value,
       scriptTags: [],
@@ -696,7 +703,7 @@ function showPopper() {
   showTreeSearch.value = true;
   popperVisible.value = true;
   allowShowTree.value = true;
-  if (!showPassword.value) {
+  if (!_showPassword.value) {
     updateFocusRange();
   }
   setTimeout(() => {
@@ -732,7 +739,7 @@ function clearCurrentInput() {
   curInput.value = '';
 }
 function clear() {
-  if (showPassword.value) {
+  if (_showPassword.value) {
     pwd.value = '';
   } else {
     setEditorContent('');
@@ -755,7 +762,6 @@ function setStringMode(stringMode: boolean) {
 }
 function setCurrentMode(mode: 'password' | 'string' | 'expression') {
   if (mode === 'password') {
-    showPassword.value = true;
     _methods.setPasswordMode(true);
   } else if (mode === 'string') {
     setStringMode(true);
@@ -764,7 +770,7 @@ function setCurrentMode(mode: 'password' | 'string' | 'expression') {
   }
 }
 function getCurrentMode() {
-  if (showPassword.value) {
+  if (_showPassword.value) {
     return 'password';
   }
   return isStringMode() ? 'string' : 'expression';
@@ -781,14 +787,14 @@ const tempCaches = {
   string: ''
 };
 function saveTextValue() {
-  if (showPassword.value) {
+  if (_showPassword.value) {
     return;
   }
   const attrName = isStringMode() ? 'string' : 'expression';
   tempCaches[attrName] = getEditorContent();
 }
 function restoreTextValue() {
-  if (showPassword.value) {
+  if (_showPassword.value) {
     return;
   }
   clear();
@@ -825,7 +831,7 @@ function getScriptKey() {
 }
 
 function focus() {
-  const instance = showPassword.value ? KScriptInputPassword.value : KScriptInputWrapper.value;
+  const instance = _showPassword.value ? KScriptInputPassword.value : KScriptInputWrapper.value;
   if (!instance) {
     return;
   }
@@ -834,7 +840,7 @@ function focus() {
   });
 }
 function blur() {
-  const instance = showPassword.value ? KScriptInputPassword.value : KScriptInputWrapper.value;
+  const instance = _showPassword.value ? KScriptInputPassword.value : KScriptInputWrapper.value;
   if (!instance) {
     return;
   }
