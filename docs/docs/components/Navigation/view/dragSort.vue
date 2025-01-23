@@ -62,3 +62,10 @@ const viewData = ref([
   }
 ]);
 </script>
+
+<style lang="less" scoped>
+::v-deep .k-view-content {
+  margin: auto;
+  font-size: 28px;
+}
+</style>

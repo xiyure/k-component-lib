@@ -7,24 +7,16 @@
     @refresh="() => console.log('refresh')"
     @drag="(value) => console.log('drag', value)"
   >
-    <template #all>all</template>
-    <template #free>free</template>
-    <template #active>active</template>
-    <template #outline>outline</template>
-    <template #destory>destory</template>
-    <template #production1>production1</template>
-    <template #production2>production2</template>
+    <template #all>全部</template>
+    <template #free>空闲</template>
+    <template #active>活跃</template>
+    <template #outline>离线</template>
+    <template #destory>停用</template>
   </k-view>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
-
-onMounted(() => {
-  sessionStorage.setItem('a', '111');
-});
-
-console.log(123, sessionStorage.getItem('a'));
 
 const viewData = ref([
   {
@@ -59,3 +51,10 @@ const viewData = ref([
   }
 ]);
 </script>
+
+<style lang="less" scoped>
+::v-deep .k-view-content {
+  margin: auto;
+  font-size: 28px;
+}
+</style>
