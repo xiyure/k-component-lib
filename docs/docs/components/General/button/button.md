@@ -34,6 +34,10 @@ date: 2021-03-11
 
 ### 方式 1, type
 
+:::tip 提示
+使用`text`时，按钮文字颜色建议使用`color`属性指定，而不是`type`属性。
+:::
+
 使用 type, 此 api 参数兼容 el 预设, 如: primary, success, info, warning, danger
 
 <preview path="./elType.vue" />
