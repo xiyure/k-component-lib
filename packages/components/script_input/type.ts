@@ -7,9 +7,9 @@ export interface ScriptInputProps {
   useTree?: boolean;
   showPopperSwitch?: boolean;
   showModeSwitch?: boolean;
-  defaultMode?: 'string' | 'expression';
+  defaultMode?: ScriptInputMode;
   height?: string;
-  onlyOneInput?: boolean;
+  onlyOneInput?: boolean | ScriptInputMode[];
   resize?: boolean;
   showPassword?: boolean;
   treeConfig?: {
@@ -41,3 +41,4 @@ export interface ScriptInputProps {
 export type ScriptOptions = {
   [key: string]: any;
 };
+export type ScriptInputMode = 'expression' |'string'

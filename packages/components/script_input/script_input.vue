@@ -242,6 +242,22 @@ const VTooltipConfig = computed(() => ({
   content: checkInputMessage.tooltip,
   visible: showMessage.value && props.contentType !== 'number' && props.contentType !== 'boolean'
 }));
+const onlyOneInputMode = computed(() => {
+  const isOnly = props.onlyOneInput;
+  let modeMap = new Map([['string', false], ['expression', false]]);
+  const modes = ['string', 'expression'];
+  if (typeof isOnly === 'boolean') {
+    modeMap.set('string', isOnly);
+    modeMap.set('expression', isOnly);
+  } else if (Array.isArray(isOnly)) {
+    modes.forEach((mode: string) => {
+      const exist = (isOnly as string[]).includes(mode);
+      modeMap.set(mode, exist);
+    })
+  }
+  console.log(modeMap.values());
+  return modeMap;
+});
 
 // 输入框内容发生变化时，需要更新下拉列表的显示状态以及光标位置
 watch(
@@ -405,7 +421,7 @@ async function handleInputContent(data: Row | RowData) {
     _isStringMode.value && data[getAttrProps().tag] !== false
       ? generateScriptTag(data[getAttrProps().label], key)
       : data[getAttrProps().value];
-  if (props.onlyOneInput) {
+  if (onlyOneInputMode.value.get(getCurrentMode())) {
     KScriptInputWrapper.value.innerHTML = content;
   } else {
     handleManualInput(content);
