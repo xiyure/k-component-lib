@@ -9,7 +9,6 @@ export interface FilterProps {
   remote?: boolean | string[]
   formatter?: string
   ignoreCase?: boolean
-  showPopper?: boolean
   maxNumber?: number
 }
 

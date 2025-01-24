@@ -7,7 +7,6 @@
     ]"
   >
     <k-popover
-      v-if="showPopper"
       trigger="click"
       width="auto"
       :teleported="false"
@@ -191,172 +190,14 @@
         </div>
       </div>
     </k-popover>
-
-    <k-card v-else-if="!showPopper">
-      <div class="k-filter__content" style="background-color: white">
-        <div class="k-filter__header">
-          <span :class="formatSize.ownSize === 'sm' ? 'text-base' : 'text-lg'" class="font-bold">
-            {{ $t('advancedFilter') }}
-          </span>
-          <span
-            :class="formatSize.ownSize === 'sm' ? 'text-sm' : 'text-base'"
-            @click="
-              () => {
-                clearFilter();
-                emits('clear');
-              }
-            "
-          >
-            <IconClearDate />
-            {{ $t('clearAll') }}
-          </span>
-        </div>
-        <div
-          v-for="(item, index) in filterData"
-          :key="index"
-          :title="item.title?.join('/')"
-          class="k-filter__item"
-        >
-          <div class="k-filter__condition">
-            <k-cascader
-              v-model="item.title"
-              :size="formatSize.ownSize"
-              :options="options"
-              :props="{
-                label: 'title',
-                value: 'title',
-                children: props.childrenField,
-              }"
-              clearable
-              @change="changeCondition(index, item, options!)"
-            ></k-cascader>
-          </div>
-          <div class="k-filter__logic">
-            <k-select
-              v-model="item.logic"
-              :size="formatSize.ownSize"
-              clearable
-              :disabled="item._allowSelectLogic === false"
-              @change="changeLogic(item)"
-            >
-              <k-option
-                v-for="conditionItem in conditionList(item)?.logicList"
-                :key="conditionItem.logic"
-                :label="$t(conditionItem.logic)"
-                :value="conditionItem.logic"
-              />
-            </k-select>
-          </div>
-          <div class="k-filter__value" :title="item.value?.toString()">
-            <div v-if="instance(item.key)?.dataType === 'date'" class="k-filter__date-box">
-              <k-select
-                v-model="item.dateRange"
-                :size="formatSize.ownSize"
-                clearable
-                :disabled="disabledInput(item)"
-                @change="changeDateRange(item)"
-              >
-                <k-option
-                  v-for="logicItem in dateLogicList(item)"
-                  :key="logicItem.value"
-                  :label="$t(logicItem.label)"
-                  :value="logicItem.value"
-                  :disabled="
-                    (item.logic === 'after' || item.logic === 'before') &&
-                      logicItem.value === 'range'
-                  "
-                />
-              </k-select>
-              <k-date-picker
-                v-model="item.value"
-                :type="item.dateType"
-                :size="formatSize.ownSize"
-                clearable
-                :disabled="disabledDatePicker(item)"
-                @change="
-                  (val: Date | Date[]) => {
-                    dateChange(val, item);
-                  }
-                "
-              />
-            </div>
-            <k-select
-              v-else-if="instance(item.key)?.options?.length && !item.isMultiple"
-              v-model="item.value"
-              :size="formatSize.ownSize"
-              :disabled="disabledInput(item)"
-              clearable
-              @change="updateValue(item, 'select', instance(item.key).options)"
-            >
-              <k-option
-                v-for="optionItem in instance(item.key)?.options"
-                :key="optionItem.label"
-                :label="optionItem.label"
-                :value="optionItem.value"
-              />
-            </k-select>
-            <k-select
-              v-else-if="instance(item.key)?.options?.length && item.isMultiple"
-              v-model="item.multipleValue"
-              :size="formatSize.ownSize"
-              :disabled="disabledInput(item)"
-              clearable
-              multiple
-              @change="updateValue(item, 'multiple', instance(item.key).options)"
-            >
-              <k-option
-                v-for="optionItem in instance(item.key)?.options"
-                :key="optionItem.label"
-                :label="optionItem.label"
-                :value="optionItem.value"
-              />
-            </k-select>
-            <k-input
-              v-else
-              v-model="item.value"
-              :size="formatSize.ownSize"
-              :disabled="disabledInput(item)"
-              clearable
-              @change="updateValue(item, 'input', instance(item.key).options)"
-            />
-          </div>
-          <i class="close-icon" @click="removeConditionItem(index)"><IconClose /></i>
-        </div>
-        <div
-          class="k-filter__operate"
-          :class="formatSize.ownSize === 'sm' ? 'text-sm' : 'text-base'"
-        >
-          <div class="k-filer__operate-left">
-            <span @click="addCondition()">
-              <IconAdd />
-              {{ $t('addCondition') }}
-            </span>
-          </div>
-          <div class="k-filer__operate-right">
-            <span class="select-label">{{ $t('aboveCondition') }}：</span>
-            <k-select v-model="filterRule" :size="formatSize.ownSize" :disabled="disableChangeMode">
-              <k-option :label="$t('anyOne')" :value="0"></k-option>
-              <k-option :label="$t('all')" :value="1"></k-option>
-            </k-select>
-            <k-button :size="formatSize.ownSize" main @click="query">{{ $t('query') }}</k-button>
-          </div>
-        </div>
-      </div>
-    </k-card>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, inject, onMounted, watch, useAttrs } from 'vue';
 import { VueI18nTranslation } from 'vue-i18n';
-import { IconClose, IconClearDate, IconAdd, IconFilter, IconFilterFill } from 'ksw-vue-icon';
 import { cloneDeep } from 'lodash-es';
 import { FilterProps, FilterData, FilterOptions } from './type';
-import { KInput } from '../input';
-import { KSelect, KOption } from '../select';
-import { KButton } from '../button';
-import { KPopover } from '../popover';
-import { KCascader } from '../cascader';
 import { dateTypeOptions, logicOptions } from '../../constant/filter_data';
 import { treeDataToArray, isValid, formatter } from '../../utils';
 import { useSize } from '../../hooks';
@@ -378,7 +219,7 @@ const formatSize = useSize<FilterProps>(props);
 const attrs = useAttrs();
 
 onMounted(() => {
-  const deprecatedFields = [{oName: 'column', nName: 'options'}];
+  const deprecatedFields = [{ oName: 'column', nName: 'options' }];
   deprecatedFields.forEach((p: { oName: string, nName: string }) => {
     if (attrs[p.oName]) {
       console.warn(`[KFilter] The "${p.oName}" field is deprecated, please use "${p.nName}" instead.`);

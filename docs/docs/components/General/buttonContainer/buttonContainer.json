@@ -3,21 +3,23 @@
   "props": [
     {
       "displayName": "max-height",
-      "type": "string | Number",
+      "type": "string | number",
       "description": "菜单最大高度",
       "defaultValue": "300"
     },
     {
       "displayName": "placement",
-      "type": "string",
+      "type": "enum",
       "description": "菜单弹出位置",
-      "defaultValue": "bottom"
+      "defaultValue": "bottom",
+      "tip": "'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end'"
     },
     {
       "displayName": "trigger",
-      "type": "string",
+      "type": "enum",
       "description": "触发下拉的行为",
-      "defaultValue": "click"
+      "defaultValue": "click",
+      "tip": "'hover' | 'click' | 'contextMenu'"
     },
     {
       "displayName": "hide-on-click",
@@ -50,8 +52,8 @@
       "defaultValue": "true"
     },
     {
-      "displayName": "triggerIcon",
-      "type": "string | Component",
+      "displayName": "trigger-icon",
+      "type": "string | component",
       "description": "自定义触发按钮图标",
       "defaultValue": "IconMore"
     }
