@@ -25,11 +25,12 @@ type BindingValue = {
       [key: string]: any;
 } | string;
 
+let tooltipConfig: BindingValue = {};
 let GLOBAL_TOOL_TIP: App | null = null;
 const TOOL_TIP_ID = '_tooltip_root';
 let timer: any = null;
 
-const createTooltip = (el:  any, config: BindingValue) => {
+const createTooltip = (el:  any) => {
   const elRoot = document.querySelector('#_tooltip_root');
   if (elRoot) {
     elRoot.remove();
@@ -39,11 +40,11 @@ const createTooltip = (el:  any, config: BindingValue) => {
   const _tipRoot = document.createElement('div');
   _tipRoot.id = TOOL_TIP_ID;
   _tipRoot.classList.add('_tipRoot');
-  const { trigger, placement, content, showAfter, autoClose, visible } = isObject(config) ?
-    config :
+  const { trigger, placement, content, showAfter, autoClose, visible } = isObject(tooltipConfig) ?
+    tooltipConfig :
     {};
-  const showContent = ['string', 'number'].includes(typeof config) ?
-    config :
+  const showContent = ['string', 'number'].includes(typeof tooltipConfig) ?
+    tooltipConfig :
     content ?? el.textContent ?? '';
   let toolTipVisible: boolean | undefined = true;
   if (visible === false) {
@@ -90,10 +91,10 @@ const disposeGlobalTooltip = () => {
     GLOBAL_TOOL_TIP = null;
   }
 };
-const handleTooltip = (el: HTMLElement, config: BindingValue) => {
-  const { showAfter = 500, trigger = 'hover' } = isObject(config) ? config : {};
+const handleTooltip = (el: HTMLElement) => {
+  const { showAfter, trigger } = isObject(tooltipConfig) ? tooltipConfig : {};
   if (trigger === 'click') {
-    createTooltip(el, config);
+    createTooltip(el);
     return;
   }
   el.addEventListener('mouseenter', () => {
@@ -101,16 +102,17 @@ const handleTooltip = (el: HTMLElement, config: BindingValue) => {
       clearTimeout(timer);
     }
     timer = setTimeout(() => {
-      createTooltip(el, config);
-    }, showAfter);
+      createTooltip(el);
+    }, showAfter ?? 500);
   });
   el.addEventListener('mouseleave', disposeGlobalTooltip);
 }
 export const tooltip: Directive = {
   mounted(el: HTMLElement, binding: DirectiveBinding<BindingValue>) {
-    handleTooltip(el, binding.value);
+    tooltipConfig = binding.value;
+    handleTooltip(el);
   },
-  updated(el: HTMLElement, binding: DirectiveBinding<BindingValue>) {
-    handleTooltip(el, binding.value);
+  updated(_el, binding: DirectiveBinding<BindingValue>) {
+    tooltipConfig = binding.value;
   }
 };
