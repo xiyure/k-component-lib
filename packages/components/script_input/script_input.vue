@@ -11,7 +11,7 @@
     >
       <template #reference>
         <div class="flex flex-col w-full min-h-8">
-          <div class="flex w-full min-h-8">
+          <div class="flex w-full min-h-8 relative">
             <div class="k-script-input-prepend">
               <k-button v-if="showModeSwitch" :disabled @click="toggleMode">
                 <component
