@@ -240,24 +240,14 @@ const flattedOptions = computed(() => {
     transformTreeData(tableData, { parentField: getAttrProps().value, children: 'children' }) ?? []
   );
 });
-const VTooltipConfig = computed(() => {
-  console.log(
-    '@',
+const VTooltipConfig = computed(() => ({
+  content: checkInputMessage.tooltip,
+  visible:
     showMessage.value &&
-      props.contentType !== 'number' &&
-      props.contentType !== 'boolean' &&
-      !limitMaxMinMsg.value,
-  );
-
-  return {
-    content: checkInputMessage.tooltip,
-    visible:
-      showMessage.value &&
-      props.contentType !== 'number' &&
-      props.contentType !== 'boolean' &&
-      !limitMaxMinMsg.value,
-  };
-});
+    props.contentType !== 'number' &&
+    props.contentType !== 'boolean' &&
+    !limitMaxMinMsg.value,
+}));
 
 watch(
   () => VTooltipConfig.value,
