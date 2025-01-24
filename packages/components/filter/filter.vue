@@ -330,9 +330,6 @@ function initData() {
 }
 // 添加条件
 function addCondition() {
-  if (filterData.value.length >= 3 && !props.showPopper) {
-    return;
-  }
   const addItem: FilterData = {
     title: [],
     logic: '',

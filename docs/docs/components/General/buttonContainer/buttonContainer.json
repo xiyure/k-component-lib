@@ -53,7 +53,7 @@
     },
     {
       "displayName": "trigger-icon",
-      "type": "string | component",
+      "type": "string | Component",
       "description": "自定义触发按钮图标",
       "defaultValue": "IconMore"
     }
