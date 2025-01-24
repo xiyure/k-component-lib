@@ -76,14 +76,14 @@
                 <IconVariable />
               </k-button>
             </div>
-          </div>
-          <div
-            v-if="showMessage"
-            v-ksw_tooltip="VTooltipConfig"
-            class="k-script-input-check-result ml-2 text-red-500 text-xs mt-1 flex items-center gap-0.5 w-fit"
-          >
-            <component :is="'IconStatusWarning'" />
-            {{ resultMessage }}
+            <div
+              v-if="showMessage"
+              v-ksw_tooltip="VTooltipConfig"
+              class="k-script-input-check-result text-red-500 text-xs flex items-center gap-0.5 w-fit"
+            >
+              <component :is="'IconStatusWarning'" />
+              {{ resultMessage }}
+            </div>
           </div>
         </div>
       </template>
@@ -221,6 +221,7 @@ const fxSet = new Set();
 const showMessage = ref(false);
 let checkVariableResult = true;
 const resultMessage = ref('');
+const limitMaxMinMsg = ref('');
 
 // password
 const _showPassword = ref(false);
@@ -239,10 +240,31 @@ const flattedOptions = computed(() => {
     transformTreeData(tableData, { parentField: getAttrProps().value, children: 'children' }) ?? []
   );
 });
-const VTooltipConfig = computed(() => ({
-  content: checkInputMessage.tooltip,
-  visible: showMessage.value && props.contentType !== 'number' && props.contentType !== 'boolean',
-}));
+const VTooltipConfig = computed(() => {
+  console.log(
+    '@',
+    showMessage.value &&
+      props.contentType !== 'number' &&
+      props.contentType !== 'boolean' &&
+      !limitMaxMinMsg.value,
+  );
+
+  return {
+    content: checkInputMessage.tooltip,
+    visible:
+      showMessage.value &&
+      props.contentType !== 'number' &&
+      props.contentType !== 'boolean' &&
+      !limitMaxMinMsg.value,
+  };
+});
+
+watch(
+  () => VTooltipConfig.value,
+  () => {
+    console.log('watch', VTooltipConfig.value);
+  },
+);
 const onlyOneInputMode = computed(() => {
   const isOnly = props.onlyOneInput;
   let modeMap = new Map([
@@ -314,6 +336,13 @@ watch(
   },
   { immediate: true },
 );
+watch(
+  () => props.contentType,
+  () => {
+    const { result = '' } = parseInputValue();
+    checkInputContentType(result);
+  },
+);
 
 function updateModelValue(res: string) {
   cacheRes = res;
@@ -351,6 +380,7 @@ function handleInput(event: InputEvent | CompositionEvent) {
   checkInputContentType(result);
 }
 function checkInputContentType(result: string) {
+  limitMaxMinMsg.value = '';
   if (!props.checkContentType) {
     return;
   }
@@ -368,10 +398,11 @@ function checkInputContentType(result: string) {
   }
 
   // 此处校验结果展示需要基于外部动态拼接
-  const limitMaxMinMsg = isInRange(result);
-  if (limitMaxMinMsg) {
+  limitMaxMinMsg.value = isInRange(result) as string;
+
+  if (limitMaxMinMsg.value) {
     showMessage.value = true;
-    resultMessage.value = `${limitMaxMinMsg}`;
+    resultMessage.value = `${limitMaxMinMsg.value}`;
   }
 }
 
