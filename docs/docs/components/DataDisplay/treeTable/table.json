@@ -3,24 +3,24 @@
   "props": [
     {
       "displayName": "data",
-      "type": "any[]",
+      "type": "Array",
       "description": "表格数据",
       "defaultValue": "",
-      "tip": ""
+      "tip": "RowData[]"
     },
     {
       "displayName": "column",
-      "type": "object",
+      "type": "Array",
       "description": "表格列配置",
       "defaultValue": "",
       "tip": "Column[]"
     },
     {
       "displayName": "size",
-      "type": "enum",
+      "type": "string",
       "description": "表格大小",
-      "defaultValue": "small",
-      "tip": "'medium' | 'small' | 'mini'"
+      "defaultValue": "",
+      "tip": ""
     },
     {
       "displayName": "height",
@@ -30,21 +30,21 @@
       "tip": ""
     },
     {
-      "displayName": "useTree",
+      "displayName": "use-tree",
       "type": "boolean",
       "description": "是否使用树形表格",
       "defaultValue": "false",
       "tip": ""
     },
     {
-      "displayName": "isRemoteQuery",
+      "displayName": "is-remote-query",
       "type": "boolean",
       "description": "是否远程搜索表格数据",
       "defaultValue": "false",
       "tip": ""
     },
     {
-      "displayName": "isServerPaging",
+      "displayName": "is-server-paging",
       "type": "boolean",
       "description": "是否服务端分页",
       "defaultValue": "false",
@@ -86,14 +86,14 @@
       "tip": ""
     },
     {
-      "displayName": "batchOperations",
-      "type": "object",
+      "displayName": "batch-operations",
+      "type": "Array",
       "description": "批量操作配置",
       "defaultValue": "",
       "tip": "OperateData[]"
     },
     {
-      "displayName": "cellClickToggleHighlight",
+      "displayName": "cell-click-toggle-high-light",
       "type": "boolean",
       "description": "单元格单击是否高亮/取消高亮状态切换",
       "defaultValue": "true",
@@ -129,27 +129,27 @@
     },
     {
       "displayName": "widgets",
-      "type": "(string | {id: string, widget: Component | () => VNode})[]",
+      "type": "Array",
       "description": "自定义表头组件，设置该参数时，show-search-input、show-filter、show-refresh、show-transfer参数将失效,该参数数组提供了search、filter、refresh、transfer、sizeControl字段用于控制以上五个参数的显示与顺序，此外还可以自定义组件，参数的id字段用于标识组件，widget字段用于渲染组件，当widget字段为null时，会自动渲染名为id的插槽",
       "defaultValue": "",
-      "tip": ""
+      "tip": "(string | {id: string, widget: Component | () => VNode})[]"
     },
     {
-      "displayName": "advancedFilterConfig",
+      "displayName": "advanced-filter-config",
       "type": "object",
       "description": "高级筛选配置",
       "defaultValue": "",
       "tip": "advancedFilterConfig"
     },
     {
-      "displayName": "paginationConfig",
+      "displayName": "pagination-config",
       "type": "object",
       "description": "分页配置",
       "defaultValue": "",
       "tip": "PaginationConfig"
     },
     {
-      "displayName": "searchConfig",
+      "displayName": "search-config",
       "type": "object",
       "description": "搜索配置",
       "defaultValue": "",
@@ -171,7 +171,7 @@
     },
     {
       "displayName": "default-transfer-data",
-      "type": "object",
+      "type": "Array",
       "description": "默认的列头控制穿梭框数据，数据格式为Array<{label: string, key: string, disabled: boolean, visible: boolean}>",
       "defaultValue": "",
       "tip": "(() = > TableHeaderControl[] | Promise<TableHeaderControl[]>) | TableHeaderControl[]"
@@ -212,6 +212,13 @@
       "tip": "(filterData: FilterDataType) => void"
     },
     {
+      "displayName": "search-function",
+      "type": "Function",
+      "description": "自定义搜索方法，参数为搜索值，返回值为搜索结果，该方法会覆盖默认的搜索方法",
+      "defaultValue": "",
+      "tip": "(searchData: string | number | Date | null | Array<string | number | Date>) => void"
+    },
+    {
       "displayName": "use-ant-style",
       "type": "boolean",
       "description": "是否使用ant-design样式",
@@ -219,10 +226,128 @@
       "tip": ""
     },
     {
+      "displayName": "has-space",
+      "type": "boolean",
+      "description": "是否使用hasSpace样式",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "round",
+      "type": "boolean",
+      "description": "是否使用round样式",
+      "defaultValue": "false"
+    },
+    {
       "displayName": "adaptive",
       "type": "boolean",
       "description": "是否自适应内容高度",
       "defaultValue": "false"
+    },
+    {
+      "displayName": "sort-config",
+      "type": "SortConfig",
+      "description": "排序配置",
+      "defaultValue": "",
+      "tip": "VxeTablePropTypes.SortConfig"
+    },
+    {
+      "displayName": "row-config",
+      "type": "RowConfig",
+      "description": "行配置",
+      "defaultValue": "",
+      "tip": "VxeTablePropTypes.RowConfig"
+    },
+    {
+      "displayName": "edit-config",
+      "type": "EditConfig",
+      "description": "编辑配置",
+      "defaultValue": "",
+      "tip": "VxeTablePropTypes.EditConfig"
+    },
+    {
+      "displayName": "scroll-Y",
+      "type": "ScrolY",
+      "description": "纵向滚动配置",
+      "defaultValue": "",
+      "tip": "VxeTablePropTypes.ScrollY"
+    },
+    {
+      "displayName": "column-config",
+      "type": "ColumnConfig",
+      "description": "列配置",
+      "defaultValue": "",
+      "tip": "VxeTablePropTypes.ColumnConfig"
+    },
+    {
+      "displayName": "checkbox-config",
+      "type": "checkboxConfig",
+      "description": "复选框配置",
+      "defaultValue": "",
+      "tip": "VxeTablePropTypes.CheckboxConfig"
+    },
+    {
+      "displayName": "tree-config",
+      "type": "TreeConfig",
+      "description": "树形结构配置",
+      "defaultValue": "",
+      "tip": "VxeTablePropTypes.TreeConfig"
+    },
+    {
+      "displayName": "show-overflow",
+      "type": "string | boolean",
+      "description": "是否显示单元格内容溢出tip",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "auto-resize",
+      "type": "boolean",
+      "description": "是否自动调整列宽",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "align",
+      "type": "string",
+      "description": "表格内容对齐方式",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "border",
+      "type": "boolean | string",
+      "description": "表格边框",
+      "defaultValue": "default",
+      "tip": ""
+    },
+    {
+      "displayName": "empty-text",
+      "type": "string",
+      "description": "空数据时显示文字",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "row-style",
+      "type": "CSSProperties | ((rowInfo: Row) => CSSProperties)",
+      "description": "行样式",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "show-size-control",
+      "type": "boolean",
+      "description": "是否显示表格尺寸控制器",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "icon-search",
+      "type": "string",
+      "description": "搜索图标",
+      "defaultValue": "",
+      "tip": ""
     }
   ],
   "subProps": {
@@ -271,7 +396,7 @@
         "defaultValue": "true"
       },
       {
-        "displayName": "showColumnMenu",
+        "displayName": "show-column-menu",
         "description": "是否显示列头菜单",
         "type": "boolean",
         "defaultValue": "false"
@@ -298,6 +423,13 @@
         "description": "数据类型",
         "type": "enum",
         "tip": "'string' | 'number' | 'boolean' | 'date'"
+      },
+      {
+        "displayName": "show-drag-column",
+        "type": "boolean",
+        "description": "是否显示拖动列",
+        "defaultValue": "false",
+        "tip": ""
       }
     ],
     "SearchConfig": [
@@ -308,19 +440,19 @@
         "defaultValue": "false"
       },
       {
-        "displayName": "searchMethod",
+        "displayName": "search-method",
         "description": "自定义搜索方法",
         "type": "Function",
-        "tip": "(key, value, data) => boolean"
+        "tip": "(key: string | number, data: any[]) => any[]"
       },
       {
-        "displayName": "isRemoteQuery",
+        "displayName": "is-remote-query",
         "description": "是否远程搜索",
         "type": "boolean",
         "defaultValue": "false"
       },
       {
-        "displayName": "ignoreCase",
+        "displayName": "ignore-case",
         "description": "是否忽略大小写",
         "type": "boolean",
         "defaultValue": "false"
@@ -410,13 +542,13 @@
     ],
     "SeqConfig": [
       {
-        "displayName": "startIndex",
+        "displayName": "start-index",
         "type": "number",
         "description": "序号起始值",
         "defaultValue": "1"
       },
       {
-        "displayName": "seqMethod",
+        "displayName": "seq-method",
         "type": "Function",
         "description": "自定义序号方法",
         "defaultValue": "",

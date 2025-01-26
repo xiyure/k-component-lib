@@ -296,14 +296,6 @@
 import { ref, computed, watch, onMounted, nextTick, inject, provide } from 'vue';
 import VXETable from 'vxe-table';
 import { VueI18nTranslation } from 'vue-i18n';
-import {
-  IconSearch,
-  IconSetting,
-  IconRefresh,
-  IconFilter,
-  IconFilterFill,
-  IconSizeControls
-} from 'ksw-vue-icon';
 import { cloneDeep } from 'lodash-es';
 import KColumnGroup from './column_group';
 import { KInput } from '../input';
@@ -314,7 +306,6 @@ import { KOperate } from '../operate';
 import { KTable } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
-import { KDropdown, KDropdownItem } from '../dropdown';
 import type { TreeTableProps, Column, TableHeaderControl, RowData, Row } from './type';
 import type { ConditionInfo, Condition } from '../filter';
 import {

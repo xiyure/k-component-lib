@@ -69,6 +69,7 @@ export interface TreeTableProps {
   round?: boolean;
   adaptive?: boolean;
   hasSpace?: boolean;
+  IconSearch?: string;
 }
 
 export interface Column {

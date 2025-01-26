@@ -46,9 +46,9 @@
     },
     {
       "displayName": "color",
-      "type": "string / function / Array",
+      "type": "string / Function / Array",
       "description": "进度条背景色（会覆盖 status 状态颜色）",
-      "defaultValue": "''"
+      "defaultValue": ""
     },
     {
       "displayName": "width",
