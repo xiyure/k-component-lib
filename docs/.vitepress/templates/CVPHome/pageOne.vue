@@ -18,7 +18,7 @@
           包含大量业务组件，能够帮助你快速构建网页应用。
         </div>
         <div class="mt-8">
-          <k-button size="lg" color="#38363c" main class="main-btn">
+          <k-button size="lg" color="#38363c" main class="main-btn" @click="handleStart">
             从这里开始
             <IconArrowUpRight rotate="45" />
           </k-button>
@@ -289,13 +289,17 @@ const column = ref([
   },
 ]);
 
-function copyCode(textToCopy: type) {
+function copyCode(textToCopy) {
   navigator.clipboard.writeText(textToCopy);
   KMessage({
     message: '复制成功',
     type: 'success',
     offset: 80,
   });
+}
+
+function handleStart() {
+  window.location.href = '../../../docs/knowledge/getting-started';
 }
 </script>
 <style scoped>

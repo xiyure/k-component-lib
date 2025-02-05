@@ -73,3 +73,5 @@ app.mount('#app');
 ```
 
 通过这种方式，你可以有效减少打包后的文件大小，提高应用的性能。
+
+[查看完整示例](../components/General/button)
