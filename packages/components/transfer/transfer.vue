@@ -46,11 +46,11 @@ import { KInput } from '../input';
 import { getExposeProxy, sortBySmallerList } from '../../utils';
 
 defineOptions({
-  name: 'KTransfer',
+  name: 'KTransfer'
 });
 
 const props = withDefaults(defineProps<TransferProps>(), {
-  filterable: true,
+  filterable: true
 });
 
 const emits = defineEmits([
@@ -60,7 +60,7 @@ const emits = defineEmits([
   'right-check-change',
   'input',
   'reset',
-  'drag',
+  'drag'
 ]);
 
 const _styleModule = inject('_styleModule', '');
@@ -83,11 +83,11 @@ const defaultPropsConfig = computed(() => ({
   label: 'label',
   key: 'key',
   disabled: 'disabled',
-  ...props.props,
+  ...props.props
 }));
 
 const filterablePlaceholder = computed(
-  () => props.filterablePlaceholder ?? t?.('searchHeaderName'),
+  () => props.filterablePlaceholder ?? t?.('searchHeaderName')
 );
 
 watch(
@@ -102,7 +102,7 @@ watch(
     }
     modelValue.value = newValue;
   },
-  { immediate: true },
+  { immediate: true }
 );
 watch(
   () => props.data,
@@ -115,13 +115,13 @@ watch(
     sourceData.value = [];
     defaultSourceKeys.length = 0;
   },
-  { immediate: true },
+  { immediate: true }
 );
 watch(
   () => searchStr.value,
   (newValue) => {
     const filterInput = KTransferRef.value.$el.querySelectorAll(
-      '.el-input__inner',
+      '.el-input__inner'
     ) as NodeListOf<HTMLInputElement>;
     if (!filterInput || !filterInput.length) {
       return;
@@ -131,13 +131,13 @@ watch(
       const event = new Event('input', { bubbles: true });
       filterInput[i].dispatchEvent(event);
     }
-  },
+  }
 );
 
 function handleChange(
   value: TransferKey[],
   direction: TransferDirection,
-  movedKeys?: TransferKey[],
+  movedKeys?: TransferKey[]
 ) {
   emits('update:modelValue', modelValue.value);
   emits('change', value, direction, movedKeys);
@@ -201,7 +201,7 @@ function initSortable() {
     return;
   }
   const dragElem = KTransferRef.value.$el?.querySelectorAll(
-    '.el-transfer-panel__list',
+    '.el-transfer-panel__list'
   )?.[1] as HTMLElement;
   if (!dragElem) {
     return;
@@ -223,18 +223,18 @@ function initSortable() {
       sourceData.value = sortBySmallerList(
         sourceData.value,
         modelValue.value,
-        props.props?.key ?? 'key',
+        props.props?.key ?? 'key'
       );
       emits('update:modelValue', modelValue.value);
       emits('drag', sourceData.value);
-    },
+    }
   });
 }
 
 function getTransferData() {
   return {
     sourceData: sourceData.value,
-    selectData: modelValue.value,
+    selectData: modelValue.value
   };
 }
 const instance: any = { getTransferData };

@@ -11,10 +11,13 @@
 
 <script lang="tsx" setup>
 import { ref, reactive } from 'vue';
-import { KButton } from '@ksware/ksw-ux';
 
 const widgets = ref([
-  'transfer'
+  'transfer',
+  'search',
+  'sizeControl',
+  'filter',
+  'refresh'
 ]);
 
 const tableData = reactive([
