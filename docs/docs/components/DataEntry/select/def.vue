@@ -1,4 +1,5 @@
 <template>
+  <div class="flex gap-1 items-end">
   <k-select
     v-model="value"
     class="m-2"
@@ -39,7 +40,7 @@
       :label="item.label"
       :value="item.value"
     />
-  </k-select>
+  </k-select></div>
 </template>
 
 <script lang="ts" setup>
