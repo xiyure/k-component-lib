@@ -11,5 +11,3 @@ title: Slider Button 滑块按钮
 ## API
 
 <API src="./sliderButton.json" lang="zh"></API>
-
-<API src="./sliderButtonPaneProps.json" lang="zh"></API>

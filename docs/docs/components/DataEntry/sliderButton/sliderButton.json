@@ -1,11 +1,12 @@
 {
-  "name": "sliderButton",
+  "name": "SliderButton",
   "props": [
     {
       "displayName": "items",
       "type": "SliderButtonPaneProps[]",
       "description": "需要展示的数据项",
-      "defaultValue": 0
+      "defaultValue": 0,
+      "tip": "[label: string, name: string]"
     },
     {
       "displayName": "active",

@@ -21,6 +21,7 @@
 
 <script lang="ts" setup>
 import { ref, nextTick, onBeforeUnmount } from 'vue';
+import { debounce } from 'lodash';
 import { SliderButtonProps, SliderButtonPaneProps } from './type';
 
 defineOptions({
@@ -34,15 +35,27 @@ const emits = defineEmits(['change']);
 const active = ref(props.active ?? props.items[0].name);
 const sliderButton = ref();
 
-// 监测窗口发生变化后
-window.addEventListener('resize', getActiveItemPosition);
-
-const timer = setTimeout(() => {
+const debouncedGetActiveItemPosition = debounce(() => {
   getActiveItemPosition();
-}, 1000);
+}, 10);
+
+const resizeObserver = new ResizeObserver((entries) => {
+  for (const entry of entries) {
+    const width = entry.contentRect.width;
+    debouncedGetActiveItemPosition();
+    console.log('元素宽度变化为:', width);
+  }
+});
+
+nextTick(() => {
+  const element = sliderButton?.value?.querySelector('.k-slider-button-pane.is-active');
+  resizeObserver.observe(element);
+});
 
 function getActiveItemPosition() {
-  const activeElement: HTMLElement | null = sliderButton?.value?.querySelector('.k-slider-button-pane.is-active');
+  const activeElement: HTMLElement | null = sliderButton?.value?.querySelector(
+    '.k-slider-button-pane.is-active'
+  );
   const { width } = activeElement?.getBoundingClientRect() || { width: 0, height: 0 };
   const top = activeElement?.offsetTop || 0;
   const left = activeElement?.offsetLeft || 0;
@@ -62,7 +75,7 @@ function handleClick(item: SliderButtonPaneProps) {
 }
 
 onBeforeUnmount(() => {
-  clearTimeout(timer);
+  resizeObserver.disconnect();
 });
 </script>
 <style lang="less">
