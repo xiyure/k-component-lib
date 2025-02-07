@@ -30,13 +30,13 @@
                   {
                     'k-script-input-placeholder': true,
                     'hidden-result ': showMessage === true,
-                    'is-disabled': disabled,
-                  },
+                    'is-disabled': disabled
+                  }
                 ]"
                 :style="{
                   height: height,
                   maxHeight: maxHeight,
-                  resize: resize ? 'vertical' : 'none',
+                  resize: resize ? 'vertical' : 'none'
                 }"
                 :contenteditable="disabled ? false : 'plaintext-only'"
                 :spellcheck="false"
@@ -95,7 +95,7 @@
             ref="$tree"
             class="k-script-options-scrollbar"
             :class="{
-              'input-tips': !showTreeSearch,
+              'input-tips': !showTreeSearch
             }"
             border="none"
             height="320px"
@@ -115,7 +115,7 @@
               isCurrent: true,
               currentMethod: ({ row }) => {
                 return row.optional !== false;
-              },
+              }
             }"
             :row-class-name="
               ({ row }: any) => {
@@ -148,7 +148,7 @@ import { checkInputMessage, typeRules } from './const';
 
 type FocusRange = { node: Node | null | undefined; offset: number | undefined };
 defineOptions({
-  name: 'KScriptInput',
+  name: 'KScriptInput'
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -168,14 +168,14 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   checkContentType: false,
   contentType: 'string',
   optionRepeatable: true,
-  placeholder: '',
+  placeholder: ''
 });
 
 const DEFAULT_TREE_CONFIG = {
   parentField: 'pid',
   rowField: getAttrProps().value,
   expandAll: false,
-  trigger: 'default',
+  trigger: 'default'
 };
 
 const emits = defineEmits(['change', 'input', 'focus', 'blur', 'select', 'update:modelValue']);
@@ -246,20 +246,20 @@ const VTooltipConfig = computed(() => ({
     showMessage.value &&
     props.contentType !== 'number' &&
     props.contentType !== 'boolean' &&
-    !limitMaxMinMsg.value,
+    !limitMaxMinMsg.value
 }));
 
 watch(
   () => VTooltipConfig.value,
   () => {
     console.log('watch', VTooltipConfig.value);
-  },
+  }
 );
 const onlyOneInputMode = computed(() => {
   const isOnly = props.onlyOneInput;
   let modeMap = new Map([
     ['string', false],
-    ['expression', false],
+    ['expression', false]
   ]);
   const modes = ['string', 'expression'];
   if (typeof isOnly === 'boolean') {
@@ -292,7 +292,7 @@ watch(
       updateFocusRange();
     }
   },
-  { immediate: true },
+  { immediate: true }
 );
 watch(
   () => [props.modelValue, props.options],
@@ -317,21 +317,21 @@ watch(
       setEditorContent(innerText);
     });
   },
-  { immediate: true, deep: true },
+  { immediate: true, deep: true }
 );
 watch(
   () => props.showPassword,
   (newVal: boolean) => {
     _methods.setPasswordMode(newVal);
   },
-  { immediate: true },
+  { immediate: true }
 );
 watch(
   () => props.contentType,
   () => {
     const { result = '' } = parseInputValue();
     checkInputContentType(result);
-  },
+  }
 );
 
 function updateModelValue(res: string) {
@@ -433,7 +433,7 @@ function cellClick({ row }: { row: Row }) {
     return;
   }
   const rowIndex = flattedOptions.value.findIndex(
-    (item) => item[getAttrProps().value] === row[getAttrProps().value],
+    (item) => item[getAttrProps().value] === row[getAttrProps().value]
   );
   selectedIndex.value = rowIndex;
   selectOption(row);
@@ -512,7 +512,7 @@ function handleManualInput(content: string) {
 function removeSameNode(targetNode: Element) {
   const dataValue = targetNode.getAttribute('data-value');
   const sameNodes = Array.from(
-    KScriptInputWrapper.value.querySelectorAll(`[data-value="${dataValue}"]`),
+    KScriptInputWrapper.value.querySelectorAll(`[data-value="${dataValue}"]`)
   );
   sameNodes.forEach((node) => {
     KScriptInputWrapper.value.removeChild(node);
@@ -523,14 +523,14 @@ function parseInputValue() {
     return {
       result: pwd.value,
       scriptTags: [],
-      isStringMode: isStringMode(),
+      isStringMode: isStringMode()
     };
   }
   if (!isStringMode()) {
     return {
       result: getEditorContent(),
       scriptTags: [],
-      isStringMode: false,
+      isStringMode: false
     };
   }
   let text = '';
@@ -567,7 +567,7 @@ function parseInputValue() {
     result: text,
     checkVariableResult,
     scriptTags,
-    isStringMode: true,
+    isStringMode: true
   };
 }
 // 解析传入的值
@@ -677,7 +677,7 @@ function getRange(key: string) {
   let isFound = false;
   const range = {
     node: KScriptInputWrapper.value,
-    offset: 0,
+    offset: 0
   };
   const getNodeInfo = (node: HTMLElement) => {
     if (isFound) {
@@ -813,11 +813,11 @@ function isStringMode() {
 }
 const caches = {
   expression: '',
-  string: '',
+  string: ''
 };
 const tempCaches = {
   expression: '',
-  string: '',
+  string: ''
 };
 function saveTextValue() {
   if (_showPassword.value) {
@@ -856,7 +856,7 @@ function getAttrProps() {
     label: attrProps.label,
     value: attrProps.value,
     disabled: attrProps.disabled,
-    tag: attrProps.tag,
+    tag: attrProps.tag
   };
 }
 function getScriptKey() {
@@ -893,7 +893,7 @@ defineExpose({
   isStringMode,
   focus,
   blur,
-  ..._methods,
+  ..._methods
 });
 </script>
 <style lang="less">
