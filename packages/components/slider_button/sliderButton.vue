@@ -40,11 +40,7 @@ const debouncedGetActiveItemPosition = debounce(() => {
 }, 10);
 
 const resizeObserver = new ResizeObserver((entries) => {
-  for (const entry of entries) {
-    const width = entry.contentRect.width;
-    debouncedGetActiveItemPosition();
-    console.log('元素宽度变化为:', width);
-  }
+  debouncedGetActiveItemPosition();
 });
 
 nextTick(() => {
