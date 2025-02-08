@@ -20,9 +20,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, nextTick, onBeforeUnmount } from 'vue';
+import { ref, nextTick, onMounted, inject, onBeforeUnmount } from 'vue';
 import { debounce } from 'lodash';
 import { SliderButtonProps, SliderButtonPaneProps } from './type';
+import { genRandomStr } from '../../utils';
 
 defineOptions({
   name: 'KSliderButton'
@@ -35,17 +36,19 @@ const emits = defineEmits(['change']);
 const active = ref(props.active ?? props.items[0].name);
 const sliderButton = ref();
 
+const key = `_${genRandomStr(8)}`;
+
 const debouncedGetActiveItemPosition = debounce(() => {
   getActiveItemPosition();
 }, 10);
 
-const resizeObserver = new ResizeObserver((entries) => {
-  debouncedGetActiveItemPosition();
-});
+const element = ref();
+const elementObserver = inject<any>('__elementObserver');
 
-nextTick(() => {
-  const element = sliderButton?.value?.querySelector('.k-slider-button-pane.is-active');
-  resizeObserver.observe(element);
+onMounted(() => {
+  element.value = sliderButton?.value?.querySelector('.k-slider-button-pane.is-active');
+  element.value.setAttribute('data-observer-key', key);
+  elementObserver.observe(element.value, debouncedGetActiveItemPosition);
 });
 
 function getActiveItemPosition() {
@@ -71,8 +74,11 @@ function handleClick(item: SliderButtonPaneProps) {
 }
 
 onBeforeUnmount(() => {
-  resizeObserver.disconnect();
+  if (element.value) {
+    elementObserver?.unobserve?.(element.value);
+  }
 });
+
 </script>
 <style lang="less">
 @import './style.less';
