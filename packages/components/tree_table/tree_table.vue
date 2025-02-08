@@ -12,7 +12,7 @@
       <k-input
         v-model="searchStr"
         :suffix-icon="IconSearch"
-        :placeholder="t('searchTable')"
+        :placeholder="$t('searchTable')"
         clearable
         @change="filter"
       />
