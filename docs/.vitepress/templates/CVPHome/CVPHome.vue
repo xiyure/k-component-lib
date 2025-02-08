@@ -7,7 +7,8 @@
 !-->
 <template>
   <client-only>
-    <div ref="CVPHome" class="CVPHome bg-white px-24 flex flex-col items-center overflow-x-hidden">
+    <logoAnimation v-if="showLogoAnimation" @animationStart="handleAnimationStart" @animationComplete="handleAnimationComplete"/>
+    <div ref="CVPHome" v-if="showCVPHome" class="CVPHome bg-white px-24 flex flex-col items-center overflow-x-hidden">
       <div class="home-page1-bg h-screen w-screen opacity-50 fixed"></div>
       <div class="h-fit z-10" style="width: 1280px">
         <!-- 第一页 -->
@@ -32,11 +33,24 @@
 </template>
 
 <script lang="tsx" setup>
-import { ref, computed } from 'vue';
+import { ref, computed, nextTick } from 'vue';
 import { iconsDataBase } from 'ksw-vue-icon/icons-base.js';
 import pageOne from './pageOne.vue';
 import pageTwo from './pageTwo.vue';
 import pageThree from './pageThree.vue';
+import logoAnimation from './logoAnimation.vue'
+
+const showCVPHome = ref(false);
+const showLogoAnimation = ref(true);
+
+function handleAnimationStart() {
+  showCVPHome.value = true; // 动画开始时显示 CVPHome
+}
+
+async function handleAnimationComplete() {
+  await nextTick(); // 确保 CVPHome 渲染完成
+  showLogoAnimation.value = false; // 动画完成后销毁 logoAnimation
+}
 
 const rightItems = [
   {
