@@ -32,7 +32,7 @@
       <div class="k-filter__content">
         <div class="k-filter__header">
           <span :class="formatSize.ownSize === 'sm' ? 'text-base' : 'text-lg'" class="font-bold">
-            {{ t('advancedFilter') }}
+            {{ $t('advancedFilter') }}
           </span>
           <span
             :class="formatSize.ownSize === 'sm' ? 'text-sm' : 'text-base'"
@@ -44,7 +44,7 @@
             "
           >
             <IconClearDate />
-            {{ t('clearAll') }}
+            {{ $t('clearAll') }}
           </span>
         </div>
         <div
@@ -171,11 +171,11 @@
           <div class="k-filer__operate-left">
             <span @click="addCondition()">
               <IconAdd />
-              {{ t('addCondition') }}
+              {{ $t('addCondition') }}
             </span>
           </div>
           <div class="k-filer__operate-right">
-            <span class="select-label">{{ t('aboveCondition') }}：</span>
+            <span class="select-label">{{ $t('aboveCondition') }}：</span>
             <k-select
               v-model="filterRule"
               :size="formatSize.ownSize"
@@ -185,7 +185,7 @@
               <k-option :label="t('anyOne')" :value="0"></k-option>
               <k-option :label="t('all')" :value="1"></k-option>
             </k-select>
-            <k-button :size="formatSize.ownSize" main @click="query">{{ t('query') }}</k-button>
+            <k-button :size="formatSize.ownSize" main @click="query">{{ $t('query') }}</k-button>
           </div>
         </div>
       </div>

@@ -28,9 +28,9 @@
       <div v-if="showDescription" class="k-table-info">
         <slot name="description" :total="dataLength" :condition-info="filterConditionInfo">
           <span v-if="!useTree">
-            {{ t('total') }}
+            {{ $t('total') }}
             {{ dataLength }}
-            {{ t('data') }}
+            {{ $t('data') }}
           </span>
           <span :title="headerText" class="condition-info">
             {{ headerText }}
@@ -45,7 +45,7 @@
               }
             "
           >
-            · {{ t('reset') }}
+            · {{ $t('reset') }}
           </span>
         </slot>
       </div>
