@@ -45,11 +45,15 @@ const showLogoAnimation = ref(true);
 
 function handleAnimationStart() {
   showCVPHome.value = true; // 动画开始时显示 CVPHome
+  document.body.style.height = '100vh'; // 禁止页面滚动
+  document.body.style.overflow = 'hidden'; // 禁止页面滚动
 }
 
 async function handleAnimationComplete() {
   await nextTick(); // 确保 CVPHome 渲染完成
   showLogoAnimation.value = false; // 动画完成后销毁 logoAnimation
+  document.body.style.height = ''; // 恢复页面滚动
+  document.body.style.overflow = ''; // 恢复页面滚动
 }
 
 const rightItems = [
@@ -114,6 +118,11 @@ const componentValue = [
 </script>
 <style lang="less" scoped>
 /* @import './style.less'; */
+
+.no-scroll {
+  overflow: hidden;
+  height: 100vh;
+}
 
 .dark .home-page1-bg {
   background-color: rgb(0 3 25);
