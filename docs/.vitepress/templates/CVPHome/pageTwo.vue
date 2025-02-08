@@ -37,6 +37,8 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
+import card from './card.vue';
+
 const rightItems = [
   {
     name: 'a',
