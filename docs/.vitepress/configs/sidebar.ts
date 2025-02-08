@@ -4,7 +4,7 @@ const baseSidebarOptions = {
   documentRootPath: 'docs',
   useTitleFromFileHeading: true, // 启用后，会从文件头部的 title 标签获取标题
   useTitleFromFrontmatter: true, // 启用后，会从 frontmatter 中获取标题
-  useFolderTitleFromIndexFile: true,
+  useFolderTitleFromIndexFile: true, //如果此值为true，则使用当前文件夹文件中的信息index.md来获取菜单名称。如果index.md文件不存在，则使用文件夹名称。
   useFolderLinkFromIndexFile: false, // 启用后，会将文件夹的名称作为链接，而不是文件夹下面的 index.md 文件
   convertSameNameSubFileToGroupIndexPage: true,
   // folderLinkNotIncludesFileName: true,
