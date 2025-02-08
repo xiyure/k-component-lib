@@ -80,7 +80,7 @@
               <k-option
                 v-for="conditionItem in conditionList(item)?.logicList"
                 :key="conditionItem.logic"
-                :label="t(conditionItem.logic)"
+                :label="$t(conditionItem.logic)"
                 :value="conditionItem.logic"
               />
             </k-select>
@@ -98,7 +98,7 @@
                 <k-option
                   v-for="logicItem in dateLogicList(item)"
                   :key="logicItem.value"
-                  :label="t(logicItem.label)"
+                  :label="$t(logicItem.label)"
                   :value="logicItem.value"
                   :disabled="
                     (item.logic === 'after' || item.logic === 'before') &&
@@ -182,8 +182,8 @@
               :disabled="disableChangeMode"
               :teleported="false"
             >
-              <k-option :label="t('anyOne')" :value="0"></k-option>
-              <k-option :label="t('all')" :value="1"></k-option>
+              <k-option :label="$t('anyOne')" :value="0"></k-option>
+              <k-option :label="$t('all')" :value="1"></k-option>
             </k-select>
             <k-button :size="formatSize.ownSize" main @click="query">{{ $t('query') }}</k-button>
           </div>
