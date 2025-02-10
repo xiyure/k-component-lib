@@ -44,6 +44,13 @@
     .el-input__inner::placeholder {
       color: var(--k-theme-input-placeholder-color);
     }
+    .el-input__suffix {
+      .el-input__suffix-inner {
+        .el-icon.el-input__validateIcon {
+          display: none;
+        }
+      }
+    }
     &:hover {
       .init-style();
       height: var(--height);
