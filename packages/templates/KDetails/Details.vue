@@ -8,7 +8,7 @@
 <template>
   <div
     ref="RefKDetails"
-    class="box k-details w-full h-fit grid grid-cols-1 2xs:grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 base:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4"
+    class="k-details w-full h-fit grid grid-cols-1 2xs:grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 base:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4"
   >
     <KDetailsItem
       v-for="(item, index) in abstract"
