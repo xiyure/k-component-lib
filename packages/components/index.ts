@@ -41,3 +41,4 @@ export * from './button_container';
 export * from './slider_button';
 export * from './script_input';
 export * from './icon_popover';
+export * from './global_provider';

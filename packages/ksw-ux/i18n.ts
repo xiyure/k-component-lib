@@ -1,5 +1,6 @@
 import type { App } from 'vue';
 import { createI18n } from 'vue-i18n';
+import { localeContextKey } from '../utils/key';
 import type { ContextConfig } from '@ksw-ux/utils/typescript';
 import zh from '../locale/zh';
 import en from '../locale/en';
@@ -14,4 +15,5 @@ export function useI18n(app: App, config: ContextConfig = {}) {
   app.use(i18n);
   app.config.globalProperties.$t = i18n.global.t;
   app.provide('$t', i18n.global.t);
+  app.provide(localeContextKey, i18n);
 }
