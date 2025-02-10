@@ -1,5 +1,5 @@
 <template>
-  <div ref="logoAnimation" class="absolute w-screen h-screen bg-white z-50 flex items-center justify-center">
+  <div ref="logoAnimation" class="fixed w-screen h-screen bg-white z-50 flex items-center justify-center">
     <svg
       class="size-96 overflow-visible"
       version="1.1"

@@ -46,15 +46,6 @@ div.VPLocalNav.has-sidebar > div > div > div > div.outline {
   outline-style: none;
 }
 
-.VPNavBar.has-sidebar > .wrapper > .container > .content,
-.VPNavBar > .wrapper > .container > .content {
-  transition: none !important;
-}
-
-.VPNavBar > .wrapper > .container > .title {
-  transition: none !important;
-}
-
 // 重写样式 VPNav
 header.VPNav {
   .VPNavBar {
@@ -62,8 +53,8 @@ header.VPNav {
       background: rgba(255, 255, 255, 0.1);
       // 背景毛玻璃
       backdrop-filter: saturate(180%) blur(10px);
-      position: relative;
       .wrapper {
+        padding: 0;
         width: 1280px;
         margin: auto;
       }
@@ -72,11 +63,15 @@ header.VPNav {
       .wrapper {
         .container {
           .title {
-            transition: unset;
+            transition: none;
           }
           .content {
-            padding-left: max(32px, var(--vp-sidebar-width));
-            transition: unset;
+            transition: none;
+            // padding-left: max(32px, var(--vp-sidebar-width));
+          }
+          .content-body {
+            // transition: none;
+            // background: transparent!important;
           }
         }
       }
@@ -95,8 +90,11 @@ header.VPNav {
       display: none !important;
     }
   }
+  .content-body {
+    // background: transparent!important;
+  }
   .VPContent.is-home {
-    padding-top: 0 !important;
+    // padding-top: 0 !important;
   }
 }
 

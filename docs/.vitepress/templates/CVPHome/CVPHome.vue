@@ -1,13 +1,6 @@
-<!--
-* @description  参数1
-* @fileName  CVPHome
-* @author userName
-* @date 2024-10-29 22:37:13
-* @version V3.0.0
-!-->
 <template>
+  <logoAnimation v-if="showLogoAnimation" @animationStart="handleAnimationStart" @animationComplete="handleAnimationComplete"/>
   <client-only>
-    <logoAnimation v-if="showLogoAnimation" @animationStart="handleAnimationStart" @animationComplete="handleAnimationComplete"/>
     <div ref="CVPHome" v-if="showCVPHome" class="CVPHome bg-white px-24 flex flex-col items-center overflow-x-hidden">
       <div class="home-page1-bg h-screen w-screen opacity-50 fixed"></div>
       <div class="h-fit z-10" style="width: 1280px">
@@ -35,10 +28,10 @@
 <script lang="tsx" setup>
 import { ref, computed, nextTick } from 'vue';
 import { iconsDataBase } from 'ksw-vue-icon/icons-base.js';
+import logoAnimation from './logoAnimation.vue'
 import pageOne from './pageOne.vue';
 import pageTwo from './pageTwo.vue';
 import pageThree from './pageThree.vue';
-import logoAnimation from './logoAnimation.vue'
 
 const showCVPHome = ref(false);
 const showLogoAnimation = ref(true);
@@ -118,12 +111,6 @@ const componentValue = [
 </script>
 <style lang="less" scoped>
 /* @import './style.less'; */
-
-.no-scroll {
-  overflow: hidden;
-  height: 100vh;
-}
-
 .dark .home-page1-bg {
   background-color: rgb(0 3 25);
   opacity: 1;

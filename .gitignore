@@ -31,3 +31,4 @@ example/view
 .temp
 cache
 stats.html
+.secret
