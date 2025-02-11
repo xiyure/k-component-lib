@@ -4,7 +4,7 @@ import zhLocal from 'element-plus/es/locale/lang/zh-cn';
 import enLocal from 'element-plus/es/locale/lang/en';
 import { I18n } from 'vue-i18n';
 import { localeContextKey } from '../utils/key';
-import { GlobalProviderProps} from '../components/global_provider';
+import { GlobalProviderProps } from '../components/global_provider';
 
 export function useLocale(props: GlobalProviderProps) {
   const i18n = inject(localeContextKey) as I18n;
