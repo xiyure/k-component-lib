@@ -158,7 +158,7 @@
     {
       "displayName": "seq-config",
       "type": "object",
-      "description": "搜索配置",
+      "description": "序号配置项",
       "defaultValue": "",
       "tip": "SeqConfig"
     },
@@ -423,13 +423,6 @@
         "description": "数据类型",
         "type": "enum",
         "tip": "'string' | 'number' | 'boolean' | 'date'"
-      },
-      {
-        "displayName": "show-drag-column",
-        "type": "boolean",
-        "description": "是否显示拖动列",
-        "defaultValue": "false",
-        "tip": ""
       }
     ],
     "SearchConfig": [
