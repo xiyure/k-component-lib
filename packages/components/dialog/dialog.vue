@@ -31,6 +31,7 @@
     class="k-dialog-minimization"
   >
     <div style="display: flex; justify-content: space-around">
+      <slot name="header">{{ title }}</slot>
       <IconWarning @click="handleBig" />
       <IconClose @click="isMinimization = false" />
     </div>
