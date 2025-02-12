@@ -2,7 +2,8 @@ import { createApp, DirectiveBinding, Directive, App } from 'vue';
 import { isObject } from 'lodash-es';
 import { KTooltip } from '../components/tooltip';
 
-type BindingValue = {
+type BindingValue =
+  | {
       trigger?: 'hover' | 'click';
       placement?:
         | 'top'
@@ -23,14 +24,15 @@ type BindingValue = {
       autoClose?: boolean;
       visible?: boolean | ((el: HTMLElement) => boolean);
       [key: string]: any;
-} | string;
+    }
+  | string;
 
-let tooltipConfig: BindingValue = {};
+const toolTipConfigMap = new WeakMap<HTMLElement, BindingValue>();
 let GLOBAL_TOOL_TIP: App | null = null;
 const TOOL_TIP_ID = '_tooltip_root';
 let timer: any = null;
 
-const createTooltip = (el:  any) => {
+const createTooltip = (el: any) => {
   const elRoot = document.querySelector('#_tooltip_root');
   if (elRoot) {
     elRoot.remove();
@@ -40,12 +42,13 @@ const createTooltip = (el:  any) => {
   const _tipRoot = document.createElement('div');
   _tipRoot.id = TOOL_TIP_ID;
   _tipRoot.classList.add('_tipRoot');
-  const { trigger, placement, content, showAfter, autoClose, visible } = isObject(tooltipConfig) ?
-    tooltipConfig :
-    {};
-  const showContent = ['string', 'number'].includes(typeof tooltipConfig) ?
-    tooltipConfig :
-    content ?? el.textContent ?? '';
+  const tooltipConfig = toolTipConfigMap.get(el);
+  const { trigger, placement, content, showAfter, autoClose, visible } = isObject(tooltipConfig)
+    ? tooltipConfig
+    : {};
+  const showContent = ['string', 'number'].includes(typeof tooltipConfig)
+    ? tooltipConfig
+    : content ?? el.textContent ?? '';
   let toolTipVisible: boolean | undefined = true;
   if (visible === false) {
     toolTipVisible = false;
@@ -92,6 +95,7 @@ const disposeGlobalTooltip = () => {
   }
 };
 const handleTooltip = (el: HTMLElement) => {
+  const tooltipConfig = toolTipConfigMap.get(el);
   const { showAfter, trigger } = isObject(tooltipConfig) ? tooltipConfig : {};
   if (trigger === 'click') {
     createTooltip(el);
@@ -106,13 +110,17 @@ const handleTooltip = (el: HTMLElement) => {
     }, showAfter ?? 500);
   });
   el.addEventListener('mouseleave', disposeGlobalTooltip);
-}
+};
 export const tooltip: Directive = {
   mounted(el: HTMLElement, binding: DirectiveBinding<BindingValue>) {
-    tooltipConfig = binding.value;
+    toolTipConfigMap.set(el, binding.value);
     handleTooltip(el);
   },
   updated(_el, binding: DirectiveBinding<BindingValue>) {
-    tooltipConfig = binding.value;
+    toolTipConfigMap.set(_el, binding.value);
+  },
+  unmounted(el: HTMLElement) {
+    toolTipConfigMap.delete(el);
+    disposeGlobalTooltip();
   }
 };
