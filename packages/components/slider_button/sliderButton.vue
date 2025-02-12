@@ -78,7 +78,6 @@ onBeforeUnmount(() => {
     elementObserver?.unobserve?.(element.value);
   }
 });
-
 </script>
 <style lang="less">
 @import './style.less';
