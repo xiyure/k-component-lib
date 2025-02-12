@@ -607,7 +607,7 @@ watch(
     xeTableData.value = setTableData(props.data);
     advancedFilter();
   },
-  { immediate: true }
+  { immediate: true, deep: true }
 );
 watch(
   () => props.paginationConfig,
