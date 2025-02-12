@@ -24,7 +24,7 @@
         </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item command="remove">{{ $t('remove') }}</el-dropdown-item>
+            <el-dropdown-item command="remove">{{ t('remove') }}</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -34,6 +34,7 @@
 
 <script setup lang="ts">
 import { inject, ref, Ref } from 'vue';
+import { VueI18nTranslation } from 'vue-i18n';
 import { ElDropdown, ElDropdownMenu, ElDropdownItem } from 'element-plus';
 import { IconMore } from 'ksw-vue-icon';
 import { ViewItemProps, ViewProps } from './type';
@@ -41,6 +42,8 @@ import { ViewItemProps, ViewProps } from './type';
 defineOptions({
   name: 'KViewItem'
 });
+
+const t = inject<VueI18nTranslation>('$t');
 
 const props = defineProps<ViewItemProps>();
 const emits = defineEmits(['change', 'remove']);

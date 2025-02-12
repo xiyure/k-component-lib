@@ -4,7 +4,7 @@
       <k-input
         ref="KTransferInputRef"
         v-model="query"
-        :placeholder="$t('enterInputSearch')"
+        :placeholder="t('enterInputSearch')"
         :suffix-icon="IconSearch"
         @keyup.enter="filterData"
       />
@@ -85,7 +85,7 @@
                 <slot name="rightHeader" v-bind="data">
                   <div class="right-data-header">
                     <span class="right-data-title">{{ props.titles?.[1] ?? '' }}</span>
-                    <span class="clear-data" @click="clearData">{{ $t('clearData') }}</span>
+                    <span class="clear-data" @click="clearData">{{ t('clearData') }}</span>
                   </div>
                 </slot>
               </template>
@@ -120,6 +120,7 @@
 
 <script setup lang="tsx">
 import { ref, computed, watch, nextTick, inject, onMounted } from 'vue';
+import { VueI18nTranslation } from 'vue-i18n';
 import { IconSearch, IconClose } from 'ksw-vue-icon';
 import { VxeTablePropTypes } from 'vxe-table';
 import { TreeTransferProps, TreeTransferData } from './type';
@@ -131,6 +132,8 @@ import { RowData } from '../tree_table';
 defineOptions({
   name: 'KTreeTransfer'
 });
+
+const t = inject<VueI18nTranslation>('$t');
 
 type Row = VxeTablePropTypes.Row;
 

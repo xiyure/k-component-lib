@@ -16,10 +16,10 @@ const GlobalProvider = defineComponent({
     // 兼容element-plus的ConfigProvider
     const _slots = {
       default: () => slots.default?.()
-    }
-    return () => <ElConfigProvider locale={elLocale.value} v-slots={_slots}/>
+    };
+    return () => <ElConfigProvider locale={elLocale.value} v-slots={_slots}/>;
   }
-})
+});
 export type GlobalProviderInstance = InstanceType<typeof GlobalProvider>
 
-export default GlobalProvider
+export default GlobalProvider;

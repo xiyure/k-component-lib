@@ -17,10 +17,10 @@ export function useLocale(props: GlobalProviderProps) {
   // 监听locale变化处理多语言切换场景
   watch(() => props.locale, (locale) => {
     changeLocale(locale, i18n);
-  });
+  }, { immediate: true });
   return {
     elLocale
-  }
+  };
 }
 function changeLocale(locale: 'zh' | 'en' | undefined, i18n: I18n) {
   const lang = locale === 'en' ? 'en' : 'zh';
