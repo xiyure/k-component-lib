@@ -1,5 +1,5 @@
 {
-  "name": "Button",
+  "name": "globalProvider",
   "props": [
     {
       "displayName": "locale",
