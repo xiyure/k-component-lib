@@ -1,5 +1,5 @@
 <template>
-  <k-button @click="toggle">Global Provider</k-button>
+  <k-button type="primary" main @click="toggle">Global Provider</k-button>
   <k-global-provider :locale="locale">
     <k-tree-table :data="tableData" :column="column"></k-tree-table>
   </k-global-provider>
