@@ -101,10 +101,28 @@
       bottom: 0;
       z-index: 100;
     }
+    .vxe-table {
+      .vxe-table--render-wrapper {
+        .vxe-table--main-wrapper {
+          .vxe-table--body-wrapper {
+            scroll-behavior: auto;
+          }
+          .vxe-table--body-wrapper,
+          .vxe-table-fixed-left-body-wrapper,
+          .vxe-table-fixed-right-body-wrapper {
+            overflow-x: auto;
+            overflow-y: auto;
+            outline: 0;
+          }
+        }
+      }
+    }
   }
+
   .pagination-box {
     margin-top: 10px;
   }
+
   &.tree-table-use-ant-style {
     .k-tree-table__header {
       .k-table-func {
