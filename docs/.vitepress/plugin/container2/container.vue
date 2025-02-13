@@ -38,11 +38,19 @@ const showSourceCode = ref(''); // 高亮后的源码
 const sourceCodeArea = ref(null);
 const dynamicComponent = shallowRef(null); // 使用 shallowRef
 
-// 解析目标路径（相对于项目根目录）
+// 解析目标路径并自动补全后缀
 const resolveTargetPath = (relativePath) => {
-  const mdDir = dirname(page.value.filePath); // 获取目录: src/guide
-  return join('/', mdDir, relativePath); // 拼接目标路径
-};
+  const mdDir = dirname(page.value.filePath)
+  let importPath = join('/', mdDir, relativePath)
+  
+  // 自动补全.vue后缀
+  const hasExtension = /\.[^./]+$/.test(importPath)
+  if (!hasExtension) {
+    importPath += '.vue'
+  }
+  
+  return importPath
+}
 
 // 使用 import.meta.glob 收集所有可能的组件（注意路径根据你的项目结构调整）
 const modules = import.meta.glob('@docs/**/*.vue');
