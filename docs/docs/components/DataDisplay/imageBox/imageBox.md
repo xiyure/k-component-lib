@@ -10,19 +10,19 @@ title: Image 图片
 
 可通过`fit`确定图片如何适应到容器框，同原生 `object-fit`。
 
-<demo-preview2 path="./def.vue" />
+<demo path="./def.vue" />
 
 # 占位内容
 
 可通过`slot = placeholder`可自定义占位内容
 
-<demo-preview2 path="./placeholderImage.vue" />
+<demo path="./placeholderImage.vue" />
 
 # 加载失败
 
 可通过`slot = error`可自定义加载失败内容
 
-<demo-preview2 path="./errorImage.vue" />
+<demo path="./errorImage.vue" />
 
 # 懒加载
 
@@ -34,13 +34,13 @@ title: Image 图片
 
 可通过`lazy`开启懒加载功能， 当图片滚动到可视范围内才会加载。 可通过 `scroll-container` 来设置滚动容器， 若未定义，则为最近一个 `overflow` 值为 `auto` 或 `scroll` 的父元素。
 
-<demo-preview2 path="./lazyImage.vue" />
+<demo path="./lazyImage.vue" />
 
 # 图片预览
 
 可通过 `previewSrcList` 开启预览大图的功能。 你可以通过 `initial-index` 初始化第一张预览图片的位置。 默认初始位置为 0。
 
-<demo-preview2 path="./previewImage.vue" />
+<demo path="./previewImage.vue" />
 
 ## API
 

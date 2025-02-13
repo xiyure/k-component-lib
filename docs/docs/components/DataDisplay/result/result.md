@@ -8,11 +8,11 @@ title: Result 结果
 
 ## 基础用法
 
-<demo-preview2 path="./def.vue" />
+<demo path="./def.vue" />
 
 ## 自定义内容
 
-<demo-preview2 path="./customResult.vue" />
+<demo path="./customResult.vue" />
 
 ## API
 

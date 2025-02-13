@@ -8,25 +8,25 @@ title: empty 空状态
 
 ## 基础用法
 
-<demo-preview2 path="./def.vue" />
+<demo path="./def.vue" />
 
 ## 自定义图片
 
 通过设置 `image` 属性传入图片 `URL`
 
-<demo-preview2 path="./customizeEmpty.vue" />
+<demo path="./customizeEmpty.vue" />
 
 ## 图片尺寸
 
 通过使用 `image-size` 属性来控制图片大小。
 
-<demo-preview2 path="./emptySize.vue" />
+<demo path="./emptySize.vue" />
 
 ## 底部内容
 
 使用默认插槽可在底部插入内容。
 
-<demo-preview2 path="./emptyBottom.vue" />
+<demo path="./emptyBottom.vue" />
 
 ## API
 

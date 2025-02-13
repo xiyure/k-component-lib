@@ -16,7 +16,7 @@ title: Dropdown 下拉菜单
 
 通过组件 slot 来设置下拉触发的元素以及需要通过具名 slot 为 dropdown 来设置下拉菜单。 默认情况下，只需要悬停在触发菜单的元素上即可，无需点击也会显示下拉菜单。
 
-<demo-preview2 path="./def.vue" />
+<demo path="./def.vue" />
 
 ## 触发对象
 
@@ -24,7 +24,7 @@ title: Dropdown 下拉菜单
 
 设置 split-button 属性来让触发下拉元素呈现为按钮组，左边是功能按钮，右边是触发下拉菜单的按钮，设置为 true 即可。 如果你想要在第三和第四个选项之间添加一个分隔符，你只需要为第四个选项添加一个 divider 的 CSS class。
 
-<demo-preview2 path="./triggerDropdown.vue" />
+<demo path="./triggerDropdown.vue" />
 
 ## 触发方式
 
@@ -32,7 +32,7 @@ title: Dropdown 下拉菜单
 
 将 `trigger` 属性设置为 `click` 即可， 默认为 `hover`。
 
-<demo-preview2 path="./triggerfunctionDropdown.vue" />
+<demo path="./triggerfunctionDropdown.vue" />
 
 ## 菜单隐藏方式
 
@@ -40,19 +40,19 @@ title: Dropdown 下拉菜单
 
 下拉菜单默认在点击菜单项后会被隐藏，将 `hide-on-click` 属性设置为 `false` 可以关闭此功能。
 
-<demo-preview2 path="./hideDropdown.vue" />
+<demo path="./hideDropdown.vue" />
 
 ## 指令事件
 
 点击菜单项后会触发事件，用户可以通过相应的菜单项 key 进行不同的操作。
 
-<demo-preview2 path="./eventDropdown.vue" />
+<demo path="./eventDropdown.vue" />
 
 ## 下拉方法
 
 您可以手动使用 `手动打开` 或 `手动关闭下拉菜单以打开或关闭`
 
-<demo-preview2 path="./manualDropdown.vue" />
+<demo path="./manualDropdown.vue" />
 
 ## 尺寸
 
@@ -60,7 +60,7 @@ title: Dropdown 下拉菜单
 
 使用 `size` 属性配置尺寸，可选的尺寸大小有: `large`, `default` 或 `small`
 
-<demo-preview2 path="./sizeDropdown.vue" />
+<demo path="./sizeDropdown.vue" />
 
 ## API
 

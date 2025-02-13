@@ -10,37 +10,37 @@ title: Tour 漫游式引导
 
 最简单的用法。
 
-<demo-preview2 path="./def.vue" />
+<demo path="./def.vue" />
 
 ## 非模态
 
 使用`:mask="false"`可以将引导变为非模态， 同时为了强调引导本身，建议与 `type="primary"` 组合使用。
 
-<demo-preview2 path="./nonModal.vue" />
+<demo path="./nonModal.vue" />
 
 ## 位置
 
 改变引导相对于目标的位置，共有 12 种位置可供选择。 当 target 为空时引导将会展示在正中央。
 
-<demo-preview2 path="./position.vue" />
+<demo path="./position.vue" />
 
 ## 自定义遮罩样式
 
 自定义遮罩样式。
 
-<demo-preview2 path="./maskStyle.vue" />
+<demo path="./maskStyle.vue" />
 
 ## 自定义指示器
 
 自定义指示器。
 
-<demo-preview2 path="./indicator.vue" />
+<demo path="./indicator.vue" />
 
 ## 目标
 
 可以传入目标的各种类型的参数。 支持字符串和函数类型。
 
-<demo-preview2 path="./target.vue" />
+<demo path="./target.vue" />
 
 ## API
 

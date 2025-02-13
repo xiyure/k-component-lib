@@ -6,15 +6,15 @@ title: Operate 批量操作
 
 ### 基础用法
 
-<demo-preview2 path="./def.vue" />
+<demo path="./def.vue" />
 
 ### 最大展示数量
 
-<demo-preview2 path="./maxOperate.vue" />
+<demo path="./maxOperate.vue" />
 
 ### 禁用操作
 
-<demo-preview2 path="./disabledOperate.vue" />
+<demo path="./disabledOperate.vue" />
 
 ## API
 

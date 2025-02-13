@@ -12,7 +12,7 @@ title: Space 间距
 
 通过间距组件来给多个组件之间提供间距
 
-<demo-preview2 path="./def.vue" />
+<demo path="./def.vue" />
 
 ## 垂直布局
 
@@ -20,7 +20,7 @@ title: Space 间距
 
 我们也提供垂直布局方式。
 
-<demo-preview2 path="./verticalSpace.vue" />
+<demo path="./verticalSpace.vue" />
 
 ## 控制间距的大小
 
@@ -30,13 +30,13 @@ title: Space 间距
 
 您也可以通过自定义的 `size` 来控制大小， 参见下一个部分。
 
-<demo-preview2 path="./sizeSpace.vue" />
+<demo path="./sizeSpace.vue" />
 
 ## 自定义 Size
 
 很多时候，内建的大小不满足设计师的要求，我们可以通过传入自己定义的大小 (数值类型) 来设置。
 
-<demo-preview2 path="./customSizeSpace.vue" />
+<demo path="./customSizeSpace.vue" />
 
 ::: tip 提示
 不要让 `KSpace` 与使用依赖父元素百分比宽度（或高度）的元素一起使用（例如 `KSlider`），这样会造成光标不同步。
@@ -48,7 +48,7 @@ title: Space 间距
 
 利用 `wrap` 属性控制换行
 
-<demo-preview2 path="./wrapSpace.vue" />
+<demo path="./wrapSpace.vue" />
 
 ## 行间分隔符
 
@@ -56,7 +56,7 @@ title: Space 间距
 
 ## 字母数字类型分隔符
 
-<demo-preview2 path="./letterNumberSpace.vue" />
+<demo path="./letterNumberSpace.vue" />
 
 ## 对齐方式
 
@@ -64,7 +64,7 @@ title: Space 间距
 
 使用 `alignment` 属性来对齐
 
-<demo-preview2 path="./alignmentSpace.vue" />
+<demo path="./alignmentSpace.vue" />
 
 ## 填充容器
 
@@ -74,7 +74,7 @@ title: Space 间距
 
 用 fill 属性让子节点自动填充容器
 
-<demo-preview2 path="./fillSpace.vue" />
+<demo path="./fillSpace.vue" />
 
 也可以使用 `fillRatio` 参数，自定义填充的比例， 默认值为 `100`，代表基于父容器宽度的 `100%` 进行填充
 
@@ -82,7 +82,7 @@ title: Space 间距
 
 用 `fillRatio` 自定义填充比例
 
-<demo-preview2 path="./fillRatioSpace.vue" />
+<demo path="./fillRatioSpace.vue" />
 
 ## API
 

@@ -10,11 +10,11 @@ title: 列头工具
 
 排序和筛选需要当前列可排序和可筛选。
 
-<demo-preview2 path="./headerController.vue" />
+<demo path="./headerController.vue" />
 
 ## 隐藏排序筛选按钮
 
-<demo-preview2 path="./hideSortFilter.vue" />
+<demo path="./hideSortFilter.vue" />
 
 :::tip 提示
 由于这个组件是基于[Vxe-Table](https://vxetable.cn/#/table/api)开发，他的原始属性未被更改，故不在此重复。请跳转查看原组件的相应文档。

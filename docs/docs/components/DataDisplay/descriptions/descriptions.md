@@ -8,15 +8,15 @@ title: Descriptions 描述列表
 
 ## 基础用法
 
-<demo-preview2 path="./def.vue" />
+<demo path="./def.vue" />
 
 ## 不同尺寸
 
-<demo-preview2 path="./sizeDescriptions.vue" />
+<demo path="./sizeDescriptions.vue" />
 
 ## 垂直列表
 
-<demo-preview2 path="./verticalDescriptions.vue" />
+<demo path="./verticalDescriptions.vue" />
 
 ## API
 

@@ -10,19 +10,19 @@ title: Tag 标签
 
 由 `type` 属性来选择 `tag` 的类型。 也可以通过 `color` 属性来自定义背景色。
 
-<demo-preview2 path="./def.vue" />
+<demo path="./def.vue" />
 
 ## 可移除标签
 
 设置 `closable` 属性可以定义一个标签是否可移除。 它接受一个 `Boolean`。 默认的标签移除时会附带渐变动画。 如果不想使用，可以设置 `disable-transitions` 属性，它接受一个 `Boolean`，`true` 为关闭。 当 `Tag` 被移除时会触发 `close` 事件。
 
-<demo-preview2 path="./removableTag.vue" />
+<demo path="./removableTag.vue" />
 
 ## 动态编辑标签
 
 动态编辑标签可以通过点击标签关闭按钮后触发的 `close` 事件来实现。
 
-<demo-preview2 path="./dynamicEditTag.vue" />
+<demo path="./dynamicEditTag.vue" />
 
 ## 不同尺寸
 
@@ -30,13 +30,13 @@ title: Tag 标签
 
 使用 `size` 属性来设置额外尺寸, 可选值包括 `large`, `default` 或 `small`.
 
-<demo-preview2 path="./sizeTag.vue" />
+<demo path="./sizeTag.vue" />
 
 ## 圆形标签
 
 `Tag` 可以向按钮组件一样变为完全圆形。
 
-<demo-preview2 path="./prototypeTag.vue" />
+<demo path="./prototypeTag.vue" />
 
 ## 可选中的标签
 
@@ -44,19 +44,19 @@ title: Tag 标签
 
 `check-tag` 的基础使用方法，`check-tag` 提供的 API 非常简单。
 
-<demo-preview2 path="./selectedTag.vue" />
+<demo path="./selectedTag.vue" />
 
 ## 自定义颜色标签
 
 `color` 可以自定义标签的颜色，可以是十六进制颜色值，也可以是 CSS 颜色名。
 
-<demo-preview2 path="./colorTag.vue" />
+<demo path="./colorTag.vue" />
 
 ## 点型标签
 
 `point` 属性可以设置标签的形状为点型。
 
-<demo-preview2 path="./pointTag.vue" />
+<demo path="./pointTag.vue" />
 
 ## API
 

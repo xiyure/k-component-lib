@@ -6,6 +6,6 @@ title: menuView 菜单视图
 
 ## 示例
 
-<demo-preview2 path="./def.vue" />
+<demo path="./def.vue" />
 
 <API src="./data.json" lang="zh"></API>

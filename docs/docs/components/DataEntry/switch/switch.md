@@ -10,17 +10,17 @@ title: Switch 开关
 
 绑定 v-model 到一个 Boolean 类型的变量。 可以使用 --el-switch-on-color 属性与 --el-switch-off-color 属性来设置开关的背景色。
 
-<demo-preview2 path="./basic" />
+<demo path="./basic" />
 
 ## on/off 自定义样式
 
 通过`activeColor`和`inactiveColor`属性设置开关的背景色。
 
-<demo-preview2 path="./customColorSwitch" />
+<demo path="./customColorSwitch" />
 
 ## 尺寸
 
-<demo-preview2 path="./sizes" />
+<demo path="./sizes" />
 
 ## 文字描述
 
@@ -28,7 +28,7 @@ title: Switch 开关
 
 使用`active-text`属性与`inactive-text`属性来设置开关的文字描述。
 
-<demo-preview2 path="./text-description" />
+<demo path="./text-description" />
 
 ## 显示自定义图标
 
@@ -40,31 +40,31 @@ title: Switch 开关
 
 :::demo You can add `active-icon` and `inactive-icon` attribute to show icons. use `inline-prompt` attribute to control icon is displayed inside dot.
 
-<demo-preview2 path="./custom-icons" />
+<demo path="./custom-icons" />
 
 ## 扩展的 value 类型
 
 你可以设置 `active-value` 和 `inactive-value` 属性， 它们接受 `Boolean`、`String` 或 `Number` 类型的值。
 
-<demo-preview2 path="./extended-value-types" />
+<demo path="./extended-value-types" />
 
 ## 禁用状态
 
 设置`disabled`属性，接受一个`Boolean`，设置`true`即可禁用。
 
-<demo-preview2 path="./disabled" />
+<demo path="./disabled" />
 
 ## 加载状态
 
 设置`loading`属性，接受一个`Boolean`，设置`true`即加载中状态。
 
-<demo-preview2 path="./loading" />
+<demo path="./loading" />
 
 ## 阻止切换
 
 设置`beforeChange`属性，若返回 `false` 或者返回 `Promise` 且被 `reject`，则停止切换
 
-<demo-preview2 path="./prevent-switching" />
+<demo path="./prevent-switching" />
 
 ## API
 

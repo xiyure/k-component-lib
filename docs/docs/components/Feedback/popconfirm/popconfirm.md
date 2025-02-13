@@ -12,19 +12,19 @@ Popconfirm 气泡确认框
 
 在 `Popconfirm` 中，只有 `title` 属性可用，`content` 属性会被忽略。
 
-<demo-preview2 path="./def.vue" />
+<demo path="./def.vue" />
 
 ## 自定义弹出框的内容
 
 可以在 `Popconfirm` 中自定义内容。
 
-<demo-preview2 path="./custom.vue" />
+<demo path="./custom.vue" />
 
 ## 多种让 Popconfirm 出现的方法
 
 点击按钮触发事件
 
-<demo-preview2 path="./trigger.vue" />
+<demo path="./trigger.vue" />
 
 ## API
 

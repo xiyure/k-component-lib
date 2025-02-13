@@ -6,11 +6,11 @@ title: filter 过滤器
 
 ## 基本示例
 
-<demo-preview2 path="./def.vue" />
+<demo path="./def.vue" />
 
 ## 格式化日期
 
-<demo-preview2 path="./formatDate.vue" />
+<demo path="./formatDate.vue" />
 
 ## API
 

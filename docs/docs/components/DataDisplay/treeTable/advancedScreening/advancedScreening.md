@@ -10,7 +10,7 @@ title: 高级筛选
 
 `exclude`属性可以指定某些列不显示在筛选条件中。
 
-<demo-preview2 path="./advancedScreening.vue" />
+<demo path="./advancedScreening.vue" />
 
 :::tip 提示
 由于这个组件是基于[Vxe-Table](https://vxetable.cn/#/table/api)开发，他的原始属性未被更改，故不在此重复。请跳转查看原组件的相应文档。

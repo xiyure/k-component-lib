@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitepress';
 import nav from './configs/nav';
 import { generateRewrites, sidebarRewrites } from './plugin/rewritePath';
-import { containerPreview, componentPreview } from './plugin/demo-preview';
+// import { containerPreview, componentPreview } from './plugin/demo-preview';
 import { fileURLToPath, URL } from 'node:url';
 
 // https://vitepress.dev/reference/site-config
@@ -24,10 +24,10 @@ export default defineConfig({
     ['meta', { property: 'og:site_name', content: 'KSW Design' }],
   ],
   markdown: {
-    config: (md) => {
-      md.use(containerPreview);
-      md.use(componentPreview);
-    },
+    // config: (md) => {
+    //   md.use(containerPreview);
+    //   md.use(componentPreview);
+    // },
     image: {
       lazyLoading: true,
     },

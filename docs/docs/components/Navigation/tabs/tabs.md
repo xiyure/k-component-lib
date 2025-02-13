@@ -12,7 +12,7 @@ title: Tabs 标签页
 
 Tabs 组件提供了选项卡功能， 默认选中第一个标签页，你也可以通过 `value` 属性来指定当前选中的标签页。
 
-<demo-preview2 path="./basic.vue" />
+<demo path="./basic.vue" />
 
 ## 卡片风格的标签
 
@@ -20,7 +20,7 @@ Tabs 组件提供了选项卡功能， 默认选中第一个标签页，你也�
 
 只需要设置 `type` 属性为 `card` 就可以使选项卡改变为标签风格。
 
-<demo-preview2 path="./cardStyle.vue" />
+<demo path="./cardStyle.vue" />
 
 ## 带有边框的卡片风格
 
@@ -28,7 +28,7 @@ Tabs 组件提供了选项卡功能， 默认选中第一个标签页，你也�
 
 将 `type` 设置为 `border-card`。
 
-<demo-preview2 path="./borderCard.vue" />
+<demo path="./borderCard.vue" />
 
 ## 标签位置的设置
 
@@ -36,33 +36,33 @@ Tabs 组件提供了选项卡功能， 默认选中第一个标签页，你也�
 
 标签一共有四个方向的设置 `tabPosition="left|right|top|bottom"`
 
-<demo-preview2 path="./tabPosition.vue" />
+<demo path="./tabPosition.vue" />
 
 ## 自定义标签页的内容
 
 可以通过具名插槽来实现自定义标签页的内容
 
-<demo-preview2 path="./customTab.vue" />
+<demo path="./customTab.vue" />
 
 ## 动态增减标签页
 
 增减标签页按钮只能在选项卡样式的标签页下使用
 
-<demo-preview2 path="./dynamicTabs.vue" />
+<demo path="./dynamicTabs.vue" />
 
 <!-- ## 添加按钮自定义图标
 
-<demo-preview2 path="./customizedAddButtonIcon.vue" /> -->
+<demo path="./customizedAddButtonIcon.vue" /> -->
 
 ## 增加标签页触发器自定义
 
 
-<demo-preview2 path="./customizedTrigger.vue" />
+<demo path="./customizedTrigger.vue" />
 
 ## 标签溢出
 
 
-<demo-preview2 path="./overflowTabs.vue" />
+<demo path="./overflowTabs.vue" />
 
 ## API
 

@@ -10,10 +10,10 @@ title: details 详情页
 
 ## 示例
 
-<demo-preview2 path="./def.vue" />
+<demo path="./def.vue" />
 
 ## 详情页+表单预览
 
-<demo-preview2 path="./form2.vue" />
+<demo path="./form2.vue" />
 
 <API src="./data.json" lang="zh"></API>

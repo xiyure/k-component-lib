@@ -34,9 +34,8 @@ const { isCodeFold, setCodeFold } = useCodeFold();
 const { clickCopy } = useCodeCopy();
 
 const sourceCode = ref(''); // 源码
-const showSourceCode = ref(''); // 高亮后的源码
 const sourceCodeArea = ref(null);
-const dynamicComponent = shallowRef(null); // 使用 shallowRef
+const dynamicComponent = shallowRef(null);
 
 // 解析目标路径并自动补全后缀
 const resolveTargetPath = (relativePath) => {

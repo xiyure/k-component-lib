@@ -10,13 +10,13 @@ title: Breadcrumb 面包屑
 
 在 `k-breadcrumb` 中使用 `k-breadcrumb-item` 标签表示从首页开始的每一级。 该组件接受一个 `String` 类型的参数 `separator`来作为分隔符。 默认值为 '/'。
 
-<demo-preview2 path="./def.vue" />
+<demo path="./def.vue" />
 
 ## 图标分隔符
 
 通过设置 `separator-class` 可使用相应的 `iconfont` 作为分隔符，注意这将使 `separator` 失效。
 
-<demo-preview2 path="./iconBreadcrumb.vue" />
+<demo path="./iconBreadcrumb.vue" />
 
 ## Breadcrumb API
 

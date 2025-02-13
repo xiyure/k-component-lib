@@ -16,7 +16,7 @@ title: Slider 滑块
 
 通过设置绑定值自定义滑块的初始值
 
-<demo-preview2 path="./def.vue" />
+<demo path="./def.vue" />
 
 ## 离散值
 
@@ -24,7 +24,7 @@ title: Slider 滑块
 
 改变`step`的值可以改变步长， 通过设置 `show-stops` 属性可以显示间断点
 
-<demo-preview2 path="./discreteSlider.vue" />
+<demo path="./discreteSlider.vue" />
 
 ## 带有输入框的滑块
 
@@ -32,17 +32,17 @@ title: Slider 滑块
 
 设置 `show-input` 属性会在右侧显示一个输入框
 
-<demo-preview2 path="./inputSlider.vue" />
+<demo path="./inputSlider.vue" />
 
 ## 不同尺寸
 
-<demo-preview2 path="./sizeSlider.vue" />
+<demo path="./sizeSlider.vue" />
 
 ## 位置
 
 您可以自定义 `Tooltip` 提示的位置。
 
-<demo-preview2 path="./postionSlider.vue" />
+<demo path="./postionSlider.vue" />
 
 ## 范围选择
 
@@ -50,19 +50,19 @@ title: Slider 滑块
 
 配置 `range` 属性以激活范围选择模式，该属性的绑定值是一个数组，由最小边界值和最大边界值组成。
 
-<demo-preview2 path="./rangeSlider.vue" />
+<demo path="./rangeSlider.vue" />
 
 ## 垂直模式
 
 配置 `vertical` 属性为 `true` 启用垂直模式。 在垂直模式下，必须设置 `height` 属性。
 
-<demo-preview2 path="./verticalSlider.vue" />
+<demo path="./verticalSlider.vue" />
 
 ## 显示标记
 
 设置 `marks` 属性可以在滑块上显示标记。
 
-<demo-preview2 path="./showSlider.vue" />
+<demo path="./showSlider.vue" />
 
 ## API
 
