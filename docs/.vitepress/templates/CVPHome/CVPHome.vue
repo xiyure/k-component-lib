@@ -1,4 +1,5 @@
 <template>
+  <botExample class="fixed bottom-14 right-10 z-40"/>
   <logoAnimation v-if="showLogoAnimation" @animationStart="handleAnimationStart" @animationComplete="handleAnimationComplete"/>
   <client-only>
     <div ref="CVPHome" v-if="showCVPHome" class="CVPHome bg-white px-24 flex flex-col items-center overflow-x-hidden">
@@ -32,6 +33,7 @@ import logoAnimation from './logoAnimation.vue'
 import pageOne from './pageOne.vue';
 import pageTwo from './pageTwo.vue';
 import pageThree from './pageThree.vue';
+import botExample from './botExample.vue';
 
 const showCVPHome = ref(false);
 const showLogoAnimation = ref(true);
