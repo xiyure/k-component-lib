@@ -16,13 +16,13 @@ title: Menu 菜单
 
 导航菜单默认为垂直模式，通过将 `mode` 属性设置为 `horizontal` 来使导航菜单变更为水平模式。 另外，在菜单中通过 `sub-menu` 组件可以生成二级菜单。 `Menu` 还提供了`background-color`、`text-color`和`active-text-color`，分别用于设置菜单的背景色、菜单的文字颜色和当前激活菜单的文字颜色。
 
-<preview path="./def.vue" />
+<demo-preview2 path="./def.vue" />
 
 ## 左右
 
 您可以将菜单项放置在左边或右边。
 
-<preview path="./leftRightMenu.vue" />
+<demo-preview2 path="./leftRightMenu.vue" />
 
 ## 侧栏
 
@@ -30,19 +30,19 @@ title: Menu 菜单
 
 通过 k-menu-item-group 组件可以实现菜单进行分组，分组名可以通过 title 属性直接设定，也可以通过具名 slot 来设定。
 
-<preview path="./sidebarMenu.vue" />
+<demo-preview2 path="./sidebarMenu.vue" />
 
 ## Collapse 折叠面板
 
 垂直导航菜单可以被折叠
 
-<preview path="./collapseMenu.vue" />
+<demo-preview2 path="./collapseMenu.vue" />
 
 ## 弹出层偏移量
 
 当提供了 popperOffset 配置，会覆盖 Submenu 的 popper-offset.
 
-<preview path="./popperOffsetMenu.vue" />
+<demo-preview2 path="./popperOffsetMenu.vue" />
 
 ## API
 

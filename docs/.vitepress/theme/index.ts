@@ -1,6 +1,7 @@
 import { h, onMounted } from 'vue';
 import DefaultTheme from 'vitepress/theme';
 import { Container } from '../plugin/container/index';
+import { Container as Container2 } from '../plugin/container2/index';
 import './style.less';
 import './tailwind.css';
 import 'overlayscrollbars/overlayscrollbars.css';
@@ -50,6 +51,7 @@ export default {
         ctx.app.use(KswIcon);
         ctx.app.use(NolebaseGitChangelogPlugin);
         ctx.app.component('demo-preview', Container);
+        ctx.app.component('demo-preview2', Container2);
         ctx.app.component('DocTitle', DocTitle);
         ctx.app.provide(InjectionKey, {
           // 配置

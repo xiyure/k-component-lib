@@ -12,7 +12,7 @@ title: 树形表格
 
 3.需要再某列配置中设置treeNode属性为true，表示该列为树形结构的节点列。
 
-<preview path="./useTreeTable.vue" />
+<demo-preview2 path="./useTreeTable.vue" />
 
 :::tip 提示
 由于这个组件是基于[Vxe-Table](https://vxetable.cn/#/table/api)开发，他的原始属性未被更改，故不在此重复。请跳转查看原组件的相应文档。

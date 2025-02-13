@@ -14,23 +14,23 @@ title: ColorPicker 颜色选择器
 
 使用 `v-model` 与 `Vue` 实例中的一个变量进行双向绑定，绑定的变量需要是字符串类型。
 
-<preview path="./def.vue" />
+<demo-preview2 path="./def.vue" />
 
 ## 选择透明度
 
 `ColorPicker` 支持普通颜色，也支持带 `Alpha` 通道的颜色，通过`show-alpha`属性即可控制是否支持透明度的选择。 要启用 `Alpha` 选择，只需添加 `show-alpha` 属性。
 
-<preview path="./chooseColorPicker.vue" />
+<demo-preview2 path="./chooseColorPicker.vue" />
 
 ## 预定义颜色
 
 `ColorPicker` 支持预定义颜色
 
-<preview path="./predefineColorPicker.vue" />
+<demo-preview2 path="./predefineColorPicker.vue" />
 
 ## 不同尺寸
 
-<preview path="./sizeColorPicker.vue" />
+<demo-preview2 path="./sizeColorPicker.vue" />
 
 ## API
 

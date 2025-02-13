@@ -12,19 +12,19 @@ title: DatePicker 日期选择器
 
 基本单位由 `type` 属性指定。 通过 `shortcuts` 配置快捷选项， 通过 `disabledDate` 函数，来设置禁用掉的日期。
 
-<preview path="./enter-date" />
+<demo-preview2 path="./enter-date" />
 
 ## 便捷型快捷日期选择
 
 当`type`为`daterange`或`datetimerange`时，可以使用`showDefaultShortcuts`设置快捷选项，快速选择某段时间。
 
-<preview path="./shortcutsPicker" />
+<demo-preview2 path="./shortcutsPicker" />
 
 ## 其他日期单位
 
 通过扩展基础的日期选择，可以选择周、月、年或多个日期
 
-<preview path="./other-measurements" />
+<demo-preview2 path="./other-measurements" />
 
 ## 选择一段时间
 
@@ -32,7 +32,7 @@ title: DatePicker 日期选择器
 
 在选择日期范围时，默认情况下左右面板会联动。 如果希望两个面板各自独立切换当前月份，可以使用 `unlink-panels` 属性解除联动。
 
-<preview path="./date-range" />
+<demo-preview2 path="./date-range" />
 
 
 ## 选择月份范围
@@ -41,7 +41,7 @@ title: DatePicker 日期选择器
 
 在选择月份范围时，默认情况下左右面板会联动。 如果希望两个面板各自独立切换当前年份，可以使用 `unlink-panels` 属性解除联动。
 
-<preview path="./month-range" />
+<demo-preview2 path="./month-range" />
 
 ## 年份范围
 
@@ -49,7 +49,7 @@ title: DatePicker 日期选择器
 
 在选择范围时，默认情况下左右面板会联动。 如果希望两个面板各自独立切换当前年份，可以使用 unlink-panels 属性解除联动。
 
-<preview path="./year-range" />
+<demo-preview2 path="./year-range" />
 
 ## 默认值
 
@@ -57,7 +57,7 @@ title: DatePicker 日期选择器
 
 如果类型是 `daterange`, `default-value` 则会设置左边窗口的默认值。
 
-<preview path="./default-value" />
+<demo-preview2 path="./default-value" />
 
 ## 日期格式
 
@@ -73,7 +73,7 @@ title: DatePicker 日期选择器
 
 :::
 
-<preview path="./date-formats" />
+<demo-preview2 path="./date-formats" />
 
 ## 默认显示日期
 
@@ -81,7 +81,7 @@ title: DatePicker 日期选择器
 
 默认情况下，开始日期和结束日期的时间部分都是选择日期当日的 `00:00:00`。 通过 `default-time` 可以分别指定开始日期和结束日期的具体时刻。 它接受最多两个日期对象的数组。 其中第一项控制起始日期的具体时刻，第二项控制结束日期的具体时刻。
 
-<preview path="./default-time" />
+<demo-preview2 path="./default-time" />
 
 ## 设置自定义前缀的内容
 
@@ -89,19 +89,19 @@ title: DatePicker 日期选择器
 
 当你从其他`vue`组件或由渲染函数生成的组件中导入组件时, 你可以设置 `prefix-icon` 属性来定制前缀内容
 
-<preview path="./custom-prefix-icon" />
+<demo-preview2 path="./custom-prefix-icon" />
 
 ## 自定义内容
 
 弹出框的内容是可以自定义的，在插槽内你可以获取到当前单元格的数据 请注意，自定义内容结构应与默认结构一致，否则可能风格会不一致。
 
-<preview path="./custom-content" />
+<demo-preview2 path="./custom-content" />
 
 ## 自定义图标
 
 使用插槽自定义图标。
 
-<preview path="./custom-icon" />
+<demo-preview2 path="./custom-icon" />
 
 ## API
 

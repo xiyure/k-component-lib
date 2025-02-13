@@ -6,56 +6,56 @@ title: ScriptInput 脚本输入框
 
 ## 基础用法
 
-<preview path="./def" />
+<demo-preview2 path="./def" />
 
 ## 自定义模式切换按钮
 
 调用`toggleMode`方法可切换输入框模式, 通过手动改变`show-mode-switch`属性可控制切换模式功能是否显示。
 
-<preview path="./switchMode" />
+<demo-preview2 path="./switchMode" />
 
 ## 自定义下拉框按钮
 
 调用`showPopper`方法可控制下拉框显示与隐藏, 通过手动改变`show-popper-switch`属性可控制按钮是否显示。
 
-<preview path="./treeBtn" />
+<demo-preview2 path="./treeBtn" />
 
 ## 自定义脚本key
 
 设置`script-key`属性可自定义Key值。
 
-<preview path="./customKey" />
+<demo-preview2 path="./customKey" />
 
 ## 树形列表
 
 使用`use-tree`属性可开启树形列表模式, 并通过`tree-config`属性传入树形数据配置。
 
-<preview path="./treeScriptInput" />
+<demo-preview2 path="./treeScriptInput" />
 
 ## 前后插槽
 
 可以在输入框中前置或后置一个元素，通常是标签或按钮。
 可通过 slot 来指定在 Input 中分发的前置或者后置的内容。
 
-<preview path="./prepend" />
+<demo-preview2 path="./prepend" />
 
 ## 密码输入框
 
 设置`show-password`属性为`true`即可开启密码输入框模式。
 
-<preview path="./password" />
+<demo-preview2 path="./password" />
 
 ## 唯一值模式
 
 设置`only-one-input`属性为`true`即可开启只允许输入一个值。
 
-<preview path="./unique" />
+<demo-preview2 path="./unique" />
 
 ## 禁用状态
 
 设置`disabled`属性为`true`即可禁用输入框。
 
-<preview path="./disabled" />
+<demo-preview2 path="./disabled" />
 
 ## 文本校验
 
@@ -63,17 +63,17 @@ title: ScriptInput 脚本输入框
 
 `content-type`可以选择`string（是否是字符串）`、`boolean（是否是布尔值）`、`number（是否是数字）`、`tooltip（变量名是否合规）`等值
 
-<preview path="./validate" />
+<demo-preview2 path="./validate" />
 
 ## 自定义高度
 
-<preview path="./heightScriptInput" />
+<demo-preview2 path="./heightScriptInput" />
 
 ## 禁用选项重复选择
 
 设置`option-repeatable`属性为`false`即可禁止同一选项多次选择。
 
-<preview path="./repeatable" />
+<demo-preview2 path="./repeatable" />
 
 ## API
 

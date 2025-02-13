@@ -13,7 +13,7 @@ title: 单元格图标
 3.在行数据中设置iconStyle属性即可，包含color（颜色）、size（大小）、indent（图标与文字距离）、
 empty（\*\*folder为true时使用，表示文件夹为空）等属性。
 
-<preview path="./customCellIcon.vue" />
+<demo-preview2 path="./customCellIcon.vue" />
 
 :::tip 提示
 由于这个组件是基于[Vxe-Table](https://vxetable.cn/#/table/api)开发，他的原始属性未被更改，故不在此重复。请跳转查看原组件的相应文档。

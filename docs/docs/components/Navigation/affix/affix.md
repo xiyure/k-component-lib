@@ -12,7 +12,7 @@ title: Affix 固钉
 
 通过设置 `offset` 属性来改变吸顶距离，默认值为 0。
 
-<preview path="./def.vue" />
+<demo-preview2 path="./def.vue" />
 
 ## 指定容器
 
@@ -20,7 +20,7 @@ title: Affix 固钉
 
 请注意容器避免出现滚动条。
 
-<preview path="./targetAffix.vue" />
+<demo-preview2 path="./targetAffix.vue" />
 
 ## 固定位置
 
@@ -28,7 +28,7 @@ title: Affix 固钉
 
 通过设置 `position` 属性来改变固定位置，默认值为 `top` 。
 
-<preview path="./positionAffix.vue" />
+<demo-preview2 path="./positionAffix.vue" />
 
 ## API
 

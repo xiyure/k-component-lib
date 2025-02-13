@@ -18,6 +18,7 @@
     "glob": "^11.0.0",
     "gray-matter": "^4.0.3",
     "gsap": "^3.12.7",
+    "highlight.js": "^11.11.1",
     "less": "^4.2.0",
     "less-loader": "^12.2.0",
     "markdown-it": "^14.1.0",
