@@ -261,8 +261,7 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     tempInsertData.clear();
     tempRemoveData.clear();
     tempSetData.clear();
-    const tableData = JSON.parse(JSON.stringify(data));
-    const newData = Array.isArray(tableData) ? tableData : [];
+    const newData = Array.isArray(data) ? data : [];
     xeTableData.value = Array.from(newData);
     store.data = [...xeTableData.value];
     return xeTableData.value;
