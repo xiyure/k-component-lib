@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress';
+import path from 'path';
 import nav from './configs/nav';
 import { generateRewrites, sidebarRewrites } from './plugin/rewritePath';
 // import { containerPreview, componentPreview } from './plugin/demo-preview';
@@ -99,6 +100,22 @@ export default defineConfig({
           replacement: fileURLToPath(new URL('./templates/CVPHome/CVPHome.vue', import.meta.url)),
         },
       ],
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes('/docs/docs/') && /\.(vue|vue\?raw|ts)$/.test(id)) {
+              // console.log('Processing:', id);
+              const parts = id.split(path.sep);
+              // 获取目录
+              const dir = parts[parts.length - 2];
+              // console.log('Chunk Name:', parts);
+              return dir || 'docsComponents';
+            }
+          }
+        }
+      }
     },
   },
 });
