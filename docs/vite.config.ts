@@ -18,21 +18,21 @@ export default defineConfig({
   plugins: [
     genApiDoc(),
     vueJsx(),
-    chunkSplitPlugin({
-      strategy: 'default',
-      customSplitting: {
-        theme: [/theme\/index/],
-        elementPlus: ['element-plus'],
-        vxeTable: [/vxe-table/],
-        vxePcUi: [/vxe-pc-ui/],
-        'ksw-ux': [
-          /packages\/(components|templates|utils|style|interface|element-plus.ts)/,
-          /vue-i18n/
-        ],
-        'ksw-icon': [/ksw-vue-icon/]
-        // '@nolebase': [/@nolebase/],
-      }
-    }),
+    // chunkSplitPlugin({
+    //   strategy: 'default',
+    //   customSplitting: {
+    //     theme: [/theme\/index/],
+    //     elementPlus: ['element-plus'],
+    //     vxeTable: [/vxe-table/],
+    //     vxePcUi: [/vxe-pc-ui/],
+    //     'ksw-ux': [
+    //       /packages\/(components|templates|utils|style|interface|element-plus.ts)/,
+    //       /vue-i18n/
+    //     ],
+    //     'ksw-icon': [/ksw-vue-icon/],
+    //     demo: [/docs\/components\/General\/button\/*\.vue/]
+    //   }
+    // }),
     GitChangelog({
       repoURL: () => 'https://github.com/xiyure/k-component-lib',
       mapAuthors: [
@@ -56,10 +56,7 @@ export default defineConfig({
         {
           name: '莫启健',
           username: 'QijianMo',
-          mapByEmailAliases: [
-            'moqijian@kingsware.cn',
-            'qijian_mo@163.com'
-          ]
+          mapByEmailAliases: ['moqijian@kingsware.cn', 'qijian_mo@163.com']
         }
       ]
     }),
@@ -79,18 +76,6 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 12581
   },
-  // build: {
-  //   rollupOptions: {
-  //     output: {
-  // manualChunks(id) {
-  //   if (id.includes('packages/components')) {
-  //     console.log(id);
-  //     return id.toString().split('packages/')[1].split('/')[0].toString();
-  //   }
-  // },
-  //     },
-  //   },
-  // },
   resolve: {
     alias: {
       '@api': path.resolve(__dirname, './api'),

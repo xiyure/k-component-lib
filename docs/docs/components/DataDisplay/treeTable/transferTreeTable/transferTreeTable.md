@@ -10,7 +10,7 @@ title: 列头控制器
 
 2.column数组中的每一项都可以配置visible属性进行隐藏，默认情况下所有列都显示。
 
-<preview path="./transferTreeTable.vue" />
+<demo path="./transferTreeTable.vue" />
 
 :::tip 提示
 由于这个组件是基于[Vxe-Table](https://vxetable.cn/#/table/api)开发，他的原始属性未被更改，故不在此重复。请跳转查看原组件的相应文档。

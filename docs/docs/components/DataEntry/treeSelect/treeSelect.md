@@ -10,13 +10,13 @@ title: TreeSelect 树形选择
 
 树状选择器
 
-<preview path="./def" />
+<demo path="./def" />
 
 ## 选择任意级别
 
 当属性`check-strictly=true`时，任何节点都可以被选择，否则只有子节点可被选择。
 
-<preview path="./treeSelectAnyLevel" />
+<demo path="./treeSelectAnyLevel" />
 
 :::tip
 
@@ -28,37 +28,37 @@ title: TreeSelect 树形选择
 
 通过点击或复选框选择多个选项。
 
-<preview path="./multipleTreeSelect" />
+<demo path="./multipleTreeSelect" />
 
 ## 禁用选项
 
 使用 disabled 字段禁用选项。
 
-<preview path="./disabledTreeSelect" />
+<demo path="./disabledTreeSelect" />
 
 ## 可筛选
 
 使用关键字筛选或自定义筛选方法。 filterMethod可以自定义数据筛选的方法， filterNodeMethod可以自定义节点数据筛选的方法。
 
-<preview path="./siftableTreeSelect" />
+<demo path="./siftableTreeSelect" />
 
 ## 自定义内容
 
 自定义树节点的内容。
 
-<preview path="./customTreeSelect" />
+<demo path="./customTreeSelect" />
 
 ## 自定义Icon
 
 自定义树节点的Icon。
 
-<preview path="./customIconTreeSelect" />
+<demo path="./customIconTreeSelect" />
 
 ## 懒加载
 
 树节点懒加载，更加适合于数据量大的列表。
 
-<preview path="./lazyLoadingTreeSelect" />
+<demo path="./lazyLoadingTreeSelect" />
 
 :::tip
 由于这个组件是k-tree和k-select的结合体，他们的原始属性未被更改，故不在此重复。请跳转查看原组件的相应文档。

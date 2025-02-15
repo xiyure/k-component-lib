@@ -10,7 +10,7 @@ title: 自定义表格工具栏
 
 2.widgets传入空数组时或者使用show-filter:false和show-search-input:false属性时，则不展示。
 
-<preview path="./formToolbar.vue" />
+<demo path="./formToolbar.vue" />
 
 :::tip 提示
 由于这个组件是基于[Vxe-Table](https://vxetable.cn/#/table/api)开发，他的原始属性未被更改，故不在此重复。请跳转查看原组件的相应文档。

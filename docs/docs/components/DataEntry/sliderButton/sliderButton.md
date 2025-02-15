@@ -6,7 +6,7 @@ title: Slider Button 滑块按钮
 
 ## 基础用法
 
-<preview path="./basic" />
+<demo path="./basic" />
 
 ## API
 

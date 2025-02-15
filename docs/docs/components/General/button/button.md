@@ -22,11 +22,11 @@ date: 2021-03-11
 - icon按钮
   > 一般用于节省空间的情景。
 
-<preview path="./def.vue" />
+<demo path="./def.vue"/>
 
 ## disabled
 
-<preview path="./btnDisabled.vue" />
+<demo path="./btnDisabled.vue" />
 
 ## 彩色图标
 
@@ -40,7 +40,7 @@ date: 2021-03-11
 
 使用 type, 此 api 参数兼容 el 预设, 如: primary, success, info, warning, danger
 
-<preview path="./elType.vue" />
+<demo path="./elType.vue" />
 
 ### 方式 2, color
 
@@ -50,23 +50,23 @@ date: 2021-03-11
 - css 预设颜色: red
 - el, type 颜色: primary...
 
-<preview path="./btnColor.vue" />
+<demo path="./btnColor.vue" />
 
 ## 左右图标插槽
 
 ### 方式一, api
 
-<preview path="./btnIcon.vue" />
+<demo path="./btnIcon.vue" />
 
 ### 方式二, 插槽
 
-<preview path="./btnIcon2.vue" />
+<demo path="./btnIcon2.vue" />
 
 ## 不同尺寸(size)
 
 size 提供三个尺寸: sm、base(def)、lg 。
 
-<preview path="./btnSize.vue" />
+<demo path="./btnSize.vue" />
 
 ## API
 

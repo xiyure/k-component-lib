@@ -10,7 +10,7 @@ title: filterForm 过滤表单
 注意：使用`render`时注意数据绑定方式，如：(item: any) => <k-input type={'textarea'} v-model={item['comment']} />
 :::
 
-<preview path="./def.vue" />
+<demo path="./def.vue" />
 
 ## API
 

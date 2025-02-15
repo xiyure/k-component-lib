@@ -16,7 +16,7 @@ title: TimePicker 时间选择器
 
 提供了两种交互方式：默认情况下通过鼠标滚轮进行选择，打开arrow-control属性则通过界面上的箭头进行选择。
 
-<preview path="./def.vue" />
+<demo path="./def.vue" />
 
 ## 限制时间选择范围
 
@@ -24,7 +24,7 @@ title: TimePicker 时间选择器
 
 通过 `disabledHours`，`disabledMinutes` 和 `disabledSeconds` 限制可选时间范围。,
 
-<preview path="./limitTimePicker.vue" />
+<demo path="./limitTimePicker.vue" />
 
 ## 任意时间范围
 
@@ -32,7 +32,7 @@ title: TimePicker 时间选择器
 
 添加`is-range`属性即可选择时间范围。 同样支持 `arrow-control` 属性。
 
-<preview path="./rangeTimePicker.vue" />
+<demo path="./rangeTimePicker.vue" />
 
 ## API
 

@@ -16,13 +16,13 @@ title: tooltips 气泡框
 
 使用 `content` 属性来决定 `hover` 时的提示信息。 由 `placement` 属性决定展示效果： `placement`属性值为：[方向]-[对齐位置]；四个方向：`top`、left、`right`、`bottom`；三种对齐位置：`start`, `end`，默认为空。 如 `placement="left-end"`，则提示信息出现在目标元素的左侧，且提示信息的底部与目标元素的底部对齐。
 
-<preview path="./def.vue" />
+<demo path="./def.vue" />
 
 ## 自定义颜色
 
 使用`color`属性来自定义气泡框的颜色, 使用`textColor`属性来自定义提示信息的颜色。
 
-<preview path="./colorTooltips.vue" />
+<demo path="./colorTooltips.vue" />
 
 ## 主题
 
@@ -34,7 +34,7 @@ title: tooltips 气泡框
 
 通过设置 `effect` 来修改主题，默认值为 `dark`.
 
-<preview path="./themeTooltips.vue" />
+<demo path="./themeTooltips.vue" />
 
 ## 更多内容的文字提示
 
@@ -42,7 +42,7 @@ title: tooltips 气泡框
 
 用具名 `slot content`，替代`tooltip`中的`content`属性。
 
-<preview path="./slotContentTooltips.vue" />
+<demo path="./slotContentTooltips.vue" />
 
 ## 高级扩展
 
@@ -54,7 +54,7 @@ title: tooltips 气泡框
 
 事实上，`Tooltip` 是一个基于 `KPopper` 的扩展，您可以使用 `KPopper` 中允许的任何属性。
 
-<preview path="./advancedTooltips.vue" />
+<demo path="./advancedTooltips.vue" />
 
 :::tip
 `Tooltip` 内不支持 `router-link` 组件，请使用 `vm.$router.push` 代替。
@@ -70,7 +70,7 @@ title: tooltips 气泡框
 `content` 属性虽然支持传入 `HTML` 片段，但是在网站上动态渲染任意 `HTML` 是非常危险的，因为容易导致[XSS](https://en.wikipedia.org/wiki/Cross-site_scripting) 攻击。 因此在 `raw-content` 打开的情况下，请确保 `content` 的内容是可信的，**永远不要**将用户提交的内容赋值给 `content` 属性。
 :::
 
-<preview path="./htmlContentTooltips.vue" />
+<demo path="./htmlContentTooltips.vue" />
 
 ## 虚拟触发
 
@@ -80,7 +80,7 @@ title: tooltips 气泡框
 需要注意的是，虚拟触发的 `tooltip` 是受控组件，因此你必须自己去控制 `tooltip` 是否显示，**你将无法**通过点击空白处来关闭 `tooltip`。
 :::
 
-<preview path="./virtualTriggerTooltips.vue" />
+<demo path="./virtualTriggerTooltips.vue" />
 
 ## 单例模式
 
@@ -90,19 +90,19 @@ Tooltip 可以作为单例，也就是是说你可以同时有多个触发同一
 已知问题：使用单例模式时，弹出窗口会从意料之外的位置弹出。
 :::
 
-<preview path="./singleTooltips.vue" />
+<demo path="./singleTooltips.vue" />
 
 ## 受控模式
 
 `Tooltip` 可以通过父组件使用 `:visible` 来控制它的显示与关闭。
 
-<preview path="./controlledTooltips.vue" />
+<demo path="./controlledTooltips.vue" />
 
 ## 自定义动画
 
 `Tooltip` 可以自定义动画，你可以根据需要自行设置所需的动画方法。
 
-<preview path="./customAnimationTooltips.vue" />
+<demo path="./customAnimationTooltips.vue" />
 
 ## API
 

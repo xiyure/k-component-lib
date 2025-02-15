@@ -8,7 +8,7 @@ title: 列头筛选
 
 对应列设置`filters`可单独筛选出所需值
 
-<preview path="./useTableFilter.vue" />
+<demo path="./useTableFilter.vue" />
 
 :::tip 提示
 由于这个组件是基于[Vxe-Table](https://vxetable.cn/#/table/api)开发，他的原始属性未被更改，故不在此重复。请跳转查看原组件的相应文档。

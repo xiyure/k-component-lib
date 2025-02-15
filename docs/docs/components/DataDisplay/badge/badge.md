@@ -12,7 +12,7 @@ title: badge 徽章
 
 数量值可接受 `Number` 或 `String`。
 
-<preview path="./def.vue" />
+<demo path="./def.vue" />
 
 ## 最大值
 
@@ -20,7 +20,7 @@ title: badge 徽章
 
 由 `max` 属性定义，接受 `Number` 值。 请注意，仅在值也是 `Number` 时起作用。
 
-<preview path="./badgeMax.vue" />
+<demo path="./badgeMax.vue" />
 
 ## 自定义显示内容
 
@@ -28,7 +28,7 @@ title: badge 徽章
 
 当 `value` 是 `String` 时，可以显示自定义文字。
 
-<preview path="./customizeBadge.vue" />
+<demo path="./customizeBadge.vue" />
 
 ## 小红点
 
@@ -36,13 +36,13 @@ title: badge 徽章
 
 使用 `is-dot` 属性。 是个布尔值。
 
-<preview path="./redDotBadge.vue" />
+<demo path="./redDotBadge.vue" />
 
 ## 偏移量
 
 设置徽章点的偏移，格式是[左，顶部]， 代表状态点从左侧和默认位置顶部的偏移。
 
-<preview path="./offsetBadge.vue" />
+<demo path="./offsetBadge.vue" />
 
 ## API
 

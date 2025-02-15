@@ -12,13 +12,13 @@ title: Radio 单选框
 
 要使用 `Radio` 组件，只需要设置`v-model`绑定变量， 选中意味着变量的值为相应 `Radio value`属性的值， `value`可以是`String`、`Number` 或 `Boolean`。
 
-<preview path="./basic.vue" />
+<demo path="./basic.vue" />
 
 ## 自定义颜色
 
 使用`color`属性可以自定义单选框的颜色。
 
-<preview path="./colorRadio.vue" />
+<demo path="./colorRadio.vue" />
 
 ## 禁用状态
 
@@ -26,7 +26,7 @@ title: Radio 单选框
 
 你只需要为单选框设置 `disabled` 属性就能控制其禁用状态。
 
-<preview path="./disabled.vue" />
+<demo path="./disabled.vue" />
 
 ## 单选框组
 
@@ -34,7 +34,7 @@ title: Radio 单选框
 
 结合`k-radio-group`元素和子元素`k-radio`可以实现单选组， 为 `k-radio-group` 绑定 `v-model`，再为 每一个 `k-radio` 设置好 `label` 属性即可， 另外，还可以通过 `change` 事件来响应变化，它会传入一个参数 `value` 来表示改变之后的值。
 
-<preview path="./radioButtonGroup.vue" />
+<demo path="./radioButtonGroup.vue" />
 
 ## 按钮样式
 
@@ -42,7 +42,7 @@ title: Radio 单选框
 
 只需要添加`button`属性即可， 此外，还提供了 size 属性用来控制单选框的大小。
 
-<preview path="./buttonStyle.vue" />
+<demo path="./buttonStyle.vue" />
 
 ## API
 

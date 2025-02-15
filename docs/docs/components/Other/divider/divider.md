@@ -10,23 +10,23 @@ title: Divider 分割线
 
 对不同段落的文本进行分割。
 
-<preview path="./def.vue" />
+<demo path="./def.vue" />
 
 ## 设置文案
 
 可以在分割线上自定义文本内容。
 
-<preview path="./textLine.vue" />
+<demo path="./textLine.vue" />
 
 ## 虚线
 
 您可以设置分隔符的样式。
 
-<preview path="./dottedLine.vue" />
+<demo path="./dottedLine.vue" />
 
 ## 垂直分隔线
 
-<preview path="./vertical.vue" />
+<demo path="./vertical.vue" />
 
 ## API
 

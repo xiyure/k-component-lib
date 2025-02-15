@@ -8,15 +8,15 @@ title: View 视图
 
 通过v-slot绑定dataItem中value字段可实现自定义视图渲染。
 
-<preview path="./def.vue" />
+<demo path="./def.vue" />
 
 ## 树形结构
 
-<preview path="./treeView.vue" />
+<demo path="./treeView.vue" />
 
 ## 拖拽排序
 
-<preview path="./dragSort.vue" />
+<demo path="./dragSort.vue" />
 
 ## API
 
