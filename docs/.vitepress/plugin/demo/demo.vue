@@ -10,12 +10,14 @@ import { useCodeFold } from './hooks/use-codefold';
 import { useCodeCopy } from './hooks/use-codecopy';
 import { KMessage } from '@ksware/ksw-ux';
 import hljs from 'highlight.js/lib/core';
-import javascript from 'highlight.js/lib/languages/javascript';
+import './highlightjs.css'
 import xml from 'highlight.js/lib/languages/xml';
+import javascript from 'highlight.js/lib/languages/javascript';
+import css from 'highlight.js/lib/languages/css';
 
-// 注册语言支持
-hljs.registerLanguage('javascript', javascript);
 hljs.registerLanguage('xml', xml);
+hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('css', css);
 
 const props = defineProps({
   path: {
@@ -92,7 +94,7 @@ const highlightedCode = computed(() => {
   if (!sourceCode.value) return ''
   try {
     const highlighted = hljs.highlight(sourceCode.value, { 
-      language: props.suffixName === 'vue' ? 'xml' : props.suffixName 
+      language: props.suffixName === 'vue' ? 'xml' : props.suffixName
     }).value
     return `<pre><code class="language-${props.suffixName}">${highlighted}</code></pre>`
   } catch (e) {
