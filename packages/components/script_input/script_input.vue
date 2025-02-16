@@ -295,6 +295,13 @@ watch(
   { immediate: true }
 );
 watch(
+  () => props.showPassword,
+  (newVal: boolean) => {
+    _methods.setPasswordMode(newVal);
+  },
+  { immediate: true }
+);
+watch(
   () => [props.modelValue, props.options],
   () => {
     const type = typeof props.modelValue;
@@ -318,13 +325,6 @@ watch(
     });
   },
   { immediate: true, deep: true }
-);
-watch(
-  () => props.showPassword,
-  (newVal: boolean) => {
-    _methods.setPasswordMode(newVal);
-  },
-  { immediate: true }
 );
 watch(
   () => props.contentType,
