@@ -105,27 +105,27 @@ export const logicOptions = [
         logic: 'equal',
         handler(a: string, b: string, ignoreCase: boolean) {
           if (ignoreCase) {
-            return a.toLowerCase() === b.toLowerCase();
+            return String(a).toLowerCase() === String(b).toLowerCase();
           }
-          return a === b;
+          return String(a) === String(b);
         }
       },
       {
         logic: 'notEqual',
         handler(a: string, b: string, ignoreCase: boolean) {
           if (ignoreCase) {
-            return a.toLowerCase() === b.toLowerCase();
+            return String(a).toLowerCase() === String(b).toLowerCase();
           }
-          return a !== b;
+          return String(a) !== String(b);
         }
       },
       {
         logic: 'contain',
         handler(a: string, b: string, ignoreCase: boolean) {
           if (ignoreCase) {
-            return a.toLowerCase() === b.toLowerCase();
+            return String(a).toLowerCase() === String(b).toLowerCase();
           }
-          return a.includes(b);
+          return String(a).includes(String(b));
         }
       },
       {
