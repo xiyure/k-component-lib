@@ -73,6 +73,9 @@ export function useCheckbox(
     });
   // 处理复选框选中数据
   const handleCheckboxData = (row: RowData | RowData[], isChecked: boolean) => {
+    if (checkboxConfig.value.reserve === false) {
+      return;
+    }
     const rowData = Array.isArray(row) ? row : [row];
     for (const rowDataItem of rowData) {
       const row = $table.value?.getRowById(rowDataItem[keyField.value]);
@@ -95,7 +98,7 @@ export function useCheckbox(
         checkedLeafData.delete(row[keyField.value]);
       }
     }
-    if (row.children && row.children.length) {
+    if (checkboxConfig.value.checkStrictly !== true && row.children && row.children.length) {
       for (const childRow of row.children) {
         handleTreeCheckboxData(childRow, isChecked);
       }
@@ -103,6 +106,7 @@ export function useCheckbox(
   };
   async function resetCheckboxStatus() {
     await $table.value?.clearCheckboxRow();
+    await $table.value?.clearCheckboxReserve();
     if (checkedLeafData.size === 0) {
       return;
     }

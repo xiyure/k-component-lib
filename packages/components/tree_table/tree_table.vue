@@ -274,6 +274,7 @@
         @size-change="changePageSize"
         @change="
           (currentPage: number, pageSize: number) => {
+            resetCheckboxStatus();
             emits('page-change', currentPage, pageSize);
           }
         "
@@ -574,7 +575,6 @@ const isPaging = computed(() => props.showPage && !props.useTree && !props.simpl
 // 页面展示的表格数据
 const visibleData = computed(() => filterTableData());
 const showTableData = computed(() => {
-  resetCheckboxStatus();
   const { isRemotePaging } = paginationConfig.value;
   if (!isPaging.value || props.isServerPaging || isRemotePaging) {
     return visibleData.value;
@@ -997,6 +997,7 @@ function refreshAdvancedFilter(
       props.searchFunction(item.showValue);
     }
   });
+  resetCheckboxStatus();
   if (isReturn) {
     return;
   }
@@ -1018,6 +1019,7 @@ function refreshAdvancedFilter(
 }
 function filter(searchStr: string) {
   query.value = searchStr ?? '';
+  resetCheckboxStatus();
 }
 function advancedFilterShow() {
   if (typeof props.onAdvancedFilterShow === 'function') {
@@ -1074,6 +1076,7 @@ async function clearAdvancedFilter() {
     return;
   }
   await nextTick();
+  resetCheckboxStatus();
   const advancedFilterObj = tableFilterRef.value?.[0]?.clearFilter?.();
   const { conditionInfo, tableData } = advancedFilterObj ?? {};
   refreshAdvancedFilter(conditionInfo, tableData, false);
