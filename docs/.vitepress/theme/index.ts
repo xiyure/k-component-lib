@@ -30,7 +30,7 @@ import { KswIcon } from 'ksw-vue-icon';
  *  npm
  */
 import install from '@ksware/ksw-ux';
-import '@ksware/ksw-ux/kingsware-ui/style.css';
+// import '@ksware/ksw-ux/kingsware-ui/style.css'; //使用 cdn 导入
 
 export default {
   ...DefaultTheme,
@@ -46,24 +46,22 @@ export default {
     // 注入第三方库
     DefaultTheme.enhanceApp(ctx);
     if (typeof window !== 'undefined') {
-      document.addEventListener('DOMContentLoaded', async () => {
-        ctx.app.use(install);
-        ctx.app.use(KswIcon);
-        ctx.app.use(NolebaseGitChangelogPlugin);
-        // ctx.app.component('demo-preview', Container);
-        ctx.app.component('demo', demo);  //使用新的 demo 组件
-        ctx.app.component('DocTitle', DocTitle);
-        ctx.app.provide(InjectionKey, {
-          // 配置
-          layoutSwitch: {
-            disableAnimation: false,
-            defaultMode: 1,
-          },
-          spotlight: {
-            defaultToggle: true,
-          },
-        } as Options);
-      });
+      ctx.app.use(install);
+      ctx.app.use(KswIcon);
+      ctx.app.use(NolebaseGitChangelogPlugin);
+      // ctx.app.component('demo-preview', Container);
+      ctx.app.component('demo', demo);  //使用新的 demo 组件
+      ctx.app.component('DocTitle', DocTitle);
+      ctx.app.provide(InjectionKey, {
+        // 配置
+        layoutSwitch: {
+          disableAnimation: false,
+          defaultMode: 1,
+        },
+        spotlight: {
+          defaultToggle: true,
+        },
+      } as Options);
     }
   },
   setup() {

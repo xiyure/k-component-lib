@@ -1,7 +1,6 @@
 import path from 'path';
 import { defineConfig } from 'vite';
 import vueJsx from '@vitejs/plugin-vue-jsx';
-import { chunkSplitPlugin } from 'vite-plugin-chunk-split';
 import {
   GitChangelog,
   GitChangelogMarkdownSection
@@ -10,29 +9,9 @@ import { visualizer } from 'rollup-plugin-visualizer';
 import { genApiDoc } from './.vitepress/plugin/api-doc.config';
 
 export default defineConfig({
-  // esbuild: {
-  //   minifySyntax: false,
-  //   minifyWhitespace: false,
-  //   minifyIdentifiers: false,
-  // },
   plugins: [
     genApiDoc(),
     vueJsx(),
-    // chunkSplitPlugin({
-    //   strategy: 'default',
-    //   customSplitting: {
-    //     theme: [/theme\/index/],
-    //     elementPlus: ['element-plus'],
-    //     vxeTable: [/vxe-table/],
-    //     vxePcUi: [/vxe-pc-ui/],
-    //     'ksw-ux': [
-    //       /packages\/(components|templates|utils|style|interface|element-plus.ts)/,
-    //       /vue-i18n/
-    //     ],
-    //     'ksw-icon': [/ksw-vue-icon/],
-    //     demo: [/docs\/components\/General\/button\/*\.vue/]
-    //   }
-    // }),
     GitChangelog({
       repoURL: () => 'https://github.com/xiyure/k-component-lib',
       mapAuthors: [
@@ -87,7 +66,7 @@ export default defineConfig({
     }
   },
   optimizeDeps: {
-    exclude: ['@nolebase/vitepress-plugin-enhanced-readabilities/client', 'vitepress']
+    exclude: ['@nolebase/vitepress-plugin-enhanced-readabilities/client']
   },
   ssr: {
     noExternal: ['ksw-vue-icon', '@ksware/ksw-ux', 'vue-i18n', '@nolebase/*']
