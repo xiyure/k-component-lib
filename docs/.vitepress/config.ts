@@ -2,6 +2,7 @@ import { defineConfig } from 'vitepress';
 import path from 'path';
 import { fileURLToPath, URL } from 'node:url';
 import del from 'rollup-plugin-delete';
+import { withI18n } from 'vitepress-i18n';
 import nav from './configs/nav';
 import { generateRewrites, sidebarRewrites } from './plugin/rewritePath';
 // import { containerPreview, componentPreview } from './plugin/demo-preview';
@@ -11,7 +12,7 @@ let iconCounter = 0;
 const iconGroupSize = 150;
 
 // https://vitepress.dev/reference/site-config
-export default defineConfig({
+const vitePressOptions = {
   lang: 'zh-CN',
   title: 'ksw-ux',
   description: 'ksw-ux 是一个基于 Element-Plus 的 UI 组件库',
@@ -64,43 +65,10 @@ export default defineConfig({
 
     logo: { src: '/klogo.svg', width: 24, height: 24 },
 
-    docFooter: {
-      prev: '上一页',
-      next: '下一页'
-    },
-
-    outline: {
-      level: 'deep',
-      label: '页面导航'
-    },
-
-    langMenuLabel: '多语言',
-    returnToTopLabel: '回到顶部',
-    sidebarMenuLabel: '菜单',
-    darkModeSwitchLabel: '主题',
-    lightModeSwitchTitle: '切换到浅色模式',
-    darkModeSwitchTitle: '切换到深色模式',
-    outlineTitle: '本页目录',
-    lastUpdatedText: '上次更新',
 
     search: {
       provider: 'local',
       options: {
-        translations: {
-          button: {
-            buttonText: '搜索文档',
-            buttonAriaLabel: '搜索文档'
-          },
-          modal: {
-            noResultsText: '无法找到相关结果',
-            resetButtonTitle: '清除查询条件',
-            footer: {
-              selectText: '选择',
-              navigateText: '切换',
-              closeText: '关闭'
-            }
-          }
-        },
         // disableDetailedView: true,
         detailedView: true
       }
@@ -200,4 +168,11 @@ export default defineConfig({
       }
     }
   }
-});
+};
+
+const vitePressI18nOptions = {
+  locales: ['zhHans'],
+  searchProvider: 'local',
+};
+
+export default defineConfig(withI18n(vitePressOptions, vitePressI18nOptions));
