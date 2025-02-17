@@ -507,7 +507,8 @@ const filterColumns = computed(() => {
   const validColumns = getValidTreeData(
     cloneDeep(columns.value),
     'group',
-    (dataItem) => !dataItem.type &&
+    (dataItem) =>
+      !dataItem.type &&
       dataItem.title &&
       dataItem.field &&
       (filterAll !== false || dataItem.visible !== false) &&
@@ -590,6 +591,9 @@ const dataLength = computed(() => {
 });
 
 const { setTableData, sortChange, dragSort, _methods } = useMethods(props, tableInstance);
+
+const fullTableData = computed(() => xeTableData.value);
+
 const {
   checkedDataSize,
   checkboxConfig,
@@ -599,7 +603,7 @@ const {
   clearCheckedData,
   resetCheckboxStatus,
   _checkboxMethods
-} = useCheckbox(tableInstance, showTableData, props);
+} = useCheckbox(tableInstance, showTableData, fullTableData, props);
 watch(
   [() => props.data, () => props.data?.length],
   () => {
@@ -659,9 +663,9 @@ watch(
 let tableDataMap: Map<string | number, RowData> = new Map();
 const treeDataMap: Map<string | number, RowData> = new Map();
 function filterTableData() {
-  const filterData = filterConditionInfo.value?.conditionList?.length ?
-    newFilterData.value :
-    xeTableData.value;
+  const filterData = filterConditionInfo.value?.conditionList?.length
+    ? newFilterData.value
+    : xeTableData.value;
   const { strict, searchMethod, ignoreCase = false } = props.searchConfig ?? {};
   const searchKey = query.value.trim().replace(/\\/g, '\\\\');
   if (props.isRemoteQuery || props.searchConfig?.isRemoteQuery) {
@@ -683,16 +687,18 @@ function filterTableData() {
     return null;
   })
   .filter((field: string | null) => field !== null);
-  let tableData = filterData.filter((dataItem: any) => fieldList.some((field: string) => {
-    const cellLabel = tableInstance.value.getCellLabel(dataItem, field);
-    if (strict === true) {
-      return cellLabel.toString() === searchKey;
-    }
-    if (ignoreCase) {
-      return String(cellLabel).toLowerCase().indexOf(searchKey.toLowerCase()) !== -1;
-    }
-    return String(cellLabel).indexOf(searchKey) !== -1;
-  })) as any;
+  let tableData = filterData.filter((dataItem: any) =>
+    fieldList.some((field: string) => {
+      const cellLabel = tableInstance.value.getCellLabel(dataItem, field);
+      if (strict === true) {
+        return cellLabel.toString() === searchKey;
+      }
+      if (ignoreCase) {
+        return String(cellLabel).toLowerCase().indexOf(searchKey.toLowerCase()) !== -1;
+      }
+      return String(cellLabel).indexOf(searchKey) !== -1;
+    })
+  ) as any;
   // 当表格数据为树时，筛选后的数据应展示完整的子树
   if (props.useTree) {
     const { rowField } = getTreeConfigField();
@@ -772,7 +778,9 @@ function getParentNode(dataItem: RowData, parentField: string, rowField: string)
 // 筛选后的数据与用户输入数据的顺序保持一致
 function sortFunc(targetData: any[], sortData: any, key: string | number) {
   const sortKeyList = sortData.map((item: any) => item[key]);
-  return targetData.sort((a, b) => (sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1));
+  return targetData.sort((a, b) =>
+    sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1
+  );
 }
 
 function clearSearch() {
@@ -900,20 +908,20 @@ async function initTransfer() {
 function updateTransfer() {
   flatColumns.value = treeDataToArray(columns.value, 'group');
   originData.value = flatColumns.value
-  .map((item: Column) => {
-    if (item.field) {
-      return {
-        label: item.title || item.type || 'undefined',
-        key: item.field
-      };
-    }
-    return null;
-  })
-  .filter((item: { label: string; key: string } | null) => item !== null);
+    .map((item: Column) => {
+      if (item.field) {
+        return {
+          label: item.title || item.type || 'undefined',
+          key: item.field
+        };
+      }
+      return null;
+    })
+    .filter((item: { label: string; key: string } | null) => item !== null);
   selectData.value = flatColumns.value
-  .filter((col: Column) => col.visible !== false)
-  .map((item: Column) => item.field)
-  .filter((item) => item !== undefined);
+    .filter((col: Column) => col.visible !== false)
+    .map((item: Column) => item.field)
+    .filter((item) => item !== undefined);
   defaultHeader.value = [...selectData.value];
 }
 function hideColumn(column: Column) {
@@ -926,14 +934,14 @@ function hideColumn(column: Column) {
   }
   columnItem.visible = false;
   selectData.value = flatColumns.value
-  .filter((col: Column) => col.visible !== false)
-  .map((item: Column) => {
-    if (item.title && item.field) {
-      return item.field;
-    }
-    return null;
-  })
-  .filter((item) => item !== null);
+    .filter((col: Column) => col.visible !== false)
+    .map((item: Column) => {
+      if (item.title && item.field) {
+        return item.field;
+      }
+      return null;
+    })
+    .filter((item) => item !== null);
   emits('hide-column', column);
 }
 function sortTableHeader(fieldList: { label: string; key: string }[]) {
@@ -1098,9 +1106,7 @@ function getRowById(id: string | number) {
     return targetRow;
   }
   const tempRecords = tableInstance.value.getInsertRecords();
-  const tempRow = tempRecords.find(
-    (item: Row) => item[rowConfig.value.keyField] === id
-  );
+  const tempRow = tempRecords.find((item: Row) => item[rowConfig.value.keyField] === id);
   return tempRow ?? null;
 }
 function getVisibleData() {
@@ -1125,9 +1131,9 @@ function getHeaderControllerData(): TableHeaderControl[] {
   }
   const selectSet = new Set(selectData.value);
   const transferInstance = tableTransferRef.value?.[0];
-  const _originData = transferInstance ?
-    transferInstance.getTransferData().sourceData :
-    originData.value;
+  const _originData = transferInstance
+    ? transferInstance.getTransferData().sourceData
+    : originData.value;
   const newTransferData = _originData.map((item: TableHeaderControl) => ({
     label: item.label,
     key: item.key,
@@ -1157,8 +1163,8 @@ function setHeaderControllerData(transferData: TableHeaderControl[]) {
       visible: item.visible !== false
     })) ?? [];
   selectData.value = originData.value
-  .filter((item: TableHeaderControl) => item.visible !== false)
-  .map((item: TableHeaderControl) => item.key);
+    .filter((item: TableHeaderControl) => item.visible !== false)
+    .map((item: TableHeaderControl) => item.key);
   sortTableHeader(transferData);
   resetColumnWidth(transferData);
 }
