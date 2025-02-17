@@ -33,7 +33,7 @@
     "vitepress-sidebar": "^1.26.0"
   },
   "dependencies": {
-    "@ksware/ksw-ux": "^1.1.8",
+    "@ksware/ksw-ux": "1.1.12beta2",
     "@vitejs/plugin-vue-jsx": "^4.0.1",
     "ksw-vue-icon": "^2.2.35",
     "three": "^0.172.0"
