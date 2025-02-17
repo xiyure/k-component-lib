@@ -76,6 +76,12 @@ Dialog 的内容是懒渲染的——在被第一次打开之前，传入的默�
 
 <demo path="./dragDialog.vue" />
 
+## 可伸缩模式
+
+启动use-resizable模式，加强你的对话框体验。
+
+<demo path="./resizableDialog.vue" />
+
 ## API
 
 <API src="./dialog.json" lang="zh"></API>

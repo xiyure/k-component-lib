@@ -161,6 +161,13 @@
       "description": "和原生的CSS的z-index相同，改变z轴的顺序",
       "defaultValue": "",
       "tip": ""
+    },
+    {
+      "displayName": "use-resizable",
+      "type": "boolean",
+      "description": "是否使用可调整大小的功能",
+      "defaultValue": "false",
+      "tip": ""
     }
   ],
   "events": [
