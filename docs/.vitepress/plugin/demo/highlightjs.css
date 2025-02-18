@@ -75,7 +75,7 @@ Original One Light Syntax theme from https://github.com/atom/one-light-syntax
   text-decoration: underline
 }
 
-html.dark {
+.dark {
   /*
   Atom One Dark by Daniel Gamage
   Original One Dark Syntax theme from https://github.com/atom/one-dark-syntax

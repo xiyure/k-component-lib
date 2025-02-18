@@ -1,5 +1,4 @@
-html.dark .shiki,
-html.dark .shiki span {
+.dark .shiki span {
   color: var(--shiki-dark) !important;
   background-color: var(--shiki-dark-bg) !important;
   /* Optional, if you also want font styles */

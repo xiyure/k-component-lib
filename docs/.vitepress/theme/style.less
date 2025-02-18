@@ -6,10 +6,16 @@
 
   --vp-code-block-bg: #f9fafb;
   --vp-c-divider: rgba(0, 0, 0, 0.1);
+
+  --glassmorphism-bg: rgba(255, 255, 255, 0.8);
+  --glassmorphism-filter: saturate(180%) blur(20px);
+  --glassmorphism-search-button-bg: rgba(0, 0, 0, 0.04);
 }
 
-html.dark {
+.dark {
   --vp-code-block-bg: var(--vp-c-bg-alt, #161618);
+  --glassmorphism-bg: rgba(14, 2, 36, 0.8);
+  --glassmorphism-search-button-bg: rgba(0, 0, 0, 0.3);
 }
 
 .demo-block .xl-button {
@@ -50,16 +56,22 @@ div.VPLocalNav.has-sidebar > div > div > div > div.outline {
 header.VPNav {
   .VPNavBar {
     &.home {
-      background: rgba(255, 255, 255, 0.1);
       // 背景毛玻璃
-      backdrop-filter: saturate(180%) blur(10px);
+      background: var(--glassmorphism-bg);
+      backdrop-filter: var(--glassmorphism-filter);
       .wrapper {
         padding: 0;
         width: 1280px;
         margin: auto;
       }
     }
-    &.has-sidebar.top {
+    &.top {
+      background-color: transparent;
+      .dark  & {
+        backdrop-filter: none;
+      }
+    }
+    &.has-sidebar {
       .wrapper {
         .container {
           .title {
@@ -67,12 +79,17 @@ header.VPNav {
           }
           .content {
             transition: none;
-            // padding-left: max(32px, var(--vp-sidebar-width));
           }
-          .content-body {
-            // transition: none;
-            // background: transparent!important;
-          }
+        }
+      }
+    }
+    .wrapper {
+      .container {
+        .title {
+          transition: none;
+        }
+        .content {
+          transition: none;
         }
       }
     }
@@ -84,18 +101,15 @@ header.VPNav {
 }
 
 @media (min-width: 960px) {
-  .VPNavBar:not(.has-sidebar):not(.home.top) {
-    background-color: transparent !important;
-    .divider {
-      display: none !important;
+  header.VPNav{
+    .VPNavBar:not(.has-sidebar):not(.top.home) {
+      background-color: var(--vp-nav-bg-color);
+      &.home {
+        background-color: var(--glassmorphism-bg);
+      }
     }
   }
-  .content-body {
-    // background: transparent!important;
-  }
-  .VPContent.is-home {
-    // padding-top: 0 !important;
-  }
+  
 }
 
 @media (min-width: 768px) {
@@ -104,7 +118,7 @@ header.VPNav {
     padding-right: 24px;
   }
   .DocSearch-Button {
-    background: transparent;
-    border: 1px solid var(--vp-c-divider);
+    background: var(--glassmorphism-search-button-bg);
+    // border: 1px solid var(--vp-c-divider);
   }
 }

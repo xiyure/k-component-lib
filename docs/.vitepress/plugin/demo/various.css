@@ -11,7 +11,7 @@
   --component-preview-primary-color: var(--vp-c-brand);
 }
 
-.dark:root {
+.dark {
   --component-preview-bg: var(--vp-c-bg);
   --component-preview-soft: var(--vp-c-bg-soft);
   --component-preview-mute: var(--vp-c-bg-mute);
