@@ -1,5 +1,6 @@
 import { ref, computed, nextTick, Ref } from 'vue';
 import { VxeTablePropTypes, VxeTableInstance } from 'vxe-table';
+import { cloneDeep } from 'lodash-es';
 import { TreeTableProps, RowData } from '../type';
 
 type Row = VxeTablePropTypes.Row;
@@ -178,8 +179,39 @@ export function useCheckbox(
   function getCheckboxRecords(isFullData = false): Row[] {
     if (!isFullData) {
       return $table.value?.getCheckboxRecords();
-    } 
-    return fullTableData.value.filter((row) => Array.from(checkedLeafData).includes(row[keyField.value]));
+    }
+    const allCheckedData = cloneDeep(checkedLeafData);
+    if (props.useTree) {
+      const record = new Map();
+      const rowField = props.treeConfig?.rowField ?? 'id';
+      const parentField = props.treeConfig?.parentField ?? 'pid';
+      for (const row of fullTableData.value) {
+        if (!record.has(row[rowField])) {
+          record.set(row[rowField], {
+            id: row[rowField],
+            pid: row[parentField],
+            childrenSize: 0,
+            current: 0
+          });
+        }
+        if (record.has(row[parentField])) {
+          record.get(row[parentField]).childrenSize++;
+        }
+      }
+      for (const id of checkedLeafData.values()) {
+        let parent = record.get(record.get(id).pid);
+        parent && parent.current++;
+        while (parent) {
+          if (parent.current !== parent.childrenSize) {
+            break;
+          }
+          allCheckedData.add(parent.id);
+          parent = record.get(parent.pid);
+          parent && parent.current++;
+        }
+      }
+    }
+    return fullTableData.value.filter((row) => allCheckedData.has(row[keyField.value]));
   }
 
   return {
