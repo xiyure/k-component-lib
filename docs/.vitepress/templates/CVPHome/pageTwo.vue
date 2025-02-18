@@ -24,7 +24,6 @@
             class=""
             :label="item.label"
             :dec="item.dec"
-            :image="item.image"
             :total="item.total"
           >
           <img class="w-full h-full bg-slate-100 rounded-2xl" :src="item.image" alt="">
@@ -35,9 +34,14 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 import { ref } from 'vue';
 import card from './card.vue';
+
+function getImageUrl(name) {
+  return new URL(`../assets/${name}`, import.meta.url).href
+}
+
 
 const rightItems = [
   {
@@ -60,42 +64,42 @@ const componentValue = [
     label: '通用',
     dec: '通用组件',
     total: 10,
-    image: '/.vitepress/templates/assets/cpm_img.svg',
+    image: getImageUrl('cpm_img.svg'),
   },
   {
     id: 1,
     label: '导航类组件',
     dec: '信息反馈',
     total: 10,
-    image: '/.vitepress/templates/assets/cpm_img1.svg',
+    image: getImageUrl('cpm_img1.svg'),
   },
   {
     id: 2,
     label: '数据输入',
     dec: '表单组件',
     total: 10,
-    image: '/.vitepress/templates/assets/cpm_img2.svg',
+    image: getImageUrl('cpm_img2.svg'),
   },
   {
     id: 3,
     label: '数据展示',
     dec: '展示数据组件',
     total: 10,
-    image: '/.vitepress/templates/assets/cpm_img3.svg',
+    image: getImageUrl('cpm_img3.svg'),
   },
   {
     id: 4,
     label: '反馈',
     dec: '反馈组件',
     total: 10,
-    image: '/.vitepress/templates/assets/cpm_img4.svg',
+    image: getImageUrl('cpm_img4.svg'),
   },
   {
     id: 5,
     label: '工具函数',
     dec: '信息反馈',
     total: 10,
-    image: '/.vitepress/templates/assets/cpm_img5.svg',
+    image: getImageUrl('cpm_img5.svg'),
   },
 ];
 </script>

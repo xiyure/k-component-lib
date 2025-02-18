@@ -5,11 +5,11 @@
       <div class="home-page1-bg h-screen w-screen opacity-50 fixed"></div>
       <div class="h-fit z-10" style="width: 1280px">
         <!-- 第一页 -->
-        <page-one></page-one>
+        <pageOne />
         <!-- 第二页, 组件 -->
-        <page-two class="mt-24"></page-two>
+        <pageTwo class="mt-24" />
         <!-- 第三页, 模板 -->
-        <page-three class="mt-24"></page-three>
+        <pageThree class="mt-24" />
 
         <div
           class="w-full h-24 flex justify-between items-center py-4 border-t border-gray-200 mt-20"
