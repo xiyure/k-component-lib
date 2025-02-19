@@ -121,6 +121,7 @@
                 layout: 'total,->, sizes, prev, pager, next, jumper',
                 pageSize: 10,
               }"
+              height="598px"
               use-ant-style
               hasSpace
             >

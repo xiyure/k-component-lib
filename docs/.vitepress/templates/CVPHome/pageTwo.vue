@@ -6,7 +6,7 @@
 * @version V3.0.0
 !-->
 <template>
-  <div class="page-two CVPHome-header relative mt-8">
+  <div class="page-two CVPHome-header relative">
     <div class="text-violet-500 dark:text-violet-300 text-xl font-bold">Components</div>
     <div class="break-words text-xl font-bold text-gray-900 dark:text-white mt-2">
       超过 90 个 UI 组件，为你的项目做好准备。
@@ -35,28 +35,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
 import card from './card.vue';
 
 function getImageUrl(name) {
   return new URL(`../assets/${name}`, import.meta.url).href
 }
-
-
-const rightItems = [
-  {
-    name: 'a',
-    icon: 'IconAdd',
-    label: '组件库',
-    dec: '组件库按人机交互分为五类: 通用,  数据录入, 数据展示, 导航, 信息反馈, 其他(公共方法)',
-  },
-  {
-    name: 'b',
-    icon: 'IconAdd',
-    label: '模板库',
-    dec: 'Form layouts,tables,modal dialogs-everything you need to build beautiful responsive web applications.',
-  },
-];
 
 const componentValue = [
   {

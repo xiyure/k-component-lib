@@ -8,17 +8,16 @@
 <template>
   <div
     ref="card"
-    class="card rounded-xl p-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-[rgba(0,0,0,0.16)] hover:shadow transition-all"
+    class="group card rounded-3xl p-3 cursor-pointer hover:bg-pink-300/10 dark:hover:bg-[rgba(0,0,0,0.16)] transition-all"
   >
-    <div class="card-body w-full h-56 rounded-lg shadow bg-slate-100">
+    <div class="card-body w-full h-56 rounded-2xl border bg-slate-100">
       <slot></slot>
     </div>
-    <div class="mt-2 flex flex-col">
-      <span class="font-bold">{{ props.label }}</span>
-      <div class="text-sm text-gray-600 dark:text-gray-200 flex gap-2">
-        <span class="">总计:</span>
-        <span class="font-bold">{{ props.total }}</span>
-        <!-- <span class="">{{ props.dec }}</span> -->
+    <div class="mt-4 flex flex-col">
+      <span class="font-bold group-hover:text-blue-600">{{ props.label }}</span>
+      <div class="mt-1.5 text-sm font-medium text-gray-500 dark:text-gray-400 flex gap-2">
+        <span>总计:</span>
+        <span>{{ props.total }}</span>
       </div>
     </div>
   </div>
