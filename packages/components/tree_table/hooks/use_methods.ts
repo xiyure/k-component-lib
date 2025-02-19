@@ -29,7 +29,7 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     } else {
       for (let i = 0; i < newRows.length; i++) {
         const row = newRows[i];
-        const { parentField } = getTreeField();
+        const { parentField } = getTreeConfigField();
         const parentRow = xeTableData.value.find((item: RowData) => item[keyField.value] === row[parentField]);
         if (!parentRow) {
           xeTableData.value.unshift(row);
@@ -73,7 +73,7 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
       let insertIndex: number = -1;
       for (let i = 0; i < newRows.length; i++) {
         const rowItem = newRows[i];
-        const { parentField } = getTreeField();
+        const { parentField } = getTreeConfigField();
         if (typeof row === 'object' && (row[parentField] === rowItem[parentField] || (!row[parentField] && !rowItem[parentField]))) {
           insertIndex = xeTableData.value.findIndex((item: RowData) => item[keyField.value] === row[keyField.value]);
           if (insertIndex !== -1) {
@@ -211,7 +211,7 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
       return;
     }
     getTreeExpandRecords();
-    const { rowField, parentField } = getTreeField();
+    const { rowField, parentField } = getTreeConfigField();
     const { fullData = [] } = $table.value?.getTableData() ?? {};
     const currentIds = transformTreeData(
       fullData,
@@ -266,7 +266,22 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     store.data = [...xeTableData.value];
     return xeTableData.value;
   }
-  function getTreeField() {
+  // 转换数据为Map结构，构建表格数据节点之间的关系
+  function convertToMap() {
+    const xeTableDataMap = new Map<string | number, { node: RowData; children: RowData[] }>();
+    const { rowField, parentField } = getTreeConfigField();
+    for (const node of xeTableData.value) {
+      if (!xeTableDataMap.has(node[rowField])) {
+        xeTableDataMap.set(node[rowField], { node, children: [] });
+      }
+      const parentNode = xeTableDataMap.get(node[parentField]);
+      if (parentNode) {
+        parentNode.children.push(node);
+      }
+    }
+    return xeTableDataMap;
+  }
+  function getTreeConfigField() {
     const rowField = props.treeConfig?.rowField ?? 'id';
     const parentField = props.treeConfig?.parentField ?? 'pid';
     return { rowField, parentField };
@@ -288,6 +303,7 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     },
     setTableData,
     sortChange,
-    dragSort
+    dragSort,
+    convertToMap
   };
 }

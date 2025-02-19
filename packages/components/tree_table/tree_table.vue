@@ -12,7 +12,7 @@
       <k-input
         v-model="searchStr"
         :suffix-icon="IconSearch"
-        :placeholder="t('searchTable')"
+        :placeholder="t?.('searchTable')"
         clearable
         @change="filter"
       />
@@ -28,9 +28,9 @@
       <div v-if="showDescription" class="k-table-info">
         <slot name="description" :total="dataLength" :condition-info="filterConditionInfo">
           <span v-if="!useTree">
-            {{ t('total') }}
+            {{ t?.('total') }}
             {{ dataLength }}
-            {{ t('data') }}
+            {{ t?.('data') }}
           </span>
           <span :title="headerText" class="condition-info">
             {{ headerText }}
@@ -45,7 +45,7 @@
               }
             "
           >
-            · {{ t('reset') }}
+            · {{ t?.('reset') }}
           </span>
         </slot>
       </div>
@@ -58,14 +58,14 @@
             <k-input
               v-model="searchStr"
               :suffix-icon="IconSearch"
-              :placeholder="t('searchTable')"
+              :placeholder="t?.('searchTable')"
               clearable
               @change="filter"
             />
           </template>
           <template v-else-if="widget.id === 'refresh'">
             <k-button
-              v-ksw_tooltip="t('refresh')"
+              v-ksw_tooltip="t?.('refresh')"
               @click="
                 () => {
                   emits('refresh');
@@ -98,7 +98,7 @@
               @hide="advancedFilterHide"
             >
               <template #reference="{ hasConfigCondition }">
-                <div v-ksw_tooltip="t('advancedFilter_c')">
+                <div v-ksw_tooltip="t?.('advancedFilter_c')">
                   <component
                     :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
                     v-if="widget.widget"
@@ -124,7 +124,7 @@
               "
             >
               <template #title>
-                <div v-ksw_tooltip="t('sizeControlTrigger')" class="text-sm">
+                <div v-ksw_tooltip="t?.('sizeControlTrigger')" class="text-sm">
                   <component
                     :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
                     v-if="widget.widget"
@@ -161,7 +161,7 @@
               "
             >
               <template #reference>
-                <div v-ksw_tooltip="t('columnHeaderController')" class="text-sm">
+                <div v-ksw_tooltip="t?.('columnHeaderController')" class="text-sm">
                   <component
                     :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
                     v-if="widget.widget"
@@ -180,7 +180,7 @@
                   noChecked: ' ',
                   hasChecked: ' '
                 }"
-                :titles="[t('unselectedFields'), t('selectedFields')]"
+                :titles="[t?.('unselectedFields'), t?.('selectedFields')]"
                 :drag="true"
                 @change="updateColumn"
                 @reset="updateColumn"
@@ -209,7 +209,7 @@
         :checkbox-config="checkboxConfig"
         :edit-config="editConfig"
         :column-config="columnConfig"
-        :empty-text="emptyText || t('noData')"
+        :empty-text="emptyText || t?.('noData')"
         :scroll-y="scrollY"
         :row-style="getRowStyle"
         :show-overflow="showOverflow"
@@ -307,7 +307,7 @@ import { KOperate } from '../operate';
 import { KTable } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
-import type { TreeTableProps, Column, TableHeaderControl, RowData, Row } from './type';
+import type { TreeTableProps, Column, TableHeaderControl, RowData, Row, TableCacheData } from './type';
 import type { ConditionInfo, Condition } from '../filter';
 import {
   genRandomStr,
@@ -426,6 +426,12 @@ const sizeList = [
   { label: '小号', value: 'small' },
   { label: '紧凑', value: 'mini' }
 ];
+// 缓存表格数据筛选过程中产生的临时数据
+const tableCacheData: TableCacheData = {
+  tableDataMap: new Map(),
+  treeDataMap: new Map(),
+  xeTableDataMap: new Map()
+}
 const tableTransferRef = ref();
 // 列配置
 const columns = ref<Column[]>([]);
@@ -590,7 +596,7 @@ const dataLength = computed(() => {
   return visibleData.value.length;
 });
 
-const { setTableData, sortChange, dragSort, _methods } = useMethods(props, tableInstance);
+const { setTableData, sortChange, dragSort, convertToMap, _methods } = useMethods(props, tableInstance);
 
 const fullTableData = computed(() => xeTableData.value);
 
@@ -603,7 +609,7 @@ const {
   clearCheckedData,
   resetCheckboxStatus,
   _checkboxMethods
-} = useCheckbox(tableInstance, showTableData, fullTableData, props);
+} = useCheckbox(tableInstance, props, fullTableData, showTableData, tableCacheData);
 watch(
   [() => props.data, () => props.data?.length],
   () => {
@@ -660,12 +666,11 @@ watch(
 );
 
 // 表格内容搜索
-let tableDataMap: Map<string | number, RowData> = new Map();
-const treeDataMap: Map<string | number, RowData> = new Map();
 function filterTableData() {
   const filterData = filterConditionInfo.value?.conditionList?.length
     ? newFilterData.value
     : xeTableData.value;
+  tableCacheData.xeTableDataMap = convertToMap();
   const { strict, searchMethod, ignoreCase = false } = props.searchConfig ?? {};
   const searchKey = query.value.trim().replace(/\\/g, '\\\\');
   if (props.isRemoteQuery || props.searchConfig?.isRemoteQuery) {
@@ -702,9 +707,9 @@ function filterTableData() {
   // 当表格数据为树时，筛选后的数据应展示完整的子树
   if (props.useTree) {
     const { rowField } = getTreeConfigField();
-    tableDataMap = new Map(xeTableData.value.map((item: RowData) => [item[rowField], item]));
+    tableCacheData.tableDataMap = new Map(xeTableData.value.map((item: RowData) => [item[rowField], item]));
     handleTreeData(tableData);
-    tableData = sortFunc([...treeDataMap.values()], xeTableData.value, rowField);
+    tableData = sortFunc([...tableCacheData.treeDataMap.values()], xeTableData.value, rowField);
   } else {
     updatePageNum(tableData.length);
   }
@@ -713,63 +718,47 @@ function filterTableData() {
 // 处理树形数据
 function handleTreeData(leafData: RowData[]) {
   const { parentField, rowField } = getTreeConfigField();
-  treeDataMap.clear();
+  tableCacheData.treeDataMap.clear();
   for (let index = 0; index < leafData.length; index++) {
     const dataItem = leafData[index];
     // 如果tableData中已存在该数据，则不再重复添加
-    const targetItem = treeDataMap.get(dataItem[rowField]);
+    const targetItem = tableCacheData.treeDataMap.get(dataItem[rowField]);
     if (targetItem) {
       continue;
     }
-    treeDataMap.set(dataItem[rowField], dataItem);
+    tableCacheData.treeDataMap.set(dataItem[rowField], dataItem);
     getParentNode(dataItem, parentField, rowField);
   }
-  const xeTableDataMap = convertToMap();
-  addChildNodes(leafData, xeTableDataMap);
+  addChildNodes(leafData);
 }
 function addChildNodes(
-  leafData: RowData[],
-  dataMap: Map<string | number, { node: RowData; children: RowData[] }>
+  leafData: RowData[]
 ) {
   if (!leafData || !leafData.length) {
     return;
   }
   const rowField = rowConfig.value.keyField;
   for (const leafDataItem of leafData) {
-    const targetNode = dataMap.get(leafDataItem[rowField]);
+    const targetNode = tableCacheData.xeTableDataMap.get(leafDataItem[rowField]);
     if (targetNode) {
       targetNode.children.forEach((child: RowData) => {
-        if (!treeDataMap.get(child[rowField])) {
-          treeDataMap.set(child[rowField], child);
+        if (!tableCacheData.treeDataMap.get(child[rowField])) {
+          tableCacheData.treeDataMap.set(child[rowField], child);
         }
       });
-      addChildNodes(targetNode.children, dataMap);
+      addChildNodes(targetNode.children);
     }
   }
-}
-function convertToMap() {
-  const xeTableDataMap = new Map<string | number, { node: RowData; children: RowData[] }>();
-  const { rowField, parentField } = getTreeConfigField();
-  for (const node of xeTableData.value) {
-    if (!xeTableDataMap.has(node[rowField])) {
-      xeTableDataMap.set(node[rowField], { node, children: [] });
-    }
-    const parentNode = xeTableDataMap.get(node[parentField]);
-    if (parentNode) {
-      parentNode.children.push(node);
-    }
-  }
-  return xeTableDataMap;
 }
 // 根据叶子节点递归遍历获取祖先节点
 function getParentNode(dataItem: RowData, parentField: string, rowField: string) {
   const parentKey = dataItem[parentField];
-  const parentItem = tableDataMap.get(parentKey);
+  const parentItem = tableCacheData.tableDataMap.get(parentKey);
   if (!parentItem) {
     return;
   }
-  if (!treeDataMap.get(parentKey)) {
-    treeDataMap.set(parentKey, parentItem);
+  if (!tableCacheData.treeDataMap.get(parentKey)) {
+    tableCacheData.treeDataMap.set(parentKey, parentItem);
   }
   if (parentItem[parentField] !== null) {
     getParentNode(parentItem, parentField, rowField);
@@ -1006,7 +995,7 @@ function refreshAdvancedFilter(
   if (props.useTree) {
     handleTreeData(newFilterData.value);
     const { rowField } = getTreeConfigField();
-    newFilterData.value = sortFunc([...treeDataMap.values()], xeTableData.value, rowField);
+    newFilterData.value = sortFunc([...tableCacheData.treeDataMap.values()], xeTableData.value, rowField);
   }
   if (conditionInfo?.conditionList?.length) {
     isFilterStatus = true;

@@ -1,16 +1,17 @@
 import { ref, computed, nextTick, Ref } from 'vue';
 import { VxeTablePropTypes, VxeTableInstance } from 'vxe-table';
 import { cloneDeep } from 'lodash-es';
-import { TreeTableProps, RowData } from '../type';
+import { TreeTableProps, RowData, TableCacheData } from '../type';
 
 type Row = VxeTablePropTypes.Row;
 
 // 重定义vxe-table的部分方法
 export function useCheckbox(
   $table: Ref<VxeTableInstance>,
-  tableData: Ref<RowData[]>,
+  props: TreeTableProps,
   fullTableData: Ref<RowData[]>,
-  props: TreeTableProps
+  tableData: Ref<RowData[]>,
+  tableCacheData: TableCacheData
 ) {
   const defaultCheckboxConfig = {};
   const checkedData = ref<Set<string | string>>(new Set());
@@ -22,15 +23,11 @@ export function useCheckbox(
   nextTick(() => {
     const { checkRowKeys, checkAll } = checkboxConfig.value;
     const newCheckRowKeys = Array.isArray(checkRowKeys) ? checkRowKeys : [];
-    const defaultRowKeys = checkAll
-      ? tableData.value.map((row: RowData) => row[keyField.value])
-      : newCheckRowKeys;
-    const defaultCheckedRows = defaultRowKeys
-      .map((rowKey) => {
-        const row = $table.value?.getRowById(rowKey);
-        return row;
-      })
-      .filter((row) => row);
+    const defaultCheckedRows = checkAll
+      ? fullTableData.value.filter((row: RowData) => row[keyField.value])
+      : newCheckRowKeys
+        .map((rowKey: string | number) => tableCacheData.xeTableDataMap.get(rowKey)?.node)
+        .filter(row => row);
     handleCheckboxData(defaultCheckedRows, true);
   });
   const checkboxConfig = computed(() =>
@@ -39,15 +36,16 @@ export function useCheckbox(
   const keyField = computed(() => props.rowConfig?.keyField ?? 'id');
 
   // 设置复选框选中行
-  const setCheckboxRow = (rows: Row | Row[], checked: boolean) =>
+  const setCheckboxRow = (rows: Row | RowData | (Row | RowData)[], checked: boolean) =>
     new Promise((resolve) => {
       const newRows = Array.isArray(rows) ? rows : [rows];
-      const res: Row[] = [];
+      const res: (Row | RowData)[] = [];
       for (const row of newRows) {
         if (isCheckboxDisabled(row)) {
           continue;
         }
-        res.push(row);
+        const newRow = $table.value?.getRowById(row[keyField.value]);
+        res.push(newRow ?? row);
       }
       handleCheckboxData(res, checked);
       $table.value?.setCheckboxRow(res, checked);
@@ -56,13 +54,14 @@ export function useCheckbox(
   // 设置所有复选框选中行
   const setAllCheckboxRow = (checked: boolean) =>
     new Promise((resolve) => {
-      const res: Row[] = [];
+      const res: (Row | RowData)[] = [];
       if (checked) {
-        for (const row of tableData.value) {
+        for (const row of fullTableData.value) {
           if (isCheckboxDisabled(row)) {
             continue;
           }
-          res.push(row);
+          const newRow = $table.value?.getRowById(row[keyField.value]);
+          res.push(newRow ?? row);
         }
         handleCheckboxData(res, checked);
         $table.value?.setCheckboxRow(res, checked);
@@ -79,11 +78,10 @@ export function useCheckbox(
     }
     const rowData = Array.isArray(row) ? row : [row];
     for (const rowDataItem of rowData) {
-      const row = $table.value?.getRowById(rowDataItem[keyField.value]);
-      handleTreeCheckboxData(row, isChecked);
+      handleTreeCheckboxData(rowDataItem, isChecked);
     }
   };
-  const handleTreeCheckboxData = (row: Row | null, isChecked: boolean) => {
+  const handleTreeCheckboxData = (row: Row | RowData | null, isChecked: boolean) => {
     if (!row) {
       return;
     }
@@ -92,15 +90,17 @@ export function useCheckbox(
     } else {
       checkedData.value.delete(row[keyField.value]);
     }
-    if (!row.children || row.children.length === 0) {
+    const rowInfo = tableCacheData.xeTableDataMap.get(row[keyField.value]);
+    if (!rowInfo || !rowInfo.children || rowInfo.children.length === 0) {
       if (isChecked) {
         checkedLeafData.add(row[keyField.value]);
       } else {
         checkedLeafData.delete(row[keyField.value]);
       }
+      return;
     }
-    if (checkboxConfig.value.checkStrictly !== true && row.children && row.children.length) {
-      for (const childRow of row.children) {
+    if (checkboxConfig.value.checkStrictly !== true) {
+      for (const childRow of rowInfo.children) {
         handleTreeCheckboxData(childRow, isChecked);
       }
     }
@@ -160,7 +160,7 @@ export function useCheckbox(
     $table.value.clearCheckboxReserve();
   }
   // 判断是否禁用复选框
-  function isCheckboxDisabled(row: Row) {
+  function isCheckboxDisabled(row: Row | RowData) {
     const { visibleMethod, checkMethod } = checkboxConfig.value;
     if (typeof visibleMethod === 'function' && !visibleMethod({ row })) {
       return true;
@@ -176,7 +176,7 @@ export function useCheckbox(
     checkedLeafData.clear();
   }
 
-  function getCheckboxRecords(isFullData = false): Row[] {
+  function getCheckboxRecords(isFullData = false): Row[] | RowData[] {
     if (!isFullData) {
       return $table.value?.getCheckboxRecords();
     }
@@ -186,6 +186,9 @@ export function useCheckbox(
       const rowField = props.treeConfig?.rowField ?? 'id';
       const parentField = props.treeConfig?.parentField ?? 'pid';
       for (const row of fullTableData.value) {
+        if (!row[rowField]) {
+          continue;
+        }
         if (!record.has(row[rowField])) {
           record.set(row[rowField], {
             id: row[rowField],
