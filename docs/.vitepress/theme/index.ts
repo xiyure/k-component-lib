@@ -1,5 +1,6 @@
 import { h, onMounted } from 'vue';
 import DefaultTheme from 'vitepress/theme';
+import type { Theme } from 'vitepress'
 // import { Container } from '../plugin/container/index';
 import { demo } from '../plugin/demo';
 import './style.less';
@@ -16,7 +17,7 @@ import { NolebaseGitChangelogPlugin } from '@nolebase/vitepress-plugin-git-chang
 import '@nolebase/vitepress-plugin-enhanced-readabilities/client/style.css';
 import '@nolebase/vitepress-plugin-git-changelog/client/style.css';
 import DocTitle from '../components/DocTitle.vue';
-import { KswIcon } from 'ksw-vue-icon';
+// import { KswIcon } from 'ksw-vue-icon';
 /*
  *  源码
  */
@@ -29,7 +30,7 @@ import { KswIcon } from 'ksw-vue-icon';
 /*
  *  npm
  */
-import install from '@ksware/ksw-ux';
+// import install from '@ksware/ksw-ux';
 // import '@ksware/ksw-ux/kingsware-ui/style.css'; //使用 cdn 导入
 
 export default {
@@ -42,27 +43,30 @@ export default {
       'nav-screen-content-after': () => h(NolebaseEnhancedReadabilitiesScreenMenu),
     });
   },
-  enhanceApp(ctx) {
+  async enhanceApp(ctx) {
     // 注入第三方库
     DefaultTheme.enhanceApp(ctx);
-    if (typeof window !== 'undefined') {
-      ctx.app.use(install);
-      ctx.app.use(KswIcon);
+    // 有条件地导入并注册访问浏览器 API 的 Vue 插件
+    if (!import.meta.env.SSR) {
+      const kswUx = await import('@ksware/ksw-ux')
+      const KswIcon = await import('ksw-vue-icon')
+      ctx.app.use(kswUx.default)
+      ctx.app.use(KswIcon.KswIcon)
       ctx.app.use(NolebaseGitChangelogPlugin);
-      // ctx.app.component('demo-preview', Container);
-      ctx.app.component('demo', demo);  //使用新的 demo 组件
-      ctx.app.component('DocTitle', DocTitle);
-      ctx.app.provide(InjectionKey, {
-        // 配置
-        layoutSwitch: {
-          disableAnimation: false,
-          defaultMode: 1,
-        },
-        spotlight: {
-          defaultToggle: true,
-        },
-      } as Options);
     }
+    // ctx.app.component('demo-preview', Container);
+    ctx.app.component('demo', demo);  //使用新的 demo 组件
+    ctx.app.component('DocTitle', DocTitle);
+    ctx.app.provide(InjectionKey, {
+      // 配置
+      layoutSwitch: {
+        disableAnimation: false,
+        defaultMode: 1,
+      },
+      spotlight: {
+        defaultToggle: true,
+      },
+    } as Options);
   },
   setup() {
     onMounted(() => {
@@ -89,4 +93,4 @@ export default {
       });
     });
   },
-};
+} satisfies Theme;

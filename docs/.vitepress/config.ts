@@ -65,13 +65,16 @@ const vitePressOptions = {
 
     logo: { src: '/klogo.svg', width: 24, height: 24 },
 
-
     search: {
       provider: 'local',
       options: {
         // disableDetailedView: true,
         detailedView: true
       }
+    },
+
+    footer: {
+      copyright: 'Copyright © 2025 Kingsware Inc. All Rights reserved.'
     }
   },
   assetsDir: 'assets/js',
@@ -172,7 +175,7 @@ const vitePressOptions = {
 
 const vitePressI18nOptions = {
   locales: ['zhHans'],
-  searchProvider: 'local',
+  searchProvider: 'local'
 };
 
 export default defineConfig(withI18n(vitePressOptions, vitePressI18nOptions));

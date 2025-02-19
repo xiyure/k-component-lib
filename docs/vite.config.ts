@@ -70,6 +70,6 @@ export default defineConfig({
     exclude: ['@nolebase/vitepress-plugin-enhanced-readabilities/client']
   },
   ssr: {
-    noExternal: ['ksw-vue-icon', '@ksware/ksw-ux', 'vue-i18n', '@nolebase/*']
+    noExternal: ['@ksware/ksw-ux', '@nolebase/*']
   }
 });
