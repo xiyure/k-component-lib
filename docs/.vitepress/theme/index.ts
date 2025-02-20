@@ -3,8 +3,6 @@ import DefaultTheme from 'vitepress/theme';
 import type { Theme } from 'vitepress'
 // import { Container } from '../plugin/container/index';
 import { demo } from '../plugin/demo';
-import './style.less';
-import './tailwind.css';
 import 'overlayscrollbars/overlayscrollbars.css';
 import { OverlayScrollbars } from 'overlayscrollbars';
 import {
@@ -17,6 +15,9 @@ import { NolebaseGitChangelogPlugin } from '@nolebase/vitepress-plugin-git-chang
 import '@nolebase/vitepress-plugin-enhanced-readabilities/client/style.css';
 import '@nolebase/vitepress-plugin-git-changelog/client/style.css';
 import DocTitle from '../components/DocTitle.vue';
+import './style.less';
+import './tailwind.css';
+
 // import { KswIcon } from 'ksw-vue-icon';
 /*
  *  源码

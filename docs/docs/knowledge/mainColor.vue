@@ -1,7 +1,7 @@
 <template>
-  <div class="flex gap-4 flex-col">
+  <div class="flex gap-2 md:gap-4 flex-col">
     <div
-      class="sticky top-16 z-10 col-start-2 grid grid-cols-[2fr,repeat(11,1fr)] justify-items-center gap-4 bg-[var(--vp-c-bg)] text-xl font-medium py-4 text-gray-950 dark:text-white"
+      class="sticky top-12 md:top-16 max-[9]: z-10 col-start-2 grid grid-cols-[minmax(6rem,2fr),repeat(11,1fr)] justify-items-center gap-2 md:gap-4 bg-[var(--vp-c-bg)] text-sm md:text-base font-medium py-4"
     >
       <div class=""></div>
       <div v-for="(level, index) in colorLevels" :key="level">{{ level }}</div>
@@ -9,13 +9,13 @@
     <div
       v-for="(colorChineseName, colorName) in colorsType"
       :key="colorName"
-      class="grid grid-cols-[2fr,repeat(11,1fr)] gap-4 sm:gap-4"
+      class="grid grid-cols-[minmax(6rem,2fr),repeat(11,1fr)] gap-2 md:gap-4"
     >
-      <div class="flex items-center text-xl font-bold">{{ colorChineseName }}</div>
+      <div class="flex items-center text-base md:text-lg lg:text-xl font-bold">{{ colorChineseName }}</div>
       <div
         v-for="(colorLevel, index) in colorLevels"
         :key="colorLevel"
-        class="aspect-square rounded-2xl outline -outline-offset-1 outline-black/10 cursor-pointer transition-all !duration-500 hover:scale-105"
+        class="aspect-square rounded-lg md:rounded-2xl lg:rounded-3xl outline -outline-offset-1 outline-black/10 cursor-pointer transition-all !duration-500 hover:scale-105"
         :style="{ backgroundColor: `var(--k-${colorName}-${colorLevel})` }"
         @click="clickCopyColor(colorName, colorLevel)"
       >
