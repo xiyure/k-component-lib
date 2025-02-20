@@ -2,12 +2,33 @@
   <div :class="['k-tree-transfer', _styleModule]">
     <div v-if="showSearchInput" class="k-transfer__filter">
       <k-input
+        v-if="!isPaging"
         ref="KTransferInputRef"
         v-model="query"
         :placeholder="t('enterInputSearch')"
         :suffix-icon="IconSearch"
         @keyup.enter="filterData"
       />
+      <div v-if="isPaging" class="flex justify-between items-center">
+        <div class="flex-1">
+          <k-input
+            ref="KTransferInputLeftRef"
+            v-model="queryLeft"
+            :placeholder="t('enterInputSearch')"
+            :suffix-icon="IconSearch"
+            @keyup.enter="filterPagingLeftData"
+          />
+        </div>
+        <div class="flex-1 ml-[10px]">
+          <k-input
+            ref="KTransferInputRightRef"
+            v-model="queryRight"
+            :placeholder="t('enterInputSearch')"
+            :suffix-icon="IconSearch"
+            @keyup.enter="filterPagingRightData"
+          />
+        </div>
+      </div>
     </div>
     <div class="k-transfer__body">
       <div class="k-transfer-content k-transfer-content__left">
@@ -17,14 +38,14 @@
             size="mini"
             :border="false"
             height="100%"
-            :data="leftData"
+            :data="showLeftTableData"
             :tree-config="treeConfig"
             :row-config="{ keyField: 'id' }"
             :scroll-y="scrollY"
             :checkbox-config="{
               checkRowKeys: defaultData,
               trigger: 'cell',
-              checkMethod,
+              checkMethod
             }"
             @checkbox-change="({ row, checked }: Row) => {
               checkboxChange(row, checked)
@@ -46,7 +67,7 @@
                 <span
                   class="tree-transfer__cell"
                   :style="{
-                    marginLeft: `${rowLevel(row) * (props.treeConfig?.indent ?? 12)}px`,
+                    marginLeft: `${rowLevel(row) * (props.treeConfig?.indent ?? 12)}px`
                   }"
                   :class="{ 'list-item-disabled': row.disabled }"
                   @click="toggleTreeExpand(row, $event)"
@@ -64,6 +85,20 @@
             </k-table-column>
           </k-table>
         </div>
+        <div v-if="isPaging" class="pagination-box bg-white">
+          <k-pagination
+            v-bind="paginationConfig"
+            :total="dataLeftLength"
+            @current-change="changeCurrentPage"
+            @size-change="changePageSize"
+            @change="
+              (currentPage, pageSize) => {
+                resetCheckboxStatus();
+                emits('page-change', currentPage, pageSize);
+              }
+            "
+          />
+        </div>
       </div>
       <div class="k-transfer-content k-transfer-content__right">
         <div class="k-transfer__list">
@@ -72,7 +107,7 @@
             size="mini"
             :border="false"
             height="100%"
-            :data="rightData"
+            :data="showRightTableData"
             :row-config="{ useKey: true, drag: showDrag }"
             :scroll-y="scrollY"
             @row-dragend="dragSort"
@@ -113,6 +148,14 @@
             </k-table-column>
           </k-table>
         </div>
+        <div v-if="isPaging" class="pagination-box bg-white">
+          <k-pagination
+            v-bind="paginationRightConfig"
+            :total="dataRightLength"
+            @current-change="changeRightCurrentPage"
+            @size-change="changeRightPageSize"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -124,10 +167,9 @@ import { VueI18nTranslation } from 'vue-i18n';
 import { IconSearch, IconClose } from 'ksw-vue-icon';
 import { VxeTablePropTypes } from 'vxe-table';
 import { TreeTransferProps, TreeTransferData } from './type';
-import { KTable, KTableColumn } from '../table';
-import { KInput } from '../input';
 import { sortBySmallerList } from '../../utils';
 import { RowData } from '../tree_table';
+import { PaginationConfig } from '../tree_table/type';
 
 defineOptions({
   name: 'KTreeTransfer'
@@ -142,12 +184,13 @@ const props = withDefaults(defineProps<TreeTransferProps>(), {
   useTree: false,
   label: 'label',
   showDrag: false,
+  showPage: false,
   defaultData: () => []
 });
 
 const _styleModule = inject('_styleModule', '');
 // 定义emit
-const emits = defineEmits(['change', 'sort']);
+const emits = defineEmits(['change', 'sort', 'page-current-change', 'page-size-change', 'page-current-rigth-change', 'page-size-rigth-change', 'page-change']);
 const defaultTreeConfig = {
   transform: true,
   rowField: 'id',
@@ -165,8 +208,21 @@ const query = ref('');
 const treeLeftRef = ref();
 const tableRightRef = ref();
 const KTransferInputRef = ref();
+const KTransferInputLeftRef = ref();
+const KTransferInputRightRef = ref();
 const treeDataMap: Map<string | number, TreeTransferData> = new Map();
 const checkDataMap: Map<string | number, { row: Row; checked: boolean }> = new Map();
+const DEFAULT_PAGES = [5, 10, 20, 100, 150];
+const defaultPaginationConfig = {
+  pagerCount: 7,
+  currentPage: 1,
+  pageSizes: DEFAULT_PAGES,
+  pageSize: DEFAULT_PAGES[0],
+  size: 'sm',
+  layout: 'total, prev, pager, next, sizes'
+};
+const paginationConfig = ref<any>(JSON.parse(JSON.stringify(defaultPaginationConfig)));
+const paginationRightConfig = ref<any>(JSON.parse(JSON.stringify(defaultPaginationConfig)));
 
 onMounted(() => {
   addEvent();
@@ -217,6 +273,28 @@ const parentData = computed(
     return { data: labelData, name };
   }
 );
+const isPaging = computed(() => props.showPage && !props.useTree);
+const dataLeftLength = computed(() => leftData.value.length);
+const dataRightLength = computed(() => rightData.value.length);
+const showLeftTableData = computed(() => {
+  if (!isPaging.value) {
+    return leftData.value;
+  }
+  return getShowTableData(leftData.value, paginationConfig.value);
+});
+const showRightTableData = computed(() => {
+  if (!isPaging.value) {
+    return rightData.value;
+  }
+  return getShowTableData(rightData.value, paginationRightConfig.value);
+});
+
+function resetCheckboxStatus() {
+  const tableInstance = treeLeftRef?.value?.tableInstance;
+  for (const checkRows of rightData.value) {
+    tableInstance.setCheckboxRow(checkRows, true);
+  }
+}
 
 watch(
   () => props.data,
@@ -228,6 +306,21 @@ watch(
     });
   },
   { immediate: true }
+);
+
+watch(
+  () => props.paginationConfig,
+  () => {
+    paginationConfig.value = Object.assign(paginationConfig.value, props.paginationConfig || {});
+  },
+  { immediate: true, deep: true }
+);
+watch(
+  () => props.paginationRightConfig,
+  () => {
+    paginationRightConfig.value = Object.assign(paginationRightConfig.value, props.paginationRightConfig || {});
+  },
+  { immediate: true, deep: true }
 );
 
 function initCheckDataMap() {
@@ -262,9 +355,14 @@ function checkboxChange(row: Row | Row[], checked: boolean, isAll: boolean = fal
   emits('change', getSelectedData());
 }
 function updateSelectData() {
-  const newData = leftData.value.filter(
+  let newData = leftData.value.filter(
     (item: TreeTransferData) => checkDataMap.get(item.id)?.checked ?? false
   );
+  if (isPaging.value) {
+    newData = fullData.value.filter(
+      (item: TreeTransferData) => checkDataMap.get(item.id)?.checked ?? false
+    );
+  }
   rightData.value = newData.filter((item: TreeTransferData) => {
     if (props.defaultData?.includes(item.id) && !checkMethod({ row: item })) {
       return false;
@@ -333,6 +431,22 @@ function clearData() {
 async function filterData() {
   await filterLeftData();
   updateSelectData();
+}
+const queryLeft = ref('');
+const queryRight = ref('');
+function filterPagingLeftData() {
+  const searchKey = queryLeft.value.trim();
+  leftData.value = props.data.filter(
+    (dataItem: TreeTransferData) => dataItem[props.label].toString().indexOf(searchKey) !== -1
+  );
+}
+
+function filterPagingRightData() {
+  updateSelectData();
+  const searchKey = queryRight.value.trim();
+  rightData.value = rightData.value.filter(
+    (dataItem: TreeTransferData) => dataItem[props.label].toString().indexOf(searchKey) !== -1
+  );
 }
 
 function getQuery() {
@@ -520,8 +634,13 @@ function isCheckedRow(id: number | string) {
 }
 function addEvent() {
   const InputRef = KTransferInputRef.value?.$el.querySelector('.el-input__suffix');
+  const InputLeftRef = KTransferInputLeftRef.value?.$el.querySelector('.el-input__suffix');
+  const InputRightRef = KTransferInputRightRef.value?.$el.querySelector('.el-input__suffix');
   if (InputRef) {
     InputRef.addEventListener('click', filterData);
+  } else if (InputLeftRef && InputRightRef) {
+    InputLeftRef.addEventListener('click', filterPagingLeftData);
+    InputRightRef.addEventListener('click', filterPagingRightData);
   } else {
     console.error('Element with class .el-input__suffix not found');
   }
@@ -530,6 +649,33 @@ async function clearQuery() {
   query.value = '';
   await filterData();
   clearData();
+}
+
+function changeCurrentPage(pageNum: number) {
+  paginationConfig.value.currentPage = pageNum;
+  emits('page-current-change', pageNum);
+}
+
+function changePageSize(pageSize: number) {
+  paginationConfig.value.pageSize = pageSize;
+  emits('page-size-change', pageSize);
+}
+
+function changeRightCurrentPage(pageNum: number) {
+  paginationRightConfig.value.currentPage = pageNum;
+  emits('page-current-rigth-change', pageNum);
+}
+
+function changeRightPageSize(pageSize: number) {
+  paginationRightConfig.value.pageSize = pageSize;
+  emits('page-size-rigth-change', pageSize);
+}
+
+function getShowTableData(data: RowData[], paginationConfig: PaginationConfig) {
+  const { currentPage, pageSize } = paginationConfig;
+  const startIndex = (currentPage! - 1) * pageSize!;
+  const endIndex = startIndex + pageSize!;
+  return data.slice(startIndex, endIndex);
 }
 
 defineExpose({

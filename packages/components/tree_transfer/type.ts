@@ -1,5 +1,7 @@
 import { Component } from 'vue';
 import { VxeTablePropTypes } from 'vxe-table';
+import { PaginationProps as ElPaginationProps } from 'element-plus';
+import { RequireToOptional } from '../../utils/typescript';
 
 export interface TreeTransferProps {
   data: TreeTransferData[]
@@ -18,10 +20,18 @@ export interface TreeTransferProps {
   scrollY?: VxeTablePropTypes.ScrollY
   drag?: boolean
   showDrag?: boolean
+  showPage?: boolean
+  paginationConfig?: PaginationConfig;
+  paginationRightConfig?: PaginationConfig;
   checkMethod?: (data: any) => boolean
   searchMethod?: (keyword: string, data: any[]) => Promise<any[]>
 }
 
 export interface TreeTransferData {
   [key: string]: any
+}
+
+export interface PaginationConfig extends RequireToOptional<Omit<ElPaginationProps, 'size'>> {
+  size?: 'base' | 'sm';
+  isRemotePaging?: boolean;
 }
