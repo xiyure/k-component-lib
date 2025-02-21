@@ -138,7 +138,10 @@ const vitePressOptions = {
               // 获取目录
               const dir = parts[parts.length - 2];
               // console.log('Chunk Name:', parts);
-              return dir;
+              return `docsComponents/${dir}`;
+            }
+            if (id.includes('gsap')) {
+              return 'gsap';
             }
             if (id.includes('@ksware/ksw-ux')) {
               return 'ksw-ux/kingsware-ui';
