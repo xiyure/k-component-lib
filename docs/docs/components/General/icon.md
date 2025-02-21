@@ -81,7 +81,7 @@ Vue.use(KswIcon, { projectName: "Guangfa" });
 | Base      |  基本图标库       |
 | Guangfa     | 广发图标库 |
 
-### 别名图标
+### 别名图标 <k-tag type="primary" round>^2.4.0</k-tag>
 
 ::: tip
 自 `2.4.0` 版本起图标库支持为图标设置别名

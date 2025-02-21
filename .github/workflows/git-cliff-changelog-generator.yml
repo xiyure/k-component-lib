@@ -73,11 +73,11 @@ jobs:
           client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
 
       # 发送企业微信通知
-      # - name: WeChat Work notification
-      #   if: steps.latest-changelog.outputs.content != ''
-      #   uses: chf007/action-wechat-work@master
-      #   env:
-      #     WECHAT_WORK_BOT_WEBHOOK: ${{secrets.WECHAT_WORK_BOT_WEBHOOK}}
-      #   with:
-      #     msgtype: markdown
-      #     content: "${{ steps.latest-changelog.outputs.content }}"
+      - name: WeChat Work notification
+        if: steps.latest-changelog.outputs.content != ''
+        uses: chf007/action-wechat-work@master
+        env:
+          WECHAT_WORK_BOT_WEBHOOK: ${{secrets.WECHAT_WORK_BOT_WEBHOOK}}
+        with:
+          msgtype: markdown
+          content: "${{ steps.latest-changelog.outputs.content }}"

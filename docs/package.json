@@ -23,7 +23,6 @@
     "less-loader": "^12.2.0",
     "markdown-it": "^14.1.0",
     "markdown-it-container": "^4.0.0",
-    "overlayscrollbars": "^2.10.0",
     "postcss": "^8.4.47",
     "rollup-plugin-delete": "^2.1.0",
     "rollup-plugin-visualizer": "^5.13.1",
@@ -36,6 +35,7 @@
     "@ksware/ksw-ux": "1.1.12beta2",
     "@vitejs/plugin-vue-jsx": "^4.0.1",
     "ksw-vue-icon": "^2.2.35",
+    "overlayscrollbars": "^2.11.0",
     "three": "^0.172.0"
   }
 }

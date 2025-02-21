@@ -70,6 +70,6 @@ export default defineConfig({
     exclude: ['@nolebase/vitepress-plugin-enhanced-readabilities/client']
   },
   ssr: {
-    noExternal: ['@ksware/ksw-ux', '@nolebase/*']
+    noExternal: ['gsap', 'gsap/ScrollTrigger', '@ksware/ksw-ux', '@nolebase/*']
   }
 });

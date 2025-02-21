@@ -766,7 +766,7 @@ const letterShadow = ref(null);
 const emit = defineEmits(['animationStart', 'animationComplete']);
 
 onMounted(() => {
-  var tl = gsap.timeline({ repeat: 0, repeatDelay: 1, onStart: () => emit('animationStart'),  onComplete: () => emit('animationComplete')});
+  const tl = gsap.timeline({ repeat: 0, repeatDelay: 1, onStart: () => emit('animationStart'),  onComplete: () => emit('animationComplete')});
 
   tl.fromTo(
     upperLeftCorner.value,
