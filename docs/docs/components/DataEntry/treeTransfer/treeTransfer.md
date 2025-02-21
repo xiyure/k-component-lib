@@ -30,6 +30,12 @@ TreeTransfer组件可以通过以下属性进行自定义设置：expand-icon（
 
 <demo path="./dragTreeTransfer" />
 
+## 分页
+
+设置`showPage`属性为`true`可以开启分页并单独筛选。
+
+<demo path="./pageTreeTransfer" />
+
 ## API
 
 <API src="./tree_transfer.json" lang="zh"></API>
