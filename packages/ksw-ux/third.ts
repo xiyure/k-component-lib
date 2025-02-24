@@ -9,7 +9,7 @@ import VxeUI from 'vxe-pc-ui';
 import type { ContextConfig } from '../utils/typescript';
 
 // import the third-party library
-export function registerThirdLib(app: App, config: ContextConfig = {}) {
+export function importThirdLib(app: App, config: ContextConfig = {}) {
   app.use(ElementPlus, {
     ...config?.ElementPlusOptions,
     locale: config.locale === 'en' ? enLocal : zhLocal

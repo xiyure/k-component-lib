@@ -1,4 +1,5 @@
 import type { App } from 'vue';
+import { isObject } from 'lodash-es';
 import type { ContextConfig } from '@ksw-ux/utils/typescript';
 import 'element-plus/dist/index.css';
 import 'vxe-table/lib/style.css';
@@ -8,7 +9,7 @@ import 'overlayscrollbars/styles/overlayscrollbars.css';
 import '../style/theme/index.css';
 
 // style of lib
-export function useTheme(app: App, config: ContextConfig = {}) {
+export function registerStyle(app: App, config: ContextConfig = {}) {
   const styleModule = config.styleModule;
   const projectList = ['AOM', 'GFAOM', 'KingAutometa'];
   let projectName = 'AOM';
@@ -25,4 +26,14 @@ export function useTheme(app: App, config: ContextConfig = {}) {
     body?.classList.add(projectName);
   }
   app.provide('_styleModule', projectName === 'AOM' ? '' : projectName);
+ // 合并css变量
+  if (isObject(config.cssVariables)) {
+    mergeCssVar(config.cssVariables);
+  }
+}
+
+function mergeCssVar(cssVariables: Record<string, string>) {
+  for (const cssName in cssVariables) {
+    document.documentElement.style.setProperty(`--${cssName}`, cssVariables[cssName]);
+  }
 }

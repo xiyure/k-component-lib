@@ -2,17 +2,17 @@ import type { App } from 'vue';
 import type { ContextConfig } from '@ksw-ux/utils/typescript';
 import {
   makeRegister,
-  registerThirdLib,
+  importThirdLib,
   useI18n,
-  useTheme,
+  registerStyle,
   useDirectives,
   provide
 } from './ksw-ux';
 
 const install = (app: App, config?: ContextConfig) => {
   makeRegister(app);
-  useTheme(app, config);
-  registerThirdLib(app, config);
+  registerStyle(app, config);
+  importThirdLib(app, config);
   useI18n(app, config);
   useDirectives(app);
   provide(app);

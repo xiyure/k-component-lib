@@ -13,4 +13,5 @@ export type ContextConfig = {
   vxeGlobalConfig?: VxeGlobalConfig
   ElementPlusOptions?: ConfigProviderContext
   styleModule?: string
+  cssVariables?: Record<string, string>
 }
