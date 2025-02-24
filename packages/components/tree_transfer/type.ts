@@ -21,7 +21,8 @@ export interface TreeTransferProps {
   drag?: boolean
   showDrag?: boolean
   showPage?: boolean
-  paginationConfig?: PaginationConfig;
+  searchStrictly?: boolean
+  paginationLeftConfig?: PaginationConfig;
   paginationRightConfig?: PaginationConfig;
   checkMethod?: (data: any) => boolean
   searchMethod?: (keyword: string, data: any[]) => Promise<any[]>

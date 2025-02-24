@@ -2,21 +2,21 @@
   <div :class="['k-tree-transfer', _styleModule]">
     <div v-if="showSearchInput" class="k-transfer__filter">
       <k-input
-        v-if="!isPaging"
+        v-if="!searchStrictly"
         ref="KTransferInputRef"
         v-model="query"
         :placeholder="t?.('enterInputSearch')"
         :suffix-icon="IconSearch"
         @keyup.enter="filterData"
       />
-      <div v-if="isPaging" class="flex justify-between items-center">
+      <div v-else-if="searchStrictly" class="flex justify-between items-center">
         <div class="flex-1">
           <k-input
             ref="KTransferInputLeftRef"
             v-model="queryLeft"
             :placeholder="t?.('enterInputSearch')"
             :suffix-icon="IconSearch"
-            @keyup.enter="filterPagingLeftData"
+            @keyup.enter="filterPagingLeftData('left')"
           />
         </div>
         <div class="flex-1 ml-[10px]">
@@ -87,10 +87,10 @@
         </div>
         <div v-if="isPaging" class="pagination-box bg-white">
           <k-pagination
-            v-bind="paginationConfig"
+            v-bind="paginationLeftConfig"
             :total="dataLeftLength"
-            @current-change="changeCurrentPage"
-            @size-change="changePageSize"
+            @current-change="(pageNum) => changeCurrentPage('left', pageNum)"
+            @size-change="(pageSize) => changePageSize('left', pageSize)"
             @change="
               (currentPage, pageSize) => {
                 resetCheckboxStatus();
@@ -152,8 +152,8 @@
           <k-pagination
             v-bind="paginationRightConfig"
             :total="dataRightLength"
-            @current-change="changeRightCurrentPage"
-            @size-change="changeRightPageSize"
+            @current-change="(pageNum) => changeCurrentPage('right', pageNum)"
+            @size-change="(pageSize) => changePageSize('right', pageSize)"
           />
         </div>
       </div>
@@ -185,12 +185,13 @@ const props = withDefaults(defineProps<TreeTransferProps>(), {
   label: 'label',
   showDrag: false,
   showPage: false,
+  searchStrictly: false,
   defaultData: () => []
 });
 
 const _styleModule = inject('_styleModule', '');
 // 定义emit
-const emits = defineEmits(['change', 'sort', 'page-current-change', 'page-size-change', 'page-current-rigth-change', 'page-size-rigth-change', 'page-change']);
+const emits = defineEmits(['change', 'sort', 'page-current-change', 'page-size-change', 'page-change']);
 const defaultTreeConfig = {
   transform: true,
   rowField: 'id',
@@ -221,7 +222,7 @@ const defaultPaginationConfig = {
   size: 'sm',
   layout: 'total, prev, pager, next, sizes'
 };
-const paginationConfig = ref<any>(JSON.parse(JSON.stringify(defaultPaginationConfig)));
+const paginationLeftConfig = ref<any>(JSON.parse(JSON.stringify(defaultPaginationConfig)));
 const paginationRightConfig = ref<any>(JSON.parse(JSON.stringify(defaultPaginationConfig)));
 
 onMounted(() => {
@@ -280,7 +281,7 @@ const showLeftTableData = computed(() => {
   if (!isPaging.value) {
     return leftData.value;
   }
-  return getShowTableData(leftData.value, paginationConfig.value);
+  return getShowTableData(leftData.value, paginationLeftConfig.value);
 });
 const showRightTableData = computed(() => {
   if (!isPaging.value) {
@@ -309,9 +310,9 @@ watch(
 );
 
 watch(
-  () => props.paginationConfig,
+  () => props.paginationLeftConfig,
   () => {
-    paginationConfig.value = Object.assign(paginationConfig.value, props.paginationConfig || {});
+    paginationLeftConfig.value = Object.assign(paginationLeftConfig.value, props.paginationLeftConfig || {});
   },
   { immediate: true, deep: true }
 );
@@ -358,11 +359,6 @@ function updateSelectData() {
   let newData = leftData.value.filter(
     (item: TreeTransferData) => checkDataMap.get(item.id)?.checked ?? false
   );
-  if (isPaging.value) {
-    newData = fullData.value.filter(
-      (item: TreeTransferData) => checkDataMap.get(item.id)?.checked ?? false
-    );
-  }
   rightData.value = newData.filter((item: TreeTransferData) => {
     if (props.defaultData?.includes(item.id) && !checkMethod({ row: item })) {
       return false;
@@ -434,11 +430,9 @@ async function filterData() {
 }
 const queryLeft = ref('');
 const queryRight = ref('');
-function filterPagingLeftData() {
-  const searchKey = queryLeft.value.trim();
-  leftData.value = props.data.filter(
-    (dataItem: TreeTransferData) => dataItem[props.label].toString().indexOf(searchKey) !== -1
-  );
+
+async function filterPagingLeftData(position: string) {
+  await filterLeftData(position);
 }
 
 function filterPagingRightData() {
@@ -453,9 +447,12 @@ function getQuery() {
   return query.value;
 }
 
-async function filterLeftData() {
+async function filterLeftData(position?: string) {
   const $table = treeLeftRef.value.tableInstance;
-  const searchKey = query.value.trim();
+  let searchKey = query.value.trim();
+  if (position === 'left' && props.searchStrictly) {
+    searchKey = queryLeft.value.trim();
+  }
   let tableData = [];
   if (typeof props.searchMethod === 'function') {
     tableData = await props.searchMethod(searchKey, props.data);
@@ -639,7 +636,7 @@ function addEvent() {
   if (InputRef) {
     InputRef.addEventListener('click', filterData);
   } else if (InputLeftRef && InputRightRef) {
-    InputLeftRef.addEventListener('click', filterPagingLeftData);
+    InputLeftRef.addEventListener('click', () => filterPagingLeftData('left'));
     InputRightRef.addEventListener('click', filterPagingRightData);
   } else {
     console.error('Element with class .el-input__suffix not found');
@@ -651,24 +648,16 @@ async function clearQuery() {
   clearData();
 }
 
-function changeCurrentPage(pageNum: number) {
-  paginationConfig.value.currentPage = pageNum;
-  emits('page-current-change', pageNum);
+function changeCurrentPage(position: string, pageNum: any) {
+  const pagination = position === 'left' ? paginationLeftConfig.value : paginationRightConfig.value;
+  pagination.currentPage = pageNum;
+  emits('page-current-change', position, pageNum);
 }
 
-function changePageSize(pageSize: number) {
-  paginationConfig.value.pageSize = pageSize;
-  emits('page-size-change', pageSize);
-}
-
-function changeRightCurrentPage(pageNum: number) {
-  paginationRightConfig.value.currentPage = pageNum;
-  emits('page-current-rigth-change', pageNum);
-}
-
-function changeRightPageSize(pageSize: number) {
-  paginationRightConfig.value.pageSize = pageSize;
-  emits('page-size-rigth-change', pageSize);
+function changePageSize(position: string, pageSize: any) {
+  const pagination = position === 'left' ? paginationLeftConfig.value : paginationRightConfig.value;
+  pagination.pageSize = pageSize;
+  emits('page-size-change', position, pageSize);
 }
 
 function getShowTableData(data: RowData[], paginationConfig: PaginationConfig) {
