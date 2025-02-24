@@ -598,8 +598,6 @@ const dataLength = computed(() => {
 
 const { setTableData, sortChange, dragSort, convertToMap, _methods } = useMethods(props, tableInstance);
 
-const fullTableData = computed(() => xeTableData.value);
-
 const {
   checkedDataSize,
   checkboxConfig,
@@ -609,7 +607,7 @@ const {
   clearCheckedData,
   resetCheckboxStatus,
   _checkboxMethods
-} = useCheckbox(tableInstance, props, fullTableData, showTableData, tableCacheData);
+} = useCheckbox(tableInstance, props, xeTableData, showTableData, tableCacheData);
 watch(
   [() => props.data, () => props.data?.length],
   () => {

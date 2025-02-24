@@ -24,7 +24,7 @@ export function useCheckbox(
     const { checkRowKeys, checkAll } = checkboxConfig.value;
     const newCheckRowKeys = Array.isArray(checkRowKeys) ? checkRowKeys : [];
     const defaultCheckedRows = checkAll
-      ? fullTableData.value.filter((row: RowData) => row[keyField.value])
+      ? fullTableData.value.filter((row: RowData) => row?.[keyField.value])
       : newCheckRowKeys
         .map((rowKey: string | number) => tableCacheData.xeTableDataMap.get(rowKey)?.node)
         .filter(row => row);
@@ -41,7 +41,7 @@ export function useCheckbox(
       const newRows = Array.isArray(rows) ? rows : [rows];
       const res: (Row | RowData)[] = [];
       for (const row of newRows) {
-        if (isCheckboxDisabled(row)) {
+        if (isCheckboxDisabled(row) || !row?.[keyField.value]) {
           continue;
         }
         const newRow = $table.value?.getRowById(row[keyField.value]);
@@ -57,7 +57,7 @@ export function useCheckbox(
       const res: (Row | RowData)[] = [];
       if (checked) {
         for (const row of fullTableData.value) {
-          if (isCheckboxDisabled(row)) {
+          if (isCheckboxDisabled(row) || !row?.[keyField.value]) {
             continue;
           }
           const newRow = $table.value?.getRowById(row[keyField.value]);
@@ -82,7 +82,7 @@ export function useCheckbox(
     }
   };
   const handleTreeCheckboxData = (row: Row | RowData | null, isChecked: boolean) => {
-    if (!row) {
+    if (!row || !row?.[keyField.value]) {
       return;
     }
     if (isChecked) {
@@ -137,7 +137,7 @@ export function useCheckbox(
     new Promise((resolve) => {
       if (props.showPage && !props.useTree) {
         const checkRows = $table.value?.getCheckboxRecords();
-        checkedData.value = new Set(checkRows.map((row: Row) => row[keyField.value]));
+        checkedData.value = new Set(checkRows.map((row: Row) => row?.[keyField.value]));
         $table.value?.setCheckboxRow(checkRows, true);
       }
       resolve(undefined);
@@ -214,7 +214,7 @@ export function useCheckbox(
         }
       }
     }
-    return fullTableData.value.filter((row) => allCheckedData.has(row[keyField.value]));
+    return fullTableData.value.filter((row) => row?.[keyField.value] && allCheckedData.has(row[keyField.value]));
   }
 
   return {
