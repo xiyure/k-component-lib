@@ -435,9 +435,13 @@ async function filterPagingLeftData(position: string) {
   await filterLeftData(position);
 }
 
-function filterPagingRightData() {
+async function filterPagingRightData() {
   updateSelectData();
   const searchKey = queryRight.value.trim();
+  if (typeof props.searchRightMethod === 'function') {
+    rightData.value = await props.searchRightMethod(searchKey, rightData.value);
+    return;
+  }
   rightData.value = rightData.value.filter(
     (dataItem: TreeTransferData) => dataItem[props.label].toString().indexOf(searchKey) !== -1
   );

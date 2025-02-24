@@ -26,6 +26,7 @@ export interface TreeTransferProps {
   paginationRightConfig?: PaginationConfig;
   checkMethod?: (data: any) => boolean
   searchMethod?: (keyword: string, data: any[]) => Promise<any[]>
+  searchRightMethod?: (keyword: string, data: any[]) => Promise<any[]>
 }
 
 export interface TreeTransferData {
