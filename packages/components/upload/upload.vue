@@ -13,7 +13,7 @@
         <slot name="trigger">
           <div v-if="props.drag" class="default-sign">
             <IconEmptyBox color="#2882ff" />
-            {{ t('uploadDragSign') }}
+            {{ t?.('uploadDragSign') }}
           </div>
           <div v-else class="default-upload-btn" @click.stop>
             <k-button
@@ -21,7 +21,7 @@
               :icon-left="autoUpload ? 'IconUpload': ''"
               @click="selectFile"
             >
-              {{ props.autoUpload ? t('uploadFile') : t('selectFile') }}
+              {{ props.autoUpload ? t?.('uploadFile') : t?.('selectFile') }}
             </k-button>
             <k-button
               v-if="!props.autoUpload"
@@ -31,7 +31,7 @@
               icon-left="IconUpload"
               @click="submit"
             >
-              {{ t('uploadFile') }}
+              {{ t?.('uploadFile') }}
             </k-button>
           </div>
         </slot>

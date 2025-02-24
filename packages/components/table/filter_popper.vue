@@ -18,7 +18,7 @@
       <ul class="filter-menu">
         <li class="filter-menu-item">
           <k-checkbox
-            v-model="isSelectAll" :label="t('all')" value="all" :indeterminate="isIndeterminate"
+            v-model="isSelectAll" :label="t?.('all')" value="all" :indeterminate="isIndeterminate"
             @change="selectAll"
           />
         </li>
@@ -31,12 +31,12 @@
       </ul>
     </slot>
     <div class="filter-buttons">
-      <k-button size="sm" @click="clearFilter">{{ text.resetButtonText ?? t('reset') }}</k-button>
+      <k-button size="sm" @click="clearFilter">{{ text.resetButtonText ?? t?.('reset') }}</k-button>
       <k-button
         class="filter-btn-item" size="sm" secondary
         @click="setFilter"
       >
-        {{ text.confirmButtonText ?? t('filter') }}
+        {{ text.confirmButtonText ?? t?.('filter') }}
       </k-button>
     </div>
   </k-popover>

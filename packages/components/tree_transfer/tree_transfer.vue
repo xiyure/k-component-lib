@@ -5,7 +5,7 @@
         v-if="!isPaging"
         ref="KTransferInputRef"
         v-model="query"
-        :placeholder="t('enterInputSearch')"
+        :placeholder="t?.('enterInputSearch')"
         :suffix-icon="IconSearch"
         @keyup.enter="filterData"
       />
@@ -14,7 +14,7 @@
           <k-input
             ref="KTransferInputLeftRef"
             v-model="queryLeft"
-            :placeholder="t('enterInputSearch')"
+            :placeholder="t?.('enterInputSearch')"
             :suffix-icon="IconSearch"
             @keyup.enter="filterPagingLeftData"
           />
@@ -23,7 +23,7 @@
           <k-input
             ref="KTransferInputRightRef"
             v-model="queryRight"
-            :placeholder="t('enterInputSearch')"
+            :placeholder="t?.('enterInputSearch')"
             :suffix-icon="IconSearch"
             @keyup.enter="filterPagingRightData"
           />
@@ -120,7 +120,7 @@
                 <slot name="rightHeader" v-bind="data">
                   <div class="right-data-header">
                     <span class="right-data-title">{{ props.titles?.[1] ?? '' }}</span>
-                    <span class="clear-data" @click="clearData">{{ t('clearData') }}</span>
+                    <span class="clear-data" @click="clearData">{{ t?.('clearData') }}</span>
                   </div>
                 </slot>
               </template>

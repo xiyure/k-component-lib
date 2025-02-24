@@ -13,7 +13,7 @@
       <div class="k-view-aside" :style="{ display: viewCollapse ? 'none' : 'flex' }">
         <div class="k-view__header">
           <div class="view-title text-base font-bold">
-            <slot name="header">{{ t('view') }}</slot>
+            <slot name="header">{{ t?.('view') }}</slot>
           </div>
           <span class="view-fresh" @click="handleFresh">
             <slot name="refresh"><IconRefresh /></slot>
@@ -66,7 +66,7 @@
         </div>
         <div v-if="customData?.length" class="k-view__custom-data text-base">
           <slot name="custom-header">
-            <span class="custom-table-box">{{ t('customView') }}</span>
+            <span class="custom-table-box">{{ t?.('customView') }}</span>
           </slot>
           <el-scrollbar class="k-view-custom-scrollbar">
             <template v-if="!useTree">

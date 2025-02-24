@@ -8,7 +8,7 @@
       <slot name="header" :date="date">
         <div class="k-calendar__header">
           <div class="k-calendar__header-left">
-            <k-button @click="jumpDate('today')">{{ t('today') }}</k-button>
+            <k-button @click="jumpDate('today')">{{ t?.('today') }}</k-button>
             <k-button @click="jumpDate('prev-month')"><IconArrowLeft /></k-button>
             <k-button @click="jumpDate('next-month')"><IconArrowRight /></k-button>
             <span>{{ date }}</span>
@@ -17,7 +17,7 @@
             <k-checkbox
               v-if="showLunar"
               v-model="isShowLunar"
-              :label="t('showLunar')"
+              :label="t?.('showLunar')"
             ></k-checkbox>
           </div>
         </div>

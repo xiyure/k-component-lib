@@ -29,7 +29,7 @@
               v-model="formData[item.prop]"
               v-bind="item.attrs"
               :size="compSize(item.attrs)"
-              :placeholder="item.attrs?.placeholder ?? t('pleaseSelect')"
+              :placeholder="item.attrs?.placeholder ?? t?.('pleaseSelect')"
             >
               <k-option v-for="option in item.options" v-bind="option" :key="option"></k-option>
             </k-select>
@@ -81,7 +81,7 @@
                 v-if="compVisible(item)"
                 v-model="formData[item.prop]"
                 v-bind="item.attrs"
-                :placeholder="item.attrs?.placeholder ?? t('pleaseInput')"
+                :placeholder="item.attrs?.placeholder ?? t?.('pleaseInput')"
                 :size="compSize(item.attrs)"
               ></k-input>
             </template>
@@ -95,15 +95,15 @@
       ></div>
       <div ref="filterBtn" class="filter-btns flex bg-white">
         <slot name="action">
-          <k-button :size="compSize()" @click="reset">{{ t('reset') }}</k-button>
-          <k-button :size="compSize()" main @click="search">{{ t('query') }}</k-button>
+          <k-button :size="compSize()" @click="reset">{{ t?.('reset') }}</k-button>
+          <k-button :size="compSize()" main @click="search">{{ t?.('query') }}</k-button>
           <KButton
             v-show="rowMax > 1"
             text
             :icon-right="isCollapse ? 'IconArrowBottom' : 'IconArrowTop'"
             @click="toggle"
           >
-            {{ isCollapse ? t('expand') : t('collapse') }}
+            {{ isCollapse ? t?.('expand') : t?.('collapse') }}
           </KButton>
         </slot>
       </div>
