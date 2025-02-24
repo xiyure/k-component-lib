@@ -66,6 +66,6 @@
     "dom-zindex": "^1.0.6",
     "i": "^0.3.7",
     "npm": "^10.8.3",
-    "overlayscrollbars": "^2.10.0"
+    "overlayscrollbars": "^2.11.1"
   }
 }

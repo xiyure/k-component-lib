@@ -1,6 +1,6 @@
 <template>
   <div :class="['k-tree-transfer', _styleModule]">
-    <div v-if="showSearchInput" class="k-transfer__filter">
+    <div v-if="showSearchInput" class="k-transfer__filter !mb-3">
       <k-input
         v-if="!searchStrictly"
         ref="KTransferInputRef"
@@ -85,7 +85,7 @@
             </k-table-column>
           </k-table>
         </div>
-        <div v-if="isPaging" class="pagination-box bg-white">
+        <div v-if="isPaging" class="pagination-box bg-white pt-3">
           <k-pagination
             v-bind="paginationLeftConfig"
             :total="dataLeftLength"
@@ -148,7 +148,7 @@
             </k-table-column>
           </k-table>
         </div>
-        <div v-if="isPaging" class="pagination-box bg-white">
+        <div v-if="isPaging" class="pagination-box bg-white pt-3">
           <k-pagination
             v-bind="paginationRightConfig"
             :total="dataRightLength"
