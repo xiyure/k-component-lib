@@ -112,70 +112,8 @@
       "description": "自定义搜索方法",
       "defaultValue": "",
       "tip": "(keyword: string, data: any[]) => Promise<any[]>"
-    },
-    {
-      "displayName": "show-page",
-      "type": "boolean",
-      "description": "是否显示分页并启动单独筛选",
-      "defaultValue": "false",
-      "tip": ""
-    },
-    {
-      "displayName": "pagination-config",
-      "type": "object",
-      "description": "左侧分页配置",
-      "defaultValue": "",
-      "tip": "PaginationConfig"
-    },
-    {
-      "displayName": "pagination-right-config",
-      "type": "object",
-      "description": "右侧分页配置",
-      "defaultValue": "",
-      "tip": "PaginationConfig"
     }
   ],
-  "subProps": {
-    "PaginationConfig": [
-        {
-          "displayName": "total",
-          "description": "总条数",
-          "type": "number"
-        },
-        {
-          "displayName": "pageSize",
-          "description": "每页条数",
-          "type": "number"
-        },
-        {
-          "displayName": "pageSizes",
-          "description": "每页条数选项",
-          "type": "number[]"
-        },
-        {
-          "displayName": "currentPage",
-          "description": "当前页数",
-          "type": "number"
-        },
-        {
-          "displayName": "pageCount",
-          "description": "总页数",
-          "type": "number"
-        },
-        {
-          "displayName": "layout",
-          "description": "分页布局",
-          "type": "enum",
-          "tip": "'sizes' | 'total' | 'prev' | 'pager' | 'next' | 'jumper' | '->'"
-        },
-        {
-          "displayName": "isRemotePaging",
-          "description": "是否服务端分页",
-          "type": "boolean",
-          "defaultValue": "false"
-        }
-      ]
-  },
   "events": [
     {
       "displayName": "change",
@@ -188,36 +126,6 @@
       "description": "拖拽排序时触发",
       "type": "Function",
       "tip": "(data: any[]) => void"
-    },
-    {
-      "displayName": "page-current-change",
-      "description": "左侧分页器pageNum变化时触发",
-      "type": "Function",
-      "tip": "(pageSize: number) => void"
-    },
-    {
-      "displayName": "page-size-change",
-      "description": "左侧分页器size变化时触发",
-      "type": "Function",
-      "tip": "(pageSize: number) => void"
-    },
-    {
-      "displayName": "page-current-rigth-change",
-      "description": "右侧分页器pageNum变化时触发",
-      "type": "Function",
-      "tip": "(pageNum: number) => void"
-    },
-    {
-      "displayName": "page-size-rigth-change",
-      "description": "右侧分页器size变化时触发",
-      "type": "Function",
-      "tip": "(pageSize: number) => void"
-    },
-    {
-      "displayName": "page-change",
-      "description": "左侧分页器变化时触发",
-      "type": "Function",
-      "tip": "(currentPage: numeber, pageSize: number) => void"
     }
   ],
   "slots": [
