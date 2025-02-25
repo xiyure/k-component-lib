@@ -32,7 +32,7 @@
     </div>
     <div class="k-transfer__body">
       <div class="k-transfer-content k-transfer-content__left">
-        <div class="k-transfer__list" :class="useTree ? 'transfer-tree-table' : ''">
+        <div class="k-transfer__list" :style="{ height: tableHeight + 'px' }" :class="useTree ? 'transfer-tree-table' : ''">
           <k-table
             ref="treeLeftRef"
             size="mini"
@@ -54,10 +54,42 @@
               checkboxChange(row, checked, true)
             }"
           >
+            <template v-if="searchStrictly && columns">
+              <template v-for="(item, index) in columns" :key="index">
+                <k-table-column
+                  :type="item.type"
+                  :field="item.field"
+                  :title="item.title"
+                  :tree-node="props.useTree"
+                  :width="item.width"
+                >
+                  <template #default="{ row }">
+                    <span
+                      class="tree-transfer__cell"
+                      :style="{
+                        marginLeft: `${rowLevel(row) * (props.treeConfig?.indent ?? 12)}px`
+                      }"
+                      :class="{ 'list-item-disabled': row.disabled }"
+                      @click="toggleTreeExpand(row, $event)"
+                    >
+                      <component
+                        :is="columnIcon(row)?.icon"
+                        class="column-icon"
+                        :color="columnIcon(row)?.color"
+                      />
+                      <span v-if="item.field" class="tree-transfer__cell-label">
+                        {{ row[item.field] }}
+                      </span>
+                    </span>
+                  </template>
+                </k-table-column>
+              </template>
+            </template>
             <template v-if="$slots.empty && query" #empty>
               <slot name="empty" :query="query"></slot>
             </template>
             <k-table-column
+              v-if="!searchStrictly || !columns"
               type="checkbox"
               :field="label"
               :title="titles?.[0] ?? ''"
@@ -89,8 +121,8 @@
           <k-pagination
             v-bind="paginationLeftConfig"
             :total="dataLeftLength"
-            @current-change="(pageNum) => changeCurrentPage('left', pageNum)"
-            @size-change="(pageSize) => changePageSize('left', pageSize)"
+            @current-change="(pageNum) => changeCurrentPage(pageNum, 'left')"
+            @size-change="(pageSize) => changePageSize(pageSize, 'left')"
             @change="
               (currentPage, pageSize) => {
                 resetCheckboxStatus();
@@ -101,7 +133,7 @@
         </div>
       </div>
       <div class="k-transfer-content k-transfer-content__right">
-        <div class="k-transfer__list">
+        <div class="k-transfer__list" :style="{ height: tableHeight + 'px' }">
           <k-table
             ref="tableRightRef"
             size="mini"
@@ -112,10 +144,47 @@
             :scroll-y="scrollY"
             @row-dragend="dragSort"
           >
+            <template v-if="searchStrictly && columns">
+              <template v-for="(item, index) in columns" :key="index">
+                <k-table-column
+                  v-if="item.type !== 'checkbox' && item.field"
+                  :field="item.field"
+                  :width="item.width"
+                  :style="{ width: item.width ? `${item.width}px` : '' }"
+                  drag-sort
+                >
+                  <template #header="data">
+                    <slot name="rightHeader" v-bind="data">
+                      <div class="right-data-header">
+                        <span class="right-data-title">{{ item.title }}</span>
+                      </div>
+                    </slot>
+                  </template>
+                  <template #default="{ row }">
+                    <div class="column-body">
+                      <span class="column-content">
+                        <slot name="right-cell">
+                          <component
+                            :is="columnIcon(row)?.icon"
+                            class="column-icon"
+                            :color="columnIcon(row)?.color"
+                          />
+                          <span class="tree-transfer__cell-label" :title="row[item.field]">
+                            <slot name="right-label" :parent-data="parentData(row)">
+                              {{ row[item.field] }}
+                            </slot>
+                          </span>
+                        </slot>
+                      </span>
+                    </div>
+                  </template>
+                </k-table-column>
+              </template>
+            </template>
             <template v-if="$slots.empty && query" #empty>
               <slot name="empty" :query="query"></slot>
             </template>
-            <k-table-column :field="label" drag-sort>
+            <k-table-column v-if="!searchStrictly || !columns" :field="label" drag-sort>
               <template #header="data">
                 <slot name="rightHeader" v-bind="data">
                   <div class="right-data-header">
@@ -152,8 +221,8 @@
           <k-pagination
             v-bind="paginationRightConfig"
             :total="dataRightLength"
-            @current-change="(pageNum) => changeCurrentPage('right', pageNum)"
-            @size-change="(pageSize) => changePageSize('right', pageSize)"
+            @current-change="(pageNum) => changeCurrentPage(pageNum, 'right')"
+            @size-change="(pageSize) => changePageSize(pageSize, 'right')"
           />
         </div>
       </div>
@@ -186,12 +255,13 @@ const props = withDefaults(defineProps<TreeTransferProps>(), {
   showDrag: false,
   showPage: false,
   searchStrictly: false,
+  tableHeight: 300,
   defaultData: () => []
 });
 
 const _styleModule = inject('_styleModule', '');
 // 定义emit
-const emits = defineEmits(['change', 'sort', 'page-current-change', 'page-size-change', 'page-change']);
+const emits = defineEmits(['change', 'sort', 'page-current-change', 'page-size-change', 'page-change', 'update:modelValue']);
 const defaultTreeConfig = {
   transform: true,
   rowField: 'id',
@@ -223,7 +293,7 @@ const defaultPaginationConfig = {
   layout: 'total, prev, pager, next, sizes'
 };
 const paginationLeftConfig = ref<any>(JSON.parse(JSON.stringify(defaultPaginationConfig)));
-const paginationRightConfig = ref<any>(JSON.parse(JSON.stringify(defaultPaginationConfig)));
+const paginationRightConfig = ref<any>(Object.assign(defaultPaginationConfig, props.paginationLeftConfig || {}));
 
 onMounted(() => {
   addEvent();
@@ -275,7 +345,7 @@ const parentData = computed(
   }
 );
 const isPaging = computed(() => props.showPage && !props.useTree);
-const dataLeftLength = computed(() => leftData.value.length);
+const dataLeftLength = computed(() => paginationLeftConfig.value.total ?? leftData.value.length);
 const dataRightLength = computed(() => rightData.value.length);
 const showLeftTableData = computed(() => {
   if (!isPaging.value) {
@@ -353,10 +423,11 @@ function initCheckDataMap() {
 function checkboxChange(row: Row | Row[], checked: boolean, isAll: boolean = false) {
   handleSelectData(row, checked, isAll);
   updateSelectData();
+  emits('update:modelValue', getSelectedData());
   emits('change', getSelectedData());
 }
 function updateSelectData() {
-  let newData = leftData.value.filter(
+  const newData = leftData.value.filter(
     (item: TreeTransferData) => checkDataMap.get(item.id)?.checked ?? false
   );
   rightData.value = newData.filter((item: TreeTransferData) => {
@@ -652,13 +723,13 @@ async function clearQuery() {
   clearData();
 }
 
-function changeCurrentPage(position: string, pageNum: any) {
+function changeCurrentPage(pageNum: any, position: string = 'right') {
   const pagination = position === 'left' ? paginationLeftConfig.value : paginationRightConfig.value;
   pagination.currentPage = pageNum;
   emits('page-current-change', position, pageNum);
 }
 
-function changePageSize(position: string, pageSize: any) {
+function changePageSize(pageSize: any, position: string = 'right') {
   const pagination = position === 'left' ? paginationLeftConfig.value : paginationRightConfig.value;
   pagination.pageSize = pageSize;
   emits('page-size-change', position, pageSize);
