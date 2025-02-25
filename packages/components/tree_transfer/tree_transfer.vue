@@ -32,7 +32,11 @@
     </div>
     <div class="k-transfer__body">
       <div class="k-transfer-content k-transfer-content__left">
-        <div class="k-transfer__list" :style="{ height: tableHeight + 'px' }" :class="useTree ? 'transfer-tree-table' : ''">
+        <div
+          class="k-transfer__list"
+          :style="{ height: tableHeight + 'px' }"
+          :class="useTree ? 'transfer-tree-table' : ''"
+        >
           <k-table
             ref="treeLeftRef"
             size="mini"
@@ -261,7 +265,14 @@ const props = withDefaults(defineProps<TreeTransferProps>(), {
 
 const _styleModule = inject('_styleModule', '');
 // 定义emit
-const emits = defineEmits(['change', 'sort', 'page-current-change', 'page-size-change', 'page-change', 'update:modelValue']);
+const emits = defineEmits([
+  'change',
+  'sort',
+  'page-current-change',
+  'page-size-change',
+  'page-change',
+  'update:modelValue'
+]);
 const defaultTreeConfig = {
   transform: true,
   rowField: 'id',
@@ -293,29 +304,39 @@ const defaultPaginationConfig = {
   layout: 'total, prev, pager, next, sizes'
 };
 const paginationLeftConfig = ref<any>(JSON.parse(JSON.stringify(defaultPaginationConfig)));
-const paginationRightConfig = ref<any>(Object.assign(defaultPaginationConfig, props.paginationLeftConfig || {}));
+const paginationRightConfig = ref<any>(
+  Object.assign(defaultPaginationConfig, props.paginationLeftConfig || {})
+);
 
 onMounted(() => {
+  if (props.modelValue && props.modelValue.length > 0) {
+    props.modelValue.forEach((item) => {
+      const row = treeLeftRef.value.tableInstance.getRowById(item.id);
+      treeLeftRef?.value?.tableInstance.setCheckboxRow(row, true);
+    });
+  }
+
   addEvent();
 });
 
 const columnIcon = computed(
-  () => function (row: Row) {
-    const expand = treeLeftRef.value?.tableInstance.isTreeExpandByRow(row);
-    const isLeafNode = !(row.children && row.children.length);
-    if (isLeafNode && row.nodeType === 1) {
-      return { icon: getIcon(props.collapseIcon, row), color: props.collapseIconColor };
+  () =>
+    function (row: Row) {
+      const expand = treeLeftRef.value?.tableInstance.isTreeExpandByRow(row);
+      const isLeafNode = !(row.children && row.children.length);
+      if (isLeafNode && row.nodeType === 1) {
+        return { icon: getIcon(props.collapseIcon, row), color: props.collapseIconColor };
+      }
+      if (props.icon && isLeafNode) {
+        return { icon: getIcon(props.icon, row), color: props.iconColor };
+      }
+      if (props.expandIcon && expand && !isLeafNode) {
+        return { icon: getIcon(props.expandIcon, row), color: props.expandIconColor };
+      }
+      if (props.collapseIcon && !expand && !isLeafNode) {
+        return { icon: getIcon(props.collapseIcon, row), color: props.collapseIconColor };
+      }
     }
-    if (props.icon && isLeafNode) {
-      return { icon: getIcon(props.icon, row), color: props.iconColor };
-    }
-    if (props.expandIcon && expand && !isLeafNode) {
-      return { icon: getIcon(props.expandIcon, row), color: props.expandIconColor };
-    }
-    if (props.collapseIcon && !expand && !isLeafNode) {
-      return { icon: getIcon(props.collapseIcon, row), color: props.collapseIconColor };
-    }
-  }
 );
 const treeConfig = computed(() => {
   if (props.useTree) {
@@ -328,21 +349,22 @@ const treeConfig = computed(() => {
 const scrollY = computed(() => ({ enabled: true, ...(props.scrollY || {}) }));
 const rowLevel = computed(() => (row: Row) => getTreeNodeLevel(row));
 const parentData = computed(
-  () => function (row: Row) {
-    let data = row;
-    while (data.pid) {
-      const parent = leftData.value.find((item) => item.id === data.pid);
-      if (parent) {
-        data = parent;
-      } else {
-        break;
+  () =>
+    function (row: Row) {
+      let data = row;
+      while (data.pid) {
+        const parent = leftData.value.find((item) => item.id === data.pid);
+        if (parent) {
+          data = parent;
+        } else {
+          break;
+        }
       }
-    }
-    const name = data.name;
-    const labelData = row[props.label];
+      const name = data.name;
+      const labelData = row[props.label];
 
-    return { data: labelData, name };
-  }
+      return { data: labelData, name };
+    }
 );
 const isPaging = computed(() => props.showPage && !props.useTree);
 const dataLeftLength = computed(() => paginationLeftConfig.value.total ?? leftData.value.length);
@@ -382,14 +404,20 @@ watch(
 watch(
   () => props.paginationLeftConfig,
   () => {
-    paginationLeftConfig.value = Object.assign(paginationLeftConfig.value, props.paginationLeftConfig || {});
+    paginationLeftConfig.value = Object.assign(
+      paginationLeftConfig.value,
+      props.paginationLeftConfig || {}
+    );
   },
   { immediate: true, deep: true }
 );
 watch(
   () => props.paginationRightConfig,
   () => {
-    paginationRightConfig.value = Object.assign(paginationRightConfig.value, props.paginationRightConfig || {});
+    paginationRightConfig.value = Object.assign(
+      paginationRightConfig.value,
+      props.paginationRightConfig || {}
+    );
   },
   { immediate: true, deep: true }
 );
@@ -441,10 +469,9 @@ function updateSelectData() {
 function handleSelectData(row: Row, checked: boolean, isAll: boolean) {
   if (isAll) {
     const $table = treeLeftRef.value.tableInstance;
-    const checkedNodes = checked ?
-      $table.getCheckboxRecords()
-      .filter((item: Row) => !item.children || !item.children.length) :
-      rightData.value;
+    const checkedNodes = checked
+      ? $table.getCheckboxRecords().filter((item: Row) => !item.children || !item.children.length)
+      : rightData.value;
     for (const node of checkedNodes) {
       updateCheckedMap(node, checked);
     }
@@ -639,7 +666,9 @@ function sortTreeData(
   key: string | number
 ) {
   const sortKeyList = sortData.map((item: TreeTransferData) => item[key]);
-  return targetData.sort((a, b) => (sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1));
+  return targetData.sort((a, b) =>
+    sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1
+  );
 }
 
 function getTreeConfigField() {
@@ -666,7 +695,9 @@ function dragSort() {
 }
 function sortFunc(targetData: TreeTransferData[], sortData: TreeTransferData) {
   const sortKeyList = sortData.map((item: TreeTransferData) => item.id);
-  return targetData.sort((a, b) => (sortKeyList.indexOf(a.id) < sortKeyList.indexOf(b.id) ? -1 : 1));
+  return targetData.sort((a, b) =>
+    sortKeyList.indexOf(a.id) < sortKeyList.indexOf(b.id) ? -1 : 1
+  );
 }
 function getSelectedData() {
   return fullData.value.filter(
@@ -689,14 +720,14 @@ function isLeafNode(row: Row) {
 async function setCheckboxRow(id: number | string | (number | string)[], checked: boolean) {
   const ids = Array.isArray(id) ? id : [id];
   const rows = ids
-  .map((id: number | string) => {
-    const row = treeLeftRef.value.tableInstance.getRowById(id);
-    if (row && checkMethod({ row }) && !row.disabled) {
-      return row;
-    }
-    return null;
-  })
-  .filter((item: Row | null) => item !== null);
+    .map((id: number | string) => {
+      const row = treeLeftRef.value.tableInstance.getRowById(id);
+      if (row && checkMethod({ row }) && !row.disabled) {
+        return row;
+      }
+      return null;
+    })
+    .filter((item: Row | null) => item !== null);
   await treeLeftRef.value.tableInstance.setCheckboxRow(rows, checked);
   checkboxChange(rows, checked);
 }

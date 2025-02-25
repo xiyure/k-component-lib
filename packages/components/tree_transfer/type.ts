@@ -22,10 +22,11 @@ export interface TreeTransferProps {
   showDrag?: boolean
   showPage?: boolean
   searchStrictly?: boolean
-  paginationLeftConfig?: PaginationConfig;
-  paginationRightConfig?: PaginationConfig;
-  columns?: Column[];
+  paginationLeftConfig?: PaginationConfig
+  paginationRightConfig?: PaginationConfig
+  columns?: Column[]
   tableHeight?: number
+  modelValue?: TreeTransferData[]
   checkMethod?: (data: any) => boolean
   searchMethod?: (keyword: string, data: any[]) => Promise<any[]>
   searchRightMethod?: (keyword: string, data: any[]) => Promise<any[]>
