@@ -148,6 +148,7 @@ export interface SearchConfig {
   searchMethod?: (key: string | number, data: any[]) => any[];
   isRemoteQuery?: boolean;
   ignoreCase?: boolean;
+  supportPinYin?: string[]
 }
 
 export interface RowData {

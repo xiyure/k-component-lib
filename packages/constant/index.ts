@@ -1,1 +1,2 @@
-export * from './filter_data.js';
+export * from './filter_data';
+export * from './CN_dict'

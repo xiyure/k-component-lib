@@ -307,6 +307,7 @@ import { KOperate } from '../operate';
 import { KTable } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
+import { CN_DICT, TONE_MARKS } from '../../constant';
 import type { TreeTableProps, Column, TableHeaderControl, RowData, Row, TableCacheData } from './type';
 import type { ConditionInfo, Condition } from '../filter';
 import {
@@ -696,12 +697,11 @@ function filterTableData() {
       if (strict === true) {
         return cellLabel.toString() === searchKey;
       }
-      if (ignoreCase) {
-        return String(cellLabel).toLowerCase().indexOf(searchKey.toLowerCase()) !== -1;
-      }
-      return String(cellLabel).indexOf(searchKey) !== -1;
+      const compareLabel = ignoreCase ? String(cellLabel).toLowerCase() : String(cellLabel);
+      const newSearchKey = ignoreCase ? searchKey.toLowerCase() : searchKey;
+      return compareLabel.indexOf(newSearchKey) !== -1 || compareByPinYin(field, compareLabel, newSearchKey, ignoreCase);
     })
-  ) as any;
+  );
   // 当表格数据为树时，筛选后的数据应展示完整的子树
   if (props.useTree) {
     const { rowField } = getTreeConfigField();
@@ -712,6 +712,56 @@ function filterTableData() {
     updatePageNum(tableData.length);
   }
   return tableData;
+}
+// 支持拼音搜索
+function compareByPinYin(field: string,compareStr: string, searchKey: string, ignoreCase = false) {
+  const supportPortCols = props.searchConfig?.supportPinYin ?? [];
+  if (!supportPortCols.includes(field)) {
+    return false;
+  }
+  let pinyin = '';
+  const result = [];
+  const reg = new RegExp(`${Object.keys(TONE_MARKS).join('|')}`, 'g');
+  for (let i = 0; i < compareStr.length; i++) {
+    const p = CN_DICT[compareStr[i] as keyof typeof CN_DICT]
+      ?.replace(reg, (match) => TONE_MARKS[match as keyof typeof TONE_MARKS]);
+    if (!p) {
+      pinyin += compareStr[i];
+      continue;
+    }
+    const polyphone = p.split(',');
+    if (polyphone.length > 1) {
+      if (pinyin?.length) {
+        result.push([pinyin]);
+      }
+      result.push(polyphone);
+      pinyin = '';
+    } else {
+      pinyin += p;
+    }
+  }
+  pinyin.length && result.push([pinyin]);
+  const all = getAllCombinations(result);
+  for (const item of all) {
+    const label = ignoreCase ? item.toLowerCase() : item;
+    if (label.indexOf(searchKey) !== -1) {
+      return true;
+    }
+  }
+  return false;
+}
+function getAllCombinations(arr: (string[])[]): string[] {
+  let result: string[] = [];
+  for (const v of arr) {
+    if (result.length === 0) {
+      result.push(...v);
+      continue;
+    }
+    result = result.flatMap((item: string) => {
+      return v.map((i) => `${item}${i}`);
+    });
+  }
+  return result;
 }
 // 处理树形数据
 function handleTreeData(leafData: RowData[]) {
