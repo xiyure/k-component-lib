@@ -7,6 +7,7 @@ import 'ksw-vue-icon/styles/icon.css';
 import '../style/tailwind.css';
 import 'overlayscrollbars/styles/overlayscrollbars.css';
 import '../style/theme/index.css';
+import '../style/global.less';
 
 // style of lib
 export function registerStyle(app: App, config: ContextConfig = {}) {
