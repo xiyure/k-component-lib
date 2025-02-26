@@ -670,7 +670,7 @@ function filterTableData() {
     ? newFilterData.value
     : xeTableData.value;
   tableCacheData.xeTableDataMap = convertToMap();
-  const { strict, searchMethod, ignoreCase = false } = props.searchConfig ?? {};
+  const { strict, searchMethod, ignoreCase = false, searchColumns } = props.searchConfig ?? {};
   const searchKey = query.value.trim().replace(/\\/g, '\\\\');
   if (props.isRemoteQuery || props.searchConfig?.isRemoteQuery) {
     emits('remote-query', searchKey);
@@ -693,6 +693,9 @@ function filterTableData() {
   .filter((field: string | null) => field !== null);
   let tableData = filterData.filter((dataItem: any) =>
     fieldList.some((field: string) => {
+      if (Array.isArray(searchColumns) && !searchColumns.includes(field)) {
+        return false;
+      }
       const cellLabel = tableInstance.value.getCellLabel(dataItem, field);
       if (strict === true) {
         return cellLabel.toString() === searchKey;
@@ -715,8 +718,8 @@ function filterTableData() {
 }
 // 支持拼音搜索
 function compareByPinYin(field: string,compareStr: string, searchKey: string, ignoreCase = false) {
-  const supportPortCols = props.searchConfig?.supportPinYin ?? [];
-  if (!supportPortCols.includes(field)) {
+  const supportCols = props.searchConfig?.supportPinYin ?? false;
+  if (supportCols !== true && !(Array.isArray(supportCols) && supportCols.includes(field))) {
     return false;
   }
   let pinyin = '';
