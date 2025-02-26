@@ -455,9 +455,14 @@ function checkboxChange(row: Row | Row[], checked: boolean, isAll: boolean = fal
   emits('change', getSelectedData());
 }
 function updateSelectData() {
-  const newData = leftData.value.filter(
+  let newData = leftData.value.filter(
     (item: TreeTransferData) => checkDataMap.get(item.id)?.checked ?? false
   );
+  if (props.searchStrictly) {
+    newData = fullData.value.filter(
+      (item: TreeTransferData) => checkDataMap.get(item.id)?.checked ?? false
+    );
+  }
   rightData.value = newData.filter((item: TreeTransferData) => {
     if (props.defaultData?.includes(item.id) && !checkMethod({ row: item })) {
       return false;
