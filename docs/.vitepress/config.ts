@@ -91,6 +91,9 @@ const vitePressOptions = {
       copyright: 'Copyright © 2025 Kingsware Inc. All Rights reserved.'
     }
   },
+  sitemap: {
+    hostname: 'https://ksw.design.donxj.com'
+  },
   assetsDir: 'assets/js',
   metaChunk: true,
   vite: {
