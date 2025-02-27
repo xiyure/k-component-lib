@@ -30,6 +30,30 @@ TreeTransfer组件可以通过以下属性进行自定义设置：expand-icon（
 
 <demo path="./dragTreeTransfer" />
 
+## 多搜索框
+
+设置`searchStrictly`属性为`true`可以开启多搜索框功能。
+
+<demo path="./multiSearchTreeTransfer" />
+
+## 多列表格
+
+在设置`searchStrictly`后，配置`columns`属性可以开启多列表格功能。
+
+<demo path="./multiColumnsTreeTransfer" />
+
+## 指定高度
+
+设置`tableHeight`属性可以指定内容区的高度。
+
+<demo path="./heightTreeTransfer" />
+
+## 分页模式
+
+设置`showPage`为`true`可以开启分页模式。
+
+<demo path="./pageTreeTransfer" />
+
 ## API
 
 <API src="./tree_transfer.json" lang="zh"></API>

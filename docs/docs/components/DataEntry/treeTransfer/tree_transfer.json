@@ -23,43 +23,57 @@
       "tip": "[string, string]"
     },
     {
-      "displayName": "showSearchInput",
+      "displayName": "show-search-input",
       "type": "boolean",
       "description": "是否显示搜索框",
       "defaultValue": "true",
       "tip": ""
     },
     {
-      "displayName": "useTree",
+      "displayName": "use-tree",
       "type": "boolean",
       "description": "是否使用树形结构",
       "defaultValue": "false",
       "tip": ""
     },
     {
-      "displayName": "treeConfig",
+      "displayName": "tree-config",
       "type": "object",
       "description": "树形结构配置",
       "defaultValue": "",
       "tip": "VxeTablePropTypes.TreeConfig"
     },
     {
-      "displayName": "scrollY",
+      "displayName": "scroll-y",
       "type": "object",
       "description": "滚动条配置",
       "defaultValue": "",
       "tip": "VxeTablePropTypes.ScrollY"
     },
     {
-      "displayName": "showDrag",
+      "displayName": "show-drag",
       "type": "boolean",
       "description": "是否启用拖拽排序",
       "defaultValue": "false",
       "tip": ""
     },
     {
+      "displayName": "show-page",
+      "type": "boolean",
+      "description": "是否显示分页",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "search-strictly",
+      "type": "boolean",
+      "description": "是否使用多搜索框模式",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
       "displayName": "icon",
-      "type": "string | Component",
+      "type": "string | component",
       "description": "叶子节点图标",
       "defaultValue": "false",
       "tip": ""
@@ -93,6 +107,20 @@
       "tip": ""
     },
     {
+      "displayName": "table-height",
+      "type": "number",
+      "description": "表格内容高度",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "columns",
+      "type": "Column[]",
+      "description": "启用searchStrictly时可进行表格列配置",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
       "displayName": "collapse-icon-color",
       "type": "string | Component",
       "description": "收起icon颜色",
@@ -100,18 +128,39 @@
       "tip": ""
     },
     {
-      "displayName": "checkMethod",
+      "displayName": "check-method",
       "type": "Function",
       "description": "自定义选中方法",
       "defaultValue": "",
       "tip": "(data: any) => boolean"
     },
     {
-      "displayName": "searchMethod",
+      "displayName": "search-method",
       "type": "Function",
       "description": "自定义搜索方法",
       "defaultValue": "",
       "tip": "(keyword: string, data: any[]) => Promise<any[]>"
+    },
+    {
+      "displayName": "search-right-method",
+      "type": "Function",
+      "description": "自定义右侧搜索方法",
+      "defaultValue": "",
+      "tip": "(keyword: string, data: any[]) => Promise<any[]>"
+    },
+    {
+      "displayName": "pagination-left-config",
+      "type": "PaginationConfig",
+      "description": "左侧分页配置",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "pagination-right-config",
+      "type": "PaginationConfig",
+      "description": "右侧分页配置，不存在时默认使用左侧分页配置",
+      "defaultValue": "",
+      "tip": ""
     }
   ],
   "events": [

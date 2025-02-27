@@ -23,7 +23,7 @@
 </template>
 
 <script lang="tsx" setup>
-import { ref, reactive } from 'vue';
+import { ref } from 'vue';
 
 const column1 = ref([
   {
@@ -58,7 +58,7 @@ const column1 = ref([
     field: 'address'
   }
 ]);
-const tableData = reactive([
+const tableData = ref([
   {
     id: 1,
     name: 'Test1',

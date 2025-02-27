@@ -309,15 +309,39 @@ const paginationRightConfig = ref<any>(
 );
 
 onMounted(() => {
-  if (props.modelValue && props.modelValue.length > 0) {
-    props.modelValue.forEach((item) => {
-      const row = treeLeftRef.value.tableInstance.getRowById(item.id);
-      treeLeftRef?.value?.tableInstance.setCheckboxRow(row, true);
-    });
-  }
-
   addEvent();
 });
+
+watch(
+  [() => props.modelValue, () => props.modelValue?.length],
+  () => {
+    for (const { row } of checkDataMap.values()) {
+      const mapItem = checkDataMap.get(row.id);
+      if (mapItem) {
+        mapItem.checked = false;
+      }
+      const _row = treeLeftRef.value.tableInstance.getRowById(row.id);
+      if (_row) {
+        treeLeftRef.value.tableInstance.setCheckboxRow(_row, false);
+      }
+    }
+    if (props.modelValue && props.modelValue.length > 0) {
+      props.modelValue.forEach((item) => {
+        const dataItem = treeLeftRef.value.tableInstance.getRowById(item.id);
+        if (dataItem) {
+          const item = checkDataMap.get(dataItem.id);
+          if (item) {
+            item.checked = true;
+          }
+          treeLeftRef?.value?.tableInstance.setCheckboxRow(dataItem, true);
+          handleSelectData(dataItem, true, false);
+        }
+      });
+      updateSelectData();
+    }
+  },
+  { immediate: true }
+);
 
 const columnIcon = computed(
   () =>
@@ -349,21 +373,22 @@ const treeConfig = computed(() => {
 const scrollY = computed(() => ({ enabled: true, ...(props.scrollY || {}) }));
 const rowLevel = computed(() => (row: Row) => getTreeNodeLevel(row));
 const parentData = computed(
-  () => function (row: Row) {
-    let data = row;
-    while (data.pid) {
-      const parent = leftData.value.find((item) => item.id === data.pid);
-      if (parent) {
-        data = parent;
-      } else {
-        break;
+  () =>
+    function (row: Row) {
+      let data = row;
+      while (data.pid) {
+        const parent = leftData.value.find((item) => item.id === data.pid);
+        if (parent) {
+          data = parent;
+        } else {
+          break;
+        }
       }
-    }
-    const name = data.name;
-    const labelData = row[props.label];
+      const name = data.name;
+      const labelData = row[props.label];
 
-    return { data: labelData, name };
-  }
+      return { data: labelData, name };
+    }
 );
 const isPaging = computed(() => props.showPage && !props.useTree);
 const dataLeftLength = computed(() => paginationLeftConfig.value.total ?? leftData.value.length);
@@ -724,14 +749,14 @@ function isLeafNode(row: Row) {
 async function setCheckboxRow(id: number | string | (number | string)[], checked: boolean) {
   const ids = Array.isArray(id) ? id : [id];
   const rows = ids
-  .map((id: number | string) => {
-    const row = treeLeftRef.value.tableInstance.getRowById(id);
-    if (row && checkMethod({ row }) && !row.disabled) {
-      return row;
-    }
-    return null;
-  })
-  .filter((item: Row | null) => item !== null);
+    .map((id: number | string) => {
+      const row = treeLeftRef.value.tableInstance.getRowById(id);
+      if (row && checkMethod({ row }) && !row.disabled) {
+        return row;
+      }
+      return null;
+    })
+    .filter((item: Row | null) => item !== null);
   await treeLeftRef.value.tableInstance.setCheckboxRow(rows, checked);
   checkboxChange(rows, checked);
 }

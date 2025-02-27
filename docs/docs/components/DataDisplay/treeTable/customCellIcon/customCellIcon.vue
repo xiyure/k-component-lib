@@ -8,10 +8,10 @@
 </template>
 
 <script lang="tsx" setup>
-import { ref, reactive } from 'vue';
+import { ref } from 'vue';
 
 // 包含图标的数据
-const tableData1 = reactive([
+const tableData1 = ref([
   {
     id: 1,
     name: 'Test1',

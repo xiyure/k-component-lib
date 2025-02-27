@@ -11,9 +11,9 @@
 </template>
 
 <script lang="tsx" setup>
-import { ref, reactive } from 'vue';
+import { ref } from 'vue';
 
-const tableData = reactive([
+const tableData = ref([
   { id: 1, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc', status: true },
   { id: 2, name: 'Test2', role: 'Test', sex: 'Women', age: 42, address: 'Guangzhou', status: true },
   { id: 3, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai', status: true },
