@@ -43,6 +43,7 @@ import { KSliderButton } from '../../components/slider_button';
 import { KScriptInput } from '../../components/script_input';
 import { KIconPopover } from '../../components/icon_popover';
 import { KGlobalProvider } from '../../components/global_provider';
+import { KSplit } from '../../components/split';
 
 export default [
   KButton,
@@ -83,6 +84,7 @@ export default [
   KFormItem,
   KSteps,
   KStep,
+  KSplit,
   KCollapse,
   KCollapseItem,
   KView,
