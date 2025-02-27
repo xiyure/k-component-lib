@@ -1,6 +1,8 @@
 <template>
   <div>
-    <k-script-input v-model="text" :options="data" show-password></k-script-input>
+    <k-form>
+      <k-script-input v-model="text" :options="data" show-password></k-script-input>
+    </k-form>
   </div>
 </template>
 

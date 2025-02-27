@@ -27,7 +27,7 @@ export function registerStyle(app: App, config: ContextConfig = {}) {
     body?.classList.add(projectName);
   }
   app.provide('_styleModule', projectName === 'AOM' ? '' : projectName);
- // 合并css变量
+  // 合并css变量
   if (isObject(config.cssVariables)) {
     mergeCssVar(config.cssVariables);
   }

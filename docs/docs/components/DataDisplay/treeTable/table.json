@@ -445,9 +445,21 @@
         "defaultValue": "false"
       },
       {
-        "displayName": "ignore-case",
+        "displayName": "ignoreCase",
         "description": "是否忽略大小写",
         "type": "boolean",
+        "defaultValue": "false"
+      },
+      {
+        "displayName": "searchColumns",
+        "description": "允许指定搜索列,输入值为表格列配置的field,只有指定列才会进行搜索",
+        "type": "string[]",
+        "defaultValue": ""
+      },
+      {
+        "displayName": "supportPinYin",
+        "description": "允许指定拼音搜索列,输入值为表格列配置的field,只有指定列才会进行搜索，为true时，会搜索所有数据",
+        "type": "boolean | string[]",
         "defaultValue": "false"
       }
     ],

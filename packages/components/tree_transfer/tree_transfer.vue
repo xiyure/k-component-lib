@@ -349,22 +349,21 @@ const treeConfig = computed(() => {
 const scrollY = computed(() => ({ enabled: true, ...(props.scrollY || {}) }));
 const rowLevel = computed(() => (row: Row) => getTreeNodeLevel(row));
 const parentData = computed(
-  () =>
-    function (row: Row) {
-      let data = row;
-      while (data.pid) {
-        const parent = leftData.value.find((item) => item.id === data.pid);
-        if (parent) {
-          data = parent;
-        } else {
-          break;
-        }
+  () => function (row: Row) {
+    let data = row;
+    while (data.pid) {
+      const parent = leftData.value.find((item) => item.id === data.pid);
+      if (parent) {
+        data = parent;
+      } else {
+        break;
       }
-      const name = data.name;
-      const labelData = row[props.label];
-
-      return { data: labelData, name };
     }
+    const name = data.name;
+    const labelData = row[props.label];
+
+    return { data: labelData, name };
+  }
 );
 const isPaging = computed(() => props.showPage && !props.useTree);
 const dataLeftLength = computed(() => paginationLeftConfig.value.total ?? leftData.value.length);
@@ -560,7 +559,7 @@ async function filterLeftData(position?: string) {
   if (position === 'left' && props.searchStrictly) {
     searchKey = queryLeft.value.trim();
   }
-  let tableData = [];
+  let tableData: TreeTransferData[] = [];
   if (typeof props.searchMethod === 'function') {
     tableData = await props.searchMethod(searchKey, props.data);
   } else {
@@ -725,14 +724,14 @@ function isLeafNode(row: Row) {
 async function setCheckboxRow(id: number | string | (number | string)[], checked: boolean) {
   const ids = Array.isArray(id) ? id : [id];
   const rows = ids
-    .map((id: number | string) => {
-      const row = treeLeftRef.value.tableInstance.getRowById(id);
-      if (row && checkMethod({ row }) && !row.disabled) {
-        return row;
-      }
-      return null;
-    })
-    .filter((item: Row | null) => item !== null);
+  .map((id: number | string) => {
+    const row = treeLeftRef.value.tableInstance.getRowById(id);
+    if (row && checkMethod({ row }) && !row.disabled) {
+      return row;
+    }
+    return null;
+  })
+  .filter((item: Row | null) => item !== null);
   await treeLeftRef.value.tableInstance.setCheckboxRow(rows, checked);
   checkboxChange(rows, checked);
 }
