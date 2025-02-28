@@ -1,6 +1,6 @@
 <template>
   <div>
-    <k-split v-model="split" triggerIcon="IconEllipsisVertical">
+    <k-split v-model="split" triggerIcon="IconEllipsisVertical" style="height: 200px;">
       <template #first>first</template>
       <template #second>second</template>
     </k-split>

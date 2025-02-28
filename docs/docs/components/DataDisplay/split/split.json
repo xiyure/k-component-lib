@@ -2,16 +2,16 @@
   "name": "Split",
   "props": [
     {
-      "displayName": "modelValue",
+      "displayName": "v-model / modelValue",
       "type": "number | string",
-      "description": "初始时左右面板比例",
+      "description": "绑定左右面板比例（目前只支持px和0-1之间的数字，不支持rem以及百分比等单位）",
       "defaultValue": "",
       "tip": ""
     },
     {
-      "displayName": "defaultSize",
+      "displayName": "default-size",
       "type": "number | string",
-      "description": "modelValue不存在时，初始左右面板比例",
+      "description": "初始左右面板比例（目前只支持px和0-1之间的数字，不支持rem以及百分比等单位）",
       "defaultValue": "0.5",
       "tip": ""
     },
@@ -51,42 +51,42 @@
       "tip": ""
     },
     {
-      "displayName": "triggerIcon",
+      "displayName": "trigger-icon",
       "type": "string | Component",
       "description": "分割线图标",
       "defaultValue": "",
       "tip": ""
     },
     {
-      "displayName": "showTrigger",
+      "displayName": "show-trigger",
       "type": "boolean",
       "description": "是否显示分割线图标",
       "defaultValue": "true",
       "tip": ""
     },
     {
-      "displayName": "pane1Class",
+      "displayName": "pane1-class",
       "type": "string",
       "description": "左侧面板类名",
       "defaultValue": "",
       "tip": ""
     },
     {
-      "displayName": "pane2Class",
+      "displayName": "pane2-class",
       "type": "string",
       "description": "右侧面板类名",
       "defaultValue": "",
       "tip": ""
     },
     {
-      "displayName": "pane1Style",
+      "displayName": "pane1-style",
       "type": "CSSProperties",
       "description": "左侧面板样式",
       "defaultValue": "",
       "tip": ""
     },
     {
-      "displayName": "pane2Style",
+      "displayName": "pane2-style",
       "type": "CSSProperties",
       "description": "右侧面板样式",
       "defaultValue": "",

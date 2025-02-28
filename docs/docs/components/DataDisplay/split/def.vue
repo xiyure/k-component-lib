@@ -1,6 +1,6 @@
 <template>
   <div>
-    <k-split v-model="split">
+    <k-split v-model="split" style="height: 200px;">
       <template #first>first</template>
       <template #second>second</template>
     </k-split>

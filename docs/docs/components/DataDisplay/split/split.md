@@ -30,6 +30,10 @@ title: Split 分割线
 
 <demo path="./customSize.vue" />
 
+## 嵌套
+
+<demo path="./nestedSplit.vue" />
+
 ## 限制拖动范围
 
 使用`min`和`max`限制拖动范围。

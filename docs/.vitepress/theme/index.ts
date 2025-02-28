@@ -19,6 +19,22 @@ import '@ksware/ksw-ux/kingsware-ui/style.css'; //使用 cdn 导入
 import './style.less';
 import './tailwind.css';
 
+// import { KswIcon } from 'ksw-vue-icon';
+/*
+ *  源码
+ */
+// import install from '../../../packages/index';
+/*
+ *  本地 build
+ */
+// import install from '../../../kingsware-ui/index';
+// import '../../../kingsware-ui/style.css';
+/*
+ *  npm
+ */
+// import install from '@ksware/ksw-ux';
+import '@ksware/ksw-ux/kingsware-ui/style.css'; //使用 cdn 导入
+
 export default {
   // 扩展默认主题
   extends: DefaultTheme,
