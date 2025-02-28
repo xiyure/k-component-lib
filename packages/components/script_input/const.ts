@@ -14,3 +14,9 @@ export const typeRules = new Map([
   ['number', { reg: /^-?\d+(\.\d+)?$/, message: checkInputMessage.number }],
   ['boolean', { reg: /^(true|false)$/, message: checkInputMessage.boolean }],
 ]);
+
+export const TAG_TYPES = {
+  string: 'fx_string',
+  number: 'fx_number',
+  boolean: 'fx_boolean'
+}

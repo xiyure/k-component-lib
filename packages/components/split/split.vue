@@ -139,6 +139,7 @@ function updateSize(newPxSize: number, containerSize: number) {
   emits('update:modelValue', newSize);
 }
 
+// 获取有效分配空间大小，考虑边界情况
 function getLegalPxSize(size: number | string, containerSize: number) {
   const pxSize = getPxSize({
     size,
@@ -249,6 +250,7 @@ function getNewPxSize({
   return getLegalPxSize(`${startPxSize + (endPosition - startPosition)}px`, startContainerSize);
 }
 
+// %、px... => px
 function getPxSize({
   size,
   defaultSize,

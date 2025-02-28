@@ -228,18 +228,23 @@ const _showPassword = ref(false);
 const pwd = ref(props.modelValue.toString());
 const { _methods } = usePassword(_showPassword, pwd);
 
+// 下拉列表配置
 const treeConfig = computed(() => {
   if (!props.useTree) {
     return undefined;
   }
   return Object.assign(DEFAULT_TREE_CONFIG, props.treeConfig || {});
 });
+
+// tree => array
 const flattedOptions = computed(() => {
   const tableData = $tree.value?.getTableData().fullData ?? [];
   return (
     transformTreeData(tableData, { parentField: getAttrProps().value, children: 'children' }) ?? []
   );
 });
+
+// tooltip配置
 const VTooltipConfig = computed(() => ({
   content: checkInputMessage.tooltip,
   visible:
@@ -249,12 +254,7 @@ const VTooltipConfig = computed(() => ({
     !limitMaxMinMsg.value
 }));
 
-watch(
-  () => VTooltipConfig.value,
-  () => {
-    console.log('watch', VTooltipConfig.value);
-  }
-);
+// 缓存开启唯一输入模式的输入框类型集合
 const onlyOneInputMode = computed(() => {
   const isOnly = props.onlyOneInput;
   let modeMap = new Map([
