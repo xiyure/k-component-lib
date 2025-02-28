@@ -30,9 +30,9 @@
           }
         ]"
       >
-        <slot v-if="showTrigger">
+        <slot name="trigger" v-if="showTrigger">
           <div class="k-split-trigger-icon-wrapper">
-            <slot name="icon">
+            <slot name="trigger-icon">
               <component :is="resizeTriggerIcon" class="k-split-trigger-icon" />
             </slot>
           </div>
@@ -47,10 +47,11 @@
   </component>
 </template>
 <script setup lang="ts">
-import { computed, ref, toRefs, onMounted, nextTick } from 'vue';
+import { computed, ref, reactive, toRefs, onMounted, nextTick } from 'vue';
 import { isNumber, isString } from 'lodash-es';
 import { IconGripHorizontal, IconGripVertical } from 'ksw-vue-icon';
 import ResizeObserver from './resize_observer';
+import { useMergeState } from '../../hooks'
 import { SplitProps } from './type';
 
 defineOptions({
@@ -58,16 +59,16 @@ defineOptions({
 });
 
 const props = withDefaults(defineProps<SplitProps>(), {
-  modelValue: 0.5,
   component: 'div',
   direction: 'horizontal',
   disabled: false,
   pane1Class: '',
   pane2Class: '',
-  showTrigger: true
+  showTrigger: true,
+  defaultSize: 0.5
 });
 
-const emits = defineEmits(['moveStart', 'moving', 'moveEnd']);
+const emits = defineEmits(['moveStart', 'moving', 'moveEnd', 'update:modelValue']);
 
 onMounted(async () => {
   const containerSize = await getContainerSize();
@@ -87,8 +88,13 @@ const record: {
   startContainerSize: 0,
   startSize: 0
 };
-const size = defineModel<string | number>({ default: 0.5 });
-const { direction, min, max } = toRefs(props);
+const { direction, modelValue, defaultSize, min, max } = toRefs(props);
+const [size, setSize] = useMergeState(
+  defaultSize.value,
+  reactive({
+    value: modelValue,
+  })
+);
 
 const triggerSize = ref(0);
 const wrapperRef = ref<HTMLDivElement>();
@@ -126,7 +132,11 @@ function updateSize(newPxSize: number, containerSize: number) {
     return;
   }
   const newSize = sizeConfig.value.isPx ? `${newPxSize}px` : px2percent(newPxSize, containerSize);
-  size.value = newSize;
+  if (newSize === size.value) {
+    return;
+  }
+  setSize(newSize);
+  emits('update:modelValue', newSize);
 }
 
 function getLegalPxSize(size: number | string, containerSize: number) {

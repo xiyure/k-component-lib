@@ -1,7 +1,8 @@
 import { Component, CSSProperties } from 'vue';
 
 export interface SplitProps {
-  modelValue: number | string
+  modelValue?: number | string
+  defaultSize?: number | string
   component?: string
   direction?: 'horizontal' | 'vertical'
   min?: number | string | undefined
