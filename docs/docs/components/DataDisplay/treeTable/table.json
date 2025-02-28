@@ -396,7 +396,7 @@
         "defaultValue": "true"
       },
       {
-        "displayName": "show-column-menu",
+        "displayName": "showColumnMenu",
         "description": "是否显示列头菜单",
         "type": "boolean",
         "defaultValue": "false"
@@ -433,13 +433,13 @@
         "defaultValue": "false"
       },
       {
-        "displayName": "search-method",
+        "displayName": "searchMethod",
         "description": "自定义搜索方法",
         "type": "Function",
         "tip": "(key: string | number, data: any[]) => any[]"
       },
       {
-        "displayName": "is-remote-query",
+        "displayName": "isRemoteQuery",
         "description": "是否远程搜索",
         "type": "boolean",
         "defaultValue": "false"
@@ -547,13 +547,13 @@
     ],
     "SeqConfig": [
       {
-        "displayName": "start-index",
+        "displayName": "startIndex",
         "type": "number",
         "description": "序号起始值",
         "defaultValue": "1"
       },
       {
-        "displayName": "seq-method",
+        "displayName": "seqMethod",
         "type": "Function",
         "description": "自定义序号方法",
         "defaultValue": "",
