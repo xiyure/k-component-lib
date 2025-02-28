@@ -13,7 +13,12 @@
         <div class="flex flex-col w-full min-h-8">
           <div class="flex w-full min-h-8 relative">
             <div class="k-script-input-prepend">
-              <k-button v-if="showModeSwitch" :disabled @click="toggleMode">
+              <k-button
+                v-if="showModeSwitch"
+                v-ksw_tooltip="_isStringMode ? t?.('stringMode') : t?.('expressionMode')"
+                :disabled
+                @click="toggleMode"
+              >
                 <component
                   :is="!_isStringMode ? 'IconModeExpressionColor' : 'IconModeExpression'"
                   color="var(--k-gray-400)"
@@ -34,7 +39,6 @@
                   }
                 ]"
                 :style="{
-                  height: height,
                   maxHeight: maxHeight,
                   resize: resize ? 'vertical' : 'none'
                 }"
@@ -139,6 +143,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, inject, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import { ElScrollbar } from 'element-plus';
+import { VueI18nTranslation } from 'vue-i18n';
 import { ScriptInputProps, ScriptOptions } from './type';
 import Message from '../message';
 import { usePassword } from './hooks/use_password';
@@ -152,6 +157,7 @@ defineOptions({
 });
 
 const _styleModule = inject('_styleModule', '');
+const t = inject<VueI18nTranslation>('$t');
 
 const props = withDefaults(defineProps<ScriptInputProps>(), {
   modelValue: '',
@@ -274,6 +280,10 @@ const onlyOneInputMode = computed(() => {
   return modeMap;
 });
 
+watch(() => props.height, async() => {
+  await nextTick();
+  KScriptInputWrapper.value.style.height = props.height?? 'auto';
+}, { immediate: true });
 // 输入框内容发生变化时，需要更新下拉列表的显示状态以及光标位置
 watch(
   () => curInput.value,

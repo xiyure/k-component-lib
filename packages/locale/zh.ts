@@ -76,5 +76,7 @@ export default {
   refresh: '刷新',
   columnHeaderController: '列头控制器',
   advancedFilter_c: '高级筛选',
-  sizeControlTrigger: '调整表格大小'
+  sizeControlTrigger: '调整表格大小',
+  stringMode: '字符串模式',
+  expressionMode: '表达式模式',
 };

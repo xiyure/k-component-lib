@@ -76,5 +76,7 @@ export default {
   refresh: 'refresh',
   columnHeaderController: 'column header controller',
   advancedFilter_c: 'advanced filter',
-  sizeControlTrigger: 'Size Control'
+  sizeControlTrigger: 'Size Control',
+  stringMode: 'string mode',
+  expressionMode: 'expression mode',
 };
