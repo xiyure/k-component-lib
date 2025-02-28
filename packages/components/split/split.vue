@@ -1,7 +1,7 @@
 <template>
   <component
     :is="component"
-    ref="wrapperRef"
+    ref="splitRef"
     :class="[
       'k-split',
       {
@@ -97,7 +97,7 @@ const [size, setSize] = useMergeState(
 );
 
 const triggerSize = ref(0);
-const wrapperRef = ref<HTMLDivElement>();
+const splitRef = ref<HTMLDivElement>();
 
 const sizeConfig = computed(() => getSizeConfig(size.value));
 const isHorizontal = computed(() => direction.value !== 'vertical');
@@ -117,10 +117,10 @@ const resizeTriggerIcon = computed(() => {
 
 async function getContainerSize() {
   const getSize = () => {
-    return isHorizontal.value ? wrapperRef.value?.clientWidth : wrapperRef.value?.clientHeight || 0;
+    return isHorizontal.value ? splitRef.value?.clientWidth : splitRef.value?.clientHeight || 0;
   };
 
-  if (!wrapperRef.value || getSize()) {
+  if (!splitRef.value || getSize()) {
     await nextTick();
   }
 
@@ -198,6 +198,7 @@ async function onMoveStart(e: MouseEvent) {
   window.addEventListener('mouseup', onMovingEnd);
   window.addEventListener('contextmenu', onMovingEnd);
   document.body.style.cursor = isHorizontal.value ? 'col-resize' : 'row-resize';
+  e.preventDefault();
 }
 function onMoving(e: MouseEvent) {
   emits('moving', e);
