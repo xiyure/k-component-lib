@@ -58,7 +58,7 @@
               checkboxChange(row, checked, true)
             }"
           >
-            <template v-if="searchStrictly && columns">
+            <template v-if="columns">
               <template v-for="(item, index) in columns" :key="index">
                 <k-table-column
                   :type="item.type"
@@ -93,7 +93,7 @@
               <slot name="empty" :query="query"></slot>
             </template>
             <k-table-column
-              v-if="!searchStrictly || !columns"
+              v-if="!columns"
               type="checkbox"
               :field="label"
               :title="titles?.[0] ?? ''"
@@ -148,7 +148,7 @@
             :scroll-y="scrollY"
             @row-dragend="dragSort"
           >
-            <template v-if="searchStrictly && columns">
+            <template v-if="columns">
               <template v-for="(item, index) in columns" :key="index">
                 <k-table-column
                   v-if="item.type !== 'checkbox' && item.field"
@@ -188,7 +188,7 @@
             <template v-if="$slots.empty && query" #empty>
               <slot name="empty" :query="query"></slot>
             </template>
-            <k-table-column v-if="!searchStrictly || !columns" :field="label" drag-sort>
+            <k-table-column v-if="!columns" :field="label" drag-sort>
               <template #header="data">
                 <slot name="rightHeader" v-bind="data">
                   <div class="right-data-header">
@@ -312,33 +312,41 @@ onMounted(() => {
   addEvent();
 });
 
+const clearCheckbox = () => {
+  for (const { row } of checkDataMap.values()) {
+    const mapItem = checkDataMap.get(row.id);
+    if (mapItem) {
+      mapItem.checked = false;
+    }
+    const _row = treeLeftRef.value.tableInstance.getRowById(row.id);
+    if (_row) {
+      treeLeftRef.value.tableInstance.setCheckboxRow(_row, false);
+    }
+  }
+};
+
+const addCheckbox = () => {
+  if (props.modelValue && props.modelValue.length > 0) {
+    props.modelValue.forEach((item) => {
+      const dataItem = treeLeftRef.value.tableInstance.getRowById(item.id);
+      if (dataItem) {
+        const item = checkDataMap.get(dataItem.id);
+        if (item) {
+          item.checked = true;
+        }
+        treeLeftRef?.value?.tableInstance.setCheckboxRow(dataItem, true);
+        handleSelectData(dataItem, true, false);
+      }
+    });
+    updateSelectData();
+  }
+};
+
 watch(
   [() => props.modelValue, () => props.modelValue?.length],
   () => {
-    for (const { row } of checkDataMap.values()) {
-      const mapItem = checkDataMap.get(row.id);
-      if (mapItem) {
-        mapItem.checked = false;
-      }
-      const _row = treeLeftRef.value.tableInstance.getRowById(row.id);
-      if (_row) {
-        treeLeftRef.value.tableInstance.setCheckboxRow(_row, false);
-      }
-    }
-    if (props.modelValue && props.modelValue.length > 0) {
-      props.modelValue.forEach((item) => {
-        const dataItem = treeLeftRef.value.tableInstance.getRowById(item.id);
-        if (dataItem) {
-          const item = checkDataMap.get(dataItem.id);
-          if (item) {
-            item.checked = true;
-          }
-          treeLeftRef?.value?.tableInstance.setCheckboxRow(dataItem, true);
-          handleSelectData(dataItem, true, false);
-        }
-      });
-      updateSelectData();
-    }
+    clearCheckbox();
+    addCheckbox();
   },
   { immediate: true }
 );

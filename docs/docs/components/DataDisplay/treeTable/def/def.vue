@@ -1,5 +1,5 @@
 <template>
-  <div :style="{ height: '420px' }">
+  <div>
     <k-tree-table
       :data="tableData" :column="column" :show-page="false"
       border
