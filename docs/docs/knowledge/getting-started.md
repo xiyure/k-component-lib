@@ -38,6 +38,7 @@ pnpm install @ksware/ksw-ux
 ## 使用
 
 在你的 Vue 项目中引入并使用 `@ksware/ksw-ux`：
+导入`@ksware/ksw-ux/kingsware-ui/style.css`样式文件，并在 `main.ts` 文件中注册组件：
 
 1. **全局引入**
 
@@ -47,6 +48,7 @@ pnpm install @ksware/ksw-ux
 import { createApp } from 'vue';
 import App from './App.vue';
 import KswUx from '@ksware/ksw-ux';
+import '@ksware/ksw-ux/kingsware-ui/style.css'
 
 const app = createApp(App);
 
@@ -63,6 +65,7 @@ app.mount('#app');
 import { createApp } from 'vue';
 import App from './App.vue';
 import { KButton, KTable } from '@ksware/ksw-ux';
+import '@ksware/ksw-ux/kingsware-ui/style.css'
 
 const app = createApp(App);
 

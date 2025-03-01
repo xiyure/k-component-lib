@@ -13,6 +13,7 @@ date: 2020-08-6 10:30:00
 
 ```typescript
 import kswUx from '@ksware/ksw-ux';
+import '@ksware/ksw-ux/kingsware-ui/style.css'
 
 app.use(kswUx, {
   vxeGlobalConfig: {
@@ -32,6 +33,7 @@ app.use(kswUx, {
 
 ```typescript
 import kswUx from '@ksware/ksw-ux';
+import '@ksware/ksw-ux/kingsware-ui/style.css'
 
 app.use(kswUx, {
   ElementPlusOptions: {
