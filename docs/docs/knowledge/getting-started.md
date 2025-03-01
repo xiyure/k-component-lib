@@ -62,11 +62,12 @@ app.mount('#app');
 ```typescript
 import { createApp } from 'vue';
 import App from './App.vue';
-import KswUx from '@ksware/ksw-ux';
+import { KButton, KTable } from '@ksware/ksw-ux';
 
 const app = createApp(App);
 
-app.use(KswUx);
+app.component('KButton', KButton);
+app.component('KTable', KTable);
 
 app.mount('#app');
 ```
