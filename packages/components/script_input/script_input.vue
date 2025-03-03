@@ -282,7 +282,10 @@ const onlyOneInputMode = computed(() => {
 
 watch(() => props.height, async() => {
   await nextTick();
-  KScriptInputWrapper.value.style.height = props.height?? 'auto';
+  const scriptInstance = KScriptInput.value;
+  if (scriptInstance?.style?.height) {
+    scriptInstance.style.height = props.height?? 'auto';
+  }
 }, { immediate: true });
 // 输入框内容发生变化时，需要更新下拉列表的显示状态以及光标位置
 watch(
@@ -325,9 +328,11 @@ watch(
     clearCurrentInput();
     const newModelValue = props.modelValue.toString();
     cacheRes = newModelValue;
-    if (_showPassword.value) {
+    if (_showPassword.value && !funcReg.test(newModelValue)) {
       pwd.value = newModelValue;
       return;
+    } else {
+      _showPassword.value = false;
     }
     nextTick(() => {
       const innerText = parseModelValue(newModelValue);
