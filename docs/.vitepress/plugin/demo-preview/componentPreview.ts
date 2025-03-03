@@ -9,6 +9,7 @@ import {
   isCheckingRelativePath,
   transformHighlightCode
 } from './utils'
+import { component } from 'vxe-pc-ui'
 
 const titleRegex = /title=['"](.*?)['"]/
 const pathRegex = /path=['"](.*?)['"]/

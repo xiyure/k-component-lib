@@ -1,7 +1,8 @@
-import { Component, VNode } from 'vue';
-import { VxeTablePropTypes, VxeColgroupProps, VxeColumnPropTypes } from 'vxe-table';
+import { Component } from 'vue';
+import { VxeTablePropTypes } from 'vxe-table';
 import { PaginationProps as ElPaginationProps } from 'element-plus';
 import { RequireToOptional } from '../../utils/typescript';
+import { Column } from '../tree_table';
 
 export interface TreeTransferProps {
   data: TreeTransferData[]
@@ -39,25 +40,4 @@ export interface TreeTransferData {
 export interface PaginationConfig extends RequireToOptional<Omit<ElPaginationProps, 'size'>> {
   size?: 'base' | 'sm';
   isRemotePaging?: boolean;
-}
-
-export interface Column {
-  visible?: boolean;
-  key?: string | number;
-  field?: string;
-  title?: string;
-  width?: string | number;
-  filters?: VxeColumnPropTypes.Filters;
-  treeNode?: boolean;
-  cellRender?: VxeColumnPropTypes.CellRender;
-  editRender?: VxeColumnPropTypes.EditRender;
-  minWidth?: string | number;
-  sortable?: boolean;
-  showIcon?: boolean;
-  showColumnMenu?: boolean;
-  group?: (Column & VxeColgroupProps)[];
-  dataType?: string;
-  render?: (...arg: any) => VNode;
-  renderEdit?: (data: any) => VNode;
-  [key: string]: any;
 }
