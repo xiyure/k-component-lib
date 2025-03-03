@@ -16,7 +16,7 @@ title: 单元格图标
 2.由于业务使用文件夹图标场景较多，因此内置了folder图标，在行数据中设置folder属性为true即可展示文件夹图标，优先级高于 icon 同时支持给图标设置样式;
 
 3.在行数据中设置iconStyle属性即可，包含color（颜色）、size（大小）、indent（图标与文字距离）、
-empty（`folder`为true时使用，表示文件夹为空）等属性。
+empty（`__folder`为true时使用，表示文件夹为空）等属性。
 
 <demo path="./customCellIcon.vue" />
 
