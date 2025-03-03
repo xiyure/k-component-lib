@@ -4,6 +4,8 @@ Popover 弹出框
 
 # Popover 弹出框
 
+<leadInto name="KPopover" />
+
 ## 基础用法
 
 `Popover` 是在 `KTooltip` 基础上开发出来的。 因此对于重复属性，请参考 `Tooltip` 的文档，在此文档中不做详尽解释。

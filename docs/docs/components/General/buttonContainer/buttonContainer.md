@@ -4,6 +4,8 @@ title: ButtonContainer 按钮容器
 
 # ButtonContainer 按钮容器
 
+<leadInto name="KButtonContainer" />
+
 ## 基础用法
 
 <demo path="./def.vue" />

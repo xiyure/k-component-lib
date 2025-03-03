@@ -4,6 +4,8 @@ title: DateTimePicker 日期时间选择器
 
 # DateTimePicker 日期时间选择器
 
+<leadInto name="KDateTimePicker" />
+
 在同一个选择器里选择日期和时间
 
 :::tip

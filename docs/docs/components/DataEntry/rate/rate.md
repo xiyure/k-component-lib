@@ -4,6 +4,8 @@ title: Rate 评分
 
 # Rate 评分
 
+<leadInto name="KRate" />
+
 用于评分
 
 ## 基础用法

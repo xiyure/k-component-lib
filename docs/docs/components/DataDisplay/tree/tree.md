@@ -4,6 +4,8 @@ title: Tree 树形控件
 
 # Tree 树形控件
 
+<leadInto name="KTree" />
+
 用清晰的层级结构展示信息，可展开或折叠。
 
 ## 基础用法

@@ -4,6 +4,8 @@ title: Divider 分割线
 
 # Divider 分割线
 
+<leadInto name="KDivider" />
+
 区隔内容的分割线。
 
 ## 基础用法

@@ -4,6 +4,8 @@ title: TimeSelect 时间选择
 
 # TimeSelect 时间选择
 
+<leadInto name="KTimeSelect" />
+
 用于选择或输入日期
 
 可用时间范围是 00:00-23:59

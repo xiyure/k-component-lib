@@ -4,6 +4,8 @@ title: Image 图片
 
 # Image 图片
 
+<leadInto name="KImage" />
+
 图片容器，在保留所有原生 img 的特性下，支持懒加载，自定义占位、加载失败等
 
 ## 基础用法

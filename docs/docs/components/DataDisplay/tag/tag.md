@@ -4,6 +4,8 @@ title: Tag 标签
 
 # Tag 标签
 
+<leadInto name="KTag" />
+
 用于标记和选择。
 
 ## 基础用法

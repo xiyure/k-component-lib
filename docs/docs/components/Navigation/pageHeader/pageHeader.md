@@ -4,6 +4,8 @@ title: Page Header 页头
 
 # Page Header 页头
 
+<leadInto name="KPageHeader" />
+
 如果页面的路径比较简单，推荐使用页头组件而非面包屑组件。
 
 ## 完整示例

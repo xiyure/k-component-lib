@@ -4,6 +4,8 @@ title: Descriptions 描述列表
 
 # Descriptions 描述列表
 
+<leadInto name="KDescriptions" />
+
 列表形式展示多个字段。
 
 ## 基础用法

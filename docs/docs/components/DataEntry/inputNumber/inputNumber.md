@@ -4,6 +4,8 @@ title: Input Number 数字输入框
 
 # Input Number 数字输入框
 
+<leadInto name="KInputNumber" />
+
 仅允许输入标准的数字值，可定义范围
 
 ### 基础用法

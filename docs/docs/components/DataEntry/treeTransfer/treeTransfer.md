@@ -4,6 +4,8 @@ title: TreeTransfer 树形穿梭框
 
 # TreeTransfer 树形穿梭框
 
+<leadInto name="KTreeSelect" />
+
 ## 基础用法
 
 TreeTransfer 的数据通过 data 属性传入。 数据需要是一个对象数组，每个对象有以下属性：key(默认为id) 为数据的唯一性标识，label 为显示文本，disabled 表示该项数据是否禁止被操作。

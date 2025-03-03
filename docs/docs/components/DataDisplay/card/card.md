@@ -4,6 +4,8 @@ title: card 卡片
 
 # Card 卡片
 
+<leadInto name="KCard" />
+
 将信息聚合在卡片容器中展示。
 
 ## 基础用法

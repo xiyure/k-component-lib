@@ -5,6 +5,8 @@ date: 2021-03-11
 
 # Button 按钮
 
+<leadInto name="KButton" />
+
 常用的操作按钮。
 
 ## 基础用法

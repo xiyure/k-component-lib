@@ -4,6 +4,8 @@ title: checkbox 多选框
 
 # Checkbox 多选框
 
+<leadInto name="KCheckbox" />
+
 在一组备选项中进行多选。
 
 ## 适用

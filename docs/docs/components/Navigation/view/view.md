@@ -4,6 +4,8 @@ title: View 视图
 
 # View 视图
 
+<leadInto name="KView" />
+
 ## 基础用法
 
 通过v-slot绑定dataItem中value字段可实现自定义视图渲染。

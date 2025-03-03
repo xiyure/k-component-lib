@@ -1,8 +1,10 @@
 ---
-title: iconPopover 图标气泡框
+title: IconPopover 图标气泡框
 ---
 
-# iconPopover 图标气泡框
+# IconPopover 图标气泡框
+
+<leadInto name="KIconPopover" />
 
 ## 基础示例
 

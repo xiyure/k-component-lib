@@ -4,6 +4,8 @@ Popconfirm 气泡确认框
 
 # Popconfirm 气泡确认框
 
+<leadInto name="KPopconfirm" />
+
 点击某个元素弹出一个简单的气泡确认框
 
 ## 基础用法

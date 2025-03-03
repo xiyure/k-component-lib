@@ -4,6 +4,8 @@ title: TreeSelect 树形选择
 
 # TreeSelect 树形选择
 
+<leadInto name="KTreeSelect" />
+
 含有下拉菜单的树形选择器，结合了 k-tree 和 k-select 两个组件的功能。
 
 ## 基础用法

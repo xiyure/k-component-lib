@@ -4,6 +4,8 @@ title: Timeline 时间线
 
 # Timeline 时间线
 
+<leadInto name="KTimeline" />
+
 可视化地呈现时间流信息。
 
 ## 基础用法

@@ -4,6 +4,8 @@ title: ScriptInput 脚本输入框
 
 # ScriptInput 脚本输入框
 
+<leadInto name="KScriptInput" />
+
 ## 基础用法
 
 <demo path="./def" />

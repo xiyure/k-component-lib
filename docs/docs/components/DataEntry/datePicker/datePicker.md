@@ -4,6 +4,8 @@ title: DatePicker 日期选择器
 
 # DatePicker 日期选择器
 
+<leadInto name="KDatePicker" />
+
 用于选择或输入日期
 
 ## 选择某一天

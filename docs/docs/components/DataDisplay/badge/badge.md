@@ -4,6 +4,8 @@ title: badge 徽章
 
 # Badge 徽章
 
+<leadInto name="KBadge" />
+
 按钮和图标上的数字或状态标记。
 
 ## 基础用法

@@ -4,6 +4,8 @@ title: Operate 批量操作
 
 # Operate 批量操作
 
+<leadInto name="KOperate" />
+
 ### 基础用法
 
 <demo path="./def.vue" />

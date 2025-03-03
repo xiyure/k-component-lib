@@ -4,6 +4,8 @@ title: Split 分割线
 
 # Split 分割线
 
+<leadInto name="KSplit" />
+
 用于分割面板内容。
 
 ## 基础用法

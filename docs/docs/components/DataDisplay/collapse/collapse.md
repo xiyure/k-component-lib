@@ -4,6 +4,8 @@ title: collapse 折叠面板
 
 # Collapse 折叠面板
 
+<leadInto name="KCollapse" />
+
 通过折叠面板收纳内容区域
 
 ## 基础用法

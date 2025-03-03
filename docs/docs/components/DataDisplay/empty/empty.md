@@ -4,6 +4,8 @@ title: empty 空状态
 
 # Empty 空状态
 
+<leadInto name="KEmpty" />
+
 空状态时的占位提示。
 
 ## 基础用法

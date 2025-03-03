@@ -4,6 +4,8 @@ title: Infinite Scroll 无限滚动
 
 # Infinite Scroll 无限滚动
 
+<leadInto name="KInfiniteScroll" />
+
 滚动至底部时，加载更多数据。
 
 ## 基础用法

@@ -4,6 +4,8 @@ title: Affix 固钉
 
 # Affix 固钉
 
+<leadInto name="KAffix" />
+
 将页面元素固定在特定可视区域。
 
 ## 基础用法

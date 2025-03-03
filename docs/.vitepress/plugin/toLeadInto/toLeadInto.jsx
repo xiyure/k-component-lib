@@ -1,9 +1,9 @@
 import { defineComponent } from 'vue';
-import { useCodeCopy } from './hooks/use-codecopy';
+import { useCodeCopy } from '../demo/hooks/use-codecopy';
 import { KMessage, KButton } from '@ksware/ksw-ux';
 
-export const toLeadPlugin = defineComponent({
-  name: 'KToLead',
+export const toLeadIntoPlugin = defineComponent({
+  name: 'KToLeadInto',
   props: {
     name: {
       type: String,

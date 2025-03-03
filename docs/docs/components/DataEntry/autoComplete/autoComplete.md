@@ -4,6 +4,8 @@ title: Autocomplete 自动补全输入框
 
 # Autocomplete 自动补全输入框
 
+<leadInto name="KAutocomplete" />
+
 根据输入内容提供对应的输入建议。
 
 ## 基础用法

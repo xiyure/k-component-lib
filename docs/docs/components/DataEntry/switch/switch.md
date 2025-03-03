@@ -4,6 +4,8 @@ title: Switch 开关
 
 # Switch 开关
 
+<leadInto name="KSwitch" />
+
 表示两种相互对立的状态间的切换，多用于触发「开/关」。
 
 ## 基础用法

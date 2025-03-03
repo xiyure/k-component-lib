@@ -4,6 +4,8 @@ title: calendar 日历
 
 # Calendar 日历
 
+<leadInto name="KCalendar" />
+
 显示日期
 
 ## 基础用法

@@ -4,6 +4,8 @@ title: Input 输入框
 
 # Input 输入框
 
+<leadInto name="KInput" />
+
 通过鼠标或键盘输入内容，是最基础的表单域的包装。
 
 ### 基础用法

@@ -4,6 +4,8 @@ title: Slider 滑块
 
 # Slider 滑块
 
+<leadInto name="KSlider" />
+
 通过拖动滑块在一个固定区间内进行选择
 
 :::tip

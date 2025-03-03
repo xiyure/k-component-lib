@@ -4,6 +4,8 @@ title: Backtop 回到顶部
 
 # Backtop 回到顶部
 
+<leadInto name="KBacktop" />
+
 返回页面顶部的操作按钮。
 
 ## 基础用法

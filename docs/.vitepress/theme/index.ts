@@ -2,7 +2,8 @@ import { h, onMounted } from 'vue';
 import DefaultTheme from 'vitepress/theme';
 import type { Theme } from 'vitepress'
 // import { Container } from '../plugin/container/index';
-import { demo, toLeadPlugin } from '../plugin/demo';
+import { demo } from '../plugin/demo';
+import { toLeadIntoPlugin } from '../plugin/toLeadInto';
 import 'overlayscrollbars/overlayscrollbars.css';
 import { OverlayScrollbars } from 'overlayscrollbars';
 import {
@@ -40,7 +41,7 @@ export default {
       app.use(KswIcon.KswIcon)
       app.use(NolebaseGitChangelogPlugin);
     }
-    app.component('leadInto', toLeadPlugin);
+    app.component('leadInto', toLeadIntoPlugin);
     app.component('demo', demo);  //使用新的 demo 组件
     app.component('DocTitle', DocTitle);
     app.provide(InjectionKey, {

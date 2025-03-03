@@ -4,6 +4,8 @@ title: Radio 单选框
 
 # Radio 单选框
 
+<leadInto name="KRadio" />
+
 在一组备选项中进行单选
 
 ## 基础用法

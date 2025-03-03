@@ -4,6 +4,8 @@ title: ColorPicker 颜色选择器
 
 # ColorPicker 颜色选择器
 
+<leadInto name="KColorPicker" />
+
 用于颜色选择，支持多种格式。
 
 :::tip

@@ -4,6 +4,8 @@ title: Upload 上传
 
 # Upload 上传
 
+<leadInto name="KUpload" />
+
 通过点击或者拖拽上传文件。
 
 ## 基础用法

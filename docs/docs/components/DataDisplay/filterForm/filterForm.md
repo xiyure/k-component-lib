@@ -4,6 +4,8 @@ title: filterForm 过滤表单
 
 # filterForm 过滤表单
 
+<leadInto name="KFilterForm" />
+
 ## 基础用法
 
 ::: warning

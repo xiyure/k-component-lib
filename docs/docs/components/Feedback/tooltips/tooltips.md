@@ -4,6 +4,8 @@ title: tooltips 气泡框
 
 # tooltips 气泡框
 
+<leadInto name="KTooltips" />
+
 常用于展示鼠标 `hover` 时的提示信息。
 
 :::tip

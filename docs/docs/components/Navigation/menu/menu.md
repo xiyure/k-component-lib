@@ -4,6 +4,8 @@ title: Menu 菜单
 
 # Menu 菜单
 
+<leadInto name="KMenu" />
+
 为网站提供导航功能的菜单。
 
 :::tip

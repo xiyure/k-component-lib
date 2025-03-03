@@ -4,6 +4,8 @@ Drawer 抽屉
 
 # Drawer 抽屉
 
+<leadInto name="KDrawer" />
+
 有些时候, `Dialog` 组件并不满足我们的需求, 比如你的表单很长, 亦或是你需要临时展示一些文档, `Drawer` 拥有和 `Dialog` 几乎相同的 `API`, 在 `UI` 上带来不一样的体验.
 
 :::tip
