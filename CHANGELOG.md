@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.16](https://github.com/xiyure/k-component-lib/compare/v1.1.14..v1.1.16) - 2025-03-05
+
+### 🐛 Bug 修复
+
+- *(ScriptInput)* 修复输入<xxx>格式文本时输入框内容消失问题； - ([547e2e8](https://github.com/xiyure/k-component-lib/commit/547e2e82fbf40e34d084b698de729a29f9568960))
+- *(ScriptInput)* 修复脚本输入框在密码状态下无法解析脚本标签问题； - ([3faf098](https://github.com/xiyure/k-component-lib/commit/3faf0984af4aac4b2803700315c8b3452fdd37ac))
+
 ## [1.1.14](https://github.com/xiyure/k-component-lib/compare/v1.1.0..v1.1.14) - 2025-02-28
 
 ### 🚀 特性
