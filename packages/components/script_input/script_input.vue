@@ -326,7 +326,7 @@ watch(
       return;
     }
     clearCurrentInput();
-    const newModelValue = props.modelValue.toString();
+    const newModelValue = escapeValue(props.modelValue.toString());
     cacheRes = newModelValue;
     if (_showPassword.value && !funcReg.test(newModelValue)) {
       pwd.value = newModelValue;
@@ -863,6 +863,18 @@ function handleResize() {
 }
 function formatterEscape(str: string) {
   return str.replace(/&nbsp;/g, ' ');
+}
+function escapeValue(str: string) {
+  if (typeof str!=='string') {
+    return str;
+  }
+  return str.replace(/<|>|&/g, (match) => {
+    if (match === '<') {
+      return '&lt;';
+    } else {
+      return '&gt;';
+    }
+  });
 }
 function getAttrProps() {
   const defaultConfig = { label: 'label', value: 'value', disabled: 'disabled', tag: 'tag' };
