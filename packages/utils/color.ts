@@ -56,10 +56,7 @@ export function GetColorLevelNew(color: string) {
   const colorLevel: { [key: string]: string } = {}; // 最终返回的颜色等级
 
   if (parse(colorValue)) {
-    const { l, c, h } = toOKLCH(colorValue) ?? {};
-    if (!l || !c || !h) {
-      return;
-    }
+    const { l = 0, c = 0, h = 0 } = toOKLCH(colorValue) ?? {};
 
     // 提取颜色hub值, 计算色阶
     for (let i = 0; i < 11; i++) {
