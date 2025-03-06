@@ -26,7 +26,8 @@
     border-bottom-left-radius: var(--border-radius);
   }
   .el-input__wrapper {
-    // z-index: 1;
+    padding-left: 42px !important;
+    padding-right: 42px !important;
 
     .el-input__inner {
       text-align: center;
@@ -53,5 +54,9 @@
 
   &.el-input-number--large {
     --border-radius: var(--k-theme-select-rounded--lg);
+  }
+  :hover {
+    padding-left: 42px;
+    padding-right: 42px;
   }
 }
