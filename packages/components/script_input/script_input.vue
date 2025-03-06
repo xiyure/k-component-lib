@@ -202,7 +202,7 @@ const focusRange: FocusRange = { node: undefined, offset: 0 };
 // 动态类名
 const dynamicClassName = `_${genRandomStr(8)}`;
 // 列配置
-const columns = [{ field: getAttrProps().label, title: '', treeNode: true }];
+const columns = [{ field: getAttrProps().optionLabel, title: '', treeNode: true }];
 // ref
 const KScriptInput = ref();
 const KScriptInputWrapper = ref();
@@ -878,11 +878,12 @@ function escapeValue(str: string) {
 }
 function getAttrProps() {
   const defaultConfig = { label: 'label', value: 'value', disabled: 'disabled', tag: 'tag' };
-  const attrProps = Object.assign(defaultConfig, props.props);
+  const attrProps = Object.assign(defaultConfig, props.props ?? {});
   return {
     label: attrProps.label,
     value: attrProps.value,
     disabled: attrProps.disabled,
+    optionLabel: attrProps.optionLabel ?? attrProps.label,
     tag: attrProps.tag
   };
 }
