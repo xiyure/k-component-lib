@@ -19,6 +19,7 @@ export interface ScriptInputProps {
     label?: string;
     value?: string;
     disabled?: string;
+    optionLabel?: string;
   };
   scriptKey?: string;
   /**
