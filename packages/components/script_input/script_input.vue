@@ -17,7 +17,12 @@
                 v-if="showModeSwitch"
                 v-ksw_tooltip="_isStringMode ? t?.('stringMode') : t?.('expressionMode')"
                 :disabled
-                @click="toggleMode"
+                @click="
+                  () => {
+                    toggleMode();
+                    emits('mode-change', isStringMode() ? 'string' : 'expression');
+                  }
+                "
               >
                 <component
                   :is="!_isStringMode ? 'IconModeExpressionColor' : 'IconModeExpression'"
@@ -184,7 +189,15 @@ const DEFAULT_TREE_CONFIG = {
   trigger: 'default'
 };
 
-const emits = defineEmits(['change', 'input', 'focus', 'blur', 'select', 'update:modelValue']);
+const emits = defineEmits([
+  'change',
+  'input',
+  'focus',
+  'blur',
+  'select',
+  'update:modelValue',
+  'mode-change'
+]);
 
 onMounted(() => {
   document.addEventListener('keydown', toggleSelect);
@@ -280,13 +293,17 @@ const onlyOneInputMode = computed(() => {
   return modeMap;
 });
 
-watch(() => props.height, async() => {
-  await nextTick();
-  const scriptInstance = KScriptInput.value;
-  if (scriptInstance?.style?.height) {
-    scriptInstance.style.height = props.height?? 'auto';
-  }
-}, { immediate: true });
+watch(
+  () => props.height,
+  async () => {
+    await nextTick();
+    const scriptInstance = KScriptInput.value;
+    if (scriptInstance?.style?.height) {
+      scriptInstance.style.height = props.height ?? 'auto';
+    }
+  },
+  { immediate: true }
+);
 // 输入框内容发生变化时，需要更新下拉列表的显示状态以及光标位置
 watch(
   () => curInput.value,
@@ -865,7 +882,7 @@ function formatterEscape(str: string) {
   return str.replace(/&nbsp;/g, ' ');
 }
 function escapeValue(str: string) {
-  if (typeof str!=='string') {
+  if (typeof str !== 'string') {
     return str;
   }
   return str.replace(/<|>|&/g, (match) => {
