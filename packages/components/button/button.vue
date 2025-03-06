@@ -24,14 +24,14 @@
     :disabled="disabled"
     v-bind="$attrs"
   >
-    <slot name="iconLeft" class="icon-left">
+    <slot :name="compatibleSlots($slots, ['icon-left', 'iconLeft'])" class="icon-left">
       <component :is="props.iconLeft" v-if="props.iconLeft" />
     </slot>
     <label v-if="props.value && props.icon === false">{{ props.value }}</label>
     <label v-else-if="$slots.default">
       <slot class="slot-content"></slot>
     </label>
-    <slot name="iconRight" class="icon-right">
+    <slot :name="compatibleSlots($slots, ['icon-right', 'iconRight'])" class="icon-right">
       <component :is="props.iconRight" v-if="props.iconRight" />
     </slot>
     <component :is="props.loadingIcon" v-if="props.loading" class="loading-icon" />
@@ -42,7 +42,7 @@
 import { computed, ref, nextTick, watch, inject } from 'vue';
 import { ElButton } from 'element-plus';
 import { ButtonProps } from './type';
-import { genRandomStr, getExposeProxy, GetColorLevelNew } from '../../utils';
+import { genRandomStr, getExposeProxy, GetColorLevelNew, compatibleSlots } from '../../utils';
 import { btnTypes } from './const';
 import { useSize } from '../../hooks';
 

@@ -103,7 +103,7 @@
                     :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
                     v-if="widget.widget"
                   />
-                  <slot v-else name="filterTrigger" :is-filter="hasConfigCondition">
+                  <slot v-else :name="compatibleSlots($slots, ['filter-trigger', 'filterTrigger'])" :is-filter="hasConfigCondition">
                     <k-button>
                       <IconFilter v-if="!hasConfigCondition" />
                       <IconFilterFill v-else color="#2882FF" />
@@ -129,13 +129,13 @@
                     :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
                     v-if="widget.widget"
                   />
-                  <slot v-else name="sizeControlTrigger">
+                  <slot v-else :name="compatibleSlots($slots, ['size-control-trigger', 'sizeControlTrigger'])">
                     <k-button><IconSizeControls /></k-button>
                   </slot>
                 </div>
               </template>
               <k-dropdown-item
-                v-for="item in sizeList"
+                v-for="item in SIZE_OPTIONS"
                 :key="item.value"
                 :style="{
                   color: _size === (item.value || undefined) ? '#2882FF' : ''
@@ -166,7 +166,7 @@
                     :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
                     v-if="widget.widget"
                   />
-                  <slot v-else name="transferTrigger">
+                  <slot v-else :name="compatibleSlots($slots, ['transfer-trigger', 'transferTrigger'])">
                     <k-button><IconSetting /></k-button>
                   </slot>
                 </div>
@@ -182,8 +182,8 @@
                 }"
                 :titles="[t?.('unselectedFields'), t?.('selectedFields')]"
                 :drag="true"
-                @change="updateColumn"
-                @reset="updateColumn"
+                @change="updateColVisible"
+                @reset="updateColVisible"
                 @drag="sortTableHeader"
               ></k-transfer>
             </k-popover>
@@ -294,7 +294,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, nextTick, inject, provide } from 'vue';
+import { ref, computed, watch, nextTick, inject, provide } from 'vue';
 import VXETable from 'vxe-table';
 import { VueI18nTranslation } from 'vue-i18n';
 import { cloneDeep } from 'lodash-es';
@@ -307,18 +307,11 @@ import { KOperate } from '../operate';
 import { KTable } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
-import { CN_DICT, TONE_MARKS } from '../../constant';
-import type { TreeTableProps, Column, TableHeaderControl, RowData, Row, TableCacheData } from './type';
-import type { ConditionInfo, Condition } from '../filter';
-import {
-  genRandomStr,
-  treeDataToArray,
-  getValidTreeData,
-  resetTreeData,
-  getExposeProxy,
-  SIZE_KEY
-} from '../../utils';
-import { useMethods, useCheckbox } from './hooks';
+import type { ConditionInfo } from '../filter';
+import { useMethods, useCheckbox, useData, useConfig, useHeaderControl, useAdvancedFilter } from './hooks';
+import { genRandomStr, sortFunc, compatibleSlots, getExposeProxy, SIZE_KEY } from '../../utils';
+import { SIZE_OPTIONS } from './const';
+import type { TreeTableProps, Column, RowData, Row } from './type';
 
 defineOptions({
   name: 'KTreeTable'
@@ -346,57 +339,6 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
 const _styleModule = inject('_styleModule', '');
 const slots = defineSlots();
 const t = inject<VueI18nTranslation>('$t');
-const DEFAULT_PAGES = [25, 50, 80, 100, 150];
-const DEFAULT_WIDGETS = new Map([
-  ['search', 'search'],
-  ['refresh', 'refresh'],
-  ['filter', 'filter'],
-  ['sizeControl', 'sizeControl'],
-  ['transfer', 'transfer']
-]);
-// 表格默认配置
-const defaultRowConfig = {
-  isHover: true,
-  isCurrent: true,
-  useKey: true,
-  keyField: 'id'
-};
-const defaultTreeConfig = {
-  transform: true,
-  rowField: 'id',
-  parentField: 'pid',
-  childrenField: 'children',
-  trigger: 'cell',
-  hasChildField: 'hasChild'
-};
-const defaultPaginationConfig = {
-  pagerCount: 7,
-  currentPage: 1,
-  pageSizes: DEFAULT_PAGES,
-  pageSize: DEFAULT_PAGES[0],
-  size: props.useAntStyle ? 'sm' : undefined,
-  layout: props.useAntStyle ? 'total, prev, pager, next, sizes' : undefined
-};
-
-const defaultSortConfig = {};
-const defaultEditConfig = {
-  key: 'id',
-  trigger: 'click',
-  mode: 'cell'
-};
-const defaultSeqConfig = {
-  seqMethod: ({ rowIndex }: { rowIndex: number }) => {
-    const startIndex = props.seqConfig?.startIndex ?? 1;
-    if (isPaging.value) {
-      const { pageSize, currentPage } = paginationConfig.value;
-      return (currentPage - 1) * pageSize + rowIndex + startIndex;
-    }
-    return rowIndex + startIndex;
-  }
-};
-
-const defaultScrollY = { enabled: true };
-const defaultColumnConfig = { resizable: true };
 
 const emits = defineEmits([
   'remote-query',
@@ -421,135 +363,35 @@ const emits = defineEmits([
 ]);
 const xTree = ref();
 const _size = ref(props.size);
-const sizeList = [
-  { label: '默认', value: '' },
-  { label: '中等', value: 'medium' },
-  { label: '小号', value: 'small' },
-  { label: '紧凑', value: 'mini' }
-];
-// 缓存表格数据筛选过程中产生的临时数据
-const tableCacheData: TableCacheData = {
-  tableDataMap: new Map(),
-  treeDataMap: new Map(),
-  xeTableDataMap: new Map()
-}
 const tableTransferRef = ref();
 // 列配置
 const columns = ref<Column[]>([]);
-const flatColumns = ref<Column[]>([]);
 // 表格数据
 const xeTableData = ref<RowData[]>([]);
 // 搜索框关键词
 const query = ref('');
 const searchStr = ref('');
-// 穿梭框
-const selectData = ref<(string | number)[]>([]);
-const originData = ref<{ label: string; key: string; value?: string }[]>([]);
-const defaultHeader = ref<(string | number)[]>([]);
+
 // 高级筛选
 const tableFilterRef = ref(); // 高级筛选后的数据
-const newFilterData = ref<RowData[]>([]);
-const filterConditionInfo = ref<ConditionInfo | undefined>();
-// 分页配置
-const paginationConfig = ref<any>(defaultPaginationConfig);
 
-const widgets = computed(() => {
-  const widgetsList: ({
-    id: string;
-    slot: string | null;
-  } & any)[] = [];
-  if (!Array.isArray(props.widgets)) {
-    // 兼容老版本参数
-    if (props.showSearchInput) {
-      widgetsList.push({
-        id: 'search',
-        slot: null
-      });
-    }
-    if (props.showRefresh) {
-      widgetsList.push({
-        id: 'refresh',
-        slot: null
-      });
-    }
-    if (props.showFilter) {
-      widgetsList.push({
-        id: 'filter',
-        slot: null
-      });
-    }
-    if (props.showSizeControl) {
-      widgetsList.push({
-        id: 'sizeControl',
-        slot: null
-      });
-    }
-    if (props.showTransfer) {
-      widgetsList.push({
-        id: 'transfer',
-        slot: null
-      });
-    }
-    return widgetsList;
-  }
-  for (const widget of props.widgets) {
-    if (!widget) {
-      continue;
-    }
-    const t = typeof widget;
-    if (t === 'string') {
-      if (DEFAULT_WIDGETS.get(widget as string)) {
-        widgetsList.push({ id: widget, slot: null });
-      } else {
-        widgetsList.push({ id: widget, slot: widget });
-      }
-    } else if (t === 'object' || t === 'function') {
-      widgetsList.push(widget);
-    }
-  }
-  return widgetsList;
+// 当前需要展示的数据（区分当前数据是基于高级筛选还是原始数据）
+const currentData = computed(() =>{
+  return filterConditionInfo.value?.conditionList?.length
+    ? newFilterData.value
+    : xeTableData.value;
 });
-// 高级筛选功能只处理非特殊、可见的有效数据
-const filterColumns = computed(() => {
-  const { filterColumns, filterAll, exclude = [] } = props.advancedFilterConfig ?? {};
-  const validColumns = getValidTreeData(
-    cloneDeep(columns.value),
-    'group',
-    (dataItem) =>
-      !dataItem.type &&
-      dataItem.title &&
-      dataItem.field &&
-      (filterAll !== false || dataItem.visible !== false) &&
-      !exclude.includes(dataItem.field)
-  );
-  if (filterColumns) {
-    return resetTreeData(validColumns, 'group', filterColumns, 'field');
-  }
-  return validColumns;
-});
+
 // 表格实例
 const tableInstance = computed(() => {
   const tableInstance = xTree.value?.tableInstance;
   return tableInstance;
 });
-const headerText = computed(() => {
-  let text: string = '';
-  if (filterConditionInfo.value?.conditionList?.length) {
-    const { filterRule } = filterConditionInfo.value;
-    text += filterRule === 0 ? (t?.('anyOne') as string) : (t?.('all') as string);
-    filterConditionInfo.value.conditionList.forEach((item: Condition, index: number) => {
-      const point = props.useTree && index === 0 ? '' : '·';
-      text += `  ${point} ${item.title} ${item.logic} ${item.showValue}`;
-    });
-  } else {
-    const point = props.useTree ? '' : '· ';
-    text += `${point}${t?.('showAll')}`;
-  }
-  return text;
-});
 
-// size相关
+// size
 const tableSize = computed(() => _size.value ?? undefined);
+
+// 表头控制器可见状态
 const __showTransfer = computed(() => {
   const toolbarNames = widgets.value.map((item) => item.id);
   if (props.showHeaderTools && toolbarNames.includes('transfer')) {
@@ -557,48 +399,60 @@ const __showTransfer = computed(() => {
   }
   return false;
 });
-// 合并用户与表格默认配置
-const treeConfig = computed(() => {
-  if (props.useTree) {
-    return Object.assign(defaultTreeConfig, props.treeConfig || {});
-  }
-  return undefined;
-});
-const sortConfig = computed(() => Object.assign(defaultSortConfig, props.sortConfig || {}));
-const rowConfig = computed(() => Object.assign(defaultRowConfig, props.rowConfig || {}));
-const editConfig = computed(() => Object.assign(defaultEditConfig, props.editConfig || {}));
-const scrollY = computed(() => {
-  const scrollYConfig = Object.assign(defaultScrollY, props.scrollY || {});
-  if (props.adaptive) {
-    scrollYConfig.enabled = false;
-  }
-  return scrollYConfig;
-});
-const columnConfig = computed(() => Object.assign(defaultColumnConfig, props.columnConfig || {}));
-const seqConfig = computed(() => Object.assign(defaultSeqConfig, props.seqConfig || {}));
-// 是否分页
-const isPaging = computed(() => props.showPage && !props.useTree && !props.simple);
 
-// 页面展示的表格数据
-const visibleData = computed(() => filterTableData());
-const showTableData = computed(() => {
-  const { isRemotePaging } = paginationConfig.value;
-  if (!isPaging.value || props.isServerPaging || isRemotePaging) {
-    return visibleData.value;
-  }
-  return getShowTableData(visibleData.value);
-});
-// 表格数据量
-const dataLength = computed(() => {
-  const { isRemotePaging, total } = paginationConfig.value;
-  if (isPaging.value && (isRemotePaging || props.isServerPaging)) {
-    return total;
-  }
-  return visibleData.value.length;
-});
+// methods
+const { setTableData, sortChange, dragSort, _methods } = useMethods(props, tableInstance);
 
-const { setTableData, sortChange, dragSort, convertToMap, _methods } = useMethods(props, tableInstance);
+// header control
+const {
+  flatColumns,
+  selectData,
+  originData,
+  defaultHeader,
+  updateTransfer,
+  transferChange,
+  transferHide,
+  transferShow,
+  sortTableHeader,
+  _transferMethods
+} = useHeaderControl(tableInstance, tableTransferRef, props, columns, handleCustomRender);
 
+// advanced filter
+const {
+  newFilterData,
+  filterColumns,
+  filterConditionInfo,
+  headerText,
+  advancedFilterShow,
+  advancedFilterHide,
+  getAdvancedCondition
+} = useAdvancedFilter(tableFilterRef, props, columns);
+
+// table data
+const {
+  showTableData,
+  isPaging,
+  dataLength,
+  paginationConfig,
+  tableCacheData,
+  changePageSize,
+  changeCurrentPage,
+  handleTreeData
+} = useData(tableInstance, props, emits, flatColumns, xeTableData, currentData, query);
+
+// config
+const {
+  widgets,
+  treeConfig,
+  sortConfig,
+  rowConfig,
+  editConfig,
+  scrollY,
+  columnConfig,
+  seqConfig
+} = useConfig(props, { isPaging, paginationConfig });
+
+// checkbox
 const {
   checkedDataSize,
   checkboxConfig,
@@ -609,6 +463,7 @@ const {
   resetCheckboxStatus,
   _checkboxMethods
 } = useCheckbox(tableInstance, props, xeTableData, showTableData, tableCacheData);
+
 watch(
   [() => props.data, () => props.data?.length],
   () => {
@@ -618,16 +473,7 @@ watch(
   },
   { immediate: true }
 );
-watch(
-  () => props.paginationConfig,
-  () => {
-    paginationConfig.value = Object.assign(paginationConfig.value, props.paginationConfig || {});
-  },
-  { immediate: true, deep: true }
-);
-onMounted(() => {
-  initTransfer();
-});
+
 watch(
   () => props.column,
   () => {
@@ -664,206 +510,7 @@ watch(
   { immediate: true }
 );
 
-// 表格内容搜索
-function filterTableData() {
-  const filterData = filterConditionInfo.value?.conditionList?.length
-    ? newFilterData.value
-    : xeTableData.value;
-  tableCacheData.xeTableDataMap = convertToMap();
-  const { strict, searchMethod, ignoreCase = false, searchColumns } = props.searchConfig ?? {};
-  const searchKey = query.value.trim().replace(/\\/g, '\\\\');
-  if (props.isRemoteQuery || props.searchConfig?.isRemoteQuery) {
-    emits('remote-query', searchKey);
-    return filterData;
-  }
-  if (!searchKey) {
-    return filterData;
-  }
-  if (typeof searchMethod === 'function') {
-    return searchMethod(searchKey, filterData);
-  }
-  const visibleColumns = flatColumns.value.filter((col: Column) => col.visible !== false);
-  const fieldList = visibleColumns
-  .map((col: Column) => {
-    if (col.field && !col.type) {
-      return col.field;
-    }
-    return null;
-  })
-  .filter((field: string | null) => field !== null);
-  let tableData = filterData.filter((dataItem: any) =>
-    fieldList.some((field: string) => {
-      if (Array.isArray(searchColumns) && !searchColumns.includes(field)) {
-        return false;
-      }
-      const cellLabel = tableInstance.value.getCellLabel(dataItem, field);
-      if (strict === true) {
-        return cellLabel.toString() === searchKey;
-      }
-      const compareLabel = ignoreCase ? String(cellLabel).toLowerCase() : String(cellLabel);
-      const newSearchKey = ignoreCase ? searchKey.toLowerCase() : searchKey;
-      return compareLabel.indexOf(newSearchKey) !== -1 || compareByPinYin(field, compareLabel, newSearchKey, ignoreCase);
-    })
-  );
-  // 当表格数据为树时，筛选后的数据应展示完整的子树
-  if (props.useTree) {
-    const { rowField } = getTreeConfigField();
-    tableCacheData.tableDataMap = new Map(xeTableData.value.map((item: RowData) => [item[rowField], item]));
-    handleTreeData(tableData);
-    tableData = sortFunc([...tableCacheData.treeDataMap.values()], xeTableData.value, rowField);
-  } else {
-    updatePageNum(tableData.length);
-  }
-  return tableData;
-}
-// 支持拼音搜索
-function compareByPinYin(field: string,compareStr: string, searchKey: string, ignoreCase = false) {
-  const supportCols = props.searchConfig?.supportPinYin ?? false;
-  if (supportCols !== true && !(Array.isArray(supportCols) && supportCols.includes(field))) {
-    return false;
-  }
-  let pinyin = '';
-  const result = [];
-  const reg = new RegExp(`${Object.keys(TONE_MARKS).join('|')}`, 'g');
-  for (let i = 0; i < compareStr.length; i++) {
-    const p = CN_DICT[compareStr[i] as keyof typeof CN_DICT]
-      ?.replace(reg, (match) => TONE_MARKS[match as keyof typeof TONE_MARKS]);
-    if (!p) {
-      pinyin += compareStr[i];
-      continue;
-    }
-    const polyphone = p.split(',');
-    if (polyphone.length > 1) {
-      if (pinyin?.length) {
-        result.push([pinyin]);
-      }
-      result.push(polyphone);
-      pinyin = '';
-    } else {
-      pinyin += p;
-    }
-  }
-  pinyin.length && result.push([pinyin]);
-  const all = getAllCombinations(result);
-  for (const item of all) {
-    const label = ignoreCase ? item.toLowerCase() : item;
-    if (label.indexOf(searchKey) !== -1) {
-      return true;
-    }
-  }
-  return false;
-}
-function getAllCombinations(arr: (string[])[]): string[] {
-  let result: string[] = [];
-  for (const v of arr) {
-    if (result.length === 0) {
-      result.push(...v);
-      continue;
-    }
-    result = result.flatMap((item: string) => {
-      return v.map((i) => `${item}${i}`);
-    });
-  }
-  return result;
-}
-// 处理树形数据
-function handleTreeData(leafData: RowData[]) {
-  const { parentField, rowField } = getTreeConfigField();
-  tableCacheData.treeDataMap.clear();
-  for (let index = 0; index < leafData.length; index++) {
-    const dataItem = leafData[index];
-    // 如果tableData中已存在该数据，则不再重复添加
-    const targetItem = tableCacheData.treeDataMap.get(dataItem[rowField]);
-    if (targetItem) {
-      continue;
-    }
-    tableCacheData.treeDataMap.set(dataItem[rowField], dataItem);
-    getParentNode(dataItem, parentField, rowField);
-  }
-  addChildNodes(leafData);
-}
-function addChildNodes(
-  leafData: RowData[]
-) {
-  if (!leafData || !leafData.length) {
-    return;
-  }
-  const rowField = rowConfig.value.keyField;
-  for (const leafDataItem of leafData) {
-    const targetNode = tableCacheData.xeTableDataMap.get(leafDataItem[rowField]);
-    if (targetNode) {
-      targetNode.children.forEach((child: RowData) => {
-        if (!tableCacheData.treeDataMap.get(child[rowField])) {
-          tableCacheData.treeDataMap.set(child[rowField], child);
-        }
-      });
-      addChildNodes(targetNode.children);
-    }
-  }
-}
-// 根据叶子节点递归遍历获取祖先节点
-function getParentNode(dataItem: RowData, parentField: string, rowField: string) {
-  const parentKey = dataItem[parentField];
-  const parentItem = tableCacheData.tableDataMap.get(parentKey);
-  if (!parentItem) {
-    return;
-  }
-  if (!tableCacheData.treeDataMap.get(parentKey)) {
-    tableCacheData.treeDataMap.set(parentKey, parentItem);
-  }
-  if (parentItem[parentField] !== null) {
-    getParentNode(parentItem, parentField, rowField);
-  }
-}
-// 筛选后的数据与用户输入数据的顺序保持一致
-function sortFunc(targetData: any[], sortData: any, key: string | number) {
-  const sortKeyList = sortData.map((item: any) => item[key]);
-  return targetData.sort((a, b) =>
-    sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1
-  );
-}
-
-function clearSearch() {
-  searchStr.value = '';
-  query.value = '';
-}
-// 分页相关
-function changePageSize(pageSize: number) {
-  paginationConfig.value.pageSize = pageSize;
-  const { isRemotePaging } = paginationConfig.value;
-  if (props.isServerPaging || isRemotePaging) {
-    emits('server-paging', paginationConfig.value);
-  }
-  emits('page-size-change', pageSize);
-}
-function changeCurrentPage(pageNum: number) {
-  paginationConfig.value.currentPage = pageNum;
-  const { isRemotePaging } = paginationConfig.value;
-  if (props.isServerPaging || isRemotePaging) {
-    emits('server-paging', paginationConfig.value);
-  }
-  emits('page-current-change', pageNum);
-}
-function getShowTableData(data: RowData[]) {
-  const { isRemotePaging } = paginationConfig.value;
-  if (props.isServerPaging || isRemotePaging) {
-    emits('server-paging', paginationConfig.value);
-    return data;
-  }
-  const { currentPage, pageSize } = paginationConfig.value;
-  const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
-  return data.slice(startIndex, endIndex);
-}
-// 数据最大页码小于当前页码时，需要修改当前页码
-function updatePageNum(length: number) {
-  let { currentPage } = paginationConfig.value;
-  const pageSize = paginationConfig.value.pageSize;
-  while ((currentPage - 1) * pageSize + 1 > length && currentPage > 1) {
-    currentPage--;
-  }
-  paginationConfig.value.currentPage = currentPage;
-}
+// 单元格样式
 function getRowStyle(rowInfo: { row: Row; rowIndex: number; $rowIndex: number }) {
   if (!props.rowStyle) {
     const { row } = rowInfo;
@@ -874,6 +521,7 @@ function getRowStyle(rowInfo: { row: Row; rowIndex: number; $rowIndex: number })
   }
   return props.rowStyle;
 }
+
 // 自定义单元格渲染
 function handleCustomRender() {
   for (const col of flatColumns.value) {
@@ -906,12 +554,9 @@ function handleCustomRender() {
     }
   }
 }
-function getTreeConfigField() {
-  const parentField = treeConfig.value?.parentField || 'pid';
-  const rowField = treeConfig.value?.rowField || 'id';
-  return { parentField, rowField };
-}
-function updateColumn(ids: string[]) {
+
+// 更新列可见状态
+function updateColVisible(ids: string[]) {
   flatColumns.value.forEach((col: Column) => {
     if (ids.includes(col.field as string)) {
       col.visible = true;
@@ -920,50 +565,8 @@ function updateColumn(ids: string[]) {
     }
   });
 }
-// 表头控制相关方法
-async function initTransfer() {
-  let transferData = props.defaultTransferData ?? [];
-  if (typeof props.defaultTransferData === 'function') {
-    transferData = await props.defaultTransferData?.();
-  }
-  transferData = Array.isArray(transferData) ? transferData : [];
-  const transferDataMap = new Map<string | undefined, TableHeaderControl>(
-    transferData.map((item: TableHeaderControl) => [item.key, item])
-  );
-  const fieldList = transferData.map((item: TableHeaderControl) => item.key);
-  const cols = props.column.map((col) => {
-    const field = col.field ?? `_table_column_${col.type ?? ''}`;
-    const visible = transferDataMap.get(field)?.visible ?? col.visible !== false;
-    const __width__ = transferDataMap.get(field)?.width;
-    return { ...cloneDeep(col), visible, field, __width__ };
-  });
-  columns.value = cols.sort((a, b) => fieldList.indexOf(a.field) - fieldList.indexOf(b.field));
-  updateTransfer();
-  handleCustomRender();
-  resetColumnWidth(transferData);
-  setTimeout(() => {
-    preTransferDataStr = JSON.stringify(getHeaderControllerData());
-  });
-}
-function updateTransfer() {
-  flatColumns.value = treeDataToArray(columns.value, 'group');
-  originData.value = flatColumns.value
-    .map((item: Column) => {
-      if (item.field) {
-        return {
-          label: item.title || item.type || 'undefined',
-          key: item.field
-        };
-      }
-      return null;
-    })
-    .filter((item: { label: string; key: string } | null) => item !== null);
-  selectData.value = flatColumns.value
-    .filter((col: Column) => col.visible !== false)
-    .map((item: Column) => item.field)
-    .filter((item) => item !== undefined);
-  defaultHeader.value = [...selectData.value];
-}
+
+// 隐藏列
 function hideColumn(column: Column) {
   if (!__showTransfer.value) {
     return;
@@ -984,46 +587,7 @@ function hideColumn(column: Column) {
     .filter((item) => item !== null);
   emits('hide-column', column);
 }
-function sortTableHeader(fieldList: { label: string; key: string }[]) {
-  if (!Array.isArray(fieldList)) {
-    return;
-  }
-  let keyIndex = 0;
-  const map = new Map(flatColumns.value.map((v: Column) => [v.field, v]));
-  const setData = (columns: Column[]) => {
-    for (const [index, col] of columns.entries()) {
-      if (Array.isArray(col.group) && col.group.length > 0) {
-        setData(col.group);
-      } else {
-        const field = fieldList[keyIndex++]?.key;
-        columns[index] = map.get(field) ?? {};
-      }
-    }
-  };
-  setData(columns.value);
-  flatColumns.value = treeDataToArray(columns.value, 'group');
-}
-function transferShow() {
-  if (typeof props.onTransferShow === 'function') {
-    props.onTransferShow();
-  }
-}
-let preTransferDataStr: string = '';
-function transferChange() {
-  if (typeof props.onTransferChange === 'function') {
-    const transferData = getHeaderControllerData();
-    if (JSON.stringify(transferData) !== preTransferDataStr) {
-      props.onTransferChange(transferData);
-      preTransferDataStr = JSON.stringify(transferData);
-    }
-  }
-}
-function transferHide() {
-  if (typeof props.onTransferHide === 'function') {
-    const transferData = getHeaderControllerData();
-    props.onTransferHide(transferData);
-  }
-}
+
 // 高级筛选相关方法
 function refreshAdvancedFilter(
   conditionInfo: ConditionInfo,
@@ -1045,7 +609,7 @@ function refreshAdvancedFilter(
   newFilterData.value = newTableData;
   if (props.useTree) {
     handleTreeData(newFilterData.value);
-    const { rowField } = getTreeConfigField();
+    const rowField = treeConfig.value?.rowField ?? 'id';
     newFilterData.value = sortFunc([...tableCacheData.treeDataMap.values()], xeTableData.value, rowField);
   }
   if (conditionInfo?.conditionList?.length) {
@@ -1057,22 +621,7 @@ function refreshAdvancedFilter(
     emits('advanced-filter-confirm', { conditionInfo, tableData: newTableData });
   }
 }
-function filter(searchStr: string) {
-  query.value = searchStr ?? '';
-  resetCheckboxStatus();
-}
-function advancedFilterShow() {
-  if (typeof props.onAdvancedFilterShow === 'function') {
-    props.onAdvancedFilterShow();
-  }
-}
-function advancedFilterHide() {
-  if (typeof props.onAdvancedFilterHide === 'function') {
-    const conditionInfo = getAdvancedCondition();
-    const filterData = newFilterData.value;
-    props.onAdvancedFilterHide({ conditionInfo, filterData });
-  }
-}
+
 // 行高亮
 let isHighlight = false;
 let preRowKey: string | number | null = null;
@@ -1095,10 +644,6 @@ function cellClick({ row, rowid }: { row: Row; rowid: string | number }) {
   }
   emits('highlight-change', row, isHighlight);
 }
-function rowDragEnd(data: any) {
-  dragSort();
-  emits('row-dragend', data);
-}
 
 // 刷新高级筛选的表格数据
 async function advancedFilter(data?: RowData[] | undefined) {
@@ -1111,6 +656,8 @@ async function advancedFilter(data?: RowData[] | undefined) {
   refreshAdvancedFilter(conditionInfo, tableData, false);
   return { conditionInfo, tableData };
 }
+
+// 清空高级筛选状态
 async function clearAdvancedFilter() {
   if (!tableFilterRef.value) {
     return;
@@ -1122,6 +669,36 @@ async function clearAdvancedFilter() {
   refreshAdvancedFilter(conditionInfo, tableData, false);
   return { conditionInfo, tableData };
 }
+
+// 搜索框搜索
+function filter(searchStr: string) {
+  query.value = searchStr ?? '';
+  resetCheckboxStatus();
+}
+
+// 清空搜索框
+function clearSearch() {
+  searchStr.value = '';
+  query.value = '';
+}
+
+// sort callback
+function onSortChange(data: any) {
+  const fieldRules = tableInstance.value.getSortColumns();
+  sortChange(fieldRules);
+  emits('sort-change', data);
+}
+
+// drag callback
+function rowDragEnd(data: any) {
+  dragSort();
+  emits('row-dragend', data);
+}
+
+// export
+function getVisibleData() {
+  return showTableData.value;
+}
 function loadData(data: RowData[]) {
   if (!Array.isArray(data)) {
     return;
@@ -1129,111 +706,16 @@ function loadData(data: RowData[]) {
   xeTableData.value = setTableData(data);
   advancedFilter(data);
 }
-function getAdvancedCondition() {
-  return tableFilterRef.value?.[0]?.getConditionInfo();
-}
-function onSortChange(data: any) {
-  const fieldRules = tableInstance.value.getSortColumns();
-  sortChange(fieldRules);
-  emits('sort-change', data);
-}
-function getRowById(id: string | number) {
-  const row = tableInstance.value?.getRowById(id);
-  if (row) {
-    return row;
-  }
-  const targetRow = xeTableData.value.find(
-    (item: RowData) => item[rowConfig.value.keyField] === id
-  );
-  if (targetRow) {
-    return targetRow;
-  }
-  const tempRecords = tableInstance.value.getInsertRecords();
-  const tempRow = tempRecords.find((item: Row) => item[rowConfig.value.keyField] === id);
-  return tempRow ?? null;
-}
-function getVisibleData() {
-  return showTableData.value;
-}
-// vxe-table行数据中dom被销毁时会导致tooltip无法关闭，这里提供手动销毁tooltip方法给予外部调用
-function disposeRowTooltip() {
-  const tooltip = document.querySelector('.vxe-table--tooltip-wrapper');
-  if (tooltip) {
-    tooltip?.remove();
-  }
-}
-function getHeaderControllerData(): TableHeaderControl[] {
-  const widthMap = new Map<string, string | undefined>();
-  const columns = tableInstance.value?.getColumns();
-  if (!columns) {
-    return [];
-  }
-  for (const col of columns) {
-    const width = tableInstance.value?.getColumnWidth(col);
-    widthMap.set(col.field, width);
-  }
-  const selectSet = new Set(selectData.value);
-  const transferInstance = tableTransferRef.value?.[0];
-  const _originData = transferInstance
-    ? transferInstance.getTransferData().sourceData
-    : originData.value;
-  const newTransferData = _originData.map((item: TableHeaderControl) => ({
-    label: item.label,
-    key: item.key,
-    width: widthMap.get(item.key) ?? '',
-    visible: selectSet.has(item.key),
-    disabled: item.disabled ?? false
-  }));
-  return newTransferData;
-}
-function setHeaderControllerData(transferData: TableHeaderControl[]) {
-  transferData.forEach?.((item: TableHeaderControl) => {
-    const column = flatColumns.value.find((col: Column) => col.field === item.key);
-    if (!column) {
-      return;
-    }
-    if (item.visible) {
-      column.visible = true;
-    } else {
-      column.visible = false;
-    }
-  });
-  originData.value =
-    transferData.map?.((item: TableHeaderControl) => ({
-      label: item.label ?? '',
-      key: item.key ?? `_${genRandomStr(8)}`,
-      disabled: item.disabled ?? false,
-      visible: item.visible !== false
-    })) ?? [];
-  selectData.value = originData.value
-    .filter((item: TableHeaderControl) => item.visible !== false)
-    .map((item: TableHeaderControl) => item.key);
-  sortTableHeader(transferData);
-  resetColumnWidth(transferData);
-}
-function resetColumnWidth(transferData: TableHeaderControl[]) {
-  const transferDataMap = new Map<string, TableHeaderControl>(
-    transferData.map((item: TableHeaderControl) => [item.key, item])
-  );
-  for (const col of columns.value) {
-    const transferItem = transferDataMap.get(col.field as string);
-    if (!transferItem || !transferItem.width) {
-      continue;
-    }
-    col.width = transferItem.width;
-  }
-}
-function getVailSize() {
-  if (_size.value === 'small' || _size.value === 'mini') {
-    return 'sm';
-  }
-  return 'base';
-}
 
 provide('__showTransfer', __showTransfer);
 provide(
   SIZE_KEY,
-  computed(() => getVailSize())
+  computed(() => {
+    if (_size.value === 'small' || _size.value === 'mini') {
+      return 'sm';
+    }
+    return 'base';
+  })
 );
 
 provide(
@@ -1248,14 +730,11 @@ const customMethods = {
   clearAdvancedFilter,
   getAdvancedCondition,
   getVisibleData,
-  getRowById,
   loadData,
-  disposeRowTooltip,
-  getHeaderControllerData,
-  setHeaderControllerData,
   clearSearch,
   ..._methods,
-  ..._checkboxMethods
+  ..._checkboxMethods,
+  ..._transferMethods,
 };
 
 defineExpose(getExposeProxy(customMethods, tableInstance));

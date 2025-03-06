@@ -160,7 +160,6 @@ export interface RowData {
 }
 
 export type TableCacheData =  {
-  tableDataMap: Map<string | number, RowData>,
   treeDataMap: Map<string | number, RowData>,
-  xeTableDataMap: Map<string | number, { node: RowData; children: RowData[] }>
+  tableDataMap: Map<string | number, { node: RowData; children: RowData[] }>
 }

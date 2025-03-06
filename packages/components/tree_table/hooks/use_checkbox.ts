@@ -26,7 +26,7 @@ export function useCheckbox(
     const defaultCheckedRows = checkAll
       ? fullTableData.value.filter((row: RowData) => row?.[keyField.value])
       : newCheckRowKeys
-        .map((rowKey: string | number) => tableCacheData.xeTableDataMap.get(rowKey)?.node)
+        .map((rowKey: string | number) => tableCacheData.tableDataMap.get(rowKey)?.node)
         .filter(row => row);
     handleCheckboxData(defaultCheckedRows, true);
   });
@@ -90,7 +90,7 @@ export function useCheckbox(
     } else {
       checkedData.value.delete(row[keyField.value]);
     }
-    const rowInfo = tableCacheData.xeTableDataMap.get(row[keyField.value]);
+    const rowInfo = tableCacheData.tableDataMap.get(row[keyField.value]);
     if (!rowInfo || !rowInfo.children || rowInfo.children.length === 0) {
       if (isChecked) {
         checkedLeafData.add(row[keyField.value]);

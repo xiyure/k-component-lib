@@ -266,25 +266,32 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     store.data = [...xeTableData.value];
     return xeTableData.value;
   }
-  // 转换数据为Map结构，构建表格数据节点之间的关系
-  function convertToMap() {
-    const xeTableDataMap = new Map<string | number, { node: RowData; children: RowData[] }>();
-    const { rowField, parentField } = getTreeConfigField();
-    for (const node of xeTableData.value) {
-      if (!xeTableDataMap.has(node[rowField])) {
-        xeTableDataMap.set(node[rowField], { node, children: [] });
-      }
-      const parentNode = xeTableDataMap.get(node[parentField]);
-      if (parentNode) {
-        parentNode.children.push(node);
-      }
+  function getRowById(id: string | number) {
+    const row = $table.value?.getRowById(id);
+    if (row) {
+      return row;
     }
-    return xeTableDataMap;
+    const targetRow = xeTableData.value.find(
+      (item: RowData) => item[keyField.value] === id
+    );
+    if (targetRow) {
+      return targetRow;
+    }
+    const tempRecords = $table.value.getInsertRecords();
+    const tempRow = tempRecords.find((item: Row) => item[keyField.value] === id);
+    return tempRow ?? null;
   }
   function getTreeConfigField() {
     const rowField = props.treeConfig?.rowField ?? 'id';
     const parentField = props.treeConfig?.parentField ?? 'pid';
     return { rowField, parentField };
+  }
+  // vxe-table行数据中dom被销毁时会导致tooltip无法关闭，这里提供手动销毁tooltip方法给予外部调用
+  function disposeRowTooltip() {
+    const tooltip = document.querySelector('.vxe-table--tooltip-wrapper');
+    if (tooltip) {
+      tooltip?.remove();
+    }
   }
 
   return {
@@ -299,11 +306,12 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
       getRemoveRecords,
       getRecordset,
       setRow,
-      setTreeExpand
+      setTreeExpand,
+      getRowById,
+      disposeRowTooltip
     },
     setTableData,
     sortChange,
-    dragSort,
-    convertToMap
+    dragSort
   };
 }
