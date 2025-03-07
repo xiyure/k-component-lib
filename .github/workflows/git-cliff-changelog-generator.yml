@@ -3,8 +3,6 @@ name: "Generate changelog"
 on:
   workflow_dispatch:
   push:
-    # branches:
-    #   - dev
     tags:
       - "v*"
 
@@ -25,17 +23,19 @@ jobs:
         with:
           fetch-depth: 0
 
-      # 生成完整的 Changelog
-      - name: Generate full changelog
-        uses: orhun/git-cliff-action@v4
-        with:
-          config: cliff.toml
-          args: --verbose
-        env:
-          OUTPUT: CHANGELOG.md
-          GITHUB_REPO: ${{ github.repository }}
+      - name: Get dependencies versions from package.json
+        id: get-versions
+        run: |
+          VXE_TABLE_VERSION=$(jq -r '.peerDependencies["vxe-table"]' package.json | sed 's/^\^//')
+          ELEMENT_PLUS_VERSION=$(jq -r '.peerDependencies["element-plus"]' package.json | sed 's/^\^//')
+          echo "VXE_TABLE_VERSION=$VXE_TABLE_VERSION" >> $GITHUB_ENV
+          echo "ELEMENT_PLUS_VERSION=$ELEMENT_PLUS_VERSION" >> $GITHUB_ENV
 
-      # 生成最新版本的 Changelog
+      - name: Update cliff.toml with versions
+        run: |
+          sed -i "s/{{ vxe_table_version }}/$VXE_TABLE_VERSION/g" cliff.toml
+          sed -i "s/{{ element_plus_version }}/$ELEMENT_PLUS_VERSION/g" cliff.toml
+
       - name: Generate latest changelog
         uses: orhun/git-cliff-action@v4
         id: latest-changelog
@@ -46,29 +46,30 @@ jobs:
           OUTPUT: LATEST_CHANGELOG.md
           GITHUB_REPO: ${{ github.repository }}
 
-      # 将 CHANGELOG.md 复制到 docs/docs/CHANGELOG.md
+      - name: Insert latest changelog after header
+        run: |
+          awk '/^# Changelog/{print; getline; print; print ""; system("cat LATEST_CHANGELOG.md"); next}1' CHANGELOG.md > TEMP_CHANGELOG.md
+          mv TEMP_CHANGELOG.md CHANGELOG.md
+
       - name: Copy CHANGELOG.md to docs directory
         run: |
           mkdir -p docs/docs
           cp CHANGELOG.md docs/docs/CHANGELOG.md
 
-      # 提交完整的 Changelog 和复制的文件
       - name: Commit full changelog
         run: |
           git checkout dev
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
-          set +e
           git add CHANGELOG.md
           git add docs/docs/CHANGELOG.md
-          git commit -m "Update changelog and copy to docs directory"
+          git commit -m "Update changelog and copy to docs directory" || echo "No changes to commit"
           git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git dev
 
       # 触发部署工作流
       - name: Trigger Deploy Docs
         uses: peter-evans/repository-dispatch@v3
         with:
-          # token: ${{ secrets.PAT }}
           event-type: trigger-deploy
           client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
 
