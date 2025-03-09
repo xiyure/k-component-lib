@@ -92,7 +92,8 @@ split_commits = false
 # 用于预处理提交消息的正则表示式
 commit_preprocessors = [
   { pattern = '^[0-9]+\.(.*)', replace = "$1" },
-  { pattern = "：", replace = ":"}
+  { pattern = "(<.*>)", replace = "`$1`"},
+  { pattern = "：", replace = ":"},
 ]
 # 正则表达式用于解析和分组提交
 commit_parsers = [
