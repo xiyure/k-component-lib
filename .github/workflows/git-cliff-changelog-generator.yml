@@ -5,8 +5,12 @@ on:
   push:
     branches:
       - dev
+    paths:
+      - 'cliff.toml'
+      - '.github/workflows/git-cliff-changelog-generator.yml'
     tags:
       - "v*"
+    workflow_dispatch:
 
 permissions:
   id-token: "write"
