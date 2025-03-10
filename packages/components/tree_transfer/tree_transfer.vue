@@ -1,26 +1,26 @@
 <template>
   <div :class="['k-tree-transfer', _styleModule]">
     <div v-if="showSearchInput === true || showSearchInput === 'left'" class="k-transfer__filter !mb-3">
-      <div class="flex justify-between items-center">
-          <k-input
-            ref="KTransferInputLeftRef"
-            class="flex-1"
-            v-model="_query"
-            :placeholder="t?.('enterInputSearch')"
-            :suffix-icon="IconSearch"
-            @keyup.enter="leftQueryChange"
-            @change="leftQueryChange"
-          />
-          <k-input
-            v-if="showSearchInput === true"
-            ref="KTransferInputRightRef"
-            class="flex-1 ml-[10px]"
-            v-model="_rightQuery"
-            :placeholder="t?.('enterInputSearch')"
-            :suffix-icon="IconSearch"
-            @keyup.enter="rightQueryChange"
-            @change="rightQueryChange"
-          />
+      <div class="flex justify-between items-center gap-2">
+        <k-input
+          ref="KTransferInputLeftRef"
+          v-model="_query"
+          class="flex-1"
+          :placeholder="t?.('enterInputSearch')"
+          :suffix-icon="IconSearch"
+          @keyup.enter="leftQueryChange"
+          @change="leftQueryChange"
+        />
+        <k-input
+          v-if="showSearchInput === true"
+          ref="KTransferInputRightRef"
+          v-model="_rightQuery"
+          class="flex-1 ml-[10px]"
+          :placeholder="t?.('enterInputSearch')"
+          :suffix-icon="IconSearch"
+          @keyup.enter="rightQueryChange"
+          @change="rightQueryChange"
+        />
       </div>
     </div>
     <div class="k-transfer__body">
@@ -231,64 +231,60 @@ const rightData = computed(() => {
 const leftColumns = computed(() => {
   if (Array.isArray(props.columns)) {
     return props.columns;
-  } else {
-    return [
-      {
-        type: 'checkbox',
-        field: props.label,
-        title: props.titles?.[0] ?? '',
-        treeNode: props.useTree
-      }
-    ];
   }
+  return [
+    {
+      type: 'checkbox',
+      field: props.label,
+      title: props.titles?.[0] ?? '',
+      treeNode: props.useTree
+    }
+  ];
 });
 const rightColumns = computed(() => {
   if (isCustomColumns.value) {
     return (props.columns as Array<Column>).filter((item) => item.type !== 'checkbox');
-  } else {
-    return [
-      {
-        field: props.label,
-        title: props.titles?.[1] ?? '',
-        dragSort: true
-      }
-    ];
   }
+  return [
+    {
+      field: props.label,
+      title: props.titles?.[1] ?? '',
+      dragSort: true
+    }
+  ];
 });
+
 // 分离左右面板配置
-const leftPanelConfig = computed(() => {
-  return {
-    showPage: props.showPage === true || props.showPage === 'left',
-    paginationConfig: props.leftPaginationConfig,
-    useTree: props.useTree,
-    treeConfig: props.treeConfig,
-    rowKey: props.rowKey,
-    searchConfig: props.searchConfig
-  }
-});
-const rightPanelConfig = computed(() => {
-  return {
-    showPage: props.showPage === true || props.showPage === 'right',
-    paginationConfig: props.rightPaginationConfig,
-    useTree: false,
-    rowKey: props.rowKey,
-    searchConfig: props.rightSearchConfig
-  }
-});
+const leftPanelConfig = computed(() => ({
+  showPage: props.showPage === true || props.showPage === 'left',
+  paginationConfig: props.leftPaginationConfig,
+  useTree: props.useTree,
+  treeConfig: props.treeConfig,
+  rowKey: props.rowKey,
+  searchConfig: props.searchConfig
+}));
+
+const rightPanelConfig = computed(() => ({
+  showPage: props.showPage === true || props.showPage === 'right',
+  paginationConfig: props.rightPaginationConfig || props.leftPaginationConfig,
+  useTree: false,
+  rowKey: props.rowKey,
+  searchConfig: props.rightSearchConfig
+}));
+
 // checkbox
-const useCheckboxConfig = computed(() => {
-  return {
-    showPage: props.showPage === true || props.showPage === 'left',
-    checkboxConfig: {
-      checkAll: props.checkboxAll,
-      checkRowKeys: props.defaultData,
-      checkMethod: props.checkMethod
-    },
-    useTree: props.useTree,
-    treeConfig: props.treeConfig,
-    rowKey: props.rowKey,
-  }
-})
+const useCheckboxConfig = computed(() => ({
+  showPage: props.showPage === true || props.showPage === 'left',
+  checkboxConfig: {
+    checkAll: props.checkboxAll,
+    checkRowKeys: props.defaultData,
+    checkMethod: props.checkMethod
+  },
+  useTree: props.useTree,
+  treeConfig: props.treeConfig,
+  rowKey: props.rowKey
+}));
+
 const tableL = computed(() => treeLeftRef.value?.tableInstance);
 const tableR = computed(() => tableRightRef.value?.tableInstance);
 
@@ -300,7 +296,7 @@ const {
   tableCacheData,
   paginationConfig: paginationLeftConfig,
   changePageSize: changeLeftPageSize,
-  changeCurrentPage: changeLeftCurrentPage,
+  changeCurrentPage: changeLeftCurrentPage
 } = useData(tableL, leftPanelConfig.value, emits, leftColumns, leftData, query);
 
 const {
@@ -309,7 +305,7 @@ const {
   isPaging: isPagingRight,
   paginationConfig: paginationRightConfig,
   changePageSize: changeRightPageSize,
-  changeCurrentPage: changeRightCurrentPage,
+  changeCurrentPage: changeRightCurrentPage
 } = useData(tableR, rightPanelConfig.value, emits, rightColumns, rightData, rightQuery);
 
 const {
@@ -343,22 +339,21 @@ const columnIcon = computed(
 );
 const rowLevel = computed(() => (row: Row) => getTreeNodeLevel(row));
 const parentData = computed(
-  () =>
-    function (row: Row) {
-      let data = row;
-      while (data.pid) {
-        const parent = leftData.value.find((item) => item.id === data.pid);
-        if (parent) {
-          data = parent;
-        } else {
-          break;
-        }
+  () => function (row: Row) {
+    let data = row;
+    while (data.pid) {
+      const parent = leftData.value.find((item) => item.id === data.pid);
+      if (parent) {
+        data = parent;
+      } else {
+        break;
       }
-      const name = data.name;
-      const labelData = row[props.label];
-
-      return { data: labelData, name };
     }
+    const name = data.name;
+    const labelData = row[props.label];
+
+    return { data: labelData, name };
+  }
 );
 
 watch(
@@ -376,7 +371,7 @@ watch(() => rightData.value, (newValue, oldValue = []) => {
   }
   emits('update:modelValue', ids);
 }, { immediate: true });
-watch(() => props.modelValue, async(newValue = []) => {
+watch(() => props.modelValue, async (newValue = []) => {
   await nextTick();
   resetCheckboxStatus();
   const ids = rightData.value.map((item) => item[props.rowKey]);
@@ -386,7 +381,7 @@ watch(() => props.modelValue, async(newValue = []) => {
   const mlMap = new Set(newValue);
   const targetRows = leftVisibleData.value.filter((row: Row) => mlMap.has(row[props.rowKey]));
   init(targetRows);
-}, { immediate: true, deep: true })
+}, { immediate: true, deep: true });
 
 function getTreeNodeLevel(row: Row): number {
   if (!props.useTree) {
@@ -443,7 +438,7 @@ function removeSelectedData(row: Row) {
 
 function leftQueryChange() {
   query.value = _query.value;
-  resetCheckboxStatus()
+  resetCheckboxStatus();
 }
 function rightQueryChange() {
   rightQuery.value = _rightQuery.value;

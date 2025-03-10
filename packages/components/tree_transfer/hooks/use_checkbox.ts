@@ -21,7 +21,7 @@ export function useCheckbox(
 ) {
   const defaultCheckboxConfig = {};
   const checkedData = ref<Set<string | string>>(new Set());
-  const checkedLeafData= ref<Set<string | string> >(new Set());
+  const checkedLeafData = ref<Set<string | string> >(new Set());
   // 复选框选中数量
   const checkedDataSize = computed(() => checkedData.value.size);
 

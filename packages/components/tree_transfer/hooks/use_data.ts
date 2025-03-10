@@ -19,7 +19,7 @@ export function useData(
   const tableCacheData: TableCacheData = {
     treeDataMap: new Map(), // 缓存搜索过程中遍历到的节点数据
     tableDataMap: new Map() // 缓存每个节点的子节点数据
-  }
+  };
   const paginationConfig = ref<any>(cloneDeep(DEFAULT_PAGE_CONFIG));
 
   watch(
@@ -58,7 +58,7 @@ export function useData(
     const pid = props.useTree ? props.treeConfig?.parentField ?? 'pid' : undefined;
     tableCacheData.tableDataMap = convertToMap(
       fullData.value, 
-      props.rowKey?? 'id',
+      props.rowKey ?? 'id',
       pid
     );
     const { strict, searchMethod, ignoreCase = false, searchColumns } = props.searchConfig ?? {};
@@ -75,13 +75,13 @@ export function useData(
     }
     const visibleColumns = columns.value.filter((col: Column) => col.visible !== false);
     const fieldList = visibleColumns
-      .map((col: Column) => {
-        if (col.field) {
-          return col.field;
-        }
-        return null;
-      })
-      .filter((field: string | null) => field !== null);
+    .map((col: Column) => {
+      if (col.field) {
+        return col.field;
+      }
+      return null;
+    })
+    .filter((field: string | null) => field !== null);
     let tableData = filterData.filter((dataItem: TreeTransferData) =>
       fieldList.some((field: string) => {
         if (Array.isArray(searchColumns) && !searchColumns.includes(field)) {
@@ -206,26 +206,26 @@ export function useData(
     return data.slice(startIndex, endIndex);
   }
 
-    // 分页相关
-    function changePageSize(pageSize: number, position: 'left' |  'right') {
-      paginationConfig.value.pageSize = pageSize;
-      emits('page-size-change', { position, pageSize });
-      emits('page-change', { position, pageNum: paginationConfig.value.currentPage, pageSize});
+  // 分页相关
+  function changePageSize(pageSize: number, position: 'left' | 'right') {
+    paginationConfig.value.pageSize = pageSize;
+    emits('page-size-change', { position, pageSize });
+    emits('page-change', { position, pageNum: paginationConfig.value.currentPage, pageSize});
+  }
+  function changeCurrentPage(pageNum: number, position: 'left' | 'right') {
+    paginationConfig.value.currentPage = pageNum;
+    emits('page-current-change', { position, pageNum });
+    emits('page-change', { position, pageNum, pageSize: paginationConfig.value.pageSize });
+  }
+  // 数据最大页码小于当前页码时，需要修改当前页码
+  function updatePageNum(length: number) {
+    let { currentPage } = paginationConfig.value;
+    const pageSize = paginationConfig.value.pageSize;
+    while ((currentPage - 1) * pageSize + 1 > length && currentPage > 1) {
+      currentPage--;
     }
-    function changeCurrentPage(pageNum: number, position: 'left' |  'right') {
-      paginationConfig.value.currentPage = pageNum;
-      emits('page-current-change', { position, pageNum });
-      emits('page-change', { position, pageNum, pageSize: paginationConfig.value.pageSize });
-    }
-    // 数据最大页码小于当前页码时，需要修改当前页码
-    function updatePageNum(length: number) {
-      let { currentPage } = paginationConfig.value;
-      const pageSize = paginationConfig.value.pageSize;
-      while ((currentPage - 1) * pageSize + 1 > length && currentPage > 1) {
-        currentPage--;
-      }
-      paginationConfig.value.currentPage = currentPage;
-    }
+    paginationConfig.value.currentPage = currentPage;
+  }
 
   return {
     showTableData,
@@ -236,5 +236,5 @@ export function useData(
     paginationConfig,
     changePageSize,
     changeCurrentPage
-  }
+  };
 }
