@@ -229,6 +229,9 @@ export function convertToMap(tableData: any[], rowField: string, parentField: st
     if (!dataMap.has(node[rowField])) {
       dataMap.set(node[rowField], { node, children: [] });
     }
+    if (!parentField) {
+      continue;
+    }
     const parentNode = dataMap.get(node[parentField]);
     if (parentNode) {
       parentNode.children.push(node);
