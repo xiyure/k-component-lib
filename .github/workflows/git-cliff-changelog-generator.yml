@@ -3,11 +3,11 @@ name: "Generate changelog"
 on:
   workflow_dispatch:
   push:
-    branches:
-      - dev
-    paths:
-      - 'cliff.toml'
-      - '.github/workflows/git-cliff-changelog-generator.yml'
+    # branches:
+    #   - dev
+    # paths:
+    #   - 'cliff.toml'
+    #   - '.github/workflows/git-cliff-changelog-generator.yml'
     tags:
       - "v*"
     workflow_dispatch:
@@ -54,7 +54,7 @@ jobs:
 
       - name: Insert latest changelog after header
         run: |
-          awk '/^# Changelog/{print; getline; print; print ""; system("cat LATEST_CHANGELOG.md"); next}1' CHANGELOG.md > TEMP_CHANGELOG.md
+          awk '/^All notable changes to this project will be documented in this file./{print; getline; print; print ""; system("cat LATEST_CHANGELOG.md"); next}1' CHANGELOG.md > TEMP_CHANGELOG.md
           mv TEMP_CHANGELOG.md CHANGELOG.md
 
       - name: Copy CHANGELOG.md to docs directory
