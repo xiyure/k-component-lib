@@ -25,25 +25,27 @@
     border-top-left-radius: var(--border-radius);
     border-bottom-left-radius: var(--border-radius);
   }
-  .el-input__wrapper {
-    padding-left: 42px !important;
-    padding-right: 42px !important;
+  .el-input {
+    .el-input__wrapper {
+      padding-left: 42px;
+      padding-right: 42px;
 
-    .el-input__inner {
-      text-align: center;
-    }
-    :hover {
-      z-index: unset;
       .el-input__inner {
         text-align: center;
       }
-    }
-    &.is-focus {
-      z-index: unset;
-      border-color: var(--k-theme-input-border-color--active);
-      box-shadow: var(--k-theme-focus-style) !important;
-      .el-input__inner {
-        text-align: center;
+      :hover {
+        z-index: unset;
+        .el-input__inner {
+          text-align: center;
+        }
+      }
+      &.is-focus {
+        z-index: unset;
+        border-color: var(--k-theme-input-border-color--active);
+        box-shadow: var(--k-theme-focus-style) !important;
+        .el-input__inner {
+          text-align: center;
+        }
       }
     }
   }
