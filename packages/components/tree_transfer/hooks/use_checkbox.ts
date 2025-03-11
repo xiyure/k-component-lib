@@ -14,7 +14,7 @@ type UseCheckboxConfig = {
 // 重定义vxe-table的部分方法
 export function useCheckbox(
   $table: Ref<VxeTableInstance>,
-  props: UseCheckboxConfig,
+  config: Ref<UseCheckboxConfig>,
   fullTableData: Ref<RowData[]>,
   tableData: Ref<RowData[]>,
   tableCacheData: TableCacheData
@@ -37,9 +37,9 @@ export function useCheckbox(
     init(defaultCheckedRows);
   });
   const checkboxConfig = computed(() =>
-    Object.assign(defaultCheckboxConfig, props.checkboxConfig || {})
+    Object.assign(defaultCheckboxConfig, config.value.checkboxConfig || {})
   );
-  const keyField = computed(() => props.rowKey ?? 'id');
+  const keyField = computed(() => config.value.rowKey ?? 'id');
 
   function init(checkedData: (RowData | undefined)[]) {
     clearCheckedData();
@@ -133,7 +133,7 @@ export function useCheckbox(
   // 清除复选框选中行
   const clearCheckboxRow = () =>
     new Promise((resolve) => {
-      if (props.showPage && !props.useTree) {
+      if (config.value.showPage && !config.value.useTree) {
         handleCheckboxData(tableData.value, false);
       } else {
         clearCheckedData();
@@ -145,7 +145,7 @@ export function useCheckbox(
   const clearCheckboxReserve = async () => {
     await $table.value?.clearCheckboxReserve();
     new Promise((resolve) => {
-      if (props.showPage && !props.useTree) {
+      if (config.value.showPage && !config.value.useTree) {
         const checkRows = $table.value?.getCheckboxRecords();
         checkedData.value = new Set(checkRows.map((row: Row) => row?.[keyField.value]));
         $table.value?.setCheckboxRow(checkRows, true);
@@ -185,10 +185,10 @@ export function useCheckbox(
       return $table.value?.getCheckboxRecords();
     }
     const allCheckedData = cloneDeep(checkedLeafData.value);
-    if (props.useTree) {
+    if (config.value.useTree) {
       const record = new Map();
-      const rowField = props.treeConfig?.rowField ?? 'id';
-      const parentField = props.treeConfig?.parentField ?? 'pid';
+      const rowField = config.value.treeConfig?.rowField ?? 'id';
+      const parentField = config.value.treeConfig?.parentField ?? 'pid';
       for (const row of fullTableData.value) {
         if (!row[rowField]) {
           continue;
@@ -222,7 +222,7 @@ export function useCheckbox(
   }
 
   function isCheckedRow(row: Row) {
-    return checkedLeafData.value.has(row[props.rowKey])
+    return checkedLeafData.value.has(row[config.value.rowKey])
   }
 
   return {

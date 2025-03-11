@@ -1,5 +1,5 @@
 import { ref, watch, computed, Ref } from 'vue';
-import type{ VxeTableInstance } from 'vxe-table';
+import type { VxeTableInstance } from 'vxe-table';
 import { cloneDeep } from 'lodash-es';
 import { CN_DICT, TONE_MARKS } from '../../../constant';
 import { getAllCombinations, sortFunc, convertToMap } from '../../../utils';
@@ -9,7 +9,7 @@ import { Column, TableCacheData } from '../../tree_table/type';
 
 export function useData(
   $table: Ref<VxeTableInstance>,
-  props: any,
+  config: Ref<any>,
   emits: any,
   columns: Ref<Column[]>,
   fullData: Ref<TreeTransferData[]>,
@@ -23,9 +23,9 @@ export function useData(
   const paginationConfig = ref<any>(cloneDeep(DEFAULT_PAGE_CONFIG));
 
   watch(
-    () => props.paginationConfig,
+    () => config.value.paginationConfig,
     () => {
-      paginationConfig.value = Object.assign(paginationConfig.value, props.paginationConfig || {});
+      paginationConfig.value = Object.assign(paginationConfig.value, config.value.paginationConfig || {});
     },
     { immediate: true, deep: true }
   );
@@ -38,15 +38,15 @@ export function useData(
     if (!isPaging.value || isRemotePaging) {
       return visibleData.value;
     }
-    return getShowTableData(visibleData.value);
+    return getPageData(visibleData.value);
   });
   // 是否分页
-  const isPaging = computed(() => props.showPage && !props.useTree);
+  const isPaging = computed(() => config.value.showPage && !config.value.useTree);
 
   // 表格数据量
   const dataLength = computed(() => {
     const { isRemotePaging, total } = paginationConfig.value;
-    if (isPaging.value && (isRemotePaging)) {
+    if (isPaging.value && isRemotePaging) {
       return total;
     }
     return visibleData.value.length;
@@ -55,15 +55,15 @@ export function useData(
   // 表格内容搜索
   function filterTableData() {
     const filterData = fullData.value;
-    const pid = props.useTree ? props.treeConfig?.parentField ?? 'pid' : undefined;
+    const pid = config.value.useTree ? config.value.treeConfig?.parentField ?? 'pid' : undefined;
     tableCacheData.tableDataMap = convertToMap(
-      fullData.value, 
-      props.rowKey ?? 'id',
+      fullData.value,
+      config.value.rowKey ?? 'id',
       pid
     );
-    const { strict, searchMethod, ignoreCase = false, searchColumns } = props.searchConfig ?? {};
+    const { strict, searchMethod, ignoreCase = false, searchColumns } = config.value.searchConfig ?? {};
     const searchKey = searchKeyWord.value.trim().replace(/\\/g, '\\\\');
-    if (props.searchConfig?.isRemoteQuery) {
+    if (config.value.searchConfig?.isRemoteQuery) {
       emits('remote-query', searchKey);
       return filterData;
     }
@@ -97,8 +97,8 @@ export function useData(
       })
     );
     // 当表格数据为树时，筛选后的数据应展示完整的子树
-    if (props.useTree) {
-      const rowField = props.treeConfig?.rowField ?? 'id';
+    if (config.value.useTree) {
+      const rowField = config.value.treeConfig?.rowField ?? 'id';
       handleTreeData(tableData);
       tableData = sortFunc([...tableCacheData.treeDataMap.values()], fullData.value, rowField);
     } else {
@@ -108,7 +108,7 @@ export function useData(
   }
   // 支持拼音搜索
   function compareByPinYin(field: string, compareStr: string, searchKey: string, ignoreCase = false) {
-    const supportCols = props.searchConfig?.supportPinYin ?? false;
+    const supportCols = config.value.searchConfig?.supportPinYin ?? false;
     if (supportCols !== true && !(Array.isArray(supportCols) && supportCols.includes(field))) {
       return false;
     }
@@ -145,8 +145,8 @@ export function useData(
   }
   // 处理树形数据
   function handleTreeData(leafData: TreeTransferData[]) {
-    const rowField = props.treeConfig?.rowField ?? 'id';
-    const parentField = props.treeConfig?.parentField ?? 'pid';
+    const rowField = config.value.treeConfig?.rowField ?? 'id';
+    const parentField = config.value.treeConfig?.parentField ?? 'pid';
     tableCacheData.treeDataMap.clear();
     for (let index = 0; index < leafData.length; index++) {
       const dataItem = leafData[index];
@@ -166,7 +166,7 @@ export function useData(
     if (!leafData || !leafData.length) {
       return;
     }
-    const rowField = props.rowKey ?? 'id';
+    const rowField = config.value.rowKey ?? 'id';
     for (const leafDataItem of leafData) {
       const targetNode = tableCacheData.tableDataMap.get(leafDataItem[rowField]);
       if (targetNode) {
@@ -194,29 +194,13 @@ export function useData(
     }
   }
 
-  function getShowTableData(data: TreeTransferData[]) {
-    const { isRemotePaging } = paginationConfig.value;
-    if (isRemotePaging) {
-      emits('server-paging', paginationConfig.value);
-      return data;
-    }
+  function getPageData(data: TreeTransferData[]) {
     const { currentPage, pageSize } = paginationConfig.value;
     const startIndex = (currentPage - 1) * pageSize;
     const endIndex = startIndex + pageSize;
     return data.slice(startIndex, endIndex);
   }
 
-  // 分页相关
-  function changePageSize(pageSize: number, position: 'left' | 'right') {
-    paginationConfig.value.pageSize = pageSize;
-    emits('page-size-change', { position, pageSize });
-    emits('page-change', { position, pageNum: paginationConfig.value.currentPage, pageSize});
-  }
-  function changeCurrentPage(pageNum: number, position: 'left' | 'right') {
-    paginationConfig.value.currentPage = pageNum;
-    emits('page-current-change', { position, pageNum });
-    emits('page-change', { position, pageNum, pageSize: paginationConfig.value.pageSize });
-  }
   // 数据最大页码小于当前页码时，需要修改当前页码
   function updatePageNum(length: number) {
     let { currentPage } = paginationConfig.value;
@@ -233,8 +217,6 @@ export function useData(
     dataLength,
     isPaging,
     tableCacheData,
-    paginationConfig,
-    changePageSize,
-    changeCurrentPage
-  };
+    paginationConfig
+  }
 }

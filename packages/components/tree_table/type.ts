@@ -3,7 +3,7 @@ import { VxeTablePropTypes, VxeColgroupProps, VxeColumnPropTypes } from 'vxe-tab
 import { PaginationProps as ElPaginationProps } from 'element-plus';
 import { OperateData } from '../operate/type';
 import { Condition, FilterValue, ConditionInfo } from '../filter/type';
-import { RequireToOptional } from '../../utils/typescript';
+import { Merge } from '../../utils/typescript';
 
 export type Row = VxeTablePropTypes.Row;
 export type TreeConfig = VxeTablePropTypes.TreeConfig;
@@ -37,7 +37,7 @@ export interface TreeTableProps {
   useTree?: boolean;
   isRemoteQuery?: boolean;
   isServerPaging?: boolean;
-  paginationConfig?: PaginationConfig;
+  paginationConfig?: TablePaginationConfig;
   showDescription?: boolean;
   showHeaderTools?: boolean;
   batchOperations?: OperateData[];
@@ -106,10 +106,10 @@ type FilterColumn = {
     value: FilterValue;
   }[];
 };
-export interface PaginationConfig extends RequireToOptional<Omit<ElPaginationProps, 'size'>> {
+export type TablePaginationConfig = Merge<{
   size?: 'base' | 'sm';
   isRemotePaging?: boolean;
-}
+}, ElPaginationProps>
 
 export interface SeqConfig {
   seqMethod?: (rowConfig: RowConfig) => string | number;

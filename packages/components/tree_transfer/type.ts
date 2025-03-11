@@ -1,6 +1,6 @@
 import { Component } from 'vue';
 import { VxeTablePropTypes } from 'vxe-table';
-import { Column, SearchConfig, PaginationConfig } from '../tree_table';
+import { Column, SearchConfig, TablePaginationConfig } from '../tree_table';
 
 export interface TreeTransferProps {
   modelValue?: TreeTransferData[]
@@ -23,8 +23,8 @@ export interface TreeTransferProps {
   searchConfig?: SearchConfig
   rightSearchConfig?: SearchConfig
   showPage?: boolean | 'left' | 'right'
-  leftPaginationConfig?: PaginationConfig
-  rightPaginationConfig?: PaginationConfig
+  leftPaginationConfig?: TablePaginationConfig
+  rightPaginationConfig?: TablePaginationConfig
   columns?: Column[]
   tableHeight?: number
   checkMethod?: (data: any) => boolean

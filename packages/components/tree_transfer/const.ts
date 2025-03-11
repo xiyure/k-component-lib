@@ -21,5 +21,6 @@ export const DEFAULT_PAGE_CONFIG = {
   pageSizes: DEFAULT_PAGES,
   pageSize: DEFAULT_PAGES[0],
   layout: 'total, prev, pager, next, sizes',
-  size: 'sm'
+  size: 'sm',
+  total: 0
 };

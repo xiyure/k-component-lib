@@ -83,21 +83,14 @@
             </template>
           </k-table>
         </div>
-        <div v-if="isPagingLeft" class="pagination-box bg-white pt-3">
-          <k-pagination
-            v-bind="paginationLeftConfig"
-            :total="leftDataLength"
-            @current-change="(pageNum: number) => {
-              changeLeftCurrentPage(pageNum, 'left');
-            }"
-            @size-change="(pageSize: number) => {
-              changeLeftPageSize(pageSize, 'left');
-            }"
-            @change="() => {
-              resetCheckboxStatus();
-            }"
-          />
-        </div>
+        <Pagination
+          :visible="isPagingLeft"
+          position="left"
+          :emits
+          :data-length="leftDataLength"
+          :page-config="paginationLeftConfig"
+          :resetCheckboxStatus
+        />
       </div>
       <div class="k-transfer-content k-transfer-content__right">
         <div class="k-transfer__list" :style="{ height: tableHeight + 'px' }">
@@ -154,18 +147,13 @@
             </template>
           </k-table>
         </div>
-        <div v-if="isPagingRight" class="pagination-box bg-white pt-3">
-          <k-pagination
-            v-bind="paginationRightConfig"
-            :total="rightDataLength"
-            @current-change="(pageNum: number) => {
-              changeRightCurrentPage(pageNum, 'right');
-            }"
-            @size-change="(pageSize: number) => {
-              changeRightPageSize(pageSize, 'right');
-            }"
-          />
-        </div>
+        <Pagination
+          :visible="isPagingRight"
+          position="right"
+          :emits
+          :data-length="rightDataLength"
+          :page-config="paginationRightConfig"
+        />
       </div>
     </div>
   </div>
@@ -176,10 +164,11 @@ import { ref, computed, watch, inject, nextTick } from 'vue';
 import { VueI18nTranslation } from 'vue-i18n';
 import { IconSearch, IconClose } from 'ksw-vue-icon';
 import { VxeTablePropTypes } from 'vxe-table';
-import { TreeTransferProps, TreeTransferData } from './type';
 import { sortBySmallerList, compatibleSlots, sortFunc } from '../../utils';
-import { Column } from '../tree_table';
 import { useData, useConfig, useCheckbox } from './hooks';
+import Pagination from './page.vue';
+import { TreeTransferProps, TreeTransferData } from './type';
+import { Column } from '../tree_table';
 
 defineOptions({
   name: 'KTreeTransfer'
@@ -210,6 +199,8 @@ const emits = defineEmits([
   'page-current-change',
   'page-size-change',
   'page-change',
+  'page-prev-click',
+  'page-next-click',
   'update:modelValue'
 ]);
 const leftData = ref<TreeTransferData[]>([]);
@@ -295,18 +286,14 @@ const {
   isPaging: isPagingLeft,
   tableCacheData,
   paginationConfig: paginationLeftConfig,
-  changePageSize: changeLeftPageSize,
-  changeCurrentPage: changeLeftCurrentPage
-} = useData(tableL, leftPanelConfig.value, emits, leftColumns, leftData, query);
+} = useData(tableL, leftPanelConfig, emits, leftColumns, leftData, query);
 
 const {
   showTableData: showRightTableData,
   dataLength: rightDataLength,
   isPaging: isPagingRight,
   paginationConfig: paginationRightConfig,
-  changePageSize: changeRightPageSize,
-  changeCurrentPage: changeRightCurrentPage
-} = useData(tableR, rightPanelConfig.value, emits, rightColumns, rightData, rightQuery);
+} = useData(tableR, rightPanelConfig, emits, rightColumns, rightData, rightQuery);
 
 const {
   checkedLeafData,
@@ -315,7 +302,7 @@ const {
   resetCheckboxStatus,
   checkboxAllChange,
   checkBoxChange
-} = useCheckbox(tableL, useCheckboxConfig.value, leftData, showLeftTableData, tableCacheData);
+} = useCheckbox(tableL, useCheckboxConfig, leftData, showLeftTableData, tableCacheData);
 
 const isCustomColumns = computed(() => Array.isArray(props.columns));
 const columnIcon = computed(

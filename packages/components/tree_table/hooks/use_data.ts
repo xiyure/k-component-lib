@@ -26,19 +26,18 @@ const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
   const visibleData = computed(() => filterTableData());
   // 可见面板数据
   const showTableData = computed(() => {
-    const { isRemotePaging } = paginationConfig.value;
-    if (!isPaging.value || props.isServerPaging || isRemotePaging) {
+    if (!isPaging.value || isUseRemotePaging()) {
       return visibleData.value;
     }
-    return getShowTableData(visibleData.value);
+    return getPageData(visibleData.value);
   });
   // 是否分页
   const isPaging = computed(() => props.showPage && !props.useTree && !props.simple);
 
   // 表格数据量
   const dataLength = computed(() => {
-    const { isRemotePaging, total } = paginationConfig.value;
-    if (isPaging.value && (isRemotePaging || props.isServerPaging)) {
+    const { total } = paginationConfig.value;
+    if (isPaging.value && isUseRemotePaging()) {
       return total;
     }
     return visibleData.value.length;
@@ -202,26 +201,19 @@ const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
   // 分页相关
   function changePageSize(pageSize: number) {
     paginationConfig.value.pageSize = pageSize;
-    const { isRemotePaging } = paginationConfig.value;
-    if (props.isServerPaging || isRemotePaging) {
+    if (isUseRemotePaging()) {
       emits('server-paging', paginationConfig.value);
     }
     emits('page-size-change', pageSize);
   }
   function changeCurrentPage(pageNum: number) {
     paginationConfig.value.currentPage = pageNum;
-    const { isRemotePaging } = paginationConfig.value;
-    if (props.isServerPaging || isRemotePaging) {
+    if (isUseRemotePaging()) {
       emits('server-paging', paginationConfig.value);
     }
     emits('page-current-change', pageNum);
   }
-  function getShowTableData(data: RowData[]) {
-    const { isRemotePaging } = paginationConfig.value;
-    if (props.isServerPaging || isRemotePaging) {
-      emits('server-paging', paginationConfig.value);
-      return data;
-    }
+  function getPageData(data: RowData[]) {
     const { currentPage, pageSize } = paginationConfig.value;
     const startIndex = (currentPage - 1) * pageSize;
     const endIndex = startIndex + pageSize;
@@ -235,6 +227,11 @@ const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
       currentPage--;
     }
     paginationConfig.value.currentPage = currentPage;
+  }
+
+  function isUseRemotePaging() {
+    const { isRemotePaging } = paginationConfig.value;
+    return isRemotePaging || props.isServerPaging;
   }
 
   return {

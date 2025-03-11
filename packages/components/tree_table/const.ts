@@ -4,7 +4,8 @@ export const DEFAULT_PAGE_CONFIG = {
   pagerCount: 7,
   currentPage: 1,
   pageSizes: DEFAULT_PAGES,
-  pageSize: DEFAULT_PAGES[0]
+  pageSize: DEFAULT_PAGES[0],
+  total: 0
 };
 
 // 默认表头工具栏配置
