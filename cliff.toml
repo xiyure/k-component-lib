@@ -37,9 +37,12 @@ body = """
     ## [未发布]
 {% endif %}\
 
-- VxeTable: {{ vxe_table_version }}
-- ElementPlus: {{ element_plus_version }}
-
+{% if extra %}
+  ### 📦️ 依赖
+  {% for dependencies in extra.dependencies %}
+  - {{ dependencies.name }} : {{ dependencies.version }}\
+  {% endfor -%}
+{% endif %}
 {% for group, commits in commits | group_by(attribute="group") %}
     ### {{ group | striptags | trim | upper_first }}
     {% for commit in commits

@@ -32,3 +32,5 @@ example/view
 cache
 stats.html
 .secret
+
+context.json

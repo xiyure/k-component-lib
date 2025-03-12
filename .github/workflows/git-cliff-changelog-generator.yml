@@ -3,14 +3,13 @@ name: "Generate changelog"
 on:
   workflow_dispatch:
   push:
-    # branches:
-    #   - dev
-    # paths:
-    #   - 'cliff.toml'
-    #   - '.github/workflows/git-cliff-changelog-generator.yml'
+    branches:
+      - dev
+    paths:
+      - 'cliff.toml'
+      - '.github/workflows/git-cliff-changelog-generator.yml'
     tags:
       - "v*"
-    workflow_dispatch:
 
 permissions:
   id-token: "write"
@@ -28,20 +27,37 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
 
-      - name: Get dependencies versions from package.json
-        id: get-versions
+      # 生成的 Changelog 上下文
+      - name: Generate full changelog
+        uses: orhun/git-cliff-action@v4
+        with:
+          config: cliff.toml
+          args: --context
+        env:
+          OUTPUT: context.json
+          GITHUB_REPO: ${{ github.repository }}
+
+      - name: Generate dependency changes and inject
         run: |
-          VXE_TABLE_VERSION=$(jq -r '.peerDependencies["vxe-table"]' package.json | sed 's/^\^//')
-          ELEMENT_PLUS_VERSION=$(jq -r '.peerDependencies["element-plus"]' package.json | sed 's/^\^//')
-          echo "VXE_TABLE_VERSION=$VXE_TABLE_VERSION" >> $GITHUB_ENV
-          echo "ELEMENT_PLUS_VERSION=$ELEMENT_PLUS_VERSION" >> $GITHUB_ENV
+          node dependenciesChange/generate_deps.js && node dependenciesChange/inject_deps.js
 
-      - name: Update cliff.toml with versions
-        run: |
-          sed -i "s/{{ vxe_table_version }}/$VXE_TABLE_VERSION/g" cliff.toml
-          sed -i "s/{{ element_plus_version }}/$ELEMENT_PLUS_VERSION/g" cliff.toml
+      # 根据上下文生成完整的 Changelog
+      - name: Generate full changelog
+        uses: orhun/git-cliff-action@v4
+        with:
+          config: cliff.toml
+          args: --verbose --from-context context.json
+        env:
+          OUTPUT: CHANGELOG.md
+          GITHUB_REPO: ${{ github.repository }}
 
+      # 生成最新版本的 Changelog
       - name: Generate latest changelog
         uses: orhun/git-cliff-action@v4
         id: latest-changelog
@@ -52,39 +68,39 @@ jobs:
           OUTPUT: LATEST_CHANGELOG.md
           GITHUB_REPO: ${{ github.repository }}
 
-      - name: Insert latest changelog after header
-        run: |
-          awk '/^All notable changes to this project will be documented in this file./{print; getline; print; print ""; system("cat LATEST_CHANGELOG.md"); next}1' CHANGELOG.md > TEMP_CHANGELOG.md
-          mv TEMP_CHANGELOG.md CHANGELOG.md
-
+      # 将 CHANGELOG.md 复制到 docs/docs/CHANGELOG.md
       - name: Copy CHANGELOG.md to docs directory
         run: |
           mkdir -p docs/docs
           cp CHANGELOG.md docs/docs/CHANGELOG.md
 
+      # 提交完整的 Changelog 和复制的文件
       - name: Commit full changelog
         run: |
           git checkout dev
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
+          set +e
+          git add dependenciesVersion.json
           git add CHANGELOG.md
           git add docs/docs/CHANGELOG.md
-          git commit -m "Update changelog and copy to docs directory" || echo "No changes to commit"
+          git commit -m "Update changelog and copy to docs directory"
           git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git dev
 
       # 触发部署工作流
       - name: Trigger Deploy Docs
         uses: peter-evans/repository-dispatch@v3
         with:
+          # token: ${{ secrets.PAT }}
           event-type: trigger-deploy
           client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
 
       # 发送企业微信通知
-      # - name: WeChat Work notification
-      #   if: steps.latest-changelog.outputs.content != ''
-      #   uses: chf007/action-wechat-work@master
-      #   env:
-      #     WECHAT_WORK_BOT_WEBHOOK: ${{secrets.WECHAT_WORK_BOT_WEBHOOK}}
-      #   with:
-      #     msgtype: markdown
-      #     content: "${{ steps.latest-changelog.outputs.content }}"
+      - name: WeChat Work notification
+        if: steps.latest-changelog.outputs.content != ''
+        uses: chf007/action-wechat-work@master
+        env:
+          WECHAT_WORK_BOT_WEBHOOK: ${{secrets.WECHAT_WORK_BOT_WEBHOOK}}
+        with:
+          msgtype: markdown
+          content: "${{ steps.latest-changelog.outputs.content }}"
