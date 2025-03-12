@@ -2,14 +2,37 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.1.16](https://github.com/xiyure/k-component-lib/compare/v1.1.14..v1.1.16) - 2025-03-05
+## [未发布]
+
+
+### 🚀 特性
+
+- *(ScriptInput)* 支持自定义下拉列表label属性； - ([e275add](https://github.com/xiyure/k-component-lib/commit/e275add33a14df0736ad12bdbb349a920f01d775))
+- *(script_input)* 增加事件, mode-change - ([741586d](https://github.com/xiyure/k-component-lib/commit/741586d5ca6d01cb94c2a98d88b9991b74d773bc))
 
 ### 🐛 Bug 修复
 
-- *(ScriptInput)* 修复输入\<xxx\>格式文本时输入框内容消失问题； - ([547e2e8](https://github.com/xiyure/k-component-lib/commit/547e2e82fbf40e34d084b698de729a29f9568960))
+- *(k-input-number)* 修复padding错误 - ([e1ec23f](https://github.com/xiyure/k-component-lib/commit/e1ec23fbaec1c98cfe08aa05baaaf57c37848a79))
+- *(tree_transfer)* 修改样式 - ([75493a8](https://github.com/xiyure/k-component-lib/commit/75493a81e51f58ed417d55a37c6e043f5a94b2c8))
+
+## [1.1.16](https://github.com/xiyure/k-component-lib/compare/v1.1.14..v1.1.16) - 2025-03-05
+
+### 📦️ 依赖
+
+- element-plus : 2.9.0
+- vxe-table : ^4.10.1
+
+### 🐛 Bug 修复
+
+- *(ScriptInput)* 修复输入`<xxx>`格式文本时输入框内容消失问题； - ([547e2e8](https://github.com/xiyure/k-component-lib/commit/547e2e82fbf40e34d084b698de729a29f9568960))
 - *(ScriptInput)* 修复脚本输入框在密码状态下无法解析脚本标签问题； - ([3faf098](https://github.com/xiyure/k-component-lib/commit/3faf0984af4aac4b2803700315c8b3452fdd37ac))
 
 ## [1.1.14](https://github.com/xiyure/k-component-lib/compare/v1.1.0..v1.1.14) - 2025-02-28
+
+### 📦️ 依赖
+
+- element-plus : 2.9.0
+- vxe-table : ^4.10.1
 
 ### 🚀 特性
 
@@ -68,6 +91,11 @@ All notable changes to this project will be documented in this file.
 
 ## [1.1.0](https://github.com/xiyure/k-component-lib/compare/v1.0.6..v1.1.0) - 2025-01-16
 
+### 📦️ 依赖
+
+- element-plus : 2.9.0
+- vxe-table : ^4.10.1
+
 ### 🚀 特性
 
 - *(script_input)* 新增 valueType, 用于正则校验是否为 数字 或 布尔值 - ([a69568c](https://github.com/xiyure/k-component-lib/commit/a69568c26631be2ad37f0e5decd2e26d6b8b4ba8))
@@ -107,6 +135,11 @@ All notable changes to this project will be documented in this file.
 * @github-actions[bot] 做出了他们的第一次贡献
 ## [1.0.6](https://github.com/xiyure/k-component-lib/compare/v1.0.0..v1.0.6) - 2025-01-08
 
+### 📦️ 依赖
+
+- element-plus : ^2.9.2
+- vxe-table : ^4.10.1
+
 ### 💼 修改
 
 - 优化 提示位置 - ([eb37361](https://github.com/xiyure/k-component-lib/commit/eb3736142d0fb88ee642e892ae9f714dc187d22d))
@@ -117,6 +150,11 @@ All notable changes to this project will be documented in this file.
 - 增加checkVariableName, 校验变量名是否合规 - ([21a1b54](https://github.com/xiyure/k-component-lib/commit/21a1b54d215b0ff08a9abd4c4c8521457f49a824))
 
 ## [1.0.0](https://github.com/xiyure/k-component-lib/compare/v0.0.123..v1.0.0) - 2025-01-07
+
+### 📦️ 依赖
+
+- element-plus : ^2.9.2
+- vxe-table : ^4.10.1
 
 ### 🐛 Bug 修复
 
@@ -132,6 +170,11 @@ All notable changes to this project will be documented in this file.
 
 * @github-actions[bot] 做出了他们的第一次贡献
 ## [0.0.120] - 2024-12-25
+
+### 📦️ 依赖
+
+- element-plus : ^2.9.0
+- vxe-table : ^4.9.22
 
 ### 🚀 特性
 
