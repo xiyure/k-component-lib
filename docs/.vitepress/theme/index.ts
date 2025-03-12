@@ -3,7 +3,7 @@ import DefaultTheme from 'vitepress/theme';
 import type { Theme } from 'vitepress'
 // import { Container } from '../plugin/container/index';
 import { demo } from '../plugin/demo';
-import { toLeadIntoPlugin } from '../plugin/toLeadInto';
+import toLeadIntoPlugin from '../components/toLeadInto.vue';
 import 'overlayscrollbars/overlayscrollbars.css';
 import { OverlayScrollbars } from 'overlayscrollbars';
 import {
