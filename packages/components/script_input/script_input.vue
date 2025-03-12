@@ -120,7 +120,6 @@
             :show-description="false"
             :show-refresh="false"
             :row-config="{
-              keyField: getAttrProps().value,
               isCurrent: true,
               currentMethod: ({ row }) => {
                 return row.optional !== false;

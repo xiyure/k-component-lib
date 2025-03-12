@@ -1,7 +1,7 @@
 {
   "name": "@ksware/ksw-ux",
   "private": false,
-  "version": "1.1.17-beta2",
+  "version": "1.1.18",
   "description": "Kingsware Component Library",
   "main": "kingsware-ui/index.umd.js",
   "module": "kingsware-ui/index.js",
@@ -33,7 +33,6 @@
   },
   "devDependencies": {
     "@types/culori": "^2.1.1",
-    "@types/diff-match-patch": "^1.0.36",
     "@types/node": "^22.5.5",
     "@types/sortablejs": "^1.15.8",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
