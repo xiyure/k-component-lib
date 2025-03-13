@@ -8,16 +8,22 @@
       @change="pageChange"
       @prev-click="prevClick"
       @next-click="nextClick"
-    />
+    >
+      <template #default>
+        <slot :page-config="pageConfig">
+          <k-input v-model="currentPage" style="width: 50px" @change="changePage"></k-input>
+        </slot>
+      </template>
+    </k-pagination>
   </div>
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue';
+import { PropType, ref } from 'vue';
 
 defineOptions({
-  name: 'Pagination',
-})
+  name: 'Pagination'
+});
 const props = defineProps({
   visible: {
     type: Boolean,
@@ -32,7 +38,8 @@ const props = defineProps({
     default: () => {}
   },
   dataLength: {
-    type: Number
+    type: Number,
+    default: 0
   },
   pageConfig: {
     type: Object,
@@ -53,6 +60,7 @@ function pageChange(pageNum: number, pageSize: number) {
     props.emits('server-paging', { ...props.pageConfig, position: props.position });
   }
   props.emits('page-change', pageNum, pageSize, props.position);
+  currentPage.value = pageNum;
 }
 
 // current page change
@@ -76,4 +84,30 @@ function prevClick(pageNum: number) {
 function nextClick(pageNum: number) {
   props.emits('page-next-click', pageNum, props.position);
 }
+
+const currentPage = ref(1);
+const oldPage = ref(1);
+const total = ref(props.dataLength);
+const pageSize = ref(props.pageConfig.pageSize);
+const maxPage = Math.ceil(total.value / pageSize.value);
+
+function changePage() {
+  const page = parseInt(currentPage.value, 10);
+  if (!Number.isNaN(page)) {
+    if (currentPage.value < 1) {
+      currentPage.value = 1;
+    } else if (currentPage.value > maxPage) {
+      currentPage.value = maxPage;
+    }
+    console.log(currentPage.value);
+    oldPage.value = currentPage.value;
+    changeCurrentPage(parseInt(currentPage.value, 10));
+  } else currentPage.value = oldPage.value;
+}
 </script>
+
+<style lang="less">
+.el-pagination__goto {
+  display: none;
+}
+</style>

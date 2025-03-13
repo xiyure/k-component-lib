@@ -11,7 +11,7 @@ export const DEFAULT_TREE_CONFIG = {
 };
 
 // 垂直方向滚动条配置
-export const DEFAULT_SCROLL_Y = { enabled: true }
+export const DEFAULT_SCROLL_Y = { enabled: true };
 
 // 默认分页配置
 export const DEFAULT_PAGES = [5, 10, 20, 50];
@@ -20,7 +20,7 @@ export const DEFAULT_PAGE_CONFIG = {
   currentPage: 1,
   pageSizes: DEFAULT_PAGES,
   pageSize: DEFAULT_PAGES[0],
-  layout: 'total, prev, pager, next, sizes',
+  layout: 'total, prev, jumper, next',
   size: 'sm',
   total: 0
 };

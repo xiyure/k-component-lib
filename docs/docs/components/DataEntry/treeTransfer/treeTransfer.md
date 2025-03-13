@@ -40,7 +40,7 @@ TreeTransfer组件可以通过以下属性进行自定义设置：expand-icon（
 
 ## 多列表格
 
-在设置`searchStrictly`后，配置`columns`属性可以开启多列表格功能。
+配置`columns`属性可以开启多列表格功能。
 
 <demo path="./multiColumnsTreeTransfer" />
 

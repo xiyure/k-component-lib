@@ -2,7 +2,6 @@
   <k-tree-transfer
     :data="treeTransferData"
     use-tree
-    search-strictly
     :columns="column"
     @change="handleChange"
   ></k-tree-transfer>

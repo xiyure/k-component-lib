@@ -4,7 +4,9 @@
     :class="['k-pagination', _styleModule]"
     v-bind="$attrs"
     :size="formatSize.elSize"
-  />
+  >
+    <slot />
+  </el-pagination>
 </template>
 
 <script setup lang="ts">

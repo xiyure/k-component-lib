@@ -4,7 +4,7 @@ title: Tabs 标签页
 
 # Tabs 标签页
 
-<leadInto name="KTabs" />
+<leadInto name="KTabs, KTabPane" />
 
 分隔内容上有关联但属于不同类别的数据集合。
 

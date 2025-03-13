@@ -1,6 +1,9 @@
 <template>
   <div :class="['k-tree-transfer', _styleModule]">
-    <div v-if="showSearchInput === true || showSearchInput === 'left'" class="k-transfer__filter !mb-3">
+    <div
+      v-if="showSearchInput === true || showSearchInput === 'left'"
+      class="k-transfer__filter !mb-3"
+    >
       <div class="flex justify-between items-center gap-2">
         <k-input
           ref="KTransferInputLeftRef"
@@ -40,7 +43,7 @@
             :row-config="{ keyField: rowKey }"
             :scroll-y="scrollY"
             :checkbox-config="{
-              checkRowKeys: defaultData,
+              checkRowKeys: modelValue ?? defaultData,
               trigger: 'cell',
               checkMethod
             }"
@@ -70,7 +73,11 @@
                         class="column-icon"
                         :color="columnIcon(row)?.color"
                       />
-                      <span v-if="item.field" class="tree-transfer__cell-label" :title="row[item.field]">
+                      <span
+                        v-if="item.field"
+                        class="tree-transfer__cell-label"
+                        :title="row[item.field]"
+                      >
                         {{ row[item.field] }}
                       </span>
                     </span>
@@ -90,7 +97,14 @@
           :data-length="leftDataLength"
           :page-config="paginationLeftConfig"
           :resetCheckboxStatus
-        />
+        >
+          <template #default="{ pageConfig }">
+            <k-input
+              v-model="currentPage"
+              @change="(number: number) => pageConfig.currentPage = number"
+            ></k-input>
+          </template>
+        </Pagination>
       </div>
       <div class="k-transfer-content k-transfer-content__right">
         <div class="k-transfer__list" :style="{ height: tableHeight + 'px' }">
@@ -113,7 +127,9 @@
                   >
                     <div v-if="!isCustomColumns" class="right-data-header">
                       <span class="right-data-title">{{ item.title ?? '' }}</span>
-                      <span class="clear-data" @click="clearCurrentData">{{ t?.('clearData') }}</span>
+                      <span class="clear-data" @click="clearCurrentData">
+                        {{ t?.('clearData') }}
+                      </span>
                     </div>
                     <template v-else>{{ item.title ?? '' }}</template>
                   </slot>
@@ -128,7 +144,12 @@
                           class="column-icon"
                         />
                         <span class="tree-transfer__cell-label" :title="row[props.label]">
-                          <slot name="right-label" :row="row" :column="column" :parent-data="parentData(row)">
+                          <slot
+                            name="right-label"
+                            :row="row"
+                            :column="column"
+                            :parent-data="parentData(row)"
+                          >
                             {{ row[props.label] }}
                           </slot>
                         </span>
@@ -138,7 +159,9 @@
                       <IconClose class="column-close" @click="removeSelectedData(row)" />
                     </div>
                   </div>
-                  <slot name="right-cell" :row="row" :column="column" v-else>{{ row[item.field ?? ''] }}</slot>
+                  <slot name="right-cell" :row="row" :column="column" v-else>
+                    {{ row[item.field ?? ''] }}
+                  </slot>
                 </template>
               </k-table-column>
             </template>
@@ -215,7 +238,9 @@ const KTransferInputRightRef = ref();
 const { treeConfig, scrollY } = useConfig(props);
 
 const rightData = computed(() => {
-  const targetRows = leftVisibleData.value.filter((row: Row) => checkedLeafData.value.has(row[props.rowKey]));
+  const targetRows = leftVisibleData.value.filter((row: Row) =>
+    checkedLeafData.value.has(row[props.rowKey])
+  );
   return sortFunc(targetRows, leftData.value, props.rowKey);
 });
 // 左右面板列配置
@@ -268,7 +293,7 @@ const useCheckboxConfig = computed(() => ({
   showPage: props.showPage === true || props.showPage === 'left',
   checkboxConfig: {
     checkAll: props.checkboxAll,
-    checkRowKeys: props.defaultData,
+    checkRowKeys: props.modelValue ?? props.defaultData,
     checkMethod: props.checkMethod
   },
   useTree: props.useTree,
@@ -285,14 +310,14 @@ const {
   dataLength: leftDataLength,
   isPaging: isPagingLeft,
   tableCacheData,
-  paginationConfig: paginationLeftConfig,
+  paginationConfig: paginationLeftConfig
 } = useData(tableL, leftPanelConfig, emits, leftColumns, leftData, query);
 
 const {
   showTableData: showRightTableData,
   dataLength: rightDataLength,
   isPaging: isPagingRight,
-  paginationConfig: paginationRightConfig,
+  paginationConfig: paginationRightConfig
 } = useData(tableR, rightPanelConfig, emits, rightColumns, rightData, rightQuery);
 
 const {
@@ -326,21 +351,22 @@ const columnIcon = computed(
 );
 const rowLevel = computed(() => (row: Row) => getTreeNodeLevel(row));
 const parentData = computed(
-  () => function (row: Row) {
-    let data = row;
-    while (data.pid) {
-      const parent = leftData.value.find((item) => item.id === data.pid);
-      if (parent) {
-        data = parent;
-      } else {
-        break;
+  () =>
+    function (row: Row) {
+      let data = row;
+      while (data.pid) {
+        const parent = leftData.value.find((item) => item.id === data.pid);
+        if (parent) {
+          data = parent;
+        } else {
+          break;
+        }
       }
-    }
-    const name = data.name;
-    const labelData = row[props.label];
+      const name = data.name;
+      const labelData = row[props.label];
 
-    return { data: labelData, name };
-  }
+      return { data: labelData, name };
+    }
 );
 
 watch(
@@ -350,25 +376,33 @@ watch(
   },
   { immediate: true }
 );
-watch(() => rightData.value, (newValue, oldValue = []) => {
-  const ids = newValue.map((item) => item[props.rowKey]);
-  const oldIds = oldValue.map((item) => item[props.rowKey]);
-  if (ids.join() === oldIds.join()) {
-    return;
-  }
-  emits('update:modelValue', ids);
-}, { immediate: true });
-watch(() => props.modelValue, async (newValue = []) => {
-  await nextTick();
-  resetCheckboxStatus();
-  const ids = rightData.value.map((item) => item[props.rowKey]);
-  if (newValue.join() === ids.join()) {
-    return;
-  }
-  const mlMap = new Set(newValue);
-  const targetRows = leftVisibleData.value.filter((row: Row) => mlMap.has(row[props.rowKey]));
-  init(targetRows);
-}, { immediate: true, deep: true });
+watch(
+  () => rightData.value,
+  (newValue, oldValue = []) => {
+    const ids = newValue.map((item) => item[props.rowKey]);
+    const oldIds = oldValue.map((item) => item[props.rowKey]);
+    if (ids.join() === oldIds.join()) {
+      return;
+    }
+    emits('update:modelValue', ids);
+  },
+  { immediate: true }
+);
+watch(
+  () => props.modelValue,
+  async (newValue = []) => {
+    await nextTick();
+    resetCheckboxStatus();
+    const ids = rightData.value.map((item) => item[props.rowKey]);
+    if (newValue.join() === ids.join()) {
+      return;
+    }
+    const mlMap = new Set(newValue && newValue.length > 0 ? newValue : ids);
+    const targetRows = leftVisibleData.value.filter((row: Row) => mlMap.has(row[props.rowKey]));
+    init(targetRows);
+  },
+  { immediate: true, deep: true }
+);
 
 function getTreeNodeLevel(row: Row): number {
   if (!props.useTree) {
@@ -464,6 +498,7 @@ function clearData(deep: boolean = false) {
   _checkboxMethods.setAllCheckboxRow(false);
 }
 
+const currentPage = ref(1);
 defineExpose({
   clearData,
   clearQuery,

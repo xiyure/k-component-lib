@@ -2,15 +2,29 @@
   "name": "TreeTransfer",
   "props": [
     {
+      "displayName": "v-model / modelValue",
+      "type": "TreeTransferData[]",
+      "description": "选中数据",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "rowKey",
+      "type": "string",
+      "description": "指定用来作为唯一标识的键名",
+      "defaultValue": "id",
+      "tip": ""
+    },
+    {
       "displayName": "data",
-      "type": "any[]",
+      "type": "TreeTransferData[]",
       "description": "绑定的数据",
       "defaultValue": "",
       "tip": ""
     },
     {
       "displayName": "default-data",
-      "type": "string[] | number[]",
+      "type": "string[]",
       "description": "默认选中数据",
       "defaultValue": "",
       "tip": ""
@@ -23,66 +37,10 @@
       "tip": "[string, string]"
     },
     {
-      "displayName": "show-search-input",
-      "type": "boolean",
-      "description": "是否显示搜索框",
-      "defaultValue": "true",
-      "tip": ""
-    },
-    {
       "displayName": "use-tree",
       "type": "boolean",
       "description": "是否使用树形结构",
       "defaultValue": "false",
-      "tip": ""
-    },
-    {
-      "displayName": "tree-config",
-      "type": "object",
-      "description": "树形结构配置",
-      "defaultValue": "",
-      "tip": "VxeTablePropTypes.TreeConfig"
-    },
-    {
-      "displayName": "scroll-y",
-      "type": "object",
-      "description": "滚动条配置",
-      "defaultValue": "",
-      "tip": "VxeTablePropTypes.ScrollY"
-    },
-    {
-      "displayName": "show-drag",
-      "type": "boolean",
-      "description": "是否启用拖拽排序",
-      "defaultValue": "false",
-      "tip": ""
-    },
-    {
-      "displayName": "show-page",
-      "type": "boolean",
-      "description": "是否显示分页",
-      "defaultValue": "false",
-      "tip": ""
-    },
-    {
-      "displayName": "search-strictly",
-      "type": "boolean",
-      "description": "是否使用多搜索框模式",
-      "defaultValue": "false",
-      "tip": ""
-    },
-    {
-      "displayName": "icon",
-      "type": "string | component",
-      "description": "叶子节点图标",
-      "defaultValue": "false",
-      "tip": ""
-    },
-    {
-      "displayName": "icon-color",
-      "type": "string",
-      "description": "叶子节点icon颜色",
-      "defaultValue": "",
       "tip": ""
     },
     {
@@ -107,23 +65,107 @@
       "tip": ""
     },
     {
-      "displayName": "table-height",
-      "type": "number",
-      "description": "表格内容高度",
+      "displayName": "collapse-icon-color",
+      "type": "string | Component",
+      "description": "收起icon颜色",
       "defaultValue": "",
       "tip": ""
+    },
+    {
+      "displayName": "icon",
+      "type": "string | component",
+      "description": "叶子节点图标",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "icon-color",
+      "type": "string",
+      "description": "叶子节点icon颜色",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "tree-config",
+      "type": "object",
+      "description": "树形结构配置",
+      "defaultValue": "",
+      "tip": "VxeTablePropTypes.TreeConfig"
+    },
+    {
+      "displayName": "label",
+      "type": "string",
+      "description": "显示字段",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "scroll-y",
+      "type": "object",
+      "description": "滚动条配置",
+      "defaultValue": "",
+      "tip": "VxeTablePropTypes.ScrollY"
+    },
+    {
+      "displayName": "show-drag",
+      "type": "boolean",
+      "description": "是否启用拖拽排序",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "show-search-input",
+      "type": "boolean | 'left'",
+      "description": "显示对应位置搜索框(true时左右都显示)",
+      "defaultValue": "left",
+      "tip": ""
+    },
+    {
+      "displayName": "search-config",
+      "type": "object",
+      "description": "左侧搜索框配置",
+      "defaultValue": "",
+      "tip": "SearchConfig"
+    },
+    {
+      "displayName": "right-search-config",
+      "type": "object",
+      "description": "右侧搜索配置",
+      "defaultValue": "",
+      "tip": "SearchConfig"
+    },
+    {
+      "displayName": "show-page",
+      "type": "enum",
+      "description": "是否显示分页",
+      "defaultValue": "false",
+      "tip": "boolean | 'left' | 'right'"
+    },
+    {
+      "displayName": "left-pagination-config",
+      "type": "object",
+      "description": "左侧分页配置",
+      "defaultValue": "",
+      "tip": "TablePaginationConfig"
+    },
+    {
+      "displayName": "right-pagination-config",
+      "type": "object",
+      "description": "右侧分页配置，不存在时默认使用左侧分页配置",
+      "defaultValue": "",
+      "tip": "TablePaginationConfig"
     },
     {
       "displayName": "columns",
       "type": "Column[]",
-      "description": "启用searchStrictly时可进行表格列配置",
+      "description": "进行表格列配置",
       "defaultValue": "",
       "tip": ""
     },
     {
-      "displayName": "collapse-icon-color",
-      "type": "string | Component",
-      "description": "收起icon颜色",
+      "displayName": "table-height",
+      "type": "number",
+      "description": "表格内容高度",
       "defaultValue": "",
       "tip": ""
     },
@@ -135,30 +177,9 @@
       "tip": "(data: any) => boolean"
     },
     {
-      "displayName": "search-method",
-      "type": "Function",
-      "description": "自定义搜索方法",
-      "defaultValue": "",
-      "tip": "(keyword: string, data: any[]) => Promise<any[]>"
-    },
-    {
-      "displayName": "search-right-method",
-      "type": "Function",
-      "description": "自定义右侧搜索方法",
-      "defaultValue": "",
-      "tip": "(keyword: string, data: any[]) => Promise<any[]>"
-    },
-    {
-      "displayName": "pagination-left-config",
-      "type": "PaginationConfig",
-      "description": "左侧分页配置",
-      "defaultValue": "",
-      "tip": ""
-    },
-    {
-      "displayName": "pagination-right-config",
-      "type": "PaginationConfig",
-      "description": "右侧分页配置，不存在时默认使用左侧分页配置",
+      "displayName": "checkboxAll",
+      "type": "boolean",
+      "description": "是否全部选中",
       "defaultValue": "",
       "tip": ""
     }
@@ -171,13 +192,60 @@
       "tip": "(data: any[]) => void"
     },
     {
-      "displayName": "sort",
+      "displayName": "drag",
       "description": "拖拽排序时触发",
       "type": "Function",
       "tip": "(data: any[]) => void"
+    },
+    {
+      "displayName": "remote-query",
+      "description": "远程搜索时触发",
+      "type": "Function",
+      "tip": "(data: string) => void"
+    },
+    {
+      "displayName": "server-paging",
+      "description": "服务端分页时触发",
+      "type": "Function",
+      "tip": "(data: object) => void"
+    },
+    {
+      "displayName": "page-current-change",
+      "description": "分页当前页变化时触发",
+      "type": "Function",
+      "tip": "(pageNum: pageNum, position: 'left' | 'right') => void"
+    },
+    {
+      "displayName": "page-size-change",
+      "description": "分页每页条数变化时触发",
+      "type": "Function",
+      "tip": "(pageNum: pageNum, position: 'left' | 'right') => void"
+    },
+    {
+      "displayName": "page-change",
+      "description": "分页每页条数变化时触发",
+      "type": "Function",
+      "tip": "(pageNum: pageNum, pageSize: number, position: 'left' | 'right') => void"
+    },
+    {
+      "displayName": "page-prev-click",
+      "description": "分页每页条数变化时触发",
+      "type": "Function",
+      "tip": "(pageNum: pageNum, position: 'left' | 'right') => void"
+    },
+    {
+      "displayName": "page-next-click",
+      "description": "分页每页条数变化时触发",
+      "type": "Function",
+      "tip": "(pageNum: pageNum, position: 'left' | 'right') => void"
     }
   ],
   "slots": [
+    {
+      "displayName": "left-cell",
+      "description": "自定义左侧单元格内容",
+      "parameters": ""
+    },
     {
       "displayName": "right-cell",
       "description": "自定义右侧单元格内容",
@@ -230,6 +298,30 @@
       "description": "获取搜索框内容",
       "type": "Function",
       "tip": "() => string"
+    },
+    {
+      "displayName": "setAllCheckboxRow",
+      "description": "设置所有行的选中状态",
+      "type": "Function",
+      "tip": "(checked: boolean) => void"
+    },
+    {
+      "displayName": "clearCheckboxRow",
+      "description": "设置所有行的清除复选框选中行选中状态",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "clearCheckboxReserve",
+      "description": "清除复选框缓存状态",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "getCheckboxRecords",
+      "description": "获取选中的数据",
+      "type": "Function",
+      "tip": "(isFullData: boolean) => void"
     }
   ]
 }

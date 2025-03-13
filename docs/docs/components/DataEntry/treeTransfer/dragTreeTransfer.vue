@@ -2,6 +2,7 @@
   <k-tree-transfer
     :data="treeTransferData"
     :show-drag="true"
+    :default-data="[10000, 10050]"
     use-tree
     label="name"
     expand-icon-color="#f60"

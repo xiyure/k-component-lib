@@ -218,5 +218,5 @@ export function useData(
     isPaging,
     tableCacheData,
     paginationConfig
-  }
+  };
 }
