@@ -43,7 +43,7 @@
             :row-config="{ keyField: rowKey }"
             :scroll-y="scrollY"
             :checkbox-config="{
-              checkRowKeys: modelValue ?? defaultData,
+              checkRowKeys: defaultData,
               trigger: 'cell',
               checkMethod
             }"
@@ -293,7 +293,7 @@ const useCheckboxConfig = computed(() => ({
   showPage: props.showPage === true || props.showPage === 'left',
   checkboxConfig: {
     checkAll: props.checkboxAll,
-    checkRowKeys: props.modelValue ?? props.defaultData,
+    checkRowKeys: props.defaultData,
     checkMethod: props.checkMethod
   },
   useTree: props.useTree,
@@ -390,14 +390,17 @@ watch(
 );
 watch(
   () => props.modelValue,
-  async (newValue = []) => {
+  async (newValue) => {
+    if (!Array.isArray(newValue)) {
+      return;
+    }
     await nextTick();
     resetCheckboxStatus();
     const ids = rightData.value.map((item) => item[props.rowKey]);
     if (newValue.join() === ids.join()) {
       return;
     }
-    const mlMap = new Set(newValue && newValue.length > 0 ? newValue : ids);
+    const mlMap = new Set(newValue);
     const targetRows = leftVisibleData.value.filter((row: Row) => mlMap.has(row[props.rowKey]));
     init(targetRows);
   },
