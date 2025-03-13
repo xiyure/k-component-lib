@@ -15,7 +15,10 @@ export enum ShapeFlags {
   COMPONENT = ShapeFlags.STATEFUL_COMPONENT | ShapeFlags.FUNCTIONAL_COMPONENT,
 }
 
-export function getElement<T extends Element>(selector: string, parent: Element | Document = document): T | null {
+export function getElement<T extends Element>(selector: string, parent: Element | Document = document, all: boolean = false): T | T[] | null {
+  if (all) {
+    return Array.from(parent.querySelectorAll(selector));
+  }
   return parent.querySelector(selector) as T | null;
 }
 // 判断是否是组件实例

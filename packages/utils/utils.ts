@@ -378,3 +378,9 @@ export function sortFunc(targetData: any[], sortData: any, key: string | number)
   );
 }
 
+// rem => rem
+export function convertPxToRem(value: number) {
+  const htmlFontSize = window.getComputedStyle(document.documentElement).fontSize;
+  return value * parseFloat(htmlFontSize);
+}
+
