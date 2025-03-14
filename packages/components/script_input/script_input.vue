@@ -6,7 +6,6 @@
       :visible="popperVisible"
       :popper-class="`k-script-input-popper ${dynamicClassName}`"
       class="overflow-hidden"
-      @show="onShowPopper"
       @hide="onHidePopper"
     >
       <template #reference>
@@ -40,7 +39,8 @@
                   {
                     'k-script-input-placeholder': true,
                     'hidden-result ': showMessage === true,
-                    'is-disabled': disabled
+                    'is-disabled': disabled,
+                    'k-script-tag--closable': tagClosable
                   }
                 ]"
                 :style="{
@@ -110,7 +110,7 @@
             height="320px"
             :use-tree="useTree"
             :column="columns"
-            :data="options"
+            :data="tableData"
             :show-search-input="showTreeSearch"
             :show-filter="false"
             :show-header="false"
@@ -120,6 +120,7 @@
             :show-description="false"
             :show-refresh="false"
             :row-config="{
+              keyField: '__kid__',
               isCurrent: true,
               currentMethod: ({ row }) => {
                 return row.optional !== false;
@@ -178,7 +179,8 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   checkContentType: false,
   contentType: 'string',
   optionRepeatable: true,
-  placeholder: ''
+  placeholder: '',
+  tagClosable: false
 });
 
 const DEFAULT_TREE_CONFIG = {
@@ -200,13 +202,13 @@ const emits = defineEmits([
 
 onMounted(() => {
   document.addEventListener('keydown', toggleSelect);
-  document.addEventListener('click', hidePopperByClick);
+  document.addEventListener('click', handlePageClick);
   window.addEventListener('resize', handleResize);
   handleResize();
 });
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', toggleSelect);
-  document.removeEventListener('click', hidePopperByClick);
+  document.removeEventListener('click', handlePageClick);
   window.removeEventListener('resize', handleResize);
 });
 
@@ -224,7 +226,7 @@ const $tree = ref();
 const _isStringMode = ref(props.defaultMode !== 'expression');
 let cacheRes = '';
 const curInput = ref('');
-const selectedIndex = ref<number>(0);
+const selectedIndex = ref<number>(-1);
 let isManual = false;
 const popperVisible = ref(false);
 const allowInput = ref(true);
@@ -291,6 +293,15 @@ const onlyOneInputMode = computed(() => {
   }
   return modeMap;
 });
+
+const tableData = computed(() => {
+  return props.options.map((item: RowData) => {
+    return {
+      ...item,
+      __kid__: item[getAttrProps().value]
+    }
+  });
+})
 
 watch(
   () => props.height,
@@ -497,7 +508,6 @@ async function handleInputContent(data: Row | RowData) {
   } else {
     handleManualInput(content);
   }
-  1;
   return key;
 }
 function handleManualInput(content: string) {
@@ -592,7 +602,12 @@ function parseInputValue() {
     }
   };
   domToText(KScriptInputWrapper.value);
+  // 处理网页空格
   text = text.replace(/\u00A0/g, ' ');
+  // 处理尾随换行符
+  if (text.length && text[text.length - 1].charCodeAt(0) === 10) {
+    text = text.slice(0, -1);
+  }
   emits('input', text);
   return {
     result: text,
@@ -632,7 +647,7 @@ function parseModelValue(value: string) {
 function generateScriptTag(content: string, key: string, isError: boolean = false) {
   return `<div class="k-script-tag ${
     isError ? 'is-error' : ''
-  }" data-key="${key}" data-value="${content}" contenteditable="false">${content}</div>`;
+  }" data-key="${key}" data-value="${content}" contenteditable="false">${content}<button class="k-script-tag-x-mark">×</button></div>`;
 }
 function toggleSelect(event: KeyboardEvent) {
   if (!allowShowTree.value || !popperVisible.value) {
@@ -665,7 +680,7 @@ function toggleSelect(event: KeyboardEvent) {
   if (row) {
     $tree.value.setCurrentRow(row);
   }
-  if (event.code === 'Enter' && popperVisible.value && document.activeElement !== headerElement) {
+  if (event.code === 'Enter' && popperVisible.value && document.activeElement !== headerElement && selectedIndex.value >= 0) {
     event.preventDefault();
     if (props.useTree && row && row.children?.length && !row.optional) {
       $tree.value?.toggleTreeExpand(row);
@@ -744,15 +759,8 @@ function getRange(key: string) {
   getNodeInfo(KScriptInputWrapper.value);
   return range as { node: Node; offset: number };
 }
-function onShowPopper() {
-  const value = flattedOptions.value?.[0]?.[getAttrProps().value];
-  const row = $tree.value?.getRowById(value);
-  if (row) {
-    $tree.value.setCurrentRow(row);
-  }
-}
 function onHidePopper() {
-  selectedIndex.value = 0;
+  selectedIndex.value = -1;
   $tree.value?.setCurrentRow(null);
   $tree.value?.clearTreeExpand();
   showTreeSearch.value = false;
@@ -792,12 +800,27 @@ function hidePopper() {
   popperVisible.value = false;
   onHidePopper();
 }
+function handlePageClick(e: MouseEvent) {
+  hidePopperByClick(e);
+  removeTag(e);
+}
 function hidePopperByClick(event: MouseEvent) {
   const popperElem = getElement(`.${dynamicClassName}`);
   if (!isManual || popperElem?.contains?.(event.target as Node)) {
     return;
   }
   hidePopper();
+}
+function removeTag(event: MouseEvent) {
+  const target = event.target as HTMLElement;
+  if (!target?.classList?.contains?.('k-script-tag-x-mark')) {
+    return;
+  }
+  const tag = target.parentNode;
+  if (tag) {
+    tag.parentNode?.removeChild(tag);
+  }
+  emits('change', parseInputValue());
 }
 function clearCurrentInput() {
   curInput.value = '';

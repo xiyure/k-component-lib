@@ -122,6 +122,23 @@
         background-color: var(--k-gray-50);
         cursor: not-allowed;
       }
+      .k-script-tag-x-mark {
+        display: none;
+        margin-left: 3px;
+        cursor: pointer;
+
+        &:hover {
+          color: var(--k-blue-400);
+        }
+        &:active {
+          color: var(--k-blue-600);
+        }
+      }
+    }
+    .k-script-input-wrapper.k-script-tag--closable {
+      .k-script-tag-x-mark {
+        display: unset;
+      }
     }
   }
   .k-script-input-check-result {

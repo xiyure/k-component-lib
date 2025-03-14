@@ -37,6 +37,7 @@ export interface ScriptInputProps {
   maxHeight?: string;
   max?: number;
   min?: number;
+  tagClosable?: boolean;
 }
 
 export type ScriptOptions = {

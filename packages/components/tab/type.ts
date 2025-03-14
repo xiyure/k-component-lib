@@ -4,7 +4,6 @@ export interface TabsProps {
   editable?: boolean;
   addable?: boolean;
   maxWidth?: string;
-  type?: '' | 'card' | 'folder';
 }
 
 export interface TabData {
