@@ -1,7 +1,7 @@
 <template>
   <k-tree-transfer
     :data="treeTransferData"
-    search-strictly
+    :show-search-input="true"
     label="name"
   ></k-tree-transfer>
 </template>

@@ -3,9 +3,9 @@
   "props": [
     {
       "displayName": "treeTransferData",
-      "type": "array",
-      "description": "页面图标",
-      "defaultValue": "null"
+      "type": "TreeTransferData[]",
+      "description": "树形穿梭框绑定数据",
+      "defaultValue": "() => []"
     },
     {
       "displayName": "title",
