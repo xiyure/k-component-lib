@@ -7,10 +7,6 @@
     :tab-position="tabPosition"
     :editable="editable"
     :addable="addable"
-    @tab-click="() => {
-      getHideTabs();
-      emits('tab-click', activeName);
-    }"
   >
     <div
       v-if="hideTabIndex.length"
@@ -18,7 +14,7 @@
       :class="`tab-${tabPosition}-layout`"
       :style="{
         right:
-          (editable || addable) && (tabPosition === 'top' || tabPosition === 'bottom') ? '2rem' : 0,
+          (editable || addable) && (tabPosition === 'top' || tabPosition === 'bottom') ? '2rem' : 0
       }"
     >
       <TabDropdownMenu :tab-index-list="hideTabIndex" :tab-slots="$slots" @command="jumpToTab">
@@ -39,7 +35,7 @@ import { ref, watch, nextTick, onMounted, onUnmounted, inject } from 'vue';
 import { ElTabs } from 'element-plus';
 import { IconMore } from 'ksw-vue-icon';
 import TabDropdownMenu from './tab_dropdown_menu';
-import { convertPxToRem, getElement,  getExposeProxy } from '../../utils';
+import { getElement, getElementAll, getExposeProxy } from '../../utils';
 import { TabsProps, TabData } from './type';
 
 defineOptions({
@@ -54,23 +50,22 @@ const props = withDefaults(defineProps<TabsProps>(), {
   maxWidth: undefined
 });
 
-const emits = defineEmits(['update:modelValue', 'tab-click']);
+const emits = defineEmits(['update:modelValue']);
 
 const _styleModule = inject('_styleModule', '');
 const activeName = ref<string | undefined>(undefined);
 const KTabsRef = ref();
 
 const hideTabIndex = ref<number[]>([]);
-let preTranslate = 0;
 
 // 可视区域发生变化时，下拉列表也随之更新
 onMounted(() => {
   window.addEventListener('resize', getHideTabs);
-  window.addEventListener('wheel', handleScroll);
+  window.addEventListener('wheel', handleWheel);
 });
 onUnmounted(() => {
   window.removeEventListener('resize', getHideTabs);
-  window.removeEventListener('wheel', handleScroll);
+  window.removeEventListener('wheel', handleWheel);
 });
 
 nextTick(() => {
@@ -100,111 +95,117 @@ watch(
   { immediate: true }
 );
 
-watch(() => activeName.value, (newVal) => {
-  if (props.modelValue !== undefined && props.modelValue !== newVal) {
-    scrollToActiveTab();
-    emits('update:modelValue', newVal);
+watch(
+  () => activeName.value,
+  (newVal) => {
+    if (props.modelValue !== undefined && props.modelValue !== newVal) {
+      emits('update:modelValue', newVal);
+      scrollToActiveTab();
+    }
   }
-});
+);
 
-function handleScroll(evt: WheelEvent) {
-  const translateElem = getElement('.el-tabs__nav', KTabsRef.value?.$el) as HTMLElement;
-  if (!translateElem || !KTabsRef.value?.$el?.contains(evt.target as Node)) {
+function handleWheel(evt: WheelEvent) {
+  const translateElem = getElement<HTMLElement>('.el-tabs__nav', KTabsRef.value?.$el);
+  const parentElement = translateElem?.parentElement;
+  if (!translateElem || !parentElement || !translateElem?.contains(evt.target as Node)) {
     return;
   }
   const disY = evt.deltaY;
-  const { width: tabsWidth, height: tabsHeight } = KTabsRef.value?.$el?.getBoundingClientRect() ?? {};
-  const { width, height } = translateElem?.getBoundingClientRect() ?? {};
-  const maxScale = isHorizontal() ? width - (tabsWidth ?? 0) : height - (tabsHeight ?? 0);
-  const translateReg = isHorizontal() ? /translateX\(([^)]+)px\)/ : /translateY\(([^)]+)px\)/;
-  const translate = translateElem?.style.transform?.match(translateReg)?.[1] ?? 0;
-  let translateDis = Number(translate) - disY;
-  const scale = getRestScale();
-  if (-translateDis < 0) {
+  const translate = getNavTranslate(translateElem);
+  let translateDis = translate - disY;
+  const { maxTranslate } = getNavElementInfo(translateElem, parentElement);
+  if (translateDis > 0) {
     translateDis = 0;
-  } else if (maxScale && -translateDis > maxScale + scale) {
-    translateDis = -maxScale - scale;
+  } else if (translateDis < maxTranslate) {
+    translateDis = maxTranslate;
   }
-  translateElem.style.transform = `translate${isHorizontal() ? 'X' : 'Y'}(${translateDis}px)`;
+  translateElem.style.transform = getTransformValue(translateDis);
   getHideTabs();
 }
-
-function isElementInContainerView(el: HTMLElement | Element, translate: number = 0) {
-  if (!KTabsRef.value?.$el || !el) {
+// 判断tab是否在可视区域
+function isElementInContainerView(el: HTMLElement | Element) {
+  if (!el) {
     return;
   }
   const elRect = el.getBoundingClientRect();
-  const containerRect = KTabsRef.value?.$el.getBoundingClientRect();
-  const diff = translate - preTranslate;
-  const scale = getRestScale();
-  if (props.tabPosition === 'top' || props.tabPosition === 'bottom') {
-    return (
-      elRect.left + diff >= containerRect.left &&
-      elRect.right + diff <= containerRect.right - (scale ?? 0)
-    );
+  const container = el.parentElement?.parentElement;
+  if (!container) {
+    return;
   }
-  return (
-    elRect.top + diff >= containerRect.top &&
-    elRect.bottom + diff <= containerRect.bottom - (scale ?? 0)
-  );
+  const containerRect = container.getBoundingClientRect();
+  if (props.tabPosition === 'top' || props.tabPosition === 'bottom') {
+    return elRect.left >= 0 && elRect.right <= containerRect.width;
+  }
+  return elRect.top >= 0 && elRect.bottom <= containerRect.height;
 }
+// 下拉列表选择tab时，滚动到可视区域
 function jumpToTab(item: TabData) {
   const name = item.name ?? '';
   activeName.value = name;
-  getHideTabs();
 }
 function getHideTabs() {
   setTimeout(() => {
-    const translateElem = getElement('.el-tabs__nav', KTabsRef.value?.$el) as HTMLElement;
-    const regex = /\(([^)]+)\)/g;
-    // 获取tab栏偏移量
-    const matches = translateElem?.style.transform?.match(regex);
-    if (!matches) {
+    const res: number[] = [];
+    const tabPaneDoms = getElementAll('.el-tabs__item', KTabsRef.value?.$el);
+    for (let _i = 0; _i < tabPaneDoms.length; _i++) {
+      if (!isElementInContainerView(tabPaneDoms[_i])) {
+        res.push(_i);
+      }
+    }
+    hideTabIndex.value = res;
+  }, 200);
+}
+// 滚动到当前激活的tab
+function scrollToActiveTab() {
+  setTimeout(() => {
+    const translateElem = getElement<HTMLElement>('.el-tabs__nav', KTabsRef.value?.$el);
+    const activeTab = KTabsRef.value.$el?.querySelector?.('.is-active');
+    const parentElement = translateElem?.parentElement;
+    if (!activeTab || !translateElem || !parentElement) {
       return;
     }
-    const [translate] = matches.map((m) => parseFloat(m.slice(1, -1)));
-
-    const res: number[] = [];
-    const tabPaneDoms = getElement('.el-tabs__item', KTabsRef.value?.$el, true) ?? [];
-    (tabPaneDoms as any[]).forEach((item: HTMLElement, index: number) => {
-      if (!isElementInContainerView(item, translate)) {
-        res.push(index);
-      }
-    });
-    preTranslate = translate;
-    hideTabIndex.value = res;
-  });
+    const translate = getNavTranslate(translateElem);
+    if (isElementInContainerView(activeTab)) {
+      return;
+    }
+    const elRect = activeTab.getBoundingClientRect();
+    const { parentRect, maxTranslate } = getNavElementInfo(translateElem, parentElement);
+    let newTranslate = translate - (isHorizontal() ? (elRect.right - parentRect.width) : (elRect.bottom - parentRect.height));
+    if (newTranslate > 0) {
+      newTranslate = 0;
+    } else if (newTranslate < maxTranslate) {
+      newTranslate = maxTranslate;
+    }
+    translateElem.style.transform = getTransformValue(newTranslate);
+    getHideTabs();
+  }, 200);
 }
-
-function getRestScale() {
-  const addTabElem = getElement<HTMLElement>('.el-tabs__new-tab', KTabsRef.value?.$el) as HTMLElement;
-  const { width = 0, height = 0 } = addTabElem?.getBoundingClientRect() ?? {};
-  let scale = 0;
-  if (!isHorizontal()) {
-    scale += height;
-  } else {
-    scale += width;
+// 获取transform样式值
+function getTransformValue(translate: number) {
+  return `translate${isHorizontal() ? 'X' : 'Y'}(${translate}px)`;
+}
+// 获取tab栏偏移量
+function getNavTranslate(el: HTMLElement) {
+  const translateReg = isHorizontal() ? /translateX\(([^)]+)px\)/ : /translateY\(([^)]+)px\)/;
+  return Number(el?.style.transform?.match(translateReg)?.[1] ?? 0);
+}
+function getNavElementInfo(el: HTMLElement, parentEl: HTMLElement) {
+  const parentRect = parentEl.getBoundingClientRect();
+  const translateRect = el.getBoundingClientRect();
+  const maxTranslate = isHorizontal()
+    ? parentRect?.width - translateRect.width
+    : parentRect?.height - translateRect.height;
+  return {
+    maxTranslate,
+    parentRect,
+    translateRect
   }
-  // 下拉开关的width、height、left、right等属性都是基于rem设置的，因此需要转换成px
-  scale += convertPxToRem(2);
-  return scale;
 }
-
+// 判断tab栏是否水平排列
 function isHorizontal() {
   return props.tabPosition === 'top' || props.tabPosition === 'bottom';
 }
-
-async function scrollToActiveTab() {
-  await nextTick();
-  const activeTab = KTabsRef.value?.$el?.querySelector('.is-active');
-  const translateElem = getElement('.el-tabs__nav', KTabsRef.value?.$el) as HTMLElement;
-  if (!translateElem || !activeTab) {
-    return;
-  }
-  const { left } = activeTab.getBoundingClientRect();
-  translateElem.style.transform = `translate${isHorizontal() ? 'X' : 'Y'}(${left}px)`;
-}
-
 
 const instance: any = {};
 defineExpose(getExposeProxy(instance, KTabsRef));
