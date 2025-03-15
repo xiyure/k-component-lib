@@ -99,6 +99,18 @@ Vue.use(KswIcon, { projectName: "Guangfa" });
 }
 ```
 
+## 彩色图标暗黑模式
+
+当我们需要在在暗黑模式下修改彩色图标的颜色可以使用 `css` 的 `filter` 属性来实现
+
+```css
+.ksw-icon {
+  .dark & :deep(svg path) {
+      filter: hue-rotate(170deg) invert(100%) contrast(150%) saturate(200%);
+    }
+}
+```
+
 ## 代码演示
 
 ### 基本用法
