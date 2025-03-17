@@ -5,6 +5,8 @@
     :class="['k-tabs', _styleModule]"
     v-bind="$attrs"
     :tab-position="tabPosition"
+    :editable="editable"
+    :addable="addable"
     @edit="(paneName: string | number | undefined, action: 'add' | 'remove') => {
       emits('edit', paneName, action);
       getHideTabs();
@@ -16,7 +18,7 @@
       :class="`tab-${tabPosition}-layout`"
       :style="{
         right:
-          ($attrs.editable || $attrs.addable) && (tabPosition === 'top' || tabPosition === 'bottom') ? '2rem' : 0
+          (editable || addable) && (tabPosition === 'top' || tabPosition === 'bottom') ? '2rem' : 0
       }"
     >
       <TabDropdownMenu :tab-index-list="hideTabIndex" :tab-slots="$slots" @command="jumpToTab">
