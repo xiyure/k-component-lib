@@ -1,0 +1,20 @@
+{
+  "name": "IconPopover",
+  "props": [],
+  "events": [
+    {
+      "displayName": "updateIcon",
+      "description": "点击弹出框中的图标时触发",
+      "type": "Function",
+      "tip": "(string) => void"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "default",
+      "description": "自定义默认内容",
+      "parameters": ""
+    }
+  ],
+  "methods": []
+}

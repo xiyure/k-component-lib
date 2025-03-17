@@ -6,11 +6,11 @@ export interface PageDetailsProps {
   pageDescription?: string,
   abstract?: PageAbstract[],
   showLine?: boolean,
-  direction?: string,
+  direction?: 'horizontal' |'vertical' | undefined,
   useflex?: boolean,
 }
 
-type PageAbstract = {
+export type PageAbstract = {
   label: string,
   value: string,
   render: () => JSX.Element,

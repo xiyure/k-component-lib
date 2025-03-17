@@ -17,7 +17,7 @@
       :title="asideTitle"
       :info="asideInfo"
       :refresh="asideRefresh"
-      @refresh="emitEvent('refresh')"
+      @refresh="emits('refresh')"
     >
       <template #head>
         <slot name="aside-toolbar"></slot>
@@ -87,7 +87,6 @@ const icon = isImgUrl.test(props.pageIcon) ?
   () => <img src={props.pageIcon} alt='icon' class='KPageHead-icon' /> :
   props.pageIcon;
 
-// 自定义事件
-const emitEvent = defineEmits(['refresh']);
+const emits = defineEmits(['refresh']);
 </script>
 <style scoped></style>

@@ -1,6 +1,6 @@
-import MarkdownIt from 'markdown-it'
-import Renderer from 'markdown-it/lib/renderer'
-import Token from 'markdown-it/lib/token'
+import MarkdownIt, { Options } from 'markdown-it'
+import Renderer from 'markdown-it/lib/renderer.mjs'
+import Token from 'markdown-it/lib/token.mjs'
 import { isCheckPreviewCom1, isCheckPreviewCom2 } from './utils'
 import { transformPreview } from './componentPreview'
 import { containerDirectiveMount, parseContainer, parseContainerTag } from './containerPreview'
@@ -10,7 +10,7 @@ export const componentPreview = (md: MarkdownIt) => {
   md.renderer.rules.html_inline = (
     tokens: Token[],
     idx: number,
-    options: MarkdownIt.Options,
+    options: Options,
     env: any,
     self: Renderer
   ) => {

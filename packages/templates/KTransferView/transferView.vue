@@ -74,6 +74,7 @@
 
 <script setup lang="tsx">
 import { ref, reactive, watch } from 'vue';
+import { KButton, KForm, KFormItem, KRadioGroup, KRadio, KPopconfirm, KTreeTransfer } from '../../components';
 import { KMTransferView, KTransferViewInterface } from './type';
 
 defineOptions({

@@ -2,6 +2,7 @@ import { UploadFile } from 'element-plus';
 import { Component } from 'vue';
 
 export interface UploadProps {
+  action: string
   drag?: boolean
   autoUpload?: boolean
   disabled?: boolean

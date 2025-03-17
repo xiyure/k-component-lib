@@ -10,11 +10,11 @@
     :limit="3"
     :on-exceed="handleExceed"
   >
-    <k-button type="primary" main>Click to upload</k-button>
+    <template #trigger>
+      <k-button type="primary" main>Click to upload</k-button>
+    </template>
     <template #tip>
-      <div class="k-upload__tip">
-        jpg/png files with a size less than 500KB.
-      </div>
+      <div class="k-upload__tip">jpg/png files with a size less than 500KB.</div>
     </template>
   </k-upload>
 </template>
@@ -51,9 +51,7 @@ const handleExceed: UploadProps['onExceed'] = (files, uploadFiles) => {
   );
 };
 
-const beforeRemove: UploadProps['beforeRemove'] = (uploadFile, uploadFiles) => ElMessageBox.confirm(
-    `Cancel the transfer of ${uploadFile.name} ?`
-).then(
+const beforeRemove: UploadProps['beforeRemove'] = (uploadFile, uploadFiles) => ElMessageBox.confirm(`Cancel the transfer of ${uploadFile.name} ?`).then(
   () => true,
   () => false
 );

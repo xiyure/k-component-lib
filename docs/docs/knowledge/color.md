@@ -29,3 +29,14 @@ app.use(KswUx, { styleModule: 'GFAOM' }); // 传入项目名称
 ```
 
 - 变量命名格式为 --k-theme-{颜色}-{色阶}, 例如 --k-theme-primary-500 表示主题色的 500 色阶。
+
+## 调色板
+
+ksw-ux 包含丰富、漂亮的开箱即用调色板，由专业设计师精心制作，适用于各种不同的设计风格。
+
+<mainColor />
+
+<script setup>
+import mainColor from './mainColor.vue';
+
+</script>

@@ -2,7 +2,7 @@
   <div ref="filterForm" class="filterForm is-expand">
     <k-form
       ref="KFormRef"
-      class="filtr-items w-full relative grid grid-cols-1 2xs:grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 base:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
+      class="filter-items w-full relative grid grid-cols-1 2xs:grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 base:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
       :model="formData"
       :size="size"
       :class="['k-form', _styleModule]"
@@ -12,8 +12,10 @@
         <k-form-item
           v-if="compVisible(item)"
           :key="item.prop"
-          v-bind="item"
-          :style="`grid-column: span ${item.column === undefined ? 1 : item.column < maxColumn ? item.column : maxColumn}`"
+          v-bind="item"  
+          :style="`grid-column: span ${
+            item.column === undefined ? 1 : item.column < maxColumn ? item.column : maxColumn
+          }`"
           class="grid-auto-rows:max-content;"
         >
           <slot :name="item.prop" :form-data="formData">
@@ -27,7 +29,7 @@
               v-model="formData[item.prop]"
               v-bind="item.attrs"
               :size="compSize(item.attrs)"
-              :placeholder="item.attrs?.placeholder ?? $t('pleaseSelect')"
+              :placeholder="item.attrs?.placeholder ?? t?.('pleaseSelect')"
             >
               <k-option v-for="option in item.options" v-bind="option" :key="option"></k-option>
             </k-select>
@@ -79,7 +81,7 @@
                 v-if="compVisible(item)"
                 v-model="formData[item.prop]"
                 v-bind="item.attrs"
-                :placeholder="item.attrs?.placeholder ?? $t('pleaseInput')"
+                :placeholder="item.attrs?.placeholder ?? t?.('pleaseInput')"
                 :size="compSize(item.attrs)"
               ></k-input>
             </template>
@@ -91,17 +93,17 @@
         class="markers flex w-full h-8 is-expand"
         :style="`grid-column: ${maxColumn} / ${maxColumn + 1}; `"
       ></div>
-      <div ref="filterBtn" class="filtr-btns flex bg-white">
+      <div ref="filterBtn" class="filter-btns flex bg-white">
         <slot name="action">
-          <k-button :size="compSize()" @click="reset">{{ $t('reset') }}</k-button>
-          <k-button :size="compSize()" main @click="search">{{ $t('query') }}</k-button>
+          <k-button :size="compSize()" @click="reset">{{ t?.('reset') }}</k-button>
+          <k-button :size="compSize()" main @click="search">{{ t?.('query') }}</k-button>
           <KButton
             v-show="rowMax > 1"
             text
             :icon-right="isCollapse ? 'IconArrowBottom' : 'IconArrowTop'"
             @click="toggle"
           >
-            {{ isCollapse ? $t('expand') : $t('collapse') }}
+            {{ isCollapse ? t?.('expand') : t?.('collapse') }}
           </KButton>
         </slot>
       </div>
@@ -111,6 +113,7 @@
 
 <script setup lang="ts">
 import { ref, inject, computed, watch, onMounted, onUnmounted } from 'vue';
+import { VueI18nTranslation } from 'vue-i18n';
 import { KInput } from '../input';
 import { KSelect, KOption } from '../select';
 import { KRadio, KRadioGroup } from '../radio';
@@ -149,6 +152,7 @@ const isCollapse = ref(props.collapse);
 const maxColumn = ref(1);
 const rowMax = ref(1);
 const firstRowHeight = ref('');
+const t = inject<VueI18nTranslation>('$t');
 
 onMounted(() => {
   if (!props.collapse) {
@@ -224,6 +228,7 @@ watch(
       const gridTemplateRows = getComputedStyle(KFormRef?.value?.$el).gridTemplateRows.split(' ');
       firstRowHeight.value = gridTemplateRows[0];
       rowMax.value = gridTemplateRows.length;
+      computeMaxColumn();
     }, 100);
   },
   { deep: true }
@@ -310,7 +315,7 @@ function getAutoSize() {
 }
 
 // expose instance
-const instance: any = { reset, getFormData, search, toggle, expand, collapse };
+const instance: any = { reset, getFormData, toggle, expand, collapse };
 defineExpose(getExposeProxy(instance, KFormRef));
 </script>
 

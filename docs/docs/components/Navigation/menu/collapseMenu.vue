@@ -1,7 +1,7 @@
 <template>
-  <k-radio-group v-model="isCollapse" style="margin-bottom: 20px">
-    <k-radio-button :value="false">expand</k-radio-button>
-    <k-radio-button :value="true">collapse</k-radio-button>
+  <k-radio-group v-model="isCollapse" style="margin-bottom: 20px" button>
+    <k-radio :value="false">expand</k-radio>
+    <k-radio :value="true">collapse</k-radio>
   </k-radio-group>
   <k-menu
     default-active="2"

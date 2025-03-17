@@ -4,6 +4,8 @@ title: Affix 固钉
 
 # Affix 固钉
 
+<leadInto name="KAffix" />
+
 将页面元素固定在特定可视区域。
 
 ## 基础用法
@@ -12,7 +14,7 @@ title: Affix 固钉
 
 通过设置 `offset` 属性来改变吸顶距离，默认值为 0。
 
-<preview path="./def.vue" />
+<demo path="./def.vue" />
 
 ## 指定容器
 
@@ -20,7 +22,7 @@ title: Affix 固钉
 
 请注意容器避免出现滚动条。
 
-<preview path="./targetAffix.vue" />
+<demo path="./targetAffix.vue" />
 
 ## 固定位置
 
@@ -28,7 +30,7 @@ title: Affix 固钉
 
 通过设置 `position` 属性来改变固定位置，默认值为 `top` 。
 
-<preview path="./positionAffix.vue" />
+<demo path="./positionAffix.vue" />
 
 ## API
 

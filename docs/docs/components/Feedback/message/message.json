@@ -1,0 +1,113 @@
+{
+  "name": "Message",
+  "props": [
+    {
+      "displayName": "message",
+      "type": "string | Fuction | VNode",
+      "description": "消息文字",
+      "defaultValue": "",
+      "tip": "() => VNode"
+    },
+    {
+      "displayName": "type",
+      "type": "enum",
+      "description": "消息类型",
+      "defaultValue": "info",
+      "tip": "'success' | 'warning' | 'info' | 'error'"
+    },
+    {
+      "displayName": "plain",
+      "type": "boolean",
+      "description": "是否纯色",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "icon",
+      "type": "string | Component",
+      "description": "自定义图标，该属性会覆盖 type 的图标。",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "dangerouslyUseHTMLString",
+      "type": "boolean",
+      "description": "是否将 message 属性作为 HTML 片段处理",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "customClass",
+      "type": "string",
+      "description": "自定义类名",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "duration",
+      "type": "number",
+      "description": "显示时间，单位为毫秒。 设为 0 则不会自动关闭",
+      "defaultValue": "3000",
+      "tip": ""
+    },
+    {
+      "displayName": "showClose",
+      "type": "boolean",
+      "description": "是否显示关闭按钮",
+      "defaultValue": false,
+      "tip": ""
+    },
+    {
+      "displayName": "center",
+      "type": "boolean",
+      "description": "文字是否居中",
+      "defaultValue": false,
+      "tip": ""
+    },
+    {
+      "displayName": "onClose",
+      "type": "Function",
+      "description": "关闭时的回调函数, 参数为被关闭的 message 实例",
+      "defaultValue": "",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "offset",
+      "type": "number",
+      "description": "Message 距离窗口顶部的偏移量",
+      "defaultValue": "16",
+      "tip": ""
+    },
+    {
+      "displayName": "appendTo",
+      "type": "string | HTMLElement",
+      "description": "设置 message 的根元素，默认为 document.body",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "grouping",
+      "type": "boolean",
+      "description": "合并内容相同的消息，不支持 VNode 类型的消息",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "repeatNum",
+      "type": "number",
+      "description": "重复次数，类似于 Badge 。当和 grouping 属性一起使用时作为初始数量使用",
+      "defaultValue": "1",
+      "tip": ""
+    }
+  ]
+  ,
+  "events": [],
+  "slots": [],
+  "methods": [{
+    "displayName": "close",
+    "type": "Function",
+    "description": "关闭当前的 Message",
+    "defaultValue": "",
+    "tip": "() => void"
+  }]
+}

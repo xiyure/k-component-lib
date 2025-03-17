@@ -7,6 +7,11 @@
   --item-width: 0;
 
   position: relative;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+  display: flex;
+  width: 100%;
+  background-color: var(--k-gray-100);
 
   &::before {
     content: '';
@@ -22,6 +27,15 @@
   .k-slider-button-pane {
     user-select: none;
     height: var(--k-theme-button-size-height--base);
+    width: 100%;
+    border-radius: 0.375rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: var(--k-gray-500);
+    cursor: pointer;
+    position: relative;
     &.is-active {
     }
   }

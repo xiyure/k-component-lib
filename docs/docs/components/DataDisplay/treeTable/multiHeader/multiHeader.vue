@@ -8,7 +8,7 @@
 </template>
 
 <script lang="tsx" setup>
-import { reactive } from 'vue';
+import { ref } from 'vue';
 
 const columnPro = [
   {
@@ -58,7 +58,7 @@ const columnPro = [
     ]
   }
 ];
-const tableData = reactive([
+const tableData = ref([
   {
     id: 1,
     name: 'Test1',

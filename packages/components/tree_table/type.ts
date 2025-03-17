@@ -3,19 +3,28 @@ import { VxeTablePropTypes, VxeColgroupProps, VxeColumnPropTypes } from 'vxe-tab
 import { PaginationProps as ElPaginationProps } from 'element-plus';
 import { OperateData } from '../operate/type';
 import { Condition, FilterValue, ConditionInfo } from '../filter/type';
+import { Merge } from '../../utils/typescript';
 
 export type Row = VxeTablePropTypes.Row;
+export type TreeConfig = VxeTablePropTypes.TreeConfig;
+export type RowConfig = VxeTablePropTypes.RowConfig;
+export type SortConfig = VxeTablePropTypes.SortConfig;
+export type EditConfig = VxeTablePropTypes.EditConfig;
+export type ScrollY = VxeTablePropTypes.ScrollY;
+export type CheckboxConfig = VxeTablePropTypes.CheckboxConfig;
+export type ColumnConfig = VxeTablePropTypes.ColumnConfig;
+
 export interface TreeTableProps {
   data?: RowData[];
   size?: string;
-  sortConfig?: VxeTablePropTypes.SortConfig;
+  sortConfig?: SortConfig;
   seqConfig?: SeqConfig;
-  rowConfig?: VxeTablePropTypes.RowConfig;
-  editConfig?: VxeTablePropTypes.EditConfig;
-  scrollY?: VxeTablePropTypes.ScrollY;
-  columnConfig?: VxeTablePropTypes.ColumnConfig;
-  checkboxConfig?: VxeTablePropTypes.CheckboxConfig;
-  treeConfig?: VxeTablePropTypes.TreeConfig;
+  rowConfig?: RowConfig;
+  editConfig?: EditConfig;
+  scrollY?: ScrollY;
+  columnConfig?: ColumnConfig;
+  checkboxConfig?: CheckboxConfig;
+  treeConfig?: TreeConfig;
   showOverflow?: string | boolean;
   autoResize?: boolean;
   height?: string | number;
@@ -23,12 +32,12 @@ export interface TreeTableProps {
   border?: boolean | string;
   emptyText?: string;
   rowStyle?: CSSProperties | ((rowInfo: Row) => CSSProperties);
-  column: ColumnConfig[];
+  column: Column[];
   showPage?: boolean;
   useTree?: boolean;
   isRemoteQuery?: boolean;
   isServerPaging?: boolean;
-  paginationConfig?: PaginationConfig;
+  paginationConfig?: TablePaginationConfig;
   showDescription?: boolean;
   showHeaderTools?: boolean;
   batchOperations?: OperateData[];
@@ -45,7 +54,7 @@ export interface TreeTableProps {
   advancedFilterConfig?: AdvancedFilterConfig;
   searchConfig?: SearchConfig;
   style?: CSSProperties;
-  class?: string;
+  class?: string | { [className: string]: boolean } | Array<string | { [className: string]: boolean }>;
   simple?: boolean;
   defaultTransferData?:
     | (() => TableHeaderControl[] | Promise<TableHeaderControl[]>)
@@ -60,9 +69,10 @@ export interface TreeTableProps {
   round?: boolean;
   adaptive?: boolean;
   hasSpace?: boolean;
+  IconSearch?: string;
 }
 
-export interface ColumnConfig {
+export interface Column {
   visible?: boolean;
   key?: string | number;
   field?: string;
@@ -76,7 +86,7 @@ export interface ColumnConfig {
   sortable?: boolean;
   showIcon?: boolean;
   showColumnMenu?: boolean;
-  group?: (ColumnConfig & VxeColgroupProps)[];
+  group?: (Column & VxeColgroupProps)[];
   dataType?: string;
   render?: (...arg: any) => VNode;
   renderEdit?: (data: any) => VNode;
@@ -96,13 +106,13 @@ type FilterColumn = {
     value: FilterValue;
   }[];
 };
-export interface PaginationConfig extends Omit<ElPaginationProps, 'size'> {
+export type TablePaginationConfig = Merge<{
   size?: 'base' | 'sm';
   isRemotePaging?: boolean;
-}
+}, ElPaginationProps>
 
 export interface SeqConfig {
-  seqMethod?: (rowConfig: VxeTablePropTypes.RowConfig) => string | number;
+  seqMethod?: (rowConfig: RowConfig) => string | number;
   startIndex?: number;
 }
 
@@ -138,11 +148,18 @@ export interface SearchConfig {
   searchMethod?: (key: string | number, data: any[]) => any[];
   isRemoteQuery?: boolean;
   ignoreCase?: boolean;
+  searchColumns?: string[]
+  supportPinYin?: string[] | boolean
 }
 
 export interface RowData {
   icon?: string;
   __folder__?: boolean;
-  iconStyle?: CSSProperties & { empty: boolean; size: number };
+  iconStyle?: CSSProperties & { empty?: boolean; size?: number };
   [key: string]: any;
+}
+
+export type TableCacheData =  {
+  treeDataMap: Map<string | number, RowData>,
+  tableDataMap: Map<string | number, { node: RowData; children: RowData[] }>
 }

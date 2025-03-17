@@ -2,15 +2,29 @@
   "name": "TreeTransfer",
   "props": [
     {
+      "displayName": "v-model / modelValue",
+      "type": "TreeTransferData[]",
+      "description": "选中数据",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "row-key",
+      "type": "string",
+      "description": "指定用来作为唯一标识的键名",
+      "defaultValue": "id",
+      "tip": ""
+    },
+    {
       "displayName": "data",
-      "type": "any[]",
+      "type": "TreeTransferData[]",
       "description": "绑定的数据",
       "defaultValue": "",
       "tip": ""
     },
     {
       "displayName": "default-data",
-      "type": "string[] | number[]",
+      "type": "string[]",
       "description": "默认选中数据",
       "defaultValue": "",
       "tip": ""
@@ -23,52 +37,10 @@
       "tip": "[string, string]"
     },
     {
-      "displayName": "showSearchInput",
-      "type": "boolean",
-      "description": "是否显示搜索框",
-      "defaultValue": "true",
-      "tip": ""
-    },
-    {
-      "displayName": "useTree",
+      "displayName": "use-tree",
       "type": "boolean",
       "description": "是否使用树形结构",
       "defaultValue": "false",
-      "tip": ""
-    },
-    {
-      "displayName": "treeConfig",
-      "type": "object",
-      "description": "树形结构配置",
-      "defaultValue": "",
-      "tip": "VxeTablePropTypes.TreeConfig"
-    },
-    {
-      "displayName": "scrollY",
-      "type": "object",
-      "description": "滚动条配置",
-      "defaultValue": "",
-      "tip": "VxeTablePropTypes.ScrollY"
-    },
-    {
-      "displayName": "showDrag",
-      "type": "boolean",
-      "description": "是否启用拖拽排序",
-      "defaultValue": "false",
-      "tip": ""
-    },
-    {
-      "displayName": "icon",
-      "type": "string | Component",
-      "description": "叶子节点图标",
-      "defaultValue": "false",
-      "tip": ""
-    },
-    {
-      "displayName": "icon-color",
-      "type": "string",
-      "description": "叶子节点icon颜色",
-      "defaultValue": "",
       "tip": ""
     },
     {
@@ -100,20 +72,271 @@
       "tip": ""
     },
     {
-      "displayName": "checkMethod",
+      "displayName": "icon",
+      "type": "string | component",
+      "description": "叶子节点图标",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "icon-color",
+      "type": "string",
+      "description": "叶子节点icon颜色",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "tree-config",
+      "type": "object",
+      "description": "树形结构配置",
+      "defaultValue": "",
+      "tip": "VxeTablePropTypes.TreeConfig"
+    },
+    {
+      "displayName": "label",
+      "type": "string",
+      "description": "显示字段",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "scroll-y",
+      "type": "object",
+      "description": "滚动条配置",
+      "defaultValue": "",
+      "tip": "VxeTablePropTypes.ScrollY"
+    },
+    {
+      "displayName": "show-drag",
+      "type": "boolean",
+      "description": "是否启用拖拽排序",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "show-search-input",
+      "type": "boolean | 'left'",
+      "description": "显示对应位置搜索框(true时左右都显示)",
+      "defaultValue": "left",
+      "tip": ""
+    },
+    {
+      "displayName": "search-config",
+      "type": "object",
+      "description": "左侧搜索框配置",
+      "defaultValue": "",
+      "tip": "SearchConfig"
+    },
+    {
+      "displayName": "right-search-config",
+      "type": "object",
+      "description": "右侧搜索配置",
+      "defaultValue": "",
+      "tip": "SearchConfig"
+    },
+    {
+      "displayName": "show-page",
+      "type": "enum",
+      "description": "是否显示分页",
+      "defaultValue": "false",
+      "tip": "boolean | 'left' | 'right'"
+    },
+    {
+      "displayName": "left-pagination-config",
+      "type": "object",
+      "description": "左侧分页配置",
+      "defaultValue": "",
+      "tip": "TablePaginationConfig"
+    },
+    {
+      "displayName": "right-pagination-config",
+      "type": "object",
+      "description": "右侧分页配置，不存在时默认使用左侧分页配置",
+      "defaultValue": "",
+      "tip": "TablePaginationConfig"
+    },
+    {
+      "displayName": "columns",
+      "type": "Column[]",
+      "description": "进行表格列配置",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "table-height",
+      "type": "number",
+      "description": "表格内容高度",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "check-method",
       "type": "Function",
       "description": "自定义选中方法",
       "defaultValue": "",
       "tip": "(data: any) => boolean"
     },
     {
-      "displayName": "searchMethod",
-      "type": "Function",
-      "description": "自定义搜索方法",
+      "displayName": "checkbox-all",
+      "type": "boolean",
+      "description": "是否全部选中",
       "defaultValue": "",
-      "tip": "(keyword: string, data: any[]) => Promise<any[]>"
+      "tip": ""
     }
   ],
+  "subProps": {
+    "Column": [
+      {
+        "displayName": "title",
+        "description": "列头显示文字",
+        "type": "string"
+      },
+      {
+        "displayName": "field",
+        "description": "列字段名",
+        "type": "string"
+      },
+      {
+        "displayName": "width",
+        "description": "列宽度",
+        "type": "number | string"
+      },
+      {
+        "displayName": "minWidth",
+        "description": "最小列宽度",
+        "type": "number | string"
+      },
+      {
+        "displayName": "treeNode",
+        "description": "useTree=true时有效，指定树节点列",
+        "type": "boolean"
+      },
+      {
+        "displayName": "sortable",
+        "description": "是否可排序",
+        "type": "boolean",
+        "defaultValue": "false"
+      },
+      {
+        "displayName": "showIcon",
+        "description": "是否显示图标",
+        "type": "boolean",
+        "defaultValue": "false"
+      },
+      {
+        "displayName": "visible",
+        "description": "是否显示该列",
+        "type": "boolean",
+        "defaultValue": "true"
+      },
+      {
+        "displayName": "showColumnMenu",
+        "description": "是否显示列头菜单",
+        "type": "boolean",
+        "defaultValue": "false"
+      },
+      {
+        "displayName": "group",
+        "description": "用于多级表头分组，参数配置与列配置一致",
+        "type": "Column[]"
+      },
+      {
+        "displayName": "render",
+        "description": "自定义渲染函数",
+        "type": "Function",
+        "tip": "({ row, rowIndex, column, columnIndex, $rowIndex, $columnIndex, $event }) => VNode  | Component"
+      },
+      {
+        "displayName": "renderEdit",
+        "description": "自定义渲染编辑单元格函数",
+        "type": "Function",
+        "tip": "({ row, rowIndex, column, columnIndex, $rowIndex, $columnIndex, $event }) => VNode  | Component"
+      },
+      {
+        "displayName": "dataType",
+        "description": "数据类型",
+        "type": "enum",
+        "tip": "'string' | 'number' | 'boolean' | 'date'"
+      }
+    ],
+    "SearchConfig": [
+      {
+        "displayName": "strict",
+        "description": "是否精确搜索",
+        "type": "boolean",
+        "defaultValue": "false"
+      },
+      {
+        "displayName": "searchMethod",
+        "description": "自定义搜索方法",
+        "type": "Function",
+        "tip": "(key: string | number, data: any[]) => any[]"
+      },
+      {
+        "displayName": "isRemoteQuery",
+        "description": "是否远程搜索",
+        "type": "boolean",
+        "defaultValue": "false"
+      },
+      {
+        "displayName": "ignoreCase",
+        "description": "是否忽略大小写",
+        "type": "boolean",
+        "defaultValue": "false"
+      },
+      {
+        "displayName": "searchColumns",
+        "description": "允许指定搜索列,输入值为表格列配置的field,只有指定列才会进行搜索",
+        "type": "string[]",
+        "defaultValue": ""
+      },
+      {
+        "displayName": "supportPinYin",
+        "description": "允许指定拼音搜索列,输入值为表格列配置的field,只有指定列才会进行搜索，为true时，会搜索所有数据",
+        "type": "boolean | string[]",
+        "defaultValue": "false"
+      }
+    ],
+    "TablePaginationConfig": [
+      {
+        "displayName": "total",
+        "description": "总条数",
+        "type": "number"
+      },
+      {
+        "displayName": "pageSize",
+        "description": "每页条数",
+        "type": "number"
+      },
+      {
+        "displayName": "pageSizes",
+        "description": "每页条数选项",
+        "type": "number[]"
+      },
+      {
+        "displayName": "currentPage",
+        "description": "当前页数",
+        "type": "number"
+      },
+      {
+        "displayName": "pageCount",
+        "description": "总页数",
+        "type": "number"
+      },
+      {
+        "displayName": "layout",
+        "description": "分页布局",
+        "type": "enum",
+        "tip": "'sizes' | 'total' | 'prev' | 'pager' | 'next' | 'jumper' | '->', 'slot"
+      },
+      {
+        "displayName": "isRemotePaging",
+        "description": "是否服务端分页",
+        "type": "boolean",
+        "defaultValue": "false"
+      }
+    ]
+  },
   "events": [
     {
       "displayName": "change",
@@ -122,13 +345,60 @@
       "tip": "(data: any[]) => void"
     },
     {
-      "displayName": "sort",
+      "displayName": "drag",
       "description": "拖拽排序时触发",
       "type": "Function",
       "tip": "(data: any[]) => void"
+    },
+    {
+      "displayName": "remote-query",
+      "description": "远程搜索时触发",
+      "type": "Function",
+      "tip": "(data: string) => void"
+    },
+    {
+      "displayName": "server-paging",
+      "description": "服务端分页时触发",
+      "type": "Function",
+      "tip": "(data: object) => void"
+    },
+    {
+      "displayName": "page-current-change",
+      "description": "分页当前页变化时触发",
+      "type": "Function",
+      "tip": "(pageNum: pageNum, position: 'left' | 'right') => void"
+    },
+    {
+      "displayName": "page-size-change",
+      "description": "分页每页条数变化时触发",
+      "type": "Function",
+      "tip": "(pageNum: pageNum, position: 'left' | 'right') => void"
+    },
+    {
+      "displayName": "page-change",
+      "description": "分页每页条数变化时触发",
+      "type": "Function",
+      "tip": "(pageNum: pageNum, pageSize: number, position: 'left' | 'right') => void"
+    },
+    {
+      "displayName": "page-prev-click",
+      "description": "分页每页条数变化时触发",
+      "type": "Function",
+      "tip": "(pageNum: pageNum, position: 'left' | 'right') => void"
+    },
+    {
+      "displayName": "page-next-click",
+      "description": "分页每页条数变化时触发",
+      "type": "Function",
+      "tip": "(pageNum: pageNum, position: 'left' | 'right') => void"
     }
   ],
   "slots": [
+    {
+      "displayName": "left-cell",
+      "description": "自定义左侧单元格内容",
+      "parameters": ""
+    },
     {
       "displayName": "right-cell",
       "description": "自定义右侧单元格内容",
@@ -181,6 +451,30 @@
       "description": "获取搜索框内容",
       "type": "Function",
       "tip": "() => string"
+    },
+    {
+      "displayName": "setAllCheckboxRow",
+      "description": "设置所有行的选中状态",
+      "type": "Function",
+      "tip": "(checked: boolean) => void"
+    },
+    {
+      "displayName": "clearCheckboxRow",
+      "description": "设置所有行的清除复选框选中行选中状态",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "clearCheckboxReserve",
+      "description": "清除复选框缓存状态",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "getCheckboxRecords",
+      "description": "获取选中的数据",
+      "type": "Function",
+      "tip": "(isFullData: boolean) => void"
     }
   ]
 }

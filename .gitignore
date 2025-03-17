@@ -12,6 +12,9 @@ kingsware-ui
 dist
 dist-ssr
 *.local
+tag_message.txt
+tag_message.md
+
 
 # Editor directories and files
 .vscode/*
@@ -27,3 +30,7 @@ example/view
 
 .temp
 cache
+stats.html
+.secret
+
+context.json

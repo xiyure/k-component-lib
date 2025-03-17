@@ -1,7 +1,7 @@
-import { Ref, ModelRef } from 'vue';
+import { Ref } from 'vue';
 
 export function usePassword(
-  showPassword: ModelRef<boolean | undefined>,
+  showPassword: Ref<boolean | undefined>,
   pwd: Ref<string>
 ) {
   const setPasswordMode = (isPassword: boolean) => {
@@ -11,14 +11,10 @@ export function usePassword(
     pwd.value = '';
     showPassword.value = isPassword;
   };
-  const togglePasswordMode = () => {
-    setPasswordMode(!showPassword.value);
-  };
 
   return {
     _methods: {
       setPasswordMode,
-      togglePasswordMode
     }
   };
 }

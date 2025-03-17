@@ -6,7 +6,7 @@
       "type": "enum",
       "description": "对齐的方式",
       "defaultValue": "center",
-      "tip": ""
+      "tip": "'center' | 'normal' | 'stretch' | ..."
     },
     {
       "displayName": "class",
@@ -20,7 +20,7 @@
       "type": "enum",
       "description": "排列的方向",
       "defaultValue": "horizontal",
-      "tip": ""
+      "tip": "'vertical' | 'horizontal'"
     },
     {
       "displayName": "prefix-cls",
@@ -34,7 +34,7 @@
       "type": "string | object",
       "description": "额外样式",
       "defaultValue": "",
-      "tip": ""
+      "tip": "CSSProperties | CSSProperties[] | string[]"
     },
     {
       "displayName": "spacer",
@@ -48,7 +48,7 @@
       "type": "enum | number | array",
       "description": "间隔大小",
       "defaultValue": "small",
-      "tip": ""
+      "tip": "'default' | 'small' | 'large' | [number, number]"
     },
     {
       "displayName": "wrap",

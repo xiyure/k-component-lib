@@ -5,17 +5,18 @@
     :class="['k-tabs', _styleModule]"
     v-bind="$attrs"
     :tab-position="tabPosition"
-    :editable="editable"
-    :addable="addable"
-    @tab-click="getHideTabs"
+    @edit="(paneName: string | number | undefined, action: 'add' | 'remove') => {
+      emits('edit', paneName, action);
+      getHideTabs();
+    }"
   >
     <div
-      v-if="hideTabIndex.length"
+      v-if="showHideList && hideTabIndex.length"
       class="k-tabs-more"
       :class="`tab-${tabPosition}-layout`"
       :style="{
         right:
-          (editable || addable) && (tabPosition === 'top' || tabPosition === 'bottom') ? '2rem' : 0,
+          ($attrs.editable || $attrs.addable) && (tabPosition === 'top' || tabPosition === 'bottom') ? '2rem' : 0
       }"
     >
       <TabDropdownMenu :tab-index-list="hideTabIndex" :tab-slots="$slots" @command="jumpToTab">
@@ -36,7 +37,7 @@ import { ref, watch, nextTick, onMounted, onUnmounted, inject } from 'vue';
 import { ElTabs } from 'element-plus';
 import { IconMore } from 'ksw-vue-icon';
 import TabDropdownMenu from './tab_dropdown_menu';
-import { getExposeProxy } from '../../utils';
+import { getElement, getElementAll, getExposeProxy } from '../../utils';
 import { TabsProps, TabData } from './type';
 
 defineOptions({
@@ -46,35 +47,29 @@ defineOptions({
 const props = withDefaults(defineProps<TabsProps>(), {
   modelValue: undefined,
   tabPosition: 'top',
-  editable: false,
-  addable: false,
-  maxWidth: undefined
+  maxWidth: undefined,
+  showHideList: true
 });
+
+const emits = defineEmits(['update:modelValue', 'edit']);
 
 const _styleModule = inject('_styleModule', '');
 const activeName = ref<string | undefined>(undefined);
-let tabsElem: HTMLElement | null = null;
-let translateElem: HTMLElement | undefined;
-let tabPaneDoms: NodeListOf<HTMLElement> | [] = [];
-let addTabElem: HTMLElement | null | undefined = null;
 const KTabsRef = ref();
 
 const hideTabIndex = ref<number[]>([]);
-let preTranslate = 0;
 
 // 可视区域发生变化时，下拉列表也随之更新
 onMounted(() => {
   window.addEventListener('resize', getHideTabs);
+  window.addEventListener('wheel', handleWheel);
 });
 onUnmounted(() => {
   window.removeEventListener('resize', getHideTabs);
+  window.removeEventListener('wheel', handleWheel);
 });
 
 nextTick(() => {
-  tabsElem = KTabsRef?.value?.$el;
-  translateElem = tabsElem?.querySelector('.el-tabs__nav') ?? undefined;
-  addTabElem = tabsElem?.querySelector('.el-tabs__new-tab');
-  tabPaneDoms = tabsElem?.querySelectorAll('.el-tabs__item') ?? [];
   getHideTabs();
 });
 
@@ -83,60 +78,15 @@ watch(
   (val) => {
     if (val) {
       nextTick(() => {
-        if (!tabsElem) {
+        if (!KTabsRef.value?.$el) {
           return;
         }
-        tabsElem?.style.setProperty('--plane-max-width', val);
+        KTabsRef.value?.$el?.style.setProperty('--plane-max-width', val);
       });
     }
   },
   { immediate: true }
 );
-
-function isElementInContainerView(el: HTMLElement, translate: number = 0) {
-  if (!tabsElem) {
-    return;
-  }
-  const elRect = el.getBoundingClientRect();
-  const containerRect = tabsElem.getBoundingClientRect();
-  const diff = translate - preTranslate;
-  const { width: addTabWidth, height: addTabHeight } = addTabElem?.getBoundingClientRect() ?? {};
-  if (props.tabPosition === 'top' || props.tabPosition === 'bottom') {
-    return (
-      elRect.left + diff >= containerRect.left &&
-      elRect.right + diff <= containerRect.right - (addTabWidth ?? 0)
-    );
-  }
-  return (
-    elRect.top + diff >= containerRect.top &&
-    elRect.bottom + diff <= containerRect.bottom - (addTabHeight ?? 0)
-  );
-}
-function jumpToTab(item: TabData) {
-  const name = item.name ?? '';
-  activeName.value = name;
-  getHideTabs();
-}
-function getHideTabs() {
-  setTimeout(() => {
-    const regex = /\(([^)]+)\)/g;
-    // 获取tab栏偏移量
-    const matches = translateElem?.style.transform?.match(regex);
-    if (!matches) {
-      return;
-    }
-    const [translate] = matches.map((m) => parseFloat(m.slice(1, -1)));
-
-    const res: number[] = [];
-    tabPaneDoms?.forEach((item: HTMLElement, index: number) => {
-      if (!isElementInContainerView(item, translate)) {
-        res.push(index);
-      }
-    });
-    preTranslate = translate;
-    hideTabIndex.value = res;
-  });
-}
 
 watch(
   () => props.modelValue,
@@ -145,6 +95,133 @@ watch(
   },
   { immediate: true }
 );
+
+watch(
+  () => activeName.value,
+  (newVal) => {
+    if (props.modelValue !== undefined && props.modelValue !== newVal) {
+      emits('update:modelValue', newVal);
+      scrollToActiveTab();
+    }
+  }
+);
+
+function handleWheel(evt: WheelEvent) {
+  const $el = KTabsRef.value?.$el;
+  const nav = getElement<HTMLElement>('.el-tabs__nav', $el);
+  const navScroll = getElement<HTMLElement>('.el-tabs__nav-scroll', $el);
+  if (!nav || !navScroll || !nav?.contains(evt.target as Node)) {
+    return;
+  }
+  const disY = evt.deltaY;
+  const translate = getNavTranslate();
+  let translateDis = translate - disY;
+  const navScrollBounding = navScroll.getBoundingClientRect();
+  const maxOffset = isHorizontal()
+      ? nav.offsetWidth - navScrollBounding.width
+      : nav.offsetHeight - navScrollBounding.height;
+  if (translateDis > 0) {
+    translateDis = 0;
+  } else if (translateDis < -maxOffset) {
+    translateDis = -maxOffset;
+  }
+  setNavTranslate(translateDis);
+  getHideTabs();
+}
+// 判断tab是否在可视区域
+function isElementInContainerView(elRect: DOMRect, navScrollRect: DOMRect) {
+  if (!elRect || !navScrollRect) {
+    return;
+  }
+  if (isHorizontal()) {
+    return elRect.left >= navScrollRect.left && elRect.right <= navScrollRect.right;
+  }
+  return elRect.top >= navScrollRect.top && elRect.bottom <= navScrollRect.bottom;
+}
+// 下拉列表选择tab时，滚动到可视区域
+function jumpToTab(item: TabData) {
+  const name = item.name ?? '';
+  activeName.value = name;
+}
+function getHideTabs() {
+  if (!props.showHideList) {
+    return;
+  }
+  setTimeout(() => {
+    const res: number[] = [];
+    const $el = KTabsRef.value?.$el
+    const tabPaneDoms = getElementAll('.el-tabs__item', $el);
+    const navScroll = getElement<HTMLElement>('.el-tabs__nav-scroll', $el);
+    if (!$el || !navScroll || !tabPaneDoms?.length) {
+      return;
+    }
+    const navScrollRect = navScroll.getBoundingClientRect();
+    for (let _i = 0; _i < tabPaneDoms.length; _i++) {
+      const elRect = tabPaneDoms[_i].getBoundingClientRect();
+      if (!isElementInContainerView(elRect, navScrollRect)) {
+        res.push(_i);
+      }
+    }
+    hideTabIndex.value = res;
+  }, 200);
+}
+// 滚动到当前激活的tab
+function scrollToActiveTab() {
+  setTimeout(() => {
+    const $el = KTabsRef.value?.$el;
+    const nav = getElement<HTMLElement>('.el-tabs__nav', $el);
+    const navScroll = getElement<HTMLElement>('.el-tabs__nav-scroll', $el);
+    if (!$el || !navScroll || !nav) return;
+    const activeTab = getElement<HTMLElement>('.is-active', $el);
+    if (!activeTab) return;
+    const _isHorizontal = isHorizontal();
+    const activeTabBounding = activeTab.getBoundingClientRect();
+    const navScrollBounding = navScroll.getBoundingClientRect();
+    const maxOffset = _isHorizontal
+      ? nav.offsetWidth - navScrollBounding.width
+      : nav.offsetHeight - navScrollBounding.height;
+    const currentOffset = -getNavTranslate();
+    let newOffset = currentOffset;
+
+    if (_isHorizontal) {
+      if (activeTabBounding.left < navScrollBounding.left) {
+        newOffset = currentOffset - (navScrollBounding.left - activeTabBounding.left);
+      }
+      if (activeTabBounding.right > navScrollBounding.right) {
+        newOffset = currentOffset + activeTabBounding.right - navScrollBounding.right;
+      }
+    } else {
+      if (activeTabBounding.top < navScrollBounding.top) {
+        newOffset = currentOffset - (navScrollBounding.top - activeTabBounding.top);
+      }
+      if (activeTabBounding.bottom > navScrollBounding.bottom) {
+        newOffset = currentOffset + (activeTabBounding.bottom - navScrollBounding.bottom);
+      }
+    }
+    newOffset = Math.max(newOffset, 0);
+    setNavTranslate(-Math.min(newOffset, maxOffset));
+    getHideTabs();
+  }, 200);
+}
+// 获取tab栏偏移量
+function getNavTranslate() {
+  if (!KTabsRef.value?.$el) {
+    return 0;
+  }
+  const translate = KTabsRef.value.$el.style.getPropertyValue('--translate') || 0;
+  return parseFloat(translate);
+}
+// 设置tab栏偏移量
+function setNavTranslate(translate: number) {
+  if (!KTabsRef.value?.$el) {
+    return;
+  }
+  KTabsRef.value.$el.style.setProperty('--translate', `${translate}px`);
+}
+// 判断tab栏是否水平排列
+function isHorizontal() {
+  return props.tabPosition === 'top' || props.tabPosition === 'bottom';
+}
 
 const instance: any = {};
 defineExpose(getExposeProxy(instance, KTabsRef));

@@ -4,6 +4,8 @@ title: TimeSelect 时间选择
 
 # TimeSelect 时间选择
 
+<leadInto name="KTimeSelect" />
+
 用于选择或输入日期
 
 可用时间范围是 00:00-23:59
@@ -14,7 +16,7 @@ title: TimeSelect 时间选择
 
 使用 el-time-select 标签，然后通过start、end和step指定起始时间，结束时间和步长。
 
-<preview path="./immobilizationTime" />
+<demo path="./immobilizationTime" />
 
 ## 时间格式
 
@@ -26,13 +28,13 @@ title: TimeSelect 时间选择
 请一定要注意传入参数的大小写是否正确
 :::
 
-<preview path="./timeFormat" />
+<demo path="./timeFormat" />
 
 ## 固定时间范围
 
 如果先选中了开始（或结束）时间，则结束（或开始）时间的状态也将会随之改变。
 
-<preview path="./timeRang" />
+<demo path="./timeRang" />
 
 ## API
 

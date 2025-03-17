@@ -1,0 +1,131 @@
+{
+  "name": "Tour",
+  "props": [
+    {
+      "displayName": "show-arrow",
+      "type": "boolean",
+      "description": "是否显示箭头",
+      "defaultValue": "true"
+    },
+    {
+      "displayName": "placement",
+      "type": "enum",
+      "description": "引导卡片相对于目标元素的位置",
+      "defaultValue": "bottom",
+      "tip": "'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'"
+    },
+    {
+      "displayName": "content-style",
+      "type": "CSSProperties",
+      "description": "为content自定义样式",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "mask",
+      "type": "boolean | Object",
+      "description": "是否启用遮罩，通过自定义属性改变遮罩样式以及填充的颜色",
+      "defaultValue": "true",
+      "tip": "{ style?: CSSProperties; color?: string; }"
+    },
+    {
+      "displayName": "type",
+      "type": "default | primary",
+      "description": "类型，影响底色与文字颜色",
+      "defaultValue": "default",
+      "tip": ""
+    },
+    {
+      "displayName": "model-value / v-model",
+      "type": "boolean",
+      "description": "打开引导",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "current / v-model:current",
+      "type": "number",
+      "description": "当前值",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "scroll-into-view-options",
+      "type": "boolean | ScrollIntoViewOptions",
+      "description": "是否支持当前元素滚动到视窗内，也可传入配置指定滚动视窗的相关参数",
+      "defaultValue": "Object",
+      "tip": "{ block: 'center' }"
+    },
+    {
+      "displayName": "z-index",
+      "type": "number",
+      "description": "Tour 的层级",
+      "defaultValue": "2001",
+      "tip": ""
+    },
+    {
+      "displayName": "show-close",
+      "type": "boolean",
+      "description": "是否显示关闭按钮",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "close-icon",
+      "type": "string | Component",
+      "description": "自定义关闭图标，默认Close",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "close-on-press-escape",
+      "type": "boolean",
+      "description": "是否可以通过按下 ESC 关闭引导",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "target-area-clickable",
+      "type": "boolean",
+      "description": "启用蒙层时，target 元素区域是否可以点击。",
+      "defaultValue": "true",
+      "tip": ""
+    }
+  ],
+  "events": [
+    {
+      "displayName": "close",
+      "type": "Function",
+      "description": "关闭引导时的回调函数",
+      "defaultValue": "",
+      "tip": "(current: number) => void"
+    },
+    {
+      "displayName": "finish",
+      "type": "Function",
+      "description": "引导完成时的回调",
+      "defaultValue": "",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "change",
+      "type": "Function",
+      "description": "步骤改变时的回调",
+      "defaultValue": "",
+      "tip": "(current: number) => void"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "default",
+      "description": "tourStep 组件列表",
+      "parameters": ""
+    },
+    {
+      "displayName": "indicators",
+      "description": "自定义指示器",
+      "parameters": ""
+    }
+  ],
+  "methods": []
+}

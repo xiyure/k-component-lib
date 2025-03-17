@@ -39,7 +39,7 @@
               v-if="props.refresh"
               text
               style="padding-right: 0"
-              @click="() => emitEvent('refresh')"
+              @click="() => emits('refresh')"
             >
               <IconRefresh />
             </KButton>
@@ -59,7 +59,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { KTooltip } from '../../components';
+import { KTooltip, KButton } from '../../components';
 import { PageHeadProps } from './type';
 
 defineOptions({
@@ -71,8 +71,8 @@ const props = withDefaults(defineProps<PageHeadProps>(), {
   title: '',
   refresh: true
 });
-// 自定义事件
-const emitEvent = defineEmits(['refresh']);
+const emits = defineEmits(['refresh']);
+
 </script>
 <style lang="less" scoped>
 @import './style.less';

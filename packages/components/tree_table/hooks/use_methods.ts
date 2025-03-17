@@ -29,7 +29,7 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     } else {
       for (let i = 0; i < newRows.length; i++) {
         const row = newRows[i];
-        const { parentField } = getTreeField();
+        const { parentField } = getTreeConfigField();
         const parentRow = xeTableData.value.find((item: RowData) => item[keyField.value] === row[parentField]);
         if (!parentRow) {
           xeTableData.value.unshift(row);
@@ -73,7 +73,7 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
       let insertIndex: number = -1;
       for (let i = 0; i < newRows.length; i++) {
         const rowItem = newRows[i];
-        const { parentField } = getTreeField();
+        const { parentField } = getTreeConfigField();
         if (typeof row === 'object' && (row[parentField] === rowItem[parentField] || (!row[parentField] && !rowItem[parentField]))) {
           insertIndex = xeTableData.value.findIndex((item: RowData) => item[keyField.value] === row[keyField.value]);
           if (insertIndex !== -1) {
@@ -211,8 +211,8 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
       return;
     }
     getTreeExpandRecords();
-    const { rowField, parentField } = getTreeField();
-    const { fullData = [] } = $table.value?.getTableData();
+    const { rowField, parentField } = getTreeConfigField();
+    const { fullData = [] } = $table.value?.getTableData() ?? {};
     const currentIds = transformTreeData(
       fullData,
       { idField: rowField, parentField }
@@ -266,10 +266,32 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     store.data = [...xeTableData.value];
     return xeTableData.value;
   }
-  function getTreeField() {
+  function getRowById(id: string | number) {
+    const row = $table.value?.getRowById(id);
+    if (row) {
+      return row;
+    }
+    const targetRow = xeTableData.value.find(
+      (item: RowData) => item[keyField.value] === id
+    );
+    if (targetRow) {
+      return targetRow;
+    }
+    const tempRecords = $table.value.getInsertRecords();
+    const tempRow = tempRecords.find((item: Row) => item[keyField.value] === id);
+    return tempRow ?? null;
+  }
+  function getTreeConfigField() {
     const rowField = props.treeConfig?.rowField ?? 'id';
     const parentField = props.treeConfig?.parentField ?? 'pid';
     return { rowField, parentField };
+  }
+  // vxe-table行数据中dom被销毁时会导致tooltip无法关闭，这里提供手动销毁tooltip方法给予外部调用
+  function disposeRowTooltip() {
+    const tooltip = document.querySelector('.vxe-table--tooltip-wrapper');
+    if (tooltip) {
+      tooltip?.remove();
+    }
   }
 
   return {
@@ -284,7 +306,9 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
       getRemoveRecords,
       getRecordset,
       setRow,
-      setTreeExpand
+      setTreeExpand,
+      getRowById,
+      disposeRowTooltip
     },
     setTableData,
     sortChange,

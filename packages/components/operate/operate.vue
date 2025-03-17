@@ -3,7 +3,7 @@
     <span class="k-operate__header">{{ total || '-' }}</span>
     <div class="k-operate__content">
       <ul class="k-operate__list">
-        <li class="list-header">{{ $t('batchOperation') }}:</li>
+        <li class="list-header">{{ t?.('batchOperation') }}:</li>
         <li
           v-for="item, index in showData"
           :key="index"
@@ -42,6 +42,7 @@
 
 <script setup lang="ts">
 import { ref, watch, inject } from 'vue';
+import { VueI18nTranslation } from 'vue-i18n';
 import { IconClose, IconMore } from 'ksw-vue-icon';
 import { KDropdown, KDropdownItem } from '../dropdown';
 import { OperateProps, OperateData } from './type';
@@ -49,6 +50,8 @@ import { OperateProps, OperateData } from './type';
 defineOptions({
   name: 'KOperate'
 });
+
+const t = inject<VueI18nTranslation>('$t');
 
 const props = withDefaults(defineProps<OperateProps>(), {
   data: () => [],

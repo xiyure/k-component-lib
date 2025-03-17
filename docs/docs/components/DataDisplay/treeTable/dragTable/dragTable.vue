@@ -3,6 +3,7 @@
     <k-tree-table
       :data="tableData" :column="column1" :show-page="false"
       border
+      :row-config="{drag: true}"
       :show-drag-column="true"
       @drag="console.log('拖拽完成')"
     ></k-tree-table>
@@ -10,14 +11,15 @@
 </template>
 
 <script lang="tsx" setup>
-import { ref, reactive } from 'vue';
+import { ref } from 'vue';
 
 const column1 = ref([
   {
     title: 'Id',
     field: 'id',
     width: '100',
-    dataType: 'number'
+    dataType: 'number',
+    dragSort: true
   },
   {
     title: 'Name',
@@ -41,7 +43,7 @@ const column1 = ref([
     field: 'address'
   }
 ]);
-const tableData = reactive([
+const tableData = ref([
   {
     id: 1,
     name: 'Test1',

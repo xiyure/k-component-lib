@@ -5,10 +5,17 @@
   --vp-c-brand-3: hsl(237, 100%, 70%);
 
   --vp-code-block-bg: #f9fafb;
+  --vp-c-divider: rgba(0, 0, 0, 0.1);
+
+  --glassmorphism-bg: rgba(255, 255, 255, 0.8);
+  --glassmorphism-filter: saturate(180%) blur(20px);
+  --glassmorphism-search-button-bg: rgba(0, 0, 0, 0.04);
 }
 
-html.dark {
+.dark {
   --vp-code-block-bg: var(--vp-c-bg-alt, #161618);
+  --glassmorphism-bg: rgba(14, 2, 36, 0.8);
+  --glassmorphism-search-button-bg: rgba(0, 0, 0, 0.3);
 }
 
 .demo-block .xl-button {
@@ -45,23 +52,78 @@ div.VPLocalNav.has-sidebar > div > div > div > div.outline {
   outline-style: none;
 }
 
-// 重写样式
-.VPNav {
+// 重写样式 VPNav
+header.VPNav {
   .VPNavBar {
-    &.home.top,
-    &.has-sidebar.top {
+    &.home {
+      // 背景毛玻璃
+      background: var(--glassmorphism-bg);
+      backdrop-filter: var(--glassmorphism-filter);
+      .wrapper {
+        padding: 0;
+        width: 1280px;
+        margin: auto;
+      }
+    }
+    &.top {
+      background-color: transparent;
+      .dark  & {
+        backdrop-filter: none;
+      }
+    }
+    &.has-sidebar {
       .wrapper {
         .container {
           .title {
-            transition: unset;
+            transition: none;
           }
           .content {
-            // background: #000;
-            padding-left: max(32px, var(--vp-sidebar-width));
-            transition: unset;
+            transition: none;
           }
         }
       }
     }
+    .wrapper {
+      .container {
+        .title {
+          transition: none;
+        }
+        .content {
+          transition: none;
+        }
+      }
+    }
+  }
+}
+
+.VPContent.is-home {
+  padding-top: 0;
+}
+
+.VPFooter{
+  background: var(--glassmorphism-bg) !important;
+  backdrop-filter: saturate(180%) blur(10px);
+}
+
+@media (min-width: 960px) {
+  header.VPNav{
+    .VPNavBar:not(.has-sidebar):not(.top.home) {
+      background-color: var(--vp-nav-bg-color);
+      &.home {
+        background-color: var(--glassmorphism-bg);
+      }
+    }
+  }
+  
+}
+
+@media (min-width: 768px) {
+  .VPNavBarSearch {
+    flex-grow: unset;
+    padding-right: 24px;
+  }
+  .DocSearch-Button {
+    background: var(--glassmorphism-search-button-bg);
+    // border: 1px solid var(--vp-c-divider);
   }
 }

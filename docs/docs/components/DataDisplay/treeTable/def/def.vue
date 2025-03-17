@@ -1,16 +1,16 @@
 <template>
-  <div :style="{ height: '420px' }">
+  <div>
     <k-tree-table
-      :data="tableData" :column="column1" :show-page="false"
+      :data="tableData" :column="column" :show-page="false"
       border
     ></k-tree-table>
   </div>
 </template>
 
 <script lang="tsx" setup>
-import { ref, reactive } from 'vue';
+import { ref } from 'vue';
 
-const column1 = ref([
+const column = ref([
   {
     title: 'Id',
     field: 'id',
@@ -39,7 +39,7 @@ const column1 = ref([
     field: 'address'
   }
 ]);
-const tableData = reactive([
+const tableData = ref([
   {
     id: 1,
     name: 'Test1',

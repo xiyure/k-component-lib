@@ -1,7 +1,7 @@
 import { defineComponent } from 'vue';
 import { KTableColumn, KColumnGroup } from '../table';
 import TableColumnContent from './table_column_content.vue';
-import { ColumnConfig } from './type';
+import { Column } from './type';
 
 type SlotsType = {
   [key: string]: any;
@@ -31,7 +31,7 @@ export default defineComponent({
         && props.column.group.length ? addColumnGroup(props.column)
         : getTableColumn(slots, props.column)
     )
-    function addColumnGroup(col: ColumnConfig) {
+    function addColumnGroup(col: Column) {
       const group = col.group || [];
       const childrenSlots = getChildrenSlots(slots, col.field );
       return  <KColumnGroup
@@ -41,7 +41,7 @@ export default defineComponent({
         v-slots={childrenSlots}
       >
         {
-          group.map((item: ColumnConfig) => {
+          group.map((item: Column) => {
             if (Array.isArray(item.group) && item.group.length) {
               return addColumnGroup(item)
             } else {
@@ -51,7 +51,7 @@ export default defineComponent({
         }
       </KColumnGroup>
     }
-    function getTableColumn(slots: SlotsType, col: ColumnConfig) {
+    function getTableColumn(slots: SlotsType, col: Column) {
       const childrenSlots = getChildrenSlots(slots, col.field);
       if (!col.render && (slots[col.field ?? ''] || col.showIcon) && !col.type) {
         childrenSlots['default'] =  (data: any) =>{

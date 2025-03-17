@@ -1,0 +1,142 @@
+{
+  "name": "Split",
+  "props": [
+    {
+      "displayName": "v-model / modelValue",
+      "type": "number | string",
+      "description": "绑定左右面板比例（目前只支持px和0-1之间的数字，不支持rem以及百分比等单位）",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "default-size",
+      "type": "number | string",
+      "description": "初始左右面板比例（目前只支持px和0-1之间的数字，不支持rem以及百分比等单位）",
+      "defaultValue": "0.5",
+      "tip": ""
+    },
+    {
+      "displayName": "component",
+      "type": "string",
+      "description": "面板容器",
+      "defaultValue": "'div'",
+      "tip": ""
+    },
+    {
+      "displayName": "direction",
+      "type": "'horizontal' | 'vertical'",
+      "description": "分割线方向",
+      "defaultValue": "'horizontal'",
+      "tip": ""
+    },
+    {
+      "displayName": "min",
+      "type": "boolean",
+      "description": "左侧面板最小宽度",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "max",
+      "type": "boolean",
+      "description": "左侧面板最大宽度",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "disabled",
+      "type": "boolean",
+      "description": "是否禁用",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "trigger-icon",
+      "type": "string | Component",
+      "description": "分割线图标",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "show-trigger",
+      "type": "boolean",
+      "description": "是否显示分割线图标",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "pane1-class",
+      "type": "string",
+      "description": "左侧面板类名",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "pane2-class",
+      "type": "string",
+      "description": "右侧面板类名",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "pane1-style",
+      "type": "CSSProperties",
+      "description": "左侧面板样式",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "pane2-style",
+      "type": "CSSProperties",
+      "description": "右侧面板样式",
+      "defaultValue": "",
+      "tip": ""
+    }
+  ],
+  "events": [
+    {
+      "displayName": "move-start",
+      "type": "Function",
+      "description": "分割线开始拖动时触发",
+      "defaultValue": "",
+      "tip": "(e: MouseEvent) => void"
+    },
+    {
+      "displayName": "moving",
+      "type": "Function",
+      "description": "分割线拖动中触发",
+      "defaultValue": "",
+      "tip": "(e: MouseEvent) => void"
+    },
+    {
+      "displayName": "move-end",
+      "type": "Function",
+      "description": "分割线结束拖动时触发",
+      "defaultValue": "",
+      "tip": "(e: MouseEvent) => void"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "first",
+      "description": "左侧面板内容",
+      "parameters": ""
+    },
+    {
+      "displayName": "second",
+      "description": "右侧面板内容",
+      "parameters": ""
+    },
+    {
+      "displayName": "trigger",
+      "description": "分割线",
+      "parameters": ""
+    },
+    {
+      "displayName": "trigger-icon",
+      "description": "分割线图标",
+      "parameters": ""
+    }
+  ],
+  "methods": []
+}

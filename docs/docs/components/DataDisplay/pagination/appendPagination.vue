@@ -1,10 +1,10 @@
 <template>
   <div class="flex items-center mb-4">
-    <k-radio-group v-model="size" class="mr-4">
-      <k-radio-button value="default">default</k-radio-button>
-      <k-radio-button value="large">large</k-radio-button>
+    <k-radio-group v-model="size" class="mr-4" button>
+      <k-radio value="default">default</k-radio>
+      <k-radio value="large">large</k-radio>
 
-      <k-radio-button value="small">small</k-radio-button>
+      <k-radio value="small">small</k-radio>
     </k-radio-group>
     <div>
       background:

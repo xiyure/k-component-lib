@@ -1,0 +1,257 @@
+{
+  "name": "ScriptInput",
+  "props": [
+    {
+      "displayName": "modelValue",
+      "type": "string | number",
+      "description": "绑定的数据",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "placeholder",
+      "type": "string",
+      "description": "输入框占位符",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "disabled",
+      "type": "boolean",
+      "description": "是否禁用",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "options",
+      "type": "object",
+      "description": "选项列表",
+      "defaultValue": "",
+      "tip": "ScriptOptions[]"
+    },
+    {
+      "displayName": "useTree",
+      "type": "boolean",
+      "description": "是否使用树形结构",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "show-popper-switch",
+      "type": "boolean",
+      "description": "是否显示下拉按钮",
+      "defaultValue": "true"
+    },
+    {
+      "displayName": "show-mode-switch",
+      "type": "boolean",
+      "description": "是否显示模式切换按钮",
+      "defaultValue": "true"
+    },
+    {
+      "displayName": "default-mode",
+      "type": "enum",
+      "description": "默认模式",
+      "defaultValue": "string",
+      "tip": "'string' | 'expression'"
+    },
+    {
+      "displayName": "height",
+      "type": "string",
+      "description": "输入框高度",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "only-one-input",
+      "type": "boolean",
+      "description": "是否只允许输入一个值",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "resize",
+      "type": "boolean",
+      "description": "是否允许调整输入框大小",
+      "defaultValue": "true"
+    },
+    {
+      "displayName": "show-password",
+      "type": "boolean",
+      "description": "是否显示密码输入框",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "tree-config",
+      "type": "object",
+      "description": "树形结构配置，参考KTreeTable组件treeConfig配置",
+      "defaultValue": "",
+      "tip": "TreeConfig"
+    },
+    {
+      "displayName": "props",
+      "type": "object",
+      "description": "输入框属性",
+      "defaultValue": "",
+      "tip": "{label?: string, value?: string, disabled?: boolean}"
+    },
+    {
+      "displayName": "script-key",
+      "type": "string",
+      "description": "脚本key",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "check-content-type",
+      "type": "boolean",
+      "description": "是否检查变量名",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "content-type",
+      "type": "enum",
+      "description": "文本类型",
+      "defaultValue": "",
+      "tip": "'number' | 'boolean' | 'string' | '' | 'limit'"
+    },
+    {
+      "displayName": "option-repeatable",
+      "type": "boolean",
+      "description": "标签是否可重复选择",
+      "defaultValue": "true",
+      "tip": "'"
+    },
+    {
+      "displayName": "max-height",
+      "type": "string",
+      "description": "最大高度",
+      "defaultValue": "",
+      "tip": "'"
+    },
+    {
+      "displayName": "max",
+      "type": "number",
+      "description": "可输入的最大值，仅在content-type为limit时有效",
+      "defaultValue": "",
+      "tip": "'"
+    },
+    {
+      "displayName": "min",
+      "type": "number",
+      "description": "可输入的最小值，仅在content-type为limit时有效",
+      "defaultValue": "",
+      "tip": "'"
+    }
+  ],
+  "events": [
+    {
+      "displayName": "change",
+      "description": "值改变时触发",
+      "type": "Function",
+      "tip": "(value: object) => void"
+    },
+    {
+      "displayName": "input",
+      "description": "输入时触发",
+      "type": "Function",
+      "tip": "(value: string) => void"
+    },
+    {
+      "displayName": "focus",
+      "description": "获得焦点时触发",
+      "type": "Function",
+      "tip": "(event: FocusEvent) => void"
+    },
+    {
+      "displayName": "blur",
+      "description": "失去焦点时触发",
+      "type": "Function",
+      "tip": "(event: FocusEvent) => void"
+    },
+    {
+      "displayName": "select",
+      "description": "选项被选中时触发",
+      "type": "Function",
+      "tip": "(data: Row | RowData) => void"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "prepend",
+      "description": "前置内容插槽"
+    },
+    {
+      "displayName": "append",
+      "description": "后置内容插槽"
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "clear",
+      "description": "清空输入框内容",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "showPopper",
+      "description": "显示下拉框",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "hidePopper",
+      "description": "隐藏下拉框",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "toggleMode",
+      "description": "切换模式",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "setStringMode",
+      "description": "切换为字符串模式",
+      "type": "Function",
+      "tip": "(isStringMode: boolean) => void"
+    },
+    {
+      "displayName": "getCurrentMode",
+      "description": "获取当前模式",
+      "type": "Function",
+      "tip": "() => 'string' | 'expression' | 'password'"
+    },
+    {
+      "displayName": "setCurrentMode",
+      "description": "设置当前模式",
+      "type": "Function",
+      "tip": "(mode: 'string' | 'expression' | 'password) => void"
+    },
+    {
+      "displayName": "isStringMode",
+      "description": "是否为字符串模式",
+      "type": "Function",
+      "tip": "() => boolean"
+    },
+    {
+      "displayName": "focus",
+      "description": "获得焦点",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "blur",
+      "description": "失去焦点",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "setPasswordMode",
+      "description": "设置密码模式",
+      "type": "Function",
+      "tip": "(isPassword: boolean) => void"
+    },
+    {
+      "displayName": "togglePasswordMode",
+      "description": "切换密码模式",
+      "type": "Function",
+      "tip": "() => void"
+    }
+  ]
+}

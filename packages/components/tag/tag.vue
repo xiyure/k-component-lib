@@ -1,17 +1,29 @@
 <template>
-  <div :class="['k-tag', _styleModule]">
+  <div
+    v-ksw_tooltip="{ content: props.text, visible: props.showOverflow }"
+    :class="['k-tag', _styleModule]"
+  >
     <el-tag
       ref="KTagRef"
       :class="[
-        { 'is-border': border },
-        { 'is-point': point },
-        { [`k-tag__${type}`]: type },
-        { 'is-custom': color },
+        {
+          'is-border': border,
+          'is-point': point,
+          [`k-tag__${type}`]: type,
+          'is-custom': color,
+          'pr-0': isOverflow,
+        },
       ]"
       v-bind="$attrs"
       :size="formatSize.elSize"
     >
-      <span>
+      <span
+        ref="KTagSpanRef"
+        :class="{
+          ' inline-block  max-w-24  overflow-hidden text-ellipsis text-nowrap  break-words pr-0':
+            showOverflow,
+        }"
+      >
         <slot>{{ props.text }}</slot>
       </span>
     </el-tag>
@@ -27,13 +39,14 @@ import { useSize } from '../../hooks';
 import { colors } from './const';
 
 defineOptions({
-  name: 'KTag'
+  name: 'KTag',
 });
 
 const props = withDefaults(defineProps<TagProps>(), {
   point: false,
   type: undefined,
-  text: undefined
+  text: undefined,
+  showOverflow: false,
 });
 
 const _styleModule = inject('_styleModule', '');
@@ -42,6 +55,27 @@ const formatSize = useSize<TagProps>(props);
 
 const KTagRef = ref();
 const color = ref(props.color);
+
+const isOverflow = ref(false);
+
+function isShowTooltip(el: HTMLElement) {
+  const scrollWidth = el?.scrollWidth;
+  const clientWidth = el?.clientWidth;
+  if (scrollWidth > clientWidth) {
+    return true;
+  }
+  return false;
+}
+
+watch(
+  () => props.text,
+  () => {
+    nextTick(() => {
+      isOverflow.value = isShowTooltip(KTagRef.value.$el.childNodes[0].children[0]);
+    });
+  },
+  { immediate: true },
+);
 
 // watch props.color 变化, 更新颜色变量
 watch(
@@ -59,13 +93,13 @@ watch(
         colors.forEach((item) => {
           KTagRef.value.$el?.style.setProperty(
             `--tag${item.name}`,
-            getColorS?.[`--k-oklch-${item.value}`]
+            getColorS?.[`--k-oklch-${item.value}`],
           );
         });
       }
     });
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 const instance: any = {};

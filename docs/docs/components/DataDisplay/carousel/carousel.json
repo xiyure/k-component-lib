@@ -50,7 +50,7 @@
       "displayName": "type",
       "type": "enum",
       "description": "carousel 的类型",
-      "defaultValue": "",
+      "defaultValue": "''",
       "tip": "'' | 'card'"
     },
     {
@@ -94,20 +94,23 @@
     {
       "displayName": "setActiveItem",
       "type": "Function",
-      "description": "手动切换幻灯片，需要切换的幻灯片的索引，从 0 开始；或相应 el-carousel-item 的 name 属性值",
-      "defaultValue": ""
+      "description": "手动切换幻灯片，需要切换的幻灯片的索引，从 0 开始；或相应 k-carousel-item 的 name 属性值",
+      "defaultValue": "",
+      "tip": "(index: string | number) => void"
     },
     {
       "displayName": "prev",
       "type": "Function",
       "description": "切换至上一张幻灯片",
-      "defaultValue": ""
+      "defaultValue": "",
+      "tip": "() => void"
     },
     {
       "displayName": "next",
       "type": "Function",
       "description": "切换至下一张幻灯片",
-      "defaultValue": ""
+      "defaultValue": "",
+      "tip": "() => void"
     }
   ]
 }

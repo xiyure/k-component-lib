@@ -1,3 +1,5 @@
+import ResizeObserver  from 'resize-observer-polyfill';
+
 // Element Observer
 const OBSERVER_KEY = 'data-observer-key';
 export class ElementObserver {
@@ -9,7 +11,7 @@ export class ElementObserver {
     this.actions = {};
     // 检查是否在浏览器环境中
     if (typeof ResizeObserver !== 'undefined') {
-      this.resizeObserver = new ResizeObserver((entries) => {
+      this.resizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => {
         entries.forEach((entry) => {
           const target = entry.target as HTMLElement;
           const targetKey = target.getAttribute(OBSERVER_KEY);

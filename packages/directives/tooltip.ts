@@ -27,11 +27,12 @@ type BindingValue =
     }
   | string;
 
+const toolTipConfigMap = new WeakMap<HTMLElement, BindingValue>();
 let GLOBAL_TOOL_TIP: App | null = null;
 const TOOL_TIP_ID = '_tooltip_root';
 let timer: any = null;
 
-const createTooltip = (el: any, binding: DirectiveBinding<BindingValue>) => {
+const createTooltip = (el: any) => {
   const elRoot = document.querySelector('#_tooltip_root');
   if (elRoot) {
     elRoot.remove();
@@ -41,19 +42,20 @@ const createTooltip = (el: any, binding: DirectiveBinding<BindingValue>) => {
   const _tipRoot = document.createElement('div');
   _tipRoot.id = TOOL_TIP_ID;
   _tipRoot.classList.add('_tipRoot');
-  const { trigger, placement, content, showAfter, autoClose, visible } = isObject(binding.value) ?
-    binding.value :
-    {};
-  const showContent = ['string', 'number'].includes(typeof binding.value) ?
-    binding.value :
-    content ?? el.textContent ?? '';
+  const tooltipConfig = toolTipConfigMap.get(el);
+  const { trigger, placement, content, showAfter, autoClose, visible } = isObject(tooltipConfig)
+    ? tooltipConfig
+    : {};
+  const showContent = ['string', 'number'].includes(typeof tooltipConfig)
+    ? tooltipConfig
+    : content ?? el.textContent ?? '';
   let toolTipVisible: boolean | undefined = true;
-  if (trigger === 'click') {
+  if (visible === false) {
+    toolTipVisible = false;
+  } else if (trigger === 'click') {
     toolTipVisible = undefined;
   } else if (typeof visible === 'function') {
     toolTipVisible = visible(el);
-  } else if (visible === false) {
-    toolTipVisible = false;
   }
 
   // 通过createApp 创建实例组件
@@ -92,21 +94,33 @@ const disposeGlobalTooltip = () => {
     GLOBAL_TOOL_TIP = null;
   }
 };
+const handleTooltip = (el: HTMLElement) => {
+  const tooltipConfig = toolTipConfigMap.get(el);
+  const { showAfter, trigger } = isObject(tooltipConfig) ? tooltipConfig : {};
+  if (trigger === 'click') {
+    createTooltip(el);
+    return;
+  }
+  el.addEventListener('mouseenter', () => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(() => {
+      createTooltip(el);
+    }, showAfter ?? 500);
+  });
+  el.addEventListener('mouseleave', disposeGlobalTooltip);
+};
 export const tooltip: Directive = {
   mounted(el: HTMLElement, binding: DirectiveBinding<BindingValue>) {
-    const { showAfter = 500, trigger = 'hover' } = isObject(binding.value) ? binding.value : {};
-    if (trigger === 'click') {
-      createTooltip(el, binding);
-      return;
-    }
-    el.addEventListener('mouseenter', () => {
-      if (timer) {
-        clearTimeout(timer);
-      }
-      timer = setTimeout(() => {
-        createTooltip(el, binding);
-      }, showAfter);
-    });
-    el.addEventListener('mouseleave', disposeGlobalTooltip);
+    toolTipConfigMap.set(el, binding.value);
+    handleTooltip(el);
+  },
+  updated(_el, binding: DirectiveBinding<BindingValue>) {
+    toolTipConfigMap.set(_el, binding.value);
+  },
+  unmounted(el: HTMLElement) {
+    toolTipConfigMap.delete(el);
+    disposeGlobalTooltip();
   }
 };

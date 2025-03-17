@@ -16,13 +16,13 @@
       "tip": ""
     },
     {
-      "displayName": "filterKey",
+      "displayName": "filter-key",
       "type": "string",
       "description": "数据筛选字段",
       "defaultValue": "title"
     },
     {
-      "displayName": "childrenField",
+      "displayName": "children-field",
       "type": "string",
       "description": "用于树形数据场景，指定子节点字段名",
       "defaultValue": "children"
@@ -57,6 +57,13 @@
       "description": "是否忽略大小写",
       "defaultValue": "false",
       "version": "0.0.80"
+    },
+    {
+      "displayName": "default-Condition",
+      "type": "boolean",
+      "description": "是否忽略大小写",
+      "defaultValue": "false",
+      "version": "0.0.80"
     }
   ],
   "events": [
@@ -76,7 +83,7 @@
   "slots": [
     {
       "displayName": "reference",
-      "description": "自定义触发按钮",
+      "description": "触发 Popover 显示的 HTML 元素",
       "parameters": "object",
       "tip": "{ hasConfigCondition: boolean }"
     }

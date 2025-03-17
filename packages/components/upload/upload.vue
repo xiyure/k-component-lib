@@ -1,8 +1,9 @@
 <template>
-  <div :class="['k-upload', _styleModule, {'k-dragger': props.drag}]">
+  <div :class="['k-upload', _styleModule, {'k-dragger': drag}]">
     <el-upload
       ref="KUploadRef"
       v-bind="$attrs"
+      :action="action"
       :on-preview="handlePreview"
       :auto-upload="autoUpload"
       :disabled="disabled"
@@ -12,7 +13,7 @@
         <slot name="trigger">
           <div v-if="props.drag" class="default-sign">
             <IconEmptyBox color="#2882ff" />
-            {{ $t('uploadDragSign') }}
+            {{ t?.('uploadDragSign') }}
           </div>
           <div v-else class="default-upload-btn" @click.stop>
             <k-button
@@ -20,7 +21,7 @@
               :icon-left="autoUpload ? 'IconUpload': ''"
               @click="selectFile"
             >
-              {{ props.autoUpload ? $t('uploadFile') : $t('selectFile') }}
+              {{ props.autoUpload ? t?.('uploadFile') : t?.('selectFile') }}
             </k-button>
             <k-button
               v-if="!props.autoUpload"
@@ -30,7 +31,7 @@
               icon-left="IconUpload"
               @click="submit"
             >
-              {{ $t('uploadFile') }}
+              {{ t?.('uploadFile') }}
             </k-button>
           </div>
         </slot>
@@ -83,6 +84,7 @@
 <script setup lang="ts">
 import { ref, inject, computed } from 'vue';
 import { ElUpload, ElProgress, UploadFile, UploadRawFile } from 'element-plus';
+import { VueI18nTranslation } from 'vue-i18n';
 
 import { IconEmptyBox, IconWarning, IconCheck, IconDelete, IconFile } from 'ksw-vue-icon';
 import { UploadProps } from './type';
@@ -92,7 +94,11 @@ defineOptions({
   name: 'KUpload'
 });
 
-const props = withDefaults(defineProps<UploadProps>(), {});
+const t = inject<VueI18nTranslation>('$t');
+
+const props = withDefaults(defineProps<UploadProps>(), {
+  autoUpload: true
+});
 
 const _styleModule = inject('_styleModule', '');
 const KUploadRef = ref();

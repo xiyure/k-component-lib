@@ -9,6 +9,7 @@ import {
   isCheckingRelativePath,
   transformHighlightCode
 } from './utils'
+import { component } from 'vxe-pc-ui'
 
 const titleRegex = /title=['"](.*?)['"]/
 const pathRegex = /path=['"](.*?)['"]/
@@ -70,7 +71,9 @@ export const transformPreview = (md: MarkdownIt, token: Token, env: any) => {
   const showCode = encodeURIComponent(compileHighlightCode)
 
   const sourceCode = `<demo-preview title="${componentProps.title}" description="${componentProps.description}" code="${code}" showCode="${showCode}" suffixName="${suffixName}" absolutePath="${componentPath}" relativePath="${componentProps.path}">
-    <${componentName}></${componentName}>
+    <client-only>
+      <${componentName}></${componentName}>
+    </client-only>
   </demo-preview>`
 
   return sourceCode

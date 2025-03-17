@@ -6,11 +6,12 @@
   <k-dialog
     v-model="centerDialogVisible" title="Warning" width="500"
     center
+    :show-close="false"
   >
-    <span>
+    <div>
       It should be noted that the content will not be aligned in center by
       default
-    </span>
+    </div>
     <template #footer>
       <div class="dialog-footer">
         <k-button @click="centerDialogVisible = false">Cancel</k-button>

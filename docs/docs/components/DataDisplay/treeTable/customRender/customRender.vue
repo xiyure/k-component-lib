@@ -10,9 +10,9 @@
 </template>
 
 <script lang="tsx" setup>
-import { ref, reactive } from 'vue';
+import { ref } from 'vue';
 
-const tableData = reactive([
+const tableData = ref([
   { id: 1, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
   { id: 2, name: 'Test2', role: 'Test', sex: 'Women', age: 42, address: 'Guangzhou' },
   { id: 3, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
@@ -44,7 +44,16 @@ const column4 = ref([
   },
   {
     title: 'Role',
-    field: 'role'
+    field: 'role',
+    render: ({ row }) => {
+      if (row.role === 'Develop') {
+        return <k-tag>{row.role}</k-tag>;
+      } else if (row.role === 'Test') {
+        return <k-tag type="success">{row.role}</k-tag>;
+      } else {
+        return <k-tag type="warning">{row.role}</k-tag>;
+      }
+    }
   },
   {
     title: 'Sex',
@@ -61,12 +70,21 @@ const column4 = ref([
   {
     title: 'Age',
     field: 'age',
-    dataType: 'number'
+    dataType: 'string'
   },
   {
     title: 'Address',
     field: 'address'
-  }
+  },
+  {
+    title: '操作',
+    field: 'operation',
+    fixed: 'right',
+    width: '200',
+    render: ({ row }) => {
+      return <k-button onClick={() => console.log(row)}>操作</k-button>;
+    }
+  },
 ]);
 </script>
 <style scoped></style>

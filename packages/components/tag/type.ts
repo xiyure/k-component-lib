@@ -5,4 +5,5 @@ export interface TagProps {
   point?: boolean;
   text?: string;
   border?: boolean;
+  showOverflow?: boolean;
 }

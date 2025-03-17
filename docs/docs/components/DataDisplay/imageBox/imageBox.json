@@ -1,17 +1,18 @@
 {
-  "name": "ImageBox",
+  "name": "Image",
   "props": [
     {
       "displayName": "src",
       "type": "string",
       "description": "图片源地址，同原生属性一致",
-      "defaultValue": "''"
+      "defaultValue": ""
     },
     {
       "displayName": "fit",
       "type": "enum",
       "description": "确定图片如何适应容器框，同原生 object-fit",
-      "defaultValue": "''"
+      "defaultValue": "''",
+      "tip": "'' | 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'"
     },
     {
       "displayName": "hide-on-click-modal",
@@ -23,7 +24,8 @@
       "displayName": "loading",
       "type": "enum",
       "description": "浏览器加载图像的策略，和浏览器原生能力一致",
-      "defaultValue": "—"
+      "defaultValue": "",
+      "tip": "'eager' | 'lazy'"
     },
     {
       "displayName": "lazy",
@@ -35,37 +37,39 @@
       "displayName": "scroll-container",
       "type": "string / object",
       "description": "开启懒加载功能后，监听 scroll 事件的容器",
-      "defaultValue": "—"
+      "defaultValue": "",
+      "tip": "string | HTMLElement"
     },
     {
       "displayName": "alt",
       "type": "string",
       "description": "原生属性 alt",
-      "defaultValue": "—"
+      "defaultValue": ""
     },
     {
       "displayName": "referrerpolicy",
       "type": "string",
       "description": "原生属性 referrerPolicy。",
-      "defaultValue": "—"
+      "defaultValue": ""
     },
     {
       "displayName": "crossorigin",
       "type": "enum",
       "description": "原生属性 crossorigin",
-      "defaultValue": "—"
+      "defaultValue": "",
+      "tip": "'' | 'anonymous' | 'use-credentials'"
     },
     {
       "displayName": "preview-src-list",
       "type": "object",
       "description": "开启图片预览功能",
-      "defaultValue": "[]"
+      "defaultValue": "string[]"
     },
     {
       "displayName": "z-index",
       "type": "number",
       "description": "设置图片预览的 z-index",
-      "defaultValue": "—"
+      "defaultValue": ""
     },
     {
       "displayName": "initial-index",
@@ -115,31 +119,36 @@
       "displayName": "load",
       "type": "Function",
       "description": "图片加载成功触发",
-      "defaultValue": ""
+      "defaultValue": "",
+      "tip": "(e: Event) => void"
     },
     {
       "displayName": "error",
       "type": "Function",
       "description": "图片加载失败触发",
-      "defaultValue": ""
+      "defaultValue": "",
+      "tip": "(e: Event) => void"
     },
     {
       "displayName": "switch",
       "type": "Function",
       "description": "切换图像时触发。",
-      "defaultValue": ""
+      "defaultValue": "",
+      "tip": "(index: number) => void"
     },
     {
       "displayName": "close",
       "type": "Function",
       "description": "当点击 X 按钮或者在 hide-on-click-modal 为 true 时点击遮罩层时触发",
-      "defaultValue": ""
+      "defaultValue": "",
+      "tip": "() => void"
     },
     {
       "displayName": "show",
       "type": "Function",
       "description": "当 Viewer 显示时触发",
-      "defaultValue": ""
+      "defaultValue": "",
+      "tip": "() => void"
     }
   ],
   "slots": [

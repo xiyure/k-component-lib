@@ -106,3 +106,10 @@ function handleVisible(visible: boolean) {
   console.log('visible', visible);
 }
 </script>
+
+<style lang="less" scoped>
+:deep(.k-view-content) {
+  margin: auto;
+  font-size: 28px;
+}
+</style>

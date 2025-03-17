@@ -6,7 +6,7 @@
       :show-page="false"
       :advanced-filter-config="{
         filterAll: true,
-        exclude: ['id', 'name', 'role', 'address', 'sex'],
+        exclude: ['sex'],
         filterColumns: [
           {
             title: 'Age',
@@ -30,25 +30,25 @@
 </template>
 
 <script lang="tsx" setup>
-import { ref, reactive } from 'vue';
+import { ref } from 'vue';
 
-const tableData = reactive([
-  { id: 1, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
-  { id: 2, name: 'Test2', role: 'Test', sex: 'Women', age: 42, address: 'Guangzhou' },
-  { id: 3, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
-  { id: 4, name: 'Test4', role: 'Designer', sex: 'Women', age: 18, address: 'Shanghai' },
-  { id: 5, name: 'Test5', role: 'Develop', sex: 'Man', age: 39, address: 'test abc' },
-  { id: 6, name: 'Test6', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
-  { id: 7, name: 'Test7', role: 'PM', sex: 'Man', age: 9, address: 'Shanghai' },
-  { id: 8, name: 'Test8', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
-  { id: 9, name: 'Test9', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
-  { id: 10, name: 'Test10', role: 'Test', sex: 'Women', age: 42, address: 'Guangzhou' },
-  { id: 11, name: 'Test11', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
-  { id: 12, name: 'Test12', role: 'Designer', sex: 'Women', age: 18, address: 'Shanghai' },
-  { id: 13, name: 'Test13', role: 'Develop', sex: 'Man', age: 39, address: 'test abc' },
-  { id: 14, name: 'Test14', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
-  { id: 15, name: 'Test15', role: 'PM', sex: 'Man', age: 9, address: 'Shanghai' },
-  { id: 16, name: 'Test16', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' }
+const tableData = ref([
+  { id: 1, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc', date: '2022-01-01' },
+  { id: 2, name: 'Test2', role: 'Test', sex: 'Women', age: 42, address: 'Guangzhou', date: '2022-01-02' },
+  { id: 3, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai', date: '2022-01-03' },
+  { id: 4, name: 'Test4', role: 'Designer', sex: 'Women', age: 18, address: 'Shanghai', date: '2022-01-04' },
+  { id: 5, name: 'Test5', role: 'Develop', sex: 'Man', age: 39, address: 'test abc', date: '2022-01-05' },
+  { id: 6, name: 'Test6', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou', date: '2022-01-06' },
+  { id: 7, name: 'Test7', role: 'PM', sex: 'Man', age: 9, address: 'Shanghai', date: '2022-01-07' },
+  { id: 8, name: 'Test8', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai', date: '2022-01-08' },
+  { id: 9, name: 'Test9', role: 'Develop', sex: 'Man', age: 28, address: 'test abc', date: '2022-01-09' },
+  { id: 10, name: 'Test10', role: 'Test', sex: 'Women', age: 42, address: 'Guangzhou', date: '2022-01-10' },
+  { id: 11, name: 'Test11', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai', date: '2022-01-11' },
+  { id: 12, name: 'Test12', role: 'Designer', sex: 'Women', age: 18, address: 'Shanghai', date: '2022-01-12' },
+  { id: 13, name: 'Test13', role: 'Develop', sex: 'Man', age: 39, address: 'test abc', date: '2022-01-13' },
+  { id: 14, name: 'Test14', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou', date: '2022-01-14' },
+  { id: 15, name: 'Test15', role: 'PM', sex: 'Man', age: 9, address: 'Shanghai', date: '2022-01-15' },
+  { id: 16, name: 'Test16', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai', date: '2022-01-16' }
 ]);
 
 const column = ref([
@@ -102,7 +102,12 @@ const column = ref([
     title: 'Address',
     field: 'address',
     dataType: 'string'
-  }
+  },
+  {
+    title: '生日',
+    field: 'date',
+    dataType: 'date'
+  },
 ]);
 </script>
 <style scoped></style>

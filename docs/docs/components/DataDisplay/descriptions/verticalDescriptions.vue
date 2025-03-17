@@ -1,4 +1,4 @@
-y<template>
+<template>
   <k-radio-group v-model="size">
     <k-radio value="large">Large</k-radio>
     <k-radio>Default</k-radio>

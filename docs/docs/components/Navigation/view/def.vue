@@ -7,23 +7,16 @@
     @refresh="() => console.log('refresh')"
     @drag="(value) => console.log('drag', value)"
   >
-    <template #label="{ data }">
-      <k-tag :color="data.color" size="sm" text-color="#000" point>
-        {{ data.label }}
-      </k-tag>
-    </template>
-    <template #all>all</template>
-    <template #free>free</template>
-    <template #active>active</template>
-    <template #outline>outline</template>
-    <template #destory>destory</template>
-    <template #production1>production1</template>
-    <template #production2>production2</template>
+    <template #all>全部</template>
+    <template #free>空闲</template>
+    <template #active>活跃</template>
+    <template #outline>离线</template>
+    <template #destory>停用</template>
   </k-view>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
 const viewData = ref([
   {
@@ -58,3 +51,10 @@ const viewData = ref([
   }
 ]);
 </script>
+
+<style lang="less" scoped>
+:deep(.k-view-content) {
+  margin: auto;
+  font-size: 28px;
+}
+</style>

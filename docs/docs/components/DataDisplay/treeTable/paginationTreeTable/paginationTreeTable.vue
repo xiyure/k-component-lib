@@ -4,13 +4,13 @@
       :data="tableData" :column="column1"
       border
       use
-      :pagination-config="{ layout: 'total, sizes, prev, pager, next, jumper' }"
+      :pagination-config="{ layout: 'total, sizes, prev, pager, next, jumper', pageSizes: [10, 20, 30, 40, 50] }"
     ></k-tree-table>
   </div>
 </template>
 
 <script lang="tsx" setup>
-import { ref, reactive } from 'vue';
+import { ref } from 'vue';
 
 const column1 = ref([
   {
@@ -41,7 +41,7 @@ const column1 = ref([
     field: 'address'
   }
 ]);
-const tableData = reactive([
+const tableData = ref([
   {
     id: 1,
     name: 'Test1',

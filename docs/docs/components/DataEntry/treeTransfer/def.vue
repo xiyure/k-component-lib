@@ -3,14 +3,13 @@
     :data="treeTransferData"
     use-tree
     label="name"
-    expand-icon-color="#f60"
-    collapse-icon-color="red"
-    @change="(a) => console.log(a)"
+    @change="handleChange"
   ></k-tree-transfer>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
+import { TreeTransferData } from '@ksware/ksw-ux';
 
 const treeTransferData = ref([
   { id: 10000, pid: null, name: 'Test1' },
@@ -32,4 +31,8 @@ const treeTransferData = ref([
   { id: 24566, pid: 24555, name: 'Test17' },
   { id: 24577, pid: 24555, name: 'Test18' }
 ]);
+
+function handleChange(data: TreeTransferData) {
+  console.log(data);
+}
 </script>

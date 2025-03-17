@@ -1,0 +1,82 @@
+@import '../../style/variable.css';
+@import '../../style/global.less';
+
+.k-split {
+  display: flex;
+
+  &-pane {
+    overflow: auto;
+  }
+
+  &-pane-second {
+    flex: 1;
+  }
+
+  &-horizontal {
+    flex-direction: row;
+  }
+
+  &-vertical {
+    flex-direction: column;
+  }
+}
+
+.k-split-trigger {
+  &-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--k-gray-600);
+    line-height: 1;
+    background-color: var(--k-gray-200);
+  }
+
+  &-icon {
+    display: inline-block;
+  }
+
+  &-line {
+    background-color: var(--k-gray-200);
+
+    &:hover {
+      background-color: var(--k-blue-300);
+    }
+  }
+
+  &-horizontal {
+    height: 100%;
+    cursor: col-resize;
+
+    .k-split-trigger-icon-wrapper {
+      width: 8px;
+    }
+
+    .k-split-trigger-line {
+      width: 3px;
+      height: 100%;
+    }
+  }
+
+  &-vertical {
+    width: 100%;
+    cursor: row-resize;
+
+    .k-split-trigger-icon-wrapper {
+      height: 8px;
+    }
+
+    .k-split-trigger-line {
+      width: 100%;
+      height: 3px;
+    }
+  }
+
+  &-disabled {
+    cursor: not-allowed;
+
+    .k-split-trigger-line:hover {
+      background-color: var(--k-gray-200);
+    }
+  }
+}

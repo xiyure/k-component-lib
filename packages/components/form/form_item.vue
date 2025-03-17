@@ -1,4 +1,3 @@
-<!--       { 'k-form-item--no-label': props.label === '' }, -->
 <template>
   <el-form-item
     ref="KFormItemRef"
@@ -6,7 +5,7 @@
       'k-form-item',
       _styleModule,
       { 'k-form-item--colon': injectShowColon },
-      { 'k-form-item--no-label': _showLabel === true },
+      { 'k-form-item--no-label': _showLabel === true }
     ]"
     v-bind="$attrs"
     :label="label"
@@ -16,7 +15,7 @@
       <span
         ref="LabelRef"
         v-ksw_tooltip="{
-          visible: isShowTooltip,
+          visible: isShowTooltip
         }"
       >
         <slot name="label" v-bind="labelData">{{ props.label }}</slot>
@@ -32,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, computed } from 'vue';
+import { ref, inject, computed, nextTick, watch } from 'vue';
 import { ElFormItem } from 'element-plus';
 import { FormItemProps } from './type';
 import { getExposeProxy } from '../../utils';
@@ -81,9 +80,8 @@ const _showLabel = computed(() => {
   if (props.showLabel === false) {
     return true;
   }
+  return false;
 });
-
-// console.log(props.label, injectShowLabel.value);
 </script>
 
 <style lang="less">

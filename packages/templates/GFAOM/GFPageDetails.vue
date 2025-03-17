@@ -88,9 +88,8 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
+import { KTabs, KTabPane, KButton } from '../../components';
 import { GFPageDetailProps } from './type';
-
-// console.log(KDetailsItem);
 
 defineOptions({
   name: 'GFPageDetails'

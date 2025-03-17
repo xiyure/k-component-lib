@@ -1,0 +1,20 @@
+{
+  "name": "globalProvider",
+  "props": [
+    {
+      "displayName": "locale",
+      "type": "enum",
+      "description": "语言类型",
+      "defaultValue": "zh",
+      "tip": "'zh' | 'en'"
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "default",
+      "description": "默认插槽内容"
+    }
+  ],
+  "methods": []
+}

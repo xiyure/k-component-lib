@@ -2,7 +2,143 @@
 
 All notable changes to this project will be documented in this file.
 
+## [未发布]
+
+
+### 🚀 特性
+
+- *(ScriptInput)* 支持自定义下拉列表label属性； - ([e275add](https://github.com/xiyure/k-component-lib/commit/e275add33a14df0736ad12bdbb349a920f01d775))
+- *(script_input)* 增加事件, mode-change - ([741586d](https://github.com/xiyure/k-component-lib/commit/741586d5ca6d01cb94c2a98d88b9991b74d773bc))
+
+### 🐛 Bug 修复
+
+- *(k-input-number)* 修复padding错误 - ([e1ec23f](https://github.com/xiyure/k-component-lib/commit/e1ec23fbaec1c98cfe08aa05baaaf57c37848a79))
+- *(tree_transfer)* 修改样式 - ([75493a8](https://github.com/xiyure/k-component-lib/commit/75493a81e51f58ed417d55a37c6e043f5a94b2c8))
+
+## [1.1.16](https://github.com/xiyure/k-component-lib/compare/v1.1.14..v1.1.16) - 2025-03-05
+
+### 📦️ 依赖
+
+- element-plus : 2.9.0
+- vxe-table : ^4.10.1
+
+### 🐛 Bug 修复
+
+- *(ScriptInput)* 修复输入`<xxx>`格式文本时输入框内容消失问题； - ([547e2e8](https://github.com/xiyure/k-component-lib/commit/547e2e82fbf40e34d084b698de729a29f9568960))
+- *(ScriptInput)* 修复脚本输入框在密码状态下无法解析脚本标签问题； - ([3faf098](https://github.com/xiyure/k-component-lib/commit/3faf0984af4aac4b2803700315c8b3452fdd37ac))
+
+## [1.1.14](https://github.com/xiyure/k-component-lib/compare/v1.1.0..v1.1.14) - 2025-02-28
+
+### 📦️ 依赖
+
+- element-plus : 2.9.0
+- vxe-table : ^4.10.1
+
+### 🚀 特性
+
+- *(KGlobalProvider)* 新增KGlobalProvider组件，用于全局共享数据； - ([abf42f7](https://github.com/xiyure/k-component-lib/commit/abf42f72819b093f81fb83a5bb231dc9f785b569))
+- *(KTreeTable)* 搜索功能支持拼音搜索； - ([d513fe3](https://github.com/xiyure/k-component-lib/commit/d513fe3dc14ae84d4166cdbb3d3ae5c324b5a1e1))
+- *(script_input)* 新增参数 max, min 用于校验字符串长度 or number 最大值 - ([0513b09](https://github.com/xiyure/k-component-lib/commit/0513b09dde02b182d3ea1972634a95a89b773670))
+- *(script_input)* 增加 maxHeight - ([9f05d55](https://github.com/xiyure/k-component-lib/commit/9f05d55b6a193800c412c925994532292fd842bf))
+- *(tree_table)* 增加可编辑单元格 hover 指针状态 - ([55f77e2](https://github.com/xiyure/k-component-lib/commit/55f77e2a0cc1332ee6d93506c559cbb12a0800a4))
+
+### 🐛 Bug 修复
+
+- *(all)* 修复所有组件ssr渲染不一致问题 - ([99e1af4](https://github.com/xiyure/k-component-lib/commit/99e1af45e6ce1acaa10efd4ede7639e2865491e0))
+- *(button)* Text 兼容 el type - ([d2cda5e](https://github.com/xiyure/k-component-lib/commit/d2cda5e752851fea8e03d5d2bb70921f252b4211))
+- *(details)* 优化样式 - ([a1d00c0](https://github.com/xiyure/k-component-lib/commit/a1d00c085365f3cab17d30a0667237794bbe5a54))
+- *(i18n)* 更换i18n挂载方式 - ([ef39884](https://github.com/xiyure/k-component-lib/commit/ef39884a9369143761a0015a9d81a122d62884a2))
+- *(input)* 使用 clearable , 在某些情况下出现两个清除按钮 - ([42c87d8](https://github.com/xiyure/k-component-lib/commit/42c87d8cef6620a6982077dcc66c9b9b583448d9))
+- *(messageBox)* 修复多层弹窗层级冲突问题 - ([66395aa](https://github.com/xiyure/k-component-lib/commit/66395aaccda52e3080149b644caa7d9bd7e4a331))
+- *(script_input)* 修复密码框形态时密码返显失效 - ([21f8fb4](https://github.com/xiyure/k-component-lib/commit/21f8fb4761d7e970a3ca2dece308167eddd3a81a))
+- *(script_input)* 校验信息定位 bug - ([0c33089](https://github.com/xiyure/k-component-lib/commit/0c33089e9a4beaf021fa9bf7801d3d2505315351))
+- *(script_input)* 优化类型校验提示 - ([fb0cbcf](https://github.com/xiyure/k-component-lib/commit/fb0cbcf42cee9bfe3cf781ec7b15f93055e77a81))
+- *(sliderButton)* 修复无法监听自身宽度bug - ([423c652](https://github.com/xiyure/k-component-lib/commit/423c65246769c35e62faa3007547498dedf92829))
+- *(tag)* Tag tooltip 改为默认不触发 - ([b89ff30](https://github.com/xiyure/k-component-lib/commit/b89ff30191b94d2ce669303be26c3b46f9e48587))
+- *(tour)* K-button样式覆盖 el-button 样式 - ([bdf489a](https://github.com/xiyure/k-component-lib/commit/bdf489aa5640591306459dc5934749b203f8aedd))
+- *(transfer)* 修复箭头icon 指向错误 - ([47f1d08](https://github.com/xiyure/k-component-lib/commit/47f1d08b709a8bdfe04e9742fe3083ebce54d07c))
+- *(tree_table)* 修复单元格自适应内容高度 - ([8cf0239](https://github.com/xiyure/k-component-lib/commit/8cf02392b6e3d63fd81293c4f956a17fd0a84d27))
+- *(tree_table)* 修复混动功能失效,  但是滚动条依然不可见 - ([02aa99c](https://github.com/xiyure/k-component-lib/commit/02aa99c4cb19094240292a00801d51a5d4cf5c2a))
+- *(tree_table)* 修复分页切换影响到已选数据bug - ([3d9e832](https://github.com/xiyure/k-component-lib/commit/3d9e832afbd92b9f9965ff4402cb4bde349d0207))
+- *(v-ksw_tooltip)* 修复同一组件时, 只生效一次, 优化 dialog 样式 - ([eb77244](https://github.com/xiyure/k-component-lib/commit/eb772445560f0b06d0ec6c7c9fdcb2192ac193f4))
+- *(导航栏)* 修复导航栏样式问题 - ([5313818](https://github.com/xiyure/k-component-lib/commit/5313818e487f5718204c32173de41266d1286e14))
+- 修复TreeTable组件getCheckboxRecords方法在树形数据中获取已选中数据时无法无法返回父级选中的数据； - ([4019744](https://github.com/xiyure/k-component-lib/commit/401974490cabba7c6244b519f5ee8590baa31a56))
+- V-ksw_tooltip响应式丢失问题； - ([952b66b](https://github.com/xiyure/k-component-lib/commit/952b66b702fb92f62b1929a560cce8ca0beb1c20))
+
+### 📚 文档
+
+- *(主页)* 添加组件展示图片 - ([bea71a7](https://github.com/xiyure/k-component-lib/commit/bea71a78bbbe33719f059213331a1419fad4aa35))
+- *(主页)* 适配黑暗模式 - ([c259e03](https://github.com/xiyure/k-component-lib/commit/c259e03156f6882e8f3cc06c66b6ac009a1bade8))
+- *(首页)* 添加首页动画 - ([74144cb](https://github.com/xiyure/k-component-lib/commit/74144cb275face8a051cac9c525cd5e9bad811e6))
+- 首页新增滚动动画 - ([1d5b049](https://github.com/xiyure/k-component-lib/commit/1d5b0492e936e64aee0e2ae535339e005933b059))
+- 新增调色板 - ([f9f74d1](https://github.com/xiyure/k-component-lib/commit/f9f74d11f7c8b65d1264d0ec7b108a4a5df3562a))
+- I18n 支持 - ([87ed211](https://github.com/xiyure/k-component-lib/commit/87ed21153317f017ecf8dd585f16157b94e8205f))
+- 优化 build chunks 分包, 组件库 css 使用 cdn 导入 - ([8dd8853](https://github.com/xiyure/k-component-lib/commit/8dd8853de10997ca6c985660737738f8cefa3bec))
+- 合并分支 'dev-docs' 到 dev, 使用动态组件优化 demo 加载 - ([3407e27](https://github.com/xiyure/k-component-lib/commit/3407e27f128dccf0e2a966d46b76f14a1e345820))
+- 优化 build Chunks - ([16e008d](https://github.com/xiyure/k-component-lib/commit/16e008d6cd8cab01509df5deb65c1fee1faa6678))
+- Demo-shiki 组件语法高亮使用 shiki 实现, 性能消耗比 highlight.js 多,但是支持精准语法高亮和丰富主题 - ([14ab427](https://github.com/xiyure/k-component-lib/commit/14ab4278baa97f509db12c1eace0d7fe8ec01d58))
+- Demo 组件新增高亮语言支持, 优化黑暗模式高亮主题 - ([b2c99e6](https://github.com/xiyure/k-component-lib/commit/b2c99e6eb486aa60bef8f9f3be3ef760f71b0af9))
+- 优化首页 - ([e848e2b](https://github.com/xiyure/k-component-lib/commit/e848e2bf4bd4924f32f3da2b73bd575ec60e7146))
+- 更新首页 - ([2dce8fd](https://github.com/xiyure/k-component-lib/commit/2dce8fd0b663de929590a9ab1aaea65a6987b787))
+
+### 🎨 样式
+
+- *(slider_button)* 优化样式 - ([6ee2c2a](https://github.com/xiyure/k-component-lib/commit/6ee2c2ac4bdadbffb760b50a201b6c36c74cf281))
+
+### 🧪 测试
+
+- *(tree-table)* 尝试修复显示不全的问题 - ([a5a06a1](https://github.com/xiyure/k-component-lib/commit/a5a06a1eaf0a5b52f4faf5a131d065472cf5096b))
+
+## [1.1.0](https://github.com/xiyure/k-component-lib/compare/v1.0.6..v1.1.0) - 2025-01-16
+
+### 📦️ 依赖
+
+- element-plus : 2.9.0
+- vxe-table : ^4.10.1
+
+### 🚀 特性
+
+- *(script_input)* 新增 valueType, 用于正则校验是否为 数字 或 布尔值 - ([a69568c](https://github.com/xiyure/k-component-lib/commit/a69568c26631be2ad37f0e5decd2e26d6b8b4ba8))
+- *(tag)* 新增 showOverflow 来控制最大宽度, 建议比table 单元格预留 140px - ([2d377b7](https://github.com/xiyure/k-component-lib/commit/2d377b73f5c19cb1c6cc21292723672834ed0bf3))
+
+### 🐛 Bug 修复
+
+- *(ButtonContainer)* 修复隐藏按钮点击事件失效问题； - ([77e2d50](https://github.com/xiyure/k-component-lib/commit/77e2d50353f2125c2c2ff4b89c6eb6edc43c56fb))
+- *(script_input)* 优化节点判断 - ([791b16a](https://github.com/xiyure/k-component-lib/commit/791b16a6efa4d8eb942dcb4f7ae751173f772943))
+- *(script_input)* 修改提示文字 - ([bc9a08f](https://github.com/xiyure/k-component-lib/commit/bc9a08f3e7a00e9c0588df02032c6dbb085a6034))
+- *(script_input)* 优化中英文混合输入导致换行的 bug - ([5e208b2](https://github.com/xiyure/k-component-lib/commit/5e208b25707f65d7378e74c6bac3a061ee34ae1f))
+- Upload组件使用trigger插槽时before-upload事件不触发的问题； - ([44e988c](https://github.com/xiyure/k-component-lib/commit/44e988c6f6094dc74793cea199e5e7c5669fa986))
+
+### 🚜 重构
+
+- Element-plus 降低版本至 2.9.0 并锁定 - ([7e3b632](https://github.com/xiyure/k-component-lib/commit/7e3b6324af8e79bb1b1e6d59dd939faedfe03a95))
+
+### 📚 文档
+
+- *(carousel)* 补充Function提示 - ([67487a1](https://github.com/xiyure/k-component-lib/commit/67487a1e0d41b438cec0b8dd0d314ca16985e936))
+- *(collapse)* 补充API描述 - ([e8631a0](https://github.com/xiyure/k-component-lib/commit/e8631a0bdc3fe64eb21023fb90972b4cc2250101))
+- *(descriptions)* 补充API提示 - ([e456a47](https://github.com/xiyure/k-component-lib/commit/e456a474a4809c0096b9724d36c4c97521e132a5))
+- *(image)* ImageViewer扩充API - ([d14b84d](https://github.com/xiyure/k-component-lib/commit/d14b84def3e9e5b7ed9ac4cf8289766c3fdf0990))
+- *(scriptInput)* 完成文档以及API编写 - ([b2dc9b4](https://github.com/xiyure/k-component-lib/commit/b2dc9b4d278a51d1cea1fd845d78e0a5b8d6b7a3))
+- 贡献者添加数据映射 - ([0d909d2](https://github.com/xiyure/k-component-lib/commit/0d909d21b519230f272d8b4de3d2e15973d1e99f))
+
+### 🎨 样式
+
+- *(script_input)* 增加 disabled 样式 - ([3826277](https://github.com/xiyure/k-component-lib/commit/3826277c04ff992d1b9ab9826d3cdcd15ed03fea))
+- *(script_input)* 增加字间距, 规避英文符号',光标问题 - ([917510e](https://github.com/xiyure/k-component-lib/commit/917510ee5fc194d2757f34f3e52f3890c56ccf53))
+
+## 新贡献者 ❤️
+
+* @sengoku-f 做出了他们的第一次贡献
+* @ 做出了他们的第一次贡献
+* @baobaomi900901 做出了他们的第一次贡献
+* @github-actions[bot] 做出了他们的第一次贡献
 ## [1.0.6](https://github.com/xiyure/k-component-lib/compare/v1.0.0..v1.0.6) - 2025-01-08
+
+### 📦️ 依赖
+
+- element-plus : ^2.9.2
+- vxe-table : ^4.10.1
 
 ### 💼 修改
 
@@ -15,6 +151,11 @@ All notable changes to this project will be documented in this file.
 
 ## [1.0.0](https://github.com/xiyure/k-component-lib/compare/v0.0.123..v1.0.0) - 2025-01-07
 
+### 📦️ 依赖
+
+- element-plus : ^2.9.2
+- vxe-table : ^4.10.1
+
 ### 🐛 Bug 修复
 
 - ScriptInput组件密码框/文本框切换选择脚本标签时内容丢失问题； - ([6712892](https://github.com/xiyure/k-component-lib/commit/671289204d7341f3653dc3142d3b20c6c0557233))
@@ -25,7 +166,15 @@ All notable changes to this project will be documented in this file.
 - 添加团队页和变更页面 - ([f61d99b](https://github.com/xiyure/k-component-lib/commit/f61d99bea95e0bf20dbcbeadd52cc68829c90247))
 - 新增提交规范 - ([4b29f83](https://github.com/xiyure/k-component-lib/commit/4b29f83c5b0d9d0a5000e5c35c77049707402812))
 
+## 新贡献者 ❤️
+
+* @github-actions[bot] 做出了他们的第一次贡献
 ## [0.0.120] - 2024-12-25
+
+### 📦️ 依赖
+
+- element-plus : ^2.9.0
+- vxe-table : ^4.9.22
 
 ### 🚀 特性
 
@@ -193,4 +342,6 @@ All notable changes to this project will be documented in this file.
 ## 新贡献者 ❤️
 
 * @ 做出了他们的第一次贡献
-* @xiyure 做出了他们的第一次贡献
+* @QijianMo 做出了他们的第一次贡献
+* @sengoku-f 做出了他们的第一次贡献
+* @baobaomi900901 做出了他们的第一次贡献

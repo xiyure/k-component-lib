@@ -1,11 +1,13 @@
 import { Component } from 'vue';
 import { VxeTablePropTypes } from 'vxe-table';
+import { Column, SearchConfig, TablePaginationConfig } from '../tree_table';
 
 export interface TreeTransferProps {
+  modelValue?: TreeTransferData[]
+  rowKey?: string
   data: TreeTransferData[]
   defaultData?: string[]
   titles?: [string, string]
-  showSearchInput?: boolean
   useTree?: boolean
   expandIcon?: Component | string
   expandIconColor?: string
@@ -16,10 +18,17 @@ export interface TreeTransferProps {
   treeConfig?: VxeTablePropTypes.TreeConfig
   label?: string
   scrollY?: VxeTablePropTypes.ScrollY
-  drag?: boolean
   showDrag?: boolean
+  showSearchInput?: boolean | 'left'
+  searchConfig?: SearchConfig
+  rightSearchConfig?: SearchConfig
+  showPage?: boolean | 'left' | 'right'
+  leftPaginationConfig?: TablePaginationConfig
+  rightPaginationConfig?: TablePaginationConfig
+  columns?: Column[]
+  tableHeight?: number
   checkMethod?: (data: any) => boolean
-  searchMethod?: (keyword: string, data: any[]) => Promise<any[]>
+  checkboxAll?: boolean
 }
 
 export interface TreeTransferData {

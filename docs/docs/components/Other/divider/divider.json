@@ -1,0 +1,36 @@
+{
+  "name": "divider",
+  "props": [
+    {
+      "displayName": "direction",
+      "type": "enum",
+      "description": "设置分割线方向",
+      "defaultValue": "horizontal",
+      "tip": "'horizontal' | 'vertical'"
+    },
+    {
+      "displayName": "border-style",
+      "type": "enum",
+      "description": "设置分隔符样式",
+      "defaultValue": "solid",
+      "tip": "'none' | 'solid' | 'hidden' | 'dashed' | ..."
+    },
+    {
+      "displayName": "content-position",
+      "type": "enum",
+      "description": "自定义分隔线内容的位置",
+      "defaultValue": "center",
+      "tip": "'left' | 'right' | 'center'"
+    }
+  ],
+  "events": [],
+  "slots": [
+    {
+      "displayName": "default",
+      "type": "slot",
+      "description": "设置分割线文案的位置",
+      "defaultValue": ""
+    }
+  ],
+  "methods": []
+}

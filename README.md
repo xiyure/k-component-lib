@@ -11,6 +11,55 @@ https://github.com/xiyure/k-component-lib.git
 ## 检查
 代码提交前先执行npm run lint检查代码，如有问题代码，可通过npm run fix修复，无法修复的则需要手动消除错误，请确保提交的代码没有问题，否则无法合入。
 
+## 生成 CHANGELOG
+
+项目使用 [git-cliff](https://git-cliff.org/docs/) 来生成 CHANGELOG
+
+### 安装
+
+```bash
+# with yarn
+yarn add -D git-cliff
+
+# with npm
+npm install git-cliff --save-dev
+```
+
+### 运行
+
+```bash
+npm exec git-cliff
+# or
+npx git-cliff@latest
+```
+
+### 生成带依赖版本的 CHANGELOG
+
+首先先使用 [git-cliff print-context](https://git-cliff.org/docs/usage/print-context) 将上下文保存为 `context.json`
+
+```bash
+git-cliff --context --output context.json
+```
+
+生成所有版本的依赖, `isFullHistory = true` 的时候请保持工作区干净
+
+```bash
+node dependenciesChange/generate_deps.js
+```
+
+将 `dependenciesVersion.json` 中的内容注入到 `context.json` 对应版本的 `extra.dependencies` 中
+
+
+```bash
+node dependenciesChange/inject_deps.js
+```
+
+接着从修改后的 `context.json` 生成 CHANGELOG
+
+```bash
+git-cliff --from-context context.json -o CHANGELOG.md
+```
+
 ## 提交规范
 
 ### 概括
@@ -132,3 +181,4 @@ BREAKING CHANGE: 使用了 Node 6 中不可用的 JavaScript 特性。
 - `feat: 添加新功能` 或 `特性: 添加新功能` 会被归类为 `🚀 特性`。
 - `fix: 修复登录问题` 或 `修复: 修复登录问题` 会被归类为 `🐛 Bug 修复`。
 - `doc: 更新 README` 或 `文档: 更新 README` 会被归类为 `📚 文档`。
+

@@ -65,10 +65,10 @@ Vue.use(KswIcon)
 ### 项目用法
 
 ::: tip
-自 `2.3.0` 版本起图标库支持 `Vue.ues` 传入项目名称来使用项目图标
+自 `2.3.0` 版本起图标库支持 `Vue.use` 传入项目名称来使用项目图标
 :::
 
-你可以在 `Vue.ues` 方法传入项目名称来使用项目图标库扩充基本图标库。项目图标的优先级大于基本图标。
+你可以在 `Vue.use` 方法传入项目名称来使用项目图标库扩充基本图标库。项目图标的优先级大于基本图标。
 
 例如下方的示例使用广发 `Guangfa` 来扩充基本图标库
 
@@ -81,7 +81,7 @@ Vue.use(KswIcon, { projectName: "Guangfa" });
 | Base      |  基本图标库       |
 | Guangfa     | 广发图标库 |
 
-### 别名图标
+### 别名图标 <k-tag type="primary" round>^2.4.0</k-tag>
 
 ::: tip
 自 `2.4.0` 版本起图标库支持为图标设置别名
@@ -96,6 +96,18 @@ Vue.use(KswIcon, { projectName: "Guangfa" });
     "alias-2",
     "alias-3"
   ],
+}
+```
+
+## 彩色图标暗黑模式
+
+当我们需要在在暗黑模式下修改彩色图标的颜色可以使用 `css` 的 `filter` 属性来实现
+
+```css
+.ksw-icon {
+  .dark & :deep(svg path) {
+      filter: hue-rotate(170deg) invert(100%) contrast(150%) saturate(200%);
+    }
 }
 ```
 

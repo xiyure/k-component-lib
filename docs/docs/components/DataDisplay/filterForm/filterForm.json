@@ -1,0 +1,131 @@
+{
+  "name": "FilterForm",
+  "props": [
+    {
+      "displayName": "items",
+      "type": "FilterFormItem[]",
+      "description": "展示的数据项",
+      "defaultValue": "[]",
+      "tip": ""
+    },
+    {
+      "displayName": "size",
+      "type": "enum",
+      "description": "尺寸",
+      "defaultValue": "",
+      "tip": "'base' | 'sm' | undefined"
+    },
+    {
+      "displayName": "collapse",
+      "type": "boolean",
+      "description": "是否折叠",
+      "defaultValue": "true"
+    },
+    {
+      "displayName": "reserve",
+      "type": "boolean",
+      "description": "是否保留已选条件",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "visible",
+      "type": "boolean",
+      "description": "是否显示表单数据项",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "showColon",
+      "type": "boolean",
+      "description": "是否显示冒号",
+      "defaultValue": ""
+    }
+  ],
+  "subProps": {
+    "FilterFormItem": [
+    {
+      "displayName": "label",
+      "description": "标签内容",
+      "type": "string",
+      "tip": ""
+    },
+    {
+      "displayName": "prop",
+      "description": "数据项对应字段",
+      "type": "string",
+      "tip": ""
+    },
+    {
+      "displayName": "value",
+      "description": "数据项对应值",
+      "type": "any",
+      "tip": ""
+    },
+    {
+      "displayName": "type",
+      "description": "数据项类型",
+      "type": "enum",
+      "tip": "'input' | 'select' | 'date' | 'checkbox' | 'radio' | 'cascader' | 'tree-select'"
+    },
+    {
+      "displayName": "attrs",
+      "description": "透传的数据",
+      "type": "any",
+      "tip": ""
+    },
+    {
+      "displayName": "render",
+      "description": "自定义渲染",
+      "type": "Function",
+      "tip": "(item: any) => VNode | Component"
+    },
+    {
+      "displayName": "options",
+      "description": "选项数据",
+      "type": "any[]",
+      "tip": ""
+    },
+    {
+      "displayName": "column",
+      "description": "列数量",
+      "type": "number",
+      "tip": ""
+    },
+    {
+      "displayName": "visible",
+      "description": "是否显示该数据项",
+      "type": "boolean",
+      "tip": ""
+    }]
+  },
+  "events": [
+    {
+      "displayName": "search",
+      "description": "搜索时触发",
+      "type": "Function",
+      "tip": "(value: FormValidateCallback) => void"
+    },
+    {
+      "displayName": "reset",
+      "description": "重置时触发",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "change",
+      "description": "重置时触发",
+      "type": "Function",
+      "tip": "(vale: FormValidateCallback) => void"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "[column.prop]",
+      "description": "自定义渲染列"
+    },
+    {
+      "displayName": "action",
+      "description": "自定义操作按钮"
+    }
+  ],
+  "methods": []
+}

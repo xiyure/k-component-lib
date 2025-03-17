@@ -1,7 +1,7 @@
 @import '../../style/variable.css';
 @import '../../style/general.less';
 
-.k-script-input-wrapper {
+.k-script-input {
   width: 100%;
   border-radius: var(--k-theme-button-size-rounded--base);
   display: flex;
@@ -38,8 +38,6 @@
     overflow: hidden;
     border-top-left-radius: var(--k-theme-button-size-rounded--base);
     border-bottom-left-radius: var(--k-theme-button-size-rounded--base);
-    .k-button {
-    }
   }
   .k-script-input-append:has(.k-button) {
     border: 1px solid var(--k-gray-200);
@@ -47,43 +45,42 @@
     overflow: hidden;
     border-top-right-radius: var(--k-theme-button-size-rounded--base);
     border-bottom-right-radius: var(--k-theme-button-size-rounded--base);
-    .k-button {
-      // border-left: 1px solid var(--k-gray-200);
-    }
   }
 
-  // &:has(.k-script-input:focus-visible) {
-  //   border: 1px solid var(--k-theme-primary);
-  //   box-shadow: var(--k-theme-focus-style);
-  //   transition: all 0.2s ease-in-out;
-  // }
-
   .k-input.el-input {
-    //   padding: 0;
     .el-input__wrapper {
-      //     border: none;
       border-radius: 0;
     }
   }
 
   .k-script-input-wrap {
     height: 100%;
-    &:has(.k-script-input:focus-visible) {
+    &:has(.k-script-input-wrapper:focus-visible) {
       z-index: 10;
     }
-    .k-script-input {
+    .k-script-input-wrapper {
       width: 100%;
       height: 100%;
       padding: 0.1875rem 0.5rem;
       line-height: 1.5rem;
       overflow: auto;
       min-height: 2rem;
+      letter-spacing: 0.075rem;
       border: 1px solid var(--k-gray-200);
       -webkit-box-orient: vertical;
       word-break: break-all;
+      white-space: pre-wrap;
 
-      &.no-checkVariableName {
+      &.hidden-result {
         border: 1px solid var(--k-red-500);
+      }
+
+      &:empty::after {
+        content: attr(placeholder);
+        color: #909090;
+        user-select: none;
+        pointer-events: none;
+        opacity: 0.5;
       }
 
       // var_tag
@@ -109,7 +106,7 @@
         }
       }
 
-      &:hover {
+      &:hover:not(.is-disabled) {
         border: 1px solid var(--k-theme-primary);
       }
 
@@ -117,10 +114,37 @@
         outline: unset;
         border: 1px solid var(--k-theme-primary);
         box-shadow: var(--k-theme-focus-style);
-        transition: all 0.2s ease-in-out;
+        // transition: all 0.2s ease-in-out;
         z-index: 10;
       }
+
+      &.is-disabled {
+        background-color: var(--k-gray-50);
+        cursor: not-allowed;
+      }
+      .k-script-tag-x-mark {
+        display: none;
+        margin-left: 3px;
+        cursor: pointer;
+
+        &:hover {
+          color: var(--k-blue-400);
+        }
+        &:active {
+          color: var(--k-blue-600);
+        }
+      }
     }
+    .k-script-input-wrapper.k-script-tag--closable {
+      .k-script-tag-x-mark {
+        display: unset;
+      }
+    }
+  }
+  .k-script-input-check-result {
+    position: absolute;
+    left: 0.5rem;
+    bottom: -1rem;
   }
 }
 

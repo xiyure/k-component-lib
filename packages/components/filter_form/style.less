@@ -2,19 +2,19 @@
 @import '../../style/general.less';
 
 .filterForm {
-  height: calc(2rem + 0.25rem);
+  height: calc(var(--firstRowHeight) + 0.25rem);
   overflow: hidden;
   padding: 0.125rem;
   transition: all var(--transition-duration) ease-in-out;
   &.is-expand {
     transition: all var(--transition-duration) ease-in-out;
     height: calc(var(--expandHeight) + 0.25rem);
-    .filtr-items::after {
+    .filter-items::after {
       display: none;
     }
   }
 
-  .filtr-items {
+  .filter-items {
     column-gap: 1.5rem;
     row-gap: 0.75rem;
     grid-auto-rows: auto;
@@ -67,7 +67,7 @@
       }
     }
 
-    .filtr-btns {
+    .filter-btns {
       --top: 0;
       // width: 30%;
       // 让元素在第一行 最后一个

@@ -1,4 +1,4 @@
-import { isRef } from 'vue';
+import { isRef, Slots } from 'vue';
 
 type RGB = [number, number, number];
 
@@ -174,7 +174,7 @@ export function transformTreeData(
       }
     }
     return result;
-  }; 
+  };
   return flatTreeData(treeData, null);
 }
 
@@ -220,6 +220,24 @@ export function resetTreeData(
     }
   }
   return treeData;
+}
+
+// 转换数据为Map结构，构建表格数据节点之间的关系
+export function convertToMap(tableData: any[], rowField: string, parentField: string) {
+  const dataMap = new Map<string | number, { node: any; children: any[] }>();
+  for (const node of tableData) {
+    if (!dataMap.has(node[rowField])) {
+      dataMap.set(node[rowField], { node, children: [] });
+    }
+    if (!parentField) {
+      continue;
+    }
+    const parentNode = dataMap.get(node[parentField]);
+    if (parentNode) {
+      parentNode.children.push(node);
+    }
+  }
+  return dataMap;
 }
 
 // 获取组件实例的expose方法（proxy模式）
@@ -284,12 +302,12 @@ export function formatter(date: Date | Date[], formatter: any) {
     const minute = dateItem.getMinutes();
     const second = dateItem.getSeconds();
     const formatStr = formatter
-    .replace('YYYY', padZero(y, 4))
-    .replace('MM', padZero(m, 2))
-    .replace('DD', padZero(d, 2))
-    .replace('HH', padZero(h, 2))
-    .replace('mm', padZero(minute, 2))
-    .replace('ss', padZero(second, 2));
+      .replace('YYYY', padZero(y, 4))
+      .replace('MM', padZero(m, 2))
+      .replace('DD', padZero(d, 2))
+      .replace('HH', padZero(h, 2))
+      .replace('mm', padZero(minute, 2))
+      .replace('ss', padZero(second, 2));
     result.push(formatStr);
   }
   if (result.length === 1) {
@@ -326,3 +344,43 @@ export function setCSSVar(el: HTMLElement | null, varName: string, value: string
   const targetElem = (el !== null ? el : document.querySelector('body')) as HTMLElement;
   targetElem.style.setProperty(varName, value);
 }
+
+// 兼容新旧版本slots
+export function compatibleSlots(slots: Slots, names: string[]) {
+  for (const name of names) {
+    if (slots[name]) {
+      return name;
+    }
+  }
+  return names[0];
+}
+
+// 笛卡尔积
+export function getAllCombinations(arr: (string[])[]): string[] {
+  let result: string[] = [];
+  for (const v of arr) {
+    if (result.length === 0) {
+      result.push(...v);
+      continue;
+    }
+    result = result.flatMap((item: string) => {
+      return v.map((i) => `${item}${i}`);
+    });
+  }
+  return result;
+}
+
+// 排序
+export function sortFunc(targetData: any[], sortData: any, key: string | number) {
+  const sortKeyList = sortData.map((item: any) => item[key]);
+  return targetData.sort((a, b) =>
+    sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1
+  );
+}
+
+// rem => rem
+export function convertPxToRem(value: number) {
+  const htmlFontSize = window.getComputedStyle(document.documentElement).fontSize;
+  return value * parseFloat(htmlFontSize);
+}
+

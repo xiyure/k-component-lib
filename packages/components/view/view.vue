@@ -1,5 +1,5 @@
 <template>
-  <div :class="['k-view', 'text-base', _styleModule]">
+  <div ref="KViewRef" :class="['k-view', 'text-base', _styleModule]">
     <div
       class="k-view-nav p-2 h-full border-r border-gray-200 relative flex-shrink-0"
       :class="{ 'is-collapse': viewCollapse }"
@@ -13,14 +13,14 @@
       <div class="k-view-aside" :style="{ display: viewCollapse ? 'none' : 'flex' }">
         <div class="k-view__header">
           <div class="view-title text-base font-bold">
-            <slot name="header">{{ $t('view') }}</slot>
+            <slot name="header">{{ t?.('view') }}</slot>
           </div>
           <span class="view-fresh" @click="handleFresh">
             <slot name="refresh"><IconRefresh /></slot>
           </span>
         </div>
-        <div :id="specialViewId" class="k-view__special-data">
-          <el-scrollbar>
+        <div class="k-view__special-data">
+          <el-scrollbar class="k-view-common-scrollbar">
             <template v-if="!useTree">
               <k-view-item
                 v-for="item in specialData"
@@ -29,8 +29,6 @@
                 v-bind="formatter(item)"
                 @change="handleChange"
                 @remove="handleRemove"
-                @_drag-start="onDragStart"
-                @_drag-drop="onDrop"
               >
                 <template v-if="$slots.label" #label>
                   <slot name="label" :data="item"></slot>
@@ -45,69 +43,73 @@
                 :props="{
                   label: config.label,
                   disabled: config.disabled,
-                  children: config.children
+                  children: config.children,
                 }"
                 :default-expanded-keys="defaultExpandedKeys"
                 :current-node-key="currentNodeKey"
-                :data="props.data"
+                :data="data"
                 :show-arrow="showArrow"
+                :draggable="draggable"
                 highlight-current
                 v-bind="treeConfig"
                 @current-change="handleChange"
                 @node-expand="handleNodeExpand"
                 @node-collapse="handleNodeCollapse"
+                @node-drop="dragEnd"
               >
                 <template v-if="$slots.label" #default="{ node, data }">
                   <slot name="label" :node="node" :data="data"></slot>
                 </template>
               </k-tree>
             </template>
-            <div v-if="customData?.length" :id="customViewId" class="k-view__custom-data text-base">
-              <slot name="custom-header">
-                <span class="custom-table-box">{{ $t('customView') }}</span>
-              </slot>
-              <template v-if="!useTree">
-                <k-view-item
-                  v-for="item in customData"
-                  :key="item[config.value]"
-                  :origin-data="item"
-                  v-bind="formatter(item)"
-                  @change="handleChange"
-                  @remove="handleRemove"
-                  @_drag-start="onDragStart"
-                  @_drag-drop="onDrop"
-                >
-                  <template v-if="$slots.label" #label>
-                    <slot name="label" :data="item"></slot>
-                  </template>
-                </k-view-item>
-              </template>
-              <template v-else>
-                <k-tree
-                  ref="KCustomViewTree"
-                  class="k-tree-view-item"
-                  :node-key="config.value"
-                  :props="{
-                    label: config.label,
-                    disabled: config.disabled,
-                    children: config.children
-                  }"
-                  :default-expanded-keys="defaultExpandedKeys"
-                  :current-node-key="currentNodeKey"
-                  :data="props.data"
-                  highlight-current
-                  :show-arrow="showArrow"
-                  v-bind="treeConfig"
-                  @current-change="handleChange"
-                  @node-expand="handleNodeExpand"
-                  @node-collapse="handleNodeCollapse"
-                >
-                  <template v-if="$slots.label" #default="{ node, data }">
-                    <slot name="label" :node="node" :data="data"></slot>
-                  </template>
-                </k-tree>
-              </template>
-            </div>
+          </el-scrollbar>
+        </div>
+        <div v-if="customData?.length" class="k-view__custom-data text-base">
+          <slot name="custom-header">
+            <span class="custom-table-box">{{ t?.('customView') }}</span>
+          </slot>
+          <el-scrollbar class="k-view-custom-scrollbar">
+            <template v-if="!useTree">
+              <k-view-item
+                v-for="item in customData"
+                :key="item[config.value]"
+                :origin-data="item"
+                v-bind="formatter(item)"
+                @change="handleChange"
+                @remove="handleRemove"
+              >
+                <template v-if="$slots.label" #label>
+                  <slot name="label" :data="item"></slot>
+                </template>
+              </k-view-item>
+            </template>
+            <template v-else>
+              <k-tree
+                ref="KCustomViewTree"
+                class="k-tree-view-item"
+                :node-key="config.value"
+                :props="{
+                  label: config.label,
+                  disabled: config.disabled,
+                  children: config.children,
+                }"
+                :default-expanded-keys="defaultExpandedKeys"
+                :current-node-key="currentNodeKey"
+                :data="data"
+                :draggable="draggable"
+                highlight-current
+                :show-arrow="showArrow"
+                v-bind="treeConfig"
+                @current-change="handleChange"
+                @node-expand="handleNodeExpand"
+                @node-collapse="handleNodeCollapse"
+                @node-drop="dragEnd"
+              >
+                <template v-if="$slots.label" #default="{ node, data }">
+                  <slot name="label" :node="node" :data="data"></slot>
+                </template>
+              </k-tree>
+            </template>
           </el-scrollbar>
         </div>
       </div>
@@ -120,18 +122,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, provide, inject } from 'vue';
+import { ref, watch, computed, provide, inject, onMounted, onBeforeUnmount } from 'vue';
+
+import { VueI18nTranslation } from 'vue-i18n';
 import { ElScrollbar } from 'element-plus';
 import { IconRefresh, IconArrowRight } from 'ksw-vue-icon';
 import { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type';
+import { Sortable, SortableInstance } from '../../utils/event/sortable';
+import { getElement } from '../../utils';
 import KViewItem from './view_item.vue';
 import { ViewProps, ViewData } from './type';
 import { KTree } from '../tree';
-import { genRandomStr } from '../../utils';
 
 defineOptions({
   name: 'KView'
 });
+
+const t = inject<VueI18nTranslation>('$t');
 
 const DEFAULT_PROPS = {
   label: 'label',
@@ -161,6 +168,7 @@ const emits = defineEmits([
 ]);
 const _styleModule = inject('_styleModule', '');
 const active = ref<string | number>('');
+const KViewRef = ref<HTMLDivElement>();
 
 const config = computed(() => Object.assign(DEFAULT_PROPS, props.props ?? {}));
 const specialData = computed(() => props.data?.filter((item) => !item[config.value.custom]) ?? []);
@@ -168,6 +176,14 @@ const customData = computed(() => props.data?.filter((item) => Boolean(item[conf
 
 const defaultExpandedKeys = ref<(string | number)[]>([]);
 const currentNodeKey = ref<string | number>('');
+
+onMounted(() => {
+  initSortable();
+});
+onBeforeUnmount(() => {
+  sortableInstances.common?.destroy();
+  sortableInstances.custom?.destroy();
+});
 
 watch(
   () => props.defaultActive,
@@ -209,47 +225,73 @@ function isLeafNode(node: TreeNodeData) {
   return node.isLeaf;
 }
 // 拖拽排序
-const dragElement: {
-  element: HTMLElement | null;
-  data: ViewData | null;
-} = {
-  element: null,
-  data: null
+type SortableInstances = {
+  common: SortableInstance | null;
+  custom: SortableInstance | null;
+}
+const sortableInstances: SortableInstances = {
+  common: null,
+  custom: null
 };
-let isCustom: boolean = false;
-const specialViewId = genRandomStr(8);
-const customViewId = genRandomStr(8);
-function onDragStart(elem: HTMLElement, data: ViewData) {
-  dragElement.element = elem;
-  dragElement.data = data;
-  isCustom = data[config.value.custom] ?? false;
-}
-function onDrop(elem: HTMLElement) {
-  if (!dragElement.element || dragElement.element === elem) {
+let preRow: Element | null = null;
+function initSortable() {
+  const commonDragElem = getElement<HTMLElement>(
+    '.k-view-common-scrollbar .el-scrollbar__view',
+    KViewRef.value
+  );
+  const customDragElem = getElement<HTMLElement>(
+    '.k-view-custom-scrollbar .el-scrollbar__view',
+    KViewRef.value
+  );
+  if (!props.draggable) {
     return;
   }
-  const targetParentId = isCustom ? customViewId : specialViewId;
-  const parentElem = document.getElementById(targetParentId);
-  if (!isChildElement(parentElem, elem)) {
-    return;
+  if (commonDragElem) {
+    sortableInstances.common = Sortable(commonDragElem as HTMLElement, {
+      handle: '.k-view-common',
+      animation: 150,
+      onMove: (evt: any) => {
+        preRow = evt.related;
+      },
+      onEnd: dragEnd
+    });
   }
-  const temp = document.createElement('div');
-  parentElem?.appendChild(temp);
-  parentElem?.replaceChild(temp, elem);
-  parentElem?.replaceChild(elem, dragElement.element as HTMLElement);
-  parentElem?.replaceChild(dragElement.element as HTMLElement, temp);
-  dragElement.element = null;
-  isCustom = false;
-  emits('drag', { value: dragElement.data?.[config.value.value], data: dragElement.data });
-  dragElement.data = null;
-}
-function isChildElement(parentElem: HTMLElement | null, element: HTMLElement) {
-  if (!parentElem || !element) {
-    return false;
+  if (customDragElem) {
+    sortableInstances.custom = Sortable(customDragElem as HTMLElement, {
+      handle: '.k-view-custom',
+      animation: 150,
+      onMove: (evt: any) => {
+        preRow = evt.related;
+      },
+      onEnd: dragEnd
+    });
   }
-  return parentElem.contains(element);
 }
-
+function dragEnd(targetNode: any, lastOverNode?: any, position?: 'after' | 'before' | 'inner') {
+  const dragData = {
+    targetNode,
+    lastOverNode,
+    position
+  };
+  if (!props.useTree) {
+    if (!preRow || preRow === targetNode) {
+      return;
+    }
+    const { item } = targetNode;
+    const compareRes = item.compareDocumentPosition(preRow);
+    if (compareRes === 2) {
+      dragData.position = 'after';
+    } else if (compareRes === 4) {
+      dragData.position = 'before';
+    }
+    const preValue = preRow?.getAttribute('data-view-value');
+    dragData.lastOverNode = props.data?.find((item) => item[config.value.value] === preValue);
+    const value = item.getAttribute('data-view-value');
+    dragData.targetNode = props.data?.find((item) => item[config.value.value] === value);
+    preRow = null;
+  }
+  emits('drag', dragData);
+}
 // 控制显示
 const viewCollapse = ref(props.collapse);
 

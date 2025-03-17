@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, provide, computed, nextTick } from 'vue';
+import { ref, inject, provide, computed } from 'vue';
 import { ElForm, FormItemInstance } from 'element-plus';
 import { FormProps } from './type';
 import { getExposeProxy, SIZE_KEY } from '../../utils';

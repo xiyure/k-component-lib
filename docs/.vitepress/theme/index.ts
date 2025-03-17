@@ -1,8 +1,9 @@
 import { h, onMounted } from 'vue';
 import DefaultTheme from 'vitepress/theme';
-import { Container } from '../plugin/container/index';
-import './style.less';
-import './tailwind.css';
+import type { Theme } from 'vitepress'
+// import { Container } from '../plugin/container/index';
+import { demo } from '../plugin/demo';
+import toLeadIntoPlugin from '../components/toLeadInto.vue';
 import 'overlayscrollbars/overlayscrollbars.css';
 import { OverlayScrollbars } from 'overlayscrollbars';
 import {
@@ -15,24 +16,13 @@ import { NolebaseGitChangelogPlugin } from '@nolebase/vitepress-plugin-git-chang
 import '@nolebase/vitepress-plugin-enhanced-readabilities/client/style.css';
 import '@nolebase/vitepress-plugin-git-changelog/client/style.css';
 import DocTitle from '../components/DocTitle.vue';
-import { KswIcon } from 'ksw-vue-icon';
-/*
- *  源码
- */
-import install from '../../../packages/index';
-/*
- *  本地 build
- */
-// import install from '../../../kingsware-ui/index';
-// import '../../../kingsware-ui/style.css';
-/*
- *  npm
- */
-// import install from '@ksware/ksw-ux';
-// import '@ksware/ksw-ux/kingsware-ui/style.css';
+import '@ksware/ksw-ux/kingsware-ui/style.css'; //使用 cdn 导入
+import './style.less';
+import './tailwind.css';
 
 export default {
-  ...DefaultTheme,
+  // 扩展默认主题
+  extends: DefaultTheme,
   Layout: () => {
     return h(DefaultTheme.Layout, null, {
       // 为较宽的屏幕的导航栏添加阅读增强菜单
@@ -41,52 +31,45 @@ export default {
       'nav-screen-content-after': () => h(NolebaseEnhancedReadabilitiesScreenMenu),
     });
   },
-  enhanceApp(ctx) {
+  async enhanceApp({app}) {
     // 注入第三方库
-    DefaultTheme.enhanceApp(ctx);
-    if (typeof window !== 'undefined') {
-      document.addEventListener('DOMContentLoaded', async () => {
-        ctx.app.use(install);
-        ctx.app.use(KswIcon);
-        ctx.app.use(NolebaseGitChangelogPlugin);
-        ctx.app.component('demo-preview', Container);
-        ctx.app.component('DocTitle', DocTitle);
-        ctx.app.provide(InjectionKey, {
-          // 配置
-          layoutSwitch: {
-            disableAnimation: false,
-            defaultMode: 1,
-          },
-          spotlight: {
-            defaultToggle: true,
-          },
-        } as Options);
-      });
+    // 有条件地导入并注册访问浏览器 API 的 Vue 插件
+    if (!import.meta.env.SSR) {
+      const kswUx = await import('@ksware/ksw-ux')
+      const KswIcon = await import('ksw-vue-icon')
+      app.use(kswUx.default)
+      app.use(KswIcon.KswIcon)
+      app.use(NolebaseGitChangelogPlugin);
     }
+    app.component('leadInto', toLeadIntoPlugin);
+    app.component('demo', demo);  //使用新的 demo 组件
+    app.component('DocTitle', DocTitle);
+    app.provide(InjectionKey, {
+      // 配置
+      layoutSwitch: {
+        disableAnimation: false,
+        defaultMode: 1,
+      },
+      spotlight: {
+        defaultToggle: true,
+      },
+    } as Options);
   },
   setup() {
-  onMounted(() => {
-  // 选择所有具有滚动条的元素
-  const scrollableElements = document.querySelectorAll(
-    'body, aside, pre, div[class="vxe-table--body-wrapper body--wrapper"]',
-  );
-  // 对每个元素初始化 OverlayScrollbars
-  scrollableElements.forEach((element) => {
-    OverlayScrollbars(element, {
-      // 这里可以设置 OverlayScrollbars 的选项
-      update: {
-        elementEvents: [
-          ['img', 'load'],
-          ['ul[id="localsearch-list"]', 'load']
-        ]
-      },
-      scrollbars: {
-        // theme: 'os-theme-dark',
-        autoHide: 'move', // 是否在某个用户操作之后自动隐藏可见的滚动条。有效值为：'never'、'scroll'和'leave', 'move'
-        autoHideSuspend: false //暂停自动隐藏功能，直到执行第一次滚动交互。
-      }
+    onMounted(() => {
+      // 选择所有具有滚动条的元素
+      const scrollableElements = document.querySelectorAll('body, aside');
+      // 对每个元素初始化 OverlayScrollbars
+      scrollableElements.forEach((element) => {
+        OverlayScrollbars(element, {
+          // 这里可以设置 OverlayScrollbars 的选项
+          scrollbars: {
+            // theme: 'os-theme-dark',
+            autoHide: 'move', // 是否在某个用户操作之后自动隐藏可见的滚动条。有效值为：'never'、'scroll'和'leave', 'move'
+            autoHideSuspend: true, //暂停自动隐藏功能，直到执行第一次滚动交互。
+          },
+        });
+      });
     });
-  });
-  });
   },
-};
+} satisfies Theme;

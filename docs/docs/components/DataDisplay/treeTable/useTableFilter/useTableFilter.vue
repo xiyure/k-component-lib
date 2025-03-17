@@ -8,9 +8,9 @@
 </template>
 
 <script lang="tsx" setup>
-import { ref, reactive } from 'vue';
+import { ref } from 'vue';
 
-const tableData = reactive([
+const tableData = ref([
   { id: 1, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
   { id: 2, name: 'Test2', role: 'Test', sex: 'Women', age: 42, address: 'Guangzhou' },
   { id: 3, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
@@ -36,7 +36,6 @@ const column7 = ref([
     field: 'id',
     width: '100',
     dataType: 'number',
-    showColumnMenu: true
   },
   {
     title: 'Name',
@@ -50,7 +49,6 @@ const column7 = ref([
   {
     title: 'Sex',
     field: 'sex',
-    showColumnMenu: true,
     filters: [
       { label: '男', value: 'Man' },
       { label: '女', value: 'Women' }

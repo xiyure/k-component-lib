@@ -6,11 +6,12 @@
 * @version V3.0.0
 !-->
 <template>
-  <div ref="sliderButton" class="k-slider-button p-1 rounded-lg flex w-full bg-gray-100">
+  <div ref="sliderButton" class="k-slider-button">
     <div
       v-for="item in props.items"
+      :key="item.name"
       :class="{ 'is-active': active === item.name }"
-      class="k-slider-button-pane w-full rounded flex justify-center items-center text-center text-gray-500 cursor-pointer relative"
+      class="k-slider-button-pane"
       @click="handleClick(item)"
     >
       {{ item.label }}
@@ -19,31 +20,41 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, nextTick } from 'vue';
+import { ref, nextTick, onMounted, inject, onBeforeUnmount } from 'vue';
+import { debounce } from 'lodash';
 import { SliderButtonProps, SliderButtonPaneProps } from './type';
+import { genRandomStr } from '../../utils';
 
 defineOptions({
   name: 'KSliderButton'
 });
 
-const props = withDefaults(defineProps<SliderButtonProps>(), {
-  items: () => []
-});
+const props = withDefaults(defineProps<SliderButtonProps>(), {});
 
 const emits = defineEmits(['change']);
 
 const active = ref(props.active ?? props.items[0].name);
 const sliderButton = ref();
 
-// 监测窗口发生变化后
-window.addEventListener('resize', getActiveItemPosition);
+const key = `_${genRandomStr(8)}`;
+
+const debouncedGetActiveItemPosition = debounce(() => {
+  getActiveItemPosition();
+}, 10);
+
+const element = ref();
+const elementObserver = inject<any>('__elementObserver');
 
 onMounted(() => {
-  getActiveItemPosition();
+  element.value = sliderButton?.value?.querySelector('.k-slider-button-pane.is-active');
+  element.value.setAttribute('data-observer-key', key);
+  elementObserver.observe(element.value, debouncedGetActiveItemPosition);
 });
 
 function getActiveItemPosition() {
-  const activeElement: HTMLElement | null = document.querySelector('.k-slider-button-pane.is-active');
+  const activeElement: HTMLElement | null = sliderButton?.value?.querySelector(
+    '.k-slider-button-pane.is-active'
+  );
   const { width } = activeElement?.getBoundingClientRect() || { width: 0, height: 0 };
   const top = activeElement?.offsetTop || 0;
   const left = activeElement?.offsetLeft || 0;
@@ -61,6 +72,12 @@ function handleClick(item: SliderButtonPaneProps) {
     });
   }
 }
+
+onBeforeUnmount(() => {
+  if (element.value) {
+    elementObserver?.unobserve?.(element.value);
+  }
+});
 </script>
 <style lang="less">
 @import './style.less';
