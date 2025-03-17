@@ -5,16 +5,18 @@
     :class="['k-tabs', _styleModule]"
     v-bind="$attrs"
     :tab-position="tabPosition"
-    :editable="editable"
-    :addable="addable"
+    @edit="(paneName: string | number | undefined, action: 'add' | 'remove') => {
+      emits('edit', paneName, action);
+      getHideTabs();
+    }"
   >
     <div
-      v-if="hideTabIndex.length"
+      v-if="showHideList && hideTabIndex.length"
       class="k-tabs-more"
       :class="`tab-${tabPosition}-layout`"
       :style="{
         right:
-          (editable || addable) && (tabPosition === 'top' || tabPosition === 'bottom') ? '2rem' : 0
+          ($attrs.editable || $attrs.addable) && (tabPosition === 'top' || tabPosition === 'bottom') ? '2rem' : 0
       }"
     >
       <TabDropdownMenu :tab-index-list="hideTabIndex" :tab-slots="$slots" @command="jumpToTab">
@@ -45,12 +47,11 @@ defineOptions({
 const props = withDefaults(defineProps<TabsProps>(), {
   modelValue: undefined,
   tabPosition: 'top',
-  editable: false,
-  addable: false,
-  maxWidth: undefined
+  maxWidth: undefined,
+  showHideList: true
 });
 
-const emits = defineEmits(['update:modelValue']);
+const emits = defineEmits(['update:modelValue', 'edit']);
 
 const _styleModule = inject('_styleModule', '');
 const activeName = ref<string | undefined>(undefined);
@@ -106,38 +107,36 @@ watch(
 );
 
 function handleWheel(evt: WheelEvent) {
-  const translateElem = getElement<HTMLElement>('.el-tabs__nav', KTabsRef.value?.$el);
-  const parentElement = translateElem?.parentElement;
-  if (!translateElem || !parentElement || !translateElem?.contains(evt.target as Node)) {
+  const $el = KTabsRef.value?.$el;
+  const nav = getElement<HTMLElement>('.el-tabs__nav', $el);
+  const navScroll = getElement<HTMLElement>('.el-tabs__nav-scroll', $el);
+  if (!nav || !navScroll || !nav?.contains(evt.target as Node)) {
     return;
   }
   const disY = evt.deltaY;
-  const translate = getNavTranslate(translateElem);
+  const translate = getNavTranslate();
   let translateDis = translate - disY;
-  const { maxTranslate } = getNavElementInfo(translateElem, parentElement);
+  const navScrollBounding = navScroll.getBoundingClientRect();
+  const maxOffset = isHorizontal()
+      ? nav.offsetWidth - navScrollBounding.width
+      : nav.offsetHeight - navScrollBounding.height;
   if (translateDis > 0) {
     translateDis = 0;
-  } else if (translateDis < maxTranslate) {
-    translateDis = maxTranslate;
+  } else if (translateDis < -maxOffset) {
+    translateDis = -maxOffset;
   }
-  translateElem.style.transform = getTransformValue(translateDis);
+  setNavTranslate(translateDis);
   getHideTabs();
 }
 // 判断tab是否在可视区域
-function isElementInContainerView(el: HTMLElement | Element) {
-  if (!el) {
+function isElementInContainerView(elRect: DOMRect, navScrollRect: DOMRect) {
+  if (!elRect || !navScrollRect) {
     return;
   }
-  const elRect = el.getBoundingClientRect();
-  const container = el.parentElement?.parentElement;
-  if (!container) {
-    return;
+  if (isHorizontal()) {
+    return elRect.left >= navScrollRect.left && elRect.right <= navScrollRect.right;
   }
-  const containerRect = container.getBoundingClientRect();
-  if (props.tabPosition === 'top' || props.tabPosition === 'bottom') {
-    return elRect.left >= 0 && elRect.right <= containerRect.width;
-  }
-  return elRect.top >= 0 && elRect.bottom <= containerRect.height;
+  return elRect.top >= navScrollRect.top && elRect.bottom <= navScrollRect.bottom;
 }
 // 下拉列表选择tab时，滚动到可视区域
 function jumpToTab(item: TabData) {
@@ -145,11 +144,21 @@ function jumpToTab(item: TabData) {
   activeName.value = name;
 }
 function getHideTabs() {
+  if (!props.showHideList) {
+    return;
+  }
   setTimeout(() => {
     const res: number[] = [];
-    const tabPaneDoms = getElementAll('.el-tabs__item', KTabsRef.value?.$el);
+    const $el = KTabsRef.value?.$el
+    const tabPaneDoms = getElementAll('.el-tabs__item', $el);
+    const navScroll = getElement<HTMLElement>('.el-tabs__nav-scroll', $el);
+    if (!$el || !navScroll || !tabPaneDoms?.length) {
+      return;
+    }
+    const navScrollRect = navScroll.getBoundingClientRect();
     for (let _i = 0; _i < tabPaneDoms.length; _i++) {
-      if (!isElementInContainerView(tabPaneDoms[_i])) {
+      const elRect = tabPaneDoms[_i].getBoundingClientRect();
+      if (!isElementInContainerView(elRect, navScrollRect)) {
         res.push(_i);
       }
     }
@@ -159,48 +168,55 @@ function getHideTabs() {
 // 滚动到当前激活的tab
 function scrollToActiveTab() {
   setTimeout(() => {
-    const translateElem = getElement<HTMLElement>('.el-tabs__nav', KTabsRef.value?.$el);
-    const activeTab = KTabsRef.value.$el?.querySelector?.('.is-active');
-    const parentElement = translateElem?.parentElement;
-    if (!activeTab || !translateElem || !parentElement) {
-      return;
+    const $el = KTabsRef.value?.$el;
+    const nav = getElement<HTMLElement>('.el-tabs__nav', $el);
+    const navScroll = getElement<HTMLElement>('.el-tabs__nav-scroll', $el);
+    if (!$el || !navScroll || !nav) return;
+    const activeTab = getElement<HTMLElement>('.is-active', $el);
+    if (!activeTab) return;
+    const _isHorizontal = isHorizontal();
+    const activeTabBounding = activeTab.getBoundingClientRect();
+    const navScrollBounding = navScroll.getBoundingClientRect();
+    const maxOffset = _isHorizontal
+      ? nav.offsetWidth - navScrollBounding.width
+      : nav.offsetHeight - navScrollBounding.height;
+    const currentOffset = -getNavTranslate();
+    let newOffset = currentOffset;
+
+    if (_isHorizontal) {
+      if (activeTabBounding.left < navScrollBounding.left) {
+        newOffset = currentOffset - (navScrollBounding.left - activeTabBounding.left);
+      }
+      if (activeTabBounding.right > navScrollBounding.right) {
+        newOffset = currentOffset + activeTabBounding.right - navScrollBounding.right;
+      }
+    } else {
+      if (activeTabBounding.top < navScrollBounding.top) {
+        newOffset = currentOffset - (navScrollBounding.top - activeTabBounding.top);
+      }
+      if (activeTabBounding.bottom > navScrollBounding.bottom) {
+        newOffset = currentOffset + (activeTabBounding.bottom - navScrollBounding.bottom);
+      }
     }
-    const translate = getNavTranslate(translateElem);
-    if (isElementInContainerView(activeTab)) {
-      return;
-    }
-    const elRect = activeTab.getBoundingClientRect();
-    const { parentRect, maxTranslate } = getNavElementInfo(translateElem, parentElement);
-    let newTranslate = translate - (isHorizontal() ? (elRect.right - parentRect.width) : (elRect.bottom - parentRect.height));
-    if (newTranslate > 0) {
-      newTranslate = 0;
-    } else if (newTranslate < maxTranslate) {
-      newTranslate = maxTranslate;
-    }
-    translateElem.style.transform = getTransformValue(newTranslate);
+    newOffset = Math.max(newOffset, 0);
+    setNavTranslate(-Math.min(newOffset, maxOffset));
     getHideTabs();
   }, 200);
 }
-// 获取transform样式值
-function getTransformValue(translate: number) {
-  return `translate${isHorizontal() ? 'X' : 'Y'}(${translate}px)`;
-}
 // 获取tab栏偏移量
-function getNavTranslate(el: HTMLElement) {
-  const translateReg = isHorizontal() ? /translateX\(([^)]+)px\)/ : /translateY\(([^)]+)px\)/;
-  return Number(el?.style.transform?.match(translateReg)?.[1] ?? 0);
-}
-function getNavElementInfo(el: HTMLElement, parentEl: HTMLElement) {
-  const parentRect = parentEl.getBoundingClientRect();
-  const translateRect = el.getBoundingClientRect();
-  const maxTranslate = isHorizontal()
-    ? parentRect?.width - translateRect.width
-    : parentRect?.height - translateRect.height;
-  return {
-    maxTranslate,
-    parentRect,
-    translateRect
+function getNavTranslate() {
+  if (!KTabsRef.value?.$el) {
+    return 0;
   }
+  const translate = KTabsRef.value.$el.style.getPropertyValue('--translate') || 0;
+  return parseFloat(translate);
+}
+// 设置tab栏偏移量
+function setNavTranslate(translate: number) {
+  if (!KTabsRef.value?.$el) {
+    return;
+  }
+  KTabsRef.value.$el.style.setProperty('--translate', `${translate}px`);
 }
 // 判断tab栏是否水平排列
 function isHorizontal() {
