@@ -59,6 +59,14 @@
       "description": "切换标签之前的钩子函数，若返回false或者返回被reject的Promise，则阻止切换。",
       "defaultValue": "() => true",
       "tip": "(activeName: TabPaneName, oldActiveName: TabPaneName) => Awaitable<void | boolean>"
+    },
+    {
+      "displayName": "show-hide-list",
+      "type": "boolean",
+      "description": "是否显示隐藏的选项卡列表",
+      "defaultValue": "true",
+      "tip": "",
+      "version": "1.1.18"
     }
   ],
   "events": [

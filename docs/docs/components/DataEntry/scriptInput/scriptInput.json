@@ -88,7 +88,7 @@
       "type": "object",
       "description": "输入框属性",
       "defaultValue": "",
-      "tip": "{label?: string, value?: string, disabled?: boolean}"
+      "tip": "{ label?: string, value?: string, disabled?: boolean, optionLabel?: string }"
     },
     {
       "displayName": "script-key",
@@ -136,6 +136,14 @@
       "description": "可输入的最小值，仅在content-type为limit时有效",
       "defaultValue": "",
       "tip": "'"
+    },
+    {
+      "displayName": "tag-closable",
+      "type": "boolean",
+      "description": "标签是否可关闭",
+      "defaultValue": "false",
+      "tip": "'",
+      "version": "1.1.18"
     }
   ],
   "events": [
