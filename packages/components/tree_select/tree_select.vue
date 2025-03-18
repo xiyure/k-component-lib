@@ -2,7 +2,7 @@
   <el-tree-select
     ref="KTreeSelectRef"
     :name="name ?? randomName"
-    :class="['k-tree-select', _styleModule]"
+    class="k-tree-select"
     :size="formatSize.elSize"
     v-bind="$attrs"
     @input="handleInput"
@@ -43,13 +43,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, provide, inject, computed } from 'vue';
+import { ref, provide, computed } from 'vue';
 import { ElTreeSelect } from 'element-plus';
 import { debounce } from 'lodash-es';
 import { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type';
 import { TreeSelectProps } from './type';
-import { getExposeProxy, genRandomStr, SIZE_KEY } from '../../utils';
-import { useSize } from '../../hooks';
+import { getExposeProxy, genRandomStr } from '../../utils';
+import { SIZE_KEY, useSize } from '../../hooks';
 
 defineOptions({
   name: 'KTreeSelect'
@@ -64,7 +64,6 @@ const props = withDefaults(defineProps<TreeSelectProps>(), {
 });
 
 const formatSize = useSize<TreeSelectProps>(props);
-const _styleModule = inject('_styleModule', '');
 
 const emits = defineEmits(['input', 'blur']);
 

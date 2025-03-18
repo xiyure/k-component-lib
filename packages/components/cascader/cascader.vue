@@ -1,7 +1,7 @@
 <template>
   <el-cascader
     ref="cascaderRef"
-    :class="['k-cascader', _styleModule]"
+    class="k-cascader"
     v-bind="$attrs"
     :size="formatSize.elSize"
   >
@@ -12,11 +12,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, provide, inject } from 'vue';
+import { ref, provide } from 'vue';
 import { ElCascader } from 'element-plus';
 import { CascaderProps } from './type';
-import { getExposeProxy, SIZE_KEY } from '../../utils';
-import { useSize } from '../../hooks';
+import { getExposeProxy } from '../../utils';
+import { SIZE_KEY, useSize } from '../../hooks';
 
 defineOptions({
   name: 'KCascader'
@@ -25,8 +25,6 @@ defineOptions({
 const props = withDefaults(defineProps<CascaderProps>(), {});
 
 const formatSize = useSize<CascaderProps>(props);
-
-const _styleModule = inject('_styleModule', '');
 
 provide(SIZE_KEY, formatSize);
 

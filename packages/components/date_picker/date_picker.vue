@@ -1,7 +1,7 @@
 <template>
   <el-date-picker
     ref="datePickerRef"
-    :class="['k-date-picker', _styleModule]"
+    class="k-date-picker"
     v-bind="$attrs"
     :type="type"
     :shortcuts="customShortcuts"
@@ -14,12 +14,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, provide, inject } from 'vue';
+import { ref, computed, provide } from 'vue';
 import { ElDatePicker } from 'element-plus';
-import { VueI18nTranslation } from 'vue-i18n';
 import { DatePicker } from './type';
-import { getExposeProxy, SIZE_KEY } from '../../utils';
-import { useSize } from '../../hooks';
+import { getExposeProxy } from '../../utils';
+import { SIZE_KEY, useSize, useLocale } from '../../hooks';
 
 defineOptions({
   name: 'KDatePicker'
@@ -29,10 +28,10 @@ const props = withDefaults(defineProps<DatePicker>(), {
   showDefaultShortcuts: true
 });
 
+const { t } = useLocale();
+
 const formatSize = useSize<DatePicker>(props);
 
-const _styleModule = inject('_styleModule', '');
-const t = inject<VueI18nTranslation>('$t');
 const datePickerRef = ref(null);
 const defaultDateRange = [
   {

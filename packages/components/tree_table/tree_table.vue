@@ -3,7 +3,6 @@
     :class="[
       'k-tree-table flex flex-col h-full',
       props.class,
-      _styleModule,
       { 'tree-table-use-ant-style': useAntStyle, 'has-space-between': hasSpace }
     ]"
     :style="{ height: adaptive ? 'fit-content' : height, ...style }"
@@ -294,9 +293,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, inject, provide } from 'vue';
+import { ref, computed, watch, nextTick, provide } from 'vue';
 import VXETable from 'vxe-table';
-import { VueI18nTranslation } from 'vue-i18n';
 import { cloneDeep } from 'lodash-es';
 import KColumnGroup from './column_group';
 import { KInput } from '../input';
@@ -309,7 +307,8 @@ import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
 import type { ConditionInfo } from '../filter';
 import { useMethods, useCheckbox, useData, useConfig, useHeaderControl, useAdvancedFilter } from './hooks';
-import { genRandomStr, sortFunc, compatibleSlots, getExposeProxy, SIZE_KEY } from '../../utils';
+import { SIZE_KEY, useLocale } from '../../hooks';
+import { genRandomStr, sortFunc, compatibleSlots, getExposeProxy } from '../../utils';
 import { SIZE_OPTIONS } from './const';
 import type { TreeTableProps, Column, RowData, Row } from './type';
 
@@ -336,9 +335,8 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
   hasSpace: false
 });
 
-const _styleModule = inject('_styleModule', '');
 const slots = defineSlots();
-const t = inject<VueI18nTranslation>('$t');
+const { t } = useLocale();
 
 const emits = defineEmits([
   'remote-query',

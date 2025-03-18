@@ -124,13 +124,13 @@
 <script setup lang="ts">
 import { ref, watch, computed, provide, inject, onMounted, onBeforeUnmount } from 'vue';
 
-import { VueI18nTranslation } from 'vue-i18n';
 import { ElScrollbar } from 'element-plus';
 import { IconRefresh, IconArrowRight } from 'ksw-vue-icon';
 import { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type';
 import { Sortable, SortableInstance } from '../../utils/event/sortable';
 import { getElement } from '../../utils';
 import KViewItem from './view_item.vue';
+import { useLocale } from '../../hooks';
 import { ViewProps, ViewData } from './type';
 import { KTree } from '../tree';
 
@@ -138,7 +138,7 @@ defineOptions({
   name: 'KView'
 });
 
-const t = inject<VueI18nTranslation>('$t');
+const { t } = useLocale();
 
 const DEFAULT_PROPS = {
   label: 'label',

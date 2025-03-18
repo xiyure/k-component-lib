@@ -1,7 +1,7 @@
 <template>
   <el-form
     ref="KFormRef"
-    :class="['k-form', _styleModule]"
+    class="k-form"
     v-bind="$attrs"
     :size="formatSize.elSize"
   >
@@ -12,11 +12,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, provide, computed } from 'vue';
+import { ref, provide, computed } from 'vue';
 import { ElForm, FormItemInstance } from 'element-plus';
 import { FormProps } from './type';
-import { getExposeProxy, SIZE_KEY } from '../../utils';
-import { useSize } from '../../hooks';
+import { getExposeProxy } from '../../utils';
+import { SIZE_KEY, useSize } from '../../hooks';
 
 defineOptions({
   name: 'KForm'
@@ -25,8 +25,6 @@ defineOptions({
 const props = withDefaults(defineProps<FormProps>(), {
   showLabel: true
 });
-
-const _styleModule = inject('_styleModule', '');
 
 const formatSize = useSize<FormProps>(props);
 

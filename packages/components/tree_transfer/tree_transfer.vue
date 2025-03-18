@@ -184,11 +184,11 @@
 
 <script setup lang="tsx">
 import { ref, computed, watch, inject, nextTick } from 'vue';
-import { VueI18nTranslation } from 'vue-i18n';
 import { IconSearch, IconClose } from 'ksw-vue-icon';
 import { VxeTablePropTypes } from 'vxe-table';
 import { sortBySmallerList, compatibleSlots, sortFunc } from '../../utils';
 import { useData, useConfig, useCheckbox } from './hooks';
+import { useLocale } from '../../hooks';
 import Pagination from './page.vue';
 import { TreeTransferProps, TreeTransferData } from './type';
 import { Column } from '../tree_table';
@@ -197,7 +197,7 @@ defineOptions({
   name: 'KTreeTransfer'
 });
 
-const t = inject<VueI18nTranslation>('$t');
+const { t } = useLocale();
 
 type Row = VxeTablePropTypes.Row;
 

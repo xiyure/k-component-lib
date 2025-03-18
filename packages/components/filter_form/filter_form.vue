@@ -113,7 +113,6 @@
 
 <script setup lang="ts">
 import { ref, inject, computed, watch, onMounted, onUnmounted } from 'vue';
-import { VueI18nTranslation } from 'vue-i18n';
 import { KInput } from '../input';
 import { KSelect, KOption } from '../select';
 import { KRadio, KRadioGroup } from '../radio';
@@ -123,7 +122,7 @@ import { KButton } from '../button';
 import { KForm, KFormItem } from '../form';
 import { FilterFormProps, FilterFormItem } from './type';
 import { getExposeProxy } from '../../utils';
-import { useSize } from '../../hooks';
+import { useSize, useLocale } from '../../hooks';
 
 defineOptions({
   name: 'KFilterForm'
@@ -152,7 +151,8 @@ const isCollapse = ref(props.collapse);
 const maxColumn = ref(1);
 const rowMax = ref(1);
 const firstRowHeight = ref('');
-const t = inject<VueI18nTranslation>('$t');
+
+const { t } = useLocale();
 
 onMounted(() => {
   if (!props.collapse) {

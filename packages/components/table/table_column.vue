@@ -253,7 +253,6 @@
 
 <script setup lang="ts">
 import { inject, ref, watch, computed, ComputedRef, Ref } from 'vue';
-import { VueI18nTranslation } from 'vue-i18n';
 import type {
   VxeColumnProps,
   VxeTableInstance,
@@ -282,13 +281,14 @@ import { KDialog } from '../dialog';
 import { KInput } from '../input';
 import { KButton } from '../button';
 import { KTooltip } from '../tooltip';
+import { useLocale } from '../../hooks';
 import { TableColumnProps, Column } from './type';
 
 defineOptions({
   name: 'KTableColumn'
 });
 
-const t = inject<VueI18nTranslation>('$t');
+const { t } = useLocale();;
 
 const tableInstance = inject<Ref<VxeTableInstance | null>>(
   'tableInstance',

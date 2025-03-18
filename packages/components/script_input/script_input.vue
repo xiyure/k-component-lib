@@ -148,11 +148,11 @@
 <script setup lang="ts">
 import { ref, computed, watch, inject, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import { ElScrollbar } from 'element-plus';
-import { VueI18nTranslation } from 'vue-i18n';
 import { ScriptInputProps, ScriptOptions } from './type';
 import Message from '../message';
 import { usePassword } from './hooks/use_password';
 import { genRandomStr, transformTreeData, getElement } from '../../utils';
+import { useLocale } from '../../hooks';
 import { Row, RowData } from '../tree_table';
 import { checkInputMessage, typeRules } from './const';
 
@@ -162,7 +162,7 @@ defineOptions({
 });
 
 const _styleModule = inject('_styleModule', '');
-const t = inject<VueI18nTranslation>('$t');
+const { t } = useLocale();
 
 const props = withDefaults(defineProps<ScriptInputProps>(), {
   modelValue: '',

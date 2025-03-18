@@ -43,12 +43,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, inject } from 'vue';
+import { ref } from 'vue';
 import { KPopover } from '../popover';
 import { KCheckbox } from '../checkbox';
 import { KButton } from '../button';
+import { useLocale } from '../../hooks';
 import { FilterPopperProps } from './type';
-import { VueI18nTranslation } from 'vue-i18n';
 
 const props = withDefaults(defineProps<FilterPopperProps>(), {
   filters: () => [],
@@ -58,7 +58,7 @@ const props = withDefaults(defineProps<FilterPopperProps>(), {
   text: () => ({})
 });
 
-const t = inject<VueI18nTranslation>('$t');
+const { t } = useLocale();
 
 const emits = defineEmits(['set-filter', 'clear-filter', 'filter-change', 'filter-visible']);
 

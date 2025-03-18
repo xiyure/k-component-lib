@@ -1,12 +1,12 @@
-import { ref, computed, inject, Ref } from 'vue';
-import type { VueI18nTranslation } from 'vue-i18n';
+import { ref, computed, Ref } from 'vue';
 import { cloneDeep } from 'lodash-es';
+import { useLocale } from '../../../hooks';
 import { getValidTreeData, resetTreeData } from '../../../utils';
 import type { ConditionInfo, Condition } from '../../filter';
 import { TreeTableProps, RowData, Column } from '../type';
 
 export function useAdvancedFilter($filter: Ref<any>, props: TreeTableProps, columns: Ref<Column[]>) {
-  const t = inject<VueI18nTranslation>('$t');
+  const { t } = useLocale();
 
   const newFilterData = ref<RowData[]>([]);
   const filterConditionInfo = ref<ConditionInfo | undefined>();

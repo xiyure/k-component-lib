@@ -195,12 +195,11 @@
 
 <script setup lang="ts">
 import { ref, computed, inject, onMounted, watch, useAttrs } from 'vue';
-import { VueI18nTranslation } from 'vue-i18n';
 import { cloneDeep } from 'lodash-es';
 import { FilterProps, FilterData, FilterOptions } from './type';
 import { dateTypeOptions, logicOptions } from '../../constant/filter_data';
 import { treeDataToArray, isValid, formatter } from '../../utils';
-import { useSize } from '../../hooks';
+import { useSize, useLocale } from '../../hooks';
 
 defineOptions({
   name: 'KFilter'
@@ -231,7 +230,7 @@ onMounted(() => {
 const popperClassName = ref('');
 const _styleModule = inject('_styleModule', '');
 const emits = defineEmits(['confirm', 'clear', 'show', 'hide']);
-const t = inject<VueI18nTranslation>('$t');
+const { t } = useLocale();
 const filterData = ref<FilterData[]>([]);
 const filterRule = ref(0);
 

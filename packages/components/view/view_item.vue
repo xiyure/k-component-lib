@@ -34,16 +34,16 @@
 
 <script setup lang="ts">
 import { inject, ref, Ref } from 'vue';
-import { VueI18nTranslation } from 'vue-i18n';
 import { ElDropdown, ElDropdownMenu, ElDropdownItem } from 'element-plus';
 import { IconMore } from 'ksw-vue-icon';
+import { useLocale } from '../../hooks';
 import { ViewItemProps, ViewProps } from './type';
 
 defineOptions({
   name: 'KViewItem'
 });
 
-const t = inject<VueI18nTranslation>('$t');
+const { t } = useLocale();
 
 const props = defineProps<ViewItemProps>();
 const emits = defineEmits(['change', 'remove']);

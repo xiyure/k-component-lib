@@ -37,11 +37,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted, inject } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { ElTransfer, TransferKey, TransferDirection } from 'element-plus';
-import { VueI18nTranslation } from 'vue-i18n';
 import { IconSearch } from 'ksw-vue-icon';
 import { Sortable, SortableInstance, SortableEvent } from '../../utils/event/sortable';
+import { useLocale } from '../../hooks';
 import { TransferProps } from './type';
 import { KInput } from '../input';
 import { getExposeProxy, sortBySmallerList } from '../../utils';
@@ -66,8 +66,8 @@ const emits = defineEmits([
   'remote-query'
 ]);
 
-const _styleModule = inject('_styleModule', '');
-const t = inject<VueI18nTranslation>('$t');
+const { t } = useLocale();
+
 const modelValue = ref<Array<any>>([]);
 const searchStr = ref('');
 const sourceData = ref<Array<any>>([]);

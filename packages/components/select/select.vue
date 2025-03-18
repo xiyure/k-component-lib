@@ -2,7 +2,6 @@
   <el-select
     ref="inputRef"
     class="k-select"
-    :class="[_styleModule]"
     v-bind="$attrs"
     :size="formatSize.elSize"
   >
@@ -13,11 +12,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, provide, inject } from 'vue';
+import { ref, provide } from 'vue';
 import { ElSelect } from 'element-plus';
 import { SelectProps } from './type';
-import { getExposeProxy, SIZE_KEY } from '../../utils';
-import { useSize } from '../../hooks';
+import { getExposeProxy } from '../../utils';
+import { SIZE_KEY, useSize } from '../../hooks';
 
 defineOptions({
   name: 'KSelect'
@@ -26,8 +25,6 @@ defineOptions({
 const props = withDefaults(defineProps<SelectProps>(), {});
 
 const formatSize = useSize<SelectProps>(props);
-
-const _styleModule = inject('_styleModule', '');
 
 const inputRef = ref<any>();
 

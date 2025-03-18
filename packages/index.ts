@@ -15,10 +15,11 @@ const install = (app: App, config?: ContextConfig) => {
   importThirdLib(app, config);
   useI18n(app, config);
   useDirectives(app);
-  provide(app);
+  provide(app, config);
 };
 
 export * from './components';
 export * from './templates';
 export * from './native';
+export * from './utils/typescript/util_types';
 export default install;

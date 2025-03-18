@@ -59,18 +59,18 @@ import type { CalendarDateType, CalendarInstance } from 'element-plus';
 // @ts-expect-error chinese-lunar-calendar has not declare dependencies
 import { getLunar } from 'chinese-lunar-calendar';
 import { IconArrowLeft, IconArrowRight } from 'ksw-vue-icon';
-import { VueI18nTranslation } from 'vue-i18n';
 import { CalendarProps, Schedule } from './type';
 import { lunarMonth, lunarDay } from './const';
 import { KCheckbox } from '../checkbox';
 import { getExposeProxy } from '../../utils';
+import { useLocale } from '../../hooks';
 import type { IntRange } from '../../utils/typescript/common';
 
 defineOptions({
   name: 'KCalendar'
 });
 
-const t = inject<VueI18nTranslation>('$t');
+const { t } = useLocale();
 
 const props = withDefaults(defineProps<CalendarProps>(), {
   schedule: () => [],

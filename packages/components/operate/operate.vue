@@ -42,16 +42,16 @@
 
 <script setup lang="ts">
 import { ref, watch, inject } from 'vue';
-import { VueI18nTranslation } from 'vue-i18n';
 import { IconClose, IconMore } from 'ksw-vue-icon';
 import { KDropdown, KDropdownItem } from '../dropdown';
+import { useLocale } from '../../hooks';
 import { OperateProps, OperateData } from './type';
 
 defineOptions({
   name: 'KOperate'
 });
 
-const t = inject<VueI18nTranslation>('$t');
+const { t } = useLocale();
 
 const props = withDefaults(defineProps<OperateProps>(), {
   data: () => [],

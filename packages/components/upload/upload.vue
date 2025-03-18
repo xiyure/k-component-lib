@@ -84,8 +84,7 @@
 <script setup lang="ts">
 import { ref, inject, computed } from 'vue';
 import { ElUpload, ElProgress, UploadFile, UploadRawFile } from 'element-plus';
-import { VueI18nTranslation } from 'vue-i18n';
-
+import { useLocale } from '../../hooks';
 import { IconEmptyBox, IconWarning, IconCheck, IconDelete, IconFile } from 'ksw-vue-icon';
 import { UploadProps } from './type';
 import { getExposeProxy } from '../../utils';
@@ -94,7 +93,7 @@ defineOptions({
   name: 'KUpload'
 });
 
-const t = inject<VueI18nTranslation>('$t');
+const { t } = useLocale();
 
 const props = withDefaults(defineProps<UploadProps>(), {
   autoUpload: true

@@ -1,6 +1,6 @@
 @import '../../variable.css';
 
-body.AOM {
+body.AOM, body {
   --k-theme-test: red;
   --theme-name: 'Hello, AOM!';
   /*
