@@ -3,9 +3,7 @@
     <el-button
       :id="id"
       ref="buttonRef"
-      class="k-button"
       :class="[
-        'k-button',
         {
           'k-button--main': main,
           'k-button--secondary': secondary,
@@ -141,5 +139,4 @@ defineExpose(getExposeProxy(instance, buttonRef));
 <style lang="less">
 @import './style.less';
 @import './el-button.css';
-@import './base.css';
 </style>

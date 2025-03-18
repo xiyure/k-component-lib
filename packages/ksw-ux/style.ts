@@ -1,7 +1,7 @@
 import type { App } from 'vue';
 import type { ContextConfig } from '../utils/typescript';
 import { mergeCssVar, setStyleTheme } from '../utils';
-// import 'element-plus/dist/index.css';
+import './base.css';
 import 'vxe-table/lib/style.css';
 import 'ksw-vue-icon/styles/icon.css';
 import '../style/tailwind.css';
