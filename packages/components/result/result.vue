@@ -1,5 +1,5 @@
 <template>
-  <div id="KResult" class="k-result" :class="[_styleModule]">
+  <div id="KResult" class="k-result">
     <div
       style="
         max-width: 12vw;
@@ -84,7 +84,7 @@
             </g>
           </svg>
         </div>
-        <div v-if="TextlStatusCode.includes(status)" class="def-bg">
+        <div v-if="statusList.includes(status)" class="def-bg">
           <div class="presuppose-icon" :style="{ backgroundColor: statusMessage.color }">
             <IconCheck v-if="status == 'success'" size="1.8vw" color="#FFFFFF" />
             <span v-if="status == 'warning'">!</span>
@@ -108,7 +108,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject } from 'vue';
+import { computed } from 'vue';
 
 import { ResultProps } from './type';
 
@@ -122,9 +122,8 @@ const props = withDefaults(defineProps<ResultProps>(), {
   subTitle: ''
 });
 
-const _styleModule = inject('_styleModule', '');
 const DigitalStatusCode = ['403', '404', '500'];
-const TextlStatusCode = ['success', 'warning', 'info', 'error'];
+const statusList = ['success', 'warning', 'info', 'error'];
 
 const statusMessage = computed(() => {
   switch (props.status) {

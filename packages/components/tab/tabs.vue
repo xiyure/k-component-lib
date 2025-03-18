@@ -2,7 +2,7 @@
   <el-tabs
     ref="KTabsRef"
     v-model="activeName"
-    :class="['k-tabs', _styleModule]"
+    class="k-tabs"
     v-bind="$attrs"
     :tab-position="tabPosition"
     :editable="editable"
@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick, onMounted, onUnmounted, inject } from 'vue';
+import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue';
 import { ElTabs } from 'element-plus';
 import { IconMore } from 'ksw-vue-icon';
 import TabDropdownMenu from './tab_dropdown_menu';
@@ -55,7 +55,6 @@ const props = withDefaults(defineProps<TabsProps>(), {
 
 const emits = defineEmits(['update:modelValue', 'edit']);
 
-const _styleModule = inject('_styleModule', '');
 const activeName = ref<string | undefined>(undefined);
 const KTabsRef = ref();
 

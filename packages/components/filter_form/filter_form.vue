@@ -5,7 +5,6 @@
       class="filter-items w-full relative grid grid-cols-1 2xs:grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 base:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
       :model="formData"
       :size="size"
-      :class="['k-form', _styleModule]"
       :show-colon="showColon"
     >
       <template v-for="item in items" :key="item.prop">
@@ -112,7 +111,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, computed, watch, onMounted, onUnmounted } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { KInput } from '../input';
 import { KSelect, KOption } from '../select';
 import { KRadio, KRadioGroup } from '../radio';
@@ -129,7 +128,6 @@ defineOptions({
 });
 
 const DEFAULT_SIZES = ['base', 'sm'];
-const _styleModule = inject('_styleModule', '');
 const props = withDefaults(defineProps<FilterFormProps>(), {
   items: () => [],
   collapse: true,

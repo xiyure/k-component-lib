@@ -1,5 +1,5 @@
 <template>
-  <div :class="['k-tree-transfer', _styleModule]">
+  <div class="k-tree-transfer">
     <div
       v-if="showSearchInput === true || showSearchInput === 'left'"
       class="k-transfer__filter !mb-3"
@@ -183,7 +183,7 @@
 </template>
 
 <script setup lang="tsx">
-import { ref, computed, watch, inject, nextTick } from 'vue';
+import { ref, computed, watch, nextTick } from 'vue';
 import { IconSearch, IconClose } from 'ksw-vue-icon';
 import { VxeTablePropTypes } from 'vxe-table';
 import { sortBySmallerList, compatibleSlots, sortFunc } from '../../utils';
@@ -211,8 +211,6 @@ const props = withDefaults(defineProps<TreeTransferProps>(), {
   defaultData: () => [],
   rowKey: 'id'
 });
-
-const _styleModule = inject('_styleModule', '');
 // 定义emit
 const emits = defineEmits([
   'change',

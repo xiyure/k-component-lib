@@ -3,7 +3,6 @@
     ref="kCollapseItemRef"
     :class="[
       'k-collapse-item',
-      _styleModule,
       { 'is-block': injectIsBlock },
       {
         'is-process': process,
@@ -51,7 +50,6 @@ const props = defineProps({
   }
 });
 
-const _styleModule = inject('_styleModule', '');
 const injectIsBlock = inject(
   '__isBlock__',
   computed(() => props.block)

@@ -2,7 +2,6 @@
   <div
     :class="[
       'k-view-item',
-      _styleModule,
       {
         'k-view-active': activeView === value,
         'k-view-disabled': disabled,
@@ -49,7 +48,6 @@ const props = defineProps<ViewItemProps>();
 const emits = defineEmits(['change', 'remove']);
 
 const activeView = inject<Ref<string | number>>('activeView', ref(0));
-const _styleModule = inject('_styleModule', '');
 const parentProps = inject<ViewProps>('parentProps', {});
 
 function handleCommand(command: string) {

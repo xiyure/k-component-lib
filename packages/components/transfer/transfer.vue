@@ -1,5 +1,5 @@
 <template>
-  <div :class="['k-transfer', _styleModule]">
+  <div class="k-transfer">
     <div class="k-transfer_searcher">
       <k-input
         v-if="filterable && !searchStrictly"

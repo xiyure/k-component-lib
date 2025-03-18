@@ -1,5 +1,5 @@
 <template>
-  <div v-if="Number.isInteger(total) && total > 0" :class="['k-operate', _styleModule]">
+  <div v-if="Number.isInteger(total) && total > 0" class="k-operate">
     <span class="k-operate__header">{{ total || '-' }}</span>
     <div class="k-operate__content">
       <ul class="k-operate__list">
@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, inject } from 'vue';
+import { ref, watch } from 'vue';
 import { IconClose, IconMore } from 'ksw-vue-icon';
 import { KDropdown, KDropdownItem } from '../dropdown';
 import { useLocale } from '../../hooks';
@@ -60,7 +60,6 @@ const props = withDefaults(defineProps<OperateProps>(), {
   hideOnClick: true
 });
 
-const _styleModule = inject('_styleModule', '');
 const hideData = ref<Array<OperateData>>([]);
 const showData = ref<Array<OperateData>>([]);
 

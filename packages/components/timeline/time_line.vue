@@ -1,7 +1,7 @@
 <template>
   <div
     ref="KTimelineRef"
-    :class="['k-timeline', _styleModule, {'hidden-line': isHideLine}]"
+    :class="['k-timeline', {'hidden-line': isHideLine}]"
   >
     <el-timeline>
       <slot></slot>
@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, inject } from 'vue';
+import { ref, computed } from 'vue';
 import { ElTimeline } from 'element-plus';
 import { TimelineProps } from './type';
 import { getExposeProxy } from '../../utils';
@@ -23,7 +23,6 @@ const props = withDefaults(defineProps<TimelineProps>(), {
   showLine: true
 });
 
-const _styleModule = inject('_styleModule', '');
 const isHideLine = computed(() => !props.showLine);
 
 const KTimelineRef = ref(null);

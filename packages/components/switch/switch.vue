@@ -1,7 +1,7 @@
 <template>
   <el-switch
     ref="kSwitchRef"
-    :class="['k-switch', _styleModule]"
+    class="k-switch"
     v-bind="$attrs"
     :size="formatSize.elSize"
     :style="switchStyle"
@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, inject } from 'vue';
+import { ref, computed } from 'vue';
 import { ElSwitch } from 'element-plus';
 import { SwitchProps } from './type';
 import { getExposeProxy } from '../../utils';
@@ -19,7 +19,6 @@ defineOptions({
   name: 'KSwitch'
 });
 
-const _styleModule = inject('_styleModule', '');
 const props = withDefaults(defineProps<SwitchProps>(), {
   activeColor: '',
   inactiveColor: ''

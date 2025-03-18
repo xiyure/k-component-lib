@@ -1,5 +1,5 @@
 <template>
-  <div ref="box" :class="['k-button-container', styleModule]">
+  <div ref="box" class="k-button-container">
     <div ref="container" class="container">
       <slot></slot>
     </div>
@@ -46,7 +46,6 @@ defineOptions(({
 }));
 
 const elementObserver = inject<any>('__elementObserver');
-const styleModule = inject('_styleModule', '');
 
 const props = withDefaults(defineProps<ButtonContainerProps>(), {
   trigger: 'click',

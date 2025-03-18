@@ -4,7 +4,6 @@
       ref="kCollapseRef"
       :class="[
         'k-collapse',
-        _styleModule,
         { 'is-useAntStyle': useAntStyle, 'is-useStepStyle': useStepStyle },
       ]"
       v-bind="$attrs"
@@ -17,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, provide, computed } from 'vue';
+import { ref, provide, computed } from 'vue';
 import { ElCollapse } from 'element-plus';
 import { getExposeProxy } from '../../utils/index';
 
@@ -49,7 +48,6 @@ provide(
   computed(() => props.block)
 );
 
-const _styleModule = inject('_styleModule', '');
 const kCollapseRef = ref(null);
 
 const instance: any = {};

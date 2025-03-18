@@ -3,7 +3,6 @@
     ref="KFormItemRef"
     :class="[
       'k-form-item',
-      _styleModule,
       { 'k-form-item--colon': injectShowColon },
       { 'k-form-item--no-label': _showLabel === true }
     ]"
@@ -31,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, computed, nextTick, watch } from 'vue';
+import { ref, inject, computed } from 'vue';
 import { ElFormItem } from 'element-plus';
 import { FormItemProps } from './type';
 import { getExposeProxy } from '../../utils';
@@ -48,7 +47,6 @@ const props = withDefaults(defineProps<FormItemProps>(), {
 
 const formatSize = useSize<FormItemProps>(props);
 
-const _styleModule = inject('_styleModule', '');
 const KFormItemRef = ref(null);
 
 function isShowTooltip(el: HTMLElement) {

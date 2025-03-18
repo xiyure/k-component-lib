@@ -1,7 +1,7 @@
 <template>
   <el-calendar
     ref="kCalendarRef"
-    :class="['k-calendar', _styleModule, { 'k-calendar--adaptive': adaptive }, 'text-base']"
+    :class="['k-calendar', { 'k-calendar--adaptive': adaptive }, 'text-base']"
     v-bind="$attrs"
   >
     <template #header="{ date }">
@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, inject } from 'vue';
+import { ref, computed } from 'vue';
 import { ElCalendar } from 'element-plus';
 import type { CalendarDateType, CalendarInstance } from 'element-plus';
 // @ts-expect-error chinese-lunar-calendar has not declare dependencies
@@ -77,8 +77,6 @@ const props = withDefaults(defineProps<CalendarProps>(), {
   showLunar: false,
   adaptive: false
 });
-
-const _styleModule = inject('_styleModule', '');
 
 const kCalendarRef = ref<CalendarInstance>();
 const isShowLunar = ref(false);

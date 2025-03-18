@@ -35,7 +35,6 @@
                 ref="KScriptInputWrapper"
                 :class="[
                   'k-script-input-wrapper',
-                  _styleModule,
                   {
                     'k-script-input-placeholder': true,
                     'hidden-result ': showMessage === true,
@@ -72,8 +71,7 @@
               v-model="pwd"
               type="password"
               :disabled
-              :class="['k-script-input-wrapper', _styleModule]"
-              class="showPassword !h-8 z-10 !p-0 flex-1"
+              class="k-script-input-wrapper showPassword !h-8 z-10 !p-0 flex-1"
               show-password
               @input="updateModelValue"
               @focus="handleFocus"
@@ -146,7 +144,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, inject, onMounted, onBeforeUnmount, nextTick } from 'vue';
+import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import { ElScrollbar } from 'element-plus';
 import { ScriptInputProps, ScriptOptions } from './type';
 import Message from '../message';
@@ -161,7 +159,6 @@ defineOptions({
   name: 'KScriptInput'
 });
 
-const _styleModule = inject('_styleModule', '');
 const { t } = useLocale();
 
 const props = withDefaults(defineProps<ScriptInputProps>(), {

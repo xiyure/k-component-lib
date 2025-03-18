@@ -2,8 +2,7 @@
   <div
     :class="[
       'k-filter',
-      { 'text-sm': formatSize.ownSize === 'sm', 'text-base': formatSize.ownSize !== 'sm' },
-      _styleModule,
+      { 'text-sm': formatSize.ownSize === 'sm', 'text-base': formatSize.ownSize !== 'sm' }
     ]"
   >
     <k-popover
@@ -228,7 +227,6 @@ onMounted(() => {
 
 // 控制popper的显示/隐藏动画
 const popperClassName = ref('');
-const _styleModule = inject('_styleModule', '');
 const emits = defineEmits(['confirm', 'clear', 'show', 'hide']);
 const { t } = useLocale();
 const filterData = ref<FilterData[]>([]);

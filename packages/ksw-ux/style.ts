@@ -10,9 +10,8 @@ import '../style/theme/index.css';
 import '../style/global.less';
 
 // style of lib
-export function registerStyle(app: App, config: ContextConfig = {}) {
-  const styleModule = setStyleTheme(config.styleModule);;
-  app.provide('_styleModule', styleModule);
+export function registerStyle(_app: App, config: ContextConfig = {}) {
+  setStyleTheme(config.styleModule);;
   // 合并css变量
   mergeCssVar(config.cssVariables);
 }

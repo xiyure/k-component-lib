@@ -1,5 +1,5 @@
 <template>
-  <div ref="KViewRef" :class="['k-view', 'text-base', _styleModule]">
+  <div ref="KViewRef" class="k-view text-base">
     <div
       class="k-view-nav p-2 h-full border-r border-gray-200 relative flex-shrink-0"
       :class="{ 'is-collapse': viewCollapse }"
@@ -166,7 +166,6 @@ const emits = defineEmits([
   'node-expand',
   'node-collapse'
 ]);
-const _styleModule = inject('_styleModule', '');
 const active = ref<string | number>('');
 const KViewRef = ref<HTMLDivElement>();
 

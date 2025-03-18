@@ -3,7 +3,7 @@
     :id="id"
     ref="kCheckboxRef"
     class="k-checkbox"
-    :class="[getSizeClass, _styleModule]"
+    :class="getSizeClass"
     v-bind="$attrs"
     :label="label"
     @click="handleClickLabel"
@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick, computed, inject } from 'vue';
+import { ref, watch, nextTick, computed } from 'vue';
 import { ElCheckbox } from 'element-plus';
 import { CheckboxProps } from './type';
 import { getExposeProxy, genRandomStr, GetColorLevelNew } from '../../utils/index';
@@ -27,7 +27,6 @@ import { colors } from './const';
 defineOptions({
   name: 'KCheckbox'
 });
-const _styleModule = inject('_styleModule', '');
 const props = withDefaults(defineProps<CheckboxProps>(), {
   strict: false,
   color: ''

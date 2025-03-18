@@ -16,8 +16,7 @@
       },
       getElTypeColor,
       getSizeClass,
-      getBtnBase,
-      _styleModule,
+      getBtnBase
     ]"
     :loading="loading"
     :loading-icon="loadingIcon"
@@ -39,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, nextTick, watch, inject } from 'vue';
+import { computed, ref, nextTick, watch } from 'vue';
 import { ElButton } from 'element-plus';
 import { ButtonProps } from './type';
 import { genRandomStr, getExposeProxy, GetColorLevelNew, compatibleSlots } from '../../utils';
@@ -66,8 +65,6 @@ const props = withDefaults(defineProps<ButtonProps>(), {
 });
 
 const formatSize = useSize<ButtonProps>(props);
-
-const _styleModule = inject('_styleModule', '');
 
 const id = genRandomStr(8);
 const buttonRef = ref();

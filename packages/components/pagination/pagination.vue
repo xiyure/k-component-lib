@@ -1,7 +1,7 @@
 <template>
   <el-pagination
     ref="KPaginationRef"
-    :class="['k-pagination', _styleModule]"
+    class="k-pagination"
     v-bind="$attrs"
     :size="formatSize.elSize"
   >
@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from 'vue';
+import { ref } from 'vue';
 import { ElPagination } from 'element-plus';
 import { getExposeProxy } from '../../utils';
 import { useSize } from '../../hooks';
@@ -23,8 +23,6 @@ defineOptions({
 const props = withDefaults(defineProps<PaginationProps>(), {});
 
 const formatSize = useSize(props);
-
-const _styleModule = inject('_styleModule', '');
 
 const KPaginationRef = ref(null);
 
