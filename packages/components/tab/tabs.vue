@@ -121,6 +121,9 @@ function handleWheel(evt: WheelEvent) {
   const maxOffset = isHorizontal()
       ? nav.offsetWidth - navScrollBounding.width
       : nav.offsetHeight - navScrollBounding.height;
+  if (maxOffset <= 0) {
+    return;
+  }
   if (translateDis > 0) {
     translateDis = 0;
   } else if (translateDis < -maxOffset) {
@@ -181,6 +184,9 @@ function scrollToActiveTab() {
     const maxOffset = _isHorizontal
       ? nav.offsetWidth - navScrollBounding.width
       : nav.offsetHeight - navScrollBounding.height;
+    if (maxOffset <= 0) {
+      return;
+    }
     const currentOffset = -getNavTranslate();
     let newOffset = currentOffset;
 

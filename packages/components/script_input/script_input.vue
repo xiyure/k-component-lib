@@ -46,7 +46,7 @@
                   maxHeight: maxHeight,
                   resize: resize ? 'vertical' : 'none'
                 }"
-                :contenteditable="disabled ? false : 'plaintext-only'"
+                :contenteditable="disabled || !editable ? false : 'plaintext-only'"
                 :spellcheck="false"
                 :placeholder
                 @input="handleInput"
@@ -230,6 +230,8 @@ const allowInput = ref(true);
 const allowShowTree = ref(false);
 const showTreeSearch = ref(false);
 const popoverWidth = ref(0);
+// 是否可编辑
+const editable = ref(true);
 // 表达式相关
 const funcReg = /fx\((.*?)\)/;
 const fxSet = new Set();
@@ -271,24 +273,12 @@ const VTooltipConfig = computed(() => ({
     !limitMaxMinMsg.value
 }));
 
-// 缓存开启唯一输入模式的输入框类型集合
-const onlyOneInputMode = computed(() => {
+const isOnlyOneInput = computed(() => {
   const isOnly = props.onlyOneInput;
-  let modeMap = new Map([
-    ['string', false],
-    ['expression', false]
-  ]);
-  const modes = ['string', 'expression'];
-  if (typeof isOnly === 'boolean') {
-    modeMap.set('string', isOnly);
-    modeMap.set('expression', isOnly);
-  } else if (Array.isArray(isOnly)) {
-    modes.forEach((mode: string) => {
-      const exist = (isOnly as string[]).includes(mode);
-      modeMap.set(mode, exist);
-    });
+  if (isOnly === true || (Array.isArray(isOnly) && isOnly.includes(getCurrentMode()))) {
+    return true;
   }
-  return modeMap;
+  return false;
 });
 
 const tableData = computed(() => {
@@ -352,6 +342,7 @@ watch(
     clearCurrentInput();
     const newModelValue = escapeValue(props.modelValue.toString());
     cacheRes = newModelValue;
+    editable.value = true;
     if (_showPassword.value && !funcReg.test(newModelValue)) {
       pwd.value = newModelValue;
       return;
@@ -376,6 +367,7 @@ watch(
 function updateModelValue(res: string) {
   cacheRes = res;
   emits('update:modelValue', res);
+  editable.value = !(isOnlyOneInput.value && res.includes('fx('));
 }
 function getEditorContent() {
   return formatterEscape(KScriptInputWrapper.value.innerHTML);
@@ -500,7 +492,7 @@ async function handleInputContent(data: Row | RowData) {
     _isStringMode.value && data[getAttrProps().tag] !== false
       ? generateScriptTag(data[getAttrProps().label], key)
       : data[getAttrProps().value];
-  if (onlyOneInputMode.value.get(getCurrentMode())) {
+  if (isOnlyOneInput.value) {
     KScriptInputWrapper.value.innerHTML = content;
   } else {
     handleManualInput(content);
@@ -575,7 +567,7 @@ function parseInputValue() {
   const scriptTags: (ScriptOptions | null)[] = [];
   const domToText = (el: HTMLElement) => {
     if (!el) {
-      return;
+      return {};
     }
     const nodes = el.childNodes;
     for (let i = 0; i < nodes.length; i++) {
@@ -644,7 +636,7 @@ function parseModelValue(value: string) {
 function generateScriptTag(content: string, key: string, isError: boolean = false) {
   return `<div class="k-script-tag ${
     isError ? 'is-error' : ''
-  }" data-key="${key}" data-value="${content}" contenteditable="false">${content}<button class="k-script-tag-x-mark">×</button></div>`;
+  }" data-key="${key}" data-value="${content}" contenteditable="false">${content}<span class="k-script-tag-x-mark"></span></div>`;
 }
 function toggleSelect(event: KeyboardEvent) {
   if (!allowShowTree.value || !popperVisible.value) {
@@ -817,7 +809,9 @@ function removeTag(event: MouseEvent) {
   if (tag) {
     tag.parentNode?.removeChild(tag);
   }
-  emits('change', parseInputValue());
+  const res = parseInputValue();
+  updateModelValue(res?.result ?? '');
+  emits('change', res);
 }
 function clearCurrentInput() {
   curInput.value = '';
@@ -885,10 +879,9 @@ function restoreTextValue() {
   const attrName = isStringMode() ? 'string' : 'expression';
   setEditorContent(caches[attrName]);
   const res = parseInputValue();
-  cacheRes = res?.result ?? '';
   caches.expression = tempCaches.expression;
   caches.string = tempCaches.string;
-  emits('update:modelValue', res?.result ?? '');
+  updateModelValue(res.result ?? '');
   emits('change', res);
 }
 function handleResize() {
