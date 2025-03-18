@@ -1,40 +1,42 @@
 <template>
-  <el-button
-    :id="id"
-    ref="buttonRef"
-    class="k-button"
-    :class="[
-      'el-button',
-      {
-        'el-button--main': main,
-        'el-button--secondary': secondary,
-        'el-button--text': text,
-        'el-button--icon': icon,
-        'is-loading': loading,
-        'is-disabled': disabled,
-        'button-loading': loading,
-      },
-      getElTypeColor,
-      getSizeClass,
-      getBtnBase
-    ]"
-    :loading="loading"
-    :loading-icon="loadingIcon"
-    :disabled="disabled"
-    v-bind="$attrs"
-  >
-    <slot :name="compatibleSlots($slots, ['icon-left', 'iconLeft'])" class="icon-left">
-      <component :is="props.iconLeft" v-if="props.iconLeft" />
-    </slot>
-    <label v-if="props.value && props.icon === false">{{ props.value }}</label>
-    <label v-else-if="$slots.default">
-      <slot class="slot-content"></slot>
-    </label>
-    <slot :name="compatibleSlots($slots, ['icon-right', 'iconRight'])" class="icon-right">
-      <component :is="props.iconRight" v-if="props.iconRight" />
-    </slot>
-    <component :is="props.loadingIcon" v-if="props.loading" class="loading-icon" />
-  </el-button>
+  <el-config-provider namespace="k">
+    <el-button
+      :id="id"
+      ref="buttonRef"
+      class="k-button"
+      :class="[
+        'k-button',
+        {
+          'k-button--main': main,
+          'k-button--secondary': secondary,
+          'k-button--text': text,
+          'k-button--icon': icon,
+          'is-loading': loading,
+          'is-disabled': disabled,
+          'button-loading': loading
+        },
+        getElTypeColor,
+        getSizeClass,
+        getBtnBase
+      ]"
+      :loading="loading"
+      :loading-icon="loadingIcon"
+      :disabled="disabled"
+      v-bind="$attrs"
+    >
+      <slot :name="compatibleSlots($slots, ['icon-left', 'iconLeft'])" class="icon-left">
+        <component :is="props.iconLeft" v-if="props.iconLeft" />
+      </slot>
+      <label v-if="props.value && props.icon === false">{{ props.value }}</label>
+      <label v-else-if="$slots.default">
+        <slot class="slot-content"></slot>
+      </label>
+      <slot :name="compatibleSlots($slots, ['icon-right', 'iconRight'])" class="icon-right">
+        <component :is="props.iconRight" v-if="props.iconRight" />
+      </slot>
+      <component :is="props.loadingIcon" v-if="props.loading" class="loading-icon" />
+    </el-button>
+  </el-config-provider>
 </template>
 
 <script setup lang="ts">
@@ -86,7 +88,7 @@ watch(
           const rbgValue = getColorS?.['--k-oklch-500']?.match(/\(([^)]+)\)/)?.[1];
 
           for (const item of btnTypes) {
-            const btnType = `el-button--${item.type}`;
+            const btnType = `k-button--${item.type}`;
             if (classList?.contains(btnType)) {
               item.vars.forEach((item) => {
                 buttonRef.value.$el?.style.setProperty(
@@ -108,14 +110,14 @@ watch(
 const getElTypeColor = computed(() => {
   const elTypeColorArgs = ['primary', 'success', 'info', 'warning', 'danger'];
   if (props.type && elTypeColorArgs.includes(props.type)) {
-    return `el-button--${props.type}`;
+    return `k-button--${props.type}`;
   }
   return '';
 });
 
 const getSizeClass = computed(() => {
   const { ownSize } = formatSize.value;
-  return ownSize ? `el-button--${ownSize}` : '';
+  return ownSize ? `k-button--${ownSize}` : '';
 });
 
 const getBtnBase = computed(() => {
@@ -138,4 +140,6 @@ defineExpose(getExposeProxy(instance, buttonRef));
 
 <style lang="less">
 @import './style.less';
+@import './el-button.css';
+@import './base.css';
 </style>
