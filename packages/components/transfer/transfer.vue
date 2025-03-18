@@ -75,9 +75,6 @@ const KTransferRef = ref();
 let defaultSourceKeys: string[] = [];
 
 onMounted(() => {
-  if (props.defaultKeys && props.defaultKeys.length) {
-    emits('update:modelValue', [...props.defaultKeys]);
-  }
   // 根据需求扩展页面内容
   extendContent();
   initSortable();
@@ -181,6 +178,7 @@ function extendContent() {
 }
 function resetTransferData() {
   if (!Array.isArray(props.defaultKeys)) {
+    emits('update:modelValue', []);
     return;
   }
   const { key } = defaultPropsConfig.value;
