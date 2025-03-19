@@ -1,5 +1,5 @@
 <template>
-  <div class="k-transfer">
+  <div :class="['k-transfer', _styleModule]">
     <div class="k-transfer_searcher">
       <k-input
         v-if="filterable && !searchStrictly"
@@ -12,10 +12,10 @@
       ref="KTransferRef"
       v-model="modelValue"
       v-bind="$attrs"
-      :data="showLeftTableData"
+      :data="sourceData"
       :props="props.props"
-      :filterable="searchStrictly"
-      :filter-method="filterMethod"
+      :class="{'k-transfer_search-strictly': !searchStrictly}"
+      filterable
       @change="handleChange"
       @left-check-change="handleLeftCheckChange"
       @right-check-change="handleRightCheckChange"
@@ -37,15 +37,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted, inject } from 'vue';
 import { ElTransfer, TransferKey, TransferDirection } from 'element-plus';
 import { IconSearch } from 'ksw-vue-icon';
-import { Sortable, SortableInstance, SortableEvent } from '../../utils/event/sortable';
 import { useLocale } from '../../hooks';
+import { Sortable, SortableInstance, SortableEvent } from '../../utils/event/sortable';
 import { TransferProps } from './type';
 import { KInput } from '../input';
 import { getExposeProxy, sortBySmallerList } from '../../utils';
-import { useData, compareByPinYin } from './hooks';
 
 defineOptions({
   name: 'KTransfer'
@@ -62,12 +61,11 @@ const emits = defineEmits([
   'right-check-change',
   'input',
   'reset',
-  'drag',
-  'remote-query'
+  'drag'
 ]);
 
+const _styleModule = inject('_styleModule', '');
 const { t } = useLocale();
-
 const modelValue = ref<Array<any>>([]);
 const searchStr = ref('');
 const sourceData = ref<Array<any>>([]);
@@ -93,29 +91,6 @@ const filterablePlaceholder = computed(
   () => props.filterablePlaceholder ?? t?.('searchHeaderName')
 );
 
-// 分离左右面板配置
-const leftPanelConfig = computed(() => ({
-  searchConfig: props.searchConfig
-}));
-const leftData = ref<any[]>([]);
-
-watch(
-  () => props.data,
-  (newValue) => {
-    leftData.value = Array.isArray(newValue) ? [...newValue] : [];
-    if (Array.isArray(newValue)) {
-      sourceData.value = newValue;
-      defaultSourceKeys = sourceData.value.map((item: any) => item[defaultPropsConfig.value.key]);
-      return;
-    }
-    sourceData.value = [];
-    defaultSourceKeys.length = 0;
-  },
-  { immediate: true }
-);
-
-const { showTableData: showLeftTableData } = useData(leftPanelConfig, emits, leftData, searchStr);
-
 watch(
   () => props.modelValue,
   (newValue) => {
@@ -130,6 +105,36 @@ watch(
   },
   { immediate: true }
 );
+watch(
+  () => props.data,
+  (newValue) => {
+    if (Array.isArray(newValue)) {
+      sourceData.value = newValue;
+      defaultSourceKeys = sourceData.value.map((item: any) => item[defaultPropsConfig.value.key]);
+      return;
+    }
+    sourceData.value = [];
+    defaultSourceKeys.length = 0;
+  },
+  { immediate: true }
+);
+watch(
+  () => searchStr.value,
+  (newValue) => {
+    const filterInput = KTransferRef.value.$el.querySelectorAll(
+      '.el-input__inner'
+    ) as NodeListOf<HTMLInputElement>;
+    if (!filterInput || !filterInput.length) {
+      return;
+    }
+    for (let i = 0; i < filterInput.length; i++) {
+      filterInput[i].value = newValue;
+      const event = new Event('input', { bubbles: true });
+      filterInput[i].dispatchEvent(event);
+    }
+  }
+);
+
 function handleChange(
   value: TransferKey[],
   direction: TransferDirection,
@@ -185,7 +190,7 @@ function resetTransferData() {
   }
   const { key } = defaultPropsConfig.value;
   sourceData.value.sort(
-    (a: any, b: any) => defaultSourceKeys.indexOf(a[key]) - defaultSourceKeys.indexOf(b[key])
+    (a: any, b: any) => defaultSourceKeys.indexOf(a[key]) - defaultSourceKeys.indexOf(b[key]),
   );
   emits('update:modelValue', [...props.defaultKeys]);
   emits('reset', [...props.defaultKeys]);
@@ -234,36 +239,6 @@ function getTransferData() {
     selectData: modelValue.value
   };
 }
-
-const filterMethod = (query: string, item: Record<string, any>): boolean => {
-  const { strict, searchMethod, ignoreCase = false } = props.searchConfig ?? {};
-  if (props.searchConfig?.isRemoteQuery) {
-    emits('remote-query', query);
-    return true;
-  }
-  if (!query) {
-    return true;
-  }
-  if (typeof searchMethod === 'function') {
-    return searchMethod(query, item);
-  }
-  const cellLabel = item.label;
-  if (strict === true) {
-    return cellLabel.toString() === query;
-  }
-  const compareLabel = ignoreCase ? String(cellLabel).toLowerCase() : String(cellLabel);
-  const newSearchKey = ignoreCase ? query.toLowerCase() : query;
-  return (
-    compareLabel.indexOf(newSearchKey) !== -1 ||
-    compareByPinYin(
-      leftPanelConfig,
-      'label',
-      compareLabel,
-      newSearchKey,
-      props.searchConfig?.ignoreCase
-    )
-  );
-};
 const instance: any = { getTransferData };
 defineExpose(getExposeProxy(instance, KTransferRef));
 </script>
