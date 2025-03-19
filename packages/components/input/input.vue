@@ -24,11 +24,8 @@
     </template>
     <template #suffix>
       <slot name="suffix"></slot>
-      <div @click="switchPassword">
-        <IconShow v-if="!isText && isPasswordVisible" />
-      </div>
-      <div @click="switchPassword">
-        <IconHide v-if="isText && isPasswordVisible" />
+      <div v-if="isPasswordVisible" @click="switchPassword">
+        <component :is="isText ? IconHide : IconShow"></component>
       </div>
     </template>
     <template v-if="slots.append" #append>
@@ -41,6 +38,7 @@
 <script setup lang="ts">
 import { ref, computed, provide, SlotsType, useAttrs } from 'vue';
 import { ElInput } from 'element-plus';
+import { IconShow, IconHide } from 'ksw-vue-icon';
 import { InputProps } from './type';
 import { getExposeProxy } from '../../utils';
 import { SIZE_KEY, useSize } from '../../hooks';
