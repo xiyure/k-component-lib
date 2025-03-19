@@ -86,7 +86,10 @@ function processVersion(versionKey) {
 
   const filtered = Object.entries(allDeps)
     .filter(([name]) => targetDependencies.includes(name))
-    .map(([name, version]) => ({ name, version }))
+  .map(([name, version]) => ({
+    name,
+    version: version.replace(/^(\^)/, '')
+  }))
 
   if (filtered.length > 0) {
     dependenciesVersions[versionKey] = filtered

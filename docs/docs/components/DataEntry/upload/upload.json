@@ -209,11 +209,6 @@
   "events": [],
   "slots": [
     {
-      "displayName": "default",
-      "description": "自定义默认内容",
-      "parameters": ""
-    },
-    {
       "displayName": "trigger",
       "description": "自定义触发文件选择框的内容",
       "parameters": ""
