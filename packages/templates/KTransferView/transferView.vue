@@ -1,5 +1,5 @@
 <template>
-  <div class="K-transfer-view">
+  <div class="k-transfer-view">
     <slot name="header">
       <div class="transfer-dialog-content">
         <IconTips class="transfer-dialog-icon" />

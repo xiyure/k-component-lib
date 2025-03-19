@@ -97,8 +97,24 @@ const filterablePlaceholder = computed(
 const leftPanelConfig = computed(() => ({
   searchConfig: props.searchConfig
 }));
+const leftData = ref<any[]>([]);
 
-const { showTableData: showLeftTableData } = useData(leftPanelConfig, emits, props.data, searchStr);
+watch(
+  () => props.data,
+  (newValue) => {
+    leftData.value = Array.isArray(newValue) ? [...newValue] : [];
+    if (Array.isArray(newValue)) {
+      sourceData.value = newValue;
+      defaultSourceKeys = sourceData.value.map((item: any) => item[defaultPropsConfig.value.key]);
+      return;
+    }
+    sourceData.value = [];
+    defaultSourceKeys.length = 0;
+  },
+  { immediate: true }
+);
+
+const { showTableData: showLeftTableData } = useData(leftPanelConfig, emits, leftData, searchStr);
 
 watch(
   () => props.modelValue,
@@ -114,20 +130,6 @@ watch(
   },
   { immediate: true }
 );
-watch(
-  () => props.data,
-  (newValue) => {
-    if (Array.isArray(newValue)) {
-      sourceData.value = newValue;
-      defaultSourceKeys = sourceData.value.map((item: any) => item[defaultPropsConfig.value.key]);
-      return;
-    }
-    sourceData.value = [];
-    defaultSourceKeys.length = 0;
-  },
-  { immediate: true }
-);
-
 function handleChange(
   value: TransferKey[],
   direction: TransferDirection,

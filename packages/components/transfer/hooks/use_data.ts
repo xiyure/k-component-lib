@@ -3,10 +3,15 @@ import { CN_DICT, TONE_MARKS } from '../../../constant';
 import { getAllCombinations, convertToMap } from '../../../utils';
 import { TableCacheData } from '../../tree_table/type';
 
+interface propsData {
+  label?: string;
+  key?: string;
+  disabled?: string;
+}
 export function useData(
   config: Ref<any>,
   emits: any,
-  fullData: any[],
+  fullData: Ref<propsData[]>,
   searchKeyWord: Ref<string>
 ) {
   // 缓存表格数据筛选过程中产生的临时数据
@@ -24,13 +29,9 @@ export function useData(
 
   // 表格内容搜索
   function filterTableData() {
-    const filterData = fullData;
-    tableCacheData.tableDataMap = convertToMap(fullData, 'key', '');
-    const {
-      strict,
-      searchMethod,
-      ignoreCase = false
-    } = config.value.searchConfig ?? {};
+    const filterData = fullData.value;
+    tableCacheData.tableDataMap = convertToMap(fullData.value, 'key', '');
+    const { strict, searchMethod, ignoreCase = false } = config.value.searchConfig ?? {};
     const searchKey = searchKeyWord.value.trim().replace(/\\/g, '\\\\');
     if (config.value.searchConfig?.isRemoteQuery) {
       emits('remote-query', searchKey);
@@ -45,7 +46,7 @@ export function useData(
     const tableData = filterData.filter((dataItem) => {
       const cellLabel = dataItem.label;
       if (strict === true) {
-        return cellLabel.toString() === searchKey;
+        return cellLabel?.toString() === searchKey;
       }
       const compareLabel = ignoreCase ? String(cellLabel).toLowerCase() : String(cellLabel);
       const newSearchKey = ignoreCase ? searchKey.toLowerCase() : searchKey;
