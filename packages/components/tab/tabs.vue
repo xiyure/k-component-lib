@@ -118,11 +118,11 @@ function handleWheel(evt: WheelEvent) {
   const translate = getNavTranslate();
   let translateDis = translate - disY;
   const navScrollBounding = navScroll.getBoundingClientRect();
-  const maxOffset = isHorizontal()
+  let maxOffset = isHorizontal()
       ? nav.offsetWidth - navScrollBounding.width
       : nav.offsetHeight - navScrollBounding.height;
   if (maxOffset <= 0) {
-    return;
+    maxOffset = -translate
   }
   if (translateDis > 0) {
     translateDis = 0;
@@ -181,13 +181,14 @@ function scrollToActiveTab() {
     const _isHorizontal = isHorizontal();
     const activeTabBounding = activeTab.getBoundingClientRect();
     const navScrollBounding = navScroll.getBoundingClientRect();
-    const maxOffset = _isHorizontal
+    let maxOffset = _isHorizontal
       ? nav.offsetWidth - navScrollBounding.width
       : nav.offsetHeight - navScrollBounding.height;
-    if (maxOffset <= 0) {
-      return;
-    }
+
     const currentOffset = -getNavTranslate();
+    if (maxOffset <= 0) {
+      maxOffset = currentOffset;
+    }
     let newOffset = currentOffset;
 
     if (_isHorizontal) {
