@@ -286,9 +286,9 @@ const tableData = computed(() => {
     return {
       ...item,
       __kid__: item[getAttrProps().value]
-    }
+    };
   });
-})
+});
 
 watch(
   () => props.height,
@@ -636,7 +636,7 @@ function parseModelValue(value: string) {
 function generateScriptTag(content: string, key: string, isError: boolean = false) {
   return `<div class="k-script-tag ${
     isError ? 'is-error' : ''
-  }" data-key="${key}" data-value="${content}" contenteditable="false">${content}<span class="k-script-tag-x-mark"></span></div>`;
+  }" data-key="${key}" data-value="${content}" contenteditable="false">${content}<span class="k-script-tag-clear-mark"></span></div>`;
 }
 function toggleSelect(event: KeyboardEvent) {
   if (!allowShowTree.value || !popperVisible.value) {
@@ -669,7 +669,12 @@ function toggleSelect(event: KeyboardEvent) {
   if (row) {
     $tree.value.setCurrentRow(row);
   }
-  if (event.code === 'Enter' && popperVisible.value && document.activeElement !== headerElement && selectedIndex.value >= 0) {
+  if (
+    event.code === 'Enter' &&
+    popperVisible.value &&
+    document.activeElement !== headerElement &&
+    selectedIndex.value >= 0
+  ) {
     event.preventDefault();
     if (props.useTree && row && row.children?.length && !row.optional) {
       $tree.value?.toggleTreeExpand(row);
@@ -802,7 +807,7 @@ function hidePopperByClick(event: MouseEvent) {
 }
 function removeTag(event: MouseEvent) {
   const target = event.target as HTMLElement;
-  if (!target?.classList?.contains?.('k-script-tag-x-mark')) {
+  if (!target?.classList?.contains?.('k-script-tag-clear-mark')) {
     return;
   }
   const tag = target.parentNode;

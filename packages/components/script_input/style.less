@@ -97,6 +97,7 @@
         text-wrap: nowrap;
         text-overflow: ellipsis;
         margin: 0.0625rem 0;
+        position: relative;
         & + .k-script-tag {
           margin-left: 0.125rem;
         }
@@ -122,7 +123,7 @@
         background-color: var(--k-gray-50);
         cursor: not-allowed;
       }
-      .k-script-tag-x-mark {
+      .k-script-tag-clear-mark {
         display: none;
         margin-left: 3px;
         cursor: pointer;
@@ -136,12 +137,34 @@
       }
     }
     .k-script-input-wrapper.k-script-tag--closable {
-      .k-script-tag-x-mark {
+      .k-script-tag-clear-mark {
         display: unset;
-      }
-      .k-script-tag-x-mark::after {
-        content: '×';
-        font-size: 15px;
+        &:before {
+          content: '';
+          position: relative;
+          border-radius: 50%;
+          line-height: 1rem;
+          background: rgba(0, 0, 0, 0.1);
+          display: inline-block;
+          width: 1rem;
+          height: 1rem;
+          top: 0.1875rem;
+        }
+        &::after {
+          content: '×';
+          position: absolute;
+          color: rgba(0, 0, 0, 0.5);
+          font-size: 1rem;
+          line-height: 1rem;
+          top: 0.1875rem;
+          right: 0.65625rem;
+        }
+        &:hover::after {
+          color: var(--k-theme-primary);
+        }
+        &:hover::before {
+          background: rgba(0, 0, 0, 0.075);
+        }
       }
     }
   }
