@@ -87,7 +87,10 @@
       }
     "
   >
-    <el-scrollbar class="k-input-scrollbar">
+    <el-scrollbar
+      class="k-input-scrollbar"
+      :max-height="popperStyle?.maxHeight ?? 200"
+      >
       <li
         :class="[
           'k-input-option',
