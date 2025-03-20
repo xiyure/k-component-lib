@@ -56,7 +56,13 @@ title: Input 输入框
 
 <demo path="./autoSizeTextarea.vue" />
 
-### 复合输入框
+### 下拉选择
+
+设置`selectable`属性可以开启下拉选择功能， 并通过 `options` 属性传入选项列表。
+
+<demo path="./selectInput.vue" />
+
+### 前后插槽
 
 可以在输入框中前置或后置一个元素，通常是标签或按钮。
 

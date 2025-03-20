@@ -2,18 +2,18 @@
   "name": "Input",
   "props": [
     {
-      "displayName": "type",
-      "type": "string",
-      "description": "类型",
-      "defaultValue": "text",
-      "tip": "'text' | 'textarea' | 'password' | 'button' | 'checkbox' | 'file' | 'number' | 'radio' | ..."
-    },
-    {
       "displayName": "model-value/v-model",
       "type": "string | number",
       "description": "绑定值",
       "defaultValue": "",
       "tip": ""
+    },
+    {
+      "displayName": "type",
+      "type": "string",
+      "description": "类型",
+      "defaultValue": "text",
+      "tip": "'text' | 'textarea' | 'password' | 'button' | 'checkbox' | 'file' | 'number' | 'radio' | ..."
     },
     {
       "displayName": "placeholder",
@@ -59,6 +59,36 @@
       "defaultValue": "false"
     },
     {
+      "displayName": "selectable",
+      "type": "boolean",
+      "description": "是否开启下拉选择功能",
+      "tip": "false"
+    },
+    {
+      "displayName": "options",
+      "type": "Array<string | number>",
+      "description": "下拉选择的选项列表",
+      "tip": "() => []"
+    },
+    {
+      "displayName": "teleported",
+      "type": "boolean",
+      "description": "是否将 popover 的下拉列表插入至 body 元素",
+      "tip": "true"
+    },
+    {
+      "displayName": "popper-class",
+      "type": "string",
+      "description": "为 popper 添加类名",
+      "tip": ""
+    },
+    {
+      "displayName": "popper-style",
+      "type": "string / object",
+      "description": "为 popper 自定义样式",
+      "tip": ""
+    },
+    {
       "displayName": "formatter",
       "type": "Function",
       "description": "格式化输入值, type为text时生效",
@@ -95,9 +125,26 @@
       "description": "在点击由 clearable 属性生成的清空按钮时触发",
       "type": "Function",
       "tip": "() => void"
+    },
+    {
+      "displayName": "popper-show",
+      "description": "下拉列表显示时触发",
+      "type": "Function",
+      "tip": "() => void"
+    },
+    {
+      "displayName": "popper-hide",
+      "description": "下拉列表隐藏时触发",
+      "type": "Function",
+      "tip": "() => void"
     }
   ],
   "slots": [
+    {
+      "displayName": "default",
+      "description": "下拉框无数据时显示的内容",
+      "parameters": ""
+    },
     {
       "displayName": "prefix",
       "description": "输入框头部内容，只对非type='textarea' 有效",
