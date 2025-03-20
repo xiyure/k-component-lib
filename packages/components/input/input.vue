@@ -14,13 +14,17 @@
     :suffix-icon="iconRight ?? suffixIcon"
     :type="inputType"
     :size="formatSize.elSize"
-    @input="(value: string | number) => {
-      emits('update:modelValue', value);
-      emits('input', value);
-    }"
-    @change="(value: string | number) => {
-      emits('change', value);
-    }"
+    @input="
+      (value: string | number) => {
+        emits('update:modelValue', value);
+        emits('input', value);
+      }
+    "
+    @change="
+      (value: string | number) => {
+        emits('change', value);
+      }
+    "
   >
     <template v-if="slots.prepend" #prepend>
       <div :class="slotClass(prependSlotType)">
@@ -38,7 +42,7 @@
     <template v-if="isSelectable" #suffix>
       <IconDown
         :class="['k-input__arrow', { 'is-rotate': popperVisible }]"
-        @click.prevent.stop="() => popperVisible = !popperVisible"
+        @click.prevent.stop="() => (popperVisible = !popperVisible)"
       />
     </template>
     <template v-else #suffix>
@@ -59,48 +63,71 @@
     :teleported
     :popper-style="{
       minHeight: '100px',
+      maxHeight: '200px',
+      overflow: 'auto',
       ...popperStyle
     }"
     :popper-class="`${popoverClassName} ${popperClass}`"
-    @before-enter="() => {
-      popoverClassName = 'k-input__popper-enter'
-    }"
-    @before-leave="() => {
-      popoverClassName = 'k-input__popper-leave'
-    }"
-    @show="() => {
-      emits('popper-show');
-    }"
-    @hide="() => {
-      emits('popper-hide');
-    }"
+    @before-enter="
+      () => {
+        popoverClassName = 'k-input__popper-enter';
+      }
+    "
+    @before-leave="
+      () => {
+        popoverClassName = 'k-input__popper-leave';
+      }
+    "
+    @show="
+      () => {
+        emits('popper-show');
+      }
+    "
+    @hide="
+      () => {
+        emits('popper-hide');
+      }
+    "
   >
-    <li
-      :class="[
-        'k-input-option',
-        {
-          'is-selected': modelValue === item,
-          'is-disabled': false
-        }
-      ]"
-      v-for="item in options"
-      :key="item"
-      @click="() => {
-        selectOption(item)
-      }"
-    >
-      {{ item }}
-    </li>
-    <slot v-if="!options?.length">
-      <div class="k-input-options-empty" >
-        {{ t('noData') }}
-      </div>
-    </slot>
+    <div class="k-input__select k-input__select-scrollbar">
+      <li
+        :class="[
+          'k-input-option',
+          {
+            'is-selected': modelValue === item,
+            'is-disabled': false
+          }
+        ]"
+        v-for="item in options"
+        :key="item"
+        @click="
+          () => {
+            selectOption(item);
+          }
+        "
+      >
+        {{ item }}
+      </li>
+      <slot v-if="!options?.length">
+        <div class="k-input-options-empty">
+          {{ t('noData') }}
+        </div>
+      </slot>
+    </div>
   </k-popover>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, provide, SlotsType, onMounted, onBeforeUnmount, nextTick } from 'vue';
+import {
+  ref,
+  watch,
+  computed,
+  provide,
+  SlotsType,
+  onMounted,
+  onBeforeUnmount,
+  nextTick
+} from 'vue';
 import { ElInput } from 'element-plus';
 import { IconShow, IconHide, IconDown } from 'ksw-vue-icon';
 import { KPopover } from '../popover';
@@ -161,11 +188,15 @@ onBeforeUnmount(() => {
 
 const isSelectable = computed(() => props.selectable && inputType.value === 'text');
 
-watch(() => props.modelValue, (newValue) => {
-  if (newValue !== modelValue.value) {
-    modelValue.value = newValue;
-  }
-});
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    if (newValue !== modelValue.value) {
+      modelValue.value = newValue;
+    }
+  },
+  { immediate: true }
+);
 
 const slotClass = computed(() => (slot: SlotsType) => {
   switch (typeof slot) {
@@ -191,13 +222,13 @@ function selectOption(item: string | number) {
   emits('change', item);
 }
 function closePopper() {
-  if (!popperVisible.value) {}
+  if (!popperVisible.value) {
+  }
   popperVisible.value = false;
 }
 function updatePopperWidth() {
-nextTick(() => 
-  popperWidth.value = inputRef.value.$el.offsetWidth
-)};
+  nextTick(() => (popperWidth.value = inputRef.value.$el.offsetWidth));
+}
 
 provide(SIZE_KEY, formatSize);
 const instance: any = {};

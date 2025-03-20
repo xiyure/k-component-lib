@@ -169,7 +169,6 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   disabled: false,
   showModeSwitch: true,
   showPopperSwitch: true,
-  expandAll: false,
   defaultMode: 'string',
   onlyOneInput: false,
   resize: true,
@@ -275,7 +274,8 @@ const VTooltipConfig = computed(() => ({
 
 const isOnlyOneInput = computed(() => {
   const isOnly = props.onlyOneInput;
-  if (isOnly === true || (Array.isArray(isOnly) && isOnly.includes(getCurrentMode()))) {
+  const curMode = isStringMode() ? 'string': 'expression'; 
+  if (isOnly === true || (Array.isArray(isOnly) && isOnly.includes(curMode))) {
     return true;
   }
   return false;
@@ -340,15 +340,16 @@ watch(
       return;
     }
     clearCurrentInput();
-    const newModelValue = escapeValue(props.modelValue.toString());
-    cacheRes = newModelValue;
-    editable.value = true;
-    if (_showPassword.value && !funcReg.test(newModelValue)) {
-      pwd.value = newModelValue;
+    const modelValue = props.modelValue.toString();
+    if (_showPassword.value && !funcReg.test(modelValue)) {
+      pwd.value = modelValue;
       return;
     } else {
       _showPassword.value = false;
     }
+    const newModelValue = escapeValue(modelValue);
+    cacheRes = newModelValue;
+    editable.value = true;
     nextTick(() => {
       const innerText = parseModelValue(newModelValue);
       setEditorContent(innerText);
@@ -388,14 +389,7 @@ function handleInput(event: InputEvent | CompositionEvent) {
   }
   const { result = '' } = parseInputValue();
   if (!result?.length) {
-    if (props.showPassword) {
-      _methods.setPasswordMode(true);
-      nextTick(() => {
-        KScriptInputPassword.value?.focus?.();
-      });
-    } else {
-      setEditorContent('');
-    }
+    setEditorContent('');
   }
   updateModelValue(result);
   checkInputContentType(result);
@@ -597,6 +591,8 @@ function parseInputValue() {
   if (text.length && text[text.length - 1].charCodeAt(0) === 10) {
     text = text.slice(0, -1);
   }
+  // 注意密码框的特殊处理
+  toPwdMode(text);
   emits('input', text);
   return {
     result: text,
@@ -604,6 +600,14 @@ function parseInputValue() {
     scriptTags,
     isStringMode: true
   };
+}
+function toPwdMode(text: string) {
+  if (!text?.length && props.showPassword && !_showPassword.value) {
+    _methods.setPasswordMode(true);
+    nextTick(() => {
+      KScriptInputPassword.value?.focus?.();
+    });
+  }
 }
 // 解析传入的值
 function parseModelValue(value: string) {
@@ -902,7 +906,7 @@ function escapeValue(str: string) {
   if (typeof str !== 'string') {
     return str;
   }
-  return str.replace(/<|>|&/g, (match) => {
+  return str.replace(/<|>/g, (match) => {
     if (match === '<') {
       return '&lt;';
     } else {
