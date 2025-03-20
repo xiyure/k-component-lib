@@ -62,31 +62,36 @@
       "displayName": "selectable",
       "type": "boolean",
       "description": "是否开启下拉选择功能",
-      "tip": "false"
+      "tip": "false",
+      "version":"1.1.19"
     },
     {
       "displayName": "options",
       "type": "Array<string | number>",
       "description": "下拉选择的选项列表",
-      "tip": "() => []"
+      "tip": "() => []",
+      "version":"1.1.19"
     },
     {
       "displayName": "teleported",
       "type": "boolean",
       "description": "是否将 popover 的下拉列表插入至 body 元素",
-      "tip": "true"
+      "tip": "true",
+      "version":"1.1.19"
     },
     {
       "displayName": "popper-class",
       "type": "string",
       "description": "为 popper 添加类名",
-      "tip": ""
+      "tip": "",
+      "version":"1.1.19"
     },
     {
       "displayName": "popper-style",
       "type": "string / object",
       "description": "为 popper 自定义样式",
-      "tip": ""
+      "tip": "",
+      "version":"1.1.19"
     },
     {
       "displayName": "formatter",
@@ -130,20 +135,23 @@
       "displayName": "popper-show",
       "description": "下拉列表显示时触发",
       "type": "Function",
-      "tip": "() => void"
+      "tip": "() => void",
+      "version":"1.1.19"
     },
     {
       "displayName": "popper-hide",
       "description": "下拉列表隐藏时触发",
       "type": "Function",
-      "tip": "() => void"
+      "tip": "() => void",
+      "version":"1.1.19"
     }
   ],
   "slots": [
     {
       "displayName": "default",
       "description": "下拉框无数据时显示的内容",
-      "parameters": ""
+      "parameters": "",
+      "version":"1.1.19"
     },
     {
       "displayName": "prefix",
