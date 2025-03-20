@@ -14,8 +14,7 @@
           'button-loading': loading
         },
         getElTypeColor,
-        getSizeClass,
-        getBtnBase
+        getSizeClass
       ]"
       :loading="loading"
       :loading-icon="loadingIcon"
@@ -116,20 +115,6 @@ const getElTypeColor = computed(() => {
 const getSizeClass = computed(() => {
   const { ownSize } = formatSize.value;
   return ownSize ? `k-button--${ownSize}` : '';
-});
-
-const getBtnBase = computed(() => {
-  const buttonTypes: Array<keyof ButtonProps> = ['main', 'secondary', 'text', 'icon'];
-  const elTypes = ['primary', 'success', 'info', 'warning', 'danger'];
-  if (elTypes.includes(props.type)) {
-    return '';
-  }
-  for (let i = 0; i < buttonTypes.length; i++) {
-    if (props[buttonTypes[i]]) {
-      return '';
-    }
-  }
-  return 'k-button--base';
 });
 
 const instance: any = {};
