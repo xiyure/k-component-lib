@@ -62,12 +62,10 @@
     :offset="3"
     :teleported
     :popper-style="{
-      minHeight: '100px',
-      maxHeight: '200px',
-      overflow: 'auto',
+      padding: 0,
       ...popperStyle
     }"
-    :popper-class="`${popoverClassName} ${popperClass}`"
+    :popper-class="`k-input__popper ${popoverClassName} ${popperClass}`"
     @before-enter="
       () => {
         popoverClassName = 'k-input__popper-enter';
@@ -89,7 +87,7 @@
       }
     "
   >
-    <div class="k-input__select k-input__select-scrollbar">
+    <el-scrollbar class="k-input-scrollbar">
       <li
         :class="[
           'k-input-option',
@@ -113,7 +111,7 @@
           {{ t('noData') }}
         </div>
       </slot>
-    </div>
+    </el-scrollbar>
   </k-popover>
 </template>
 
@@ -128,7 +126,7 @@ import {
   onBeforeUnmount,
   nextTick
 } from 'vue';
-import { ElInput } from 'element-plus';
+import { ElInput, ElScrollbar } from 'element-plus';
 import { IconShow, IconHide, IconDown } from 'ksw-vue-icon';
 import { KPopover } from '../popover';
 import { InputProps } from './type';
@@ -152,7 +150,8 @@ const props = withDefaults(defineProps<InputProps>(), {
   selectable: false,
   options: () => [],
   teleported: true,
-  popperStyle: () => ({})
+  popperStyle: () => ({}),
+  popperClass: ''
 });
 
 const formatSize = useSize<InputProps>(props);
@@ -216,6 +215,9 @@ const switchPassword = () => {
   inputType.value = isText.value ? 'text' : 'password';
 };
 function selectOption(item: string | number) {
+  if (modelValue.value === item) {
+    return;
+  }
   modelValue.value = item;
   emits('update:modelValue', item);
   emits('input', item);

@@ -338,6 +338,32 @@
   width: 100%;
   height: 100px;
 }
+.k-input__popper {
+  min-height: 100px;
+  height: 200px;
+  .k-input-scrollbar {
+    height: 200px;
+    padding: 8px;
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-track,
+    ::-webkit-scrollbar-corner {
+      background-color: #ffffff;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #bfbfbf;
+    }
+    ::-webkit-scrollbar-thumb:hover,
+    ::-webkit-scrollbar-thumb:active {
+      background-color: #787878;
+    }
+  }
+}
 .k-input__popper-enter {
   animation: popper-fade-in 0.2s ease-out;
 }
