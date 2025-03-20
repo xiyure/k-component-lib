@@ -1,3 +1,5 @@
+// todo 由于vxe-table新版本将vxe-table--tooltip-xxx相关类名改为了vxe-tooltip--xxx，因此需要兼容新旧类名的样式
+
 .vxe-table--tooltip-wrapper, .vxe-tooltip--wrapper {
   display: none;
   position: absolute;
@@ -22,7 +24,7 @@
   }
 
   &.is--arrow {
-    .vxe-tooltip--arrow {
+    .vxe-tooltip--arrow, .vxe-table--tooltip-arrow {
       display: block;
     }
   }
@@ -38,11 +40,11 @@
     }
   }
 
-  .vxe-tooltip--content {
+  .vxe-tooltip--content, .vxe-table--tooltip-content {
     white-space: pre-line;
   }
 
-  .vxe-tooltip--arrow {
+  .vxe-tooltip--arrow, .vxe-table--tooltip-arrow {
     display: none;
     position: absolute;
     border-color: transparent;
@@ -68,7 +70,7 @@
       }
     }
 
-    .vxe-tooltip--arrow {
+    .vxe-tooltip--arrow, .vxe-table--tooltip-arrow {
       bottom: -12px;
 
       &:before {
@@ -84,7 +86,7 @@
       }
     }
 
-    .vxe-tooltip--arrow {
+    .vxe-tooltip--arrow, .vxe-table--tooltip-arrow {
       top: -12px;
 
       &:before {
@@ -94,7 +96,7 @@
   }
 }
 
-.vxe-tooltip--wrapper, .vxe-tooltip--wrapper {
+.vxe-tooltip--wrapper, .vxe-table--tooltip-wrapper {
   z-index: 9999 !important;
 
   &.theme--light {
@@ -102,7 +104,7 @@
     border: 1px solid #dcdfe6;
 
     &.placement--top {
-      .vxe-tooltip--arrow {
+      .vxe-tooltip--arrow, .vxe-table--tooltip-arrow {
         border-top-color: #dcdfe6;
 
         &:before {
@@ -112,7 +114,7 @@
     }
 
     &.placement--bottom {
-      .vxe-tooltip--arrow {
+      .vxe-tooltip--arrow, .vxe-table--tooltip-arrow {
         border-bottom-color: #dcdfe6;
 
         &:before {
@@ -127,7 +129,7 @@
     color: #FFF;
 
     &.placement--top {
-      .vxe-tooltip--arrow {
+      .vxe-tooltip--arrow, .vxe-table--tooltip-arrow {
         border-top-color: #303133;
 
         &:before {
@@ -137,7 +139,7 @@
     }
 
     &.placement--bottom {
-      .vxe-tooltip--arrow {
+      .vxe-tooltip--arrow, .vxe-table--tooltip-arrow {
         border-bottom-color: #303133;
 
         &:before {

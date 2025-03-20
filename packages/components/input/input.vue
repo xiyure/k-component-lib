@@ -9,10 +9,18 @@
       }
     ]"
     v-bind="$attrs"
+    v-model="modelValue"
     :prefix-icon="iconLeft ?? prefixIcon"
     :suffix-icon="iconRight ?? suffixIcon"
-    :type="InputType"
+    :type="inputType"
     :size="formatSize.elSize"
+    @input="(value: string | number) => {
+      emits('update:modelValue', value);
+      emits('input', value);
+    }"
+    @change="(value: string | number) => {
+      emits('change', value);
+    }"
   >
     <template v-if="slots.prepend" #prepend>
       <div :class="slotClass(prependSlotType)">
@@ -22,32 +30,90 @@
     <template #prefix>
       <slot name="prefix"></slot>
     </template>
-    <template #suffix>
-      <slot name="suffix"></slot>
-      <div v-if="isPasswordVisible" @click="switchPassword">
-        <component :is="isText ? IconHide : IconShow"></component>
-      </div>
-    </template>
     <template v-if="slots.append" #append>
       <div :class="slotClass(appendSlotType)">
         <slot name="append"></slot>
       </div>
     </template>
+    <template v-if="isSelectable" #suffix>
+      <IconDown
+        :class="['k-input__arrow', { 'is-rotate': popperVisible }]"
+        @click.prevent.stop="() => popperVisible = !popperVisible"
+      />
+    </template>
+    <template v-else #suffix>
+      <slot name="suffix"></slot>
+      <div v-if="showPassword && modelValue" @click="switchPassword">
+        <component :is="isText ? IconHide : IconShow"></component>
+      </div>
+    </template>
   </el-input>
+  <k-popover
+    v-if="isSelectable"
+    :visible="popperVisible"
+    :show-arrow="false"
+    :width="popperWidth"
+    virtual-triggering
+    :virtual-ref="inputRef"
+    :offset="3"
+    :teleported
+    :popper-style="{
+      minHeight: '100px',
+      ...popperStyle
+    }"
+    :popper-class="`${popoverClassName} ${popperClass}`"
+    @before-enter="() => {
+      popoverClassName = 'k-input__popper-enter'
+    }"
+    @before-leave="() => {
+      popoverClassName = 'k-input__popper-leave'
+    }"
+    @show="() => {
+      emits('popper-show');
+    }"
+    @hide="() => {
+      emits('popper-hide');
+    }"
+  >
+    <li
+      :class="[
+        'k-input-option',
+        {
+          'is-selected': modelValue === item,
+          'is-disabled': false
+        }
+      ]"
+      v-for="item in options"
+      :key="item"
+      @click="() => {
+        selectOption(item)
+      }"
+    >
+      {{ item }}
+    </li>
+    <slot v-if="!options?.length">
+      <div class="k-input-options-empty" >
+        {{ t('noData') }}
+      </div>
+    </slot>
+  </k-popover>
 </template>
+
 <script setup lang="ts">
-import { ref, computed, provide, SlotsType, useAttrs } from 'vue';
+import { ref, watch, computed, provide, SlotsType, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import { ElInput } from 'element-plus';
-import { IconShow, IconHide } from 'ksw-vue-icon';
+import { IconShow, IconHide, IconDown } from 'ksw-vue-icon';
+import { KPopover } from '../popover';
 import { InputProps } from './type';
 import { getExposeProxy } from '../../utils';
-import { SIZE_KEY, useSize } from '../../hooks';
+import { SIZE_KEY, useLocale, useSize } from '../../hooks';
 
 defineOptions({
   name: 'KInput'
 });
 
 const props = withDefaults(defineProps<InputProps>(), {
+  modelValue: '',
   iconLeft: undefined,
   iconRight: undefined,
   prepend: undefined,
@@ -55,21 +121,51 @@ const props = withDefaults(defineProps<InputProps>(), {
   prefixIcon: undefined,
   suffixIcon: undefined,
   showPassword: false,
-  type: 'text'
+  type: 'text',
+  selectable: false,
+  options: () => [],
+  teleported: true,
+  popperStyle: () => ({})
 });
 
 const formatSize = useSize<InputProps>(props);
+const { t } = useLocale();
 
+const emits = defineEmits(['update:modelValue', 'input', 'change', 'popper-show', 'popper-hide']);
 const slots = defineSlots(); // 具名插槽
 const prependSlot = slots.prepend?.();
 const prependSlotType = prependSlot?.[0]?.type;
 
 const appendSlot = slots.append?.();
 const appendSlotType = appendSlot?.[0]?.type;
+const inputRef = ref();
 const isText = ref(false);
-const InputType = ref(props.type);
+const inputType = ref(props.type);
+const modelValue = ref<string | number>('');
 
-const isPasswordVisible = computed(() => props.showPassword && useAttrs().modelValue);
+// 弹出框相关
+const popperWidth = ref(0);
+const popperVisible = ref(false);
+const popoverClassName = ref('');
+
+onMounted(() => {
+  window.addEventListener('click', closePopper);
+  window.addEventListener('resize', updatePopperWidth);
+  updatePopperWidth();
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('click', closePopper);
+  window.removeEventListener('resize', updatePopperWidth);
+});
+
+const isSelectable = computed(() => props.selectable && inputType.value === 'text');
+
+watch(() => props.modelValue, (newValue) => {
+  if (newValue !== modelValue.value) {
+    modelValue.value = newValue;
+  }
+});
 
 const slotClass = computed(() => (slot: SlotsType) => {
   switch (typeof slot) {
@@ -84,17 +180,27 @@ const slotClass = computed(() => (slot: SlotsType) => {
   }
 });
 
-provide(SIZE_KEY, formatSize);
-
-const inputRef = ref();
-
-const instance: any = {};
-
 const switchPassword = () => {
   isText.value = !isText.value;
-  InputType.value = isText.value ? 'text' : 'password';
+  inputType.value = isText.value ? 'text' : 'password';
 };
+function selectOption(item: string | number) {
+  modelValue.value = item;
+  emits('update:modelValue', item);
+  emits('input', item);
+  emits('change', item);
+}
+function closePopper() {
+  if (!popperVisible.value) {}
+  popperVisible.value = false;
+}
+function updatePopperWidth() {
+nextTick(() => 
+  popperWidth.value = inputRef.value.$el.offsetWidth
+)};
 
+provide(SIZE_KEY, formatSize);
+const instance: any = {};
 defineExpose(getExposeProxy(instance, inputRef));
 </script>
 

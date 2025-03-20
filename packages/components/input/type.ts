@@ -1,6 +1,7 @@
-import { Component } from 'vue';
+import { Component, CSSProperties } from 'vue';
 
 export interface InputProps {
+  modelValue?: string | number
   /**
    * 尺寸
    */
@@ -27,4 +28,9 @@ export interface InputProps {
   showPassword?: boolean;
 
   type?: string;
+  selectable?: boolean;
+  options?: (string | number)[];
+  popperClass?: string;
+  popperStyle?: CSSProperties;
+  teleported?: boolean;
 }
