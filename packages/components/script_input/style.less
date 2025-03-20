@@ -97,7 +97,6 @@
         text-wrap: nowrap;
         text-overflow: ellipsis;
         margin: 0.0625rem 0;
-        position: relative;
         & + .k-script-tag {
           margin-left: 0.125rem;
         }
@@ -139,6 +138,7 @@
     .k-script-input-wrapper.k-script-tag--closable {
       .k-script-tag-clear-mark {
         display: unset;
+        position: relative;
         &:before {
           content: '';
           position: relative;
@@ -172,8 +172,9 @@
             );
           font-size: 1rem;
           line-height: 1rem;
-          top: 38%;
-          right: 11.35%;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
         }
         &:hover::after {
           --clear-color: var(--k-theme-primary);
