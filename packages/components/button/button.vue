@@ -138,5 +138,4 @@ defineExpose(getExposeProxy(instance, buttonRef));
 
 <style lang="less">
 @import './style.less';
-@import './el-button.css';
 </style>
