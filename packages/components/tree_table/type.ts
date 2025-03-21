@@ -3,7 +3,7 @@ import { VxeTablePropTypes, VxeColgroupProps, VxeColumnPropTypes } from 'vxe-tab
 import { PaginationProps as ElPaginationProps } from 'element-plus';
 import { OperateData } from '../operate/type';
 import { Condition, FilterValue, ConditionInfo } from '../filter/type';
-import { Merge } from '../../utils/typescript';
+import { Merge, CompSize } from '../../utils/typescript';
 
 export type Row = VxeTablePropTypes.Row;
 export type TreeConfig = VxeTablePropTypes.TreeConfig;
@@ -107,7 +107,7 @@ type FilterColumn = {
   }[];
 };
 export type TablePaginationConfig = Merge<{
-  size?: 'base' | 'sm';
+  size?: CompSize;
   isRemotePaging?: boolean;
 }, ElPaginationProps>
 

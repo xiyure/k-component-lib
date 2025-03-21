@@ -1,3 +1,5 @@
+import { CompSize } from "../../utils";
+
 export interface PaginationProps {
-  size?: 'base' | 'sm'
+  size?: CompSize;
 }

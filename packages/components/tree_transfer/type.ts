@@ -1,6 +1,5 @@
 import { Component } from 'vue';
-import { VxeTablePropTypes } from 'vxe-table';
-import { Column, SearchConfig, TablePaginationConfig } from '../tree_table';
+import { Column, SearchConfig, TablePaginationConfig, TreeConfig, ScrollY } from '../tree_table';
 
 export interface TreeTransferProps {
   modelValue?: TreeTransferData[]
@@ -15,9 +14,9 @@ export interface TreeTransferProps {
   collapseIconColor?: string
   icon?: Component | string
   iconColor?: string
-  treeConfig?: VxeTablePropTypes.TreeConfig
+  treeConfig?: TreeConfig
   label?: string
-  scrollY?: VxeTablePropTypes.ScrollY
+  scrollY?: ScrollY
   showDrag?: boolean
   showSearchInput?: boolean | 'left'
   searchConfig?: SearchConfig

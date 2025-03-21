@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { ref, computed, provide } from 'vue';
 import { ElDatePicker } from 'element-plus';
-import { DatePicker } from './type';
+import { DatePickerProps } from './type';
 import { getExposeProxy } from '../../utils';
 import { SIZE_KEY, useSize, useLocale } from '../../hooks';
 
@@ -24,13 +24,13 @@ defineOptions({
   name: 'KDatePicker'
 });
 
-const props = withDefaults(defineProps<DatePicker>(), {
+const props = withDefaults(defineProps<DatePickerProps>(), {
   showDefaultShortcuts: true
 });
 
 const { t } = useLocale();
 
-const formatSize = useSize<DatePicker>(props);
+const formatSize = useSize<DatePickerProps>(props);
 
 const datePickerRef = ref(null);
 const defaultDateRange = [

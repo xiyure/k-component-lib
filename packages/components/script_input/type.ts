@@ -1,8 +1,9 @@
 import { TreeConfig } from '../tree_table';
+import { CompSize } from "../../utils";
 
 export interface ScriptInputProps {
   modelValue: string | number;
-  size?: 'lg' | 'base' | 'sm' | '';
+  size?: CompSize;
   placeholder?: string;
   disabled?: boolean;
   options?: ScriptOptions[];

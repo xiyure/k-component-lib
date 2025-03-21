@@ -1,11 +1,12 @@
 import { Component, CSSProperties } from 'vue';
+import { CompSize } from "../../utils";
 
 export interface InputProps {
   modelValue?: string | number
   /**
    * 尺寸
    */
-  size?: 'base' | 'sm';
+  size?: CompSize;
   /**
    * 输入框左边图标
    * 输入框左边图标 === prefixIcon, 需要传入组件

@@ -1,8 +1,10 @@
+import { CompSize } from "../../utils";
+
 export interface FilterProps {
   data?: any[],
   options?: FilterOptions[]
   border?: boolean
-  size?: 'base' | 'sm'
+  size?: CompSize
   childrenField?: string
   filterKey?: string,
   defaultCondition?: ConditionInfo

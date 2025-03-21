@@ -1,4 +1,5 @@
 import { VNode, Component } from 'vue';
+import { CompSize } from "../../utils";
 
 export interface FilterFormItem {
   label?: string;
@@ -14,7 +15,7 @@ export interface FilterFormItem {
 
 export interface FilterFormProps {
   items?: FilterFormItem[];
-  size?: 'base' | 'sm' | undefined;
+  size?: CompSize;
   collapse?: boolean;
   reserve?: boolean;
   visible?: boolean;

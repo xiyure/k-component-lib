@@ -1,10 +1,12 @@
+import { CompSize } from "../../utils";
+
 export interface CheckboxGroupProps {
-  size?: 'lg' | 'base' | 'sm' | '';
+  size?: CompSize;
   color?: string;
 }
 
 export interface CheckboxProps {
-  size?: 'lg' | 'base' | 'sm' | '';
+  size?: CompSize;
   label?: string | number;
   color?: string;
   strict?: boolean;
