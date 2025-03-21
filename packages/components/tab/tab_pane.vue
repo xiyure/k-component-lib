@@ -25,20 +25,15 @@ import { ref, computed, useSlots } from 'vue';
 import { ElTabPane } from 'element-plus';
 import { getExposeProxy } from '../../utils';
 import { KTooltip } from '../tooltip';
+import { TabPaneProps } from './type';
 
 defineOptions({
   name: 'KTabPane'
 });
 
-const props = defineProps({
-  closable: {
-    type: Boolean,
-    default: false
-  },
-  label: {
-    type: String,
-    default: ''
-  }
+const props = withDefaults(defineProps<TabPaneProps>(), {
+  label: '',
+  closable: false
 });
 
 const KTabPaneRef = ref(null);

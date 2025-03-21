@@ -7,6 +7,11 @@ export interface TabsProps {
   showHideList?: boolean
 }
 
+export interface TabPaneProps {
+  closable?: boolean
+  label?: string
+}
+
 export interface TabData {
   name: string;
   label?: string | (() => string);

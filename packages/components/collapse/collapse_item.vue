@@ -23,31 +23,20 @@
 <script setup lang="ts">
 import { ref, inject, computed } from 'vue';
 import { ElCollapseItem } from 'element-plus';
-import { getExposeProxy } from '../../utils/index';
+import { getExposeProxy } from '../../utils';
+import { CollapseItemProps } from './type';
 
 defineOptions({
   name: 'KCollapseItem'
 });
 
-const props = defineProps({
-  block: {
-    type: Boolean
-  },
-  process: {
-    type: Boolean
-  },
-  wait: {
-    type: Boolean
-  },
-  finish: {
-    type: Boolean
-  },
-  error: {
-    type: Boolean
-  },
-  warning: {
-    type: Boolean
-  }
+const props = withDefaults(defineProps<CollapseItemProps>(), {
+  block: false,
+  process: false,
+  wait: false,
+  finish: false,
+  error: false,
+  warning: false
 });
 
 const injectIsBlock = inject(
