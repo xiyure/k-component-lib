@@ -43,4 +43,12 @@ export interface ScriptInputProps {
 export type ScriptOptions = {
   [key: string]: any;
 };
+
 export type ScriptInputMode = 'expression' | 'string';
+
+export type ChangeEventParams = {
+  result: string,
+  scriptTags: (ScriptOptions | null)[],
+  isStringMode: boolean,
+  checkVariableResult: boolean
+}

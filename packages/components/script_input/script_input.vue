@@ -136,7 +136,11 @@
             highlight-current
             adaptive
             @cell-click="cellClick"
-          ></k-tree-table>
+          >
+            <template #[getAttrProps().optionLabel]="data">
+              <slot name="option" v-bind="data">{{ data?.row[getAttrProps().optionLabel] }}</slot>
+            </template>
+          </k-tree-table>
         </el-scrollbar>
       </div>
     </k-popover>
@@ -146,7 +150,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import { ElScrollbar } from 'element-plus';
-import { ScriptInputProps, ScriptOptions } from './type';
+import { ScriptInputProps, ScriptOptions, ChangeEventParams } from './type';
 import Message from '../message';
 import { usePassword } from './hooks/use_password';
 import { genRandomStr, transformTreeData, getElement } from '../../utils';
@@ -224,6 +228,7 @@ let cacheRes = '';
 const curInput = ref('');
 const selectedIndex = ref<number>(-1);
 let isManual = false;
+let contentHasChanged = false;
 const popperVisible = ref(false);
 const allowInput = ref(true);
 const allowShowTree = ref(false);
@@ -365,14 +370,28 @@ watch(
   }
 );
 
+// 更新v-model绑定值
 function updateModelValue(res: string) {
   cacheRes = res;
+  contentHasChanged = true;
   emits('update:modelValue', res);
   editable.value = !(isOnlyOneInput.value && res.includes('fx('));
 }
+
+// 处理change事件
+function handleChange(res: ChangeEventParams) {
+ if (contentHasChanged) {
+  emits('change', res);
+  contentHasChanged = false;
+ }
+}
+
+// 获取输入框内容，注意处理特殊字符
 function getEditorContent() {
   return formatterEscape(KScriptInputWrapper.value.innerHTML);
 }
+
+// 设置输入框内容
 function setEditorContent(value: string) {
   KScriptInputWrapper.value.innerHTML = value;
 }
@@ -394,6 +413,7 @@ function handleInput(event: InputEvent | CompositionEvent) {
   updateModelValue(result);
   checkInputContentType(result);
 }
+
 function checkInputContentType(result: string) {
   limitMaxMinMsg.value = '';
   if (!props.checkContentType) {
@@ -441,6 +461,7 @@ function handleFocus(event: FocusEvent) {
   allowShowTree.value = true;
   emits('focus', event);
 }
+
 function handleBlur(event: FocusEvent) {
   if (!(event.target instanceof HTMLElement)) {
     return;
@@ -448,11 +469,12 @@ function handleBlur(event: FocusEvent) {
   const popperElem = getElement(`.${dynamicClassName}`);
   if (popperElem && !popperElem.contains(event.relatedTarget as Node)) {
     emits('blur', event);
-    emits('change', parseInputValue());
+    handleChange(parseInputValue());
     allowShowTree.value = false;
     popperVisible.value = false;
   }
 }
+
 function cellClick({ row }: { row: Row }) {
   if (row.children?.length && !row.optional) {
     return;
@@ -463,6 +485,7 @@ function cellClick({ row }: { row: Row }) {
   selectedIndex.value = rowIndex;
   selectOption(row);
 }
+
 async function selectOption(data: Row | RowData) {
   const key = await handleInputContent(data);
   clearCurrentInput();
@@ -472,9 +495,10 @@ async function selectOption(data: Row | RowData) {
     const res = parseInputValue();
     updateModelValue(res?.result ?? '');
     emits('select', data);
-    emits('change', res);
+    handleChange(res)
   });
 }
+
 // 将选择的脚本标签转化成dom节点并插入到编辑框中，注意两种选择场景下的差异性
 async function handleInputContent(data: Row | RowData) {
   if (_showPassword.value) {
@@ -493,6 +517,7 @@ async function handleInputContent(data: Row | RowData) {
   }
   return key;
 }
+
 function handleManualInput(content: string) {
   const domParser = new DOMParser();
   const doc = domParser.parseFromString(content, 'text/html');
@@ -533,6 +558,7 @@ function handleManualInput(content: string) {
   }
   node.insertBefore(targetNode, childNodes[offset]);
 }
+
 function removeSameNode(targetNode: Element) {
   const dataValue = targetNode.getAttribute('data-value');
   const sameNodes = Array.from(
@@ -542,19 +568,14 @@ function removeSameNode(targetNode: Element) {
     KScriptInputWrapper.value.removeChild(node);
   });
 }
-function parseInputValue() {
-  if (_showPassword.value) {
+
+function parseInputValue(): ChangeEventParams {
+  if (_showPassword.value || !isStringMode()) {
     return {
-      result: pwd.value,
+      result: _showPassword.value ? pwd.value : getEditorContent(),
       scriptTags: [],
-      isStringMode: isStringMode()
-    };
-  }
-  if (!isStringMode()) {
-    return {
-      result: getEditorContent(),
-      scriptTags: [],
-      isStringMode: false
+      isStringMode: isStringMode(),
+      checkVariableResult
     };
   }
   let text = '';
@@ -601,6 +622,7 @@ function parseInputValue() {
     isStringMode: true
   };
 }
+
 function toPwdMode(text: string) {
   if (!text?.length && props.showPassword && !_showPassword.value) {
     _methods.setPasswordMode(true);
@@ -609,6 +631,7 @@ function toPwdMode(text: string) {
     });
   }
 }
+
 // 解析传入的值
 function parseModelValue(value: string) {
   fxSet.clear();
@@ -637,11 +660,13 @@ function parseModelValue(value: string) {
   }
   return originText;
 }
+
 function generateScriptTag(content: string, key: string, isError: boolean = false) {
   return `<div class="k-script-tag ${
     isError ? 'is-error' : ''
   }" data-key="${key}" data-value="${content}" contenteditable="false">${content}<span class="k-script-tag-clear-mark"></span></div>`;
 }
+
 function toggleSelect(event: KeyboardEvent) {
   if (!allowShowTree.value || !popperVisible.value) {
     return;
@@ -697,6 +722,7 @@ function isHideNode(rowData: RowData) {
   }
   return Boolean(!$tree.value?.isTreeExpandByRow(parentRow) && rowData.pid);
 }
+
 // 解决输入非字符内容时光标无法移到最后的问题
 function resetCursor(key?: string) {
   if (window.getSelection === undefined) {
@@ -717,6 +743,7 @@ function resetCursor(key?: string) {
     selection?.addRange(range);
   }
 }
+
 function getRange(key: string) {
   let isFound = false;
   const range = {
@@ -757,6 +784,7 @@ function getRange(key: string) {
   getNodeInfo(KScriptInputWrapper.value);
   return range as { node: Node; offset: number };
 }
+
 function onHidePopper() {
   selectedIndex.value = -1;
   $tree.value?.setCurrentRow(null);
@@ -766,6 +794,7 @@ function onHidePopper() {
     isManual = false;
   }
 }
+
 function showPopper() {
   if (props.disabled) {
     return;
@@ -785,6 +814,7 @@ function showPopper() {
     headerElement?.focus();
   });
 }
+
 function updateFocusRange() {
   const selection = window.getSelection();
   const { focusNode, focusOffset } = selection ?? {};
@@ -794,14 +824,17 @@ function updateFocusRange() {
   focusRange.node = focusNode;
   focusRange.offset = focusOffset;
 }
+
 function hidePopper() {
   popperVisible.value = false;
   onHidePopper();
 }
+
 function handlePageClick(e: MouseEvent) {
   hidePopperByClick(e);
   removeTag(e);
 }
+
 function hidePopperByClick(event: MouseEvent) {
   const popperElem = getElement(`.${dynamicClassName}`);
   if (!isManual || popperElem?.contains?.(event.target as Node)) {
@@ -809,6 +842,7 @@ function hidePopperByClick(event: MouseEvent) {
   }
   hidePopper();
 }
+
 function removeTag(event: MouseEvent) {
   const target = event.target as HTMLElement;
   if (!target?.classList?.contains?.('k-script-tag-clear-mark')) {
@@ -820,11 +854,13 @@ function removeTag(event: MouseEvent) {
   }
   const res = parseInputValue();
   updateModelValue(res?.result ?? '');
-  emits('change', res);
+  handleChange(res);
 }
+
 function clearCurrentInput() {
   curInput.value = '';
 }
+
 function clear() {
   if (_showPassword.value) {
     pwd.value = '';
@@ -833,6 +869,7 @@ function clear() {
   }
   clearCurrentInput();
 }
+
 function toggleMode() {
   saveTextValue();
   _isStringMode.value = !_isStringMode.value;
@@ -847,6 +884,7 @@ function setStringMode(stringMode: boolean) {
   _isStringMode.value = stringMode;
   restoreTextValue();
 }
+
 function setCurrentMode(mode: 'password' | 'string' | 'expression') {
   if (mode === 'password') {
     _methods.setPasswordMode(true);
@@ -856,15 +894,18 @@ function setCurrentMode(mode: 'password' | 'string' | 'expression') {
     setStringMode(false);
   }
 }
+
 function getCurrentMode() {
   if (_showPassword.value) {
     return 'password';
   }
   return isStringMode() ? 'string' : 'expression';
 }
+
 function isStringMode() {
   return _isStringMode.value;
 }
+
 const caches = {
   expression: '',
   string: ''
@@ -880,6 +921,7 @@ function saveTextValue() {
   const attrName = isStringMode() ? 'string' : 'expression';
   tempCaches[attrName] = getEditorContent();
 }
+
 function restoreTextValue() {
   if (_showPassword.value) {
     return;
@@ -891,8 +933,9 @@ function restoreTextValue() {
   caches.expression = tempCaches.expression;
   caches.string = tempCaches.string;
   updateModelValue(res.result ?? '');
-  emits('change', res);
+  handleChange(res);
 }
+
 function handleResize() {
   nextTick(() => {
     // 获取 KScriptInput 的 宽度
@@ -914,6 +957,7 @@ function escapeValue(str: string) {
     }
   });
 }
+
 function getAttrProps() {
   const defaultConfig = { label: 'label', value: 'value', disabled: 'disabled', tag: 'tag' };
   const attrProps = Object.assign(defaultConfig, props.props ?? {});
@@ -925,6 +969,7 @@ function getAttrProps() {
     tag: attrProps.tag
   };
 }
+
 function getScriptKey() {
   return props.scriptKey ?? getAttrProps().value;
 }
@@ -938,6 +983,7 @@ function focus() {
     instance?.focus();
   });
 }
+
 function blur() {
   const instance = _showPassword.value ? KScriptInputPassword.value : KScriptInputWrapper.value;
   if (!instance) {
