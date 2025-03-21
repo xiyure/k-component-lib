@@ -4,10 +4,23 @@
 .k-calendar {
   width: 100%;
   height: 100%;
+
+  //el
+  --k-calendar-border: var(--k-table-border, 1px solid var(--k-border-color-lighter));
+  --k-calendar-header-border-bottom: var(--k-calendar-border);
+  --k-calendar-selected-bg-color: var(--k-color-primary-light-9);
+  --k-calendar-cell-width: 85px;
+  background-color: var(--k-fill-color-blank);
+
   .k-calendar__header {
     display: flex;
     justify-content: space-between;
     width: 100%;
+
+    //el
+    border-bottom: var(--k-calendar-header-border-bottom);
+    padding: 12px 20px;
+
     .k-calendar__header-left {
       display: flex;
       justify-content: flex-start;
@@ -21,15 +34,74 @@
       }
     }
   }
-  .el-calendar__body {
+
+  // el
+  .k-calendar__title {
+    align-self: center;
+    color: var(--k-text-color)
+  }
+
+  .k-calendar__body {
+    // el
+    padding: 12px 20px 35px;
+
     height: calc(100% - 57px);
-    .el-calendar-table {
+    .k-calendar-table {
+      //el
+      table-layout: fixed;
+      width: 100%;
+
       height: 100%;
       min-height: 250px;
-      .el-calendar-day {
+      .k-calendar-day {
+        //el
+        box-sizing: border-box;
+        height: var(--k-calendar-cell-width);
+        padding: 8px;
+
         overflow: auto;
         padding-bottom: 0;
+
+        &:hover {
+          background-color: var(--k-calendar-selected-bg-color);
+          cursor: pointer
+        }
       }
+
+      //el
+      & thead th {
+        color: var(--k-text-color-regular);
+        font-weight: normal;
+        padding: 12px 0
+      }
+      &:not(.is-range) td.next,
+      &:not(.is-range) td.prev {
+        color: var(--k-text-color-placeholder)
+      }
+      & td {
+        border-bottom: var(--k-calendar-border);
+        border-right: var(--k-calendar-border);
+        transition: background-color var(--k-transition-duration-fast) ease;
+        vertical-align: top;
+        &.is-selected {
+          background-color: var(--k-calendar-selected-bg-color)
+        }
+        &.is-today {
+          color: var(--k-color-primary)
+        }
+      }
+      & tr {
+        &:first-child td {
+          border-top: var(--k-calendar-border)
+        }
+        & td:first-child {
+          border-left: var(--k-calendar-border)
+        }
+        &.k-calendar-table__row--hide-border td {
+          border-top: none
+        }
+      }
+
     }
   }
   ::-webkit-scrollbar {
@@ -47,7 +119,7 @@
   }
 }
 .k-calendar.k-calendar--adaptive {
-  .el-calendar-day {
+  .k-calendar-day {
     height: 100%;
   }
 }

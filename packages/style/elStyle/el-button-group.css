@@ -1,0 +1,134 @@
+.k-button-group {
+  display: inline-block;
+  vertical-align: middle
+}
+
+.k-button-group:after,
+.k-button-group:before {
+  content: "";
+  display: table
+}
+
+.k-button-group:after {
+  clear: both
+}
+
+.k-button-group>.k-button {
+  float: left;
+  position: relative
+}
+
+.k-button-group>.k-button+.k-button {
+  margin-left: 0
+}
+
+.k-button-group>.k-button:first-child {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0
+}
+
+.k-button-group>.k-button:last-child {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0
+}
+
+.k-button-group>.k-button:first-child:last-child {
+  border-bottom-left-radius: var(--k-border-radius-base);
+  border-bottom-right-radius: var(--k-border-radius-base);
+  border-top-left-radius: var(--k-border-radius-base);
+  border-top-right-radius: var(--k-border-radius-base)
+}
+
+.k-button-group>.k-button:first-child:last-child.is-round {
+  border-radius: var(--k-border-radius-round)
+}
+
+.k-button-group>.k-button:first-child:last-child.is-circle {
+  border-radius: 50%
+}
+
+.k-button-group>.k-button:not(:first-child):not(:last-child) {
+  border-radius: 0
+}
+
+.k-button-group>.k-button:not(:last-child) {
+  margin-right: -1px
+}
+
+.k-button-group>.k-button.is-active,
+.k-button-group>.k-button:active,
+.k-button-group>.k-button:focus,
+.k-button-group>.k-button:hover {
+  z-index: 1
+}
+
+.k-button-group>.k-dropdown>.k-button {
+  border-bottom-left-radius: 0;
+  border-left-color: var(--k-button-divide-border-color);
+  border-top-left-radius: 0
+}
+
+.k-button-group .k-button--primary:first-child {
+  border-right-color: var(--k-button-divide-border-color)
+}
+
+.k-button-group .k-button--primary:last-child {
+  border-left-color: var(--k-button-divide-border-color)
+}
+
+.k-button-group .k-button--primary:not(:first-child):not(:last-child) {
+  border-left-color: var(--k-button-divide-border-color);
+  border-right-color: var(--k-button-divide-border-color)
+}
+
+.k-button-group .k-button--success:first-child {
+  border-right-color: var(--k-button-divide-border-color)
+}
+
+.k-button-group .k-button--success:last-child {
+  border-left-color: var(--k-button-divide-border-color)
+}
+
+.k-button-group .k-button--success:not(:first-child):not(:last-child) {
+  border-left-color: var(--k-button-divide-border-color);
+  border-right-color: var(--k-button-divide-border-color)
+}
+
+.k-button-group .k-button--warning:first-child {
+  border-right-color: var(--k-button-divide-border-color)
+}
+
+.k-button-group .k-button--warning:last-child {
+  border-left-color: var(--k-button-divide-border-color)
+}
+
+.k-button-group .k-button--warning:not(:first-child):not(:last-child) {
+  border-left-color: var(--k-button-divide-border-color);
+  border-right-color: var(--k-button-divide-border-color)
+}
+
+.k-button-group .k-button--danger:first-child {
+  border-right-color: var(--k-button-divide-border-color)
+}
+
+.k-button-group .k-button--danger:last-child {
+  border-left-color: var(--k-button-divide-border-color)
+}
+
+.k-button-group .k-button--danger:not(:first-child):not(:last-child) {
+  border-left-color: var(--k-button-divide-border-color);
+  border-right-color: var(--k-button-divide-border-color)
+}
+
+.k-button-group .k-button--info:first-child {
+  border-right-color: var(--k-button-divide-border-color)
+}
+
+.k-button-group .k-button--info:last-child {
+  border-left-color: var(--k-button-divide-border-color)
+}
+
+.k-button-group .k-button--info:not(:first-child):not(:last-child) {
+  border-left-color: var(--k-button-divide-border-color);
+  border-right-color: var(--k-button-divide-border-color)
+}
