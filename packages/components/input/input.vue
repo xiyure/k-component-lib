@@ -109,7 +109,7 @@
       >
         {{ item }}
       </li>
-      <slot v-if="!options?.length">
+      <slot name="empty" v-if="!options?.length">
         <div class="k-input-options-empty">
           {{ t('noData') }}
         </div>
