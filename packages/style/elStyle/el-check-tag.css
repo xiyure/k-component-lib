@@ -1,0 +1,153 @@
+.k-check-tag {
+  background-color: var(--k-color-info-light-9);
+  border-radius: var(--k-border-radius-base);
+  color: var(--k-color-info);
+  cursor: pointer;
+  display: inline-block;
+  font-size: var(--k-font-size-base);
+  font-weight: bold;
+  line-height: var(--k-font-size-base);
+  padding: 7px 15px;
+  transition: var(--k-transition-all);
+}
+.k-check-tag:hover {
+  background-color: var(--k-color-info-light-7);
+}
+.k-check-tag.k-check-tag--primary.is-checked {
+  background-color: var(--k-color-primary-light-8);
+  color: var(--k-color-primary);
+}
+.k-check-tag.k-check-tag--primary.is-checked:hover {
+  background-color: var(--k-color-primary-light-7);
+}
+.k-check-tag.k-check-tag--primary.is-checked.is-disabled {
+  background-color: var(--k-color-primary-light-8);
+  color: var(--k-disabled-text-color);
+  cursor: not-allowed;
+}
+.k-check-tag.k-check-tag--primary.is-checked.is-disabled:hover {
+  background-color: var(--k-color-primary-light-8);
+}
+.k-check-tag.k-check-tag--primary.is-disabled {
+  background-color: var(--k-color-info-light-9);
+  color: var(--k-disabled-text-color);
+  cursor: not-allowed;
+}
+.k-check-tag.k-check-tag--primary.is-disabled:hover {
+  background-color: var(--k-color-info-light-9);
+}
+.k-check-tag.k-check-tag--success.is-checked {
+  background-color: var(--k-color-success-light-8);
+  color: var(--k-color-success);
+}
+.k-check-tag.k-check-tag--success.is-checked:hover {
+  background-color: var(--k-color-success-light-7);
+}
+.k-check-tag.k-check-tag--success.is-checked.is-disabled {
+  background-color: var(--k-color-success-light-8);
+  color: var(--k-disabled-text-color);
+  cursor: not-allowed;
+}
+.k-check-tag.k-check-tag--success.is-checked.is-disabled:hover {
+  background-color: var(--k-color-success-light-8);
+}
+.k-check-tag.k-check-tag--success.is-disabled {
+  color: var(--k-disabled-text-color);
+  cursor: not-allowed;
+}
+.k-check-tag.k-check-tag--success.is-disabled,
+.k-check-tag.k-check-tag--success.is-disabled:hover {
+  background-color: var(--k-color-success-light-9);
+}
+.k-check-tag.k-check-tag--warning.is-checked {
+  background-color: var(--k-color-warning-light-8);
+  color: var(--k-color-warning);
+}
+.k-check-tag.k-check-tag--warning.is-checked:hover {
+  background-color: var(--k-color-warning-light-7);
+}
+.k-check-tag.k-check-tag--warning.is-checked.is-disabled {
+  background-color: var(--k-color-warning-light-8);
+  color: var(--k-disabled-text-color);
+  cursor: not-allowed;
+}
+.k-check-tag.k-check-tag--warning.is-checked.is-disabled:hover {
+  background-color: var(--k-color-warning-light-8);
+}
+.k-check-tag.k-check-tag--warning.is-disabled {
+  color: var(--k-disabled-text-color);
+  cursor: not-allowed;
+}
+.k-check-tag.k-check-tag--warning.is-disabled,
+.k-check-tag.k-check-tag--warning.is-disabled:hover {
+  background-color: var(--k-color-warning-light-9);
+}
+.k-check-tag.k-check-tag--danger.is-checked {
+  background-color: var(--k-color-danger-light-8);
+  color: var(--k-color-danger);
+}
+.k-check-tag.k-check-tag--danger.is-checked:hover {
+  background-color: var(--k-color-danger-light-7);
+}
+.k-check-tag.k-check-tag--danger.is-checked.is-disabled {
+  background-color: var(--k-color-danger-light-8);
+  color: var(--k-disabled-text-color);
+  cursor: not-allowed;
+}
+.k-check-tag.k-check-tag--danger.is-checked.is-disabled:hover {
+  background-color: var(--k-color-danger-light-8);
+}
+.k-check-tag.k-check-tag--danger.is-disabled {
+  color: var(--k-disabled-text-color);
+  cursor: not-allowed;
+}
+.k-check-tag.k-check-tag--danger.is-disabled,
+.k-check-tag.k-check-tag--danger.is-disabled:hover {
+  background-color: var(--k-color-danger-light-9);
+}
+.k-check-tag.k-check-tag--error.is-checked {
+  background-color: var(--k-color-error-light-8);
+  color: var(--k-color-error);
+}
+.k-check-tag.k-check-tag--error.is-checked:hover {
+  background-color: var(--k-color-error-light-7);
+}
+.k-check-tag.k-check-tag--error.is-checked.is-disabled {
+  background-color: var(--k-color-error-light-8);
+  color: var(--k-disabled-text-color);
+  cursor: not-allowed;
+}
+.k-check-tag.k-check-tag--error.is-checked.is-disabled:hover {
+  background-color: var(--k-color-error-light-8);
+}
+.k-check-tag.k-check-tag--error.is-disabled {
+  color: var(--k-disabled-text-color);
+  cursor: not-allowed;
+}
+.k-check-tag.k-check-tag--error.is-disabled,
+.k-check-tag.k-check-tag--error.is-disabled:hover {
+  background-color: var(--k-color-error-light-9);
+}
+.k-check-tag.k-check-tag--info.is-checked {
+  background-color: var(--k-color-info-light-8);
+  color: var(--k-color-info);
+}
+.k-check-tag.k-check-tag--info.is-checked:hover {
+  background-color: var(--k-color-info-light-7);
+}
+.k-check-tag.k-check-tag--info.is-checked.is-disabled {
+  background-color: var(--k-color-info-light-8);
+  color: var(--k-disabled-text-color);
+  cursor: not-allowed;
+}
+.k-check-tag.k-check-tag--info.is-checked.is-disabled:hover {
+  background-color: var(--k-color-info-light-8);
+}
+.k-check-tag.k-check-tag--info.is-disabled {
+  color: var(--k-disabled-text-color);
+  cursor: not-allowed;
+}
+.k-check-tag.k-check-tag--info.is-disabled,
+.k-check-tag.k-check-tag--info.is-disabled:hover {
+  background-color: var(--k-color-info-light-9);
+}

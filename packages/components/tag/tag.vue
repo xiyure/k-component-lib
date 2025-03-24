@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-ksw_tooltip="{ content: props.text, visible: props.showOverflow }"
-    class="k-tag"
-  >
+  <div v-ksw_tooltip="{ content: props.text, visible: props.showOverflow }">
     <el-tag
       ref="KTagRef"
       :class="[
@@ -11,8 +8,8 @@
           'is-point': point,
           [`k-tag__${type}`]: type,
           'is-custom': color,
-          'pr-0': isOverflow,
-        },
+          'pr-0': isOverflow
+        }
       ]"
       v-bind="$attrs"
       :size="formatSize.elSize"
@@ -21,7 +18,7 @@
         ref="KTagSpanRef"
         :class="{
           ' inline-block  max-w-24  overflow-hidden text-ellipsis text-nowrap  break-words pr-0':
-            showOverflow,
+            showOverflow
         }"
       >
         <slot>{{ props.text }}</slot>
@@ -39,14 +36,14 @@ import { useSize } from '../../hooks';
 import { colors } from './const';
 
 defineOptions({
-  name: 'KTag',
+  name: 'KTag'
 });
 
 const props = withDefaults(defineProps<TagProps>(), {
   point: false,
   type: undefined,
   text: undefined,
-  showOverflow: false,
+  showOverflow: false
 });
 
 const formatSize = useSize<TagProps>(props);
@@ -72,7 +69,7 @@ watch(
       isOverflow.value = isShowTooltip(KTagRef.value.$el.childNodes[0].children[0]);
     });
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 // watch props.color 变化, 更新颜色变量
@@ -91,13 +88,13 @@ watch(
         colors.forEach((item) => {
           KTagRef.value.$el?.style.setProperty(
             `--tag${item.name}`,
-            getColorS?.[`--k-oklch-${item.value}`],
+            getColorS?.[`--k-oklch-${item.value}`]
           );
         });
       }
     });
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 const instance: any = {};

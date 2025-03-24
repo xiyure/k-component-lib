@@ -23,7 +23,7 @@
   --k-input-width: 100%;
   font-size: var(--k-font-size-base);
   position: relative;
-  
+
   // 所有样式设置为unset
   .init-style();
 
@@ -88,8 +88,6 @@
     }
 
     .k-input__inner {
-      .init-style();
-      .text-base();
       //el
       --k-input-inner-height: calc(var(--k-input-height, 32px) - 2px);
       appearance: none;
@@ -103,6 +101,8 @@
       outline: none;
       padding: 0;
       width: 100%;
+      .init-style();
+      .text-base();
 
       cursor: text;
       color: var(--k-normal);
@@ -439,17 +439,6 @@
       .text-sm();
     }
   }
-
-  //el
-  & .k-input__count {
-    background: var(--k-fill-color-blank);
-    bottom: 5px;
-    color: var(--k-color-info);
-    font-size: 12px;
-    line-height: 14px;
-    position: absolute;
-    right: 10px;
-  }
 }
 
 .k-input {
@@ -491,11 +480,14 @@
   &.k-input__password:hover {
     color: var(--k-input-clear-hover-color);
   }
-  .k-input__count {
+
+  //el
+  & .k-input__count {
     align-items: center;
     color: var(--k-color-info);
     display: inline-flex;
     font-size: 12px;
+    height: 100%;
 
     .k-input__count-inner {
       background: var(--k-fill-color-blank);
@@ -504,8 +496,6 @@
       padding-left: 8px;
     }
   }
-
-  //el
   & .k-input__icon {
     align-items: center;
     display: flex;
@@ -587,6 +577,17 @@
   display: inline-block;
   vertical-align: bottom;
   width: 100%;
+
+  & .k-input__count {
+    background: var(--k-fill-color-blank);
+    bottom: 5px;
+    height: unset;
+    color: var(--k-color-info);
+    font-size: 12px;
+    line-height: 14px;
+    position: absolute;
+    right: 10px;
+  }
 }
 
 //el
