@@ -2,28 +2,28 @@
   "name": "table_view",
   "props": [
     {
-      "displayName": "show-view-bus",
+      "displayName": "show-aside",
       "type": "boolean",
-      "description": "是否显示视图",
+      "description": "是否显示左侧列表",
       "defaultValue": "false"
     },
     {
-      "displayName": "view-bus-title",
+      "displayName": "aside-title",
       "type": "string",
-      "description": "视图标题名称",
-      "defaultValue": "视图"
+      "description": "左侧列表标题",
+      "defaultValue": "viewBus"
     },
     {
-      "displayName": "view-bus-info",
+      "displayName": "aside-info",
       "type": "string",
-      "description": " hover 视图标题显示的说明",
-      "defaultValue": "描述信息"
+      "description": "左侧列表描述",
+      "defaultValue": ""
     },
     {
-      "displayName": "view-bus-refresh",
+      "displayName": "aside-refresh",
       "type": "boolean",
-      "description": "是否显示刷新按钮",
-      "defaultValue": "fasle"
+      "description": "左侧列表刷新按钮",
+      "defaultValue": "false"
     },
     {
       "displayName": "page-icon",
