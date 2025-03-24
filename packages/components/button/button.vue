@@ -1,39 +1,37 @@
 <template>
-  <el-config-provider namespace="k">
-    <el-button
-      :id="id"
-      ref="buttonRef"
-      :class="[
-        {
-          'k-button--main': main,
-          'k-button--secondary': secondary,
-          'k-button--text': text,
-          'k-button--icon': icon,
-          'is-loading': loading,
-          'is-disabled': disabled,
-          'button-loading': loading
-        },
-        getElTypeColor,
-        getSizeClass
-      ]"
-      :loading="loading"
-      :loading-icon="loadingIcon"
-      :disabled="disabled"
-      v-bind="$attrs"
-    >
-      <slot :name="compatibleSlots($slots, ['icon-left', 'iconLeft'])" class="icon-left">
-        <component :is="props.iconLeft" v-if="props.iconLeft" />
-      </slot>
-      <label v-if="props.value && props.icon === false">{{ props.value }}</label>
-      <label v-else-if="$slots.default">
-        <slot class="slot-content"></slot>
-      </label>
-      <slot :name="compatibleSlots($slots, ['icon-right', 'iconRight'])" class="icon-right">
-        <component :is="props.iconRight" v-if="props.iconRight" />
-      </slot>
-      <component :is="props.loadingIcon" v-if="props.loading" class="loading-icon" />
-    </el-button>
-  </el-config-provider>
+  <el-button
+    :id="id"
+    ref="buttonRef"
+    :class="[
+      {
+        'k-button--main': main,
+        'k-button--secondary': secondary,
+        'k-button--text': text,
+        'k-button--icon': icon,
+        'is-loading': loading,
+        'is-disabled': disabled,
+        'button-loading': loading
+      },
+      getElTypeColor,
+      getSizeClass
+    ]"
+    :loading="loading"
+    :loading-icon="loadingIcon"
+    :disabled="disabled"
+    v-bind="$attrs"
+  >
+    <slot :name="compatibleSlots($slots, ['icon-left', 'iconLeft'])" class="icon-left">
+      <component :is="props.iconLeft" v-if="props.iconLeft" />
+    </slot>
+    <label v-if="props.value && props.icon === false">{{ props.value }}</label>
+    <label v-else-if="$slots.default">
+      <slot class="slot-content"></slot>
+    </label>
+    <slot :name="compatibleSlots($slots, ['icon-right', 'iconRight'])" class="icon-right">
+      <component :is="props.iconRight" v-if="props.iconRight" />
+    </slot>
+    <component :is="props.loadingIcon" v-if="props.loading" class="loading-icon" />
+  </el-button>
 </template>
 
 <script setup lang="ts">

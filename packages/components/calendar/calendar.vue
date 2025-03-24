@@ -1,55 +1,49 @@
 <template>
-  <el-config-provider namespace="k">
-    <el-calendar
-      ref="kCalendarRef"
-      :class="[{ 'k-calendar--adaptive': adaptive }, 'text-base']"
-      v-bind="$attrs"
-    >
-      <template #header="{ date }">
-        <slot name="header" :date="date">
-          <div class="k-calendar__header-left">
-            <k-button @click="jumpDate('today')">{{ t?.('today') }}</k-button>
-            <k-button @click="jumpDate('prev-month')"><IconArrowLeft /></k-button>
-            <k-button @click="jumpDate('next-month')"><IconArrowRight /></k-button>
-            <span>{{ date }}</span>
+  <el-calendar
+    ref="kCalendarRef"
+    :class="[{ 'k-calendar--adaptive': adaptive }, 'text-base']"
+    v-bind="$attrs"
+  >
+    <template #header="{ date }">
+      <slot name="header" :date="date">
+        <div class="k-calendar__header-left">
+          <k-button @click="jumpDate('today')">{{ t?.('today') }}</k-button>
+          <k-button @click="jumpDate('prev-month')"><IconArrowLeft /></k-button>
+          <k-button @click="jumpDate('next-month')"><IconArrowRight /></k-button>
+          <span>{{ date }}</span>
+        </div>
+        <div class="k-calendar__header-right">
+          <k-checkbox v-if="showLunar" v-model="isShowLunar" :label="t?.('showLunar')"></k-checkbox>
+        </div>
+      </slot>
+    </template>
+    <template #date-cell="cellData">
+      <slot name="date-cell" v-bind="cellData">
+        <div class="k-calendar__item">
+          <div class="k-calendar__date">
+            <span class="k-calendar__solar">{{ cellData.data.date.getDate() }}</span>
+            <span v-show="isShowLunar" class="k-calendar__lunar">
+              {{ lunarDate(cellData.data.date).lunarDate_zh }}
+            </span>
           </div>
-          <div class="k-calendar__header-right">
-            <k-checkbox
-              v-if="showLunar"
-              v-model="isShowLunar"
-              :label="t?.('showLunar')"
-            ></k-checkbox>
-          </div>
-        </slot>
-      </template>
-      <template #date-cell="cellData">
-        <slot name="date-cell" v-bind="cellData">
-          <div class="k-calendar__item">
-            <div class="k-calendar__date">
-              <span class="k-calendar__solar">{{ cellData.data.date.getDate() }}</span>
-              <span v-show="isShowLunar" class="k-calendar__lunar">
-                {{ lunarDate(cellData.data.date).lunarDate_zh }}
-              </span>
+          <slot name="schedule" :date="cellData.data.date">
+            <div class="k-calendar__schedule">
+              <ul>
+                <li
+                  v-for="item in targetSchedule(cellData.data.date)"
+                  :key="item"
+                  ref="scheduleItemRef"
+                  class="k-calendar__schedule-item"
+                >
+                  {{ item }}
+                </li>
+              </ul>
             </div>
-            <slot name="schedule" :date="cellData.data.date">
-              <div class="k-calendar__schedule">
-                <ul>
-                  <li
-                    v-for="item in targetSchedule(cellData.data.date)"
-                    :key="item"
-                    ref="scheduleItemRef"
-                    class="k-calendar__schedule-item"
-                  >
-                    {{ item }}
-                  </li>
-                </ul>
-              </div>
-            </slot>
-          </div>
-        </slot>
-      </template>
-    </el-calendar>
-  </el-config-provider>
+          </slot>
+        </div>
+      </slot>
+    </template>
+  </el-calendar>
 </template>
 
 <script setup lang="ts">
@@ -98,19 +92,19 @@ const lunarDate = computed(
 
 const scheduleContent = computed(() =>
   props.schedule
-  .map((item: Schedule) => {
-    const { date } = item;
-    let dateStr: string | undefined;
-    const newDate: Date = new Date(date);
-    if (newDate instanceof Date && !Number.isNaN(newDate?.getTime())) {
-      dateStr = formatDate(newDate);
-    }
-    return {
-      date: dateStr,
-      content: item.content
-    };
-  })
-  .filter((item: Schedule) => item.date)
+    .map((item: Schedule) => {
+      const { date } = item;
+      let dateStr: string | undefined;
+      const newDate: Date = new Date(date);
+      if (newDate instanceof Date && !Number.isNaN(newDate?.getTime())) {
+        dateStr = formatDate(newDate);
+      }
+      return {
+        date: dateStr,
+        content: item.content
+      };
+    })
+    .filter((item: Schedule) => item.date)
 );
 const targetSchedule = computed(
   () =>

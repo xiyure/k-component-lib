@@ -12,7 +12,8 @@ import type { ContextConfig } from '../utils/typescript';
 export function importThirdLib(app: App, config: ContextConfig = {}) {
   app.use(ElementPlus, {
     ...config?.ElementPlusOptions,
-    locale: config.locale === 'en' ? enLocal : zhLocal
+    locale: config.locale === 'en' ? enLocal : zhLocal,
+    namespace: 'k'
   });
   app.use(VxeTable).use(VxeUI);
   VxeUI.setConfig(config.vxeGlobalConfig ?? {});
