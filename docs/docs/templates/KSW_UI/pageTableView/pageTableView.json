@@ -54,20 +54,24 @@
   ],
   "slots": [
     {
+      "displayName": "default",
+      "description": "右侧内容插槽"
+    },
+    {
       "displayName": "aside",
-      "description": "视图中的插槽"
+      "description": "左侧列表插槽"
+    },
+    {
+      "displayName": "aside-foot",
+      "description": "左侧底部插槽"
     },
     {
       "displayName": "aside-toolbar",
-      "description": "视图的工具栏, 默认是刷新按钮"
+      "description": "左侧头部工具栏, 默认是刷新按钮"
     },
     {
       "displayName": "toolbar",
-      "description": "页面的工具栏"
-    },
-    {
-      "displayName": "toolbar",
-      "description": "页面的工具栏"
+      "description": "右侧内容工具栏"
     }
   ],
   "methods": []
