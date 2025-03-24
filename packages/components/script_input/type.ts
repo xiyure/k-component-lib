@@ -53,3 +53,9 @@ export type ChangeEventParams = {
   isStringMode: boolean,
   checkVariableResult: boolean
 }
+
+export type ScriptTagConfig = {
+  key?: string
+  isError?: boolean
+  isFunction?: boolean
+}

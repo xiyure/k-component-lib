@@ -150,7 +150,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import { ElScrollbar } from 'element-plus';
-import { ScriptInputProps, ScriptOptions, ChangeEventParams } from './type';
+import { ScriptInputProps, ScriptOptions, ChangeEventParams, ScriptTagConfig } from './type';
 import Message from '../message';
 import { usePassword } from './hooks/use_password';
 import { genRandomStr, transformTreeData, getElement } from '../../utils';
@@ -237,7 +237,7 @@ const popoverWidth = ref(0);
 // 是否可编辑
 const editable = ref(true);
 // 表达式相关
-const funcReg = /fx\((.*?)\)/;
+const funcReg = /fx\((.*?)\)|RPA_Func\{\{(.*?)\}\}/;
 const fxSet = new Set();
 
 //  校验结果
@@ -286,12 +286,10 @@ const isOnlyOneInput = computed(() => {
   return false;
 });
 
-const tableData = computed(() => {
+const tableData = computed<ScriptOptions[]>(() => {
   return props.options.map((item: RowData) => {
-    return {
-      ...item,
-      __kid__: item[getAttrProps().value]
-    };
+    item.__kid__ = item[getAttrProps().value];
+    return item;
   });
 });
 
@@ -354,7 +352,7 @@ watch(
     }
     const newModelValue = escapeValue(modelValue);
     cacheRes = newModelValue;
-    editable.value = true;
+    editable.value = !(isOnlyOneInput.value &&( newModelValue.includes('fx(') || newModelValue.includes('RPA_Func{{')));
     nextTick(() => {
       const innerText = parseModelValue(newModelValue);
       setEditorContent(innerText);
@@ -375,7 +373,7 @@ function updateModelValue(res: string) {
   cacheRes = res;
   contentHasChanged = true;
   emits('update:modelValue', res);
-  editable.value = !(isOnlyOneInput.value && res.includes('fx('));
+  editable.value = !(isOnlyOneInput.value &&( res.includes('fx(') || res.includes('RPA_Func{{')));
 }
 
 // 处理change事件
@@ -506,16 +504,25 @@ async function handleInputContent(data: Row | RowData) {
     await nextTick();
   }
   const key = genRandomStr(8);
-  const content =
-    _isStringMode.value && data[getAttrProps().tag] !== false
-      ? generateScriptTag(data[getAttrProps().label], key)
-      : data[getAttrProps().value];
+  const content = getInputContent(data, key);
   if (isOnlyOneInput.value) {
     KScriptInputWrapper.value.innerHTML = content;
   } else {
     handleManualInput(content);
   }
   return key;
+}
+
+function getInputContent(data: Row | RowData, key: string) {
+  const label = data[getAttrProps().label];
+  const value = data[getAttrProps().value];
+  if (_isStringMode.value && data?.isFunction) {
+    return generateScriptTag(value, { key, isFunction: true })
+  } else if (_isStringMode.value && data[getAttrProps().tag] !== false) {
+    return generateScriptTag(label, { key })
+  } else {
+    return value;
+  }
 }
 
 function handleManualInput(content: string) {
@@ -591,7 +598,10 @@ function parseInputValue(): ChangeEventParams {
         text += node.textContent ?? '';
       } else if (node.tagName.toUpperCase() === 'DIV' && node.classList.contains('k-script-tag')) {
         const label = node.innerText;
-        if (fxSet.has(label)) {
+        const dataType = node.getAttribute('data-type');
+        if (dataType === 'function') {
+          text += `RPA_Func{{${label}}}`;
+        } else if (fxSet.has(label)) {
           text += `fx(${label})`;
           scriptTags.push(null);
         } else {
@@ -641,30 +651,36 @@ function parseModelValue(value: string) {
   }
   while (funcReg.test(originText)) {
     const match = originText.match(funcReg);
-    if (match?.[0] === undefined || match?.[1] === undefined) {
+    const matchRegStr = match?.[0];
+    const matchStr = match?.[1] ?? match?.[2];
+    if (!match || matchRegStr === undefined || !matchStr === undefined) {
       break;
     }
-    const value = match[1];
+    const tagConfig = { key: genRandomStr(8), isError: false, isFunction: false }
+    const value = match[1] ?? match[2];
     const attrName = getScriptKey();
     const targetOption = props.options.find((item) => item[attrName] === value);
     let label = targetOption?.[getAttrProps().label] ?? '';
-    let isError = false;
-    if (!targetOption) {
+    if (match[0].includes('RPA_Func{{')) {
+      label = value;
+      tagConfig.isFunction = true;
+    } else if (!targetOption) {
       label = value;
       Message.error(`'${value}' not found`);
       fxSet.add(label);
-      isError = true;
+      tagConfig.isError = true;
     }
-    const key = genRandomStr(8);
-    originText = originText.replace(match?.[0], generateScriptTag(label, key, isError));
+    originText = originText.replace(match?.[0], generateScriptTag(label, tagConfig));
   }
   return originText;
 }
 
-function generateScriptTag(content: string, key: string, isError: boolean = false) {
+function generateScriptTag(content: string, config: ScriptTagConfig) {
+  const { key = '', isError = false, isFunction = false } = config;
+  const dataType = isFunction ? 'function' : 'variable';
   return `<div class="k-script-tag ${
     isError ? 'is-error' : ''
-  }" data-key="${key}" data-value="${content}" contenteditable="false">${content}<span class="k-script-tag-clear-mark"></span></div>`;
+  }" data-key="${key}" data-value="${content}" data-type="${dataType}" contenteditable="false">${content}<span class="k-script-tag-clear-mark"></span></div>`;
 }
 
 function toggleSelect(event: KeyboardEvent) {
