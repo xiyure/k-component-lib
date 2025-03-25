@@ -2,7 +2,6 @@
   <el-input
     ref="inputRef"
     :class="[
-      'k-input',
       {
         'k-input-has-prepend': slots.prepend,
         'k-input-has-append': slots.append

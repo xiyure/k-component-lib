@@ -1,0 +1,107 @@
+.k-popper {
+  --k-popper-border-radius: var(--k-popover-border-radius, 4px);
+  border-radius: var(--k-popper-border-radius);
+  font-size: 12px;
+  line-height: 20px;
+  min-width: 10px;
+  overflow-wrap: break-word;
+  padding: 5px 11px;
+  position: absolute;
+  visibility: visible;
+  z-index: 2000
+}
+
+.k-popper.is-dark {
+  color: var(--k-bg-color)
+}
+
+.k-popper.is-dark,
+.k-popper.is-dark>.k-popper__arrow:before {
+  background: var(--k-text-color-primary);
+  border: 1px solid var(--k-text-color-primary)
+}
+
+.k-popper.is-dark>.k-popper__arrow:before {
+  right: 0
+}
+
+.k-popper.is-light,
+.k-popper.is-light>.k-popper__arrow:before {
+  background: var(--k-bg-color-overlay);
+  border: 1px solid var(--k-border-color-light)
+}
+
+.k-popper.is-light>.k-popper__arrow:before {
+  right: 0
+}
+
+.k-popper.is-pure {
+  padding: 0
+}
+
+.k-popper__arrow,
+.k-popper__arrow:before {
+  height: 10px;
+  position: absolute;
+  width: 10px;
+  z-index: -1
+}
+
+.k-popper__arrow:before {
+  background: var(--k-text-color-primary);
+  box-sizing: border-box;
+  content: " ";
+  transform: rotate(45deg)
+}
+
+.k-popper[data-popper-placement^=top]>.k-popper__arrow {
+  bottom: -5px
+}
+
+.k-popper[data-popper-placement^=top]>.k-popper__arrow:before {
+  border-bottom-right-radius: 2px
+}
+
+.k-popper[data-popper-placement^=bottom]>.k-popper__arrow {
+  top: -5px
+}
+
+.k-popper[data-popper-placement^=bottom]>.k-popper__arrow:before {
+  border-top-left-radius: 2px
+}
+
+.k-popper[data-popper-placement^=left]>.k-popper__arrow {
+  right: -5px
+}
+
+.k-popper[data-popper-placement^=left]>.k-popper__arrow:before {
+  border-top-right-radius: 2px
+}
+
+.k-popper[data-popper-placement^=right]>.k-popper__arrow {
+  left: -5px
+}
+
+.k-popper[data-popper-placement^=right]>.k-popper__arrow:before {
+  border-bottom-left-radius: 2px
+}
+
+.k-popper[data-popper-placement^=top]>.k-popper__arrow:before {
+  border-left-color: transparent !important;
+  border-top-color: transparent !important
+}
+
+.k-popper[data-popper-placement^=bottom]>.k-popper__arrow:before {
+  border-bottom-color: transparent !important;
+  border-right-color: transparent !important
+}
+
+.k-popper[data-popper-placement^=left]>.k-popper__arrow:before {
+  border-bottom-color: transparent !important;
+  border-left-color: transparent !important
+}
+
+.k-popper[data-popper-placement^=right]>.k-popper__arrow:before {
+  border-right-color: transparent !important;
+  border-top-color: transparent !important
+}
