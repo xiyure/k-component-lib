@@ -2,7 +2,6 @@
   <el-checkbox
     :id="id"
     ref="kCheckboxRef"
-    class="k-checkbox"
     :class="getSizeClass"
     v-bind="$attrs"
     :label="label"
@@ -83,7 +82,7 @@ function handleClickLabel(e: Event) {
   if (!e.target || !(e.target instanceof Element)) {
     return;
   }
-  const isCheckbox = e.target?.classList.contains('el-checkbox__inner');
+  const isCheckbox = e.target?.classList.contains('k-checkbox__inner');
   if (!isCheckbox) {
     e.preventDefault();
   }

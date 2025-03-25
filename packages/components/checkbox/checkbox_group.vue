@@ -1,7 +1,6 @@
 <template>
   <el-checkbox-group
     ref="kCheckboxGroupRef"
-    class="k-checkbox-group"
     v-bind="$attrs"
   >
     <slot></slot>

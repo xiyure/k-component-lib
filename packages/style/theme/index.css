@@ -1,3 +1,5 @@
+@import '../variable.css';
+@import '../general.less';
 @import './AOM/theme.css';
 @import './GFAOM/theme.css';
 @import './KingAutometa/theme.css';

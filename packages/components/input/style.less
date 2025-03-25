@@ -24,9 +24,6 @@
   font-size: var(--k-font-size-base);
   position: relative;
 
-  // 所有样式设置为unset
-  .init-style();
-
   --bg-color: #fff;
   --height: var(--k-theme-input-size-height--base);
   --padding: var(--k-theme-input-size-padding--base);
@@ -51,7 +48,6 @@
     justify-content: center;
     transform: translateZ(0);
     transition: var(--k-transition-box-shadow);
-    .init-style();
 
     cursor: text;
     height: var(--height);
@@ -101,7 +97,6 @@
       outline: none;
       padding: 0;
       width: 100%;
-      .init-style();
       .text-base();
 
       cursor: text;
@@ -152,7 +147,6 @@
     }
 
     &:hover {
-      .init-style();
       height: var(--height);
       padding: var(--padding);
       background-color: #fff;
@@ -160,7 +154,6 @@
       border: var(--border-color--hover) 1px solid;
     }
     &.is-focus {
-      .init-style();
       height: var(--height);
       padding: var(--padding);
       background-color: #fff;
@@ -239,7 +232,6 @@
     }
     .k-input-group__prepend,
     .k-input-group__append {
-      .init-style();
       .text-base();
       height: var(--height);
       padding: 0;
@@ -364,8 +356,6 @@
         display: flex;
         align-items: center;
         padding: var(--padding);
-      }
-      .k-input-slot--component {
       }
     }
   }
