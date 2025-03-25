@@ -1,5 +1,5 @@
 <template>
-  <div class="k-tree-transfer" :class="{ 'h-full': fullHeight }">
+  <div class="k-tree-transfer" :class="{ 'h-full': adaptive }">
     <div
       v-if="showSearchInput === true || showSearchInput === 'left'"
       class="k-transfer__filter !mb-3"
@@ -26,11 +26,11 @@
         />
       </div>
     </div>
-    <div class="k-transfer__body" :class="{ 'flex-1': fullHeight }">
+    <div class="k-transfer__body" :class="{ 'flex-1': adaptive }">
       <div class="k-transfer-content k-transfer-content__left">
         <div
           class="k-transfer__list"
-          :style="{ height: fullHeight ? '100%' : tableHeight + 'px' }"
+          :style="{ height: adaptive ? '100%' : tableHeight + 'px' }"
           :class="useTree ? 'transfer-tree-table' : ''"
         >
           <k-table
@@ -107,7 +107,7 @@
         </Pagination>
       </div>
       <div class="k-transfer-content k-transfer-content__right">
-        <div class="k-transfer__list" :style="{ height: fullHeight ? '100%' : tableHeight + 'px' }">
+        <div class="k-transfer__list" :style="{ height: adaptive ? '100%' : tableHeight + 'px' }">
           <k-table
             ref="tableRightRef"
             size="mini"
@@ -208,7 +208,7 @@ const props = withDefaults(defineProps<TreeTransferProps>(), {
   showDrag: false,
   showPage: false,
   tableHeight: 300,
-  fullHeight: false,
+  adaptive: false,
   defaultData: () => [],
   rowKey: 'id'
 });

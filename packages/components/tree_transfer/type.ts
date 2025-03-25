@@ -28,7 +28,7 @@ export interface TreeTransferProps {
   tableHeight?: number
   checkMethod?: (data: any) => boolean
   checkboxAll?: boolean
-  fullHeight?: boolean
+  adaptive?: boolean
 }
 
 export interface TreeTransferData {
