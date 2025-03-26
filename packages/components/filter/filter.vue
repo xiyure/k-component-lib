@@ -61,7 +61,7 @@
               :props="{
                 label: 'title',
                 value: 'title',
-                children: props.childrenField,
+                children: props.childrenField
               }"
               clearable
               @change="changeCondition(index, item, options!)"
@@ -101,7 +101,7 @@
                   :value="logicItem.value"
                   :disabled="
                     (item.logic === 'after' || item.logic === 'before') &&
-                      logicItem.value === 'range'
+                    logicItem.value === 'range'
                   "
                 />
               </k-select>
@@ -218,9 +218,11 @@ const attrs = useAttrs();
 
 onMounted(() => {
   const deprecatedFields = [{ oName: 'column', nName: 'options' }];
-  deprecatedFields.forEach((p: { oName: string, nName: string }) => {
+  deprecatedFields.forEach((p: { oName: string; nName: string }) => {
     if (attrs[p.oName]) {
-      console.warn(`[KFilter] The "${p.oName}" field is deprecated, please use "${p.nName}" instead.`);
+      console.warn(
+        `[KFilter] The "${p.oName}" field is deprecated, please use "${p.nName}" instead.`
+      );
     }
   });
 });
@@ -234,47 +236,54 @@ const filterRule = ref(0);
 
 const flatColumns = computed(() => treeDataToArray(cloneDeep(props.options), 'group'));
 const instance = computed(
-  () => function (value: string | null) {
-    const matchInstance: FilterOptions = flatColumns.value?.find(
-      (item) => item[props.filterKey] === value
-    );
-    return matchInstance;
-  }
+  () =>
+    function (value: string | null) {
+      const matchInstance: FilterOptions = flatColumns.value?.find(
+        (item) => item[props.filterKey] === value
+      );
+      return matchInstance;
+    }
 );
 const conditionList = computed(
-  () => function (item: FilterData) {
-    const columnItem = flatColumns.value?.find((col) => col[props.filterKey] === item.key);
-    const type = columnItem?.dataType || 'string';
-    return logicOptions.find((item) => item.type === type);
-  }
+  () =>
+    function (item: FilterData) {
+      const columnItem = flatColumns.value?.find((col) => col[props.filterKey] === item.key);
+      const type = columnItem?.dataType || 'string';
+      return logicOptions.find((item) => item.type === type);
+    }
 );
 
 const dateLogicList = computed(
-  () => function (item: FilterData) {
-    if (item.logic === 'equal') {
-      return dateTypeOptions;
+  () =>
+    function (item: FilterData) {
+      if (item.logic === 'equal') {
+        return dateTypeOptions;
+      }
+      const hideLogicList = ['past-seven-days', 'past-thirty-days'];
+      return dateTypeOptions.filter((item) => !hideLogicList.includes(item.value));
     }
-    const hideLogicList = ['past-seven-days', 'past-thirty-days'];
-    return dateTypeOptions.filter((item) => !hideLogicList.includes(item.value));
-  }
 );
 
-const hasConfigCondition = computed(() => filterData.value.some(
-  (item) => item.key && item.logic && (item.value || ['empty', 'nonEmpty'].includes(item.logic))
-));
+const hasConfigCondition = computed(() =>
+  filterData.value.some(
+    (item) => item.key && item.logic && (item.value || ['empty', 'nonEmpty'].includes(item.logic))
+  )
+);
 
 // 日期禁用
 const disabledInput = computed(
-  () => function (item: FilterData) {
-    const disabledLogicTypes = ['empty', 'nonEmpty'];
-    return !item.logic || disabledLogicTypes.includes(item.logic);
-  }
+  () =>
+    function (item: FilterData) {
+      const disabledLogicTypes = ['empty', 'nonEmpty'];
+      return !item.logic || disabledLogicTypes.includes(item.logic);
+    }
 );
 const disabledDatePicker = computed(
-  () => function (item: FilterData) {
-    const notDisabledDateRanges = ['date', 'range'];
-    return disabledInput.value(item) || !notDisabledDateRanges.includes(item.dateRange as string);
-  }
+  () =>
+    function (item: FilterData) {
+      const notDisabledDateRanges = ['date', 'range'];
+      return disabledInput.value(item) || !notDisabledDateRanges.includes(item.dateRange as string);
+    }
 );
 const disableChangeMode = computed(() => {
   const fields = filterData.value.map((item) => item.key);
@@ -365,6 +374,12 @@ function query() {
 function filter(data?: any[]) {
   const sourceData = Array.isArray(data) ? data : props.data;
   const conditionInfo = getConditionInfo();
+  if (typeof props.searchMethod === 'function') {
+    return {
+      conditionInfo,
+      tableData: props.searchMethod(conditionInfo)
+    };
+  }
   if (conditionInfo.conditionList.length === 0 || props.remote === true) {
     return {
       conditionInfo,
@@ -408,17 +423,18 @@ function filter(data?: any[]) {
 function getConditionInfo() {
   const disabledLogicTypes = ['empty', 'nonEmpty'];
   const conditionList = filterData.value
-  .filter(
-    (item) => item.key && item.logic && (isValid(item.value) || disabledLogicTypes.includes(item.logic))
-  )
-  .map((item) => ({
-    title: item.title.join(' - '),
-    logic: t?.(item.logic),
-    key: item.key,
-    showValue: item.showValue,
-    value: item.value,
-    handler: item.handler
-  }));
+    .filter(
+      (item) =>
+        item.key && item.logic && (isValid(item.value) || disabledLogicTypes.includes(item.logic))
+    )
+    .map((item) => ({
+      title: item.title.join(' - '),
+      logic: t?.(item.logic),
+      key: item.key,
+      showValue: item.showValue,
+      value: item.value,
+      handler: item.handler
+    }));
   return {
     conditionList,
     filterRule: filterRule.value

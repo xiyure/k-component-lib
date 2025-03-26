@@ -141,6 +141,7 @@ export interface AdvancedFilterConfig {
     conditionList?: Condition[];
     filterRule?: number;
   };
+  searchMethod?: (conditionInfo: ConditionInfo | undefined) => any[];
 }
 
 export interface SearchConfig {

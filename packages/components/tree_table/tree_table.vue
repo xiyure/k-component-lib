@@ -86,6 +86,7 @@
               :ignore-case="advancedFilterConfig?.ignoreCase"
               :formatter="advancedFilterConfig?.dateFormat ?? 'YYYY-MM-DD HH:mm:ss'"
               :default-condition="advancedFilterConfig?.defaultCondition ?? filterConditionInfo"
+              :search-method="advancedFilterConfig?.searchMethod"
               @confirm="refreshAdvancedFilter"
               @clear="
                 () => {
@@ -102,7 +103,11 @@
                     :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
                     v-if="widget.widget"
                   />
-                  <slot v-else :name="compatibleSlots($slots, ['filter-trigger', 'filterTrigger'])" :is-filter="hasConfigCondition">
+                  <slot
+                    v-else
+                    :name="compatibleSlots($slots, ['filter-trigger', 'filterTrigger'])"
+                    :is-filter="hasConfigCondition"
+                  >
                     <k-button>
                       <IconFilter v-if="!hasConfigCondition" />
                       <IconFilterFill v-else color="#2882FF" />
@@ -128,7 +133,10 @@
                     :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
                     v-if="widget.widget"
                   />
-                  <slot v-else :name="compatibleSlots($slots, ['size-control-trigger', 'sizeControlTrigger'])">
+                  <slot
+                    v-else
+                    :name="compatibleSlots($slots, ['size-control-trigger', 'sizeControlTrigger'])"
+                  >
                     <k-button><IconSizeControls /></k-button>
                   </slot>
                 </div>
@@ -165,7 +173,10 @@
                     :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
                     v-if="widget.widget"
                   />
-                  <slot v-else :name="compatibleSlots($slots, ['transfer-trigger', 'transferTrigger'])">
+                  <slot
+                    v-else
+                    :name="compatibleSlots($slots, ['transfer-trigger', 'transferTrigger'])"
+                  >
                     <k-button><IconSetting /></k-button>
                   </slot>
                 </div>
@@ -303,7 +314,14 @@ import { KTable } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
 import type { ConditionInfo } from '../filter';
-import { useMethods, useCheckbox, useData, useConfig, useHeaderControl, useAdvancedFilter } from './hooks';
+import {
+  useMethods,
+  useCheckbox,
+  useData,
+  useConfig,
+  useHeaderControl,
+  useAdvancedFilter
+} from './hooks';
 import { SIZE_KEY, useLocale } from '../../hooks';
 import { genRandomStr, sortFunc, compatibleSlots, getExposeProxy } from '../../utils';
 import { SIZE_OPTIONS } from './const';
@@ -371,10 +389,8 @@ const searchStr = ref('');
 const tableFilterRef = ref(); // 高级筛选后的数据
 
 // 当前需要展示的数据（区分当前数据是基于高级筛选还是原始数据）
-const currentData = computed(() =>{
-  return filterConditionInfo.value?.conditionList?.length
-    ? newFilterData.value
-    : xeTableData.value;
+const currentData = computed(() => {
+  return filterConditionInfo.value?.conditionList?.length ? newFilterData.value : xeTableData.value;
 });
 
 // 表格实例
@@ -436,16 +452,8 @@ const {
 } = useData(tableInstance, props, emits, flatColumns, xeTableData, currentData, query);
 
 // config
-const {
-  widgets,
-  treeConfig,
-  sortConfig,
-  rowConfig,
-  editConfig,
-  scrollY,
-  columnConfig,
-  seqConfig
-} = useConfig(props, { isPaging, paginationConfig });
+const { widgets, treeConfig, sortConfig, rowConfig, editConfig, scrollY, columnConfig, seqConfig } =
+  useConfig(props, { isPaging, paginationConfig });
 
 // checkbox
 const {
@@ -572,14 +580,14 @@ function hideColumn(column: Column) {
   }
   columnItem.visible = false;
   selectData.value = flatColumns.value
-    .filter((col: Column) => col.visible !== false)
-    .map((item: Column) => {
-      if (item.title && item.field) {
-        return item.field;
-      }
-      return null;
-    })
-    .filter((item) => item !== null);
+  .filter((col: Column) => col.visible !== false)
+  .map((item: Column) => {
+    if (item.title && item.field) {
+      return item.field;
+    }
+    return null;
+  })
+  .filter((item) => item !== null);
   emits('hide-column', column);
 }
 
@@ -605,7 +613,11 @@ function refreshAdvancedFilter(
   if (props.useTree) {
     handleTreeData(newFilterData.value);
     const rowField = treeConfig.value?.rowField ?? 'id';
-    newFilterData.value = sortFunc([...tableCacheData.treeDataMap.values()], xeTableData.value, rowField);
+    newFilterData.value = sortFunc(
+      [...tableCacheData.treeDataMap.values()],
+      xeTableData.value,
+      rowField
+    );
   }
   if (conditionInfo?.conditionList?.length) {
     isFilterStatus = true;
@@ -729,7 +741,7 @@ const customMethods = {
   clearSearch,
   ..._methods,
   ..._checkboxMethods,
-  ..._transferMethods,
+  ..._transferMethods
 };
 
 defineExpose(getExposeProxy(customMethods, tableInstance));
