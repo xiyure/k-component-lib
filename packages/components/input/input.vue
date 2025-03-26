@@ -14,12 +14,7 @@
     :suffix-icon="iconRight ?? suffixIcon"
     :type="inputType"
     :size="formatSize.elSize"
-    @input="
-      (value: string | number) => {
-        emits('update:modelValue', value);
-        emits('input', value);
-      }
-    "
+    @input="handleInput"
     @change="
       (value: string | number) => {
         emits('change', value);
@@ -42,7 +37,7 @@
     <template v-if="isSelectable" #suffix>
       <IconDown
         :class="['k-input__arrow', { 'is-rotate': popperVisible }]"
-        @click.prevent.stop="() => (popperVisible = !popperVisible)"
+        @click.prevent.stop="triggerClick"
       />
     </template>
     <template v-else #suffix>
@@ -92,14 +87,14 @@
       :max-height="popperStyle?.maxHeight ?? 200"
       >
       <li
+        v-for="item, index in showOptions"
         :class="[
           'k-input-option',
           {
             'is-selected': modelValue === item,
-            'is-disabled': false
+            'is-highlight': selectedIndex === index
           }
         ]"
-        v-for="item in options"
         :key="item"
         @click="
           () => {
@@ -176,19 +171,29 @@ const modelValue = ref<string | number>('');
 const popperWidth = ref(0);
 const popperVisible = ref(false);
 const popoverClassName = ref('');
+const isManual = ref(false);
+const selectedIndex = ref(-1);
 
 onMounted(() => {
   window.addEventListener('click', closePopper);
   window.addEventListener('resize', updatePopperWidth);
+  window.addEventListener('keydown', toggleSelect);
   updatePopperWidth();
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener('click', closePopper);
   window.removeEventListener('resize', updatePopperWidth);
+  window.removeEventListener('keydown', toggleSelect);
 });
 
 const isSelectable = computed(() => props.selectable && inputType.value === 'text');
+const showOptions = computed(() => {
+  if (props.filterable && !isManual.value && modelValue.value) {
+    return props.options?.filter((item) => item.toString().includes(modelValue.value.toString()));
+  }
+  return props.options;
+});
 
 watch(
   () => props.modelValue,
@@ -199,6 +204,11 @@ watch(
   },
   { immediate: true }
 );
+watch(() => popperVisible.value, (newValue) => {
+  if (!newValue) {
+    isManual.value = false;
+  }
+})
 
 const slotClass = computed(() => (slot: SlotsType) => {
   switch (typeof slot) {
@@ -213,7 +223,7 @@ const slotClass = computed(() => (slot: SlotsType) => {
   }
 });
 
-const switchPassword = () => {
+function switchPassword() {
   isText.value = !isText.value;
   inputType.value = isText.value ? 'text' : 'password';
 };
@@ -226,11 +236,46 @@ function selectOption(item: string | number) {
   emits('input', item);
   emits('change', item);
 }
+
+function triggerClick() {
+  if (!popperVisible.value) {
+    isManual.value = true;
+  }
+  popperVisible.value = !popperVisible.value;
+}
+function handleInput(value: string | number) {
+  if (props.filterable && modelValue.value && showOptions.value?.length) {
+    popperVisible.value = true;
+  } else {
+    popperVisible.value = false;
+  }
+  emits('update:modelValue', value);
+  emits('input', value);
+}
+
+function toggleSelect(event: KeyboardEvent) {
+  if (!popperVisible.value) {
+    return;
+  }
+  const dataLength = showOptions.value?.length ?? 0;
+  if (event.code === 'ArrowUp') {
+    selectedIndex.value = (selectedIndex.value - 1 + dataLength) % dataLength;
+  } else if (event.code === 'ArrowDown') {
+    selectedIndex.value = (selectedIndex.value + 1) % dataLength;
+  } else if (event.code === 'Enter') {
+    if (selectedIndex.value >= 0 && selectedIndex.value < dataLength) {
+      modelValue.value = showOptions.value[selectedIndex.value];
+      popperVisible.value = false;
+    }
+  }
+}
+
 function closePopper() {
   if (!popperVisible.value) {
   }
   popperVisible.value = false;
 }
+
 function updatePopperWidth() {
   nextTick(() => (popperWidth.value = inputRef.value.$el.offsetWidth));
 }

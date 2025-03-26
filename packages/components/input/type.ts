@@ -25,11 +25,16 @@ export interface InputProps {
    * el属性,右边图标
    */
   suffixIcon?: Component | string | undefined;
-
+  /**
+   * 是否使用密码框
+   */
   showPassword?: boolean;
-
+  /**
+   * 输入框类型
+  */
   type?: string;
   selectable?: boolean;
+  filterable?: boolean;
   options?: (string | number)[];
   popperClass?: string;
   popperStyle?: CSSProperties;
