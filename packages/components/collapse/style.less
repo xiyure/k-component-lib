@@ -5,6 +5,11 @@
 .el-collapse,
 .k-collapse,
 .el-collapse.k-collapse {
+  --font-size: var(--k-font-base);
+  --line-height: var(--k-font-base-line)
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+
   border: none;
   .el-collapse-item__header,
   .el-collapse-item__content {
@@ -25,7 +30,8 @@
         justify-content: flex-start;
       }
       .icon-ele {
-        .text-sm();
+        --font-size: var(--k-font-sm);
+        --line-height: var(--k-font-sm-line)
         margin: 0 8px 0 auto;
         color: var(--k-theme-primary);
       }
@@ -93,7 +99,8 @@
         background: var(--k-gray-50);
         border: unset;
         .info {
-          .text-sm();
+          --font-size: var(--k-font-sm);
+          --line-height: var(--k-font-sm-line)
           position: relative;
           color: var(--k-theme-text--light);
           margin-left: 0.5rem;

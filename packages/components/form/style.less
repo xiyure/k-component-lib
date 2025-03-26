@@ -17,6 +17,11 @@
 }
 
 .k-form {
+  --font-size: var(--k-font-base);
+  --line-height: var(--k-font-base-line);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+
   .k-form-item {
     margin-bottom: 1.375rem;
     margin-bottom: 0;
@@ -146,18 +151,21 @@
     .el-form-item__error {
       padding: 0;
       margin-top: 0;
-      .text-base();
+      --font-size: var(--k-font-base);
+      --line-height: var(--k-font-base-line)
     }
   }
   &.el-form--small {
     padding: 0;
     margin-right: 0.5rem;
     .el-form-item__label {
-      .text-sm();
+      --font-size: var(--k-font-sm);
+      --line-height: var(--k-font-sm-line)
       height: unset;
     }
     .el-form-item__error {
-      .text-sm();
+      --font-size: var(--k-font-sm);
+      --line-height: var(--k-font-sm-line)
       margin-top: 0;
       padding: 0;
     }
@@ -170,11 +178,13 @@
     padding: 0;
     margin-right: 0.5rem;
     .el-form-item__label {
-      .text-lg();
+      --font-size: var(--k-font-lg);
+      --line-height: var(--k-font-lg-line)
       height: unset;
     }
     .el-form-item__error {
-      .text-lg();
+      --font-size: var(--k-font-lg);
+      --line-height: var(--k-font-lg-line)
       margin-top: 0;
       padding: 0;
     }

@@ -42,6 +42,9 @@
   --k-button-focus: rgba(var(--k-theme-primary-rgb), 0.2);
   --k-button-rounded: var(--k-theme-button-size-rounded--base);
 
+  --font-size: var(--k-font-base);
+  --line-height: var(--k-font-base-line);
+
   //el
   appearance: none;
   -webkit-appearance: none;
@@ -50,7 +53,6 @@
   outline: none;
   transition: 0.1s;
   white-space: nowrap;
-  font-size: var(--k-font-size-base);
 
   width: fit-content;
   box-sizing: border-box;
@@ -64,7 +66,8 @@
   height: var(--k-theme-button-size-height--base);
   border-radius: var(--k-button-rounded);
   color: var(--k-button-content-color);
-  .text-base();
+  font-size: var(--font-size);
+  line-height: var(--line-height);
   cursor: pointer;
   background-color: var(--k-button-bg-color);
 
@@ -188,7 +191,8 @@
   // size
   &.k-button--sm {
     --k-button-rounded: var(--k-theme-button-size-rounded--sm);
-    .text-sm();
+    --font-size: var(--k-font-sm);
+    --line-height: var(--k-font-sm-line)
     padding: var(--k-theme-button-size-padding--sm);
     height: var(--k-theme-button-size-height--sm);
     gap: var(--k-theme-button-size-gap--sm);
@@ -206,7 +210,8 @@
   }
   &.k-button--lg {
     --k-button-rounded: var(--k-theme-button-size-rounded--lg);
-    .text-lg();
+    --font-size: var(--k-font-lg);
+    --line-height: var(--k-font-lg-line)
     padding: var(--k-theme-button-size-padding--lg);
     height: var(--k-theme-button-size-height--lg);
     gap: var(--k-theme-button-size-gap--lg);
@@ -929,9 +934,10 @@
     }
   }
 }
-.k-button-group,
 .k-button-group {
   display: inline-flex;
+  --k-button-rounded: var(--k-theme-button-size-rounded--base);
+  border-radius: var(--k-button-rounded);
   .k-button {
     border-radius: 0;
     margin: 0;

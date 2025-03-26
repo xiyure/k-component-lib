@@ -13,7 +13,10 @@
 }
 
 .el-popper.is-dark {
-  .text-sm();
+  --font-size: var(--k-font-sm);
+  --line-height: var(--k-font-sm-line);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
   max-width: 20rem;
   &.is-dark {
     background: #2d313f;

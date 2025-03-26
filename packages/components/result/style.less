@@ -117,12 +117,18 @@
 }
 
 @media screen and (max-width: 1920px) {
+  --font-size: var(--k-font-base);
+  --line-height: var(--k-font-base-line);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
   .k-result {
     .base-title {
-      .text-2xl();
+      --font-size: var(--k-font-2xl);
+      --line-height: var(--k-font-2xl-line);
     }
     .base-subTitle {
-      .text-base();
+      --font-size: var(--k-font-base);
+      --line-height: var(--k-font-base-line);
     }
   }
 }

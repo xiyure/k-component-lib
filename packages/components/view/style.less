@@ -5,6 +5,10 @@
   display: flex;
   width: 100%;
   height: 100%;
+  --font-size: var(--k-font-base);
+  --line-height: var(--k-font-base-line);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
   .k-view-nav {
     width: 15rem;
     transition: all 0.125s ease-in-out;
@@ -101,7 +105,8 @@
       color: #6b7280;
       padding-top: 0.75rem;
       padding-bottom: 0.5rem;
-      .text-sm();
+      --font-size: var(--k-font-sm);
+      --line-height: var(--k-font-sm-line);
     }
   }
 }

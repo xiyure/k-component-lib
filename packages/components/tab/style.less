@@ -16,6 +16,10 @@
   --icon-skew: 0.625rem;
   --icon-Space: 2rem;
   --translate: 0px;
+  --font-size: var(--k-font-base);
+  --line-height: var(--k-font-base-line);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
 
   position: relative;
 
@@ -52,7 +56,8 @@
             color: var(--k-theme-text--normal);
 
             .el-tooltip__trigger {
-              .text-base();
+              --font-size: var(--k-font-base);
+              --line-height: var(--k-font-base-line)
               display: inline-block;
               width: 100%;
               overflow: hidden;

@@ -2,6 +2,10 @@
 @import '../../style/general.less';
 
 .k-layout-container {
+  --font-size: var(--k-font-base);
+  --line-height: var(--k-font-base-line);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
   .k-layout-aside {
     background-color: #051627;
     transition: width 0.3s ease-in-out;
@@ -23,7 +27,8 @@
         font-size: 1.25rem;
       }
       span {
-        .text-lg();
+        --font-size: var(--k-font-lg);
+        --line-height: var(--k-font-lg-line);
       }
     }
 

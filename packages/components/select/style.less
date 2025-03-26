@@ -2,6 +2,10 @@
 @import '../../style/general.less';
 
 .k-select {
+  --font-size: var(--k-font-base);
+  --line-height: var(--k-font-base-line);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
   //el
   --k-select-border-color-hover: var(--k-border-color-hover);
   --k-select-disabled-color: var(--k-disabled-text-color);
@@ -37,15 +41,14 @@
     box-sizing: border-box;
     cursor: pointer;
     display: flex;
-    font-size: 14px;
     gap: 6px;
-    line-height: 24px;
     position: relative;
     text-align: left;
     transform: translateZ(0);
     transition: var(--k-transition-duration);
 
-    .text-base();
+    --font-size: var(--k-font-base);
+    --line-height: var(--k-font-base-line);
     min-height: var(--height);
     padding: var(--padding);
     border-radius: var(--border-radius);
@@ -238,13 +241,12 @@
     --border-radius: var(--k-theme-select-rounded--sm);
     .k-select__wrapper {
       //el
-      font-size: 12px;
       gap: 4px;
-      line-height: 20px;
       min-height: 24px;
       padding: 2px 8px;
 
-      .text-sm();
+      --font-size: var(--k-font-sm);
+      --line-height: var(--k-font-sm-line);
       // border-radius:;
     }
     & .k-select__selection {
@@ -273,7 +275,8 @@
       min-height: 40px;
       padding: 8px 16px;
 
-      .text-lg();
+      --font-size: var(--k-font-lg);
+      --line-height: var(--k-font-lg-line);
     }
     .k-select__selection {
       gap: 6px;

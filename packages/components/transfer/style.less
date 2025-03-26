@@ -2,6 +2,10 @@
 @import '../../style/general.less';
 
 .k-transfer {
+  --font-size: var(--k-font-base);
+  --line-height: var(--k-font-base-line);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
   width: fit-content;
   .k-transfer_searcher {
     margin-bottom: 0.5rem;
@@ -10,11 +14,6 @@
     display: flex;
     .el-transfer-panel {
       background-color: #fff;
-
-      &:first-child {
-      }
-      &:last-child {
-      }
 
       .el-transfer-panel__header.transfer-right-header {
         .transfer-restore__text {
@@ -26,10 +25,8 @@
       .el-transfer-panel__header {
         padding: 0 0.75rem;
         height: 2.5rem;
-        .text-base();
         .el-checkbox {
           .el-checkbox__label {
-            .text-base();
           }
         }
         &.transfer-right-header {

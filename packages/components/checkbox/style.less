@@ -22,6 +22,8 @@
   --k-checkbox-checked-bg-color: var(--k-color-primary);
   --k-checkbox-checked-icon-color: var(--k-color-white);
   --k-checkbox-input-border-color-hover: var(--k-color-primary);
+  --font-size: var(--k-font-base);
+  --line-height: var(--k-font-base-line)
   cursor: pointer;
   font-size: var(--k-font-size-base);
   font-weight: var(--k-checkbox-font-weight);
@@ -32,7 +34,8 @@
   -moz-user-select: none;
   user-select: none;
   white-space: nowrap;
-  .text-base();
+  font-size: var(--font-size);
+  line-height: var(--line-height);
   // size ??
   --radio-ball-size: var(--k-theme-radio__ball-size--base);
   // text
@@ -357,7 +360,8 @@
       }
     }
     .k-checkbox__label {
-      .text-sm();
+      --font-size: var(--k-font-sm);
+      --line-height: var(--k-font-sm-line)
     }
     .is-indeterminate {
       .k-checkbox__inner {
@@ -382,7 +386,8 @@
       }
     }
     .k-checkbox__label {
-      .text-lg();
+      --font-size: var(--k-font-lg);
+      --line-height: var(--k-font-lg-line)
     }
     &.is-bordered {
       border-radius: var(--k-theme-button-size-rounded--lg);

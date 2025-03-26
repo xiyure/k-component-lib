@@ -408,10 +408,8 @@ export function setStyleTheme(theme: StyleModules = 'AOM') {
   return projectName;
 }
 
-
 // rem => rem
 export function convertPxToRem(value: number) {
   const htmlFontSize = window.getComputedStyle(document.documentElement).fontSize;
   return value * parseFloat(htmlFontSize);
 }
-

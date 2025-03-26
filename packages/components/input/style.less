@@ -21,7 +21,6 @@
   --k-input-clear-hover-color: var(--k-text-color-secondary);
   --k-input-focus-border-color: var(--k-color-primary);
   --k-input-width: 100%;
-  font-size: var(--k-font-size-base);
   position: relative;
 
   --bg-color: #fff;
@@ -32,6 +31,11 @@
   --border-color--hover: var(--k-theme-input-border-color--hover);
   --border-color--checked: var(--k-theme-input-border-color--checked);
   --input-offset: 0;
+
+  --font-size: var(--k-font-base);
+  --line-height: var(--k-font-base-line);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
 
   cursor: text;
   box-sizing: content-box;
@@ -97,7 +101,8 @@
       outline: none;
       padding: 0;
       width: 100%;
-      .text-base();
+      --font-size: var(--k-font-base);
+      --line-height: var(--k-font-base-line);
 
       cursor: text;
       color: var(--k-normal);
@@ -232,13 +237,15 @@
     }
     .k-input-group__prepend,
     .k-input-group__append {
-      .text-base();
+      --font-size: var(--k-font-base);
+      --line-height: var(--k-font-base-line);
       height: var(--height);
       padding: 0;
       z-index: 1;
       .k-input-slot--string,
       .k-input-slot--htmlTag {
-        .text-base();
+        --font-size: var(--k-font-base);
+        --line-height: var(--k-font-base-line);
         height: var(--height);
         color: var(--k-theme-info);
         background-color: var(--k-gray-50);
@@ -345,14 +352,16 @@
     --padding: var(--k-theme-input-size-padding--sm);
     .k-input__wrapper {
       .k-input__inner {
-        .text-sm();
+        --font-size: var(--k-font-sm);
+        --line-height: var(--k-font-sm-line);
       }
     }
     .k-input-group__prepend,
     .k-input-group__append {
       .k-input-slot--string,
       .k-input-slot--htmlTag {
-        .text-sm();
+        --font-size: var(--k-font-sm);
+        --line-height: var(--k-font-sm-line);
         display: flex;
         align-items: center;
         padding: var(--padding);
@@ -365,11 +374,13 @@
     --padding: var(--k-theme-input-size-padding--lg);
     .k-input__wrapper {
       .k-input__inner {
-        .text-lg();
+        --font-size: var(--k-font-lg);
+        --line-height: var(--k-font-lg-line);
       }
     }
     .k-textarea__inner {
-      .text-lg();
+      --font-size: var(--k-font-lg);
+      --line-height: var(--k-font-lg-line);
     }
   }
 
@@ -391,7 +402,8 @@
     transition: var(--k-transition-box-shadow);
     width: 100%;
 
-    .text-base();
+    --font-size: var(--k-font-base);
+    --line-height: var(--k-font-base-line);
     box-shadow: unset;
     border: 1px solid var(--border-color--normal);
     border-radius: var(--border-radius);
@@ -416,7 +428,8 @@
 
   &.k-input--small {
     .k-textarea__inner {
-      .text-sm();
+      --font-size: var(--k-font-sm);
+      --line-height: var(--k-font-sm-line);
     }
   }
 }
@@ -428,6 +441,9 @@
   line-height: var(--k-input-height);
   vertical-align: middle;
   width: var(--k-input-width);
+  
+  font-size: var(--font-size);
+  line-height: var(--line-height);
 
   &::-webkit-scrollbar {
     width: 6px;
@@ -557,6 +573,8 @@
   display: inline-block;
   vertical-align: bottom;
   width: 100%;
+  font-size: var(--font-size);
+  line-height: var(--line-height);
 
   & .k-input__count {
     background: var(--k-fill-color-blank);
@@ -575,6 +593,8 @@
   align-items: stretch;
   display: inline-flex;
   width: 100%;
+  font-size: var(--font-size);
+  line-height: var(--line-height);
 
   .k-input-group__append,
   .k-input-group__prepend {

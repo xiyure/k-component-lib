@@ -3,6 +3,10 @@
 @import '../../style/global.less';
 
 .k-tag {
+  --font-size: var(--k-font-base);
+  --line-height: var(--k-font-base-line);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
   //el
   --k-tag-font-size: 12px;
   --k-tag-border-radius: 4px;
@@ -16,10 +20,8 @@
   box-sizing: border-box;
   color: var(--k-tag-text-color);
   display: inline-flex;
-  font-size: var(--k-tag-font-size);
   height: 24px;
   justify-content: center;
-  line-height: 1;
   padding: 0 9px;
   vertical-align: middle;
   white-space: nowrap;
@@ -33,7 +35,6 @@
   background: var(--bgc);
   color: var(--color);
   border: 1px solid var(--border-color);
-  .text-base();
   .k-tag__point {
     display: flex;
     justify-content: flex-start;
@@ -201,7 +202,8 @@
   }
 
   .k-tag__content {
-    .text-base();
+    --font-size: var(--k-font-base);
+    --line-height: var(--k-font-base-line);
     user-select: none;
     height: 100%;
     display: inline-flex;
@@ -378,7 +380,8 @@
     }    
 
     .k-tag__content {
-      .text-sm();
+      --font-size: var(--k-font-sm);
+      --line-height: var(--k-font-sm-line);
     }
     .k-icon.k-tag__close {
       margin-left: 0.125rem;
@@ -394,7 +397,8 @@
     }
 
     .k-tag__content {
-      .text-lg();
+      --font-size: var(--k-font-lg);
+      --line-height: var(--k-font-lg-line);
     }
     .k-icon.k-tag__close {
       //el

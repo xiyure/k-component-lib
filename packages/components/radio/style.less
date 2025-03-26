@@ -2,8 +2,8 @@
 @import '../../style/general.less';
 
 .k-radio.el-radio {
-  // 所有样式设置为unset
-  .text-base();
+  --font-size: var(--k-font-base);
+  --line-height: var(--k-font-base-line);
   // size
   --radio-ball-size: var(--k-theme-radio__ball-size--base);
   // text
@@ -60,6 +60,9 @@
 
   cursor: pointer;
 
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+
   // 隐藏原生radio
   input[type='radio'] {
     display: none;
@@ -95,7 +98,8 @@
     background-color: var(--radio__inner__ball-color--normal);
   }
   .el-radio__label {
-    .text-base();
+    --font-size: var(--k-font-base);
+    --line-height: var(--k-font-base-line);
     user-select: none;
     padding-left: 0; // 覆盖 el 样式
     transition: all 0.2s;
@@ -104,7 +108,8 @@
   // size
   &.k-radio--sm {
     --radio-ball-size: var(--k-theme-radio__ball-size--sm);
-    .text-sm();
+    --font-size: var(--k-font-base);
+    --line-height: var(--k-font-base-line);
     height: var(--k-theme-radio-size-height--sm);
     gap: var(--k-theme-radio-size-gap--sm);
     .el-radio__inner {
@@ -112,12 +117,14 @@
       height: var(--k-theme-radio__inner-size--sm);
     }
     .el-radio__label {
-      .text-sm();
+      --font-size: var(--k-font-sm);
+      --line-height: var(--k-font-sm-line);
     }
   }
   &.k-radio--lg {
     --radio-ball-size: var(--k-theme-radio__ball-size--lg);
-    .text-lg();
+    --font-size: var(--k-font-lg);
+    --line-height: var(--k-font-lg-line);
     height: var(--k-theme-radio-size-height--lg);
     gap: var(--k-theme-radio-size-gap--lg);
     .el-radio__inner {
@@ -125,7 +132,8 @@
       height: var(--k-theme-radio__inner-size--lg);
     }
     .el-radio__label {
-      .text-lg();
+      --font-size: var(--k-font-lg);
+      --line-height: var(--k-font-lg-line);
     }
   }
   &:hover {
@@ -196,6 +204,10 @@
 
 // 单选组
 .k-radio-group {
+  --font-size: var(--k-font-base);
+  --line-height: var(--k-font-base-line);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
   width: fit-content;
   gap: calc(var(--k-theme-radio-size-gap--base) * 2);
 
@@ -386,7 +398,8 @@
         height: var(--k-theme-radio-size-height--sm);
         padding: var(--k-theme-radio__button-size-padding--sm);
         .el-radio__label {
-          .text-sm();
+          --font-size: var(--k-font-sm);
+          --line-height: var(--k-font-sm-line);
         }
       }
     }
@@ -406,7 +419,8 @@
         border-bottom-right-radius: var(--k-theme-radio__button-rounded--sm);
       }
       .el-radio__label {
-        .text-sm();
+        --font-size: var(--k-font-sm);
+        --line-height: var(--k-font-sm-line);
       }
     }
     &.k-radio-group--column {
@@ -431,7 +445,8 @@
         height: var(--k-theme-radio-size-height--lg);
         padding: var(--k-theme-radio__button-size-padding--lg);
         .el-radio__label {
-          .text-lg();
+          --font-size: var(--k-font-lg);
+          --line-height: var(--k-font-lg-line);
         }
       }
     }
@@ -451,7 +466,8 @@
         border-bottom-right-radius: var(--k-theme-radio__button-rounded--lg);
       }
       .el-radio__label {
-        .text-lg();
+        --font-size: var(--k-font-lg);
+        --line-height: var(--k-font-lg-line);
       }
     }
     &.k-radio-group--column {
@@ -468,39 +484,4 @@
       }
     }
   }
-
-  // --k-theme-button-size-padding--base
-
-  // group sm
-  // &.k-radio-group--sm {
-  //   .k-radio.el-radio {
-  //     --radio-radius: var(--k-rounded-sm);
-  //     --radio-size: 0.75rem;
-  //     --radio-radius: var(--k-rounded-sm);
-  //     .text-sm();
-  //     height: var(--radio-height-sm);
-  //     gap: 0;
-  //     padding: 0.25rem 0.75rem;
-  //   }
-  //   .k-radio:not(.is-button) {
-  //     --radio-size: 0.75rem;
-  //     .text-sm();
-  //     gap: 0.25rem;
-  //     padding: 0.25rem 0;
-  //   }
-  //   .k-radio.is-button {
-  //     padding: 0.25rem 0.75rem;
-  //   }
-  // }
-  // &.k-radio-group--sm.k-radio-group--button {
-  //   .k-radio.el-radio {
-  //     --radio-radius: var(--k-rounded-sm);
-  //     --radio-size: 0.75rem;
-  //     --radio-radius: var(--k-rounded-sm);
-  //     .text-sm();
-  //     gap: 0;
-  //     padding: 0.25rem 0.75rem;
-  //     height: var(--radio-height-sm);
-  //   }
-  // }
 }

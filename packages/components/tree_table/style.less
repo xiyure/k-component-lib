@@ -3,6 +3,10 @@
 @import '../../style/global.less';
 
 .k-tree-table {
+  --font-size: var(--k-font-base);
+  --line-height: var(--k-font-base-line);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
   .k-tree-table__header-pure {
     width: 100%;
     margin-bottom: 0.25rem;
@@ -22,7 +26,8 @@
     margin-bottom: 0.25rem;
 
     .k-table-info {
-      .text-sm();
+      --font-size: var(--k-font-sm);
+      --line-height: var(--k-font-sm-line);
       color: var(--k-gray-400);
       display: flex;
       flex: 1;
