@@ -1,0 +1,161 @@
+.k-alert {
+  --k-alert-padding: 8px 16px;
+  --k-alert-border-radius-base: var(--k-border-radius-base);
+  --k-alert-title-font-size: 14px;
+  --k-alert-title-with-description-font-size: 16px;
+  --k-alert-description-font-size: 14px;
+  --k-alert-close-font-size: 16px;
+  --k-alert-close-customed-font-size: 14px;
+  --k-alert-icon-size: 16px;
+  --k-alert-icon-large-size: 28px;
+  align-items: center;
+  background-color: var(--k-color-white);
+  border-radius: var(--k-alert-border-radius-base);
+  box-sizing: border-box;
+  display: flex;
+  margin: 0;
+  opacity: 1;
+  overflow: hidden;
+  padding: var(--k-alert-padding);
+  position: relative;
+  transition: opacity var(--k-transition-duration-fast);
+  width: 100%
+}
+
+.k-alert.is-light .k-alert__close-btn {
+  color: var(--k-text-color-placeholder)
+}
+
+.k-alert.is-dark .k-alert__close-btn,
+.k-alert.is-dark .k-alert__description {
+  color: var(--k-color-white)
+}
+
+.k-alert.is-center {
+  justify-content: center
+}
+
+.k-alert--success {
+  --k-alert-bg-color: var(--k-color-success-light-9)
+}
+
+.k-alert--success.is-light {
+  background-color: var(--k-alert-bg-color)
+}
+
+.k-alert--success.is-light,
+.k-alert--success.is-light .k-alert__description {
+  color: var(--k-color-success)
+}
+
+.k-alert--success.is-dark {
+  background-color: var(--k-color-success);
+  color: var(--k-color-white)
+}
+
+.k-alert--info {
+  --k-alert-bg-color: var(--k-color-info-light-9)
+}
+
+.k-alert--info.is-light {
+  background-color: var(--k-alert-bg-color)
+}
+
+.k-alert--info.is-light,
+.k-alert--info.is-light .k-alert__description {
+  color: var(--k-color-info)
+}
+
+.k-alert--info.is-dark {
+  background-color: var(--k-color-info);
+  color: var(--k-color-white)
+}
+
+.k-alert--warning {
+  --k-alert-bg-color: var(--k-color-warning-light-9)
+}
+
+.k-alert--warning.is-light {
+  background-color: var(--k-alert-bg-color)
+}
+
+.k-alert--warning.is-light,
+.k-alert--warning.is-light .k-alert__description {
+  color: var(--k-color-warning)
+}
+
+.k-alert--warning.is-dark {
+  background-color: var(--k-color-warning);
+  color: var(--k-color-white)
+}
+
+.k-alert--error {
+  --k-alert-bg-color: var(--k-color-error-light-9)
+}
+
+.k-alert--error.is-light {
+  background-color: var(--k-alert-bg-color)
+}
+
+.k-alert--error.is-light,
+.k-alert--error.is-light .k-alert__description {
+  color: var(--k-color-error)
+}
+
+.k-alert--error.is-dark {
+  background-color: var(--k-color-error);
+  color: var(--k-color-white)
+}
+
+.k-alert__content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px
+}
+
+.k-alert .k-alert__icon {
+  font-size: var(--k-alert-icon-size);
+  margin-right: 8px;
+  width: var(--k-alert-icon-size)
+}
+
+.k-alert .k-alert__icon.is-big {
+  font-size: var(--k-alert-icon-large-size);
+  margin-right: 12px;
+  width: var(--k-alert-icon-large-size)
+}
+
+.k-alert__title {
+  font-size: var(--k-alert-title-font-size);
+  line-height: 24px
+}
+
+.k-alert__title.with-description {
+  font-size: var(--k-alert-title-with-description-font-size)
+}
+
+.k-alert .k-alert__description {
+  font-size: var(--k-alert-description-font-size);
+  margin: 0
+}
+
+.k-alert .k-alert__close-btn {
+  cursor: pointer;
+  font-size: var(--k-alert-close-font-size);
+  opacity: 1;
+  position: absolute;
+  right: 16px;
+  top: 12px
+}
+
+.k-alert .k-alert__close-btn.is-customed {
+  font-size: var(--k-alert-close-customed-font-size);
+  font-style: normal;
+  line-height: 24px;
+  top: 8px
+}
+
+.k-alert-fade-enter-from,
+.k-alert-fade-leave-active {
+  opacity: 0
+}

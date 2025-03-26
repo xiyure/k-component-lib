@@ -1,6 +1,12 @@
 @import './base.css';
 @import './display.css';
 @import './el-affix.css';
+@import './el-alert.css';
+@import './el-anchor.css';
+@import './el-anchor-link.css';
+@import './el-aside.css';
+@import './el-autocomplete.css';
+@import './el-avatar.css';
 @import './el-button-group.css';
 @import './el-check-tag.css';
 @import './el-popper.css';

@@ -1,0 +1,73 @@
+.k-anchor {
+  --k-anchor-bg-color: var(--k-bg-color);
+  --k-anchor-padding-indent: 14px;
+  --k-anchor-line-height: 22px;
+  --k-anchor-font-size: 12px;
+  --k-anchor-color: var(--k-text-color-secondary);
+  --k-anchor-active-color: var(--k-color-primary);
+  --k-anchor-marker-bg-color: var(--k-color-primary);
+  background-color: var(--k-anchor-bg-color);
+  position: relative;
+}
+.k-anchor__marker {
+  background-color: var(--k-anchor-marker-bg-color);
+  border-radius: 4px;
+  opacity: 0;
+  position: absolute;
+  z-index: 0;
+}
+.k-anchor.k-anchor--vertical .k-anchor__marker {
+  height: 14px;
+  left: 0;
+  top: 8px;
+  transition:
+    top 0.25s ease-in-out,
+    opacity 0.25s;
+  width: 4px;
+}
+.k-anchor.k-anchor--vertical .k-anchor__list {
+  padding-left: var(--k-anchor-padding-indent);
+}
+.k-anchor.k-anchor--vertical.k-anchor--underline:before {
+  background-color: rgba(5, 5, 5, 0.06);
+  content: '';
+  height: 100%;
+  left: 0;
+  position: absolute;
+  width: 2px;
+}
+.k-anchor.k-anchor--vertical.k-anchor--underline .k-anchor__marker {
+  border-radius: unset;
+  width: 2px;
+}
+.k-anchor.k-anchor--horizontal .k-anchor__marker {
+  bottom: 0;
+  height: 2px;
+  transition:
+    left 0.25s ease-in-out,
+    opacity 0.25s,
+    width 0.25s;
+  width: 20px;
+}
+.k-anchor.k-anchor--horizontal .k-anchor__list {
+  display: flex;
+  padding-bottom: 4px;
+}
+.k-anchor.k-anchor--horizontal .k-anchor__list .k-anchor__item {
+  padding-left: 16px;
+}
+.k-anchor.k-anchor--horizontal .k-anchor__list .k-anchor__item:first-child {
+  padding-left: 0;
+}
+.k-anchor.k-anchor--horizontal.k-anchor--underline:before {
+  background-color: rgba(5, 5, 5, 0.06);
+  bottom: 0;
+  content: '';
+  height: 2px;
+  position: absolute;
+  width: 100%;
+}
+.k-anchor.k-anchor--horizontal.k-anchor--underline .k-anchor__marker {
+  border-radius: unset;
+  height: 2px;
+}

@@ -1,0 +1,42 @@
+.k-avatar {
+  --k-avatar-text-color: var(--k-color-white);
+  --k-avatar-bg-color: var(--k-text-color-disabled);
+  --k-avatar-text-size: 14px;
+  --k-avatar-icon-size: 18px;
+  --k-avatar-border-radius: var(--k-border-radius-base);
+  --k-avatar-size-large: 56px;
+  --k-avatar-size-small: 24px;
+  --k-avatar-size: 40px;
+  align-items: center;
+  background: var(--k-avatar-bg-color);
+  box-sizing: border-box;
+  color: var(--k-avatar-text-color);
+  display: inline-flex;
+  font-size: var(--k-avatar-text-size);
+  height: var(--k-avatar-size);
+  justify-content: center;
+  outline: none;
+  overflow: hidden;
+  text-align: center;
+  width: var(--k-avatar-size);
+}
+.k-avatar > img {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+.k-avatar--circle {
+  border-radius: 50%;
+}
+.k-avatar--square {
+  border-radius: var(--k-avatar-border-radius);
+}
+.k-avatar--icon {
+  font-size: var(--k-avatar-icon-size);
+}
+.k-avatar--small {
+  --k-avatar-size: 24px;
+}
+.k-avatar--large {
+  --k-avatar-size: 56px;
+}

@@ -1,11 +1,9 @@
 <template>
-  <el-config-provider namespace="k">
-    <el-badge ref="badgeRef" v-bind="$attrs">
-      <template v-for="(_, name) in $slots" :key="name" #[name]="data">
-        <slot :name="name" v-bind="data"></slot>
-      </template>
-    </el-badge>
-  </el-config-provider>
+  <el-badge ref="badgeRef" v-bind="$attrs">
+    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+      <slot :name="name" v-bind="data"></slot>
+    </template>
+  </el-badge>
 </template>
 
 <script setup lang="ts">

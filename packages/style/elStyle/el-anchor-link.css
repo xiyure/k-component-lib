@@ -1,0 +1,29 @@
+.k-anchor__item {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.k-anchor__link {
+  cursor: pointer;
+  font-size: var(--k-anchor-font-size);
+  line-height: var(--k-anchor-line-height);
+  max-width: 100%;
+  outline: none;
+  overflow: hidden;
+  padding: 4px 0;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  transition: color var(--k-transition-duration);
+  white-space: nowrap;
+}
+.k-anchor__link,
+.k-anchor__link:focus,
+.k-anchor__link:hover {
+  color: var(--k-anchor-color);
+}
+.k-anchor__link.is-active {
+  color: var(--k-anchor-active-color);
+}
+.k-anchor .k-anchor__list .k-anchor__item a {
+  display: inline-block;
+}
