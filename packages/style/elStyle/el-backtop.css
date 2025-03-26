@@ -1,0 +1,24 @@
+.k-backtop {
+  --k-backtop-bg-color: var(--k-bg-color-overlay);
+  --k-backtop-text-color: var(--k-color-primary);
+  --k-backtop-hover-bg-color: var(--k-border-color-extra-light);
+  align-items: center;
+  background-color: var(--k-backtop-bg-color);
+  border-radius: 50%;
+  box-shadow: var(--k-box-shadow-lighter);
+  color: var(--k-backtop-text-color);
+  cursor: pointer;
+  display: flex;
+  font-size: 20px;
+  height: 40px;
+  justify-content: center;
+  position: fixed;
+  width: 40px;
+  z-index: 5;
+}
+.k-backtop:hover {
+  background-color: var(--k-backtop-hover-bg-color);
+}
+.k-backtop__icon {
+  font-size: 20px;
+}

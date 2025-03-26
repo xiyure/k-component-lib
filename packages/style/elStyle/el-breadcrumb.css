@@ -1,0 +1,55 @@
+.k-breadcrumb {
+  font-size: 14px;
+  line-height: 1;
+}
+.k-breadcrumb:after,
+.k-breadcrumb:before {
+  content: '';
+  display: table;
+}
+.k-breadcrumb:after {
+  clear: both;
+}
+.k-breadcrumb__separator {
+  color: var(--k-text-color-placeholder);
+  font-weight: bold;
+  margin: 0 9px;
+}
+.k-breadcrumb__separator.k-icon {
+  font-weight: normal;
+  margin: 0 6px;
+}
+.k-breadcrumb__separator.k-icon svg {
+  vertical-align: middle;
+}
+.k-breadcrumb__item {
+  align-items: center;
+  display: inline-flex;
+  float: left;
+}
+.k-breadcrumb__inner {
+  color: var(--k-text-color-regular);
+}
+.k-breadcrumb__inner a,
+.k-breadcrumb__inner.is-link {
+  color: var(--k-text-color-primary);
+  font-weight: bold;
+  text-decoration: none;
+  transition: var(--k-transition-color);
+}
+.k-breadcrumb__inner a:hover,
+.k-breadcrumb__inner.is-link:hover {
+  color: var(--k-color-primary);
+  cursor: pointer;
+}
+.k-breadcrumb__item:last-child .k-breadcrumb__inner,
+.k-breadcrumb__item:last-child .k-breadcrumb__inner a,
+.k-breadcrumb__item:last-child .k-breadcrumb__inner a:hover,
+.k-breadcrumb__item:last-child .k-breadcrumb__inner:hover {
+  color: var(--k-text-color-regular);
+  cursor: text;
+  font-weight: normal;
+}
+.k-breadcrumb__item:last-child .k-breadcrumb__separator {
+  display: none;
+}
