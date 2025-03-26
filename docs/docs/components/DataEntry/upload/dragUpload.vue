@@ -15,5 +15,5 @@
 </template>
 
 <script setup lang="ts">
-import { IconRPAWebAutomationUpLoadFileColor } from 'ksw-vue-icon/KingAutometa'
+import { IconRPAWebAutomationUpLoadFileColor } from 'ksw-vue-icon'
 </script>

@@ -51,6 +51,12 @@ title: TreeTransfer 树形穿梭框
 
 <demo path="./heightTreeTransfer" />
 
+## 自适应高度
+
+设置`adaptive`属性令指定内容区高度自适应。
+
+<demo path="./adaptiveTreeTransfer" />
+
 ## 分页模式
 
 设置`showPage`为`true`可以开启分页模式, 并且还可以设置成`left`或`right`指定分页单独显示在左侧或右侧。
