@@ -7,6 +7,11 @@ date: 2021-03-12
 
 [Ksw vue icon](https://sengoku-f.github.io/KSW-vue-icon/) 图标库是一个通过技术驱动矢量图标样式的图标库产品，可以实现根据单一SVG源文件导出为 Vue3 组件代码，打通 Design to Code 链路，实现产品、研发、设计师一站式对接，使用更高效。
 
+::: danger ⚠️ 注意
+默认仅导入 `base` 基础图标库, 如发现无法使用某些图标请传入项目名称来使用项目图标。
+`2.5.0` 版本后大部分项目图标已迁移至 `base`
+:::
+
 ## 使用方法
 
 ### 安装
@@ -62,7 +67,7 @@ import { KswIcon } from 'ksw-vue-icon'
 Vue.use(KswIcon)
 ```
 
-### 项目用法
+## 项目用法 <k-tag type="primary" round><IconArrowUp />2.3.0</k-tag>
 
 ::: tip
 自 `2.3.0` 版本起图标库支持 `Vue.use` 传入项目名称来使用项目图标
@@ -73,15 +78,21 @@ Vue.use(KswIcon)
 例如下方的示例使用广发 `Guangfa` 来扩充基本图标库
 
 ```js
-Vue.use(KswIcon, { projectName: "Guangfa" });
+Vue.use(KswIcon, { projectName: 'Guangfa' });
 ```
 
-| projectName  | 备注                     | 
-| --------- | -------------------------- |
-| Base      |  基本图标库       |
+按需引用项目图标只需要在 `ksw-vue-icon` 后添加上 `projectName`，例如:
+
+```js
+import { IconName } from 'ksw-vue-icon/Guangfa';
+```
+
+| projectName | 备注       |
+| ----------- | ---------- |
+| Base        | 基本图标库 |
 | Guangfa     | 广发图标库 |
 
-### 别名图标 <k-tag type="primary" round>^2.4.0</k-tag>
+### 别名图标 <k-tag type="primary" round><IconArrowUp />2.4.0</k-tag>
 
 ::: tip
 自 `2.4.0` 版本起图标库支持为图标设置别名
@@ -91,11 +102,7 @@ Vue.use(KswIcon, { projectName: "Guangfa" });
 
 ```json
 {
-  "alias": [
-    "alias-1",
-    "alias-2",
-    "alias-3"
-  ],
+  "alias": ["alias-1", "alias-2", "alias-3"]
 }
 ```
 
@@ -106,8 +113,8 @@ Vue.use(KswIcon, { projectName: "Guangfa" });
 ```css
 .ksw-icon {
   .dark & :deep(svg path) {
-      filter: hue-rotate(170deg) invert(100%) contrast(150%) saturate(200%);
-    }
+    filter: hue-rotate(170deg) invert(100%) contrast(150%) saturate(200%);
+  }
 }
 ```
 
@@ -210,7 +217,6 @@ import {
 | **color**  | 图标的颜色，默认为当前颜色 | `string` &#124; `string[]` | `currentColor` |
 | **rotate** | 图标旋转角度（IE9 无效）   | `number`                   | `-`            |
 | **spin**   | 给图标加旋转动画           | `boolean`                  | `false`        |
-
 
 <style scoped>
 h3{
