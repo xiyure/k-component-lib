@@ -1,5 +1,3 @@
-@import '../../variable.css';
-
 body.KingAutometa {
   --k-theme-test: purple;
   --theme-name: 'Hello, KingAutometa!';

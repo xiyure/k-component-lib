@@ -1,0 +1,53 @@
+.k-carousel__item {
+  display: inline-block;
+  height: 100%;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  width: 100%
+}
+
+.k-carousel__item,
+.k-carousel__item.is-active {
+  z-index: calc(var(--k-index-normal) - 1)
+}
+
+.k-carousel__item--card,
+.k-carousel__item.is-animating {
+  transition: transform .4s ease-in-out
+}
+
+.k-carousel__item--card {
+  width: 50%
+}
+
+.k-carousel__item--card.is-in-stage {
+  cursor: pointer;
+  z-index: var(--k-index-normal)
+}
+
+.k-carousel__item--card.is-in-stage.is-hover .k-carousel__mask,
+.k-carousel__item--card.is-in-stage:hover .k-carousel__mask {
+  opacity: .12
+}
+
+.k-carousel__item--card.is-active {
+  z-index: calc(var(--k-index-normal) + 1)
+}
+
+.k-carousel__item--card-vertical {
+  height: 50%;
+  width: 100%
+}
+
+.k-carousel__mask {
+  background-color: var(--k-color-white);
+  height: 100%;
+  left: 0;
+  opacity: .24;
+  position: absolute;
+  top: 0;
+  transition: var(--k-transition-duration-fast);
+  width: 100%
+}

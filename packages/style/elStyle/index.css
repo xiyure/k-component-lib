@@ -7,7 +7,14 @@
 @import './el-aside.css';
 @import './el-autocomplete.css';
 @import './el-avatar.css';
+@import './el-backtop.css';
+@import './el-breadcrumb-item.css';
+@import './el-breadcrumb.css';
 @import './el-button-group.css';
+@import './el-card.css';
+@import './el-carousel-item.css';
+@import './el-carousel.css';
+@import './el-cascader-panel.css';
 @import './el-check-tag.css';
 @import './el-popper.css';
 @import './el-scrollbar.css';
