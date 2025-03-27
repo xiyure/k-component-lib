@@ -424,6 +424,7 @@ const {
   transferHide,
   transferShow,
   sortTableHeader,
+  updateColVisible,
   _transferMethods
 } = useHeaderControl(tableInstance, tableTransferRef, props, columns, handleCustomRender);
 
@@ -555,17 +556,6 @@ function handleCustomRender() {
       });
     }
   }
-}
-
-// 更新列可见状态
-function updateColVisible(ids: string[]) {
-  flatColumns.value.forEach((col: Column) => {
-    if (ids.includes(col.field as string)) {
-      col.visible = true;
-    } else {
-      col.visible = false;
-    }
-  });
 }
 
 // 隐藏列
