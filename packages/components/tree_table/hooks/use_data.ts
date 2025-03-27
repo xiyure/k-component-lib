@@ -1,7 +1,7 @@
 import { ref, watch, computed, Ref } from 'vue';
 import { VxeTableInstance } from 'vxe-table';
 import { CN_DICT, TONE_MARKS } from '../../../constant';
-import { DEFAULT_PAGE_CONFIG} from '../const';
+import { DEFAULT_PAGE_CONFIG } from '../const';
 import { getAllCombinations, sortFunc, convertToMap } from '../../../utils';
 import { TreeTableProps, RowData, Column, TableCacheData } from '../type';
 
@@ -18,10 +18,10 @@ export function useData(
   const tableCacheData: TableCacheData = {
     treeDataMap: new Map(), // 缓存搜索过程中遍历到的节点数据
     tableDataMap: new Map() // 缓存每个节点的子节点数据
-  }
+  };
 
   // 分页配置
-const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
+  const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
   // 表格数据
   const visibleData = computed(() => filterTableData());
   // 可见面板数据
@@ -50,7 +50,7 @@ const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
         {
           ...paginationConfig.value,
           size: props.useAntStyle ? 'sm' : undefined,
-          layout: props.useAntStyle ? 'total, prev, pager, next, sizes' : undefined
+          layout: props.useAntStyle ? 'total, ->, prev, pager, next, sizes' : undefined
         },
         props.paginationConfig || {}
       );
@@ -62,8 +62,9 @@ const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
   function filterTableData() {
     const filterData = currentData.value;
     tableCacheData.tableDataMap = convertToMap(
-      fullData.value, props.rowConfig?.keyField?? 'id',
-      props.treeConfig?.parentField?? 'pid'
+      fullData.value,
+      props.rowConfig?.keyField ?? 'id',
+      props.treeConfig?.parentField ?? 'pid'
     );
     const { strict, searchMethod, ignoreCase = false, searchColumns } = props.searchConfig ?? {};
     const searchKey = searchKeyWord.value.trim().replace(/\\/g, '\\\\');
@@ -78,14 +79,16 @@ const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
       return searchMethod(searchKey, filterData);
     }
     const visibleColumns = columns.value.filter((col: Column) => col.visible !== false);
-    const fieldList = Array.isArray(searchColumns) ? searchColumns : visibleColumns
-      .map((col: Column) => {
-        if (col.field && !col.type) {
-          return col.field;
-        }
-        return null;
-      })
-      .filter((field: string | null) => field !== null);
+    const fieldList = Array.isArray(searchColumns)
+      ? searchColumns
+      : visibleColumns
+          .map((col: Column) => {
+            if (col.field && !col.type) {
+              return col.field;
+            }
+            return null;
+          })
+          .filter((field: string | null) => field !== null);
     let tableData = filterData.filter((dataItem: any) =>
       fieldList.some((field: string) => {
         const cellLabel = $table.value.getCellLabel(dataItem, field) ?? dataItem[field];
@@ -94,7 +97,10 @@ const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
         }
         const compareLabel = ignoreCase ? String(cellLabel).toLowerCase() : String(cellLabel);
         const newSearchKey = ignoreCase ? searchKey.toLowerCase() : searchKey;
-        return compareLabel.indexOf(newSearchKey) !== -1 || compareByPinYin(field, compareLabel, newSearchKey, ignoreCase);
+        return (
+          compareLabel.indexOf(newSearchKey) !== -1 ||
+          compareByPinYin(field, compareLabel, newSearchKey, ignoreCase)
+        );
       })
     );
     // 当表格数据为树时，筛选后的数据应展示完整的子树
@@ -108,7 +114,12 @@ const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
     return tableData;
   }
   // 支持拼音搜索
-  function compareByPinYin(field: string, compareStr: string, searchKey: string, ignoreCase = false) {
+  function compareByPinYin(
+    field: string,
+    compareStr: string,
+    searchKey: string,
+    ignoreCase = false
+  ) {
     const supportCols = props.searchConfig?.supportPinYin ?? false;
     if (supportCols !== true && !(Array.isArray(supportCols) && supportCols.includes(field))) {
       return false;
@@ -117,8 +128,10 @@ const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
     const result = [];
     const reg = new RegExp(`${Object.keys(TONE_MARKS).join('|')}`, 'g');
     for (let i = 0; i < compareStr.length; i++) {
-      const p = CN_DICT[compareStr[i] as keyof typeof CN_DICT]
-        ?.replace(reg, (match) => TONE_MARKS[match as keyof typeof TONE_MARKS]);
+      const p = CN_DICT[compareStr[i] as keyof typeof CN_DICT]?.replace(
+        reg,
+        (match) => TONE_MARKS[match as keyof typeof TONE_MARKS]
+      );
       if (!p) {
         pinyin += compareStr[i];
         continue;
@@ -161,9 +174,7 @@ const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
     }
     addChildNodes(leafData);
   }
-  function addChildNodes(
-    leafData: RowData[]
-  ) {
+  function addChildNodes(leafData: RowData[]) {
     if (!leafData || !leafData.length) {
       return;
     }
@@ -240,5 +251,5 @@ const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
     changePageSize,
     changeCurrentPage,
     handleTreeData
-  }
+  };
 }
