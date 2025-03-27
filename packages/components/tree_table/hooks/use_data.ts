@@ -78,7 +78,7 @@ const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
       return searchMethod(searchKey, filterData);
     }
     const visibleColumns = columns.value.filter((col: Column) => col.visible !== false);
-    const fieldList = visibleColumns
+    const fieldList = Array.isArray(searchColumns) ? searchColumns : visibleColumns
       .map((col: Column) => {
         if (col.field && !col.type) {
           return col.field;
@@ -88,10 +88,7 @@ const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
       .filter((field: string | null) => field !== null);
     let tableData = filterData.filter((dataItem: any) =>
       fieldList.some((field: string) => {
-        if (Array.isArray(searchColumns) && !searchColumns.includes(field)) {
-          return false;
-        }
-        const cellLabel = $table.value.getCellLabel(dataItem, field) ?? '';
+        const cellLabel = $table.value.getCellLabel(dataItem, field) ?? dataItem[field];
         if (strict === true) {
           return cellLabel.toString() === searchKey;
         }

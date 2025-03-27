@@ -1,4 +1,4 @@
-import { TreeConfig } from '../tree_table';
+import { TreeConfig, SearchConfig } from '../tree_table';
 import { CompSize } from "../../utils";
 
 export interface ScriptInputProps {
@@ -39,6 +39,7 @@ export interface ScriptInputProps {
   max?: number;
   min?: number;
   tagClosable?: boolean;
+  searchConfig?: SearchConfig;
 }
 
 export type ScriptOptions = {

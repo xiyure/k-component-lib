@@ -133,6 +133,7 @@
               }
             "
             :tree-config="treeConfig"
+            :search-config="searchConfig"
             highlight-current
             adaptive
             @cell-click="cellClick"
