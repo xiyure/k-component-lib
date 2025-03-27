@@ -102,8 +102,8 @@ watch(
   (newVal) => {
     if (props.modelValue !== undefined && props.modelValue !== newVal) {
       emits('update:modelValue', newVal);
-      scrollToActiveTab();
     }
+    scrollToActiveTab();
   }
 );
 

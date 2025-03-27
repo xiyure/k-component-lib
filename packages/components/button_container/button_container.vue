@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, watch, inject, nextTick, computed, provide } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch, inject, computed, provide } from 'vue';
 import { ButtonContainerProps } from './type';
 import Dropdown from './dropdown_menu';
 import { flattenChildren, isValidElement, camelize, genRandomStr, getElementAll, isElementInContainerView } from '../../utils';
