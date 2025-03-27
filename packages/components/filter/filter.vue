@@ -423,18 +423,18 @@ function filter(data?: any[]) {
 function getConditionInfo() {
   const disabledLogicTypes = ['empty', 'nonEmpty'];
   const conditionList = filterData.value
-    .filter(
-      (item) =>
-        item.key && item.logic && (isValid(item.value) || disabledLogicTypes.includes(item.logic))
-    )
-    .map((item) => ({
-      title: item.title.join(' - '),
-      logic: t?.(item.logic),
-      key: item.key,
-      showValue: item.showValue,
-      value: item.value,
-      handler: item.handler
-    }));
+  .filter(
+    (item) =>
+      item.key && item.logic && (isValid(item.value) || disabledLogicTypes.includes(item.logic))
+  )
+  .map((item) => ({
+    title: item.title.join(' - '),
+    logic: item.logic,
+    key: item.key,
+    showValue: item.showValue,
+    value: item.value,
+    handler: item.handler
+  }));
   return {
     conditionList,
     filterRule: filterRule.value
