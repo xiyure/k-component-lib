@@ -350,7 +350,6 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
   hasSpace: false
 });
 
-const slots = defineSlots();
 const { t } = useLocale();
 
 const emits = defineEmits([

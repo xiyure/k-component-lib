@@ -224,28 +224,28 @@
     <template v-if="isExpandColumn" #default>
       <span>-</span>
     </template>
-    <template v-else-if="slots.default && !isExpandColumn" #default="defaultSlotProps">
+    <template v-else-if="$slots.default && !isExpandColumn" #default="defaultSlotProps">
       <slot v-bind="defaultSlotProps"></slot>
     </template>
-    <template v-if="slots.footer" #footer="footerSlotProps">
+    <template v-if="$slots.footer" #footer="footerSlotProps">
       <slot name="footer" v-bind="footerSlotProps"></slot>
     </template>
-    <template v-if="slots.radio" #radio="radioSlotProps">
+    <template v-if="$slots.radio" #radio="radioSlotProps">
       <slot name="radio" v-bind="radioSlotProps"></slot>
     </template>
-    <template v-if="slots.checkbox" #checkbox="checkboxSlotProps">
+    <template v-if="$slots.checkbox" #checkbox="checkboxSlotProps">
       <slot name="checkbox" v-bind="checkboxSlotProps"></slot>
     </template>
-    <template v-if="slots.title" #title="titleSlotProps">
+    <template v-if="$slots.title" #title="titleSlotProps">
       <slot name="title" v-bind="titleSlotProps"></slot>
     </template>
-    <template v-if="slots.edit" #edit="editSlotProps">
+    <template v-if="$slots.edit" #edit="editSlotProps">
       <slot name="edit" v-bind="editSlotProps"></slot>
     </template>
-    <template v-if="slots.valid" #valid="validSlotProps">
+    <template v-if="$slots.valid" #valid="validSlotProps">
       <slot name="valid" v-bind="validSlotProps"></slot>
     </template>
-    <template v-if="slots.content" #content="contentSlotProps">
+    <template v-if="$slots.content" #content="contentSlotProps">
       <slot name="content" v-bind="contentSlotProps"></slot>
     </template>
   </vxe-column>
@@ -307,7 +307,6 @@ const showColumnMenuParent = inject('showColumnMenu', false);
 const props = withDefaults(defineProps<TableColumnProps>(), {
   showColumnMenu: undefined
 });
-const slots = defineSlots();
 
 const popoverRef = ref();
 const isExpandColumn = ref(false);

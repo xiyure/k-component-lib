@@ -39,7 +39,7 @@ import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue';
 import { ElTabs } from 'element-plus';
 import { IconMore } from 'ksw-vue-icon';
 import TabDropdownMenu from './tab_dropdown_menu';
-import { getElement, getElementAll, getExposeProxy } from '../../utils';
+import { getElement, getElementAll, isElementInContainerView, getExposeProxy } from '../../utils';
 import { TabsProps, TabData } from './type';
 
 defineOptions({
@@ -132,16 +132,7 @@ function handleWheel(evt: WheelEvent) {
   setNavTranslate(translateDis);
   getHideTabs();
 }
-// 判断tab是否在可视区域
-function isElementInContainerView(elRect: DOMRect, navScrollRect: DOMRect) {
-  if (!elRect || !navScrollRect) {
-    return;
-  }
-  if (isHorizontal()) {
-    return elRect.left >= navScrollRect.left && elRect.right <= navScrollRect.right;
-  }
-  return elRect.top >= navScrollRect.top && elRect.bottom <= navScrollRect.bottom;
-}
+
 // 下拉列表选择tab时，滚动到可视区域
 function jumpToTab(item: TabData) {
   const name = item.name ?? '';
@@ -162,7 +153,7 @@ function getHideTabs() {
     const navScrollRect = navScroll.getBoundingClientRect();
     for (let _i = 0; _i < tabPaneDoms.length; _i++) {
       const elRect = tabPaneDoms[_i].getBoundingClientRect();
-      if (!isElementInContainerView(elRect, navScrollRect)) {
+      if (!isElementInContainerView(elRect, navScrollRect, isHorizontal() ? 'horizontal' :'vertical')) {
         res.push(_i);
       }
     }
@@ -228,7 +219,7 @@ function setNavTranslate(translate: number) {
 }
 // 判断tab栏是否水平排列
 function isHorizontal() {
-  return props.tabPosition === 'top' || props.tabPosition === 'bottom';
+  return Boolean(props.tabPosition === 'top' || props.tabPosition === 'bottom');
 }
 
 const instance: any = {};

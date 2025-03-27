@@ -62,7 +62,6 @@ defineOptions({
 
 const props = withDefaults(defineProps<KTableProps>(), {});
 
-const slots = defineSlots();
 const id = genRandomStr(8);
 // 事件管理
 const emitter = inject('_emitter') as any;

@@ -4,8 +4,8 @@
     :class="[
       'k-input',
       {
-        'k-input-has-prepend': slots.prepend,
-        'k-input-has-append': slots.append
+        'k-input-has-prepend': $slots.prepend,
+        'k-input-has-append': $slots.append
       }
     ]"
     v-bind="$attrs"
@@ -21,16 +21,16 @@
       }
     "
   >
-    <template v-if="slots.prepend" #prepend>
-      <div :class="slotClass(prependSlotType)">
+    <template v-if="$slots.prepend" #prepend>
+      <div :class="slotClass($slots.prepend)">
         <slot name="prepend"></slot>
       </div>
     </template>
     <template #prefix>
       <slot name="prefix"></slot>
     </template>
-    <template v-if="slots.append" #append>
-      <div :class="slotClass(appendSlotType)">
+    <template v-if="$slots.append" #append>
+      <div :class="slotClass($slots.append)">
         <slot name="append"></slot>
       </div>
     </template>
@@ -119,10 +119,10 @@ import {
   watch,
   computed,
   provide,
-  SlotsType,
   onMounted,
   onBeforeUnmount,
-  nextTick
+  nextTick,
+  VNode
 } from 'vue';
 import { ElInput, ElScrollbar } from 'element-plus';
 import { IconShow, IconHide, IconDown } from 'ksw-vue-icon';
@@ -156,12 +156,7 @@ const formatSize = useSize<InputProps>(props);
 const { t } = useLocale();
 
 const emits = defineEmits(['update:modelValue', 'input', 'change', 'popper-show', 'popper-hide']);
-const slots = defineSlots(); // 具名插槽
-const prependSlot = slots.prepend?.();
-const prependSlotType = prependSlot?.[0]?.type;
 
-const appendSlot = slots.append?.();
-const appendSlotType = appendSlot?.[0]?.type;
 const inputRef = ref();
 const isText = ref(false);
 const inputType = ref(props.type);
@@ -210,8 +205,12 @@ watch(() => popperVisible.value, (newValue) => {
   }
 })
 
-const slotClass = computed(() => (slot: SlotsType) => {
-  switch (typeof slot) {
+const slotClass = computed(() => (slot: (...args: any) => VNode[]) => {
+  if (typeof slot !== 'function') {
+    return '';
+  }
+  const slotType = slot()?.[0].type;
+  switch (typeof slotType) {
     case 'string':
       return 'k-input-slot--htmlTag';
     case 'object':

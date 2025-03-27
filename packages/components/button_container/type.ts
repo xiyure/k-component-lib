@@ -1,4 +1,5 @@
 import { Component } from 'vue';
+import { CompSize } from '../../utils';
 
 export interface ButtonContainerProps {
   trigger?: 'hover' | 'click' | 'contextMenu'
@@ -10,4 +11,5 @@ export interface ButtonContainerProps {
   popperClass?: string
   teleported?: boolean
   triggerIcon?: string | Component
+  size?: CompSize
 }

@@ -108,3 +108,14 @@ export const getFirstComponent = (
 
   return undefined;
 };
+
+// 判断元素是否在容器范围内
+export function isElementInContainerView(elRect: DOMRect | undefined, containerRect: DOMRect | undefined, direction: 'horizontal' |'vertical' = 'horizontal') {
+  if (!elRect || !containerRect) {
+    return;
+  }
+  if (direction === 'horizontal') {
+    return elRect.left >= containerRect.left && elRect.right <= containerRect.right;
+  }
+  return elRect.top >= containerRect.top && elRect.bottom <= containerRect.bottom;
+}
