@@ -181,14 +181,14 @@
     &.is-circle {
       padding: 5px;
       width: var(--k-button-size);
-    }    
+    }
   }
 
   // size
   &.k-button--sm {
     --k-button-rounded: var(--k-theme-button-size-rounded--sm);
     --font-size: var(--k-font-sm);
-    --line-height: var(--k-font-sm-line)
+    --line-height: var(--k-font-sm-line);
     padding: var(--k-theme-button-size-padding--sm);
     height: var(--k-theme-button-size-height--sm);
     gap: var(--k-theme-button-size-gap--sm);
@@ -207,7 +207,7 @@
   &.k-button--lg {
     --k-button-rounded: var(--k-theme-button-size-rounded--lg);
     --font-size: var(--k-font-lg);
-    --line-height: var(--k-font-lg-line)
+    --line-height: var(--k-font-lg-line);
     padding: var(--k-theme-button-size-padding--lg);
     height: var(--k-theme-button-size-height--lg);
     gap: var(--k-theme-button-size-gap--lg);
@@ -316,7 +316,7 @@
     &:hover:not(.is-disabled, .is-loading) {
       //el
       outline: none;
-      
+
       background: var(--k-button-bg-color-main--hover);
       color: var(--k-button-content-color-main--hover);
       border-color: var(--k-button-border-color-main--hover);
@@ -324,7 +324,7 @@
     &:active:not(.is-disabled, .is-loading) {
       //el
       outline: none;
-      
+
       background: var(--k-button-bg-color-main--active);
       color: var(--k-button-content-color-main--active);
       border-color: var(--k-button-border-color-main--active);
@@ -931,9 +931,129 @@
   }
 }
 .k-button-group {
+  //el
+  vertical-align: middle;
+
   display: inline-flex;
   --k-button-rounded: var(--k-theme-button-size-rounded--base);
   border-radius: var(--k-button-rounded);
+
+  //el
+  &:after,
+  &:before {
+    content: '';
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+  & > .k-button {
+    float: left;
+    position: relative;
+    & + .k-button {
+      margin-left: 0;
+    }
+    &:first-child {
+      border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
+    }
+    &:last-child {
+      border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
+    }
+    &:first-child:last-child {
+      border-bottom-left-radius: var(--k-border-radius-base);
+      border-bottom-right-radius: var(--k-border-radius-base);
+      border-top-left-radius: var(--k-border-radius-base);
+      border-top-right-radius: var(--k-border-radius-base);
+    }
+    &.is-round {
+      border-radius: var(--k-border-radius-round);
+    }
+    &.is-circle {
+      border-radius: 50%;
+    }
+    &:not(:first-child):not(:last-child) {
+      border-radius: 0;
+    }
+    &:not(:last-child) {
+      margin-right: -1px;
+    }
+    &.is-active,
+    &:active,
+    &:focus,
+    &:hover {
+      z-index: 1;
+    }
+  }
+  & > .k-dropdown {
+    > .k-button {
+      border-bottom-left-radius: 0;
+      border-left-color: var(--k-button-divide-border-color);
+      border-top-left-radius: 0;
+    }
+  }
+  & .k-button--primary {
+    &:first-child {
+      border-right-color: var(--k-button-divide-border-color);
+    }
+    &:last-child {
+      border-left-color: var(--k-button-divide-border-color);
+    }
+    &:not(:first-child):not(:last-child) {
+      border-left-color: var(--k-button-divide-border-color);
+      border-right-color: var(--k-button-divide-border-color);
+    }
+  }
+  & .k-button--success {
+    &:first-child {
+      border-right-color: var(--k-button-divide-border-color);
+    }
+    &:last-child {
+      border-left-color: var(--k-button-divide-border-color)
+    }
+    &:not(:first-child):not(:last-child) {
+      border-left-color: var(--k-button-divide-border-color);
+      border-right-color: var(--k-button-divide-border-color)
+    }
+  }
+  & .k-button--warning {
+    &:first-child {
+      border-right-color: var(--k-button-divide-border-color)
+    }
+    &:last-child {
+      border-left-color: var(--k-button-divide-border-color)
+    }
+    &:not(:first-child):not(:last-child) {
+      border-left-color: var(--k-button-divide-border-color);
+      border-right-color: var(--k-button-divide-border-color)
+    }
+  }
+  & .k-button--danger {
+    &:first-child {
+      border-right-color: var(--k-button-divide-border-color)
+    }
+    &:last-child {
+      border-left-color: var(--k-button-divide-border-color)
+    }
+    &:not(:first-child):not(:last-child) {
+      border-left-color: var(--k-button-divide-border-color);
+      border-right-color: var(--k-button-divide-border-color)
+    }
+  }
+  & .k-button--info {
+    &:first-child {
+      border-right-color: var(--k-button-divide-border-color)
+    }
+    &:last-child {
+      border-left-color: var(--k-button-divide-border-color)
+    }
+    &:not(:first-child):not(:last-child) {
+      border-left-color: var(--k-button-divide-border-color);
+      border-right-color: var(--k-button-divide-border-color)
+    }
+  }
+
   .k-button {
     border-radius: 0;
     margin: 0;

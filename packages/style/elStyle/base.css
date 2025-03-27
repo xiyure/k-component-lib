@@ -43,9 +43,9 @@
     var(--k-transition-function-ease-in-out-bezier);
   --k-transition-color: color var(--k-transition-duration-fast)
     var(--k-transition-function-ease-in-out-bezier);
-  --k-component-size-large: 40px;
-  --k-component-size: 32px;
-  --k-component-size-small: 24px;
+  --k-component-size-large: 2.5rem;
+  --k-component-size: 2rem;
+  --k-component-size-small: 1.5rem;
   color-scheme: light;
   --k-color-primary: #409eff;
   --k-color-primary-light-3: rgb(121.3, 187.1, 255);
