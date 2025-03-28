@@ -1,0 +1,31 @@
+.k-statistic {
+  --k-statistic-title-font-weight: 400;
+  --k-statistic-title-font-size: var(--k-font-size-extra-small);
+  --k-statistic-title-color: var(--k-text-color-regular);
+  --k-statistic-content-font-weight: 400;
+  --k-statistic-content-font-size: var(--k-font-size-extra-large);
+  --k-statistic-content-color: var(--k-text-color-primary);
+}
+.k-statistic__head {
+  color: var(--k-statistic-title-color);
+  font-size: var(--k-statistic-title-font-size);
+  font-weight: var(--k-statistic-title-font-weight);
+  line-height: 20px;
+  margin-bottom: 4px;
+}
+.k-statistic__content {
+  color: var(--k-statistic-content-color);
+  font-size: var(--k-statistic-content-font-size);
+  font-weight: var(--k-statistic-content-font-weight);
+}
+.k-statistic__value {
+  display: inline-block;
+}
+.k-statistic__prefix {
+  display: inline-block;
+  margin-right: 4px;
+}
+.k-statistic__suffix {
+  display: inline-block;
+  margin-left: 4px;
+}

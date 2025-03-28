@@ -1,0 +1,11 @@
+.k-container {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1;
+  flex-basis: auto;
+  flex-direction: row;
+  min-width: 0;
+}
+.k-container.is-vertical {
+  flex-direction: column;
+}
