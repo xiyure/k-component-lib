@@ -1,7 +1,6 @@
 <template>
   <el-date-picker
     ref="datePickerRef"
-    class="k-date-picker"
     v-bind="$attrs"
     :type="type"
     :shortcuts="customShortcuts"
