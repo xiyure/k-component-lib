@@ -1,20 +1,192 @@
-.el-collapse,
-.k-collapse,
-.el-collapse.k-collapse {
+//el
+.fade-in-linear-enter-active,
+.fade-in-linear-leave-active {
+  transition: var(--k-transition-fade-linear);
+}
+.fade-in-linear-enter-from,
+.fade-in-linear-leave-to {
+  opacity: 0;
+}
+.k-fade-in-linear-enter-active,
+.k-fade-in-linear-leave-active {
+  transition: var(--k-transition-fade-linear);
+}
+.k-fade-in-linear-enter-from,
+.k-fade-in-linear-leave-to {
+  opacity: 0;
+}
+.k-fade-in-enter-active,
+.k-fade-in-leave-active {
+  transition: all var(--k-transition-duration) cubic-bezier(0.55, 0, 0.1, 1);
+}
+.k-fade-in-enter-from,
+.k-fade-in-leave-active {
+  opacity: 0;
+}
+.k-zoom-in-center-enter-active,
+.k-zoom-in-center-leave-active {
+  transition: all var(--k-transition-duration) cubic-bezier(0.55, 0, 0.1, 1);
+}
+.k-zoom-in-center-enter-from,
+.k-zoom-in-center-leave-active {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.k-zoom-in-top-enter-active,
+.k-zoom-in-top-leave-active {
+  opacity: 1;
+  transform: scaleY(1);
+  transform-origin: center top;
+  transition: var(--k-transition-md-fade);
+}
+.k-zoom-in-top-enter-active[data-popper-placement^='top'],
+.k-zoom-in-top-leave-active[data-popper-placement^='top'] {
+  transform-origin: center bottom;
+}
+.k-zoom-in-top-enter-from,
+.k-zoom-in-top-leave-active {
+  opacity: 0;
+  transform: scaleY(0);
+}
+.k-zoom-in-bottom-enter-active,
+.k-zoom-in-bottom-leave-active {
+  opacity: 1;
+  transform: scaleY(1);
+  transform-origin: center bottom;
+  transition: var(--k-transition-md-fade);
+}
+.k-zoom-in-bottom-enter-from,
+.k-zoom-in-bottom-leave-active {
+  opacity: 0;
+  transform: scaleY(0);
+}
+.k-zoom-in-left-enter-active,
+.k-zoom-in-left-leave-active {
+  opacity: 1;
+  transform: scale(1);
+  transform-origin: top left;
+  transition: var(--k-transition-md-fade);
+}
+.k-zoom-in-left-enter-from,
+.k-zoom-in-left-leave-active {
+  opacity: 0;
+  transform: scale(0.45);
+}
+.collapse-transition {
+  transition:
+    var(--k-transition-duration) height ease-in-out,
+    var(--k-transition-duration) padding-top ease-in-out,
+    var(--k-transition-duration) padding-bottom ease-in-out;
+}
+.k-collapse-transition-enter-active,
+.k-collapse-transition-leave-active {
+  transition:
+    var(--k-transition-duration) max-height ease-in-out,
+    var(--k-transition-duration) padding-top ease-in-out,
+    var(--k-transition-duration) padding-bottom ease-in-out;
+}
+.horizontal-collapse-transition {
+  transition:
+    var(--k-transition-duration) width ease-in-out,
+    var(--k-transition-duration) padding-left ease-in-out,
+    var(--k-transition-duration) padding-right ease-in-out;
+}
+.k-list-enter-active,
+.k-list-leave-active {
+  transition: all 1s;
+}
+.k-list-enter-from,
+.k-list-leave-to {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+.k-list-leave-active {
+  position: absolute !important;
+}
+.k-opacity-transition {
+  transition: opacity var(--k-transition-duration) cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+
+
+
+.k-collapse {
+  //el
+  --k-collapse-border-color: var(--k-border-color-lighter);
+  --k-collapse-header-height: 48px;
+  --k-collapse-header-bg-color: var(--k-fill-color-blank);
+  --k-collapse-header-text-color: var(--k-text-color-primary);
+  --k-collapse-header-font-size: 13px;
+  --k-collapse-content-bg-color: var(--k-fill-color-blank);
+  --k-collapse-content-font-size: 13px;
+  --k-collapse-content-text-color: var(--k-text-color-primary);
+  border-bottom: 1px solid var(--k-collapse-border-color);
+  border-top: 1px solid var(--k-collapse-border-color);
+
   --font-size: var(--k-font-base);
   --line-height: var(--k-font-base-line)
   font-size: var(--font-size);
   line-height: var(--line-height);
 
   border: none;
-  .el-collapse-item__header,
-  .el-collapse-item__content {
-    font-size: inherit;
+
+  //el
+  & .k-collapse-item__header {
+    align-items: center;
+    background-color: var(--k-collapse-header-bg-color);
+    border: none;
+    border-bottom: 1px solid var(--k-collapse-border-color);
+    color: var(--k-collapse-header-text-color);
+    cursor: pointer;
+    display: flex;
+    font-size: var(--k-collapse-header-font-size);
+    font-weight: 500;
+    height: var(--k-collapse-header-height);
+    line-height: var(--k-collapse-header-height);
+    outline: none;
+    padding: 0;
+    transition: border-bottom-color var(--k-transition-duration);
+    width: 100%;
+    &.focusing {
+      &:focus {
+        :not(:hover) {
+          color: var(--k-color-primary);
+        }
+      }
+    }
+    &.is-active {
+      border-bottom-color: transparent;
+    }
+  }
+  & .k-collapse-item__arrow {
+    font-weight: 300;
+    margin: 0 8px 0 auto;
+    transition: transform var(--k-transition-duration);
+    &.is-active {
+      transform: rotate(90deg);
+    }
+  }
+  & .k-collapse-item__wrap {
+    background-color: var(--k-collapse-content-bg-color);
+    border-bottom: 1px solid var(--k-collapse-border-color);
+    box-sizing: border-box;
+    overflow: hidden;
+    will-change: height;
+  }
+  & .k-collapse-item__content {
+    color: var(--k-collapse-content-text-color);
+    font-size: var(--k-collapse-content-font-size);
+    line-height: 1.7692307692;
+    padding-bottom: 25px;
   }
 
-  .el-collapse-item,
   .k-collapse-item {
-    .el-collapse-item__header {
+    //el
+    &:last-child {
+      margin-bottom: -1px;
+    }
+
+    .k-collapse-item__header {
       height: var(--k-theme-collapse-size-height);
 
       border-top: none;
@@ -33,8 +205,15 @@
       }
     }
 
+    &.is-disabled {
+      & .k-collapse-item__header {
+        color: var(--k-text-color-disabled);
+        cursor: not-allowed;
+      }
+    }
+
     &.is-block {
-      .el-collapse-item__header {
+      .k-collapse-item__header {
         background: var(--k-theme-collapse-bg-color--normal);
         border-radius: var(--k-theme-collapse-rounded);
 
@@ -49,7 +228,7 @@
       }
     }
 
-    .el-collapse-item__wrap {
+    .k-collapse-item__wrap {
       border: none;
       padding: 8px 16px;
     }
@@ -59,7 +238,7 @@
     }
     &:first-child,
     &:first-child {
-      .el-collapse-item__header {
+      .k-collapse-item__header {
         border-top: 1px solid var(--k-gray-200);
       }
     }
@@ -69,8 +248,8 @@
     border: 1px solid var(--k-gray-200);
     border-radius: var(--k-theme-button-size-rounded--base);
     overflow: hidden;
-    .el-collapse-item {
-      .el-collapse-item__header {
+    .k-collapse-item {
+      .k-collapse-item__header {
         background: var(--k-gray-50);
         border-top: unset;
       }
@@ -83,7 +262,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-    .el-collapse-item {
+    .k-collapse-item {
       border: unset;
       border-radius: var(--k-theme-button-size-rounded--lg);
       overflow: hidden;
@@ -91,7 +270,7 @@
       &.is-active {
         border: unset;
       }
-      .el-collapse-item__header {
+      .k-collapse-item__header {
         background: var(--k-gray-50);
         border: unset;
         .info {
@@ -113,12 +292,12 @@
           }
         }
       }
-      .el-collapse-item__wrap {
+      .k-collapse-item__wrap {
         border: unset;
       }
       // process
       &.is-process {
-        .el-collapse-item__header {
+        .k-collapse-item__header {
           background: #fff;
           color: var(--k-theme-primary);
         }
@@ -126,7 +305,7 @@
       // wait
       &.is-wait {
         margin: 0 1rem;
-        .el-collapse-item__header {
+        .k-collapse-item__header {
           background: #fff;
           color: var(--k-gray-300);
           .info {
@@ -136,36 +315,41 @@
       }
       // finish
       &.is-finish {
-        .el-collapse-item__header {
+        .k-collapse-item__header {
           background: #fff;
           color: var(--k-theme-success);
         }
       }
       //error
       &.is-error {
-        .el-collapse-item__header {
+        .k-collapse-item__header {
           background: #fff;
           color: var(--k-theme-danger);
         }
       }
       // .warning
       &.is-warning {
-        .el-collapse-item__header {
+        .k-collapse-item__header {
           background: #fff;
           color: var(--k-theme-warning);
         }
       }
     }
   }
+  
+  .k-collapse-item__header,
+  .k-collapse-item__content {
+    font-size: inherit;
+  }
 }
 .k-collapse-outline {
   // 通过::v-deep穿透样式，移除el-collapse-item__header的下边框
-  .el-collapse-item__header {
+  .k-collapse-item__header {
     border-bottom: none !important;
   }
 
   // 如果需要移除其他地方的边框，可以继续添加相应的样式
-  .el-collapse-item {
+  .k-collapse-item {
     border-bottom: none !important;
   }
 }

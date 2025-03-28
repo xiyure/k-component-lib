@@ -3,7 +3,6 @@
     <el-collapse
       ref="kCollapseRef"
       :class="[
-        'k-collapse',
         { 'is-useAntStyle': useAntStyle, 'is-useStepStyle': useStepStyle },
       ]"
       v-bind="$attrs"
