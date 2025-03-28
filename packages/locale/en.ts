@@ -69,7 +69,7 @@ export default {
     advancedFilter_c: 'advanced filter',
     sizeControlTrigger: 'size control',
     searchTable: 'search table data',
-    data: 'data',
+    data: '',
     showAll: 'show all',
     total: 'total',
     all: 'all',
