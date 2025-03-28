@@ -15,7 +15,7 @@ export function useAdvancedFilter($filter: Ref<any>, props: TreeTableProps, colu
     let text: string = '';
     if (filterConditionInfo.value?.conditionList?.length) {
       const { filterRule } = filterConditionInfo.value;
-      text += filterRule === 0 ? (t?.('anyOne') as string) : (t?.('all') as string);
+      text += filterRule === 0 ? (t?.('filter.anyOne') as string) : (t?.('filter.all') as string);
       filterConditionInfo.value.conditionList.forEach((item: Condition, index: number) => {
         const point = props.useTree && index === 0 ? '' : '·';
         text += `  ${point} ${item.title} ${item.logic} ${item.showValue}`;
