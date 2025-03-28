@@ -22,7 +22,7 @@ export function useAdvancedFilter($filter: Ref<any>, props: TreeTableProps, colu
       });
     } else {
       const point = props.useTree ? '' : '· ';
-      text += `${point}${t?.('showAll')}`;
+      text += `${point}${t?.('table.showAll')}`;
     }
     return text;
   });

@@ -13,7 +13,7 @@
       <div class="k-view-aside" :style="{ display: viewCollapse ? 'none' : 'flex' }">
         <div class="k-view__header">
           <div class="view-title text-base font-bold">
-            <slot name="header">{{ t?.('view') }}</slot>
+            <slot name="header">{{ t?.('view.view') }}</slot>
           </div>
           <span class="view-fresh" @click="handleFresh">
             <slot name="refresh"><IconRefresh /></slot>
@@ -66,7 +66,7 @@
         </div>
         <div v-if="customData?.length" class="k-view__custom-data text-base">
           <slot name="custom-header">
-            <span class="custom-table-box">{{ t?.('customView') }}</span>
+            <span class="custom-table-box">{{ t?.('view.customView') }}</span>
           </slot>
           <el-scrollbar class="k-view-custom-scrollbar">
             <template v-if="!useTree">
@@ -122,7 +122,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, provide, inject, onMounted, onBeforeUnmount } from 'vue';
+import { ref, watch, computed, provide, onMounted, onBeforeUnmount } from 'vue';
 
 import { ElScrollbar } from 'element-plus';
 import { IconRefresh, IconArrowRight } from 'ksw-vue-icon';
@@ -320,7 +320,7 @@ function formatter(data: ViewData) {
     count: data[config.value.count] ?? 0,
     disabled: data[config.value.disabled] ?? false,
     custom: data[config.value.custom] ?? false,
-    showCustomControl: data.showCustomControl ?? false
+    showCustomControl: data.showCustomControl ?? props.showCustomControl ?? false
   };
 }
 

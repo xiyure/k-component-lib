@@ -88,7 +88,7 @@ const defaultPropsConfig = computed(() => ({
 }));
 
 const filterablePlaceholder = computed(
-  () => props.filterablePlaceholder ?? t?.('searchHeaderName')
+  () => props.filterablePlaceholder ?? t?.('transfer.searchHeaderName')
 );
 
 watch(
@@ -170,7 +170,7 @@ function extendContent() {
   const transferHeader = transferElem.querySelectorAll('.el-transfer-panel__header')[1];
   transferHeader.classList.add('transfer-right-header');
   const label = document.createElement('label');
-  label.innerHTML = t?.('restoreDefault') as string;
+  label.innerHTML = t?.('transfer.reset') as string;
   label.classList.add('transfer-restore__text');
   label.addEventListener('click', () => {
     resetTransferData();

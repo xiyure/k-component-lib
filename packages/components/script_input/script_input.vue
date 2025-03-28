@@ -14,7 +14,7 @@
             <div class="k-script-input-prepend">
               <k-button
                 v-if="showModeSwitch"
-                v-ksw_tooltip="_isStringMode ? t?.('stringMode') : t?.('expressionMode')"
+                v-ksw_tooltip="_isStringMode ? t?.('scriptInput.stringMode') : t?.('scriptInput.expressionMode')"
                 :disabled
                 @click="
                   () => {
@@ -48,7 +48,7 @@
                 }"
                 :contenteditable="disabled || !editable ? false : 'plaintext-only'"
                 :spellcheck="false"
-                :placeholder
+                :placeholder="placeholder ?? t?.('scriptInput.placeholder')"
                 @input="handleInput"
                 @blur="handleBlur"
                 @focus="handleFocus"
@@ -72,6 +72,7 @@
               type="password"
               :disabled
               class="k-script-input-wrapper showPassword !h-8 z-10 !p-0 flex-1"
+              :placeholder="placeholder ?? t?.('scriptInput.placeholder')"
               show-password
               @input="updateModelValue"
               @focus="handleFocus"
@@ -180,7 +181,6 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   checkContentType: false,
   contentType: 'string',
   optionRepeatable: true,
-  placeholder: '',
   tagClosable: false
 });
 

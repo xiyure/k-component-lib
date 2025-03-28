@@ -26,14 +26,14 @@
         <k-dialog
           v-if="isShowColumnMenu"
           v-model="dialogVisible"
-          :title="t?.('customDescription')"
+          :title="t?.('table.remark')"
           @open="openDialog"
         >
           <div class="k-column__header-dialog">
             <k-input v-model="textareaContent" type="textarea"></k-input>
             <div class="header-dialog__buttons">
-              <k-button @click="() => dialogVisible = false">{{ t?.('cancel') }}</k-button>
-              <k-button main @click="addDescription(headerSlotProps.column)">{{ t?.('confirm') }}</k-button>
+              <k-button @click="() => dialogVisible = false">{{ t?.('table.cancel') }}</k-button>
+              <k-button main @click="addDescription(headerSlotProps.column)">{{ t?.('table.confirm') }}</k-button>
             </div>
           </div>
         </k-dialog>
@@ -146,7 +146,7 @@
                   >
                     <div class="filter-select-item" :class="{'disabled': !props.filters}">
                       <IconFilter class="menu-item-icon" />
-                      {{ t?.('filter') }}
+                      {{ t?.('table.filter') }}
                     </div>
                     <template v-if="$slots.filter">
                       <slot
@@ -172,37 +172,37 @@
                     <template #reference>
                       <div class="sort-select-item" :class="{'disabled': !props.sortable}">
                         <IconTableSortNormalColor class="menu-item-icon" />
-                        {{ t?.('sort') }}
+                        {{ t?.('table.sort') }}
                         <IconArrowRight class="sort-arrow-right" />
                       </div>
                     </template>
                     <ul class="sort-menu">
                       <li class="sort-menu-item" @click="tableSort(headerSlotProps.column, 'asc')">
                         <IconTableSortUpColor />
-                        {{ t?.('ascendingOrder') }}
+                        {{ t?.('table.asc') }}
                       </li>
                       <li class="sort-menu-item" @click="tableSort(headerSlotProps.column, 'desc')">
                         <IconTableSortDownColor />
-                        {{ t?.('descendingOrder') }}
+                        {{ t?.('table.desc') }}
                       </li>
                       <li class="sort-menu-item" @click="clearSort(headerSlotProps.column)">
                         <IconClearDate />
-                        {{ t?.('clearSorting') }}
+                        {{ t?.('table.clear') }}
                       </li>
                     </ul>
                   </k-popover>
                 </li>
                 <li class="more-menu-item" @click="expandColumn(true)">
                   <IconFold class="menu-item-icon" />
-                  {{ t?.('retract') }}
+                  {{ t?.('table.retract') }}
                 </li>
                 <li v-if="showTransfer" class="more-menu-item" @click="hideColumn(headerSlotProps.column)">
                   <IconHide class="menu-item-icon" />
-                  {{ t?.('hide') }}
+                  {{ t?.('table.hide') }}
                 </li>
                 <li class="more-menu-item" @click="() => dialogVisible = true">
                   <IconEdit class="menu-item-icon" />
-                  {{ t?.('customDescription') }}
+                  {{ t?.('table.remark') }}
                 </li>
               </ul>
             </k-popover>

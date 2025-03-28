@@ -31,7 +31,7 @@
       <div class="k-filter__content">
         <div class="k-filter__header">
           <span :class="formatSize.ownSize === 'sm' ? 'text-base' : 'text-lg'" class="font-bold">
-            {{ t?.('advancedFilter') }}
+            {{ t?.('filter.advancedFilter') }}
           </span>
           <span
             :class="formatSize.ownSize === 'sm' ? 'text-sm' : 'text-base'"
@@ -43,7 +43,7 @@
             "
           >
             <IconClearDate />
-            {{ t?.('clearAll') }}
+            {{ t?.('filter.clearAll') }}
           </span>
         </div>
         <div
@@ -79,7 +79,7 @@
               <k-option
                 v-for="conditionItem in conditionList(item)?.logicList"
                 :key="conditionItem.logic"
-                :label="t?.(conditionItem.logic)"
+                :label="t?.(`filter.${conditionItem.logic}`)"
                 :value="conditionItem.logic"
               />
             </k-select>
@@ -97,7 +97,7 @@
                 <k-option
                   v-for="logicItem in dateLogicList(item)"
                   :key="logicItem.value"
-                  :label="t?.(logicItem.label)"
+                  :label="t?.(`filter.${logicItem.label}`)"
                   :value="logicItem.value"
                   :disabled="
                     (item.logic === 'after' || item.logic === 'before') &&
@@ -170,21 +170,21 @@
           <div class="k-filer__operate-left">
             <span @click="addCondition()">
               <IconAdd />
-              {{ t?.('addCondition') }}
+              {{ t?.('filter.addCondition') }}
             </span>
           </div>
           <div class="k-filer__operate-right">
-            <span class="select-label">{{ t?.('aboveCondition') }}：</span>
+            <span class="select-label">{{ t?.('filter.aboveCondition') }}：</span>
             <k-select
               v-model="filterRule"
               :size="formatSize.ownSize"
               :disabled="disableChangeMode"
               :teleported="false"
             >
-              <k-option :label="t?.('anyOne')" :value="0"></k-option>
-              <k-option :label="t?.('all')" :value="1"></k-option>
+              <k-option :label="t?.('filter.anyOne')" :value="0"></k-option>
+              <k-option :label="t?.('filter.all')" :value="1"></k-option>
             </k-select>
-            <k-button :size="formatSize.ownSize" main @click="query">{{ t?.('query') }}</k-button>
+            <k-button :size="formatSize.ownSize" main @click="query">{{ t?.('filter.query') }}</k-button>
           </div>
         </div>
       </div>

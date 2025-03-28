@@ -9,7 +9,7 @@
           ref="KTransferInputLeftRef"
           v-model="_query"
           class="flex-1"
-          :placeholder="t?.('enterInputSearch')"
+          :placeholder="t?.('treeTransfer.enterInputSearch')"
           :suffix-icon="IconSearch"
           @keyup.enter="leftQueryChange"
           @change="leftQueryChange"
@@ -19,7 +19,7 @@
           ref="KTransferInputRightRef"
           v-model="_rightQuery"
           class="flex-1 ml-[10px]"
-          :placeholder="t?.('enterInputSearch')"
+          :placeholder="t?.('treeTransfer.enterInputSearch')"
           :suffix-icon="IconSearch"
           @keyup.enter="rightQueryChange"
           @change="rightQueryChange"
@@ -128,7 +128,7 @@
                     <div v-if="!isCustomColumns" class="right-data-header">
                       <span class="right-data-title">{{ item.title ?? '' }}</span>
                       <span class="clear-data" @click="clearCurrentData">
-                        {{ t?.('clearData') }}
+                        {{ t?.('treeTransfer.clearData') }}
                       </span>
                     </div>
                     <template v-else>{{ item.title ?? '' }}</template>

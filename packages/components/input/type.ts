@@ -3,6 +3,7 @@ import { CompSize } from "../../utils";
 
 export interface InputProps {
   modelValue?: string | number
+  placeholder?: string;
   /**
    * 尺寸
    */

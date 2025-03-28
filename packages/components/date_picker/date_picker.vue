@@ -33,35 +33,37 @@ const { t } = useLocale();
 const formatSize = useSize<DatePickerProps>(props);
 
 const datePickerRef = ref(null);
-const defaultDateRange = [
+const defaultDateRange = computed(() => {
+  return [
   {
-    text: t?.('within7days'),
+    text: t?.('datePicker.within7days'),
     value: () => getTargetDay(-7)
   },
   {
-    text: t?.('within15days'),
+    text: t?.('datePicker.within15days'),
     value: () => getTargetDay(-15)
   },
   {
-    text: t?.('curMonth'),
+    text: t?.('datePicker.curMonth'),
     value: getCurMonthRange()
   },
   {
-    text: t?.('curQuarter'),
+    text: t?.('datePicker.curQuarter'),
     value: getCurQuarterRange()
   },
   {
-    text: t?.('curYear'),
+    text: t?.('datePicker.curYear'),
     value: getCurYearRange()
   }
-];
+]
+});
 
 const customShortcuts = computed(() => {
   if (
     (props.type === 'daterange' || props.type === 'datetimerange') &&
     props.showDefaultShortcuts
   ) {
-    return [...defaultDateRange, ...(props.shortcuts || [])];
+    return [...defaultDateRange.value, ...(props.shortcuts || [])];
   }
   return props.shortcuts;
 });

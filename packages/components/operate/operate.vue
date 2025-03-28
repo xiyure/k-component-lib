@@ -3,7 +3,7 @@
     <span class="k-operate__header">{{ total || '-' }}</span>
     <div class="k-operate__content">
       <ul class="k-operate__list">
-        <li class="list-header">{{ t?.('batchOperation') }}:</li>
+        <li class="list-header">{{ t?.('operate.title') }}:</li>
         <li
           v-for="item, index in showData"
           :key="index"

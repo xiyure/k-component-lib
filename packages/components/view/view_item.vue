@@ -23,7 +23,7 @@
         </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item command="remove">{{ t?.('remove') }}</el-dropdown-item>
+            <el-dropdown-item command="remove">{{ t?.('view.remove') }}</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>

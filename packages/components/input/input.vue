@@ -14,6 +14,7 @@
     :suffix-icon="iconRight ?? suffixIcon"
     :type="inputType"
     :size="formatSize.elSize"
+    :placeholder="placeholder ?? t('input.placeholder')"
     @input="handleInput"
     @change="
       (value: string | number) => {
@@ -106,7 +107,7 @@
       </li>
       <slot name="empty" v-if="!options?.length">
         <div class="k-input-options-empty">
-          {{ t('noData') }}
+          {{ t('input.empty') }}
         </div>
       </slot>
     </el-scrollbar>

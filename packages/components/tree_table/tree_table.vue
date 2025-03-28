@@ -11,7 +11,7 @@
       <k-input
         v-model="searchStr"
         :suffix-icon="IconSearch"
-        :placeholder="t?.('searchTable')"
+        :placeholder="t?.('table.searchTable')"
         clearable
         @change="filter"
       />
@@ -27,9 +27,9 @@
       <div v-if="showDescription" class="k-table-info">
         <slot name="description" :total="dataLength" :condition-info="filterConditionInfo">
           <span v-if="!useTree">
-            {{ t?.('total') }}
+            {{ t?.('table.total') }}
             {{ dataLength }}
-            {{ t?.('data') }}
+            {{ t?.('table.data') }}
           </span>
           <span :title="headerText" class="condition-info">
             {{ headerText }}
@@ -44,7 +44,7 @@
               }
             "
           >
-            · {{ t?.('reset') }}
+            · {{ t?.('table.reset') }}
           </span>
         </slot>
       </div>
@@ -57,14 +57,14 @@
             <k-input
               v-model="searchStr"
               :suffix-icon="IconSearch"
-              :placeholder="t?.('searchTable')"
+              :placeholder="t?.('table.searchTable')"
               clearable
               @change="filter"
             />
           </template>
           <template v-else-if="widget.id === 'refresh'">
             <k-button
-              v-ksw_tooltip="t?.('refresh')"
+              v-ksw_tooltip="t?.('table.refresh')"
               @click="
                 () => {
                   emits('refresh');
@@ -98,7 +98,7 @@
               @hide="advancedFilterHide"
             >
               <template #reference="{ hasConfigCondition }">
-                <div v-ksw_tooltip="t?.('advancedFilter_c')">
+                <div v-ksw_tooltip="t?.('table.advancedFilter_c')">
                   <component
                     :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
                     v-if="widget.widget"
@@ -128,7 +128,7 @@
               "
             >
               <template #title>
-                <div v-ksw_tooltip="t?.('sizeControlTrigger')" class="text-sm">
+                <div v-ksw_tooltip="t?.('table.sizeControlTrigger')" class="text-sm">
                   <component
                     :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
                     v-if="widget.widget"
@@ -168,7 +168,7 @@
               "
             >
               <template #reference>
-                <div v-ksw_tooltip="t?.('columnHeaderController')" class="text-sm">
+                <div v-ksw_tooltip="t?.('table.columnHeaderController')" class="text-sm">
                   <component
                     :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
                     v-if="widget.widget"
@@ -190,7 +190,7 @@
                   noChecked: ' ',
                   hasChecked: ' '
                 }"
-                :titles="[t?.('unselectedFields'), t?.('selectedFields')]"
+                :titles="[t?.('table.unselected'), t?.('table.selected')]"
                 :drag="true"
                 @change="updateColVisible"
                 @reset="updateColVisible"
@@ -219,7 +219,7 @@
         :checkbox-config="checkboxConfig"
         :edit-config="editConfig"
         :column-config="columnConfig"
-        :empty-text="emptyText || t?.('noData')"
+        :empty-text="emptyText || t?.('table.noData')"
         :scroll-y="scrollY"
         :row-style="getRowStyle"
         :show-overflow="showOverflow"
