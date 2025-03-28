@@ -7,7 +7,7 @@
       </div>
     </slot>
     <k-form
-      ref="KFormRef" :model="form" labk-width="auto"
+      ref="KFormRef" :model="form" label-width="auto"
       style="max-width: 600px"
     >
       <k-form-item
