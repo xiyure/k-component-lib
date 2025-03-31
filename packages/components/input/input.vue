@@ -44,7 +44,7 @@
     <template v-else #suffix>
       <slot name="suffix"></slot>
       <div v-if="showPassword && modelValue" @click="switchPassword">
-        <component :is="isText ? IconHide : IconShow"></component>
+        <component :is="isText ? IconShow : IconHide"></component>
       </div>
     </template>
   </el-input>
@@ -130,7 +130,7 @@ import { IconShow, IconHide, IconDown } from 'ksw-vue-icon';
 import { KPopover } from '../popover';
 import { InputProps } from './type';
 import { getExposeProxy } from '../../utils';
-import { SIZE_KEY, useLocale, useSize } from '../../hooks';
+import { SIZE_KEY, useLocale, useSize, useCursor } from '../../hooks';
 
 defineOptions({
   name: 'KInput'
@@ -153,14 +153,14 @@ const props = withDefaults(defineProps<InputProps>(), {
   popperClass: ''
 });
 
+const inputRef = ref();
 const formatSize = useSize<InputProps>(props);
+const { recordCursor, setCursor } = useCursor(inputRef);
 const { t } = useLocale();
 
 const emits = defineEmits(['update:modelValue', 'input', 'change', 'popper-show', 'popper-hide']);
 
-const inputRef = ref();
 const isText = ref(false);
-const inputType = ref(props.type);
 const modelValue = ref<string | number>('');
 
 // 弹出框相关
@@ -183,7 +183,13 @@ onBeforeUnmount(() => {
   window.removeEventListener('keydown', toggleSelect);
 });
 
-const isSelectable = computed(() => props.selectable && inputType.value === 'text');
+const inputType = computed(() => {
+  if (props.type !== 'password' && (!props.showPassword || isText.value)) {
+    return props.type;
+  }
+  return isText.value ? 'text' : 'password';
+})
+const isSelectable = computed(() => props.selectable && inputType.value === 'text' && !props.showPassword);
 const showOptions = computed(() => {
   if (props.filterable && !isManual.value && modelValue.value) {
     return props.options?.filter((item) => item.toString().includes(modelValue.value.toString()));
@@ -224,8 +230,9 @@ const slotClass = computed(() => (slot: (...args: any) => VNode[]) => {
 });
 
 function switchPassword() {
+  recordCursor();
   isText.value = !isText.value;
-  inputType.value = isText.value ? 'text' : 'password';
+  setTimeout(setCursor);
 };
 function selectOption(item: string | number) {
   if (modelValue.value === item) {

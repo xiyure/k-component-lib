@@ -18,22 +18,46 @@
 
 .k-form {
   .k-form-item {
-    margin-bottom: 1.375rem;
-    margin-bottom: 0;
     display: flex;
     align-items: center;
     position: relative;
     margin-bottom: 1.25rem;
+    .el-form-item__label::before, .el-form-item__label::after {
+      content: '*';
+      display: none;
+      color: red;
+    }
+    &.is-required.asterisk-position__left {
+      .el-form-item__label::before {
+        display: block;
+        margin-right: 4px;
+      }
+      > .el-form-item__label-wrap {
+        > .el-form-item__label::before {
+          display: block;
+        }
+      }
+    }
+    &.is-required.asterisk-position__right {
+      .el-form-item__label::after {
+        display: block;
+        margin-left: 4px;
+      }
+      > .el-form-item__label-wrap {
+        > .el-form-item__label::after {
+          display: block;
+        }
+      }
+    }
+    &.k-form-item--colon:not(.asterisk-position__right) {
+      > .el-form-item__label::after {
+        display: block;
+        color: unset;
+        content: ':';
+      }
+    }
     .el-form-item__label {
       display: inline-flex;
-      // overflow: hidden;
-      &::before {
-        content: '*';
-        opacity: 0;
-      }
-      &::after {
-        right: -0.1rem;
-      }
 
       > span,
       span {
@@ -43,7 +67,6 @@
         text-overflow: ellipsis;
         text-wrap: nowrap;
         color: var(--k-theme-form-item__label-color);
-        // color: red;
         -webkit-box-orient: vertical;
         word-break: break-all;
       }
@@ -65,7 +88,6 @@
         }
       }
       .el-form-item__content {
-        // background: #000;
         .el-date-editor.el-date-editor--daterange.el-input__wrapper.el-range-editor.k-date-picker.el-tooltip__trigger.el-tooltip__trigger {
           border: 1px solid var(--k-theme-danger);
           box-shadow: unset;
@@ -74,10 +96,8 @@
     }
     &.el-form-item--label-right {
       .el-form-item__label {
-        // position: relative;
         &::before {
           position: unset;
-          // left: 0;
         }
       }
     }
@@ -93,46 +113,10 @@
         width: 100%;
       }
     }
-    &.k-form-item--colon {
-      > .el-form-item__label::after {
-        content: ':';
-      }
-    }
-    &.is-required {
-      > .el-form-item__label::before {
-        content: '*';
-        opacity: 1;
-      }
-      > .el-form-item__label-wrap {
-        // margin-right: 0px !important;
-        > .el-form-item__label::before {
-          content: '*';
-          opacity: 1;
-        }
-      }
-    }
     // 适配嵌套样式
     .el-form-item__content {
-      div {
-        .k-form-item {
-          &.is-required {
-            .el-form-item__label-wrap {
-              margin-right: 0px !important;
-              .el-form-item__label::before {
-                content: '*';
-                opacity: 1;
-                color: red;
-              }
-            }
-          }
-          &.k-form-item--no-label {
-            .el-form-item__label-wrap {
-              .el-form-item__label {
-                display: none;
-              }
-            }
-          }
-        }
+      .el-form-item {
+        margin-bottom: 1.25rem;
       }
     }
     &.k-form-item--no-label {
