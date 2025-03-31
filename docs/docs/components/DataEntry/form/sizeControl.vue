@@ -67,7 +67,7 @@
       </k-radio-group>
     </k-form-item>
     <k-form-item>
-      <k-button type="primary" @click="onSubmit">Create</k-button>
+      <k-button type="primary" main @click="onSubmit">Create</k-button>
       <k-button>Cancel</k-button>
     </k-form-item>
   </k-form>

@@ -1,0 +1,32 @@
+.k-descriptions__label.k-descriptions__cell.is-bordered-label {
+  background: var(--k-descriptions-item-bordered-label-background);
+  color: var(--k-text-color-regular);
+  font-weight: bold;
+}
+.k-descriptions__label:not(.is-bordered-label) {
+  color: var(--k-text-color-primary);
+  margin-right: 16px;
+}
+.k-descriptions__label.k-descriptions__cell:not(.is-bordered-label).is-vertical-label {
+  padding-bottom: 6px;
+}
+.k-descriptions__content.k-descriptions__cell.is-bordered-content {
+  color: var(--k-text-color-primary);
+}
+.k-descriptions__content:not(.is-bordered-label) {
+  color: var(--k-text-color-regular);
+}
+.k-descriptions--large .k-descriptions__label:not(.is-bordered-label) {
+  margin-right: 16px;
+}
+.k-descriptions--large
+  .k-descriptions__label.k-descriptions__cell:not(.is-bordered-label).is-vertical-label {
+  padding-bottom: 8px;
+}
+.k-descriptions--small .k-descriptions__label:not(.is-bordered-label) {
+  margin-right: 12px;
+}
+.k-descriptions--small
+  .k-descriptions__label.k-descriptions__cell:not(.is-bordered-label).is-vertical-label {
+  padding-bottom: 4px;
+}

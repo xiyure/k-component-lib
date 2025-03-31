@@ -1,0 +1,96 @@
+.k-descriptions {
+  --k-descriptions-table-border: 1px solid var(--k-border-color-lighter);
+  --k-descriptions-item-bordered-label-background: var(--k-fill-color-light);
+  box-sizing: border-box;
+  color: var(--k-text-color-primary);
+  font-size: var(--k-font-size-base);
+}
+.k-descriptions__header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.k-descriptions__title {
+  color: var(--k-text-color-primary);
+  font-size: 16px;
+  font-weight: bold;
+}
+.k-descriptions__body {
+  background-color: var(--k-fill-color-blank);
+}
+.k-descriptions__body .k-descriptions__table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.k-descriptions__body .k-descriptions__table .k-descriptions__cell {
+  box-sizing: border-box;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 23px;
+  text-align: left;
+}
+.k-descriptions__body .k-descriptions__table .k-descriptions__cell.is-left {
+  text-align: left;
+}
+.k-descriptions__body .k-descriptions__table .k-descriptions__cell.is-center {
+  text-align: center;
+}
+.k-descriptions__body .k-descriptions__table .k-descriptions__cell.is-right {
+  text-align: right;
+}
+.k-descriptions__body .k-descriptions__table.is-bordered .k-descriptions__cell {
+  border: var(--k-descriptions-table-border);
+  padding: 8px 11px;
+}
+.k-descriptions__body .k-descriptions__table:not(.is-bordered) .k-descriptions__cell {
+  padding-bottom: 12px;
+}
+.k-descriptions--large {
+  font-size: 14px;
+}
+.k-descriptions--large .k-descriptions__header {
+  margin-bottom: 20px;
+}
+.k-descriptions--large .k-descriptions__header .k-descriptions__title {
+  font-size: 16px;
+}
+.k-descriptions--large .k-descriptions__body .k-descriptions__table .k-descriptions__cell {
+  font-size: 14px;
+}
+.k-descriptions--large
+  .k-descriptions__body
+  .k-descriptions__table.is-bordered
+  .k-descriptions__cell {
+  padding: 12px 15px;
+}
+.k-descriptions--large
+  .k-descriptions__body
+  .k-descriptions__table:not(.is-bordered)
+  .k-descriptions__cell {
+  padding-bottom: 16px;
+}
+.k-descriptions--small {
+  font-size: 12px;
+}
+.k-descriptions--small .k-descriptions__header {
+  margin-bottom: 12px;
+}
+.k-descriptions--small .k-descriptions__header .k-descriptions__title {
+  font-size: 14px;
+}
+.k-descriptions--small .k-descriptions__body .k-descriptions__table .k-descriptions__cell {
+  font-size: 12px;
+}
+.k-descriptions--small
+  .k-descriptions__body
+  .k-descriptions__table.is-bordered
+  .k-descriptions__cell {
+  padding: 4px 7px;
+}
+.k-descriptions--small
+  .k-descriptions__body
+  .k-descriptions__table:not(.is-bordered)
+  .k-descriptions__cell {
+  padding-bottom: 8px;
+}

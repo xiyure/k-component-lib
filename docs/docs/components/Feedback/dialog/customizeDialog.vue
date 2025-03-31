@@ -9,10 +9,10 @@
 
   <k-dialog v-model="dialogFormVisible" title="Shipping address" width="500">
     <k-form :model="form">
-      <k-form-item label="Promotion name" :labk-width="formLabelWidth">
+      <k-form-item label="Promotion name" :label-width="formLabelWidth">
         <k-input v-model="form.name" autocomplete="off" />
       </k-form-item>
-      <k-form-item label="Zones" :labk-width="formLabelWidth">
+      <k-form-item label="Zones" :label-width="formLabelWidth">
         <k-select v-model="form.region" placeholder="Please select a zone">
           <k-option label="Zone No.1" value="shanghai" />
           <k-option label="Zone No.2" value="beijing" />

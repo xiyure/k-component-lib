@@ -2,7 +2,6 @@
   <el-radio
     v-bind="$attrs"
     ref="kRadioRef"
-    class="k-radio"
     :class="[getSizeClass, { 'is-button': props.button === true }]"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">

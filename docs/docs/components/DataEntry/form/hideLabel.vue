@@ -1,6 +1,6 @@
 <template>
   <k-form
-    :model="form" labk-width="auto" style="max-width: 600px"
+    :model="form" label-width="auto" style="max-width: 600px"
     :show-label="false"
   >
     <k-form-item label="Activity name">

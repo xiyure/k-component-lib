@@ -8,7 +8,6 @@
 @import './el-autocomplete.css';
 @import './el-avatar.css';
 @import './el-backtop.css';
-@import './el-breadcrumb-item.css';
 @import './el-breadcrumb.css';
 @import './el-button-group.css';
 @import './el-card.css';
@@ -19,6 +18,8 @@
 @import './el-col.css';
 @import './el-color-picker.css';
 @import './el-container.css';
+@import './el-descriptions-item.css';
+@import './el-descriptions.css';
 @import './el-popper.css';
 @import './el-scrollbar.css';
 @import './el-statistic.css';
