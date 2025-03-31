@@ -57,6 +57,7 @@
 
 <script lang="tsx" setup>
 import { ref } from 'vue';
+import { IconTips } from 'ksw-vue-icon';
 import { KPageViewBus } from '../KPageViewBus';
 import { KTooltip } from '../../components';
 import { PageTableViewProps } from './type';

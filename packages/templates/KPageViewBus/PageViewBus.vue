@@ -59,6 +59,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { IconArrowLeft, IconRefresh, IconTips } from 'ksw-vue-icon';
 import { KTooltip, KButton } from '../../components';
 import { PageHeadProps } from './type';
 

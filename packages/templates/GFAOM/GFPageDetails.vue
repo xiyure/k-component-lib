@@ -89,6 +89,7 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
 import { KTabs, KTabPane, KButton } from '../../components';
+import { IconArrowTop, IconTips } from 'ksw-vue-icon';
 import { GFPageDetailProps } from './type';
 
 defineOptions({
