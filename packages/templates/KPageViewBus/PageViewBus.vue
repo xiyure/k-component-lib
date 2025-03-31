@@ -1,4 +1,4 @@
-<!--
+<!-- 
 * @description  参数1
 * @fileName  demo
 * @author userName
@@ -41,7 +41,7 @@
               style="padding-right: 0"
               @click="() => emits('refresh')"
             >
-              <IconRefresh />
+              <IconRefresh color="gray" />
             </KButton>
           </slot>
         </div>
