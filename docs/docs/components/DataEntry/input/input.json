@@ -59,6 +59,12 @@
       "defaultValue": "false"
     },
     {
+      "displayName": "formatter",
+      "type": "Function",
+      "description": "格式化输入值, type为text时生效",
+      "tip": "(value: string) => string"
+    },
+    {
       "displayName": "selectable",
       "type": "boolean",
       "description": "是否开启下拉选择功能",
@@ -88,16 +94,17 @@
     },
     {
       "displayName": "popper-style",
-      "type": "string / object",
+      "type": "object",
       "description": "为 popper 自定义样式",
-      "tip": "",
+      "tip": "CSSProperties",
       "version":"1.1.19"
     },
     {
-      "displayName": "formatter",
-      "type": "Function",
-      "description": "格式化输入值, type为text时生效",
-      "tip": "(value: string) => string"
+      "displayName": "filterable",
+      "type": "boolean",
+      "description": "用于selectable为true时，是否开启输入过程中过滤下拉选项功能",
+      "tip": "false",
+      "version":"1.1.20"
     }
   ],
   "events": [

@@ -304,6 +304,7 @@
 import { ref, computed, watch, nextTick, provide } from 'vue';
 import VXETable from 'vxe-table';
 import { cloneDeep } from 'lodash-es';
+import { IconSearch, IconRefresh, IconFilter, IconFilterFill, IconSizeControls, IconSetting } from 'ksw-vue-icon';
 import KColumnGroup from './column_group';
 import { KInput } from '../input';
 import { KButton } from '../button';
