@@ -1,0 +1,227 @@
+.k-switch {
+  --k-switch-on-color: var(--k-color-primary);
+  --k-switch-off-color: var(--k-border-color);
+  align-items: center;
+  display: inline-flex;
+  font-size: 14px;
+  height: 32px;
+  line-height: 20px;
+  position: relative;
+  vertical-align: middle
+}
+
+.k-switch.is-disabled .k-switch__core,
+.k-switch.is-disabled .k-switch__label {
+  cursor: not-allowed
+}
+
+.k-switch__label {
+  color: var(--k-text-color-primary);
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 500;
+  height: 20px;
+  transition: var(--k-transition-duration-fast);
+  vertical-align: middle
+}
+
+.k-switch__label.is-active {
+  color: var(--k-color-primary)
+}
+
+.k-switch__label--left {
+  margin-right: 10px
+}
+
+.k-switch__label--right {
+  margin-left: 10px
+}
+
+.k-switch__label * {
+  display: inline-block;
+  font-size: 14px;
+  line-height: 1
+}
+
+.k-switch__label .k-icon {
+  height: inherit
+}
+
+.k-switch__label .k-icon svg {
+  vertical-align: middle
+}
+
+.k-switch__input {
+  height: 0;
+  margin: 0;
+  opacity: 0;
+  position: absolute;
+  width: 0
+}
+
+.k-switch__input:focus-visible~.k-switch__core {
+  outline: 2px solid var(--k-switch-on-color);
+  outline-offset: 1px
+}
+
+.k-switch__core {
+  align-items: center;
+  background: var(--k-switch-off-color);
+  border: 1px solid var(--k-switch-border-color, var(--k-switch-off-color));
+  border-radius: 10px;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-flex;
+  height: 20px;
+  min-width: 40px;
+  outline: none;
+  position: relative;
+  transition: border-color var(--k-transition-duration), background-color var(--k-transition-duration)
+}
+
+.k-switch__core .k-switch__inner {
+  align-items: center;
+  display: flex;
+  height: 16px;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0 4px 0 18px;
+  transition: all var(--k-transition-duration);
+  width: 100%
+}
+
+.k-switch__core .k-switch__inner .is-icon,
+.k-switch__core .k-switch__inner .is-text {
+  color: var(--k-color-white);
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  white-space: nowrap
+}
+
+.k-switch__core .k-switch__action {
+  align-items: center;
+  background-color: var(--k-color-white);
+  border-radius: var(--k-border-radius-circle);
+  color: var(--k-switch-off-color);
+  display: flex;
+  height: 16px;
+  justify-content: center;
+  left: 1px;
+  position: absolute;
+  transition: all var(--k-transition-duration);
+  width: 16px
+}
+
+.k-switch.is-checked .k-switch__core {
+  background-color: var(--k-switch-on-color);
+  border-color: var(--k-switch-border-color, var(--k-switch-on-color))
+}
+
+.k-switch.is-checked .k-switch__core .k-switch__action {
+  color: var(--k-switch-on-color);
+  left: calc(100% - 17px)
+}
+
+.k-switch.is-checked .k-switch__core .k-switch__inner {
+  padding: 0 18px 0 4px
+}
+
+.k-switch.is-disabled {
+  opacity: .6
+}
+
+.k-switch--wide .k-switch__label.k-switch__label--left span {
+  left: 10px
+}
+
+.k-switch--wide .k-switch__label.k-switch__label--right span {
+  right: 10px
+}
+
+.k-switch .label-fade-enter-from,
+.k-switch .label-fade-leave-active {
+  opacity: 0
+}
+
+.k-switch--large {
+  font-size: 14px;
+  height: 40px;
+  line-height: 24px
+}
+
+.k-switch--large .k-switch__label {
+  font-size: 14px;
+  height: 24px
+}
+
+.k-switch--large .k-switch__label * {
+  font-size: 14px
+}
+
+.k-switch--large .k-switch__core {
+  border-radius: 12px;
+  height: 24px;
+  min-width: 50px
+}
+
+.k-switch--large .k-switch__core .k-switch__inner {
+  height: 20px;
+  padding: 0 6px 0 22px
+}
+
+.k-switch--large .k-switch__core .k-switch__action {
+  height: 20px;
+  width: 20px
+}
+
+.k-switch--large.is-checked .k-switch__core .k-switch__action {
+  left: calc(100% - 21px)
+}
+
+.k-switch--large.is-checked .k-switch__core .k-switch__inner {
+  padding: 0 22px 0 6px
+}
+
+.k-switch--small {
+  font-size: 12px;
+  height: 24px;
+  line-height: 16px
+}
+
+.k-switch--small .k-switch__label {
+  font-size: 12px;
+  height: 16px
+}
+
+.k-switch--small .k-switch__label * {
+  font-size: 12px
+}
+
+.k-switch--small .k-switch__core {
+  border-radius: 8px;
+  height: 16px;
+  min-width: 30px
+}
+
+.k-switch--small .k-switch__core .k-switch__inner {
+  height: 12px;
+  padding: 0 2px 0 14px
+}
+
+.k-switch--small .k-switch__core .k-switch__action {
+  height: 12px;
+  width: 12px
+}
+
+.k-switch--small.is-checked .k-switch__core .k-switch__action {
+  left: calc(100% - 13px)
+}
+
+.k-switch--small.is-checked .k-switch__core .k-switch__inner {
+  padding: 0 14px 0 2px
+}

@@ -1,5 +1,5 @@
 <template>
-  <div v-ksw_tooltip="{ content: props.text, visible: props.showOverflow }">
+  <div v-ksw_tooltip="{ content: props.text, visible: props.showOverflow }" style="display: inline-flex;">
     <el-tag
       ref="KTagRef"
       :class="[
