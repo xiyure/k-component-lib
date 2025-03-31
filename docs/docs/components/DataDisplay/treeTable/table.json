@@ -212,13 +212,6 @@
       "tip": "(filterData: FilterDataType) => void"
     },
     {
-      "displayName": "search-function",
-      "type": "Function",
-      "description": "自定义搜索方法，参数为搜索值，返回值为搜索结果，该方法会覆盖默认的搜索方法",
-      "defaultValue": "",
-      "tip": "(searchData: string | number | Date | null | Array<string | number | Date>) => void"
-    },
-    {
       "displayName": "use-ant-style",
       "type": "boolean",
       "description": "是否使用ant-design样式",
@@ -578,7 +571,7 @@
       "displayName": "server-paging",
       "description": "服务端分页",
       "type": "Function",
-      "tip": "(config: PaginationConfig) => void"
+      "tip": "(config: PaginationConfig, extra: {filterConditionInfo: ConditionInfo, searchStr: string}) => void"
     },
     {
       "displayName": "highlight-clear",

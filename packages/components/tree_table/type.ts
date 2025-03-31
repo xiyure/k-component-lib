@@ -67,7 +67,6 @@ export interface TreeTableProps {
   onTransferChange?: (transferData: TableHeaderControl[]) => void;
   onAdvancedFilterShow?: () => void;
   onAdvancedFilterHide?: (filterInfo: { conditionInfo: ConditionInfo; filterData: any[] }) => void;
-  searchFunction?: (searchData: FilterValue) => void;
   useAntStyle?: boolean;
   round?: boolean;
   adaptive?: boolean;
