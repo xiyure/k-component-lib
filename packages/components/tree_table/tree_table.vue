@@ -450,7 +450,7 @@ const {
   changePageSize,
   changeCurrentPage,
   handleTreeData
-} = useData(tableInstance, props, emits, flatColumns, xeTableData, currentData, query);
+} = useData(tableInstance, props, emits, flatColumns, xeTableData, currentData, query, filterConditionInfo, searchStr);
 
 // config
 const { widgets, treeConfig, sortConfig, rowConfig, editConfig, scrollY, columnConfig, seqConfig } =
@@ -587,17 +587,7 @@ function refreshAdvancedFilter(
   newTableData: RowData[],
   isEmit = true
 ) {
-  let isReturn = false;
-  conditionInfo.conditionList?.forEach((item) => {
-    isReturn = Array.isArray(item.showValue) && typeof props.searchFunction === 'function';
-    if (isReturn && props.searchFunction) {
-      props.searchFunction(item.showValue);
-    }
-  });
   resetCheckboxStatus();
-  if (isReturn) {
-    return;
-  }
   filterConditionInfo.value = conditionInfo;
   newFilterData.value = newTableData;
   if (props.useTree) {

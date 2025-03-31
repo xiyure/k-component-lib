@@ -4,6 +4,7 @@ import { CN_DICT, TONE_MARKS } from '../../../constant';
 import { DEFAULT_PAGE_CONFIG } from '../const';
 import { getAllCombinations, sortFunc, convertToMap } from '../../../utils';
 import { TreeTableProps, RowData, Column, TableCacheData } from '../type';
+import { ConditionInfo } from '../../filter/type';
 
 export function useData(
   $table: Ref<VxeTableInstance>,
@@ -12,7 +13,9 @@ export function useData(
   columns: Ref<Column[]>,
   fullData: Ref<RowData[]>,
   currentData: Ref<RowData[]>,
-  searchKeyWord: Ref<string>
+  searchKeyWord: Ref<string>,
+  filterConditionInfo?: Ref<ConditionInfo | undefined>,
+  searchStr?: Ref<string>
 ) {
   // 缓存表格数据筛选过程中产生的临时数据
   const tableCacheData: TableCacheData = {
@@ -207,17 +210,21 @@ export function useData(
   }
 
   // 分页相关
+  const extra = computed(() => ({
+    filterConditionInfo: filterConditionInfo?.value,
+    searchStr: searchStr?.value
+  }));
   function changePageSize(pageSize: number) {
     paginationConfig.value.pageSize = pageSize;
     if (isUseRemotePaging()) {
-      emits('server-paging', paginationConfig.value);
+      emits('server-paging', paginationConfig.value, extra.value);
     }
     emits('page-size-change', pageSize);
   }
   function changeCurrentPage(pageNum: number) {
     paginationConfig.value.currentPage = pageNum;
     if (isUseRemotePaging()) {
-      emits('server-paging', paginationConfig.value);
+      emits('server-paging', paginationConfig.value, extra.value);
     }
     emits('page-current-change', pageNum);
   }

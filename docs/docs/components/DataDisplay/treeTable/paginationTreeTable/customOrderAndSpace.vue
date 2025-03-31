@@ -3,7 +3,6 @@
     <k-tree-table
       :data="tableData" :column="column1"
       border
-      use
       :pagination-config="{ layout: ' jumper, sizes, ->, prev, pager, next, total', pageSizes: [10, 20, 30, 40, 50] }"
     ></k-tree-table>
   </div>

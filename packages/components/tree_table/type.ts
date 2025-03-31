@@ -54,7 +54,10 @@ export interface TreeTableProps {
   advancedFilterConfig?: AdvancedFilterConfig;
   searchConfig?: SearchConfig;
   style?: CSSProperties;
-  class?: string | { [className: string]: boolean } | Array<string | { [className: string]: boolean }>;
+  class?:
+    | string
+    | { [className: string]: boolean }
+    | Array<string | { [className: string]: boolean }>;
   simple?: boolean;
   defaultTransferData?:
     | (() => TableHeaderControl[] | Promise<TableHeaderControl[]>)
@@ -105,10 +108,13 @@ type FilterColumn = {
     value: FilterValue;
   }[];
 };
-export type TablePaginationConfig = Merge<{
-  size?: CompSize;
-  isRemotePaging?: boolean;
-}, ElPaginationProps>
+export type TablePaginationConfig = Merge<
+  {
+    size?: CompSize;
+    isRemotePaging?: boolean;
+  },
+  ElPaginationProps
+>;
 
 export interface SeqConfig {
   seqMethod?: (rowConfig: RowConfig) => string | number;
@@ -148,8 +154,8 @@ export interface SearchConfig {
   searchMethod?: (key: string | number, data: any[]) => any[];
   isRemoteQuery?: boolean;
   ignoreCase?: boolean;
-  searchColumns?: string[]
-  supportPinYin?: string[] | boolean
+  searchColumns?: string[];
+  supportPinYin?: string[] | boolean;
 }
 
 export interface RowData {
@@ -159,7 +165,7 @@ export interface RowData {
   [key: string]: any;
 }
 
-export type TableCacheData =  {
-  treeDataMap: Map<string | number, RowData>,
-  tableDataMap: Map<string | number, { node: RowData; children: RowData[] }>
-}
+export type TableCacheData = {
+  treeDataMap: Map<string | number, RowData>;
+  tableDataMap: Map<string | number, { node: RowData; children: RowData[] }>;
+};
