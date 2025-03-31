@@ -3,7 +3,7 @@
     <k-form-item label="Approved by">
       <k-input v-model="formInline.user" placeholder="Approved by" clearable />
     </k-form-item>
-    <k-form-item label="Activity zone" style="width: 300px;">
+    <k-form-item label="Activity zone" style="width: 250px;">
       <k-select
         v-model="formInline.region"
         placeholder="Activity zone"
@@ -22,7 +22,7 @@
       />
     </k-form-item>
     <k-form-item>
-      <k-button type="primary" @click="onSubmit">Query</k-button>
+      <k-button type="primary" main @click="onSubmit">Query</k-button>
     </k-form-item>
   </k-form>
 </template>
