@@ -1,7 +1,7 @@
 <template>
   <div class="demo-date-picker">
     <div class="block">
-      <p class="mb-4">Component value：{{ value }}</p>
+      <p class="mb-4 demonstration">Component value：{{ value }}</p>
       <k-date-picker
         v-model="value"
         type="daterange"
@@ -32,10 +32,17 @@ const defaultTime = ref<[Date, Date]>([
 .demo-date-picker .block {
   padding: 30px 0;
   text-align: center;
-  border-right: solid 1px var(--el-border-color);
+  border-right: solid 1px var(--k-border-color);
   flex: 1;
 }
 .demo-date-picker .block:last-child {
   border-right: none;
+}
+
+.demo-date-picker .demonstration {
+  display: block;
+  color: var(--k-text-color-secondary);
+  font-size: 14px;
+  margin-bottom: 20px;
 }
 </style>

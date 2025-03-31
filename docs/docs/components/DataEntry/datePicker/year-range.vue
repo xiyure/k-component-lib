@@ -68,7 +68,7 @@ const shortcuts = [
 .demo-date-picker .block {
   padding: 30px 0;
   text-align: center;
-  border-right: solid 1px var(--el-border-color);
+  border-right: solid 1px var(--k-border-color);
   flex: 1;
 }
 .demo-date-picker .block:last-child {
@@ -76,7 +76,7 @@ const shortcuts = [
 }
 .demo-date-picker .demonstration {
   display: block;
-  color: var(--el-text-color-secondary);
+  color: var(--k-text-color-secondary);
   font-size: 14px;
   margin-bottom: 20px;
 }
