@@ -1,7 +1,6 @@
 <template>
   <el-form
     ref="KFormRef"
-    class="k-form"
     v-bind="$attrs"
     :size="formatSize.elSize"
   >

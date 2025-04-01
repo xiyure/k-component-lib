@@ -2,7 +2,6 @@
   <el-form-item
     ref="KFormItemRef"
     :class="[
-      'k-form-item',
       { 'k-form-item--colon': injectShowColon },
       { 'k-form-item--no-label': _showLabel === true }
     ]"

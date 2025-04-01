@@ -9,7 +9,7 @@ const extendOptions = (options: MessageBoxOptions = {}) => {
   const newOptions: MessageBoxOptions = { ...options };
   newOptions.customClass = `k-message-box ${options.customClass || ''}`;
   newOptions.cancelButtonClass = `k-message-box-cancel k-button ${options.cancelButtonClass || ''}`;
-  newOptions.confirmButtonClass = `k-message-box-confirm k-button el-button--main ${options.confirmButtonClass || ''}`;
+  newOptions.confirmButtonClass = `k-message-box-confirm k-button k-button--main ${options.confirmButtonClass || ''}`;
   let index = nextZIndex();
   newOptions.zIndex = index++;
   return newOptions;

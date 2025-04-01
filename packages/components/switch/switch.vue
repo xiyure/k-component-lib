@@ -1,11 +1,5 @@
 <template>
-  <el-switch
-    ref="kSwitchRef"
-    class="k-switch"
-    v-bind="$attrs"
-    :size="formatSize.elSize"
-    :style="switchStyle"
-  />
+  <el-switch ref="kSwitchRef" v-bind="$attrs" :size="formatSize.elSize" :style="switchStyle" />
 </template>
 
 <script setup lang="ts">
@@ -24,8 +18,8 @@ const props = withDefaults(defineProps<SwitchProps>(), {
   inactiveColor: ''
 });
 const DEFAULT_STYLE = {
-  '--el-switch-on-color': props.activeColor,
-  '--el-switch-off-color': props.inactiveColor
+  '--k-switch-on-color': props.activeColor,
+  '--k-switch-off-color': props.inactiveColor
 };
 
 const switchStyle = computed(() => Object.assign(DEFAULT_STYLE, props.style ?? {}));

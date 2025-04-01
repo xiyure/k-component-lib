@@ -1,0 +1,15 @@
+.k-overlay {
+  background-color: var(--k-overlay-color-lighter);
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  overflow: auto;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 2000
+}
+
+.k-overlay .k-overlay-root {
+  height: 0
+}

@@ -1,0 +1,222 @@
+:root {
+  --k-popup-modal-bg-color: var(--k-color-black);
+  --k-popup-modal-opacity: 0.5
+}
+
+.v-modal-enter {
+  animation: v-modal-in var(--k-transition-duration-fast) ease
+}
+
+.v-modal-leave {
+  animation: v-modal-out var(--k-transition-duration-fast) ease forwards
+}
+
+@keyframes v-modal-in {
+  0% {
+    opacity: 0
+  }
+}
+
+@keyframes v-modal-out {
+  to {
+    opacity: 0
+  }
+}
+
+.v-modal {
+  background: var(--k-popup-modal-bg-color);
+  height: 100%;
+  left: 0;
+  opacity: var(--k-popup-modal-opacity);
+  position: fixed;
+  top: 0;
+  width: 100%
+}
+
+.k-popup-parent--hidden {
+  overflow: hidden
+}
+
+.k-dialog {
+  --k-dialog-width: 50%;
+  --k-dialog-margin-top: 15vh;
+  --k-dialog-bg-color: var(--k-bg-color);
+  --k-dialog-box-shadow: var(--k-box-shadow);
+  --k-dialog-title-font-size: var(--k-font-size-large);
+  --k-dialog-content-font-size: 14px;
+  --k-dialog-font-line-height: var(--k-font-line-height-primary);
+  --k-dialog-padding-primary: 16px;
+  --k-dialog-border-radius: var(--k-border-radius-base);
+  background: var(--k-dialog-bg-color);
+  border-radius: var(--k-dialog-border-radius);
+  box-shadow: var(--k-dialog-box-shadow);
+  box-sizing: border-box;
+  margin: var(--k-dialog-margin-top, 15vh) auto 50px;
+  overflow-wrap: break-word;
+  padding: var(--k-dialog-padding-primary);
+  position: relative;
+  width: var(--k-dialog-width, 50%)
+}
+
+.k-dialog:focus {
+  outline: none !important
+}
+
+.k-dialog.is-align-center {
+  margin: auto
+}
+
+.k-dialog.is-fullscreen {
+  --k-dialog-width: 100%;
+  --k-dialog-margin-top: 0;
+  height: 100%;
+  margin-bottom: 0;
+  overflow: auto
+}
+
+.k-dialog__wrapper {
+  bottom: 0;
+  left: 0;
+  margin: 0;
+  overflow: auto;
+  position: fixed;
+  right: 0;
+  top: 0
+}
+
+.k-dialog.is-draggable .k-dialog__header {
+  cursor: move;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none
+}
+
+.k-dialog__header {
+  padding-bottom: var(--k-dialog-padding-primary)
+}
+
+.k-dialog__header.show-close {
+  padding-right: calc(var(--k-dialog-padding-primary) + var(--k-message-close-size, 16px))
+}
+
+.k-dialog__headerbtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: var(--k-message-close-size, 16px);
+  height: 48px;
+  outline: none;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 48px
+}
+
+.k-dialog__headerbtn .k-dialog__close {
+  color: var(--k-color-info);
+  font-size: inherit
+}
+
+.k-dialog__headerbtn:focus .k-dialog__close,
+.k-dialog__headerbtn:hover .k-dialog__close {
+  color: var(--k-color-primary)
+}
+
+.k-dialog__title {
+  color: var(--k-text-color-primary);
+  font-size: var(--k-dialog-title-font-size);
+  line-height: var(--k-dialog-font-line-height)
+}
+
+.k-dialog__body {
+  color: var(--k-text-color-regular);
+  font-size: var(--k-dialog-content-font-size)
+}
+
+.k-dialog__footer {
+  box-sizing: border-box;
+  padding-top: var(--k-dialog-padding-primary);
+  text-align: right
+}
+
+.k-dialog--center {
+  text-align: center
+}
+
+.k-dialog--center .k-dialog__body {
+  text-align: initial
+}
+
+.k-dialog--center .k-dialog__footer {
+  text-align: inherit
+}
+
+.k-overlay-dialog {
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+  position: fixed;
+  right: 0;
+  top: 0
+}
+
+.dialog-fade-enter-active {
+  animation: modal-fade-in var(--k-transition-duration)
+}
+
+.dialog-fade-enter-active .k-overlay-dialog {
+  animation: dialog-fade-in var(--k-transition-duration)
+}
+
+.dialog-fade-leave-active {
+  animation: modal-fade-out var(--k-transition-duration)
+}
+
+.dialog-fade-leave-active .k-overlay-dialog {
+  animation: dialog-fade-out var(--k-transition-duration)
+}
+
+@keyframes dialog-fade-in {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -20px, 0)
+  }
+
+  to {
+    opacity: 1;
+    transform: translateZ(0)
+  }
+}
+
+@keyframes dialog-fade-out {
+  0% {
+    opacity: 1;
+    transform: translateZ(0)
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(0, -20px, 0)
+  }
+}
+
+@keyframes modal-fade-in {
+  0% {
+    opacity: 0
+  }
+
+  to {
+    opacity: 1
+  }
+}
+
+@keyframes modal-fade-out {
+  0% {
+    opacity: 1
+  }
+
+  to {
+    opacity: 0
+  }
+}

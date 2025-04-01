@@ -2,7 +2,7 @@
   <el-dialog
     ref="kDialogRef"
     v-bind="$attrs"
-    :class="['k-dialog', { 'k-dialog-resizable': useResizable && !isFull }]"
+    :class="[{ 'k-dialog-resizable': useResizable && !isFull }]"
     :fullscreen="isFull"
     :draggable="useResizable || draggable"
     :style="useResizable ? { minWidth: minWidth + 'px', minHeight: minHeight + 'px' } : {}"
@@ -149,7 +149,7 @@ defineExpose(getExposeProxy(instance, kDialogRef));
   resize: both;
   overflow: auto;
 
-  .el-dialog__header.show-close {
+  .k-dialog__header.show-close {
     padding-right: 8rem;
   }
 }
