@@ -536,6 +536,14 @@
         "description": "是否服务端分页",
         "type": "boolean",
         "defaultValue": "false"
+      },
+      {
+        "displayName": "pagingMethod",
+        "description": "自定义分页方法",
+        "type": "Function",
+        "defaultValue": "",
+        "tip": "(config: PaginationConfig, extra: {filterConditionInfo: ConditionInfo, searchStr: string}) => void",
+        "version":"1.1.20"
       }
     ],
     "SeqConfig": [

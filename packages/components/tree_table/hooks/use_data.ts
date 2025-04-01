@@ -215,18 +215,28 @@ export function useData(
     searchStr: searchStr?.value
   }));
   function changePageSize(pageSize: number) {
-    paginationConfig.value.pageSize = pageSize;
-    if (isUseRemotePaging()) {
-      emits('server-paging', paginationConfig.value, extra.value);
+    if (isServerPaging()) {
+      const paginationData = { ...paginationConfig.value, pageSize };
+      paginationConfig.value.pagingMethod(paginationData, extra.value);
+    } else {
+      paginationConfig.value.pageSize = pageSize;
+      if (isUseRemotePaging()) {
+        emits('server-paging', paginationConfig.value, extra.value);
+      }
+      emits('page-size-change', pageSize);
     }
-    emits('page-size-change', pageSize);
   }
   function changeCurrentPage(pageNum: number) {
-    paginationConfig.value.currentPage = pageNum;
-    if (isUseRemotePaging()) {
-      emits('server-paging', paginationConfig.value, extra.value);
+    if (isServerPaging()) {
+      const paginationData = { ...paginationConfig.value, currentPage: pageNum };
+      paginationConfig.value.pagingMethod(paginationData, extra.value);
+    } else {
+      paginationConfig.value.currentPage = pageNum;
+      if (isUseRemotePaging()) {
+        emits('server-paging', paginationConfig.value, extra.value);
+      }
+      emits('page-current-change', pageNum);
     }
-    emits('page-current-change', pageNum);
   }
   function getPageData(data: RowData[]) {
     const { currentPage, pageSize } = paginationConfig.value;
@@ -247,6 +257,13 @@ export function useData(
   function isUseRemotePaging() {
     const { isRemotePaging } = paginationConfig.value;
     return isRemotePaging || props.isServerPaging;
+  }
+
+  function isServerPaging() {
+    return (
+      paginationConfig.value.pagingMethod &&
+      typeof paginationConfig.value.pagingMethod === 'function'
+    );
   }
 
   return {

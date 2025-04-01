@@ -1,4 +1,4 @@
-import { CompSize } from "../../utils";
+import { CompSize } from '../../utils';
 
 export interface PaginationProps {
   size?: CompSize;

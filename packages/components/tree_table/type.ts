@@ -111,6 +111,7 @@ export type TablePaginationConfig = Merge<
   {
     size?: CompSize;
     isRemotePaging?: boolean;
+    pagingMethod?: (pagination: TablePaginationConfig, extra: any) => void;
   },
   ElPaginationProps
 >;
