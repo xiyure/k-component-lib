@@ -40,6 +40,7 @@ export interface ScriptInputProps {
   min?: number;
   tagClosable?: boolean;
   searchConfig?: SearchConfig;
+  teleported?: boolean
 }
 
 export type ScriptOptions = {

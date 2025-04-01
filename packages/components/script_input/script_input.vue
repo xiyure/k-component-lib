@@ -5,6 +5,7 @@
       :show-arrow="false"
       :visible="popperVisible"
       :popper-class="`k-script-input-popper ${dynamicClassName}`"
+      :teleported
       class="overflow-hidden"
       @hide="onHidePopper"
     >
@@ -181,7 +182,8 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   checkContentType: false,
   contentType: 'string',
   optionRepeatable: true,
-  tagClosable: false
+  tagClosable: false,
+  teleported: true
 });
 
 const DEFAULT_TREE_CONFIG = {
@@ -386,8 +388,10 @@ function handleChange(res: ChangeEventParams) {
 }
 
 // 获取输入框内容，注意处理特殊字符
-function getEditorContent() {
-  return formatterEscape(KScriptInputWrapper.value.innerHTML);
+function getEditorContent(isText: boolean = false) {
+  const { innerHTML, textContent } = KScriptInputWrapper.value;
+  const content = isText? textContent : innerHTML;
+  return content.replace(/&nbsp;/g, ' ');
 }
 
 // 设置输入框内容
@@ -580,7 +584,7 @@ function removeSameNode(targetNode: Element) {
 function parseInputValue(): ChangeEventParams {
   if (_showPassword.value || !isStringMode()) {
     return {
-      result: _showPassword.value ? pwd.value : getEditorContent(),
+      result: _showPassword.value ? pwd.value : getEditorContent(true),
       scriptTags: [],
       isStringMode: isStringMode(),
       checkVariableResult
@@ -959,9 +963,7 @@ function handleResize() {
     popoverWidth.value = KScriptInput.value?.offsetWidth ?? 0;
   });
 }
-function formatterEscape(str: string) {
-  return str.replace(/&nbsp;/g, ' ');
-}
+
 function escapeValue(str: string) {
   if (typeof str !== 'string') {
     return str;

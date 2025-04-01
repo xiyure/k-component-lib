@@ -66,9 +66,11 @@
         overflow: hidden;
         text-overflow: ellipsis;
         text-wrap: nowrap;
-        color: var(--k-theme-form-item__label-color);
         -webkit-box-orient: vertical;
         word-break: break-all;
+        &:not(button>*) {
+          color: var(--k-theme-form-item__label-color);
+        }
       }
     }
     .el-form-item__content {

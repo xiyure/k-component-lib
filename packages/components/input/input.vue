@@ -122,7 +122,6 @@ import {
   provide,
   onMounted,
   onBeforeUnmount,
-  nextTick,
   VNode
 } from 'vue';
 import { ElInput, ElScrollbar } from 'element-plus';
@@ -284,7 +283,7 @@ function closePopper() {
 }
 
 function updatePopperWidth() {
-  nextTick(() => (popperWidth.value = inputRef.value.$el.offsetWidth));
+  setTimeout(() => (popperWidth.value = inputRef.value?.$el?.offsetWidth));
 }
 
 provide(SIZE_KEY, formatSize);
