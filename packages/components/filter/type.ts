@@ -12,7 +12,7 @@ export interface FilterProps {
   formatter?: string;
   ignoreCase?: boolean;
   maxNumber?: number;
-  searchMethod?: (data: ConditionInfo | undefined) => any[];
+  filterMethod?: (data: ConditionInfo | undefined) =>any[] | Promise<any[]>;
 }
 
 export type FilterValue = string | number | Date | null | Array<string | number | Date>;
@@ -76,7 +76,8 @@ export interface Condition {
     | 'nonEmpty'
     | 'contains'
     | 'before'
-    | 'after';
+    | 'after'
+    | ''
   value: FilterValue;
   showValue: FilterValue;
   key: string | null;

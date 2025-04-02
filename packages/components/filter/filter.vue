@@ -367,17 +367,17 @@ function clearFilter(isFilter: boolean = true) {
   }
   return {};
 }
-function query() {
-  const { conditionInfo, tableData } = filter();
+async function query() {
+  const { conditionInfo, tableData } = await filter();
   emits('confirm', conditionInfo, tableData ?? []);
 }
-function filter(data?: any[]) {
+async function filter(data?: any[]) {
   const sourceData = Array.isArray(data) ? data : props.data;
   const conditionInfo = getConditionInfo();
-  if (typeof props.searchMethod === 'function') {
+  if (typeof props.filterMethod === 'function') {
     return {
       conditionInfo,
-      tableData: props.searchMethod(conditionInfo)
+      tableData: await props.filterMethod(conditionInfo)
     };
   }
   if (conditionInfo.conditionList.length === 0 || props.remote === true) {

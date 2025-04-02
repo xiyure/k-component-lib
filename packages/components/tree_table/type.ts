@@ -146,12 +146,12 @@ export interface AdvancedFilterConfig {
     conditionList?: Condition[];
     filterRule?: number;
   };
-  searchMethod?: (conditionInfo: ConditionInfo | undefined) => any[];
+  filterMethod?: (conditionInfo: ConditionInfo | undefined) => RowData[] | Promise<RowData[]>;
 }
 
 export interface SearchConfig {
   strict?: boolean;
-  searchMethod?: (key: string | number, data: any[]) => any[];
+  searchMethod?: (key: string | number, data: RowData[]) => RowData[] | Promise<RowData[]>;
   isRemoteQuery?: boolean;
   ignoreCase?: boolean;
   searchColumns?: string[];

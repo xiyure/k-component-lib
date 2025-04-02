@@ -14,8 +14,7 @@ export function useData(
   fullData: Ref<RowData[]>,
   currentData: Ref<RowData[]>,
   searchKeyWord: Ref<string>,
-  filterConditionInfo?: Ref<ConditionInfo | undefined>,
-  searchStr?: Ref<string>
+  filterConditionInfo: Ref<ConditionInfo | undefined>
 ) {
   // 缓存表格数据筛选过程中产生的临时数据
   const tableCacheData: TableCacheData = {
@@ -26,7 +25,7 @@ export function useData(
   // 分页配置
   const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
   // 表格数据
-  const visibleData = computed(() => filterTableData());
+  const visibleData = ref(props.data ?? []);
   // 可见面板数据
   const showTableData = computed(() => {
     if (!isPaging.value || isUseRemotePaging()) {
@@ -61,8 +60,15 @@ export function useData(
     { immediate: true, deep: true }
   );
 
+  watch([
+    () => searchKeyWord.value,
+    () => currentData.value,
+    ], async () => {
+      visibleData.value = await filterTableData();
+  })
+
   // 表格内容搜索
-  function filterTableData() {
+  async function filterTableData() {
     const filterData = currentData.value;
     tableCacheData.tableDataMap = convertToMap(
       fullData.value,
@@ -71,15 +77,15 @@ export function useData(
     );
     const { strict, searchMethod, ignoreCase = false, searchColumns } = props.searchConfig ?? {};
     const searchKey = searchKeyWord.value.trim().replace(/\\/g, '\\\\');
-    if (props.isRemoteQuery || props.searchConfig?.isRemoteQuery) {
-      emits('remote-query', searchKey);
-      return filterData;
-    }
     if (!searchKey) {
       return filterData;
     }
     if (typeof searchMethod === 'function') {
-      return searchMethod(searchKey, filterData);
+      return await searchMethod(searchKey, filterData);
+    }
+    if (props.isRemoteQuery || props.searchConfig?.isRemoteQuery) {
+      emits('remote-query', searchKey);
+      return filterData;
     }
     const visibleColumns = columns.value.filter((col: Column) => col.visible !== false);
     const fieldList = Array.isArray(searchColumns)
@@ -210,33 +216,15 @@ export function useData(
   }
 
   // 分页相关
-  const extra = computed(() => ({
-    filterConditionInfo: filterConditionInfo?.value,
-    searchStr: searchStr?.value
-  }));
   function changePageSize(pageSize: number) {
-    if (isServerPaging()) {
-      const paginationData = { ...paginationConfig.value, pageSize };
-      paginationConfig.value.pagingMethod(paginationData, extra.value);
-    } else {
-      paginationConfig.value.pageSize = pageSize;
-      if (isUseRemotePaging()) {
-        emits('server-paging', paginationConfig.value, extra.value);
-      }
-      emits('page-size-change', pageSize);
-    }
+    paginationConfig.value.pageSize = pageSize;
+    handleRemotePaging();
+    emits('page-size-change', pageSize);
   }
   function changeCurrentPage(pageNum: number) {
-    if (isServerPaging()) {
-      const paginationData = { ...paginationConfig.value, currentPage: pageNum };
-      paginationConfig.value.pagingMethod(paginationData, extra.value);
-    } else {
-      paginationConfig.value.currentPage = pageNum;
-      if (isUseRemotePaging()) {
-        emits('server-paging', paginationConfig.value, extra.value);
-      }
-      emits('page-current-change', pageNum);
-    }
+    paginationConfig.value.currentPage = pageNum;
+    handleRemotePaging();
+    emits('page-current-change', pageNum);
   }
   function getPageData(data: RowData[]) {
     const { currentPage, pageSize } = paginationConfig.value;
@@ -259,11 +247,12 @@ export function useData(
     return isRemotePaging || props.isServerPaging;
   }
 
-  function isServerPaging() {
-    return (
-      paginationConfig.value.pagingMethod &&
-      typeof paginationConfig.value.pagingMethod === 'function'
-    );
+  function handleRemotePaging() {
+    if (!isUseRemotePaging()) {
+      return;
+    }
+    const params = { ...paginationConfig.value, searchKeyWord: searchKeyWord.value, conditionInfo: filterConditionInfo.value ?? {} };
+    emits('server-paging', paginationConfig.value, params);
   }
 
   return {

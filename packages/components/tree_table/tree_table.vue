@@ -86,7 +86,7 @@
               :ignore-case="advancedFilterConfig?.ignoreCase"
               :formatter="advancedFilterConfig?.dateFormat ?? 'YYYY-MM-DD HH:mm:ss'"
               :default-condition="advancedFilterConfig?.defaultCondition ?? filterConditionInfo"
-              :search-method="advancedFilterConfig?.searchMethod"
+              :filter-method="advancedFilterConfig?.filterMethod"
               @confirm="refreshAdvancedFilter"
               @clear="
                 () => {
@@ -450,7 +450,7 @@ const {
   changePageSize,
   changeCurrentPage,
   handleTreeData
-} = useData(tableInstance, props, emits, flatColumns, xeTableData, currentData, query, filterConditionInfo, searchStr);
+} = useData(tableInstance, props, emits, flatColumns, xeTableData, currentData, query, filterConditionInfo);
 
 // config
 const { widgets, treeConfig, sortConfig, rowConfig, editConfig, scrollY, columnConfig, seqConfig } =
