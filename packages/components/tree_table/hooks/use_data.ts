@@ -251,8 +251,18 @@ export function useData(
     if (!isUseRemotePaging()) {
       return;
     }
-    const params = { ...paginationConfig.value, searchKeyWord: searchKeyWord.value, conditionInfo: filterConditionInfo.value ?? {} };
-    emits('server-paging', paginationConfig.value, params);
+    const { currentPage, pageSize, total, pageSizes } = paginationConfig.value;
+    const params = {
+      currentPage,
+      pageSize,
+      total,
+      pageSizes,
+      searchKeyWord: searchKeyWord.value,
+      conditionInfo: filterConditionInfo.value ?? {}
+    };
+    const pagingMethod = props.paginationConfig?.pagingMethod;
+    typeof pagingMethod === 'function' && pagingMethod(params);
+    emits('server-paging', params);
   }
 
   return {
