@@ -64,21 +64,21 @@ import 'ksw-vue-icon/styles/icon.css';
 
 ```js:line-numbers
 import { KswIcon } from 'ksw-vue-icon'
-Vue.use(KswIcon)
+app.use(KswIcon)
 ```
 
 ## 项目用法 <k-tag type="primary" round><IconArrowUp />2.3.0</k-tag>
 
 ::: tip
-自 `2.3.0` 版本起图标库支持 `Vue.use` 传入项目名称来使用项目图标
+自 `2.3.0` 版本起图标库支持 `app.use` 传入项目名称来使用项目图标
 :::
 
-你可以在 `Vue.use` 方法传入项目名称来使用项目图标库扩充基本图标库。项目图标的优先级大于基本图标。
+你可以在 `app.use` 方法传入项目名称来使用项目图标库扩充基本图标库。项目图标的优先级大于基本图标。
 
 例如下方的示例使用广发 `Guangfa` 来扩充基本图标库
 
 ```js
-Vue.use(KswIcon, { projectName: 'Guangfa' });
+app.use(KswIcon, { projectName: 'Guangfa' });
 ```
 
 按需引用项目图标只需要在 `ksw-vue-icon` 后添加上 `projectName`，例如:
