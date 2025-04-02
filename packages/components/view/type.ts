@@ -12,6 +12,7 @@ export interface ViewProps {
   showArrow?: boolean
   showCount?: boolean
   props?: ViewAttributes
+  simple?: boolean
 }
 export interface ViewAttributes {
   label?: string

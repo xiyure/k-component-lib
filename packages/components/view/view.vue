@@ -5,13 +5,14 @@
       :class="{ 'is-collapse': viewCollapse }"
     >
       <div
+        v-if="!simple"
         class="showViewBtn flex justify-center items-center rounded-full"
         @click="handleViewVisible"
       >
         <IconArrowRight :class="{ 'is-collapse': !viewCollapse }" />
       </div>
       <div class="k-view-aside" :style="{ display: viewCollapse ? 'none' : 'flex' }">
-        <div class="k-view__header">
+        <div v-if="!simple" class="k-view__header">
           <div class="view-title text-base font-bold">
             <slot name="header">{{ t?.('view.view') }}</slot>
           </div>
@@ -114,7 +115,7 @@
         </div>
       </div>
     </div>
-    <div class="k-view-content">
+    <div class="k-view-content" v-if="!simple">
       <slot></slot>
       <slot :name="active"></slot>
     </div>
@@ -155,7 +156,8 @@ const props = withDefaults(defineProps<ViewProps>(), {
   useTree: false,
   treeConfig: () => ({}),
   showArrow: false,
-  showCount: true
+  showCount: true,
+  simple: false
 });
 const emits = defineEmits([
   'refresh',
