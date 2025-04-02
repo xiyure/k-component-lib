@@ -449,8 +449,14 @@ const {
   tableCacheData,
   changePageSize,
   changeCurrentPage,
-  handleTreeData
-} = useData(tableInstance, props, emits, flatColumns, xeTableData, currentData, query, filterConditionInfo);
+  handleTreeData,
+  handleRemotePaging
+} = useData(tableInstance, props, emits, flatColumns, xeTableData, currentData, query, filterConditionInfo, setData);
+
+(function() {
+  setData(props.data ?? []);
+  handleRemotePaging();
+})();
 
 // config
 const { widgets, treeConfig, sortConfig, rowConfig, editConfig, scrollY, columnConfig, seqConfig } =
@@ -472,11 +478,9 @@ watch(
   [() => props.data, () => props.data?.length],
   () => {
     clearCheckedData();
-    xeTableData.value = setTableData(props.data);
+    setData(props.data ?? []);
     advancedFilter();
-  },
-  { immediate: true }
-);
+  });
 
 watch(
   () => props.column,
@@ -585,8 +589,14 @@ function hideColumn(column: Column) {
 function refreshAdvancedFilter(
   conditionInfo: ConditionInfo,
   newTableData: RowData[],
+  isRemote: boolean,
   isEmit = true
 ) {
+  if (isRemote) {
+    setData(newTableData);
+    newFilterData.value = newTableData;
+    return;
+  }
   resetCheckboxStatus();
   filterConditionInfo.value = conditionInfo;
   newFilterData.value = newTableData;
@@ -640,7 +650,7 @@ async function advancedFilter(data?: RowData[] | undefined) {
   await nextTick();
   const advancedFilterObj = tableFilterRef.value?.[0]?.filter?.(data);
   const { conditionInfo, tableData } = advancedFilterObj ?? {};
-  refreshAdvancedFilter(conditionInfo, tableData, false);
+  refreshAdvancedFilter(conditionInfo, tableData, false, false);
   return { conditionInfo, tableData };
 }
 
@@ -653,7 +663,7 @@ async function clearAdvancedFilter() {
   resetCheckboxStatus();
   const advancedFilterObj = tableFilterRef.value?.[0]?.clearFilter?.();
   const { conditionInfo, tableData } = advancedFilterObj ?? {};
-  refreshAdvancedFilter(conditionInfo, tableData, false);
+  refreshAdvancedFilter(conditionInfo, tableData, false, false);
   return { conditionInfo, tableData };
 }
 
@@ -690,8 +700,12 @@ function loadData(data: RowData[]) {
   if (!Array.isArray(data)) {
     return;
   }
-  xeTableData.value = setTableData(data);
+  setData(data);
   advancedFilter(data);
+}
+
+function setData(data: RowData[]) {
+  xeTableData.value = setTableData(data);
 }
 
 provide('__showTransfer', __showTransfer);

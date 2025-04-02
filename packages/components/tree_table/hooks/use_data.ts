@@ -3,7 +3,7 @@ import { VxeTableInstance } from 'vxe-table';
 import { CN_DICT, TONE_MARKS } from '../../../constant';
 import { DEFAULT_PAGE_CONFIG } from '../const';
 import { getAllCombinations, sortFunc, convertToMap } from '../../../utils';
-import { TreeTableProps, RowData, Column, TableCacheData } from '../type';
+import { TreeTableProps, RowData, Column, TableCacheData, TablePaginationConfig } from '../type';
 import { ConditionInfo } from '../../filter/type';
 
 export function useData(
@@ -14,7 +14,8 @@ export function useData(
   fullData: Ref<RowData[]>,
   currentData: Ref<RowData[]>,
   searchKeyWord: Ref<string>,
-  filterConditionInfo: Ref<ConditionInfo | undefined>
+  filterConditionInfo: Ref<ConditionInfo | undefined>,
+  setData: (data: RowData[]) => void,
 ) {
   // 缓存表格数据筛选过程中产生的临时数据
   const tableCacheData: TableCacheData = {
@@ -23,9 +24,11 @@ export function useData(
   };
 
   // 分页配置
-  const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
+  const paginationConfig = ref<TablePaginationConfig>(DEFAULT_PAGE_CONFIG);
   // 表格数据
-  const visibleData = ref(props.data ?? []);
+  const visibleData = computed(() => {
+    return props.isRemoteQuery || props.searchConfig?.isRemoteQuery ? fullData.value : filterTableData();
+  })
   // 可见面板数据
   const showTableData = computed(() => {
     if (!isPaging.value || isUseRemotePaging()) {
@@ -60,31 +63,29 @@ export function useData(
     { immediate: true, deep: true }
   );
 
+  // 处理远程搜索
   watch([
-    () => searchKeyWord.value,
-    () => currentData.value,
+    () => searchKeyWord.value
     ], async () => {
-      visibleData.value = await filterTableData();
-  })
+      const { isRemoteQuery, searchMethod }  =  props.searchConfig ?? {};
+      if ((props.isRemoteQuery || isRemoteQuery)) {
+        emits('remote-query', searchKeyWord.value.trim().replace(/\\/g, '\\\\'));
+        const tableData = await searchMethod?.(searchKeyWord.value, fullData.value);
+        setData(Array.isArray(tableData) ? tableData : []);
+      }
+  }, { immediate: true })
 
   // 表格内容搜索
-  async function filterTableData() {
+  function filterTableData() {
     const filterData = currentData.value;
     tableCacheData.tableDataMap = convertToMap(
       fullData.value,
       props.rowConfig?.keyField ?? 'id',
       props.treeConfig?.parentField ?? 'pid'
     );
-    const { strict, searchMethod, ignoreCase = false, searchColumns } = props.searchConfig ?? {};
+    const { strict, ignoreCase = false, searchColumns } = props.searchConfig ?? {};
     const searchKey = searchKeyWord.value.trim().replace(/\\/g, '\\\\');
     if (!searchKey) {
-      return filterData;
-    }
-    if (typeof searchMethod === 'function') {
-      return await searchMethod(searchKey, filterData);
-    }
-    if (props.isRemoteQuery || props.searchConfig?.isRemoteQuery) {
-      emits('remote-query', searchKey);
       return filterData;
     }
     const visibleColumns = columns.value.filter((col: Column) => col.visible !== false);
@@ -228,14 +229,19 @@ export function useData(
   }
   function getPageData(data: RowData[]) {
     const { currentPage, pageSize } = paginationConfig.value;
+    if (!pageSize || !currentPage) {
+      return [];
+    }
     const startIndex = (currentPage - 1) * pageSize;
     const endIndex = startIndex + pageSize;
     return data.slice(startIndex, endIndex);
   }
   // 数据最大页码小于当前页码时，需要修改当前页码
   function updatePageNum(length: number) {
-    let { currentPage } = paginationConfig.value;
-    const pageSize = paginationConfig.value.pageSize;
+    let { currentPage, pageSize } = paginationConfig.value;
+    if (!currentPage || !pageSize) {
+      return;
+    }
     while ((currentPage - 1) * pageSize + 1 > length && currentPage > 1) {
       currentPage--;
     }
@@ -247,22 +253,28 @@ export function useData(
     return isRemotePaging || props.isServerPaging;
   }
 
-  function handleRemotePaging() {
+  async function handleRemotePaging() {
     if (!isUseRemotePaging()) {
       return;
     }
-    const { currentPage, pageSize, total, pageSizes } = paginationConfig.value;
+    const { currentPage, pageSize, pageSizes } = paginationConfig.value;
     const params = {
       currentPage,
       pageSize,
-      total,
       pageSizes,
       searchKeyWord: searchKeyWord.value,
       conditionInfo: filterConditionInfo.value ?? {}
     };
-    const pagingMethod = props.paginationConfig?.pagingMethod;
-    typeof pagingMethod === 'function' && pagingMethod(params);
+    customPagingMethod(params);
     emits('server-paging', params);
+  }
+  async function customPagingMethod(params: any) {
+    const { total: curTotal = 0, pagingMethod } = props.paginationConfig ?? {};
+    if (typeof pagingMethod === 'function') {
+      const { data = [], total } = (await pagingMethod(params)) ?? {};
+      setData(data);
+      paginationConfig.value.total = isNaN(Number(total)) ? curTotal : Number(total);
+    }
   }
 
   return {
@@ -273,6 +285,8 @@ export function useData(
     paginationConfig,
     changePageSize,
     changeCurrentPage,
-    handleTreeData
+    handleTreeData,
+    isUseRemotePaging,
+    handleRemotePaging
   };
 }

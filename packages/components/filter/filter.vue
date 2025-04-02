@@ -368,16 +368,18 @@ function clearFilter(isFilter: boolean = true) {
   return {};
 }
 async function query() {
-  const { conditionInfo, tableData } = await filter();
-  emits('confirm', conditionInfo, tableData ?? []);
+  const { conditionInfo, tableData, remote } = await filter();
+  emits('confirm', conditionInfo, tableData ?? [], remote);
 }
 async function filter(data?: any[]) {
   const sourceData = Array.isArray(data) ? data : props.data;
   const conditionInfo = getConditionInfo();
   if (typeof props.filterMethod === 'function') {
+    const tableData = await props.filterMethod(conditionInfo);
     return {
       conditionInfo,
-      tableData: await props.filterMethod(conditionInfo)
+      tableData,
+      remote: true
     };
   }
   if (conditionInfo.conditionList.length === 0 || props.remote === true) {
@@ -417,7 +419,8 @@ async function filter(data?: any[]) {
   });
   return {
     conditionInfo,
-    tableData: newData ?? []
+    tableData: newData ?? [],
+    remote: false
   };
 }
 function getConditionInfo() {

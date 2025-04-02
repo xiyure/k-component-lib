@@ -111,9 +111,11 @@ export type TablePaginationConfig = Merge<
   {
     size?: CompSize;
     isRemotePaging?: boolean;
-    pagingMethod?: (config: any) => void;
+    pagingMethod?: (config: any) => Promise<{ data: RowData[]; total: number }>;
   },
-  ElPaginationProps
+  {
+    -readonly [K in keyof ElPaginationProps]: ElPaginationProps[K];
+  }
 >;
 
 export interface SeqConfig {
