@@ -27,7 +27,7 @@ export function useData(
   const paginationConfig = ref<TablePaginationConfig>(DEFAULT_PAGE_CONFIG);
   // 表格数据
   const visibleData = computed(() => {
-    return props.isRemoteQuery || props.searchConfig?.isRemoteQuery ? fullData.value : filterTableData();
+    return isUseRemoteSearch() ? currentData.value : filterTableData();
   })
   // 可见面板数据
   const showTableData = computed(() => {
@@ -67,14 +67,18 @@ export function useData(
   watch([
     () => searchKeyWord.value
     ], async () => {
-      const { isRemoteQuery, searchMethod }  =  props.searchConfig ?? {};
-      if ((props.isRemoteQuery || isRemoteQuery)) {
-        emits('remote-query', searchKeyWord.value.trim().replace(/\\/g, '\\\\'));
-        const params = getMethodParams();
-        const tableData = await searchMethod?.(params);
-        setData(Array.isArray(tableData) ? tableData : []);
+      const { searchMethod }  =  props.searchConfig ?? {};
+      const params = getMethodParams();
+      if (isUseRemoteSearch()) {
+        if (typeof props.requestMethod === 'function') {
+          await handleRemoteData();
+        } else if (typeof searchMethod === 'function') {
+          const tableData = await searchMethod(params);
+          setData(Array.isArray(tableData) ? tableData : []);
+        }
+        emits('remote-query', params);
       }
-  }, { immediate: true })
+  });
 
   // 表格内容搜索
   function filterTableData() {
@@ -220,12 +224,18 @@ export function useData(
   // 分页相关
   function changePageSize(pageSize: number) {
     paginationConfig.value.pageSize = pageSize;
-    handleRemotePaging();
+    if (isUseRemotePaging()) {
+      handleRemoteData();
+      emits('server-paging', getMethodParams());
+    }
     emits('page-size-change', pageSize);
   }
   function changeCurrentPage(pageNum: number) {
     paginationConfig.value.currentPage = pageNum;
-    handleRemotePaging();
+    if (isUseRemotePaging()) {
+      handleRemoteData();
+      emits('server-paging', getMethodParams());
+    }
     emits('page-current-change', pageNum);
   }
   function getPageData(data: RowData[]) {
@@ -254,18 +264,15 @@ export function useData(
     return isRemotePaging || props.isServerPaging;
   }
 
-  async function handleRemotePaging() {
-    if (!isUseRemotePaging()) {
-      return;
-    }
-    const params = getMethodParams();
-    customPagingMethod(params);
-    emits('server-paging', params);
+  function isUseRemoteSearch() {
+    return props.isRemoteQuery || props.searchConfig?.isRemoteQuery;
   }
-  async function customPagingMethod(params: any) {
-    const { total: curTotal = 0, pagingMethod } = props.paginationConfig ?? {};
-    if (typeof pagingMethod === 'function') {
-      const { data = [], total } = (await pagingMethod(params)) ?? {};
+
+  async function handleRemoteData() {
+    const { total: curTotal = 0 } = paginationConfig.value;
+    const params =  getMethodParams();
+    if (typeof props.requestMethod === 'function') {
+      const { data = [], total } = (await props.requestMethod(params)) ?? {};
       setData(data);
       paginationConfig.value.total = isNaN(Number(total)) ? curTotal : Number(total);
     }
@@ -273,13 +280,13 @@ export function useData(
 
   function getMethodParams() {
     const { currentPage, pageSize, pageSizes } = paginationConfig.value;
-    return{
+    return {
       currentPage,
       pageSize,
       pageSizes,
-      searchKeyWord: searchKeyWord.value,
+      searchKeyWord: searchKeyWord.value.trim().replace(/\\/g, '\\\\'),
       conditionInfo: filterConditionInfo.value ?? {},
-      currentData: fullData.value,
+      currentData: currentData.value,
     };
   }
 
@@ -292,6 +299,6 @@ export function useData(
     changePageSize,
     changeCurrentPage,
     handleTreeData,
-    handleRemotePaging
+    handleRemoteData
   };
 }

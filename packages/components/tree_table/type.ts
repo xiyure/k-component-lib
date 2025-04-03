@@ -71,6 +71,7 @@ export interface TreeTableProps {
   round?: boolean;
   adaptive?: boolean;
   hasSpace?: boolean;
+  requestMethod?: (params: TableRemoteMethod) => Promise<TableMethodReturn>;
 }
 
 export interface Column {
@@ -111,7 +112,6 @@ export type TablePaginationConfig = Merge<
   {
     size?: CompSize;
     isRemotePaging?: boolean;
-    pagingMethod?: (params: TableRemoteMethod) => Promise<{ data: RowData[]; total: number }>;
   },
   {
     -readonly [K in keyof ElPaginationProps]: ElPaginationProps[K];
@@ -148,7 +148,6 @@ export interface AdvancedFilterConfig {
     conditionList?: Condition[];
     filterRule?: number;
   };
-  filterMethod?: (params: TableRemoteMethod) => RowData[] | Promise<RowData[]>;
 }
 
 export interface SearchConfig {
@@ -179,4 +178,9 @@ export type TableRemoteMethod = {
   pageSizes: number[] | undefined
   conditionInfo: ConditionInfo,
   currentData?: RowData[]
+}
+
+export type TableMethodReturn = {
+  data: RowData[]
+  total?: number
 }

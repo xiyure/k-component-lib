@@ -86,7 +86,6 @@
               :ignore-case="advancedFilterConfig?.ignoreCase"
               :formatter="advancedFilterConfig?.dateFormat ?? 'YYYY-MM-DD HH:mm:ss'"
               :default-condition="advancedFilterConfig?.defaultCondition ?? filterConditionInfo"
-              :filter-method="advancedFilterConfig?.filterMethod"
               @confirm="refreshAdvancedFilter"
               @clear="
                 () => {
@@ -301,7 +300,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, provide, onMounted } from 'vue';
+import { ref, computed, watch, nextTick, provide, onBeforeMount } from 'vue';
 import VXETable from 'vxe-table';
 import { cloneDeep } from 'lodash-es';
 import { IconSearch, IconRefresh, IconFilter, IconFilterFill, IconSizeControls, IconSetting } from 'ksw-vue-icon';
@@ -395,7 +394,7 @@ const tableTransferRef = ref();
 // 列配置
 const columns = ref<Column[]>([]);
 // 表格数据
-const xeTableData = ref<RowData[]>([]);
+const xeTableData = ref<RowData[]>(Array.isArray(props.data) ? props.data : []);
 // 搜索框关键词
 const query = ref('');
 const searchStr = ref('');
@@ -465,14 +464,8 @@ const {
   changePageSize,
   changeCurrentPage,
   handleTreeData,
-  handleRemotePaging
+  handleRemoteData
 } = useData(tableInstance, props, emits, flatColumns, xeTableData, currentData, query, filterConditionInfo, setData);
-
-// 初始化数据
-(function() {
-  setData(props.data ?? []);
-  isPaging.value && handleRemotePaging();
-})();
 
 // config
 const { widgets, treeConfig, sortConfig, rowConfig, editConfig, scrollY, columnConfig, seqConfig } =
@@ -489,6 +482,10 @@ const {
   resetCheckboxStatus,
   _checkboxMethods
 } = useCheckbox(tableInstance, props, xeTableData, showTableData, tableCacheData);
+
+onBeforeMount(() => {
+  refreshTableData();
+});
 
 watch(
   [() => props.data, () => props.data?.length],
@@ -607,24 +604,14 @@ async function refreshAdvancedFilter(
   newTableData: RowData[],
   isEmit = true
 ) {
-  const { remote, filterMethod } = props.advancedFilterConfig ?? {};
-  if (remote && typeof filterMethod === 'function') {
-    const { currentPage, pageSize, pageSizes } = paginationConfig.value;
-    const params = {
-      currentPage,
-      pageSize,
-      pageSizes,
-      conditionInfo,
-      searchKeyWord: query.value,
-      currentData: xeTableData.value
-    };
-    const newTableData = await filterMethod?.(params) ?? [];
-    setData(newTableData);
-    newFilterData.value = newTableData;
+  filterConditionInfo.value = conditionInfo;
+  const { remote } = props.advancedFilterConfig ?? {};
+  if (remote) {
+    await handleRemoteData();
+    newFilterData.value = xeTableData.value;
     return;
   }
   resetCheckboxStatus();
-  filterConditionInfo.value = conditionInfo;
   newFilterData.value = newTableData;
   if (props.useTree) {
     handleTreeData(newFilterData.value);
@@ -734,6 +721,15 @@ function setData(data: RowData[]) {
   xeTableData.value = setTableData(data);
 }
 
+async function refreshTableData() {
+  const isRemoteSearch = props.searchConfig?.isRemoteQuery || props.isRemoteQuery;
+  const isRemoteFilter = props.advancedFilterConfig?.remote ?? false;
+  const isServerPaging = isPaging.value && (props.isServerPaging || props.paginationConfig?.isRemotePaging);
+  if (isServerPaging || isRemoteSearch || isRemoteFilter) {
+    handleRemoteData();
+  }
+}
+
 provide('__showTransfer', __showTransfer);
 provide(
   SIZE_KEY,
@@ -759,6 +755,7 @@ const customMethods = {
   getVisibleData,
   loadData,
   clearSearch,
+  refreshTableData,
   ..._methods,
   ..._checkboxMethods,
   ..._transferMethods
