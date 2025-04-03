@@ -19,8 +19,9 @@
       <template #head>
         <slot name="aside-toolbar"></slot>
       </template>
-
-      <slot name="aside"></slot>
+      <div>
+        <slot name="aside"></slot>
+      </div>
       <template #foot>
         <slot name="aside-foot"></slot>
       </template>

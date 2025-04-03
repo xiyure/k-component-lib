@@ -46,7 +46,7 @@
           </slot>
         </div>
 
-        <div class="KPageViewBus-main pt-3 h-full flex">
+        <div class="KPageViewBus-main h-full flex">
           <slot></slot>
         </div>
         <div v-if="$slots['foot']" class="KPageViewBus-foot pt-3">

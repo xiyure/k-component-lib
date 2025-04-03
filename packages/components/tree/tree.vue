@@ -17,6 +17,9 @@
         </slot>
       </span>
     </template>
+    <template v-if="$slots.empty" #empty>
+      <slot name="empty"></slot>
+    </template>
   </el-tree>
 </template>
 

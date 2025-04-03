@@ -1,8 +1,8 @@
 <template>
   <div ref="KViewRef" class="k-view text-base" :style="{ height: typeof height === 'number'? `${height}px` : height }">
     <div
-      class="k-view-nav p-2 h-full border-r border-gray-200 relative flex-shrink-0"
-      :class="{ 'is-collapse': viewCollapse, 'is-simple': simple }"
+      class="k-view-nav h-full border-gray-200 relative flex-shrink-0"
+      :class="{ 'is-collapse': viewCollapse, 'is-simple': simple, 'border-r': !simple, 'p-2': !simple, 'pr-2': simple  }"
     >
       <div
         v-if="!simple"
