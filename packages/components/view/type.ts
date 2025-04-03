@@ -13,6 +13,7 @@ export interface ViewProps {
   showCount?: boolean
   props?: ViewAttributes
   simple?: boolean
+  height?: string | number
 }
 export interface ViewAttributes {
   label?: string
