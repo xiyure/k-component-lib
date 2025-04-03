@@ -193,7 +193,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch, useAttrs } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { cloneDeep } from 'lodash-es';
 import { FilterProps, FilterData, FilterOptions } from './type';
 import { dateTypeOptions, logicOptions } from '../../constant/filter_data';
@@ -214,19 +214,6 @@ const props = withDefaults(defineProps<FilterProps>(), {
 });
 
 const formatSize = useSize<FilterProps>(props);
-const attrs = useAttrs();
-
-onMounted(() => {
-  const deprecatedFields = [{ oName: 'column', nName: 'options' }];
-  deprecatedFields.forEach((p: { oName: string; nName: string }) => {
-    if (attrs[p.oName]) {
-      console.warn(
-        `[KFilter] The "${p.oName}" field is deprecated, please use "${p.nName}" instead.`
-      );
-    }
-  });
-});
-
 // 控制popper的显示/隐藏动画
 const popperClassName = ref('');
 const emits = defineEmits(['confirm', 'clear', 'show', 'hide']);
@@ -368,24 +355,16 @@ function clearFilter(isFilter: boolean = true) {
   return {};
 }
 async function query() {
-  const { conditionInfo, tableData, remote } = await filter();
-  emits('confirm', conditionInfo, tableData ?? [], remote);
+  const { conditionInfo, tableData } = await filter();
+  emits('confirm', conditionInfo, tableData ?? []);
 }
 async function filter(data?: any[]) {
   const sourceData = Array.isArray(data) ? data : props.data;
   const conditionInfo = getConditionInfo();
-  if (typeof props.filterMethod === 'function') {
-    const tableData = await props.filterMethod(conditionInfo);
+  if (props.remote === true || conditionInfo.conditionList.length === 0) {
     return {
       conditionInfo,
-      tableData,
-      remote: true
-    };
-  }
-  if (conditionInfo.conditionList.length === 0 || props.remote === true) {
-    return {
-      conditionInfo,
-      tableData: sourceData
+      sourceData
     };
   }
   const remoteFieldMap = getRemoteFieldMap();
@@ -419,8 +398,7 @@ async function filter(data?: any[]) {
   });
   return {
     conditionInfo,
-    tableData: newData ?? [],
-    remote: false
+    tableData: newData ?? []
   };
 }
 function getConditionInfo() {

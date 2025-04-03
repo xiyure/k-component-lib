@@ -12,7 +12,6 @@ export interface FilterProps {
   formatter?: string;
   ignoreCase?: boolean;
   maxNumber?: number;
-  filterMethod?: (data: ConditionInfo | undefined) => any[] | Promise<any[]>;
 }
 
 export type FilterValue = string | number | Date | null | Array<string | number | Date>;

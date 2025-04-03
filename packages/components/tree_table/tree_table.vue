@@ -301,7 +301,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, provide } from 'vue';
+import { ref, computed, watch, nextTick, provide, onMounted } from 'vue';
 import VXETable from 'vxe-table';
 import { cloneDeep } from 'lodash-es';
 import { IconSearch, IconRefresh, IconFilter, IconFilterFill, IconSizeControls, IconSetting } from 'ksw-vue-icon';
@@ -323,7 +323,7 @@ import {
   useHeaderControl,
   useAdvancedFilter
 } from './hooks';
-import { SIZE_KEY, useLocale } from '../../hooks';
+import { SIZE_KEY, useLocale, useDeprecated } from '../../hooks';
 import { genRandomStr, sortFunc, compatibleSlots, getExposeProxy } from '../../utils';
 import { SIZE_OPTIONS } from './const';
 import type { TreeTableProps, Column, RowData, Row } from './type';
@@ -351,6 +351,20 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
   hasSpace: false
 });
 
+useDeprecated({
+  scope: 'k-tree-table',
+  from: 'isRemoteQuery',
+  replacement: 'searchConfig.isRemoteQuery',
+  version: '2.0.0'
+}, computed(() => !!props.isRemoteQuery));
+
+useDeprecated({
+  scope: 'k-tree-table',
+  from: 'isServerPaging',
+  replacement: 'paginationConfig.isRemotePaging',
+  version: '2.0.0'
+}, computed(() => !!props.isServerPaging));
+
 const { t } = useLocale();
 
 const emits = defineEmits([
@@ -374,6 +388,7 @@ const emits = defineEmits([
   'prev-click',
   'next-click'
 ]);
+
 const xTree = ref();
 const _size = ref(props.size);
 const tableTransferRef = ref();
@@ -453,9 +468,10 @@ const {
   handleRemotePaging
 } = useData(tableInstance, props, emits, flatColumns, xeTableData, currentData, query, filterConditionInfo, setData);
 
+// 初始化数据
 (function() {
   setData(props.data ?? []);
-  handleRemotePaging();
+  isPaging.value && handleRemotePaging();
 })();
 
 // config
@@ -586,13 +602,23 @@ function hideColumn(column: Column) {
 }
 
 // 高级筛选相关方法
-function refreshAdvancedFilter(
+async function refreshAdvancedFilter(
   conditionInfo: ConditionInfo,
   newTableData: RowData[],
-  isRemote: boolean,
   isEmit = true
 ) {
-  if (isRemote) {
+  const { remote, filterMethod } = props.advancedFilterConfig ?? {};
+  if (remote && typeof filterMethod === 'function') {
+    const { currentPage, pageSize, pageSizes } = paginationConfig.value;
+    const params = {
+      currentPage,
+      pageSize,
+      pageSizes,
+      conditionInfo,
+      searchKeyWord: query.value,
+      currentData: xeTableData.value
+    };
+    const newTableData = await filterMethod?.(params) ?? [];
     setData(newTableData);
     newFilterData.value = newTableData;
     return;
@@ -650,7 +676,7 @@ async function advancedFilter(data?: RowData[] | undefined) {
   await nextTick();
   const advancedFilterObj = tableFilterRef.value?.[0]?.filter?.(data);
   const { conditionInfo, tableData } = advancedFilterObj ?? {};
-  refreshAdvancedFilter(conditionInfo, tableData, false, false);
+  await refreshAdvancedFilter(conditionInfo, tableData, false);
   return { conditionInfo, tableData };
 }
 
@@ -663,7 +689,7 @@ async function clearAdvancedFilter() {
   resetCheckboxStatus();
   const advancedFilterObj = tableFilterRef.value?.[0]?.clearFilter?.();
   const { conditionInfo, tableData } = advancedFilterObj ?? {};
-  refreshAdvancedFilter(conditionInfo, tableData, false, false);
+  await refreshAdvancedFilter(conditionInfo, tableData, false);
   return { conditionInfo, tableData };
 }
 

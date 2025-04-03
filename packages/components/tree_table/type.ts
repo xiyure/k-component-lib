@@ -111,7 +111,7 @@ export type TablePaginationConfig = Merge<
   {
     size?: CompSize;
     isRemotePaging?: boolean;
-    pagingMethod?: (config: any) => Promise<{ data: RowData[]; total: number }>;
+    pagingMethod?: (params: TableRemoteMethod) => Promise<{ data: RowData[]; total: number }>;
   },
   {
     -readonly [K in keyof ElPaginationProps]: ElPaginationProps[K];
@@ -148,12 +148,12 @@ export interface AdvancedFilterConfig {
     conditionList?: Condition[];
     filterRule?: number;
   };
-  filterMethod?: (conditionInfo: ConditionInfo | undefined) => RowData[] | Promise<RowData[]>;
+  filterMethod?: (params: TableRemoteMethod) => RowData[] | Promise<RowData[]>;
 }
 
 export interface SearchConfig {
   strict?: boolean;
-  searchMethod?: (key: string | number, data: RowData[]) => RowData[] | Promise<RowData[]>;
+  searchMethod?: (params: TableRemoteMethod) => RowData[] | Promise<RowData[]>;
   isRemoteQuery?: boolean;
   ignoreCase?: boolean;
   searchColumns?: string[];
@@ -171,3 +171,12 @@ export type TableCacheData = {
   treeDataMap: Map<string | number, RowData>;
   tableDataMap: Map<string | number, { node: RowData; children: RowData[] }>;
 };
+
+export type TableRemoteMethod = {
+  searchKeyWord: string
+  currentPage: number | undefined
+  pageSize: number | undefined
+  pageSizes: number[] | undefined
+  conditionInfo: ConditionInfo,
+  currentData?: RowData[]
+}

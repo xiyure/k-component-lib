@@ -70,7 +70,8 @@ export function useData(
       const { isRemoteQuery, searchMethod }  =  props.searchConfig ?? {};
       if ((props.isRemoteQuery || isRemoteQuery)) {
         emits('remote-query', searchKeyWord.value.trim().replace(/\\/g, '\\\\'));
-        const tableData = await searchMethod?.(searchKeyWord.value, fullData.value);
+        const params = getMethodParams();
+        const tableData = await searchMethod?.(params);
         setData(Array.isArray(tableData) ? tableData : []);
       }
   }, { immediate: true })
@@ -257,14 +258,7 @@ export function useData(
     if (!isUseRemotePaging()) {
       return;
     }
-    const { currentPage, pageSize, pageSizes } = paginationConfig.value;
-    const params = {
-      currentPage,
-      pageSize,
-      pageSizes,
-      searchKeyWord: searchKeyWord.value,
-      conditionInfo: filterConditionInfo.value ?? {}
-    };
+    const params = getMethodParams();
     customPagingMethod(params);
     emits('server-paging', params);
   }
@@ -277,6 +271,18 @@ export function useData(
     }
   }
 
+  function getMethodParams() {
+    const { currentPage, pageSize, pageSizes } = paginationConfig.value;
+    return{
+      currentPage,
+      pageSize,
+      pageSizes,
+      searchKeyWord: searchKeyWord.value,
+      conditionInfo: filterConditionInfo.value ?? {},
+      currentData: fullData.value,
+    };
+  }
+
   return {
     showTableData,
     dataLength,
@@ -286,7 +292,6 @@ export function useData(
     changePageSize,
     changeCurrentPage,
     handleTreeData,
-    isUseRemotePaging,
     handleRemotePaging
   };
 }
