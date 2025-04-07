@@ -160,6 +160,7 @@ const props = withDefaults(defineProps<ViewProps>(), {
   simple: false
 });
 const emits = defineEmits([
+  'update:modelValue',
   'refresh',
   'change',
   'remove',
@@ -179,6 +180,7 @@ const defaultExpandedKeys = ref<(string | number)[]>([]);
 const currentNodeKey = ref<string | number>('');
 
 onMounted(() => {
+  initData();
   initSortable();
 });
 onBeforeUnmount(() => {
@@ -186,25 +188,33 @@ onBeforeUnmount(() => {
   sortableInstances.custom?.destroy();
 });
 
-watch(
-  () => props.defaultActive,
-  (val: string | number | undefined) => {
-    let activeValue = val;
-    if (!val) {
-      activeValue = props.data?.[0]?.[config.value.value] ?? '';
-    }
-    active.value = activeValue as string;
-    defaultExpandedKeys.value = [activeValue ?? ''];
-    currentNodeKey.value = activeValue ?? '';
-  },
-  { immediate: true }
-);
+watch(() => props.modelValue, () => {
+  if (typeof props.modelValue !== 'string' && typeof props.modelValue !== 'number') {
+    return;
+  }
+  const targetItem = props.data?.find((item) => item[config.value.value] === props.modelValue);
+  if (!targetItem) {
+    console.warn(`Can't find data with value ${props.modelValue}`);
+    return;
+  }
+  active.value = props.modelValue;
+}, { immediate: true })
 
+function initData() {
+  if (props.modelValue) {
+    return;
+  }
+  const activeValue = props.defaultActive ?? props.data?.[0]?.[config.value.value] ?? '';;
+  active.value = activeValue;
+  defaultExpandedKeys.value = [activeValue ?? ''];
+  currentNodeKey.value = activeValue ?? '';
+}
 function handleFresh() {
   emits('refresh');
 }
 function handleChange(data: ViewData, node?: TreeNodeData) {
   active.value = data[config.value.value];
+  emits('update:modelValue', active.value);
   emits('change', { value: active.value, data, node });
 }
 function handleRemove(data: ViewData) {
@@ -236,6 +246,9 @@ const sortableInstances: SortableInstances = {
 };
 let preRow: Element | null = null;
 function initSortable() {
+  if (!props.draggable) {
+    return;
+  }
   const commonDragElem = getElement<HTMLElement>(
     '.k-view-common-scrollbar .el-scrollbar__view',
     KViewRef.value
@@ -244,9 +257,6 @@ function initSortable() {
     '.k-view-custom-scrollbar .el-scrollbar__view',
     KViewRef.value
   );
-  if (!props.draggable) {
-    return;
-  }
   if (commonDragElem) {
     sortableInstances.common = Sortable(commonDragElem as HTMLElement, {
       handle: '.k-view-common',
@@ -315,6 +325,9 @@ function isExpand() {
 function isCollapse() {
   return viewCollapse.value;
 }
+function getCurrentView() {
+  return active.value;
+}
 function formatter(data: ViewData) {
   return {
     label: data[config.value.label] ?? '',
@@ -334,7 +347,8 @@ defineExpose({
   collapse,
   toggle,
   isExpand,
-  isCollapse
+  isCollapse,
+  getCurrentView
 });
 </script>
 
