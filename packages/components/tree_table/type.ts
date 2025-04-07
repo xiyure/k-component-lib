@@ -172,7 +172,7 @@ export type TableCacheData = {
 };
 
 export type TableRemoteMethod = {
-  searchKeyWord: string
+  searchKeyword: string
   currentPage: number | undefined
   pageSize: number | undefined
   pageSizes: number[] | undefined

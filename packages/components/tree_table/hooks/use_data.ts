@@ -13,7 +13,7 @@ export function useData(
   columns: Ref<Column[]>,
   fullData: Ref<RowData[]>,
   currentData: Ref<RowData[]>,
-  searchKeyWord: Ref<string>,
+  searchKeyword: Ref<string>,
   filterConditionInfo: Ref<ConditionInfo | undefined>,
   setData: (data: RowData[]) => void,
 ) {
@@ -42,7 +42,7 @@ export function useData(
   // 表格数据量
   const dataLength = computed(() => {
     const { total } = paginationConfig.value;
-    if (isPaging.value && isUseRemotePaging()) {
+    if (isUseRemotePaging()) {
       return total;
     }
     return visibleData.value.length;
@@ -65,7 +65,7 @@ export function useData(
 
   // 处理远程搜索
   watch([
-    () => searchKeyWord.value
+    () => searchKeyword.value
     ], async () => {
       const { searchMethod }  =  props.searchConfig ?? {};
       const params = getMethodParams();
@@ -89,7 +89,7 @@ export function useData(
       props.treeConfig?.parentField ?? 'pid'
     );
     const { strict, ignoreCase = false, searchColumns } = props.searchConfig ?? {};
-    const searchKey = searchKeyWord.value.trim().replace(/\\/g, '\\\\');
+    const searchKey = searchKeyword.value.trim().replace(/\\/g, '\\\\');
     if (!searchKey) {
       return filterData;
     }
@@ -260,8 +260,11 @@ export function useData(
   }
 
   function isUseRemotePaging() {
+    // 启用远程搜索、远程筛选以及远程分页时均使用远程分页
     const { isRemotePaging } = paginationConfig.value;
-    return isRemotePaging || props.isServerPaging;
+    const { isRemoteQuery } = props.searchConfig ?? {};
+    const { remote } = props.advancedFilterConfig ?? {};
+    return isRemotePaging || props.isServerPaging || isRemoteQuery || props.isRemoteQuery || remote;
   }
 
   function isUseRemoteSearch() {
@@ -284,7 +287,7 @@ export function useData(
       currentPage,
       pageSize,
       pageSizes,
-      searchKeyWord: searchKeyWord.value.trim().replace(/\\/g, '\\\\'),
+      searchKeyword: searchKeyword.value.trim().replace(/\\/g, '\\\\'),
       conditionInfo: filterConditionInfo.value ?? {},
       currentData: currentData.value,
     };
