@@ -50,13 +50,21 @@ import { IconName } from 'ksw-vue-icon'
 <IconName :size="24" color="#333" />
 ```
 
-### 引入样式
+### 引入样式 <k-tag type="primary" round>2.6.0</k-tag>
+
+::: danger ⚠️ 注意
+`2.6.0` 版本会自动注入 `CSS` 不再需要导入样式, 并且不再提供 `CSS` 的导出
+:::
+
+::: details 2.5 版本以下需要引入 CSS
 
 导入图标样式（整个项目只需1次）:
 
 ```js:line-numbers
 import 'ksw-vue-icon/styles/icon.css';
 ```
+
+:::
 
 ### 全局注册图标
 
@@ -67,7 +75,7 @@ import { KswIcon } from 'ksw-vue-icon'
 app.use(KswIcon)
 ```
 
-## 项目用法 <k-tag type="primary" round><IconArrowUp />2.3.0</k-tag>
+## 项目用法 <k-tag type="primary" round>2.3.0</k-tag>
 
 ::: tip
 自 `2.3.0` 版本起图标库支持 `app.use` 传入项目名称来使用项目图标
@@ -92,7 +100,7 @@ import { IconName } from 'ksw-vue-icon/Guangfa';
 | Base        | 基本图标库 |
 | Guangfa     | 广发图标库 |
 
-### 别名图标 <k-tag type="primary" round><IconArrowUp />2.4.0</k-tag>
+## 别名图标 <k-tag type="primary" round>2.4.0</k-tag>
 
 ::: tip
 自 `2.4.0` 版本起图标库支持为图标设置别名
@@ -105,6 +113,10 @@ import { IconName } from 'ksw-vue-icon/Guangfa';
   "alias": ["alias-1", "alias-2", "alias-3"]
 }
 ```
+
+## 支持 VUE 组件 <k-tag type="primary" round>2.6.0</k-tag>
+
+支持使用 `vue` 组件制作复杂的`动画图标`、`插画`等设计资产, 请将组件放置于 `src/components` 中，同样支持配置 `icons-config.json`
 
 ## 彩色图标暗黑模式
 
@@ -219,7 +231,7 @@ import {
 | **spin**   | 给图标加旋转动画           | `boolean`                  | `false`        |
 
 <style scoped>
-h3{
+h2,h3{
   display: flex;
   align-items: center;
   gap: 0.25rem;

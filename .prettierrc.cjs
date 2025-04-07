@@ -18,5 +18,6 @@ module.exports = {
   embeddedLanguageFormatting: 'auto', //对引用代码进行格式化
   // 保存时自动格式化
   formatOnSave: true,
-  trailingComma: 'none' //去除尾随逗号
+  trailingComma: 'none', //去除尾随逗号
+  plugins: ['prettier-plugin-tailwindcss']
 };
