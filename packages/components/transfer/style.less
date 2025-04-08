@@ -6,6 +6,11 @@
   .k-transfer_searcher {
     margin-bottom: 0.5rem;
   }
+  .k-transfer_search-strictly {
+    .el-transfer-panel__filter {
+      display: none;
+    }
+  }
   .el-transfer {
     display: flex;
     .el-transfer-panel {
@@ -18,6 +23,7 @@
 
       .el-transfer-panel__header.transfer-right-header {
         .transfer-restore__text {
+          cursor: pointer;
           color: #fff;
         }
       }
@@ -40,8 +46,7 @@
       }
 
       .el-transfer-panel__body {
-        .el-transfer-panel__list.is-filterable {
-          height: 100%;
+        .el-transfer-panel__list {
           padding: 0;
           display: flex;
           flex-direction: column;
@@ -77,105 +82,6 @@
           }
         }
       }
-
-      // 搜索框隐藏
-      .el-transfer-panel__filter {
-        display: none;
-      }
-      // .el-transfer__list {
-      //   padding: 0 !important;
-      // }
-      // .transfer-right-header {
-      //   display: flex;
-      //   height: 32px;
-      //   padding-left: 10px;
-      //   background-color: var(--k-gray-50);
-      //   label:nth-child(1) {
-      //     flex: 1;
-      //     margin-right: 0;
-      //     .el-checkbox__label {
-      //       display: flex;
-      //       justify-content: space-between;
-      //       &:span {
-      //         right: 0;
-      //         margin-left: 5px;
-      //       }
-      //     }
-      //   }
-      //   .transfer-restore__text {
-      //     padding-right: 5px;
-      //     color: var(--k-theme-primary);
-      //     cursor: pointer;
-      //     &:active {
-      //       color: var(--k-blue-600);
-      //     }
-      //   }
-      // }
-      // .el-transfer-panel__list.is-filterable {
-      //   height: 100%;
-      //   padding: 0;
-      // }
-      // .el-transfer-panel__item {
-      //   width: 100%;
-      //   margin-right: 0;
-      //   padding-left: 0;
-      //   padding: 2px 0;
-      //   border-bottom: 1px var(--k-gray-100) solid;
-      //   background-color: var(--k-theme-light);
-      //   &:hover {
-      //     background-color: var(--k-gray-50);
-      //   }
-      //   &:active {
-      //     background-color: var(--k-blue-50);
-      //   }
-      //   .el-checkbox__input,
-      //   .el-checkbox__label {
-      //     width: auto;
-      //     margin-left: 10px;
-      //   }
-      // }
-      // .el-transfer-panel__body {
-      //   .el-transfer-panel__list.el-checkbox-group {
-      //     display: flex;
-      //     flex-direction: column;
-      //     .el-transfer-panel__item {
-      //       margin: 0;
-      //       padding: 0;
-      //       width: 100%;
-      //       height: 2rem;
-      //       display: flex !important;
-      //       align-items: center;
-      //       padding: 0 0.625rem;
-      //       .el-checkbox__input {
-      //         position: unset;
-      //         margin: 0;
-      //       }
-      //       .el-checkbox__label {
-      //         margin: 0;
-      //         padding: 0;
-      //         flex: 1;
-      //         height: 2rem;
-      //         .k-transfer-item {
-      //           display: flex;
-      //           height: 100%;
-      //           justify-content: space-between;
-      //           align-items: center;
-      //           margin-left: 8px;
-      //           .k-transfer-sort {
-      //             height: 100%;
-
-      //             padding: 0;
-      //             margin: 0;
-      //             display: flex;
-      //             .ksw-icon.ksw-icon-Drag {
-      //               margin: 0;
-      //             }
-      //           }
-      //         }
-      //       }
-      //     }
-      //   }
-      // }
     }
     .el-transfer__buttons {
       display: flex;

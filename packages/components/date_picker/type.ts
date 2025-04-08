@@ -1,5 +1,7 @@
-export interface DatePicker {
-  size?: 'lg' | 'base' | 'sm' | ''
+import { CompSize } from "../../utils";
+
+export interface DatePickerProps {
+  size?: CompSize,
   shortcuts?: any[],
   showDefaultShortcuts?: boolean
   type?: 'year' | 'month' | 'date' | 'datetime' | 'week' | 'datetimerange' | 'daterange'

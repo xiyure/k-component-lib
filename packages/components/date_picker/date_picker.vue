@@ -1,7 +1,7 @@
 <template>
   <el-date-picker
     ref="datePickerRef"
-    :class="['k-date-picker', _styleModule]"
+    class="k-date-picker"
     v-bind="$attrs"
     :type="type"
     :shortcuts="customShortcuts"
@@ -14,55 +14,56 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, provide, inject } from 'vue';
+import { ref, computed, provide } from 'vue';
 import { ElDatePicker } from 'element-plus';
-import { VueI18nTranslation } from 'vue-i18n';
-import { DatePicker } from './type';
-import { getExposeProxy, SIZE_KEY } from '../../utils';
-import { useSize } from '../../hooks';
+import { DatePickerProps } from './type';
+import { getExposeProxy } from '../../utils';
+import { SIZE_KEY, useSize, useLocale } from '../../hooks';
 
 defineOptions({
   name: 'KDatePicker'
 });
 
-const props = withDefaults(defineProps<DatePicker>(), {
+const props = withDefaults(defineProps<DatePickerProps>(), {
   showDefaultShortcuts: true
 });
 
-const formatSize = useSize<DatePicker>(props);
+const { t } = useLocale();
 
-const _styleModule = inject('_styleModule', '');
-const t = inject<VueI18nTranslation>('$t');
+const formatSize = useSize<DatePickerProps>(props);
+
 const datePickerRef = ref(null);
-const defaultDateRange = [
+const defaultDateRange = computed(() => {
+  return [
   {
-    text: t?.('within7days'),
+    text: t?.('datePicker.within7days'),
     value: () => getTargetDay(-7)
   },
   {
-    text: t?.('within15days'),
+    text: t?.('datePicker.within15days'),
     value: () => getTargetDay(-15)
   },
   {
-    text: t?.('curMonth'),
+    text: t?.('datePicker.curMonth'),
     value: getCurMonthRange()
   },
   {
-    text: t?.('curQuarter'),
+    text: t?.('datePicker.curQuarter'),
     value: getCurQuarterRange()
   },
   {
-    text: t?.('curYear'),
+    text: t?.('datePicker.curYear'),
     value: getCurYearRange()
   }
-];
+]
+});
 
 const customShortcuts = computed(() => {
   if (
     (props.type === 'daterange' || props.type === 'datetimerange') &&
     props.showDefaultShortcuts
   ) {
-    return [...defaultDateRange, ...(props.shortcuts || [])];
+    return [...defaultDateRange.value, ...(props.shortcuts || [])];
   }
   return props.shortcuts;
 });

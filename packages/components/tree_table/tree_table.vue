@@ -3,7 +3,6 @@
     :class="[
       'k-tree-table flex flex-col h-full',
       props.class,
-      _styleModule,
       { 'tree-table-use-ant-style': useAntStyle, 'has-space-between': hasSpace }
     ]"
     :style="{ height: adaptive ? 'fit-content' : height, ...style }"
@@ -12,7 +11,7 @@
       <k-input
         v-model="searchStr"
         :suffix-icon="IconSearch"
-        :placeholder="t?.('searchTable')"
+        :placeholder="t?.('table.searchTable')"
         clearable
         @change="filter"
       />
@@ -28,9 +27,9 @@
       <div v-if="showDescription" class="k-table-info">
         <slot name="description" :total="dataLength" :condition-info="filterConditionInfo">
           <span v-if="!useTree">
-            {{ t?.('total') }}
+            {{ t?.('table.total') }}
             {{ dataLength }}
-            {{ t?.('data') }}
+            {{ t?.('table.data') }}
           </span>
           <span :title="headerText" class="condition-info">
             {{ headerText }}
@@ -45,7 +44,7 @@
               }
             "
           >
-            · {{ t?.('reset') }}
+            · {{ t?.('table.reset') }}
           </span>
         </slot>
       </div>
@@ -58,14 +57,14 @@
             <k-input
               v-model="searchStr"
               :suffix-icon="IconSearch"
-              :placeholder="t?.('searchTable')"
+              :placeholder="t?.('table.searchTable')"
               clearable
               @change="filter"
             />
           </template>
           <template v-else-if="widget.id === 'refresh'">
             <k-button
-              v-ksw_tooltip="t?.('refresh')"
+              v-ksw_tooltip="t?.('table.refresh')"
               @click="
                 () => {
                   emits('refresh');
@@ -98,12 +97,16 @@
               @hide="advancedFilterHide"
             >
               <template #reference="{ hasConfigCondition }">
-                <div v-ksw_tooltip="t?.('advancedFilter_c')">
+                <div v-ksw_tooltip="t?.('table.advancedFilter_c')">
                   <component
                     :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
                     v-if="widget.widget"
                   />
-                  <slot v-else :name="compatibleSlots($slots, ['filter-trigger', 'filterTrigger'])" :is-filter="hasConfigCondition">
+                  <slot
+                    v-else
+                    :name="compatibleSlots($slots, ['filter-trigger', 'filterTrigger'])"
+                    :is-filter="hasConfigCondition"
+                  >
                     <k-button>
                       <IconFilter v-if="!hasConfigCondition" />
                       <IconFilterFill v-else color="#2882FF" />
@@ -124,12 +127,15 @@
               "
             >
               <template #title>
-                <div v-ksw_tooltip="t?.('sizeControlTrigger')" class="text-sm">
+                <div v-ksw_tooltip="t?.('table.sizeControlTrigger')" class="text-sm">
                   <component
                     :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
                     v-if="widget.widget"
                   />
-                  <slot v-else :name="compatibleSlots($slots, ['size-control-trigger', 'sizeControlTrigger'])">
+                  <slot
+                    v-else
+                    :name="compatibleSlots($slots, ['size-control-trigger', 'sizeControlTrigger'])"
+                  >
                     <k-button><IconSizeControls /></k-button>
                   </slot>
                 </div>
@@ -161,12 +167,15 @@
               "
             >
               <template #reference>
-                <div v-ksw_tooltip="t?.('columnHeaderController')" class="text-sm">
+                <div v-ksw_tooltip="t?.('table.columnHeaderController')" class="text-sm">
                   <component
                     :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
                     v-if="widget.widget"
                   />
-                  <slot v-else :name="compatibleSlots($slots, ['transfer-trigger', 'transferTrigger'])">
+                  <slot
+                    v-else
+                    :name="compatibleSlots($slots, ['transfer-trigger', 'transferTrigger'])"
+                  >
                     <k-button><IconSetting /></k-button>
                   </slot>
                 </div>
@@ -180,7 +189,7 @@
                   noChecked: ' ',
                   hasChecked: ' '
                 }"
-                :titles="[t?.('unselectedFields'), t?.('selectedFields')]"
+                :titles="[t?.('table.unselected'), t?.('table.selected')]"
                 :drag="true"
                 @change="updateColVisible"
                 @reset="updateColVisible"
@@ -209,7 +218,7 @@
         :checkbox-config="checkboxConfig"
         :edit-config="editConfig"
         :column-config="columnConfig"
-        :empty-text="emptyText || t?.('noData')"
+        :empty-text="emptyText || t?.('table.noData')"
         :scroll-y="scrollY"
         :row-style="getRowStyle"
         :show-overflow="showOverflow"
@@ -254,11 +263,8 @@
             </template>
           </KColumnGroup>
         </template>
-        <template v-if="slots.empty" #empty>
-          <slot name="empty"></slot>
-        </template>
-        <template v-if="slots.loading" #loading>
-          <slot name="loading"></slot>
+        <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+          <slot :name="name" v-bind="data"></slot>
         </template>
       </k-table>
       <!-- 批量操作 -->
@@ -294,10 +300,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, inject, provide } from 'vue';
+import { ref, computed, watch, nextTick, provide, onBeforeMount } from 'vue';
 import VXETable from 'vxe-table';
-import { VueI18nTranslation } from 'vue-i18n';
 import { cloneDeep } from 'lodash-es';
+import { IconSearch, IconRefresh, IconFilter, IconFilterFill, IconSizeControls, IconSetting } from 'ksw-vue-icon';
 import KColumnGroup from './column_group';
 import { KInput } from '../input';
 import { KButton } from '../button';
@@ -308,8 +314,16 @@ import { KTable } from '../table';
 import { KPagination } from '../pagination';
 import { KFilter } from '../filter';
 import type { ConditionInfo } from '../filter';
-import { useMethods, useCheckbox, useData, useConfig, useHeaderControl, useAdvancedFilter } from './hooks';
-import { genRandomStr, sortFunc, compatibleSlots, getExposeProxy, SIZE_KEY } from '../../utils';
+import {
+  useMethods,
+  useCheckbox,
+  useData,
+  useConfig,
+  useHeaderControl,
+  useAdvancedFilter
+} from './hooks';
+import { SIZE_KEY, useLocale, useDeprecated } from '../../hooks';
+import { genRandomStr, sortFunc, compatibleSlots, getExposeProxy } from '../../utils';
 import { SIZE_OPTIONS } from './const';
 import type { TreeTableProps, Column, RowData, Row } from './type';
 
@@ -336,9 +350,21 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
   hasSpace: false
 });
 
-const _styleModule = inject('_styleModule', '');
-const slots = defineSlots();
-const t = inject<VueI18nTranslation>('$t');
+useDeprecated({
+  scope: 'k-tree-table',
+  from: 'isRemoteQuery',
+  replacement: 'searchConfig.isRemoteQuery',
+  version: '2.0.0'
+}, computed(() => !!props.isRemoteQuery));
+
+useDeprecated({
+  scope: 'k-tree-table',
+  from: 'isServerPaging',
+  replacement: 'paginationConfig.isRemotePaging',
+  version: '2.0.0'
+}, computed(() => !!props.isServerPaging));
+
+const { t } = useLocale();
 
 const emits = defineEmits([
   'remote-query',
@@ -361,13 +387,14 @@ const emits = defineEmits([
   'prev-click',
   'next-click'
 ]);
+
 const xTree = ref();
 const _size = ref(props.size);
 const tableTransferRef = ref();
 // 列配置
 const columns = ref<Column[]>([]);
 // 表格数据
-const xeTableData = ref<RowData[]>([]);
+const xeTableData = ref<RowData[]>(Array.isArray(props.data) ? props.data : []);
 // 搜索框关键词
 const query = ref('');
 const searchStr = ref('');
@@ -376,10 +403,8 @@ const searchStr = ref('');
 const tableFilterRef = ref(); // 高级筛选后的数据
 
 // 当前需要展示的数据（区分当前数据是基于高级筛选还是原始数据）
-const currentData = computed(() =>{
-  return filterConditionInfo.value?.conditionList?.length
-    ? newFilterData.value
-    : xeTableData.value;
+const currentData = computed(() => {
+  return filterConditionInfo.value?.conditionList?.length ? newFilterData.value : xeTableData.value;
 });
 
 // 表格实例
@@ -414,6 +439,7 @@ const {
   transferHide,
   transferShow,
   sortTableHeader,
+  updateColVisible,
   _transferMethods
 } = useHeaderControl(tableInstance, tableTransferRef, props, columns, handleCustomRender);
 
@@ -437,20 +463,13 @@ const {
   tableCacheData,
   changePageSize,
   changeCurrentPage,
-  handleTreeData
-} = useData(tableInstance, props, emits, flatColumns, xeTableData, currentData, query);
+  handleTreeData,
+  handleRemoteData
+} = useData(tableInstance, props, emits, flatColumns, xeTableData, currentData, query, filterConditionInfo, setData);
 
 // config
-const {
-  widgets,
-  treeConfig,
-  sortConfig,
-  rowConfig,
-  editConfig,
-  scrollY,
-  columnConfig,
-  seqConfig
-} = useConfig(props, { isPaging, paginationConfig });
+const { widgets, treeConfig, sortConfig, rowConfig, editConfig, scrollY, columnConfig, seqConfig } =
+  useConfig(props, { isPaging, paginationConfig });
 
 // checkbox
 const {
@@ -459,20 +478,24 @@ const {
   closeBatchOperation,
   checkBoxChange,
   checkboxAllChange,
+  initCheckedData,
   clearCheckedData,
   resetCheckboxStatus,
   _checkboxMethods
 } = useCheckbox(tableInstance, props, xeTableData, showTableData, tableCacheData);
 
+onBeforeMount(() => {
+  refreshTableData();
+});
+
 watch(
   [() => props.data, () => props.data?.length],
   () => {
     clearCheckedData();
-    xeTableData.value = setTableData(props.data);
+    setData(props.data ?? []);
     advancedFilter();
-  },
-  { immediate: true }
-);
+    initCheckedData();
+  });
 
 watch(
   () => props.column,
@@ -555,17 +578,6 @@ function handleCustomRender() {
   }
 }
 
-// 更新列可见状态
-function updateColVisible(ids: string[]) {
-  flatColumns.value.forEach((col: Column) => {
-    if (ids.includes(col.field as string)) {
-      col.visible = true;
-    } else {
-      col.visible = false;
-    }
-  });
-}
-
 // 隐藏列
 function hideColumn(column: Column) {
   if (!__showTransfer.value) {
@@ -577,40 +589,40 @@ function hideColumn(column: Column) {
   }
   columnItem.visible = false;
   selectData.value = flatColumns.value
-    .filter((col: Column) => col.visible !== false)
-    .map((item: Column) => {
-      if (item.title && item.field) {
-        return item.field;
-      }
-      return null;
-    })
-    .filter((item) => item !== null);
+  .filter((col: Column) => col.visible !== false)
+  .map((item: Column) => {
+    if (item.title && item.field) {
+      return item.field;
+    }
+    return null;
+  })
+  .filter((item) => item !== null);
   emits('hide-column', column);
 }
 
 // 高级筛选相关方法
-function refreshAdvancedFilter(
+async function refreshAdvancedFilter(
   conditionInfo: ConditionInfo,
-  newTableData: RowData[],
+  newTableData: RowData[] = [],
   isEmit = true
 ) {
-  let isReturn = false;
-  conditionInfo.conditionList?.forEach((item) => {
-    isReturn = Array.isArray(item.showValue) && typeof props.searchFunction === 'function';
-    if (isReturn && props.searchFunction) {
-      props.searchFunction(item.showValue);
-    }
-  });
-  resetCheckboxStatus();
-  if (isReturn) {
+  filterConditionInfo.value = conditionInfo;
+  const { remote } = props.advancedFilterConfig ?? {};
+  if (remote) {
+    await handleRemoteData();
+    newFilterData.value = xeTableData.value;
     return;
   }
-  filterConditionInfo.value = conditionInfo;
+  resetCheckboxStatus();
   newFilterData.value = newTableData;
   if (props.useTree) {
     handleTreeData(newFilterData.value);
     const rowField = treeConfig.value?.rowField ?? 'id';
-    newFilterData.value = sortFunc([...tableCacheData.treeDataMap.values()], xeTableData.value, rowField);
+    newFilterData.value = sortFunc(
+      [...tableCacheData.treeDataMap.values()],
+      xeTableData.value,
+      rowField
+    );
   }
   if (conditionInfo?.conditionList?.length) {
     isFilterStatus = true;
@@ -653,7 +665,7 @@ async function advancedFilter(data?: RowData[] | undefined) {
   await nextTick();
   const advancedFilterObj = tableFilterRef.value?.[0]?.filter?.(data);
   const { conditionInfo, tableData } = advancedFilterObj ?? {};
-  refreshAdvancedFilter(conditionInfo, tableData, false);
+  await refreshAdvancedFilter(conditionInfo, tableData, false);
   return { conditionInfo, tableData };
 }
 
@@ -666,7 +678,7 @@ async function clearAdvancedFilter() {
   resetCheckboxStatus();
   const advancedFilterObj = tableFilterRef.value?.[0]?.clearFilter?.();
   const { conditionInfo, tableData } = advancedFilterObj ?? {};
-  refreshAdvancedFilter(conditionInfo, tableData, false);
+  await refreshAdvancedFilter(conditionInfo, tableData, false);
   return { conditionInfo, tableData };
 }
 
@@ -703,8 +715,21 @@ function loadData(data: RowData[]) {
   if (!Array.isArray(data)) {
     return;
   }
-  xeTableData.value = setTableData(data);
+  setData(data);
   advancedFilter(data);
+}
+
+function setData(data: RowData[]) {
+  xeTableData.value = setTableData(data);
+}
+
+async function refreshTableData() {
+  const isRemoteSearch = props.searchConfig?.isRemoteQuery || props.isRemoteQuery;
+  const isRemoteFilter = props.advancedFilterConfig?.remote ?? false;
+  const isServerPaging = isPaging.value && (props.isServerPaging || props.paginationConfig?.isRemotePaging);
+  if (isServerPaging || isRemoteSearch || isRemoteFilter) {
+    handleRemoteData();
+  }
 }
 
 provide('__showTransfer', __showTransfer);
@@ -732,9 +757,10 @@ const customMethods = {
   getVisibleData,
   loadData,
   clearSearch,
+  refreshTableData,
   ..._methods,
   ..._checkboxMethods,
-  ..._transferMethods,
+  ..._transferMethods
 };
 
 defineExpose(getExposeProxy(customMethods, tableInstance));

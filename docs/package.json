@@ -4,6 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "license": "MIT",
+  "docs": "https://ksw.design.donxj.com/",
+  "repository": "https://github.com/xiyure/k-component-lib/tree/dev",
+  "privateRepos": {
+    "internal": "http://10.11.1.188/kingsware/vcl/-/tree/master/ksw-ux"
+  },
   "scripts": {
     "dev": "vitepress dev",
     "build": "vitepress build",
@@ -32,9 +37,9 @@
     "vitepress-sidebar": "^1.26.0"
   },
   "dependencies": {
-    "@ksware/ksw-ux": "^1.1.18-beta3",
+    "@ksware/ksw-ux": "^1.1.20-beta",
     "@vitejs/plugin-vue-jsx": "^4.0.1",
-    "ksw-vue-icon": "^2.4.16",
+    "ksw-vue-icon": "^2.5.0",
     "meilisearch-docsearch": "^0.7.0",
     "overlayscrollbars": "^2.11.0",
     "three": "^0.172.0"

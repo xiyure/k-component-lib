@@ -212,13 +212,6 @@
       "tip": "(filterData: FilterDataType) => void"
     },
     {
-      "displayName": "search-function",
-      "type": "Function",
-      "description": "自定义搜索方法，参数为搜索值，返回值为搜索结果，该方法会覆盖默认的搜索方法",
-      "defaultValue": "",
-      "tip": "(searchData: string | number | Date | null | Array<string | number | Date>) => void"
-    },
-    {
       "displayName": "use-ant-style",
       "type": "boolean",
       "description": "是否使用ant-design样式",
@@ -246,52 +239,52 @@
     },
     {
       "displayName": "sort-config",
-      "type": "SortConfig",
+      "type": "object",
       "description": "排序配置",
       "defaultValue": "",
-      "tip": "VxeTablePropTypes.SortConfig"
+      "tip": "SortConfig"
     },
     {
       "displayName": "row-config",
-      "type": "RowConfig",
+      "type": "object",
       "description": "行配置",
       "defaultValue": "",
-      "tip": "VxeTablePropTypes.RowConfig"
+      "tip": "RowConfig"
     },
     {
       "displayName": "edit-config",
-      "type": "EditConfig",
+      "type": "object",
       "description": "编辑配置",
       "defaultValue": "",
-      "tip": "VxeTablePropTypes.EditConfig"
+      "tip": "EditConfig"
     },
     {
       "displayName": "scroll-Y",
-      "type": "ScrolY",
+      "type": "object",
       "description": "纵向滚动配置",
       "defaultValue": "",
-      "tip": "VxeTablePropTypes.ScrollY"
+      "tip": "ScrollY"
     },
     {
       "displayName": "column-config",
-      "type": "ColumnConfig",
+      "type": "object",
       "description": "列配置",
       "defaultValue": "",
-      "tip": "VxeTablePropTypes.ColumnConfig"
+      "tip": "ColumnConfig"
     },
     {
       "displayName": "checkbox-config",
-      "type": "checkboxConfig",
+      "type": "object",
       "description": "复选框配置",
       "defaultValue": "",
-      "tip": "VxeTablePropTypes.CheckboxConfig"
+      "tip": "CheckboxConfig"
     },
     {
       "displayName": "tree-config",
-      "type": "TreeConfig",
+      "type": "object",
       "description": "树形结构配置",
       "defaultValue": "",
-      "tip": "VxeTablePropTypes.TreeConfig"
+      "tip": "TreeConfig"
     },
     {
       "displayName": "show-overflow",
@@ -340,13 +333,6 @@
       "type": "boolean",
       "description": "是否显示表格尺寸控制器",
       "defaultValue": "false",
-      "tip": ""
-    },
-    {
-      "displayName": "icon-search",
-      "type": "string",
-      "description": "搜索图标",
-      "defaultValue": "",
       "tip": ""
     }
   ],
@@ -452,7 +438,7 @@
       },
       {
         "displayName": "searchColumns",
-        "description": "允许指定搜索列,输入值为表格列配置的field,只有指定列才会进行搜索",
+        "description": "允许指定搜索属性名,只对该参数指定的属性进行搜索",
         "type": "string[]",
         "defaultValue": ""
       },
@@ -504,6 +490,13 @@
         "description": "默认筛选条件",
         "type": "object",
         "tip": "{ conditionList: Condition[], filterRule: 0 | 1 }"
+      },
+      {
+        "displayName": "searchMethod",
+        "description": "自定义高级筛选搜索方法",
+        "type": "Function",
+        "tip": "({ conditionList: Condition[], filterRule: 0 | 1 }) => data: RowData[]",
+        "version": "1.1.20"
       }
     ],
     "PaginationConfig": [
@@ -543,6 +536,14 @@
         "description": "是否服务端分页",
         "type": "boolean",
         "defaultValue": "false"
+      },
+      {
+        "displayName": "pagingMethod",
+        "description": "自定义分页方法",
+        "type": "Function",
+        "defaultValue": "",
+        "tip": "(config: PaginationConfig, extra: {filterConditionInfo: ConditionInfo, searchStr: string}) => void",
+        "version":"1.1.20"
       }
     ],
     "SeqConfig": [
@@ -578,7 +579,7 @@
       "displayName": "server-paging",
       "description": "服务端分页",
       "type": "Function",
-      "tip": "(config: PaginationConfig) => void"
+      "tip": "(config: PaginationConfig, extra: {filterConditionInfo: ConditionInfo, searchStr: string}) => void"
     },
     {
       "displayName": "highlight-clear",
@@ -673,21 +674,18 @@
       "tip": "{ column, row }"
     },
     {
-
       "displayName": "[column.field]-header",
       "description": "自定义该列列头内容",
-       "parameters": "object",
-       "tip": "{ column }"
+      "parameters": "object",
+      "tip": "{ column }"
     },
     {
-
       "displayName": "[column.field]-edit",
       "description": "自定义单元格渲染列内容",
-       "parameters": "object",
-       "tip": "{ column }"
+      "parameters": "object",
+      "tip": "{ column }"
     },
     {
-
       "displayName": "[column.field]-label",
       "description": "自定义该列单元格文本内容（当单元格设置icon时，使用该插槽只会替换文本内容，不会替换icon）",
       "parameters": "object",

@@ -2,6 +2,7 @@ import { Component } from 'vue';
 import { TreeData, TreeNodeData } from 'element-plus/es/components/tree/src/tree.type';
 
 export interface ViewProps {
+  modelValue?: string | number
   defaultActive?: string | number
   data?: ViewData[]
   draggable?: boolean
@@ -12,6 +13,8 @@ export interface ViewProps {
   showArrow?: boolean
   showCount?: boolean
   props?: ViewAttributes
+  simple?: boolean
+  height?: string | number
 }
 export interface ViewAttributes {
   label?: string

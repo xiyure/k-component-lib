@@ -1,8 +1,9 @@
 import { CSSProperties } from 'vue';
+import { CompSize } from "../../utils";
 
 export interface SwitchProps {
   activeColor?: string
   inactiveColor?: string
-  size?:'lg' | 'base' | 'sm' | ''
+  size?: CompSize
   style?: CSSProperties
 }

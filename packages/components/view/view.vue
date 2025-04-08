@@ -1,19 +1,20 @@
 <template>
-  <div ref="KViewRef" :class="['k-view', 'text-base', _styleModule]">
+  <div ref="KViewRef" class="k-view text-base" :style="{ height: typeof height === 'number'? `${height}px` : height }">
     <div
-      class="k-view-nav p-2 h-full border-r border-gray-200 relative flex-shrink-0"
-      :class="{ 'is-collapse': viewCollapse }"
+      class="k-view-nav h-full border-gray-200 relative flex-shrink-0"
+      :class="{ 'is-collapse': viewCollapse, 'is-simple': simple, 'border-r': !simple, 'p-2': !simple, 'pr-2': simple  }"
     >
       <div
+        v-if="!simple"
         class="showViewBtn flex justify-center items-center rounded-full"
         @click="handleViewVisible"
       >
         <IconArrowRight :class="{ 'is-collapse': !viewCollapse }" />
       </div>
       <div class="k-view-aside" :style="{ display: viewCollapse ? 'none' : 'flex' }">
-        <div class="k-view__header">
+        <div v-if="!simple" class="k-view__header">
           <div class="view-title text-base font-bold">
-            <slot name="header">{{ t?.('view') }}</slot>
+            <slot name="header">{{ t?.('view.view') }}</slot>
           </div>
           <span class="view-fresh" @click="handleFresh">
             <slot name="refresh"><IconRefresh /></slot>
@@ -66,7 +67,7 @@
         </div>
         <div v-if="customData?.length" class="k-view__custom-data text-base">
           <slot name="custom-header">
-            <span class="custom-table-box">{{ t?.('customView') }}</span>
+            <span class="custom-table-box">{{ t?.('view.customView') }}</span>
           </slot>
           <el-scrollbar class="k-view-custom-scrollbar">
             <template v-if="!useTree">
@@ -114,7 +115,7 @@
         </div>
       </div>
     </div>
-    <div class="k-view-content">
+    <div class="k-view-content" v-if="!simple">
       <slot></slot>
       <slot :name="active"></slot>
     </div>
@@ -122,15 +123,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, provide, inject, onMounted, onBeforeUnmount } from 'vue';
+import { ref, watch, computed, provide, onMounted, onBeforeUnmount } from 'vue';
 
-import { VueI18nTranslation } from 'vue-i18n';
 import { ElScrollbar } from 'element-plus';
 import { IconRefresh, IconArrowRight } from 'ksw-vue-icon';
 import { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type';
 import { Sortable, SortableInstance } from '../../utils/event/sortable';
 import { getElement } from '../../utils';
 import KViewItem from './view_item.vue';
+import { useLocale } from '../../hooks';
 import { ViewProps, ViewData } from './type';
 import { KTree } from '../tree';
 
@@ -138,7 +139,7 @@ defineOptions({
   name: 'KView'
 });
 
-const t = inject<VueI18nTranslation>('$t');
+const { t } = useLocale();
 
 const DEFAULT_PROPS = {
   label: 'label',
@@ -155,9 +156,11 @@ const props = withDefaults(defineProps<ViewProps>(), {
   useTree: false,
   treeConfig: () => ({}),
   showArrow: false,
-  showCount: true
+  showCount: true,
+  simple: false
 });
 const emits = defineEmits([
+  'update:modelValue',
   'refresh',
   'change',
   'remove',
@@ -166,7 +169,6 @@ const emits = defineEmits([
   'node-expand',
   'node-collapse'
 ]);
-const _styleModule = inject('_styleModule', '');
 const active = ref<string | number>('');
 const KViewRef = ref<HTMLDivElement>();
 
@@ -178,6 +180,7 @@ const defaultExpandedKeys = ref<(string | number)[]>([]);
 const currentNodeKey = ref<string | number>('');
 
 onMounted(() => {
+  initData();
   initSortable();
 });
 onBeforeUnmount(() => {
@@ -185,25 +188,33 @@ onBeforeUnmount(() => {
   sortableInstances.custom?.destroy();
 });
 
-watch(
-  () => props.defaultActive,
-  (val: string | number | undefined) => {
-    let activeValue = val;
-    if (!val) {
-      activeValue = props.data?.[0]?.[config.value.value] ?? '';
-    }
-    active.value = activeValue as string;
-    defaultExpandedKeys.value = [activeValue ?? ''];
-    currentNodeKey.value = activeValue ?? '';
-  },
-  { immediate: true }
-);
+watch(() => props.modelValue, () => {
+  if (typeof props.modelValue !== 'string' && typeof props.modelValue !== 'number') {
+    return;
+  }
+  const targetItem = props.data?.find((item) => item[config.value.value] === props.modelValue);
+  if (!targetItem) {
+    console.warn(`Can't find data with value ${props.modelValue}`);
+    return;
+  }
+  active.value = props.modelValue;
+}, { immediate: true })
 
+function initData() {
+  if (props.modelValue) {
+    return;
+  }
+  const activeValue = props.defaultActive ?? props.data?.[0]?.[config.value.value] ?? '';;
+  active.value = activeValue;
+  defaultExpandedKeys.value = [activeValue ?? ''];
+  currentNodeKey.value = activeValue ?? '';
+}
 function handleFresh() {
   emits('refresh');
 }
 function handleChange(data: ViewData, node?: TreeNodeData) {
   active.value = data[config.value.value];
+  emits('update:modelValue', active.value);
   emits('change', { value: active.value, data, node });
 }
 function handleRemove(data: ViewData) {
@@ -235,6 +246,9 @@ const sortableInstances: SortableInstances = {
 };
 let preRow: Element | null = null;
 function initSortable() {
+  if (!props.draggable) {
+    return;
+  }
   const commonDragElem = getElement<HTMLElement>(
     '.k-view-common-scrollbar .el-scrollbar__view',
     KViewRef.value
@@ -243,9 +257,6 @@ function initSortable() {
     '.k-view-custom-scrollbar .el-scrollbar__view',
     KViewRef.value
   );
-  if (!props.draggable) {
-    return;
-  }
   if (commonDragElem) {
     sortableInstances.common = Sortable(commonDragElem as HTMLElement, {
       handle: '.k-view-common',
@@ -314,6 +325,9 @@ function isExpand() {
 function isCollapse() {
   return viewCollapse.value;
 }
+function getCurrentView() {
+  return active.value;
+}
 function formatter(data: ViewData) {
   return {
     label: data[config.value.label] ?? '',
@@ -321,7 +335,7 @@ function formatter(data: ViewData) {
     count: data[config.value.count] ?? 0,
     disabled: data[config.value.disabled] ?? false,
     custom: data[config.value.custom] ?? false,
-    showCustomControl: data.showCustomControl ?? false
+    showCustomControl: data.showCustomControl ?? props.showCustomControl ?? false
   };
 }
 
@@ -333,7 +347,8 @@ defineExpose({
   collapse,
   toggle,
   isExpand,
-  isCollapse
+  isCollapse,
+  getCurrentView
 });
 </script>
 

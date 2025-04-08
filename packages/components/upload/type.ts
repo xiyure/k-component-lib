@@ -6,6 +6,7 @@ export interface UploadProps {
   drag?: boolean
   autoUpload?: boolean
   disabled?: boolean
+  listType?: 'text' | 'picture' | 'picture-card'
   removeIcon?: Component | string
   successIcon?: Component | string
   failIcon?: Component | string

@@ -1,8 +1,10 @@
+import { CompSize } from "../../utils";
+
 export interface RadioProps {
   /**
    * 尺寸, 默认 base
    */
-  size?: 'base' | 'sm';
+  size?: CompSize;
   /**
    * 自定义颜色
    */
@@ -16,7 +18,7 @@ export interface RadioGroupProps {
   /**
    * 尺寸
    */
-  size?: 'base' | 'sm';
+  size?: CompSize;
   /**
    * 排列方向
    */

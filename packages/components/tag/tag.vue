@@ -1,7 +1,7 @@
 <template>
   <div
     v-ksw_tooltip="{ content: props.text, visible: props.showOverflow }"
-    :class="['k-tag', _styleModule]"
+    class="k-tag"
   >
     <el-tag
       ref="KTagRef"
@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, inject, nextTick } from 'vue';
+import { ref, watch, nextTick } from 'vue';
 import { ElTag } from 'element-plus';
 import { TagProps } from './type';
 import { getExposeProxy, GetColorLevelNew } from '../../utils';
@@ -48,8 +48,6 @@ const props = withDefaults(defineProps<TagProps>(), {
   text: undefined,
   showOverflow: false,
 });
-
-const _styleModule = inject('_styleModule', '');
 
 const formatSize = useSize<TagProps>(props);
 

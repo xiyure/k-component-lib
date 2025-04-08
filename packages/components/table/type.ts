@@ -1,8 +1,6 @@
 import { VxeColumnProps, VxeColumnPropTypes, VxeTableDefines } from 'vxe-table';
 
 export interface KTableProps {
-  data?: any[]
-  showDragColumn?: boolean
   showColumnMenu?: boolean
 }
 export interface TableColumnProps {

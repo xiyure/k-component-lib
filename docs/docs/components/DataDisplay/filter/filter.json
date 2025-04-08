@@ -64,6 +64,13 @@
       "description": "是否忽略大小写",
       "defaultValue": "false",
       "version": "0.0.80"
+    },
+    {
+      "displayName": "search-method",
+      "description": "自定义高级筛选搜索方法",
+      "type": "Function",
+      "tip": "({ conditionList: Condition[], filterRule: 0 | 1 }) => data: RowData[]",
+      "version": "1.1.20"
     }
   ],
   "events": [

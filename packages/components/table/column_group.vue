@@ -3,7 +3,7 @@
     v-bind="$attrs"
   >
     <slot></slot>
-    <template v-if="slots.header" #header="colgroupSlotProps">
+    <template v-if="$slots.header" #header="colgroupSlotProps">
       <slot name="header" v-bind="colgroupSlotProps"></slot>
     </template>
   </vxe-colgroup>
@@ -15,7 +15,6 @@ import { VxeColgroup } from 'vxe-table';
 defineOptions({
   name: 'KColumnGroup'
 });
-const slots = defineSlots();
 </script>
 
 <style lang="less">

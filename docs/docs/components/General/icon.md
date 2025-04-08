@@ -7,6 +7,11 @@ date: 2021-03-12
 
 [Ksw vue icon](https://sengoku-f.github.io/KSW-vue-icon/) 图标库是一个通过技术驱动矢量图标样式的图标库产品，可以实现根据单一SVG源文件导出为 Vue3 组件代码，打通 Design to Code 链路，实现产品、研发、设计师一站式对接，使用更高效。
 
+::: danger ⚠️ 注意
+默认仅导入 `base` 基础图标库, 如发现无法使用某些图标请传入项目名称来使用项目图标。
+`2.5.0` 版本后大部分项目图标已迁移至 `base`
+:::
+
 ## 使用方法
 
 ### 安装
@@ -45,7 +50,13 @@ import { IconName } from 'ksw-vue-icon'
 <IconName :size="24" color="#333" />
 ```
 
-### 引入样式
+### 引入样式 <k-tag type="primary" round>2.6.0</k-tag>
+
+::: danger ⚠️ 注意
+`2.6.0` 版本会自动注入 `CSS` 不再需要导入样式, 并且不再提供 `CSS` 的导出
+:::
+
+::: details 2.5 版本以下需要引入 CSS
 
 导入图标样式（整个项目只需1次）:
 
@@ -53,35 +64,43 @@ import { IconName } from 'ksw-vue-icon'
 import 'ksw-vue-icon/styles/icon.css';
 ```
 
+:::
+
 ### 全局注册图标
 
 我们建议按需加载图标，因为这样可以大大减少编译代码量。但是在一些类似远程加载菜单的场景下，直接引用所有图标可以减少开发成本。
 
 ```js:line-numbers
 import { KswIcon } from 'ksw-vue-icon'
-Vue.use(KswIcon)
+app.use(KswIcon)
 ```
 
-### 项目用法
+## 项目用法 <k-tag type="primary" round>2.3.0</k-tag>
 
 ::: tip
-自 `2.3.0` 版本起图标库支持 `Vue.use` 传入项目名称来使用项目图标
+自 `2.3.0` 版本起图标库支持 `app.use` 传入项目名称来使用项目图标
 :::
 
-你可以在 `Vue.use` 方法传入项目名称来使用项目图标库扩充基本图标库。项目图标的优先级大于基本图标。
+你可以在 `app.use` 方法传入项目名称来使用项目图标库扩充基本图标库。项目图标的优先级大于基本图标。
 
 例如下方的示例使用广发 `Guangfa` 来扩充基本图标库
 
 ```js
-Vue.use(KswIcon, { projectName: "Guangfa" });
+app.use(KswIcon, { projectName: 'Guangfa' });
 ```
 
-| projectName  | 备注                     | 
-| --------- | -------------------------- |
-| Base      |  基本图标库       |
+按需引用项目图标只需要在 `ksw-vue-icon` 后添加上 `projectName`，例如:
+
+```js
+import { IconName } from 'ksw-vue-icon/Guangfa';
+```
+
+| projectName | 备注       |
+| ----------- | ---------- |
+| Base        | 基本图标库 |
 | Guangfa     | 广发图标库 |
 
-### 别名图标 <k-tag type="primary" round>^2.4.0</k-tag>
+## 别名图标 <k-tag type="primary" round>2.4.0</k-tag>
 
 ::: tip
 自 `2.4.0` 版本起图标库支持为图标设置别名
@@ -91,13 +110,13 @@ Vue.use(KswIcon, { projectName: "Guangfa" });
 
 ```json
 {
-  "alias": [
-    "alias-1",
-    "alias-2",
-    "alias-3"
-  ],
+  "alias": ["alias-1", "alias-2", "alias-3"]
 }
 ```
+
+## 支持 VUE 组件 <k-tag type="primary" round>2.6.0</k-tag>
+
+支持使用 `vue` 组件制作复杂的`动画图标`、`插画`等设计资产, 请将组件放置于 `src/components` 中，同样支持配置 `icons-config.json`
 
 ## 彩色图标暗黑模式
 
@@ -106,8 +125,8 @@ Vue.use(KswIcon, { projectName: "Guangfa" });
 ```css
 .ksw-icon {
   .dark & :deep(svg path) {
-      filter: hue-rotate(170deg) invert(100%) contrast(150%) saturate(200%);
-    }
+    filter: hue-rotate(170deg) invert(100%) contrast(150%) saturate(200%);
+  }
 }
 ```
 
@@ -211,9 +230,8 @@ import {
 | **rotate** | 图标旋转角度（IE9 无效）   | `number`                   | `-`            |
 | **spin**   | 给图标加旋转动画           | `boolean`                  | `false`        |
 
-
 <style scoped>
-h3{
+h2,h3{
   display: flex;
   align-items: center;
   gap: 0.25rem;

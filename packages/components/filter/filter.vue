@@ -2,8 +2,7 @@
   <div
     :class="[
       'k-filter',
-      { 'text-sm': formatSize.ownSize === 'sm', 'text-base': formatSize.ownSize !== 'sm' },
-      _styleModule,
+      { 'text-sm': formatSize.ownSize === 'sm', 'text-base': formatSize.ownSize !== 'sm' }
     ]"
   >
     <k-popover
@@ -32,7 +31,7 @@
       <div class="k-filter__content">
         <div class="k-filter__header">
           <span :class="formatSize.ownSize === 'sm' ? 'text-base' : 'text-lg'" class="font-bold">
-            {{ t?.('advancedFilter') }}
+            {{ t?.('filter.advancedFilter') }}
           </span>
           <span
             :class="formatSize.ownSize === 'sm' ? 'text-sm' : 'text-base'"
@@ -44,7 +43,7 @@
             "
           >
             <IconClearDate />
-            {{ t?.('clearAll') }}
+            {{ t?.('filter.clearAll') }}
           </span>
         </div>
         <div
@@ -62,7 +61,7 @@
               :props="{
                 label: 'title',
                 value: 'title',
-                children: props.childrenField,
+                children: props.childrenField
               }"
               clearable
               @change="changeCondition(index, item, options!)"
@@ -80,7 +79,7 @@
               <k-option
                 v-for="conditionItem in conditionList(item)?.logicList"
                 :key="conditionItem.logic"
-                :label="t?.(conditionItem.logic)"
+                :label="t?.(`filter.${conditionItem.logic}`)"
                 :value="conditionItem.logic"
               />
             </k-select>
@@ -98,11 +97,11 @@
                 <k-option
                   v-for="logicItem in dateLogicList(item)"
                   :key="logicItem.value"
-                  :label="t?.(logicItem.label)"
+                  :label="t?.(`filter.${logicItem.label}`)"
                   :value="logicItem.value"
                   :disabled="
                     (item.logic === 'after' || item.logic === 'before') &&
-                      logicItem.value === 'range'
+                    logicItem.value === 'range'
                   "
                 />
               </k-select>
@@ -171,21 +170,21 @@
           <div class="k-filer__operate-left">
             <span @click="addCondition()">
               <IconAdd />
-              {{ t?.('addCondition') }}
+              {{ t?.('filter.addCondition') }}
             </span>
           </div>
           <div class="k-filer__operate-right">
-            <span class="select-label">{{ t?.('aboveCondition') }}：</span>
+            <span class="select-label">{{ t?.('filter.aboveCondition') }}：</span>
             <k-select
               v-model="filterRule"
               :size="formatSize.ownSize"
               :disabled="disableChangeMode"
               :teleported="false"
             >
-              <k-option :label="t?.('anyOne')" :value="0"></k-option>
-              <k-option :label="t?.('all')" :value="1"></k-option>
+              <k-option :label="t?.('filter.anyOne')" :value="0"></k-option>
+              <k-option :label="t?.('filter.all')" :value="1"></k-option>
             </k-select>
-            <k-button :size="formatSize.ownSize" main @click="query">{{ t?.('query') }}</k-button>
+            <k-button :size="formatSize.ownSize" main @click="query">{{ t?.('filter.query') }}</k-button>
           </div>
         </div>
       </div>
@@ -194,13 +193,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, inject, onMounted, watch, useAttrs } from 'vue';
-import { VueI18nTranslation } from 'vue-i18n';
+import { ref, computed, watch } from 'vue';
 import { cloneDeep } from 'lodash-es';
 import { FilterProps, FilterData, FilterOptions } from './type';
 import { dateTypeOptions, logicOptions } from '../../constant/filter_data';
 import { treeDataToArray, isValid, formatter } from '../../utils';
-import { useSize } from '../../hooks';
+import { useSize, useLocale } from '../../hooks';
 
 defineOptions({
   name: 'KFilter'
@@ -216,68 +214,63 @@ const props = withDefaults(defineProps<FilterProps>(), {
 });
 
 const formatSize = useSize<FilterProps>(props);
-const attrs = useAttrs();
-
-onMounted(() => {
-  const deprecatedFields = [{ oName: 'column', nName: 'options' }];
-  deprecatedFields.forEach((p: { oName: string, nName: string }) => {
-    if (attrs[p.oName]) {
-      console.warn(`[KFilter] The "${p.oName}" field is deprecated, please use "${p.nName}" instead.`);
-    }
-  });
-});
-
 // 控制popper的显示/隐藏动画
 const popperClassName = ref('');
-const _styleModule = inject('_styleModule', '');
 const emits = defineEmits(['confirm', 'clear', 'show', 'hide']);
-const t = inject<VueI18nTranslation>('$t');
+const { t } = useLocale();
 const filterData = ref<FilterData[]>([]);
 const filterRule = ref(0);
 
 const flatColumns = computed(() => treeDataToArray(cloneDeep(props.options), 'group'));
 const instance = computed(
-  () => function (value: string | null) {
-    const matchInstance: FilterOptions = flatColumns.value?.find(
-      (item) => item[props.filterKey] === value
-    );
-    return matchInstance;
-  }
+  () =>
+    function (value: string | null) {
+      const matchInstance: FilterOptions = flatColumns.value?.find(
+        (item) => item[props.filterKey] === value
+      );
+      return matchInstance;
+    }
 );
 const conditionList = computed(
-  () => function (item: FilterData) {
-    const columnItem = flatColumns.value?.find((col) => col[props.filterKey] === item.key);
-    const type = columnItem?.dataType || 'string';
-    return logicOptions.find((item) => item.type === type);
-  }
+  () =>
+    function (item: FilterData) {
+      const columnItem = flatColumns.value?.find((col) => col[props.filterKey] === item.key);
+      const type = columnItem?.dataType || 'string';
+      return logicOptions.find((item) => item.type === type);
+    }
 );
 
 const dateLogicList = computed(
-  () => function (item: FilterData) {
-    if (item.logic === 'equal') {
-      return dateTypeOptions;
+  () =>
+    function (item: FilterData) {
+      if (item.logic === 'equal') {
+        return dateTypeOptions;
+      }
+      const hideLogicList = ['past-seven-days', 'past-thirty-days'];
+      return dateTypeOptions.filter((item) => !hideLogicList.includes(item.value));
     }
-    const hideLogicList = ['past-seven-days', 'past-thirty-days'];
-    return dateTypeOptions.filter((item) => !hideLogicList.includes(item.value));
-  }
 );
 
-const hasConfigCondition = computed(() => filterData.value.some(
-  (item) => item.key && item.logic && (item.value || ['empty', 'nonEmpty'].includes(item.logic))
-));
+const hasConfigCondition = computed(() =>
+  filterData.value.some(
+    (item) => item.key && item.logic && (item.value || ['empty', 'nonEmpty'].includes(item.logic))
+  )
+);
 
 // 日期禁用
 const disabledInput = computed(
-  () => function (item: FilterData) {
-    const disabledLogicTypes = ['empty', 'nonEmpty'];
-    return !item.logic || disabledLogicTypes.includes(item.logic);
-  }
+  () =>
+    function (item: FilterData) {
+      const disabledLogicTypes = ['empty', 'nonEmpty'];
+      return !item.logic || disabledLogicTypes.includes(item.logic);
+    }
 );
 const disabledDatePicker = computed(
-  () => function (item: FilterData) {
-    const notDisabledDateRanges = ['date', 'range'];
-    return disabledInput.value(item) || !notDisabledDateRanges.includes(item.dateRange as string);
-  }
+  () =>
+    function (item: FilterData) {
+      const notDisabledDateRanges = ['date', 'range'];
+      return disabledInput.value(item) || !notDisabledDateRanges.includes(item.dateRange as string);
+    }
 );
 const disableChangeMode = computed(() => {
   const fields = filterData.value.map((item) => item.key);
@@ -361,17 +354,17 @@ function clearFilter(isFilter: boolean = true) {
   }
   return {};
 }
-function query() {
-  const { conditionInfo, tableData } = filter();
+async function query() {
+  const { conditionInfo, tableData } = await filter();
   emits('confirm', conditionInfo, tableData ?? []);
 }
-function filter(data?: any[]) {
+async function filter(data?: any[]) {
   const sourceData = Array.isArray(data) ? data : props.data;
   const conditionInfo = getConditionInfo();
-  if (conditionInfo.conditionList.length === 0 || props.remote === true) {
+  if (props.remote === true || conditionInfo.conditionList.length === 0) {
     return {
       conditionInfo,
-      tableData: sourceData
+      sourceData
     };
   }
   const remoteFieldMap = getRemoteFieldMap();
@@ -412,11 +405,12 @@ function getConditionInfo() {
   const disabledLogicTypes = ['empty', 'nonEmpty'];
   const conditionList = filterData.value
   .filter(
-    (item) => item.key && item.logic && (isValid(item.value) || disabledLogicTypes.includes(item.logic))
+    (item) =>
+      item.key && item.logic && (isValid(item.value) || disabledLogicTypes.includes(item.logic))
   )
   .map((item) => ({
     title: item.title.join(' - '),
-    logic: t?.(item.logic),
+    logic: item.logic,
     key: item.key,
     showValue: item.showValue,
     value: item.value,

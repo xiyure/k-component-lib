@@ -1,5 +1,5 @@
 <template>
-  <div class="K-transfer-view">
+  <div class="k-transfer-view">
     <slot name="header">
       <div class="transfer-dialog-content">
         <IconTips class="transfer-dialog-icon" />
@@ -7,7 +7,7 @@
       </div>
     </slot>
     <k-form
-      ref="KFormRef" :model="form" labk-width="auto"
+      ref="KFormRef" :model="form" label-width="auto"
       style="max-width: 600px"
     >
       <k-form-item
@@ -74,6 +74,7 @@
 
 <script setup lang="tsx">
 import { ref, reactive, watch } from 'vue';
+import { IconTips } from 'ksw-vue-icon';
 import { KButton, KForm, KFormItem, KRadioGroup, KRadio, KPopconfirm, KTreeTransfer } from '../../components';
 import { KMTransferView, KTransferViewInterface } from './type';
 

@@ -1,14 +1,14 @@
 <template>
   <el-calendar
     ref="kCalendarRef"
-    :class="['k-calendar', _styleModule, { 'k-calendar--adaptive': adaptive }, 'text-base']"
+    :class="['k-calendar', { 'k-calendar--adaptive': adaptive }, 'text-base']"
     v-bind="$attrs"
   >
     <template #header="{ date }">
       <slot name="header" :date="date">
         <div class="k-calendar__header">
           <div class="k-calendar__header-left">
-            <k-button @click="jumpDate('today')">{{ t?.('today') }}</k-button>
+            <k-button @click="jumpDate('today')">{{ t?.('calendar.today') }}</k-button>
             <k-button @click="jumpDate('prev-month')"><IconArrowLeft /></k-button>
             <k-button @click="jumpDate('next-month')"><IconArrowRight /></k-button>
             <span>{{ date }}</span>
@@ -17,7 +17,7 @@
             <k-checkbox
               v-if="showLunar"
               v-model="isShowLunar"
-              :label="t?.('showLunar')"
+              :label="t?.('calendar.showLunar')"
             ></k-checkbox>
           </div>
         </div>
@@ -53,32 +53,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, inject } from 'vue';
+import { ref, computed } from 'vue';
 import { ElCalendar } from 'element-plus';
 import type { CalendarDateType, CalendarInstance } from 'element-plus';
 // @ts-expect-error chinese-lunar-calendar has not declare dependencies
 import { getLunar } from 'chinese-lunar-calendar';
 import { IconArrowLeft, IconArrowRight } from 'ksw-vue-icon';
-import { VueI18nTranslation } from 'vue-i18n';
 import { CalendarProps, Schedule } from './type';
 import { lunarMonth, lunarDay } from './const';
 import { KCheckbox } from '../checkbox';
 import { getExposeProxy } from '../../utils';
+import { useLocale } from '../../hooks';
 import type { IntRange } from '../../utils/typescript/common';
 
 defineOptions({
   name: 'KCalendar'
 });
 
-const t = inject<VueI18nTranslation>('$t');
+const { t } = useLocale();
 
 const props = withDefaults(defineProps<CalendarProps>(), {
   schedule: () => [],
   showLunar: false,
   adaptive: false
 });
-
-const _styleModule = inject('_styleModule', '');
 
 const kCalendarRef = ref<CalendarInstance>();
 const isShowLunar = ref(false);

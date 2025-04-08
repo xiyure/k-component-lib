@@ -1,5 +1,5 @@
 <template>
-  <div :class="['k-upload', _styleModule, {'k-dragger': drag}]">
+  <div :class="['k-upload', { 'k-dragger': drag }]">
     <el-upload
       ref="KUploadRef"
       v-bind="$attrs"
@@ -8,20 +8,17 @@
       :auto-upload="autoUpload"
       :disabled="disabled"
       :drag="drag"
+      :list-type="listType"
     >
       <template #trigger>
         <slot name="trigger">
           <div v-if="props.drag" class="default-sign">
             <IconEmptyBox color="#2882ff" />
-            {{ t?.('uploadDragSign') }}
+            {{ t?.('upload.uploadDragSign') }}
           </div>
           <div v-else class="default-upload-btn" @click.stop>
-            <k-button
-              secondary
-              :icon-left="autoUpload ? 'IconUpload': ''"
-              @click="selectFile"
-            >
-              {{ props.autoUpload ? t?.('uploadFile') : t?.('selectFile') }}
+            <k-button secondary :icon-left="autoUpload ? 'IconUpload' : ''" @click="selectFile">
+              {{ props.autoUpload ? t?.('upload.uploadFile') : t?.('upload.selectFile') }}
             </k-button>
             <k-button
               v-if="!props.autoUpload"
@@ -31,20 +28,21 @@
               icon-left="IconUpload"
               @click="submit"
             >
-              {{ t?.('uploadFile') }}
+              {{ t?.('upload.uploadFile') }}
             </k-button>
           </div>
         </slot>
       </template>
-      <template #file="{ file }">
+      <template #default>
+        <slot></slot>
+      </template>
+      <template v-if="listType === 'text'" #file="{ file }">
         <slot name="file">
           <div class="file-list">
             <div>
               <a @click="handlePreview(file)">
                 <span class="header-icon"><IconFile /></span>
-                <span
-                  :title="file.name"
-                >
+                <span :title="file.name">
                   {{ file.name }}
                 </span>
               </a>
@@ -74,18 +72,19 @@
           </div>
         </slot>
       </template>
-      <div class="el-upload__tip">
-        <slot name="tip"></slot>
-      </div>
+      <template #tip>
+        <div class="el-upload__tip">
+          <slot name="tip"></slot>
+        </div>
+      </template>
     </el-upload>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, inject, computed } from 'vue';
+import { ref, computed } from 'vue';
 import { ElUpload, ElProgress, UploadFile, UploadRawFile } from 'element-plus';
-import { VueI18nTranslation } from 'vue-i18n';
-
+import { useLocale } from '../../hooks';
 import { IconEmptyBox, IconWarning, IconCheck, IconDelete, IconFile } from 'ksw-vue-icon';
 import { UploadProps } from './type';
 import { getExposeProxy } from '../../utils';
@@ -94,28 +93,31 @@ defineOptions({
   name: 'KUpload'
 });
 
-const t = inject<VueI18nTranslation>('$t');
+const { t } = useLocale();
 
 const props = withDefaults(defineProps<UploadProps>(), {
-  autoUpload: true
+  autoUpload: true,
+  listType: 'text'
 });
 
-const _styleModule = inject('_styleModule', '');
 const KUploadRef = ref();
 
 const statusIcon = computed(() => (status: string) => {
   if (status === 'success' && props.successIcon) {
     return props.successIcon;
-  } if (status === 'success') {
+  }
+  if (status === 'success') {
     return IconCheck;
-  } if (status === 'fail' && props.failIcon) {
+  }
+  if (status === 'fail' && props.failIcon) {
     return props.failIcon;
-  } if (status === 'fail') {
+  }
+  if (status === 'fail') {
     return IconWarning;
   }
 });
 
-function submit(e:Event) {
+function submit(e: Event) {
   e && e.stopPropagation();
   e && e.preventDefault();
   KUploadRef.value?.submit();

@@ -1,7 +1,11 @@
 <template>
-  <div ref="logoAnimation" class="fixed w-screen h-screen bg-white z-50 flex items-center justify-center">
+  <div
+    ref="logoAnimation"
+    class="fixed z-50 flex h-screen w-screen items-center justify-center bg-white"
+  >
     <svg
-      class="size-96 overflow-visible"
+      ref="svgElement"
+      class="invisible size-96 overflow-visible"
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -11,7 +15,7 @@
       style="enable-background: new 0 0 3518 660"
       xml:space="preserve"
     >
-      <g ref="reference">
+      <g ref="logo">
         <g ref="upperLeftCorner" id="upperLeftCorner">
           <g>
             <g>
@@ -543,12 +547,12 @@
         </g>
       </g>
       <g ref="letterShadow" id="letterShadow">
-        <use x="0" y="0" xlink:href="#letter"/>
-        <use x="0" y="0" xlink:href="#letter"/>
-        <use x="0" y="0" xlink:href="#letter"/>
-        <use x="0" y="0" xlink:href="#letter"/>
-        <use x="0" y="0" xlink:href="#letter"/>
-        <use x="0" y="0" xlink:href="#letter"/>
+        <use x="0" y="0" xlink:href="#letter" />
+        <use x="0" y="0" xlink:href="#letter" />
+        <use x="0" y="0" xlink:href="#letter" />
+        <use x="0" y="0" xlink:href="#letter" />
+        <use x="0" y="0" xlink:href="#letter" />
+        <use x="0" y="0" xlink:href="#letter" />
       </g>
       <g ref="letter" id="letter">
         <g ref="letterK" id="letterK">
@@ -740,7 +744,6 @@
           </g>
         </g>
       </g>
-      
     </svg>
   </div>
 </template>
@@ -751,7 +754,8 @@ import { gsap } from 'gsap';
 import DrawSVGPlugin from '../../plugin/DrawSVGPlugin.min.js';
 
 const logoAnimation = ref(null);
-const reference = ref(null);
+const logo = ref(null);
+const svgElement = ref(null);
 const upperLeftCorner = ref(null);
 const bottomRightCorner = ref(null);
 const rightSide = ref(null);
@@ -766,7 +770,12 @@ const letterShadow = ref(null);
 const emit = defineEmits(['animationStart', 'animationComplete']);
 
 onMounted(() => {
-  const tl = gsap.timeline({ repeat: 0, repeatDelay: 1, onStart: () => emit('animationStart'),  onComplete: () => emit('animationComplete')});
+  const tl = gsap.timeline({
+    repeat: 0,
+    repeatDelay: 1,
+    onStart: () => emit('animationStart'),
+    onComplete: () => emit('animationComplete')
+  });
 
   tl.fromTo(
     upperLeftCorner.value,
@@ -784,7 +793,7 @@ onMounted(() => {
   tl.from(
     upperLeftCorner.value,
     {
-      opacity: 0,
+      autoAlpha: 0,
       // scaleX: 50,
       // scaleY: 5,
       ease: 'power3.out',
@@ -808,7 +817,7 @@ onMounted(() => {
   tl.from(
     bottomRightCorner.value,
     {
-      opacity: 0,
+      autoAlpha: 0,
       // scaleX: 50,
       // scaleY: 5,
       ease: 'power3.out',
@@ -832,7 +841,7 @@ onMounted(() => {
   tl.from(
     rightSide.value,
     {
-      opacity: 0,
+      autoAlpha: 0,
       // scaleX: 50,
       // scaleY: 5,
       ease: 'power3.out',
@@ -841,29 +850,65 @@ onMounted(() => {
     0.5
   );
 
-  tl.fromTo(reference.value, { x: 0 }, { x: -1429, duration: 1, ease: 'power2.out', }, 0.65);
-  tl.fromTo(letterK.value, { x: 2000 }, { x: 0, duration: 1, ease: 'power2.out', }, 0.75);
-  tl.fromTo(letterS.value, { x: 2000 }, { x: 0, duration: 1, ease: 'power2.out', }, 0.85);
-  tl.fromTo(letterW.value, { x: 2000 }, { x: 0, duration: 1, ease: 'power2.out', }, 0.95);
-  tl.fromTo(letterU.value, { x: 2000 }, { x: 0, duration: 1, ease: 'power2.out', }, 1.05);
-  tl.fromTo(letterX.value, { x: 2000 }, { x: 0, duration: 1, ease: 'power2.out', }, 1.15);
+  tl.fromTo(
+    svgElement.value,
+    { autoAlpha: 0 },
+    { autoAlpha: 1, duration: 0.25, ease: 'power2.out' },
+    0
+  );
+  tl.fromTo(logo.value, { x: 0 }, { x: -1429, duration: 1, ease: 'power2.out' }, 0.65);
+  tl.fromTo(letterK.value, { x: 2000 }, { x: 0, duration: 1, ease: 'power2.out' }, 0.75);
+  tl.fromTo(letterS.value, { x: 2000 }, { x: 0, duration: 1, ease: 'power2.out' }, 0.85);
+  tl.fromTo(letterW.value, { x: 2000 }, { x: 0, duration: 1, ease: 'power2.out' }, 0.95);
+  tl.fromTo(letterU.value, { x: 2000 }, { x: 0, duration: 1, ease: 'power2.out' }, 1.05);
+  tl.fromTo(letterX.value, { x: 2000 }, { x: 0, duration: 1, ease: 'power2.out' }, 1.15);
 
   // 描边动画
   gsap.registerPlugin(DrawSVGPlugin);
-  tl.fromTo("#letterK path", { drawSVG: 0 }, { drawSVG: "100%", duration: 1, ease: 'power2.out', }, 1);
-  tl.fromTo("#letterS path", { drawSVG: 0 }, { drawSVG: "100%", duration: 1, ease: 'power2.out', }, 1.1);
-  tl.fromTo("#letterW path", { drawSVG: 0 }, { drawSVG: "100%", duration: 1, ease: 'power2.out', }, 1.2);
-  tl.fromTo("#letterU path", { drawSVG: 0 }, { drawSVG: "100%", duration: 1, ease: 'power2.out', }, 1.3);
-  tl.fromTo("#letterX path", { drawSVG: 0 }, { drawSVG: "100%", duration: 1, ease: 'power2.out', }, 1.4);
-  
-  const uses = gsap.utils.toArray("#letterShadow use");
-  tl.fromTo(uses, { x: 0 }, { x: (index) => (uses.length - index) * 10, duration: 1, stagger: 0, ease: 'power2.out', }, 1.4);
-  tl.to(logoAnimation.value, { opacity: 0, duration: 1, ease: 'power2.out', }, 2.5);
-  // tl.pause()
+  tl.fromTo(
+    '#letterK path',
+    { drawSVG: 0 },
+    { drawSVG: '100%', duration: 1, ease: 'power2.out' },
+    1
+  );
+  tl.fromTo(
+    '#letterS path',
+    { drawSVG: 0 },
+    { drawSVG: '100%', duration: 1, ease: 'power2.out' },
+    1.1
+  );
+  tl.fromTo(
+    '#letterW path',
+    { drawSVG: 0 },
+    { drawSVG: '100%', duration: 1, ease: 'power2.out' },
+    1.2
+  );
+  tl.fromTo(
+    '#letterU path',
+    { drawSVG: 0 },
+    { drawSVG: '100%', duration: 1, ease: 'power2.out' },
+    1.3
+  );
+  tl.fromTo(
+    '#letterX path',
+    { drawSVG: 0 },
+    { drawSVG: '100%', duration: 1, ease: 'power2.out' },
+    1.4
+  );
+
+  const uses = gsap.utils.toArray('#letterShadow use');
+  tl.fromTo(
+    uses,
+    { x: 0 },
+    { x: (index) => (uses.length - index) * 10, duration: 1, stagger: 0, ease: 'power2.out' },
+    1.4
+  );
+
+  tl.to(logoAnimation.value, { autoAlpha: 0, duration: 1, ease: 'power2.out' }, 2.5);
+  // tl.pause();
   // tl.timeScale(0.25)
   // tl.seek(2);
 });
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

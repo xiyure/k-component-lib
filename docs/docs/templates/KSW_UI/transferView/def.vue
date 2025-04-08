@@ -1,9 +1,10 @@
 <template>
   <KTransferView
-    :tree-transfer-data="treeTransferData"
-    :default-data="defaultList"
+    label="name"
     default-val="windows"
     title="选择目标服务器"
+    :tree-transfer-data="treeTransferData"
+    :default-data="defaultList"
     :select-list="[
       {
         name: 'winsssdows',

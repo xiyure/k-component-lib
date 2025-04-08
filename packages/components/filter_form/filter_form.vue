@@ -5,7 +5,6 @@
       class="filter-items w-full relative grid grid-cols-1 2xs:grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 base:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
       :model="formData"
       :size="size"
-      :class="['k-form', _styleModule]"
       :show-colon="showColon"
     >
       <template v-for="item in items" :key="item.prop">
@@ -29,7 +28,6 @@
               v-model="formData[item.prop]"
               v-bind="item.attrs"
               :size="compSize(item.attrs)"
-              :placeholder="item.attrs?.placeholder ?? t?.('pleaseSelect')"
             >
               <k-option v-for="option in item.options" v-bind="option" :key="option"></k-option>
             </k-select>
@@ -81,7 +79,6 @@
                 v-if="compVisible(item)"
                 v-model="formData[item.prop]"
                 v-bind="item.attrs"
-                :placeholder="item.attrs?.placeholder ?? t?.('pleaseInput')"
                 :size="compSize(item.attrs)"
               ></k-input>
             </template>
@@ -95,15 +92,15 @@
       ></div>
       <div ref="filterBtn" class="filter-btns flex bg-white">
         <slot name="action">
-          <k-button :size="compSize()" @click="reset">{{ t?.('reset') }}</k-button>
-          <k-button :size="compSize()" main @click="search">{{ t?.('query') }}</k-button>
+          <k-button :size="compSize()" @click="reset">{{ t?.('filterForm.reset') }}</k-button>
+          <k-button :size="compSize()" main @click="search">{{ t?.('filterForm.query') }}</k-button>
           <KButton
             v-show="rowMax > 1"
             text
             :icon-right="isCollapse ? 'IconArrowBottom' : 'IconArrowTop'"
             @click="toggle"
           >
-            {{ isCollapse ? t?.('expand') : t?.('collapse') }}
+            {{ isCollapse ? t?.('filterForm.expand') : t?.('filterForm.collapse') }}
           </KButton>
         </slot>
       </div>
@@ -112,8 +109,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, computed, watch, onMounted, onUnmounted } from 'vue';
-import { VueI18nTranslation } from 'vue-i18n';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { KInput } from '../input';
 import { KSelect, KOption } from '../select';
 import { KRadio, KRadioGroup } from '../radio';
@@ -123,14 +119,13 @@ import { KButton } from '../button';
 import { KForm, KFormItem } from '../form';
 import { FilterFormProps, FilterFormItem } from './type';
 import { getExposeProxy } from '../../utils';
-import { useSize } from '../../hooks';
+import { useSize, useLocale } from '../../hooks';
 
 defineOptions({
   name: 'KFilterForm'
 });
 
 const DEFAULT_SIZES = ['base', 'sm'];
-const _styleModule = inject('_styleModule', '');
 const props = withDefaults(defineProps<FilterFormProps>(), {
   items: () => [],
   collapse: true,
@@ -152,7 +147,8 @@ const isCollapse = ref(props.collapse);
 const maxColumn = ref(1);
 const rowMax = ref(1);
 const firstRowHeight = ref('');
-const t = inject<VueI18nTranslation>('$t');
+
+const { t } = useLocale();
 
 onMounted(() => {
   if (!props.collapse) {

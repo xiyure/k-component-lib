@@ -1,4 +1,7 @@
 import { isRef, Slots } from 'vue';
+import { isObject } from 'lodash-es';
+import { STYLE_MODULES } from '../constant';
+import { StyleModules } from './typescript/util_types';
 
 type RGB = [number, number, number];
 
@@ -377,6 +380,34 @@ export function sortFunc(targetData: any[], sortData: any, key: string | number)
     sortKeyList.indexOf(a[key]) < sortKeyList.indexOf(b[key]) ? -1 : 1
   );
 }
+
+// 合并CSS变量
+export function mergeCssVar(cssVariables: Record<string, string> | undefined) {
+  if (!isObject(cssVariables)) {
+    return;
+  }
+  for (const cssName in cssVariables) {
+    document.documentElement.style.setProperty(`--${cssName}`, cssVariables[cssName]);
+  }
+}
+
+export function setStyleTheme(theme: StyleModules = 'AOM') {
+  let projectName = 'AOM';
+  if (typeof theme === 'string' && STYLE_MODULES.includes(theme)) {
+    projectName = theme;
+  } else if (theme !== undefined) {
+    console.warn(
+      `'styleModule' expected to be ${STYLE_MODULES.map((name) => `'${name}'`).join(' | ')}, but got '${theme}'.`
+    );
+  }
+  if (typeof document !== 'undefined') {
+    // 添加项目类名
+    const body = document?.getElementsByTagName('body')[0];
+    body?.classList.add(projectName);
+  }
+  return projectName;
+}
+
 
 // rem => rem
 export function convertPxToRem(value: number) {

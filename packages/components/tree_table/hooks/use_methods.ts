@@ -205,7 +205,7 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
       expandRows.length = 0;
     });
   }
-  // 为确保高级筛选和搜索功能正常
+  // 为确保高级筛选和搜索功能正常,拖拽排序后需要更新数据顺序
   function dragSort() {
     if (props.useTree && props.treeConfig?.lazy) {
       return;
@@ -213,10 +213,8 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     getTreeExpandRecords();
     const { rowField, parentField } = getTreeConfigField();
     const { fullData = [] } = $table.value?.getTableData() ?? {};
-    const currentIds = transformTreeData(
-      fullData,
-      { idField: rowField, parentField }
-    ).map((item: RowData) => item[rowField]);
+    const targetData = props.useTree ? transformTreeData(fullData, { idField: rowField, parentField }) : fullData;
+    const currentIds = targetData.map((item: RowData) => item[rowField]);
     const newData = sortBySmallerList(xeTableData.value, currentIds, rowField);
     xeTableData.value.length = 0;
     xeTableData.value.push(...newData);

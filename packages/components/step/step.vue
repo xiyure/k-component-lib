@@ -2,7 +2,7 @@
   <el-step
     v-if="!stepsProps.capsule"
     ref="KStepRef"
-    :class="['k-step', _styleModule]"
+    class="k-step"
     v-bind="$attrs"
     :title="title"
     :description="description"
@@ -13,7 +13,7 @@
       <slot :name="name" v-bind="data"></slot>
     </template>
   </el-step>
-  <div v-else :id="id" :class="['k-step__capsule-box', _styleModule]">
+  <div v-else :id="id" class="k-step__capsule-box">
     <k-popover :show-after="500" :disabled="!props.description">
       <template #reference>
         <slot name="title">
@@ -52,7 +52,6 @@ const stepMethods = inject('stepMethods') as any;
 // 向父组件添加step信息
 stepMethods.registerStep(props.title);
 
-const _styleModule = inject('_styleModule', '');
 const id = genRandomStr(8);
 const DEFAULT_STATUS_COLOR: {
   primary: string;

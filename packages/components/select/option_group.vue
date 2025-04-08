@@ -1,7 +1,7 @@
 <template>
   <el-option-group
     ref="KOptionGroupRef"
-    :class="['k-option-group', _styleModule]"
+    class="k-option-group"
     v-bind="$attrs"
   >
     <template v-for="(_, name) in $slots" :key="name" #[name]="data">
@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from 'vue';
+import { ref } from 'vue';
 import { ElOptionGroup } from 'element-plus';
 import { getExposeProxy } from '../../utils';
 
@@ -19,7 +19,6 @@ defineOptions({
   name: 'KOptionGroup'
 });
 
-const _styleModule = inject('_styleModule', '');
 const KOptionGroupRef = ref(null);
 
 const instance: any = {};

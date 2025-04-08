@@ -24,9 +24,9 @@ export default defineComponent({
         {
           props.tabs.map((tab: any, index: number) => (
             <KDropdownItem
-              key={tab}
+              key={tab.index}
               disabled={tab.disabled}
-              command={index}
+              command={tab.index}
             >
               { typeof tab?.label ==='function'? tab.label() : tab.label }
             </KDropdownItem>

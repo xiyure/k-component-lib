@@ -5,6 +5,7 @@
       :show-arrow="false"
       :visible="popperVisible"
       :popper-class="`k-script-input-popper ${dynamicClassName}`"
+      :teleported
       class="overflow-hidden"
       @hide="onHidePopper"
     >
@@ -14,7 +15,7 @@
             <div class="k-script-input-prepend">
               <k-button
                 v-if="showModeSwitch"
-                v-ksw_tooltip="_isStringMode ? t?.('stringMode') : t?.('expressionMode')"
+                v-ksw_tooltip="_isStringMode ? t?.('scriptInput.stringMode') : t?.('scriptInput.expressionMode')"
                 :disabled
                 @click="
                   () => {
@@ -35,7 +36,6 @@
                 ref="KScriptInputWrapper"
                 :class="[
                   'k-script-input-wrapper',
-                  _styleModule,
                   {
                     'k-script-input-placeholder': true,
                     'hidden-result ': showMessage === true,
@@ -47,9 +47,9 @@
                   maxHeight: maxHeight,
                   resize: resize ? 'vertical' : 'none'
                 }"
-                :contenteditable="disabled ? false : 'plaintext-only'"
+                :contenteditable="disabled || !editable ? false : 'plaintext-only'"
                 :spellcheck="false"
-                :placeholder
+                :placeholder="placeholder ?? t?.('scriptInput.placeholder')"
                 @input="handleInput"
                 @blur="handleBlur"
                 @focus="handleFocus"
@@ -72,8 +72,8 @@
               v-model="pwd"
               type="password"
               :disabled
-              :class="['k-script-input-wrapper', _styleModule]"
-              class="showPassword !h-8 z-10 !p-0 flex-1"
+              class="k-script-input-wrapper showPassword !h-8 z-10 !p-0 flex-1"
+              :placeholder="placeholder ?? t?.('scriptInput.placeholder')"
               show-password
               @input="updateModelValue"
               @focus="handleFocus"
@@ -135,10 +135,15 @@
               }
             "
             :tree-config="treeConfig"
+            :search-config="searchConfig"
             highlight-current
             adaptive
             @cell-click="cellClick"
-          ></k-tree-table>
+          >
+            <template #[getAttrProps().optionLabel]="data">
+              <slot name="option" v-bind="data">{{ data?.row[getAttrProps().optionLabel] }}</slot>
+            </template>
+          </k-tree-table>
         </el-scrollbar>
       </div>
     </k-popover>
@@ -146,13 +151,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, inject, onMounted, onBeforeUnmount, nextTick } from 'vue';
+import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import { ElScrollbar } from 'element-plus';
-import { VueI18nTranslation } from 'vue-i18n';
-import { ScriptInputProps, ScriptOptions } from './type';
+import { ScriptInputProps, ScriptOptions, ChangeEventParams, ScriptTagConfig } from './type';
 import Message from '../message';
 import { usePassword } from './hooks/use_password';
 import { genRandomStr, transformTreeData, getElement } from '../../utils';
+import { useLocale } from '../../hooks';
 import { Row, RowData } from '../tree_table';
 import { checkInputMessage, typeRules } from './const';
 
@@ -161,8 +166,7 @@ defineOptions({
   name: 'KScriptInput'
 });
 
-const _styleModule = inject('_styleModule', '');
-const t = inject<VueI18nTranslation>('$t');
+const { t } = useLocale();
 
 const props = withDefaults(defineProps<ScriptInputProps>(), {
   modelValue: '',
@@ -172,15 +176,14 @@ const props = withDefaults(defineProps<ScriptInputProps>(), {
   disabled: false,
   showModeSwitch: true,
   showPopperSwitch: true,
-  expandAll: false,
   defaultMode: 'string',
   onlyOneInput: false,
   resize: true,
   checkContentType: false,
   contentType: 'string',
   optionRepeatable: true,
-  placeholder: '',
-  tagClosable: false
+  tagClosable: false,
+  teleported: true
 });
 
 const DEFAULT_TREE_CONFIG = {
@@ -228,13 +231,16 @@ let cacheRes = '';
 const curInput = ref('');
 const selectedIndex = ref<number>(-1);
 let isManual = false;
+let contentHasChanged = false;
 const popperVisible = ref(false);
 const allowInput = ref(true);
 const allowShowTree = ref(false);
 const showTreeSearch = ref(false);
 const popoverWidth = ref(0);
+// 是否可编辑
+const editable = ref(true);
 // 表达式相关
-const funcReg = /fx\((.*?)\)/;
+const funcReg = /fx\((.*?)\)|RPA_Func\{\{(.*?)\}\}/;
 const fxSet = new Set();
 
 //  校验结果
@@ -274,34 +280,21 @@ const VTooltipConfig = computed(() => ({
     !limitMaxMinMsg.value
 }));
 
-// 缓存开启唯一输入模式的输入框类型集合
-const onlyOneInputMode = computed(() => {
+const isOnlyOneInput = computed(() => {
   const isOnly = props.onlyOneInput;
-  let modeMap = new Map([
-    ['string', false],
-    ['expression', false]
-  ]);
-  const modes = ['string', 'expression'];
-  if (typeof isOnly === 'boolean') {
-    modeMap.set('string', isOnly);
-    modeMap.set('expression', isOnly);
-  } else if (Array.isArray(isOnly)) {
-    modes.forEach((mode: string) => {
-      const exist = (isOnly as string[]).includes(mode);
-      modeMap.set(mode, exist);
-    });
+  const curMode = isStringMode() ? 'string': 'expression'; 
+  if (isOnly === true || (Array.isArray(isOnly) && isOnly.includes(curMode))) {
+    return true;
   }
-  return modeMap;
+  return false;
 });
 
-const tableData = computed(() => {
+const tableData = computed<ScriptOptions[]>(() => {
   return props.options.map((item: RowData) => {
-    return {
-      ...item,
-      __kid__: item[getAttrProps().value]
-    }
+    item.__kid__ = item[getAttrProps().value];
+    return item;
   });
-})
+});
 
 watch(
   () => props.height,
@@ -353,14 +346,16 @@ watch(
       return;
     }
     clearCurrentInput();
-    const newModelValue = escapeValue(props.modelValue.toString());
-    cacheRes = newModelValue;
-    if (_showPassword.value && !funcReg.test(newModelValue)) {
-      pwd.value = newModelValue;
+    const modelValue = props.modelValue.toString();
+    if (_showPassword.value && !funcReg.test(modelValue)) {
+      pwd.value = modelValue;
       return;
     } else {
       _showPassword.value = false;
     }
+    const newModelValue = escapeValue(modelValue);
+    cacheRes = newModelValue;
+    editable.value = !(isOnlyOneInput.value &&( newModelValue.includes('fx(') || newModelValue.includes('RPA_Func{{')));
     nextTick(() => {
       const innerText = parseModelValue(newModelValue);
       setEditorContent(innerText);
@@ -376,13 +371,30 @@ watch(
   }
 );
 
+// 更新v-model绑定值
 function updateModelValue(res: string) {
   cacheRes = res;
+  contentHasChanged = true;
   emits('update:modelValue', res);
+  editable.value = !(isOnlyOneInput.value &&( res.includes('fx(') || res.includes('RPA_Func{{')));
 }
-function getEditorContent() {
-  return formatterEscape(KScriptInputWrapper.value.innerHTML);
+
+// 处理change事件
+function handleChange(res: ChangeEventParams) {
+ if (contentHasChanged) {
+  emits('change', res);
+  contentHasChanged = false;
+ }
 }
+
+// 获取输入框内容，注意处理特殊字符
+function getEditorContent(isText: boolean = false) {
+  const { innerHTML, textContent } = KScriptInputWrapper.value;
+  const content = isText? textContent : innerHTML;
+  return content.replace(/&nbsp;/g, ' ');
+}
+
+// 设置输入框内容
 function setEditorContent(value: string) {
   KScriptInputWrapper.value.innerHTML = value;
 }
@@ -399,18 +411,12 @@ function handleInput(event: InputEvent | CompositionEvent) {
   }
   const { result = '' } = parseInputValue();
   if (!result?.length) {
-    if (props.showPassword) {
-      _methods.setPasswordMode(true);
-      nextTick(() => {
-        KScriptInputPassword.value?.focus?.();
-      });
-    } else {
-      setEditorContent('');
-    }
+    setEditorContent('');
   }
   updateModelValue(result);
   checkInputContentType(result);
 }
+
 function checkInputContentType(result: string) {
   limitMaxMinMsg.value = '';
   if (!props.checkContentType) {
@@ -458,6 +464,7 @@ function handleFocus(event: FocusEvent) {
   allowShowTree.value = true;
   emits('focus', event);
 }
+
 function handleBlur(event: FocusEvent) {
   if (!(event.target instanceof HTMLElement)) {
     return;
@@ -465,11 +472,12 @@ function handleBlur(event: FocusEvent) {
   const popperElem = getElement(`.${dynamicClassName}`);
   if (popperElem && !popperElem.contains(event.relatedTarget as Node)) {
     emits('blur', event);
-    emits('change', parseInputValue());
+    handleChange(parseInputValue());
     allowShowTree.value = false;
     popperVisible.value = false;
   }
 }
+
 function cellClick({ row }: { row: Row }) {
   if (row.children?.length && !row.optional) {
     return;
@@ -480,6 +488,7 @@ function cellClick({ row }: { row: Row }) {
   selectedIndex.value = rowIndex;
   selectOption(row);
 }
+
 async function selectOption(data: Row | RowData) {
   const key = await handleInputContent(data);
   clearCurrentInput();
@@ -489,9 +498,10 @@ async function selectOption(data: Row | RowData) {
     const res = parseInputValue();
     updateModelValue(res?.result ?? '');
     emits('select', data);
-    emits('change', res);
+    handleChange(res)
   });
 }
+
 // 将选择的脚本标签转化成dom节点并插入到编辑框中，注意两种选择场景下的差异性
 async function handleInputContent(data: Row | RowData) {
   if (_showPassword.value) {
@@ -499,17 +509,27 @@ async function handleInputContent(data: Row | RowData) {
     await nextTick();
   }
   const key = genRandomStr(8);
-  const content =
-    _isStringMode.value && data[getAttrProps().tag] !== false
-      ? generateScriptTag(data[getAttrProps().label], key)
-      : data[getAttrProps().value];
-  if (onlyOneInputMode.value.get(getCurrentMode())) {
+  const content = getInputContent(data, key);
+  if (isOnlyOneInput.value) {
     KScriptInputWrapper.value.innerHTML = content;
   } else {
     handleManualInput(content);
   }
   return key;
 }
+
+function getInputContent(data: Row | RowData, key: string) {
+  const label = data[getAttrProps().label];
+  const value = data[getAttrProps().value];
+  if (_isStringMode.value && data?.isFunction) {
+    return generateScriptTag(value, { key, isFunction: true })
+  } else if (_isStringMode.value && data[getAttrProps().tag] !== false) {
+    return generateScriptTag(label, { key })
+  } else {
+    return value;
+  }
+}
+
 function handleManualInput(content: string) {
   const domParser = new DOMParser();
   const doc = domParser.parseFromString(content, 'text/html');
@@ -550,6 +570,7 @@ function handleManualInput(content: string) {
   }
   node.insertBefore(targetNode, childNodes[offset]);
 }
+
 function removeSameNode(targetNode: Element) {
   const dataValue = targetNode.getAttribute('data-value');
   const sameNodes = Array.from(
@@ -559,26 +580,21 @@ function removeSameNode(targetNode: Element) {
     KScriptInputWrapper.value.removeChild(node);
   });
 }
-function parseInputValue() {
-  if (_showPassword.value) {
+
+function parseInputValue(): ChangeEventParams {
+  if (_showPassword.value || !isStringMode()) {
     return {
-      result: pwd.value,
+      result: _showPassword.value ? pwd.value : getEditorContent(true),
       scriptTags: [],
-      isStringMode: isStringMode()
-    };
-  }
-  if (!isStringMode()) {
-    return {
-      result: getEditorContent(),
-      scriptTags: [],
-      isStringMode: false
+      isStringMode: isStringMode(),
+      checkVariableResult
     };
   }
   let text = '';
   const scriptTags: (ScriptOptions | null)[] = [];
   const domToText = (el: HTMLElement) => {
     if (!el) {
-      return;
+      return {};
     }
     const nodes = el.childNodes;
     for (let i = 0; i < nodes.length; i++) {
@@ -587,7 +603,10 @@ function parseInputValue() {
         text += node.textContent ?? '';
       } else if (node.tagName.toUpperCase() === 'DIV' && node.classList.contains('k-script-tag')) {
         const label = node.innerText;
-        if (fxSet.has(label)) {
+        const dataType = node.getAttribute('data-type');
+        if (dataType === 'function') {
+          text += `RPA_Func{{${label}}}`;
+        } else if (fxSet.has(label)) {
           text += `fx(${label})`;
           scriptTags.push(null);
         } else {
@@ -608,6 +627,8 @@ function parseInputValue() {
   if (text.length && text[text.length - 1].charCodeAt(0) === 10) {
     text = text.slice(0, -1);
   }
+  // 注意密码框的特殊处理
+  toPwdMode(text);
   emits('input', text);
   return {
     result: text,
@@ -616,6 +637,16 @@ function parseInputValue() {
     isStringMode: true
   };
 }
+
+function toPwdMode(text: string) {
+  if (!text?.length && props.showPassword && !_showPassword.value) {
+    _methods.setPasswordMode(true);
+    nextTick(() => {
+      KScriptInputPassword.value?.focus?.();
+    });
+  }
+}
+
 // 解析传入的值
 function parseModelValue(value: string) {
   fxSet.clear();
@@ -625,30 +656,38 @@ function parseModelValue(value: string) {
   }
   while (funcReg.test(originText)) {
     const match = originText.match(funcReg);
-    if (match?.[0] === undefined || match?.[1] === undefined) {
+    const matchRegStr = match?.[0];
+    const matchStr = match?.[1] ?? match?.[2];
+    if (!match || matchRegStr === undefined || !matchStr === undefined) {
       break;
     }
-    const value = match[1];
+    const tagConfig = { key: genRandomStr(8), isError: false, isFunction: false }
+    const value = match[1] ?? match[2];
     const attrName = getScriptKey();
     const targetOption = props.options.find((item) => item[attrName] === value);
     let label = targetOption?.[getAttrProps().label] ?? '';
-    let isError = false;
-    if (!targetOption) {
+    if (match[0].includes('RPA_Func{{')) {
+      label = value;
+      tagConfig.isFunction = true;
+    } else if (!targetOption) {
       label = value;
       Message.error(`'${value}' not found`);
       fxSet.add(label);
-      isError = true;
+      tagConfig.isError = true;
     }
-    const key = genRandomStr(8);
-    originText = originText.replace(match?.[0], generateScriptTag(label, key, isError));
+    originText = originText.replace(match?.[0], generateScriptTag(label, tagConfig));
   }
   return originText;
 }
-function generateScriptTag(content: string, key: string, isError: boolean = false) {
+
+function generateScriptTag(content: string, config: ScriptTagConfig) {
+  const { key = '', isError = false, isFunction = false } = config;
+  const dataType = isFunction ? 'function' : 'variable';
   return `<div class="k-script-tag ${
     isError ? 'is-error' : ''
-  }" data-key="${key}" data-value="${content}" contenteditable="false">${content}<button class="k-script-tag-x-mark">×</button></div>`;
+  }" data-key="${key}" data-value="${content}" data-type="${dataType}" contenteditable="false">${content}<span class="k-script-tag-clear-mark"></span></div>`;
 }
+
 function toggleSelect(event: KeyboardEvent) {
   if (!allowShowTree.value || !popperVisible.value) {
     return;
@@ -680,7 +719,12 @@ function toggleSelect(event: KeyboardEvent) {
   if (row) {
     $tree.value.setCurrentRow(row);
   }
-  if (event.code === 'Enter' && popperVisible.value && document.activeElement !== headerElement && selectedIndex.value >= 0) {
+  if (
+    event.code === 'Enter' &&
+    popperVisible.value &&
+    document.activeElement !== headerElement &&
+    selectedIndex.value >= 0
+  ) {
     event.preventDefault();
     if (props.useTree && row && row.children?.length && !row.optional) {
       $tree.value?.toggleTreeExpand(row);
@@ -699,6 +743,7 @@ function isHideNode(rowData: RowData) {
   }
   return Boolean(!$tree.value?.isTreeExpandByRow(parentRow) && rowData.pid);
 }
+
 // 解决输入非字符内容时光标无法移到最后的问题
 function resetCursor(key?: string) {
   if (window.getSelection === undefined) {
@@ -719,6 +764,7 @@ function resetCursor(key?: string) {
     selection?.addRange(range);
   }
 }
+
 function getRange(key: string) {
   let isFound = false;
   const range = {
@@ -759,6 +805,7 @@ function getRange(key: string) {
   getNodeInfo(KScriptInputWrapper.value);
   return range as { node: Node; offset: number };
 }
+
 function onHidePopper() {
   selectedIndex.value = -1;
   $tree.value?.setCurrentRow(null);
@@ -768,6 +815,7 @@ function onHidePopper() {
     isManual = false;
   }
 }
+
 function showPopper() {
   if (props.disabled) {
     return;
@@ -787,6 +835,7 @@ function showPopper() {
     headerElement?.focus();
   });
 }
+
 function updateFocusRange() {
   const selection = window.getSelection();
   const { focusNode, focusOffset } = selection ?? {};
@@ -796,14 +845,17 @@ function updateFocusRange() {
   focusRange.node = focusNode;
   focusRange.offset = focusOffset;
 }
+
 function hidePopper() {
   popperVisible.value = false;
   onHidePopper();
 }
+
 function handlePageClick(e: MouseEvent) {
   hidePopperByClick(e);
   removeTag(e);
 }
+
 function hidePopperByClick(event: MouseEvent) {
   const popperElem = getElement(`.${dynamicClassName}`);
   if (!isManual || popperElem?.contains?.(event.target as Node)) {
@@ -811,20 +863,25 @@ function hidePopperByClick(event: MouseEvent) {
   }
   hidePopper();
 }
+
 function removeTag(event: MouseEvent) {
   const target = event.target as HTMLElement;
-  if (!target?.classList?.contains?.('k-script-tag-x-mark')) {
+  if (!target?.classList?.contains?.('k-script-tag-clear-mark')) {
     return;
   }
   const tag = target.parentNode;
   if (tag) {
     tag.parentNode?.removeChild(tag);
   }
-  emits('change', parseInputValue());
+  const res = parseInputValue();
+  updateModelValue(res?.result ?? '');
+  handleChange(res);
 }
+
 function clearCurrentInput() {
   curInput.value = '';
 }
+
 function clear() {
   if (_showPassword.value) {
     pwd.value = '';
@@ -833,6 +890,7 @@ function clear() {
   }
   clearCurrentInput();
 }
+
 function toggleMode() {
   saveTextValue();
   _isStringMode.value = !_isStringMode.value;
@@ -847,6 +905,7 @@ function setStringMode(stringMode: boolean) {
   _isStringMode.value = stringMode;
   restoreTextValue();
 }
+
 function setCurrentMode(mode: 'password' | 'string' | 'expression') {
   if (mode === 'password') {
     _methods.setPasswordMode(true);
@@ -856,15 +915,18 @@ function setCurrentMode(mode: 'password' | 'string' | 'expression') {
     setStringMode(false);
   }
 }
+
 function getCurrentMode() {
   if (_showPassword.value) {
     return 'password';
   }
   return isStringMode() ? 'string' : 'expression';
 }
+
 function isStringMode() {
   return _isStringMode.value;
 }
+
 const caches = {
   expression: '',
   string: ''
@@ -880,6 +942,7 @@ function saveTextValue() {
   const attrName = isStringMode() ? 'string' : 'expression';
   tempCaches[attrName] = getEditorContent();
 }
+
 function restoreTextValue() {
   if (_showPassword.value) {
     return;
@@ -888,26 +951,24 @@ function restoreTextValue() {
   const attrName = isStringMode() ? 'string' : 'expression';
   setEditorContent(caches[attrName]);
   const res = parseInputValue();
-  cacheRes = res?.result ?? '';
   caches.expression = tempCaches.expression;
   caches.string = tempCaches.string;
-  emits('update:modelValue', res?.result ?? '');
-  emits('change', res);
+  updateModelValue(res.result ?? '');
+  handleChange(res);
 }
+
 function handleResize() {
   nextTick(() => {
     // 获取 KScriptInput 的 宽度
     popoverWidth.value = KScriptInput.value?.offsetWidth ?? 0;
   });
 }
-function formatterEscape(str: string) {
-  return str.replace(/&nbsp;/g, ' ');
-}
+
 function escapeValue(str: string) {
   if (typeof str !== 'string') {
     return str;
   }
-  return str.replace(/<|>|&/g, (match) => {
+  return str.replace(/<|>/g, (match) => {
     if (match === '<') {
       return '&lt;';
     } else {
@@ -915,6 +976,7 @@ function escapeValue(str: string) {
     }
   });
 }
+
 function getAttrProps() {
   const defaultConfig = { label: 'label', value: 'value', disabled: 'disabled', tag: 'tag' };
   const attrProps = Object.assign(defaultConfig, props.props ?? {});
@@ -926,6 +988,7 @@ function getAttrProps() {
     tag: attrProps.tag
   };
 }
+
 function getScriptKey() {
   return props.scriptKey ?? getAttrProps().value;
 }
@@ -939,6 +1002,7 @@ function focus() {
     instance?.focus();
   });
 }
+
 function blur() {
   const instance = _showPassword.value ? KScriptInputPassword.value : KScriptInputWrapper.value;
   if (!instance) {

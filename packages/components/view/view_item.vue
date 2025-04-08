@@ -2,7 +2,6 @@
   <div
     :class="[
       'k-view-item',
-      _styleModule,
       {
         'k-view-active': activeView === value,
         'k-view-disabled': disabled,
@@ -24,7 +23,7 @@
         </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item command="remove">{{ t?.('remove') }}</el-dropdown-item>
+            <el-dropdown-item command="remove">{{ t?.('view.remove') }}</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -34,22 +33,21 @@
 
 <script setup lang="ts">
 import { inject, ref, Ref } from 'vue';
-import { VueI18nTranslation } from 'vue-i18n';
 import { ElDropdown, ElDropdownMenu, ElDropdownItem } from 'element-plus';
 import { IconMore } from 'ksw-vue-icon';
+import { useLocale } from '../../hooks';
 import { ViewItemProps, ViewProps } from './type';
 
 defineOptions({
   name: 'KViewItem'
 });
 
-const t = inject<VueI18nTranslation>('$t');
+const { t } = useLocale();
 
 const props = defineProps<ViewItemProps>();
 const emits = defineEmits(['change', 'remove']);
 
 const activeView = inject<Ref<string | number>>('activeView', ref(0));
-const _styleModule = inject('_styleModule', '');
 const parentProps = inject<ViewProps>('parentProps', {});
 
 function handleCommand(command: string) {

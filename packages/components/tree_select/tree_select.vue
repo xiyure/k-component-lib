@@ -2,7 +2,7 @@
   <el-tree-select
     ref="KTreeSelectRef"
     :name="name ?? randomName"
-    :class="['k-tree-select', _styleModule]"
+    class="k-tree-select"
     :size="formatSize.elSize"
     v-bind="$attrs"
     @input="handleInput"
@@ -13,10 +13,8 @@
       }
     "
   >
-    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
-      <template v-if="!customSlots.includes(name as string)">
-        <slot :name="name" v-bind="data"></slot>
-      </template>
+    <template v-for="(_, name) in inheritSlot($slots)" :key="name" #[name]="data">
+      <slot :name="name" v-bind="data"></slot>
     </template>
     <template #default="defaultData">
       <slot v-bind="defaultData">
@@ -43,19 +41,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, provide, inject, computed } from 'vue';
+import { ref, provide, computed } from 'vue';
 import { ElTreeSelect } from 'element-plus';
 import { debounce } from 'lodash-es';
 import { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type';
 import { TreeSelectProps } from './type';
-import { getExposeProxy, genRandomStr, SIZE_KEY } from '../../utils';
-import { useSize } from '../../hooks';
+import { getExposeProxy, genRandomStr } from '../../utils';
+import { SIZE_KEY, useSize, useInheritSlot } from '../../hooks';
 
 defineOptions({
   name: 'KTreeSelect'
 });
-
-const customSlots = ['empty', 'default'];
 
 const props = withDefaults(defineProps<TreeSelectProps>(), {
   expandIcon: 'IconFolderOpen',
@@ -64,7 +60,6 @@ const props = withDefaults(defineProps<TreeSelectProps>(), {
 });
 
 const formatSize = useSize<TreeSelectProps>(props);
-const _styleModule = inject('_styleModule', '');
 
 const emits = defineEmits(['input', 'blur']);
 
@@ -74,6 +69,7 @@ const query = ref({
 });
 const randomName = genRandomStr(8);
 
+const inheritSlot = useInheritSlot(['empty', 'default']);
 const nodeIcon = computed(() => (nodeItem: TreeNodeData) => {
   const { node, data } = nodeItem;
   if (data.icon) {

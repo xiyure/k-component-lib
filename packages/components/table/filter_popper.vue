@@ -18,7 +18,7 @@
       <ul class="filter-menu">
         <li class="filter-menu-item">
           <k-checkbox
-            v-model="isSelectAll" :label="t?.('all')" value="all" :indeterminate="isIndeterminate"
+            v-model="isSelectAll" :label="t?.('table.all')" value="all" :indeterminate="isIndeterminate"
             @change="selectAll"
           />
         </li>
@@ -31,24 +31,24 @@
       </ul>
     </slot>
     <div class="filter-buttons">
-      <k-button size="sm" @click="clearFilter">{{ text.resetButtonText ?? t?.('reset') }}</k-button>
+      <k-button size="sm" @click="clearFilter">{{ text.resetButtonText ?? t?.('table.reset') }}</k-button>
       <k-button
         class="filter-btn-item" size="sm" secondary
         @click="setFilter"
       >
-        {{ text.confirmButtonText ?? t?.('filter') }}
+        {{ text.confirmButtonText ?? t?.('table.filter') }}
       </k-button>
     </div>
   </k-popover>
 </template>
 
 <script lang="ts" setup>
-import { ref, inject } from 'vue';
+import { ref } from 'vue';
 import { KPopover } from '../popover';
 import { KCheckbox } from '../checkbox';
 import { KButton } from '../button';
+import { useLocale } from '../../hooks';
 import { FilterPopperProps } from './type';
-import { VueI18nTranslation } from 'vue-i18n';
 
 const props = withDefaults(defineProps<FilterPopperProps>(), {
   filters: () => [],
@@ -58,7 +58,7 @@ const props = withDefaults(defineProps<FilterPopperProps>(), {
   text: () => ({})
 });
 
-const t = inject<VueI18nTranslation>('$t');
+const { t } = useLocale();
 
 const emits = defineEmits(['set-filter', 'clear-filter', 'filter-change', 'filter-visible']);
 

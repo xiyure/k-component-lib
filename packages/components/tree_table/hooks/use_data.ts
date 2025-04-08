@@ -1,9 +1,10 @@
 import { ref, watch, computed, Ref } from 'vue';
 import { VxeTableInstance } from 'vxe-table';
 import { CN_DICT, TONE_MARKS } from '../../../constant';
-import { DEFAULT_PAGE_CONFIG} from '../const';
+import { DEFAULT_PAGE_CONFIG } from '../const';
 import { getAllCombinations, sortFunc, convertToMap } from '../../../utils';
-import { TreeTableProps, RowData, Column, TableCacheData } from '../type';
+import { TreeTableProps, RowData, Column, TableCacheData, TablePaginationConfig } from '../type';
+import { ConditionInfo } from '../../filter/type';
 
 export function useData(
   $table: Ref<VxeTableInstance>,
@@ -12,18 +13,22 @@ export function useData(
   columns: Ref<Column[]>,
   fullData: Ref<RowData[]>,
   currentData: Ref<RowData[]>,
-  searchKeyWord: Ref<string>
+  searchKeyword: Ref<string>,
+  filterConditionInfo: Ref<ConditionInfo | undefined>,
+  setData: (data: RowData[]) => void,
 ) {
   // 缓存表格数据筛选过程中产生的临时数据
   const tableCacheData: TableCacheData = {
     treeDataMap: new Map(), // 缓存搜索过程中遍历到的节点数据
     tableDataMap: new Map() // 缓存每个节点的子节点数据
-  }
+  };
 
   // 分页配置
-const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
+  const paginationConfig = ref<TablePaginationConfig>(DEFAULT_PAGE_CONFIG);
   // 表格数据
-  const visibleData = computed(() => filterTableData());
+  const visibleData = computed(() => {
+    return isUseRemoteSearch() ? currentData.value : filterTableData();
+  })
   // 可见面板数据
   const showTableData = computed(() => {
     if (!isPaging.value || isUseRemotePaging()) {
@@ -37,7 +42,7 @@ const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
   // 表格数据量
   const dataLength = computed(() => {
     const { total } = paginationConfig.value;
-    if (isPaging.value && isUseRemotePaging()) {
+    if (isUseRemotePaging()) {
       return total;
     }
     return visibleData.value.length;
@@ -50,7 +55,7 @@ const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
         {
           ...paginationConfig.value,
           size: props.useAntStyle ? 'sm' : undefined,
-          layout: props.useAntStyle ? 'total, prev, pager, next, sizes' : undefined
+          layout: props.useAntStyle ? 'total, ->, prev, pager, next, sizes' : undefined
         },
         props.paginationConfig || {}
       );
@@ -58,46 +63,59 @@ const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
     { immediate: true, deep: true }
   );
 
+  // 处理远程搜索
+  watch([
+    () => searchKeyword.value
+    ], async () => {
+      const { searchMethod }  =  props.searchConfig ?? {};
+      const params = getMethodParams();
+      if (isUseRemoteSearch()) {
+        if (typeof props.requestMethod === 'function') {
+          await handleRemoteData();
+        } else if (typeof searchMethod === 'function') {
+          const tableData = await searchMethod(params);
+          setData(Array.isArray(tableData) ? tableData : []);
+        }
+        emits('remote-query', params);
+      }
+  });
+
   // 表格内容搜索
   function filterTableData() {
     const filterData = currentData.value;
     tableCacheData.tableDataMap = convertToMap(
-      fullData.value, props.rowConfig?.keyField?? 'id',
-      props.treeConfig?.parentField?? 'pid'
+      fullData.value,
+      props.rowConfig?.keyField ?? 'id',
+      props.treeConfig?.parentField ?? 'pid'
     );
-    const { strict, searchMethod, ignoreCase = false, searchColumns } = props.searchConfig ?? {};
-    const searchKey = searchKeyWord.value.trim().replace(/\\/g, '\\\\');
-    if (props.isRemoteQuery || props.searchConfig?.isRemoteQuery) {
-      emits('remote-query', searchKey);
-      return filterData;
-    }
+    const { strict, ignoreCase = false, searchColumns } = props.searchConfig ?? {};
+    const searchKey = searchKeyword.value.trim().replace(/\\/g, '\\\\');
     if (!searchKey) {
       return filterData;
     }
-    if (typeof searchMethod === 'function') {
-      return searchMethod(searchKey, filterData);
-    }
     const visibleColumns = columns.value.filter((col: Column) => col.visible !== false);
-    const fieldList = visibleColumns
-      .map((col: Column) => {
-        if (col.field && !col.type) {
-          return col.field;
-        }
-        return null;
-      })
-      .filter((field: string | null) => field !== null);
+    const fieldList = Array.isArray(searchColumns)
+      ? searchColumns
+      : visibleColumns
+          .map((col: Column) => {
+            if (col.field && !col.type) {
+              return col.field;
+            }
+            return null;
+          })
+          .filter((field: string | null) => field !== null);
     let tableData = filterData.filter((dataItem: any) =>
       fieldList.some((field: string) => {
-        if (Array.isArray(searchColumns) && !searchColumns.includes(field)) {
-          return false;
-        }
-        const cellLabel = $table.value.getCellLabel(dataItem, field) ?? '';
+        const cellLabel = $table.value.getCellLabel(dataItem, field) ?? dataItem[field];
         if (strict === true) {
           return cellLabel.toString() === searchKey;
         }
         const compareLabel = ignoreCase ? String(cellLabel).toLowerCase() : String(cellLabel);
         const newSearchKey = ignoreCase ? searchKey.toLowerCase() : searchKey;
-        return compareLabel.indexOf(newSearchKey) !== -1 || compareByPinYin(field, compareLabel, newSearchKey, ignoreCase);
+        return (
+          compareLabel.indexOf(newSearchKey) !== -1 ||
+          compareByPinYin(field, compareLabel, newSearchKey, ignoreCase)
+        );
       })
     );
     // 当表格数据为树时，筛选后的数据应展示完整的子树
@@ -111,7 +129,12 @@ const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
     return tableData;
   }
   // 支持拼音搜索
-  function compareByPinYin(field: string, compareStr: string, searchKey: string, ignoreCase = false) {
+  function compareByPinYin(
+    field: string,
+    compareStr: string,
+    searchKey: string,
+    ignoreCase = false
+  ) {
     const supportCols = props.searchConfig?.supportPinYin ?? false;
     if (supportCols !== true && !(Array.isArray(supportCols) && supportCols.includes(field))) {
       return false;
@@ -120,8 +143,10 @@ const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
     const result = [];
     const reg = new RegExp(`${Object.keys(TONE_MARKS).join('|')}`, 'g');
     for (let i = 0; i < compareStr.length; i++) {
-      const p = CN_DICT[compareStr[i] as keyof typeof CN_DICT]
-        ?.replace(reg, (match) => TONE_MARKS[match as keyof typeof TONE_MARKS]);
+      const p = CN_DICT[compareStr[i] as keyof typeof CN_DICT]?.replace(
+        reg,
+        (match) => TONE_MARKS[match as keyof typeof TONE_MARKS]
+      );
       if (!p) {
         pinyin += compareStr[i];
         continue;
@@ -149,6 +174,9 @@ const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
   }
   // 处理树形数据
   function handleTreeData(leafData: any[]) {
+    if (Array.isArray(leafData) && leafData.length === 0) {
+      return;
+    }
     const rowField = props.treeConfig?.rowField ?? 'id';
     const parentField = props.treeConfig?.parentField ?? 'pid';
     tableCacheData.treeDataMap.clear();
@@ -164,9 +192,7 @@ const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
     }
     addChildNodes(leafData);
   }
-  function addChildNodes(
-    leafData: RowData[]
-  ) {
+  function addChildNodes(leafData: RowData[]) {
     if (!leafData || !leafData.length) {
       return;
     }
@@ -202,27 +228,34 @@ const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
   function changePageSize(pageSize: number) {
     paginationConfig.value.pageSize = pageSize;
     if (isUseRemotePaging()) {
-      emits('server-paging', paginationConfig.value);
+      handleRemoteData();
+      emits('server-paging', getMethodParams());
     }
     emits('page-size-change', pageSize);
   }
   function changeCurrentPage(pageNum: number) {
     paginationConfig.value.currentPage = pageNum;
     if (isUseRemotePaging()) {
-      emits('server-paging', paginationConfig.value);
+      handleRemoteData();
+      emits('server-paging', getMethodParams());
     }
     emits('page-current-change', pageNum);
   }
   function getPageData(data: RowData[]) {
     const { currentPage, pageSize } = paginationConfig.value;
+    if (!pageSize || !currentPage) {
+      return [];
+    }
     const startIndex = (currentPage - 1) * pageSize;
     const endIndex = startIndex + pageSize;
     return data.slice(startIndex, endIndex);
   }
   // 数据最大页码小于当前页码时，需要修改当前页码
   function updatePageNum(length: number) {
-    let { currentPage } = paginationConfig.value;
-    const pageSize = paginationConfig.value.pageSize;
+    let { currentPage, pageSize } = paginationConfig.value;
+    if (!currentPage || !pageSize) {
+      return;
+    }
     while ((currentPage - 1) * pageSize + 1 > length && currentPage > 1) {
       currentPage--;
     }
@@ -230,8 +263,37 @@ const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
   }
 
   function isUseRemotePaging() {
+    // 启用远程搜索、远程筛选以及远程分页时均使用远程分页
     const { isRemotePaging } = paginationConfig.value;
-    return isRemotePaging || props.isServerPaging;
+    const { isRemoteQuery } = props.searchConfig ?? {};
+    const { remote } = props.advancedFilterConfig ?? {};
+    return isRemotePaging || props.isServerPaging || isRemoteQuery || props.isRemoteQuery || remote;
+  }
+
+  function isUseRemoteSearch() {
+    return props.isRemoteQuery || props.searchConfig?.isRemoteQuery;
+  }
+
+  async function handleRemoteData() {
+    const { total: curTotal = 0 } = paginationConfig.value;
+    const params =  getMethodParams();
+    if (typeof props.requestMethod === 'function') {
+      const { data = [], total } = (await props.requestMethod(params)) ?? {};
+      setData(data);
+      paginationConfig.value.total = isNaN(Number(total)) ? curTotal : Number(total);
+    }
+  }
+
+  function getMethodParams() {
+    const { currentPage, pageSize, pageSizes } = paginationConfig.value;
+    return {
+      currentPage,
+      pageSize,
+      pageSizes,
+      searchKeyword: searchKeyword.value.trim().replace(/\\/g, '\\\\'),
+      conditionInfo: filterConditionInfo.value ?? {},
+      currentData: currentData.value,
+    };
   }
 
   return {
@@ -242,6 +304,7 @@ const paginationConfig = ref<any>(DEFAULT_PAGE_CONFIG);
     paginationConfig,
     changePageSize,
     changeCurrentPage,
-    handleTreeData
-  }
+    handleTreeData,
+    handleRemoteData
+  };
 }

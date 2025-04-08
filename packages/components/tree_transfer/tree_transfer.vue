@@ -1,5 +1,5 @@
 <template>
-  <div :class="['k-tree-transfer', _styleModule]">
+  <div class="k-tree-transfer" :class="{ 'h-full': adaptive }">
     <div
       v-if="showSearchInput === true || showSearchInput === 'left'"
       class="k-transfer__filter !mb-3"
@@ -9,7 +9,7 @@
           ref="KTransferInputLeftRef"
           v-model="_query"
           class="flex-1"
-          :placeholder="t?.('enterInputSearch')"
+          :placeholder="t?.('treeTransfer.enterInputSearch')"
           :suffix-icon="IconSearch"
           @keyup.enter="leftQueryChange"
           @change="leftQueryChange"
@@ -19,18 +19,18 @@
           ref="KTransferInputRightRef"
           v-model="_rightQuery"
           class="flex-1 ml-[10px]"
-          :placeholder="t?.('enterInputSearch')"
+          :placeholder="t?.('treeTransfer.enterInputSearch')"
           :suffix-icon="IconSearch"
           @keyup.enter="rightQueryChange"
           @change="rightQueryChange"
         />
       </div>
     </div>
-    <div class="k-transfer__body">
+    <div class="k-transfer__body" :class="{ 'flex-1': adaptive }">
       <div class="k-transfer-content k-transfer-content__left">
         <div
           class="k-transfer__list"
-          :style="{ height: tableHeight + 'px' }"
+          :style="{ height: adaptive ? '100%' : tableHeight + 'px' }"
           :class="useTree ? 'transfer-tree-table' : ''"
         >
           <k-table
@@ -107,7 +107,7 @@
         </Pagination>
       </div>
       <div class="k-transfer-content k-transfer-content__right">
-        <div class="k-transfer__list" :style="{ height: tableHeight + 'px' }">
+        <div class="k-transfer__list" :style="{ height: adaptive ? '100%' : tableHeight + 'px' }">
           <k-table
             ref="tableRightRef"
             size="mini"
@@ -128,7 +128,7 @@
                     <div v-if="!isCustomColumns" class="right-data-header">
                       <span class="right-data-title">{{ item.title ?? '' }}</span>
                       <span class="clear-data" @click="clearCurrentData">
-                        {{ t?.('clearData') }}
+                        {{ t?.('treeTransfer.clearData') }}
                       </span>
                     </div>
                     <template v-else>{{ item.title ?? '' }}</template>
@@ -183,12 +183,12 @@
 </template>
 
 <script setup lang="tsx">
-import { ref, computed, watch, inject, nextTick } from 'vue';
-import { VueI18nTranslation } from 'vue-i18n';
+import { ref, computed, watch, nextTick } from 'vue';
 import { IconSearch, IconClose } from 'ksw-vue-icon';
 import { VxeTablePropTypes } from 'vxe-table';
 import { sortBySmallerList, compatibleSlots, sortFunc } from '../../utils';
 import { useData, useConfig, useCheckbox } from './hooks';
+import { useLocale } from '../../hooks';
 import Pagination from './page.vue';
 import { TreeTransferProps, TreeTransferData } from './type';
 import { Column } from '../tree_table';
@@ -197,7 +197,7 @@ defineOptions({
   name: 'KTreeTransfer'
 });
 
-const t = inject<VueI18nTranslation>('$t');
+const { t } = useLocale();
 
 type Row = VxeTablePropTypes.Row;
 
@@ -208,11 +208,10 @@ const props = withDefaults(defineProps<TreeTransferProps>(), {
   showDrag: false,
   showPage: false,
   tableHeight: 300,
+  adaptive: false,
   defaultData: () => [],
   rowKey: 'id'
 });
-
-const _styleModule = inject('_styleModule', '');
 // 定义emit
 const emits = defineEmits([
   'change',

@@ -11,6 +11,7 @@ export interface TransferProps {
   }
   defaultKeys?: (string | number)[]
   filterable?: boolean
+  searchStrictly?: boolean;
   drag?: boolean
   dragIcon?: string | Component
 }

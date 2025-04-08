@@ -1,7 +1,7 @@
 <template>
   <el-input-number
     ref="inputNumberRef"
-    :class="['k-input-number', _styleModule]"
+    class="k-input-number"
     v-bind="$attrs"
     :size="formatSize.elSize"
   >
@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from 'vue';
+import { ref } from 'vue';
 import { ElInputNumber } from 'element-plus';
 import { InputNumberProps } from './type';
 import { getExposeProxy } from '../../utils';
@@ -26,7 +26,6 @@ const props = withDefaults(defineProps<InputNumberProps>(), {});
 
 const formatSize = useSize<InputNumberProps>(props);
 
-const _styleModule = inject('_styleModule', '');
 const inputNumberRef = ref<HTMLElement | null>(null);
 
 const instance: any = {};

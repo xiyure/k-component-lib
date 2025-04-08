@@ -1,7 +1,7 @@
 <template>
   <el-tree
     ref="KTreeRef"
-    :class="['k-tree', _styleModule, { 'k-tree-show-arrow': props.showArrow }]"
+    :class="['k-tree', { 'k-tree-show-arrow': props.showArrow }]"
     :filter-method="filterMethod"
     :props="props.props"
     v-bind="$attrs"
@@ -17,11 +17,14 @@
         </slot>
       </span>
     </template>
+    <template v-if="$slots.empty" #empty>
+      <slot name="empty"></slot>
+    </template>
   </el-tree>
 </template>
 
 <script setup lang="ts">
-import { ref, inject, computed } from 'vue';
+import { ref, computed } from 'vue';
 import { ElTree } from 'element-plus';
 import { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type';
 import { TreeProps } from './type';
@@ -39,7 +42,6 @@ const props = withDefaults(defineProps<TreeProps>(), {
   showArrow: true
 });
 
-const _styleModule = inject('_styleModule', '');
 const KTreeRef = ref();
 
 const treeIcon = computed(() => (node: TreeNodeData, data: TreeNodeData) => {

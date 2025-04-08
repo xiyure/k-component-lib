@@ -1,5 +1,7 @@
+import { CompSize } from "../../utils";
+
 export interface CascaderProps {
-  size?: 'lg' | 'base' | 'sm' | ''
+  size?: CompSize
 }
 
 export interface CascaderConfig {

@@ -1,12 +1,12 @@
-import { ref, computed, inject, Ref } from 'vue';
-import type { VueI18nTranslation } from 'vue-i18n';
+import { ref, computed, Ref } from 'vue';
 import { cloneDeep } from 'lodash-es';
+import { useLocale } from '../../../hooks';
 import { getValidTreeData, resetTreeData } from '../../../utils';
 import type { ConditionInfo, Condition } from '../../filter';
 import { TreeTableProps, RowData, Column } from '../type';
 
 export function useAdvancedFilter($filter: Ref<any>, props: TreeTableProps, columns: Ref<Column[]>) {
-  const t = inject<VueI18nTranslation>('$t');
+  const { t } = useLocale();
 
   const newFilterData = ref<RowData[]>([]);
   const filterConditionInfo = ref<ConditionInfo | undefined>();
@@ -15,14 +15,14 @@ export function useAdvancedFilter($filter: Ref<any>, props: TreeTableProps, colu
     let text: string = '';
     if (filterConditionInfo.value?.conditionList?.length) {
       const { filterRule } = filterConditionInfo.value;
-      text += filterRule === 0 ? (t?.('anyOne') as string) : (t?.('all') as string);
+      text += filterRule === 0 ? (t?.('filter.anyOne') as string) : (t?.('filter.all') as string);
       filterConditionInfo.value.conditionList.forEach((item: Condition, index: number) => {
         const point = props.useTree && index === 0 ? '' : '·';
-        text += `  ${point} ${item.title} ${item.logic} ${item.showValue}`;
+        text += `  ${point} ${item.title} ${t?.('filter.' + item.logic)} ${item.showValue}`;
       });
     } else {
       const point = props.useTree ? '' : '· ';
-      text += `${point}${t?.('showAll')}`;
+      text += `${point}${t?.('table.showAll')}`;
     }
     return text;
   });

@@ -1,8 +1,9 @@
-import { TreeConfig } from '../tree_table';
+import { TreeConfig, SearchConfig } from '../tree_table';
+import { CompSize } from "../../utils";
 
 export interface ScriptInputProps {
   modelValue: string | number;
-  size?: 'lg' | 'base' | 'sm' | '';
+  size?: CompSize;
   placeholder?: string;
   disabled?: boolean;
   options?: ScriptOptions[];
@@ -38,9 +39,25 @@ export interface ScriptInputProps {
   max?: number;
   min?: number;
   tagClosable?: boolean;
+  searchConfig?: SearchConfig;
+  teleported?: boolean
 }
 
 export type ScriptOptions = {
   [key: string]: any;
 };
+
 export type ScriptInputMode = 'expression' | 'string';
+
+export type ChangeEventParams = {
+  result: string,
+  scriptTags: (ScriptOptions | null)[],
+  isStringMode: boolean,
+  checkVariableResult: boolean
+}
+
+export type ScriptTagConfig = {
+  key?: string
+  isError?: boolean
+  isFunction?: boolean
+}

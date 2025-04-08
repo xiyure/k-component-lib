@@ -2,11 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
-## [未发布]
+## [1.1.18](https://github.com/xiyure/k-component-lib/compare/v1.1.16..v1.1.18) - 2025-03-17
 
+### 📦️ 依赖
+
+- element-plus : 2.9.0
+- vxe-table : ^4.10.1
 
 ### 🚀 特性
 
+- *(KTabs)* 支持多个tabPane溢出时开启滚动； - ([2ecef9d](https://github.com/xiyure/k-component-lib/commit/2ecef9d54c3f7c077376043ef9cfacaf46e50be7))
 - *(ScriptInput)* 支持自定义下拉列表label属性； - ([e275add](https://github.com/xiyure/k-component-lib/commit/e275add33a14df0736ad12bdbb349a920f01d775))
 - *(script_input)* 增加事件, mode-change - ([741586d](https://github.com/xiyure/k-component-lib/commit/741586d5ca6d01cb94c2a98d88b9991b74d773bc))
 
@@ -14,6 +19,11 @@ All notable changes to this project will be documented in this file.
 
 - *(k-input-number)* 修复padding错误 - ([e1ec23f](https://github.com/xiyure/k-component-lib/commit/e1ec23fbaec1c98cfe08aa05baaaf57c37848a79))
 - *(tree_transfer)* 修改样式 - ([75493a8](https://github.com/xiyure/k-component-lib/commit/75493a81e51f58ed417d55a37c6e043f5a94b2c8))
+- 修复tab切换时偶现滚动异常问题； - ([289ffb6](https://github.com/xiyure/k-component-lib/commit/289ffb60fd12148ce67d049f4d2f58a93803ce1d))
+
+### 📚 文档
+
+- 暗黑模式下图标的 css 说明 - ([0b792ef](https://github.com/xiyure/k-component-lib/commit/0b792ef571bf487a712265fdef23e5087283ca5f))
 
 ## [1.1.16](https://github.com/xiyure/k-component-lib/compare/v1.1.14..v1.1.16) - 2025-03-05
 
@@ -127,12 +137,6 @@ All notable changes to this project will be documented in this file.
 - *(script_input)* 增加 disabled 样式 - ([3826277](https://github.com/xiyure/k-component-lib/commit/3826277c04ff992d1b9ab9826d3cdcd15ed03fea))
 - *(script_input)* 增加字间距, 规避英文符号',光标问题 - ([917510e](https://github.com/xiyure/k-component-lib/commit/917510ee5fc194d2757f34f3e52f3890c56ccf53))
 
-## 新贡献者 ❤️
-
-* @sengoku-f 做出了他们的第一次贡献
-* @ 做出了他们的第一次贡献
-* @baobaomi900901 做出了他们的第一次贡献
-* @github-actions[bot] 做出了他们的第一次贡献
 ## [1.0.6](https://github.com/xiyure/k-component-lib/compare/v1.0.0..v1.0.6) - 2025-01-08
 
 ### 📦️ 依赖

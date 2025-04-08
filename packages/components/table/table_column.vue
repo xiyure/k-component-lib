@@ -26,14 +26,14 @@
         <k-dialog
           v-if="isShowColumnMenu"
           v-model="dialogVisible"
-          :title="t?.('customDescription')"
+          :title="t?.('table.remark')"
           @open="openDialog"
         >
           <div class="k-column__header-dialog">
             <k-input v-model="textareaContent" type="textarea"></k-input>
             <div class="header-dialog__buttons">
-              <k-button @click="() => dialogVisible = false">{{ t?.('cancel') }}</k-button>
-              <k-button main @click="addDescription(headerSlotProps.column)">{{ t?.('confirm') }}</k-button>
+              <k-button @click="() => dialogVisible = false">{{ t?.('table.cancel') }}</k-button>
+              <k-button main @click="addDescription(headerSlotProps.column)">{{ t?.('table.confirm') }}</k-button>
             </div>
           </div>
         </k-dialog>
@@ -146,7 +146,7 @@
                   >
                     <div class="filter-select-item" :class="{'disabled': !props.filters}">
                       <IconFilter class="menu-item-icon" />
-                      {{ t?.('filter') }}
+                      {{ t?.('table.filter') }}
                     </div>
                     <template v-if="$slots.filter">
                       <slot
@@ -172,37 +172,37 @@
                     <template #reference>
                       <div class="sort-select-item" :class="{'disabled': !props.sortable}">
                         <IconTableSortNormalColor class="menu-item-icon" />
-                        {{ t?.('sort') }}
+                        {{ t?.('table.sort') }}
                         <IconArrowRight class="sort-arrow-right" />
                       </div>
                     </template>
                     <ul class="sort-menu">
                       <li class="sort-menu-item" @click="tableSort(headerSlotProps.column, 'asc')">
                         <IconTableSortUpColor />
-                        {{ t?.('ascendingOrder') }}
+                        {{ t?.('table.asc') }}
                       </li>
                       <li class="sort-menu-item" @click="tableSort(headerSlotProps.column, 'desc')">
                         <IconTableSortDownColor />
-                        {{ t?.('descendingOrder') }}
+                        {{ t?.('table.desc') }}
                       </li>
                       <li class="sort-menu-item" @click="clearSort(headerSlotProps.column)">
                         <IconClearDate />
-                        {{ t?.('clearSorting') }}
+                        {{ t?.('table.clear') }}
                       </li>
                     </ul>
                   </k-popover>
                 </li>
                 <li class="more-menu-item" @click="expandColumn(true)">
                   <IconFold class="menu-item-icon" />
-                  {{ t?.('retract') }}
+                  {{ t?.('table.retract') }}
                 </li>
                 <li v-if="showTransfer" class="more-menu-item" @click="hideColumn(headerSlotProps.column)">
                   <IconHide class="menu-item-icon" />
-                  {{ t?.('hide') }}
+                  {{ t?.('table.hide') }}
                 </li>
                 <li class="more-menu-item" @click="() => dialogVisible = true">
                   <IconEdit class="menu-item-icon" />
-                  {{ t?.('customDescription') }}
+                  {{ t?.('table.remark') }}
                 </li>
               </ul>
             </k-popover>
@@ -224,28 +224,28 @@
     <template v-if="isExpandColumn" #default>
       <span>-</span>
     </template>
-    <template v-else-if="slots.default && !isExpandColumn" #default="defaultSlotProps">
+    <template v-else-if="$slots.default && !isExpandColumn" #default="defaultSlotProps">
       <slot v-bind="defaultSlotProps"></slot>
     </template>
-    <template v-if="slots.footer" #footer="footerSlotProps">
+    <template v-if="$slots.footer" #footer="footerSlotProps">
       <slot name="footer" v-bind="footerSlotProps"></slot>
     </template>
-    <template v-if="slots.radio" #radio="radioSlotProps">
+    <template v-if="$slots.radio" #radio="radioSlotProps">
       <slot name="radio" v-bind="radioSlotProps"></slot>
     </template>
-    <template v-if="slots.checkbox" #checkbox="checkboxSlotProps">
+    <template v-if="$slots.checkbox" #checkbox="checkboxSlotProps">
       <slot name="checkbox" v-bind="checkboxSlotProps"></slot>
     </template>
-    <template v-if="slots.title" #title="titleSlotProps">
+    <template v-if="$slots.title" #title="titleSlotProps">
       <slot name="title" v-bind="titleSlotProps"></slot>
     </template>
-    <template v-if="slots.edit" #edit="editSlotProps">
+    <template v-if="$slots.edit" #edit="editSlotProps">
       <slot name="edit" v-bind="editSlotProps"></slot>
     </template>
-    <template v-if="slots.valid" #valid="validSlotProps">
+    <template v-if="$slots.valid" #valid="validSlotProps">
       <slot name="valid" v-bind="validSlotProps"></slot>
     </template>
-    <template v-if="slots.content" #content="contentSlotProps">
+    <template v-if="$slots.content" #content="contentSlotProps">
       <slot name="content" v-bind="contentSlotProps"></slot>
     </template>
   </vxe-column>
@@ -253,7 +253,6 @@
 
 <script setup lang="ts">
 import { inject, ref, watch, computed, ComputedRef, Ref } from 'vue';
-import { VueI18nTranslation } from 'vue-i18n';
 import type {
   VxeColumnProps,
   VxeTableInstance,
@@ -282,13 +281,14 @@ import { KDialog } from '../dialog';
 import { KInput } from '../input';
 import { KButton } from '../button';
 import { KTooltip } from '../tooltip';
+import { useLocale } from '../../hooks';
 import { TableColumnProps, Column } from './type';
 
 defineOptions({
   name: 'KTableColumn'
 });
 
-const t = inject<VueI18nTranslation>('$t');
+const { t } = useLocale();;
 
 const tableInstance = inject<Ref<VxeTableInstance | null>>(
   'tableInstance',
@@ -307,7 +307,6 @@ const showColumnMenuParent = inject('showColumnMenu', false);
 const props = withDefaults(defineProps<TableColumnProps>(), {
   showColumnMenu: undefined
 });
-const slots = defineSlots();
 
 const popoverRef = ref();
 const isExpandColumn = ref(false);

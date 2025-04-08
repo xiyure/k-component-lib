@@ -6,10 +6,7 @@
 * @version V3.0.0
 !-->
 <template>
-  <div
-    id="KPageTableView"
-    class="KPageTableView bbm w-full h-full bg-white rounded flex text-gray-700"
-  >
+  <div id="KPageTableView" class="KPageTableView w-full h-full bg-white rounded flex text-gray-700">
     <!-- left -->
     <!-- no-refresh -->
     <KPageViewBus
@@ -22,8 +19,9 @@
       <template #head>
         <slot name="aside-toolbar"></slot>
       </template>
-
-      <slot name="aside"></slot>
+      <div>
+        <slot name="aside"></slot>
+      </div>
       <template #foot>
         <slot name="aside-foot"></slot>
       </template>
@@ -51,7 +49,7 @@
           <slot name="toolbar"></slot>
         </div>
       </div>
-      <div id="KPageBody" class="KPageBody flex-1 overflow-hidden">
+      <div id="KPageBody" class="KPageBody overflow-hidden" style="height: calc(100vh - 10.375rem)">
         <slot></slot>
       </div>
     </div>
@@ -60,6 +58,7 @@
 
 <script lang="tsx" setup>
 import { ref } from 'vue';
+import { IconTips } from 'ksw-vue-icon';
 import { KPageViewBus } from '../KPageViewBus';
 import { KTooltip } from '../../components';
 import { PageTableViewProps } from './type';
@@ -83,9 +82,9 @@ const tips = ref(false);
 const isImgUrl = /.(jpg|jpeg|png|gif|svg)$/;
 
 // 判断 props.pageIcon 是否是图片链接
-const icon = isImgUrl.test(props.pageIcon) ?
-  () => <img src={props.pageIcon} alt='icon' class='KPageHead-icon' /> :
-  props.pageIcon;
+const icon = isImgUrl.test(props.pageIcon)
+  ? () => <img src={props.pageIcon} alt='icon' class='KPageHead-icon' />
+  : props.pageIcon;
 
 const emits = defineEmits(['refresh']);
 </script>

@@ -2,7 +2,7 @@
   <div :class="['k-transfer', _styleModule]">
     <div class="k-transfer_searcher">
       <k-input
-        v-if="filterable"
+        v-if="filterable && !searchStrictly"
         v-model="searchStr"
         :placeholder="filterablePlaceholder"
         :prefix-icon="IconSearch"
@@ -14,6 +14,7 @@
       v-bind="$attrs"
       :data="sourceData"
       :props="props.props"
+      :class="{'k-transfer_search-strictly': !searchStrictly}"
       filterable
       @change="handleChange"
       @left-check-change="handleLeftCheckChange"
@@ -38,8 +39,8 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted, inject } from 'vue';
 import { ElTransfer, TransferKey, TransferDirection } from 'element-plus';
-import { VueI18nTranslation } from 'vue-i18n';
 import { IconSearch } from 'ksw-vue-icon';
+import { useLocale } from '../../hooks';
 import { Sortable, SortableInstance, SortableEvent } from '../../utils/event/sortable';
 import { TransferProps } from './type';
 import { KInput } from '../input';
@@ -64,7 +65,7 @@ const emits = defineEmits([
 ]);
 
 const _styleModule = inject('_styleModule', '');
-const t = inject<VueI18nTranslation>('$t');
+const { t } = useLocale();
 const modelValue = ref<Array<any>>([]);
 const searchStr = ref('');
 const sourceData = ref<Array<any>>([]);
@@ -87,7 +88,7 @@ const defaultPropsConfig = computed(() => ({
 }));
 
 const filterablePlaceholder = computed(
-  () => props.filterablePlaceholder ?? t?.('searchHeaderName')
+  () => props.filterablePlaceholder ?? t?.('transfer.searchHeaderName')
 );
 
 watch(
@@ -169,7 +170,7 @@ function extendContent() {
   const transferHeader = transferElem.querySelectorAll('.el-transfer-panel__header')[1];
   transferHeader.classList.add('transfer-right-header');
   const label = document.createElement('label');
-  label.innerHTML = t?.('restoreDefault') as string;
+  label.innerHTML = t?.('transfer.reset') as string;
   label.classList.add('transfer-restore__text');
   label.addEventListener('click', () => {
     resetTransferData();
@@ -184,6 +185,7 @@ function extendContent() {
 }
 function resetTransferData() {
   if (!Array.isArray(props.defaultKeys)) {
+    emits('update:modelValue', []);
     return;
   }
   const { key } = defaultPropsConfig.value;

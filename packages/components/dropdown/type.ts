@@ -1,4 +1,6 @@
-export interface DropDownProps {
+import { CompSize } from "../../utils";
+
+export interface DropdownProps {
   title?: string
-  size?:'lg' | 'base' | 'sm' | ''
+  size?: CompSize
 }

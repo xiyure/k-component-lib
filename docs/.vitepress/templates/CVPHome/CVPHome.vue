@@ -7,10 +7,10 @@
   <div
     ref="CVPHome"
     v-if="showCVPHome"
-    class="CVPHome bg-white px-24 flex flex-col items-center overflow-x-hidden"
+    class="CVPHome flex flex-col items-center overflow-x-hidden bg-white px-24"
   >
-    <div class="home-page1-bg h-screen w-screen opacity-50 fixed"></div>
-    <div class="h-fit z-10" style="width: 1280px">
+    <div class="home-page1-bg fixed h-screen w-screen opacity-50"></div>
+    <div class="z-10 h-fit" style="width: 1280px">
       <pageOne />
       <pageTwo class="my-24" />
       <pageThree class="my-24" />

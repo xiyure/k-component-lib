@@ -1,5 +1,5 @@
 <template>
-  <div :class="['k-steps', _styleModule]">
+  <div class="k-steps">
     <el-steps
       v-if="!capsule"
       ref="KStepsRef"
@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, provide, nextTick, inject } from 'vue';
+import { ref, watch, provide, nextTick } from 'vue';
 import { ElSteps } from 'element-plus';
 import { StepsProps } from './type';
 import { genRandomStr, getExposeProxy } from '../../utils';
@@ -35,7 +35,6 @@ const props = withDefaults(defineProps<StepsProps>(), {
   useAntStyle: false
 });
 
-const _styleModule = inject('_styleModule', '');
 const steps: any[] = [];
 
 const id = genRandomStr(8);

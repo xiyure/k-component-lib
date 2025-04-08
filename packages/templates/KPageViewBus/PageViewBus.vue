@@ -1,4 +1,4 @@
-<!--
+<!-- 
 * @description  参数1
 * @fileName  demo
 * @author userName
@@ -41,12 +41,12 @@
               style="padding-right: 0"
               @click="() => emits('refresh')"
             >
-              <IconRefresh />
+              <IconRefresh color="gray" />
             </KButton>
           </slot>
         </div>
 
-        <div class="KPageViewBus-main pt-3 h-full flex">
+        <div class="KPageViewBus-main h-full flex">
           <slot></slot>
         </div>
         <div v-if="$slots['foot']" class="KPageViewBus-foot pt-3">
@@ -59,6 +59,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { IconArrowLeft, IconRefresh, IconTips } from 'ksw-vue-icon';
 import { KTooltip, KButton } from '../../components';
 import { PageHeadProps } from './type';
 

@@ -1,11 +1,16 @@
+import { CompSize } from "../../utils";
+
 export interface FormProps {
-  size?: '' | 'lg' | 'base' | 'sm';
+  size?: CompSize;
   showColon?: boolean;
   showLabel?: boolean;
+  hideRequiredAsterisk?: boolean
+  requireAsteriskPosition?: 'left' | 'right'
 }
 
 export interface FormItemProps {
-  size?: '' | 'lg' | 'base' | 'sm';
+  size?: CompSize;
   label?: string;
   showLabel?: boolean;
+  showColon?: boolean;
 }

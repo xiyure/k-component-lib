@@ -2,7 +2,7 @@
   <el-dialog
     ref="kDialogRef"
     v-bind="$attrs"
-    :class="['k-dialog', _styleModule, { 'k-dialog-resizable': useResizable && !isFull }]"
+    :class="['k-dialog', { 'k-dialog-resizable': useResizable && !isFull }]"
     :fullscreen="isFull"
     :draggable="useResizable || draggable"
     :style="useResizable ? { minWidth: minWidth + 'px', minHeight: minHeight + 'px' } : {}"
@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, useAttrs, watch } from 'vue';
+import { ref, useAttrs, watch } from 'vue';
 import { ElDialog } from 'element-plus';
 import { DialogProps } from './type';
 import { getExposeProxy } from '../../utils';
@@ -64,7 +64,6 @@ defineOptions({
   name: 'KDialog'
 });
 
-const _styleModule = inject('_styleModule', '');
 const kDialogRef = ref();
 
 const instance: any = {};

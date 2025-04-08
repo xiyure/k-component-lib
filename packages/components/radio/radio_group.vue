@@ -8,8 +8,7 @@
         'k-radio-group--row': props.row === true,
         'k-radio-group--column': props.column === true,
       },
-      getSizeClass,
-      _styleModule,
+      getSizeClass
     ]"
     v-bind="$attrs"
   >
@@ -20,11 +19,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, provide, inject } from 'vue';
+import { ref, computed, watch, provide } from 'vue';
 import { ElRadioGroup } from 'element-plus';
 import { RadioGroupProps } from './type';
-import { getExposeProxy, SIZE_KEY } from '../../utils';
-import { useSize } from '../../hooks';
+import { getExposeProxy } from '../../utils';
+import { SIZE_KEY, useSize } from '../../hooks';
 
 defineOptions({
   name: 'KRadioGroup'
@@ -37,7 +36,6 @@ const props = withDefaults(defineProps<RadioGroupProps>(), {
 });
 
 const formatSize = useSize<RadioGroupProps>(props);
-const _styleModule = inject('_styleModule', '');
 
 const KRadioGroupRef = ref(null);
 const fillColor = ref(props.color);

@@ -1,10 +1,13 @@
-import { Component } from 'vue';
+import { Component, CSSProperties } from 'vue';
+import { CompSize } from "../../utils";
 
 export interface InputProps {
+  modelValue?: string | number
+  placeholder?: string;
   /**
    * 尺寸
    */
-  size?: 'base' | 'sm';
+  size?: CompSize;
   /**
    * 输入框左边图标
    * 输入框左边图标 === prefixIcon, 需要传入组件
@@ -23,8 +26,18 @@ export interface InputProps {
    * el属性,右边图标
    */
   suffixIcon?: Component | string | undefined;
-
+  /**
+   * 是否使用密码框
+   */
   showPassword?: boolean;
-
+  /**
+   * 输入框类型
+  */
   type?: string;
+  selectable?: boolean;
+  filterable?: boolean;
+  options?: (string | number)[];
+  popperClass?: string;
+  popperStyle?: CSSProperties;
+  teleported?: boolean;
 }

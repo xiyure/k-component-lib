@@ -1,9 +1,9 @@
 import { inject, unref, computed, ComputedRef } from 'vue';
 import { toString } from 'lodash-es';
-import { SIZE_KEY } from '../utils/key';
- 
-type Size = 'base' | 'sm' | 'lg' | '' ;
+import { CompSize } from '../utils';
 
+export const SIZE_KEY = Symbol('__size__');
+ 
 const OWN_SIZE_MAP = new Map<string, string>([
   ['default', 'base'],
   ['small', 'sm'],
@@ -21,7 +21,7 @@ const EL_SIZE_MAP = new Map<string, string>([
   ['large', 'large']
 ]);
 
-export function useSize<T>(props: T & { size?: Size }) : ComputedRef {
+export function useSize<T>(props: T & { size?: CompSize }) : ComputedRef {
   const __size__ = inject(SIZE_KEY, 'base');
   return computed(() => {
     const size = props.size || unref(__size__);

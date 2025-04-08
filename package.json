@@ -1,8 +1,8 @@
 {
   "name": "@ksware/ksw-ux",
   "private": false,
-  "version": "1.1.18",
-  "description": "Kingsware Component Library",
+  "version": "1.1.20-beta9",
+  "description": "一个基于ElementPlus与VxeTable的UI组件库，满足项目多场景开发的常用组件需求",
   "main": "kingsware-ui/index.umd.js",
   "module": "kingsware-ui/index.js",
   "style": "kingsware-ui/style.css",
@@ -22,7 +22,7 @@
     "docs:preview": "npm run -C docs preview"
   },
   "peerDependencies": {
-    "element-plus": "2.9.0",
+    "element-plus": "^2.9.0",
     "ksw-vue-icon": "latest",
     "lodash-es": "^4.17.21",
     "sortablejs": "^1.15.2",
@@ -51,6 +51,7 @@
     "overlayscrollbars-vue": "^0.5.9",
     "postcss": "^8.4.47",
     "prettier": "3.3.2",
+    "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^3.4.12",
     "typescript": "^5.6.2",
     "vite": "^5.4.6",

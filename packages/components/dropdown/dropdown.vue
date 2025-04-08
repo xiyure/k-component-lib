@@ -1,7 +1,7 @@
 <template>
   <el-dropdown
     ref="kDropDownRef"
-    :class="['k-dropdown', _styleModule]"
+    class="k-dropdown"
     v-bind="$attrs"
     :size="formatSize.elSize"
   >
@@ -17,20 +17,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref, provide, inject } from 'vue';
+import { ref, provide } from 'vue';
 import { ElDropdown, ElDropdownMenu } from 'element-plus';
-import { DropDownProps } from './type';
-import { getExposeProxy, SIZE_KEY } from '../../utils';
-import { useSize } from '../../hooks';
+import { DropdownProps } from './type';
+import { getExposeProxy } from '../../utils';
+import { SIZE_KEY, useSize } from '../../hooks';
 
 defineOptions({
   name: 'KDropdown'
 });
 
-const _styleModule = inject('_styleModule', '');
-const props = withDefaults(defineProps<DropDownProps>(), {});
+const props = withDefaults(defineProps<DropdownProps>(), {});
 
-const formatSize = useSize<DropDownProps>(props);
+const formatSize = useSize<DropdownProps>(props);
 
 const kDropDownRef = ref();
 

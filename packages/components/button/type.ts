@@ -1,4 +1,4 @@
-import { Component } from 'vue';
+import { CompSize } from "../../utils";
 
 export interface ButtonProps {
   /**
@@ -24,7 +24,7 @@ export interface ButtonProps {
   /**
    * 按钮尺寸，可选值为:
    */
-  size?: 'base' | 'sm';
+  size?: CompSize;
   /**
    * 文字左边图标. 例如：'iconAdd'
    */

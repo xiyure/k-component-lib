@@ -18,4 +18,5 @@ export function importThirdLib(app: App, config: ContextConfig = {}) {
   VxeUI.setConfig(config.vxeGlobalConfig ?? {});
   VxeUI.setI18n('zh-CN', zhCN);
   VxeUI.setI18n('en-US', enUS);
+  VxeUI.setLanguage(config.locale === 'en' ? 'en-US' : 'zh-CN')
 }

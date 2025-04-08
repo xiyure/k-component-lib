@@ -91,6 +91,14 @@
       "description": "是否显示label",
       "defaultValue": "true",
       "tip": ""
+    },
+    {
+      "displayName": "showColon",
+      "type": "boolean",
+      "description": "是否显示label",
+      "defaultValue": "false",
+      "tip": "",
+      "version": "1.1.20"
     }
   ],
   "events": [],

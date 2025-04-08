@@ -171,6 +171,18 @@ export function useHeaderControl(
     }
   }
 
+  // 更新列可见状态
+  function updateColVisible(ids: string[]) {
+    console.log(ids);
+    flatColumns.value.forEach((col: Column) => {
+      if (ids.includes(col.field as string)) {
+        col.visible = true;
+      } else {
+        col.visible = false;
+      }
+    });
+  }
+
   return {
     flatColumns,
     selectData,
@@ -181,6 +193,7 @@ export function useHeaderControl(
     transferHide,
     transferShow,
     sortTableHeader,
+    updateColVisible,
     _transferMethods: {
       getHeaderControllerData,
       setHeaderControllerData

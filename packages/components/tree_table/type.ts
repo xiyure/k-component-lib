@@ -3,7 +3,7 @@ import { VxeTablePropTypes, VxeColgroupProps, VxeColumnPropTypes } from 'vxe-tab
 import { PaginationProps as ElPaginationProps } from 'element-plus';
 import { OperateData } from '../operate/type';
 import { Condition, FilterValue, ConditionInfo } from '../filter/type';
-import { Merge } from '../../utils/typescript';
+import { Merge, CompSize } from '../../utils/typescript';
 
 export type Row = VxeTablePropTypes.Row;
 export type TreeConfig = VxeTablePropTypes.TreeConfig;
@@ -54,7 +54,10 @@ export interface TreeTableProps {
   advancedFilterConfig?: AdvancedFilterConfig;
   searchConfig?: SearchConfig;
   style?: CSSProperties;
-  class?: string | { [className: string]: boolean } | Array<string | { [className: string]: boolean }>;
+  class?:
+    | string
+    | { [className: string]: boolean }
+    | Array<string | { [className: string]: boolean }>;
   simple?: boolean;
   defaultTransferData?:
     | (() => TableHeaderControl[] | Promise<TableHeaderControl[]>)
@@ -64,12 +67,11 @@ export interface TreeTableProps {
   onTransferChange?: (transferData: TableHeaderControl[]) => void;
   onAdvancedFilterShow?: () => void;
   onAdvancedFilterHide?: (filterInfo: { conditionInfo: ConditionInfo; filterData: any[] }) => void;
-  searchFunction?: (searchData: FilterValue) => void;
   useAntStyle?: boolean;
   round?: boolean;
   adaptive?: boolean;
   hasSpace?: boolean;
-  IconSearch?: string;
+  requestMethod?: (params: TableRemoteMethod) => Promise<TableMethodReturn>;
 }
 
 export interface Column {
@@ -106,10 +108,15 @@ type FilterColumn = {
     value: FilterValue;
   }[];
 };
-export type TablePaginationConfig = Merge<{
-  size?: 'base' | 'sm';
-  isRemotePaging?: boolean;
-}, ElPaginationProps>
+export type TablePaginationConfig = Merge<
+  {
+    size?: CompSize;
+    isRemotePaging?: boolean;
+  },
+  {
+    -readonly [K in keyof ElPaginationProps]: ElPaginationProps[K];
+  }
+>;
 
 export interface SeqConfig {
   seqMethod?: (rowConfig: RowConfig) => string | number;
@@ -145,11 +152,11 @@ export interface AdvancedFilterConfig {
 
 export interface SearchConfig {
   strict?: boolean;
-  searchMethod?: (key: string | number, data: any[]) => any[];
+  searchMethod?: (params: TableRemoteMethod) => RowData[] | Promise<RowData[]>;
   isRemoteQuery?: boolean;
   ignoreCase?: boolean;
-  searchColumns?: string[]
-  supportPinYin?: string[] | boolean
+  searchColumns?: string[];
+  supportPinYin?: string[] | boolean;
 }
 
 export interface RowData {
@@ -159,7 +166,21 @@ export interface RowData {
   [key: string]: any;
 }
 
-export type TableCacheData =  {
-  treeDataMap: Map<string | number, RowData>,
-  tableDataMap: Map<string | number, { node: RowData; children: RowData[] }>
+export type TableCacheData = {
+  treeDataMap: Map<string | number, RowData>;
+  tableDataMap: Map<string | number, { node: RowData; children: RowData[] }>;
+};
+
+export type TableRemoteMethod = {
+  searchKeyword: string
+  currentPage: number | undefined
+  pageSize: number | undefined
+  pageSizes: number[] | undefined
+  conditionInfo: ConditionInfo,
+  currentData?: RowData[]
+}
+
+export type TableMethodReturn = {
+  data: RowData[]
+  total?: number
 }

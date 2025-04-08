@@ -1,16 +1,11 @@
 <template>
   <vxe-table
     ref="vxeTableRef"
-    :class="['k-table', _styleModule, {'drag_table': showDragColumn}]"
-    :data="data"
+    class="k-table"
     v-bind="$attrs"
   >
-    <slot v-bind="data"></slot>
-    <template v-if="slots.empty" #empty="data">
-      <slot name="empty" v-bind="data"></slot>
-    </template>
-    <template v-if="slots.loading" #loading="data">
-      <slot name="loading" v-bind="data"></slot>
+    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+      <slot :name="name" v-bind="data"></slot>
     </template>
   </vxe-table>
 </template>
@@ -65,12 +60,8 @@ defineOptions({
   name: 'KTable'
 });
 
-const props = withDefaults(defineProps<KTableProps>(), {
-  showDragColumn: false
-});
+const props = withDefaults(defineProps<KTableProps>(), {});
 
-const _styleModule = inject('_styleModule', '');
-const slots = defineSlots();
 const id = genRandomStr(8);
 // 事件管理
 const emitter = inject('_emitter') as any;

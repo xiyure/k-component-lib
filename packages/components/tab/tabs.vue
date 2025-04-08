@@ -2,9 +2,11 @@
   <el-tabs
     ref="KTabsRef"
     v-model="activeName"
-    :class="['k-tabs', _styleModule]"
+    class="k-tabs"
     v-bind="$attrs"
     :tab-position="tabPosition"
+    :editable="editable"
+    :addable="addable"
     @edit="(paneName: string | number | undefined, action: 'add' | 'remove') => {
       emits('edit', paneName, action);
       getHideTabs();
@@ -16,7 +18,7 @@
       :class="`tab-${tabPosition}-layout`"
       :style="{
         right:
-          ($attrs.editable || $attrs.addable) && (tabPosition === 'top' || tabPosition === 'bottom') ? '2rem' : 0
+          (editable || addable) && (tabPosition === 'top' || tabPosition === 'bottom') ? '2rem' : 0
       }"
     >
       <TabDropdownMenu :tab-index-list="hideTabIndex" :tab-slots="$slots" @command="jumpToTab">
@@ -33,11 +35,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick, onMounted, onUnmounted, inject } from 'vue';
+import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue';
 import { ElTabs } from 'element-plus';
 import { IconMore } from 'ksw-vue-icon';
 import TabDropdownMenu from './tab_dropdown_menu';
-import { getElement, getElementAll, getExposeProxy } from '../../utils';
+import { getElement, getElementAll, isElementInContainerView, getExposeProxy } from '../../utils';
 import { TabsProps, TabData } from './type';
 
 defineOptions({
@@ -53,7 +55,6 @@ const props = withDefaults(defineProps<TabsProps>(), {
 
 const emits = defineEmits(['update:modelValue', 'edit']);
 
-const _styleModule = inject('_styleModule', '');
 const activeName = ref<string | undefined>(undefined);
 const KTabsRef = ref();
 
@@ -101,8 +102,8 @@ watch(
   (newVal) => {
     if (props.modelValue !== undefined && props.modelValue !== newVal) {
       emits('update:modelValue', newVal);
-      scrollToActiveTab();
     }
+    scrollToActiveTab();
   }
 );
 
@@ -117,9 +118,12 @@ function handleWheel(evt: WheelEvent) {
   const translate = getNavTranslate();
   let translateDis = translate - disY;
   const navScrollBounding = navScroll.getBoundingClientRect();
-  const maxOffset = isHorizontal()
+  let maxOffset = isHorizontal()
       ? nav.offsetWidth - navScrollBounding.width
       : nav.offsetHeight - navScrollBounding.height;
+  if (maxOffset <= 0) {
+    maxOffset = -translate
+  }
   if (translateDis > 0) {
     translateDis = 0;
   } else if (translateDis < -maxOffset) {
@@ -128,16 +132,7 @@ function handleWheel(evt: WheelEvent) {
   setNavTranslate(translateDis);
   getHideTabs();
 }
-// 判断tab是否在可视区域
-function isElementInContainerView(elRect: DOMRect, navScrollRect: DOMRect) {
-  if (!elRect || !navScrollRect) {
-    return;
-  }
-  if (isHorizontal()) {
-    return elRect.left >= navScrollRect.left && elRect.right <= navScrollRect.right;
-  }
-  return elRect.top >= navScrollRect.top && elRect.bottom <= navScrollRect.bottom;
-}
+
 // 下拉列表选择tab时，滚动到可视区域
 function jumpToTab(item: TabData) {
   const name = item.name ?? '';
@@ -158,7 +153,7 @@ function getHideTabs() {
     const navScrollRect = navScroll.getBoundingClientRect();
     for (let _i = 0; _i < tabPaneDoms.length; _i++) {
       const elRect = tabPaneDoms[_i].getBoundingClientRect();
-      if (!isElementInContainerView(elRect, navScrollRect)) {
+      if (!isElementInContainerView(elRect, navScrollRect, isHorizontal() ? 'horizontal' :'vertical')) {
         res.push(_i);
       }
     }
@@ -177,10 +172,14 @@ function scrollToActiveTab() {
     const _isHorizontal = isHorizontal();
     const activeTabBounding = activeTab.getBoundingClientRect();
     const navScrollBounding = navScroll.getBoundingClientRect();
-    const maxOffset = _isHorizontal
+    let maxOffset = _isHorizontal
       ? nav.offsetWidth - navScrollBounding.width
       : nav.offsetHeight - navScrollBounding.height;
+
     const currentOffset = -getNavTranslate();
+    if (maxOffset <= 0) {
+      maxOffset = currentOffset;
+    }
     let newOffset = currentOffset;
 
     if (_isHorizontal) {
@@ -220,7 +219,7 @@ function setNavTranslate(translate: number) {
 }
 // 判断tab栏是否水平排列
 function isHorizontal() {
-  return props.tabPosition === 'top' || props.tabPosition === 'bottom';
+  return Boolean(props.tabPosition === 'top' || props.tabPosition === 'bottom');
 }
 
 const instance: any = {};

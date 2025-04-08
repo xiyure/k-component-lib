@@ -1,9 +1,10 @@
 import { CSSProperties } from 'vue';
+import { CompSize } from "../../utils";
 
 export interface TreeSelectProps {
   name?: string
   icon?: string
-  size?: 'base' | 'sm' | 'lg' | ''
+  size?: CompSize
   expandIcon?: string
   collapseIcon?: string
   debounce?: number

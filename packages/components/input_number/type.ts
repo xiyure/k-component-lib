@@ -1,3 +1,5 @@
+import { CompSize } from "../../utils";
+
 export interface InputNumberProps {
-  size?: 'lg' | 'base' | 'sm'
+  size?: CompSize
 }
