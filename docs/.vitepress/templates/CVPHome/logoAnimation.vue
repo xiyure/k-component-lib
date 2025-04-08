@@ -4,7 +4,8 @@
     class="fixed z-50 flex h-screen w-screen items-center justify-center bg-white"
   >
     <svg
-      class="size-96 overflow-visible"
+      ref="svgElement"
+      class="invisible size-96 overflow-visible"
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -14,7 +15,7 @@
       style="enable-background: new 0 0 3518 660"
       xml:space="preserve"
     >
-      <g ref="reference" class="invisible">
+      <g ref="logo">
         <g ref="upperLeftCorner" id="upperLeftCorner">
           <g>
             <g>
@@ -753,7 +754,8 @@ import { gsap } from 'gsap';
 import DrawSVGPlugin from '../../plugin/DrawSVGPlugin.min.js';
 
 const logoAnimation = ref(null);
-const reference = ref(null);
+const logo = ref(null);
+const svgElement = ref(null);
 const upperLeftCorner = ref(null);
 const bottomRightCorner = ref(null);
 const rightSide = ref(null);
@@ -849,12 +851,12 @@ onMounted(() => {
   );
 
   tl.fromTo(
-    reference.value,
+    svgElement.value,
     { autoAlpha: 0 },
     { autoAlpha: 1, duration: 0.25, ease: 'power2.out' },
     0
   );
-  tl.fromTo(reference.value, { x: 0 }, { x: -1429, duration: 1, ease: 'power2.out' }, 0.65);
+  tl.fromTo(logo.value, { x: 0 }, { x: -1429, duration: 1, ease: 'power2.out' }, 0.65);
   tl.fromTo(letterK.value, { x: 2000 }, { x: 0, duration: 1, ease: 'power2.out' }, 0.75);
   tl.fromTo(letterS.value, { x: 2000 }, { x: 0, duration: 1, ease: 'power2.out' }, 0.85);
   tl.fromTo(letterW.value, { x: 2000 }, { x: 0, duration: 1, ease: 'power2.out' }, 0.95);
