@@ -1,4 +1,4 @@
-import { ref, computed, Ref } from 'vue';
+import { ref, computed, Ref, onMounted, nextTick } from 'vue';
 import { VxeTablePropTypes, VxeTableInstance } from 'vxe-table';
 import { cloneDeep } from 'lodash-es';
 import { TreeTableProps, RowData, TableCacheData } from '../type';
@@ -25,11 +25,16 @@ export function useCheckbox(
   );
   const keyField = computed(() => props.rowConfig?.keyField ?? 'id');
 
+  onMounted(() => {
+    initCheckedData();
+  });
+
   // 初始化时保存复选框选中行
-  function initCheckedData() {
+  async function initCheckedData() {
     if (!fullTableData.value?.length || hasInit) {
       return;
     }
+    await nextTick();
     hasInit = true;
     const { checkRowKeys, checkAll } = checkboxConfig.value;
     const newCheckRowKeys = Array.isArray(checkRowKeys) ? checkRowKeys : [];
@@ -141,7 +146,7 @@ export function useCheckbox(
     await $table.value?.clearCheckboxReserve();
     new Promise((resolve) => {
       if (props.showPage && !props.useTree) {
-        const checkRows = $table.value?.getCheckboxRecords();
+        const checkRows = $table.value?.getCheckboxRecords(true);
         checkedData.value = new Set(checkRows.map((row: Row) => row?.[keyField.value]));
         $table.value?.setCheckboxRow(checkRows, true);
       }
