@@ -1,4 +1,4 @@
-import { ref, computed, nextTick, Ref } from 'vue';
+import { ref, computed, Ref } from 'vue';
 import { VxeTablePropTypes, VxeTableInstance } from 'vxe-table';
 import { cloneDeep } from 'lodash-es';
 import { TreeTableProps, RowData, TableCacheData } from '../type';
@@ -18,9 +18,19 @@ export function useCheckbox(
   const checkedLeafData: Set<string | string> = new Set();
   // 复选框选中数量
   const checkedDataSize = computed(() => checkedData.value.size);
+  let hasInit = false;
+
+  const checkboxConfig = computed(() =>
+    Object.assign(defaultCheckboxConfig, props.checkboxConfig || {})
+  );
+  const keyField = computed(() => props.rowConfig?.keyField ?? 'id');
 
   // 初始化时保存复选框选中行
-  nextTick(() => {
+  function initCheckedData() {
+    if (!fullTableData.value?.length || hasInit) {
+      return;
+    }
+    hasInit = true;
     const { checkRowKeys, checkAll } = checkboxConfig.value;
     const newCheckRowKeys = Array.isArray(checkRowKeys) ? checkRowKeys : [];
     const defaultCheckedRows = checkAll
@@ -29,12 +39,7 @@ export function useCheckbox(
         .map((rowKey: string | number) => tableCacheData.tableDataMap.get(rowKey)?.node)
         .filter(row => row);
     handleCheckboxData(defaultCheckedRows, true);
-  });
-  const checkboxConfig = computed(() =>
-    Object.assign(defaultCheckboxConfig, props.checkboxConfig || {})
-  );
-  const keyField = computed(() => props.rowConfig?.keyField ?? 'id');
-
+  }
   // 设置复选框选中行
   const setCheckboxRow = (rows: Row | RowData | (Row | RowData)[], checked: boolean) =>
     new Promise((resolve) => {
@@ -176,9 +181,9 @@ export function useCheckbox(
     checkedLeafData.clear();
   }
 
-  function getCheckboxRecords(isFullData = false): Row[] | RowData[] {
+  function getCheckboxRecords(isFullData = false, onlyVisible = false): Row[] | RowData[] {
     if (!isFullData) {
-      return $table.value?.getCheckboxRecords();
+      return $table.value?.getCheckboxRecords(!onlyVisible);
     }
     const allCheckedData = cloneDeep(checkedLeafData);
     if (props.useTree) {
@@ -230,6 +235,7 @@ export function useCheckbox(
     closeBatchOperation,
     isCheckboxDisabled,
     clearCheckedData,
+    initCheckedData,
     resetCheckboxStatus,
     checkedDataSize,
     checkboxConfig

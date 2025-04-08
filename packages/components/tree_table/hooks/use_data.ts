@@ -174,6 +174,9 @@ export function useData(
   }
   // 处理树形数据
   function handleTreeData(leafData: any[]) {
+    if (Array.isArray(leafData) && leafData.length === 0) {
+      return;
+    }
     const rowField = props.treeConfig?.rowField ?? 'id';
     const parentField = props.treeConfig?.parentField ?? 'pid';
     tableCacheData.treeDataMap.clear();

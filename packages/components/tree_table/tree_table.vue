@@ -478,6 +478,7 @@ const {
   closeBatchOperation,
   checkBoxChange,
   checkboxAllChange,
+  initCheckedData,
   clearCheckedData,
   resetCheckboxStatus,
   _checkboxMethods
@@ -493,6 +494,7 @@ watch(
     clearCheckedData();
     setData(props.data ?? []);
     advancedFilter();
+    initCheckedData();
   });
 
 watch(
@@ -601,7 +603,7 @@ function hideColumn(column: Column) {
 // 高级筛选相关方法
 async function refreshAdvancedFilter(
   conditionInfo: ConditionInfo,
-  newTableData: RowData[],
+  newTableData: RowData[] = [],
   isEmit = true
 ) {
   filterConditionInfo.value = conditionInfo;
