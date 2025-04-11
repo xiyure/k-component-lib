@@ -28,6 +28,7 @@ export type RenderType = SlotsType
 
 export interface DialogServiceOptions extends DialogOptions {
   id?: string
+  attrs?: DialogOptions
   slots?: DialogSlots
   formAttrs?: FormOptions
   formItems?: FormItemOptions[]

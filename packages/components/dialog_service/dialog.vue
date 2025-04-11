@@ -117,6 +117,7 @@ function getFormItemRender (formAttrs: FormOptions, formItem: FormItemOptions) {
 
 function showDialog ({
   id = `dialog_${genRandomStr(8)}`,
+  attrs,
   slots = {},
   formItems,
   formAttrs = {},
@@ -130,7 +131,7 @@ function showDialog ({
   cancelButtonText = t('dialog.cancel'),
   ...rest
 }: DialogServiceOptions) {
-  const attrs = rest ?? {}
+  attrs = attrs ?? rest;
   penetratePointer && (attrs.modal = false)
   // if param slots ids a function, then convert it to default slot
   if (typeof slots === 'function') {
@@ -195,11 +196,9 @@ function showDialog ({
       if (!showDefaultFooter) return () => null
       slotParams.confirm = async (payload: any) => {
         // 需要验证
-        try {
-          if (typeof cntRef.value?.validate === 'function') {
+        if (typeof cntRef.value?.validate === 'function') {
           await cntRef.value.validate?.()
         }
-        } catch (err: any) {}
         try {
           if (payload instanceof Event) {
             payload = { ok: true, dialogAttrs }
