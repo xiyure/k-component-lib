@@ -366,8 +366,7 @@ watch(
 watch(
   () => props.contentType,
   () => {
-    const { result = '' } = parseInputValue();
-    checkInputContentType(result);
+    checkInputContentType(parseInputValue());
   }
 );
 
@@ -409,15 +408,16 @@ function handleInput(event: InputEvent | CompositionEvent) {
   } else if (event.data !== null) {
     curInput.value += event.data ?? '';
   }
-  const { result = '' } = parseInputValue();
-  if (!result?.length) {
+  const res = parseInputValue();
+  if (!res.result?.length) {
     setEditorContent('');
   }
-  updateModelValue(result);
-  checkInputContentType(result);
+  updateModelValue(res.result ?? '');
+  checkInputContentType(res);
 }
 
-function checkInputContentType(result: string) {
+function checkInputContentType(res: ChangeEventParams) {
+  const { result = '' } = res;
   limitMaxMinMsg.value = '';
   if (!props.checkContentType) {
     return;
@@ -442,6 +442,7 @@ function checkInputContentType(result: string) {
     showMessage.value = true;
     resultMessage.value = `${limitMaxMinMsg.value}`;
   }
+  res.checkVariableResult = checkVariableResult;
 }
 
 function isInRange(value: string) {
@@ -497,7 +498,7 @@ async function selectOption(data: Row | RowData) {
   nextTick(() => {
     const res = parseInputValue();
     updateModelValue(res?.result ?? '');
-    checkInputContentType(res?.result ?? '');
+    checkInputContentType(res);
     emits('select', data);
     handleChange(res)
   });
@@ -876,6 +877,7 @@ function removeTag(event: MouseEvent) {
   }
   const res = parseInputValue();
   updateModelValue(res?.result ?? '');
+  checkInputContentType(res);
   handleChange(res);
 }
 
@@ -955,6 +957,7 @@ function restoreTextValue() {
   caches.expression = tempCaches.expression;
   caches.string = tempCaches.string;
   updateModelValue(res.result ?? '');
+  checkInputContentType(res);
   handleChange(res);
 }
 
