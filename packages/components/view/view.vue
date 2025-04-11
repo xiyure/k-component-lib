@@ -155,7 +155,7 @@ const props = withDefaults(defineProps<ViewProps>(), {
   showCustomControl: false,
   useTree: false,
   treeConfig: () => ({}),
-  showArrow: false,
+  showArrow: true,
   showCount: true,
   simple: false
 });
@@ -190,11 +190,6 @@ onBeforeUnmount(() => {
 
 watch(() => props.modelValue, () => {
   if (typeof props.modelValue !== 'string' && typeof props.modelValue !== 'number') {
-    return;
-  }
-  const targetItem = props.data?.find((item) => item[config.value.value] === props.modelValue);
-  if (!targetItem) {
-    console.warn(`Can't find data with value ${props.modelValue}`);
     return;
   }
   active.value = props.modelValue;

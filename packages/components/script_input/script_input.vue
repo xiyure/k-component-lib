@@ -497,6 +497,7 @@ async function selectOption(data: Row | RowData) {
   nextTick(() => {
     const res = parseInputValue();
     updateModelValue(res?.result ?? '');
+    checkInputContentType(res?.result ?? '');
     emits('select', data);
     handleChange(res)
   });

@@ -43,7 +43,7 @@ const resolveMap = new Map() // dialog id -> resolve
 const root = ref()
 
 // handle default form
-function genFormAttrsItemVNode(attrs: FormOptions, items: FormItemOptions[]): [FormOptions, RenderType] {
+function genFormAttrsItemVNode(fAttrs: FormOptions, items: FormItemOptions[]): [FormOptions, RenderType] {
   const model = items.reduce((fData: any, item: FormItemOptions) => {
     const { prop, value = ''} = item;
     if (!prop) {
@@ -57,7 +57,7 @@ function genFormAttrsItemVNode(attrs: FormOptions, items: FormItemOptions[]): [F
     labelPosition: 'top',
     model,
     labelWidth: '100',
-    ...attrs
+    ...fAttrs
   })
 
   // formItems
@@ -117,7 +117,6 @@ function getFormItemRender (formAttrs: FormOptions, formItem: FormItemOptions) {
 
 function showDialog ({
   id = `dialog_${genRandomStr(8)}`,
-  attrs,
   slots = {},
   formItems,
   formAttrs = {},
@@ -129,8 +128,9 @@ function showDialog ({
   showConfirmButton = true,
   confirmButtonText = t('dialog.confirm'),
   cancelButtonText = t('dialog.cancel'),
+  ...rest
 }: DialogServiceOptions) {
-  attrs = attrs ?? {}
+  const attrs = rest ?? {}
   penetratePointer && (attrs.modal = false)
   // if param slots ids a function, then convert it to default slot
   if (typeof slots === 'function') {
