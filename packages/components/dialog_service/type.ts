@@ -26,7 +26,7 @@ export type DialogSlots = {
 
 export type RenderType = SlotsType
 
-export interface DialogServiceOptions extends Omit<Partial<Writable<DialogProps>>, 'modelValue'> {
+export interface DialogServiceOptions {
   id?: string
   attrs?: DialogOptions
   slots?: DialogSlots
@@ -38,8 +38,8 @@ export interface DialogServiceOptions extends Omit<Partial<Writable<DialogProps>
   showConfirmButton?: boolean
   confirmButtonText?: string
   cancelButtonText?: string
-  onConfirm?: (close: () => void, payload: any) => void | Promise<void>
-  onCancel?: (dialogAttrs:DialogOptions, formAttrs: FormOptions, formItems: FormItemOptions[]) => Promise<void> | void
+  confirm?: (close: () => void, payload: any) => void | Promise<void>
+  cancel?: (dialogAttrs:DialogOptions, formAttrs: FormOptions, formItems: FormItemOptions[]) => Promise<void> | void
 }
 
 export type CommonOption = {

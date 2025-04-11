@@ -121,8 +121,8 @@ function showDialog ({
   slots = {},
   formItems,
   formAttrs = {},
-  onConfirm,
-  onCancel,
+  confirm,
+  cancel,
   penetratePointer = false,
   showDefaultFooter = true,
   showCancelButton = true,
@@ -195,9 +195,11 @@ function showDialog ({
       if (!showDefaultFooter) return () => null
       slotParams.confirm = async (payload: any) => {
         // 需要验证
-        if (typeof cntRef.value?.validate === 'function') {
+        try {
+          if (typeof cntRef.value?.validate === 'function') {
           await cntRef.value.validate?.()
         }
+        } catch (err: any) {}
         try {
           if (payload instanceof Event) {
             payload = { ok: true, dialogAttrs }
@@ -210,8 +212,8 @@ function showDialog ({
           } else {
             payload = { ok: true, result: payload }
           }
-          if (typeof onConfirm === 'function') {
-            await onConfirm(
+          if (typeof confirm === 'function') {
+            await confirm(
               close,
               payload
             )
@@ -226,8 +228,8 @@ function showDialog ({
       }
       slotParams.cancel = async () => {
         try {
-          if (typeof onCancel === 'function') {
-            await onCancel(dialogAttrs, fAttrs, formItems)
+          if (typeof cancel === 'function') {
+            await cancel(dialogAttrs, fAttrs, formItems)
           }
           dialogAttrs.modelValue = false
         } catch (err: any) {
@@ -278,7 +280,7 @@ function showDialog ({
     })
   }
 
-  if (typeof onConfirm === 'function') {
+  if (typeof confirm === 'function') {
     return close;
   }
 
