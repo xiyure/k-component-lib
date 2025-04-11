@@ -116,5 +116,9 @@ export default {
     placeholder: '请输入',
     stringMode: '字符串模式',
     expressionMode: '表达式模式',
+  },
+  dialog: {
+    confirm: '确认',
+    cancel: '取消'
   }
 }

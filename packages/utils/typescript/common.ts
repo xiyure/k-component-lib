@@ -4,3 +4,6 @@ export type IntRange<F extends number, T extends number> = Exclude<Enumerate<T>,
 
 // merge types
 export type Merge<T, U> = T & Partial<Omit<U, keyof T>>;
+
+// writable
+export type Writable<T> = { -readonly [P in keyof T]: T[P] };

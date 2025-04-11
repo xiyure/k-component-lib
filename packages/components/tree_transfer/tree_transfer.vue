@@ -186,6 +186,8 @@
 import { ref, computed, watch, nextTick } from 'vue';
 import { IconSearch, IconClose } from 'ksw-vue-icon';
 import { VxeTablePropTypes } from 'vxe-table';
+import { KTable, KTableColumn } from '../table';
+import { KInput } from '../input'; 
 import { sortBySmallerList, compatibleSlots, sortFunc } from '../../utils';
 import { useData, useConfig, useCheckbox } from './hooks';
 import { useLocale } from '../../hooks';
