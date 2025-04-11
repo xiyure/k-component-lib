@@ -155,7 +155,7 @@ const props = withDefaults(defineProps<ViewProps>(), {
   showCustomControl: false,
   useTree: false,
   treeConfig: () => ({}),
-  showArrow: true,
+  showArrow: false,
   showCount: true,
   simple: false
 });
