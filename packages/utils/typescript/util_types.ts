@@ -1,3 +1,4 @@
+import { Component, VNode } from 'vue';
 import { STYLE_MODULES, COMP_SIZES, LANGS } from '../../constant/common';
 import type{ ConfigProviderContext as _ConfigProviderContext } from 'element-plus';
 import { VxeGlobalConfig as _VxeGlobalConfig } from 'vxe-pc-ui';
@@ -27,3 +28,6 @@ export type CssVariables = Record<string, string>;
 
 // lang type
 export type Lang = typeof LANGS[number];
+
+// slot type
+export type SlotsType = VNode | Component | (VNode | Component)[] | string;

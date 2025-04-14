@@ -116,5 +116,9 @@ export default {
     placeholder: 'Please input',
     stringMode: 'string mode',
     expressionMode: 'expression mode',
+  },
+  dialog: {
+    confirm: 'confirm',
+    cancel: 'cancel'
   }
 }

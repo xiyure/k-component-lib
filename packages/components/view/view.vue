@@ -192,11 +192,6 @@ watch(() => props.modelValue, () => {
   if (typeof props.modelValue !== 'string' && typeof props.modelValue !== 'number') {
     return;
   }
-  const targetItem = props.data?.find((item) => item[config.value.value] === props.modelValue);
-  if (!targetItem) {
-    console.warn(`Can't find data with value ${props.modelValue}`);
-    return;
-  }
   active.value = props.modelValue;
 }, { immediate: true })
 

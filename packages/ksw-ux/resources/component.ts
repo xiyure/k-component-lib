@@ -21,6 +21,7 @@ import { KEmpty } from '../../components/empty';
 import { KMessage } from '../../components/message';
 import { KMessageBox } from '../../components/message_box';
 import { KDialog } from '../../components/dialog';
+import { showDialog } from '../../components/dialog_service';
 import { KTooltip } from '../../components/tooltip';
 import { KFilter } from '../../components/filter';
 import { KTable, KTableColumn, KColumnGroup } from '../../components/table';
@@ -74,6 +75,7 @@ export default [
   KMessage,
   KMessageBox,
   KDialog,
+  showDialog,
   KTooltip,
   KFilter,
   KTable,

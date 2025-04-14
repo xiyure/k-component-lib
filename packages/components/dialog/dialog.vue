@@ -11,7 +11,7 @@
     <template #header>
       <div
         class="w-full overflow-hidden text-ellipsis text-nowrap"
-        k-ksw_tooltip="{ content: title }"
+        v-ksw_tooltip="{ content: title }"
       >
         <slot name="header">{{ title }}</slot>
       </div>
@@ -37,7 +37,7 @@
     </template>
   </el-dialog>
 
-  <k-card v-if="isMinimization && useResizable" shadow="always" class="k-dialog-minimization">
+  <el-card v-if="isMinimization && useResizable" shadow="always" class="k-dialog-minimization">
     <div class="flex justify-between items-center">
       <div class="max-w-32 overflow-hidden text-ellipsis" v-ksw_tooltip="{ content: title }">
         <slot name="header">{{ title }}</slot>
@@ -51,12 +51,12 @@
       </div>
       <div class="close-icon w-3 h-3" @click="isMinimization = false"></div>
     </div>
-  </k-card>
+  </el-card>
 </template>
 
 <script setup lang="ts">
 import { ref, useAttrs, watch } from 'vue';
-import { ElDialog } from 'element-plus';
+import { ElDialog, ElCard } from 'element-plus';
 import { DialogProps } from './type';
 import { getExposeProxy } from '../../utils';
 
@@ -101,7 +101,7 @@ watch(
 const currentWidth = ref(0);
 const currentHeight = ref(0);
 const maximization = () => {
-  const dialog = document.querySelector('.k-dialog');
+  const dialog = document.querySelector('.k-dialog') as HTMLElement;
   if (!isFull.value) {
     const { width, height } = dialog!.getBoundingClientRect();
     currentWidth.value = width;

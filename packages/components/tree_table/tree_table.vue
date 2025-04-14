@@ -394,7 +394,7 @@ const tableTransferRef = ref();
 // 列配置
 const columns = ref<Column[]>([]);
 // 表格数据
-const xeTableData = ref<RowData[]>(Array.isArray(props.data) ? props.data : []);
+const xeTableData = ref<RowData[]>([]);
 // 搜索框关键词
 const query = ref('');
 const searchStr = ref('');
@@ -495,7 +495,9 @@ watch(
     setData(props.data ?? []);
     advancedFilter();
     initCheckedData();
-  });
+  },
+  { immediate: true }
+);
 
 watch(
   () => props.column,

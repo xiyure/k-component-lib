@@ -174,12 +174,12 @@ export function useData(
   }
   // 处理树形数据
   function handleTreeData(leafData: any[]) {
-    if (Array.isArray(leafData) && leafData.length === 0) {
+    tableCacheData.treeDataMap.clear();
+    if (!Array.isArray(leafData) || leafData.length === 0) {
       return;
     }
     const rowField = props.treeConfig?.rowField ?? 'id';
     const parentField = props.treeConfig?.parentField ?? 'pid';
-    tableCacheData.treeDataMap.clear();
     for (let index = 0; index < leafData.length; index++) {
       const dataItem = leafData[index];
       // 如果tableData中已存在该数据，则不再重复添加
