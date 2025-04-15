@@ -23,6 +23,9 @@
           ' inline-block  max-w-24  overflow-hidden text-ellipsis text-nowrap  break-words pr-0':
             showOverflow,
         }"
+        :style="{
+          color: textColor,
+        }"
       >
         <slot>{{ props.text }}</slot>
       </span>

@@ -6,6 +6,7 @@ export interface TagProps {
   size?: CompSize;
   point?: boolean;
   text?: string;
+  textColor?: string;
   border?: boolean;
   showOverflow?: boolean;
 }
