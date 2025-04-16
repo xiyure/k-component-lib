@@ -1,6 +1,6 @@
 <template>
   <div v-if="Number.isInteger(total) && total > 0" class="k-operate">
-    <span class="k-operate__header">{{ total || '-' }}</span>
+    <span class="k-operate__header" v-if="showTotal">{{ total || '-' }}</span>
     <div class="k-operate__content">
       <ul class="k-operate__list">
         <li class="list-header">{{ t?.('operate.title') }}:</li>
@@ -57,7 +57,8 @@ const props = withDefaults(defineProps<OperateProps>(), {
   data: () => [],
   max: 5,
   total: 0,
-  hideOnClick: true
+  hideOnClick: true,
+  showTotal: true
 });
 
 const hideData = ref<Array<OperateData>>([]);
@@ -87,7 +88,8 @@ function handler(item: OperateData) {
     return;
   }
   if (typeof handler === 'function') {
-    handler();
+    const checkedData = typeof props.checkMethod === 'function'? props.checkMethod(item) : [];
+    handler({ data: checkedData });
   }
 }
 function handleClose() {
