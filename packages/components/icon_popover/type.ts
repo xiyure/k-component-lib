@@ -1,1 +1,1 @@
-export interface IconPopover {}
+export interface IconPopoverProps {}

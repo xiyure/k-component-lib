@@ -4,7 +4,7 @@ import { TabPaneProps, TabsProps } from 'element-plus';
 interface TabsConfig extends TabsProps {
   defaultActive?: string | number;
 }
-export interface GFPageDetailProps {
+export interface GFPageDetailsProps {
   icon?: string | Component;
   title?: string;
   descriptions?: string;
