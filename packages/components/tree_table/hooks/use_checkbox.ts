@@ -1,4 +1,5 @@
 import { ref, computed, Ref, onMounted, nextTick } from 'vue';
+import { isObject } from '@vue/shared';
 import { VxeTablePropTypes, VxeTableInstance } from 'vxe-table';
 import { cloneDeep } from 'lodash-es';
 import { TreeTableProps, RowData, TableCacheData } from '../type';
@@ -23,6 +24,20 @@ export function useCheckbox(
   const checkboxConfig = computed(() =>
     Object.assign(defaultCheckboxConfig, props.checkboxConfig || {})
   );
+  // 批量操作配置
+  const batchOpConfig = computed(() => {
+    const defaultCheckMethod = () => getCheckboxRecords(true);
+    if (isObject(props.batchOperateConfig)) {
+      const {
+        showTotal = true,
+        total = checkedData.value.size,
+        data = [],
+        checkMethod = defaultCheckMethod
+      } = props.batchOperateConfig;
+      return { showTotal, total, data, checkMethod };
+    }
+    return { showTotal: true, total: checkedData.value.size, data: props.batchOperations ?? [], checkMethod: defaultCheckMethod };
+  })
   const keyField = computed(() => props.rowConfig?.keyField ?? 'id');
 
   onMounted(() => {
@@ -243,6 +258,7 @@ export function useCheckbox(
     initCheckedData,
     resetCheckboxStatus,
     checkedDataSize,
-    checkboxConfig
+    checkboxConfig,
+    batchOpConfig
   };
 }

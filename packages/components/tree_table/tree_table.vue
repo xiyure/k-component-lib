@@ -268,8 +268,8 @@
         </template>
       </k-table>
       <!-- 批量操作 -->
-      <div v-if="showBatchOperation && checkedDataSize > 0" v-ksw_drag class="batch-operate">
-        <k-operate :total="checkedDataSize" :data="batchOperations" :checkMethod="() => _checkboxMethods.getCheckboxRecords(true)" @close="closeBatchOperation" />
+      <div v-if="(batchOperateConfig || showBatchOperation) && batchOpConfig.total > 0" v-ksw_drag class="batch-operate">
+        <k-operate v-bind="batchOpConfig" @close="closeBatchOperation" />
       </div>
     </div>
     <div v-if="isPaging" ref="RefTablePagination" class="pagination-box">
@@ -473,8 +473,8 @@ const { widgets, treeConfig, sortConfig, rowConfig, editConfig, scrollY, columnC
 
 // checkbox
 const {
-  checkedDataSize,
   checkboxConfig,
+  batchOpConfig,
   closeBatchOperation,
   checkBoxChange,
   checkboxAllChange,
