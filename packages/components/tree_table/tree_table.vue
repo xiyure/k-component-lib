@@ -610,7 +610,7 @@ async function refreshAdvancedFilter(
 ) {
   filterConditionInfo.value = conditionInfo;
   const { remote } = props.advancedFilterConfig ?? {};
-  if (remote) {
+  if (remote === true) {
     await handleRemoteData();
     newFilterData.value = xeTableData.value;
     return;
@@ -666,7 +666,7 @@ async function advancedFilter(data?: RowData[] | undefined) {
   }
   await nextTick();
   const advancedFilterObj = tableFilterRef.value?.[0]?.filter?.(data);
-  const { conditionInfo, tableData } = advancedFilterObj ?? {};
+  const { conditionInfo, data: tableData } = advancedFilterObj ?? {};
   await refreshAdvancedFilter(conditionInfo, tableData, false);
   return { conditionInfo, tableData };
 }
@@ -679,7 +679,7 @@ async function clearAdvancedFilter() {
   await nextTick();
   resetCheckboxStatus();
   const advancedFilterObj = tableFilterRef.value?.[0]?.clearFilter?.();
-  const { conditionInfo, tableData } = advancedFilterObj ?? {};
+  const { conditionInfo, data: tableData } = advancedFilterObj ?? {};
   await refreshAdvancedFilter(conditionInfo, tableData, false);
   return { conditionInfo, tableData };
 }
@@ -713,6 +713,9 @@ function rowDragEnd(data: any) {
 function getVisibleData() {
   return showTableData.value;
 }
+function getFullData() {
+  return xeTableData.value;
+}
 function loadData(data: RowData[]) {
   if (!Array.isArray(data)) {
     return;
@@ -727,7 +730,7 @@ function setData(data: RowData[]) {
 
 async function refreshTableData() {
   const isRemoteSearch = props.searchConfig?.isRemoteQuery || props.isRemoteQuery;
-  const isRemoteFilter = props.advancedFilterConfig?.remote ?? false;
+  const isRemoteFilter = props.advancedFilterConfig?.remote === true;
   const isServerPaging = isPaging.value && (props.isServerPaging || props.paginationConfig?.isRemotePaging);
   if (isServerPaging || isRemoteSearch || isRemoteFilter) {
     handleRemoteData();
@@ -757,6 +760,7 @@ const customMethods = {
   clearAdvancedFilter,
   getAdvancedCondition,
   getVisibleData,
+  getFullData,
   loadData,
   clearSearch,
   refreshTableData,

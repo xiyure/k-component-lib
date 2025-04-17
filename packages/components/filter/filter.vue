@@ -274,10 +274,7 @@ const disabledDatePicker = computed(
 );
 const disableChangeMode = computed(() => {
   const fields = filterData.value.map((item) => item.key);
-  return (
-    props.remote === true ||
-    (Array.isArray(props.remote) && props.remote.some((field: string) => fields.includes(field)))
-  );
+  return Array.isArray(props.remote) && props.remote.some((field: string) => fields.includes(field));
 });
 
 watch(
@@ -354,17 +351,17 @@ function clearFilter(isFilter: boolean = true) {
   }
   return {};
 }
-async function query() {
-  const { conditionInfo, tableData } = await filter();
-  emits('confirm', conditionInfo, tableData ?? []);
+function query() {
+  const { conditionInfo, data } = filter();
+  emits('confirm', conditionInfo, data ?? []);
 }
-async function filter(data?: any[]) {
+function filter(data?: any[]) {
   const sourceData = Array.isArray(data) ? data : props.data;
   const conditionInfo = getConditionInfo();
   if (props.remote === true || conditionInfo.conditionList.length === 0) {
     return {
       conditionInfo,
-      sourceData
+      data: sourceData
     };
   }
   const remoteFieldMap = getRemoteFieldMap();
@@ -398,7 +395,7 @@ async function filter(data?: any[]) {
   });
   return {
     conditionInfo,
-    tableData: newData ?? []
+    data: newData ?? []
   };
 }
 function getConditionInfo() {
