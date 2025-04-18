@@ -241,13 +241,13 @@ function showDialog ({
       }
       const hasLeft = typeof slots.footerLeft === 'function'
       return (
-        <div class={'dialog-footer' + (hasLeft ? ' footer-has-left' : '')}>
+        <div class={'k-dialog-service-footer' + (hasLeft ? ' k-dialog-service-footer-has-left' : '')}>
           {hasLeft ? (
-            <div class='footer-left'>{slots.footerLeft?.(slotParams)}</div>
+            <div class='k-dialog-service-footer-left'>{slots.footerLeft?.(slotParams)}</div>
           ) : (
             ''
           )}
-          {showCancelButton !== false && <KButton onClick={slotParams.cancel}>{cancelButtonText}</KButton>}
+          {showCancelButton !== false && <KButton class={'k-dialog-service-cancel-button__default'} onClick={slotParams.cancel}>{cancelButtonText}</KButton>}
           {showConfirmButton !== false && (
             <KButton onClick={slotParams.confirm} main>
               {confirmButtonText}
@@ -308,3 +308,7 @@ defineExpose({
   showDialog
 })
 </script>
+
+<style lang="less">
+@import './style.less';
+</style>
