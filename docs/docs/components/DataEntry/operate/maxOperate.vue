@@ -1,28 +1,70 @@
 <template>
-  <k-operate :data="data" :total="1" :max="2"></k-operate>
+  <k-operate :data="data" :max="4" :total="99"></k-operate>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { KMessage } from '@ksware/ksw-ux';
 
-const data = ref([
+const data = [
   {
-    label: '编辑',
-    handler: (item: any) => {
-      console.log(item);
+    label: '添加',
+    handler: () => {
+      run('添加')
     }
   },
   {
     label: '删除',
-    handler: (item: any) => {
-      console.log(item);
+    handler: () => {
+      run('删除')
     }
   },
   {
-    label: '查看',
-    handler: (item: any) => {
-      console.log(item);
+    label: '更新',
+    disabled: true,
+    handler: () => {
+      run('更新')
     }
-  }
-]);
+  },
+  {
+    label: '使能',
+    handler: () => {
+      run('使能')
+    }
+  },
+  {
+    label: '检测',
+    handler: () => {
+      run('检测')
+    }
+  },
+  {
+    label: '禁用',
+    handler: () => {
+      run('禁用')
+    }
+  },
+  {
+    label: '返回',
+    handler: () => {
+      run('返回')
+    }
+  },
+  {
+    label: '解禁',
+    disabled: true,
+    handler: () => {
+      run('解禁')
+    }
+  },
+  {
+    label: '回显',
+    handler: () => {
+      run('回显')
+    }
+  },
+]
+
+function run(name: string) {
+  KMessage.success(`成功执行操作：${name}`);
+}
 </script>
