@@ -28,8 +28,155 @@
       "description": "是否折叠",
       "defaultValue": "false",
       "tip": ""
+    },
+    {
+      "displayName": "show-custom-control",
+      "type": "boolean",
+      "description": "是否显示自定义控制按钮",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "use-tree",
+      "type": "boolean",
+      "description": "是否使用树形结构",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "treeConfig",
+      "type": "object",
+      "description": "树形结构配置",
+      "defaultValue": "",
+      "tip": "TreeViewConfig"
+    },
+    {
+      "displayName": "showCount",
+      "type": "boolean",
+      "description": "是否显示视图数据量",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "props",
+      "type": "object",
+      "description": "自定义视图项属性",
+      "defaultValue": "",
+      "tip": "ViewAttributes"
+    },
+    {
+      "displayName": "simple",
+      "type": "boolean",
+      "description": "是否使用精简模式",
+      "defaultValue": "false",
+      "tip": "",
+      "version": "1.1.20"
+    },
+    {
+      "displayName": "height",
+      "type": "string | number",
+      "description": "视图高度",
+      "defaultValue": "",
+      "tip": "",
+      "version": "1.1.20"
+    },
+    {
+      "displayName": "v-model / modelValue",
+      "type": "string | number",
+      "description": "当前激活视图项",
+      "defaultValue": "",
+      "tip": "",
+      "version": "1.1.21"
     }
   ],
+  "subProps": {
+    "TreeViewConfig": [
+      {
+        "displayName": "nodeKey",
+        "type": "string | number",
+        "description": "节点唯一标识",
+        "defaultValue": "value",
+        "tip": ""
+      },
+      {
+        "displayName": "emptyText",
+        "type": "string",
+        "description": "空数据时显示的文字",
+        "defaultValue": "",
+        "tip": ""
+      },
+      {
+        "displayName": "expand-on-click-node",
+        "type": "boolean",
+        "description": "是否点击节点展开, 为 false 时只有点箭头才会展开",
+        "defaultValue": "",
+        "tip": ""
+      },
+      {
+        "displayName": "default-expanded-keys",
+        "type": "array",
+        "description": "默认展开的节点",
+        "defaultValue": "",
+        "tip": "Array<string | number>"
+      },
+      {
+        "displayName": "showArrow",
+        "type": "boolean",
+        "description": "是否显示箭头",
+        "defaultValue": "true",
+        "tip": ""
+      },
+      {
+        "displayName": "accordion",
+        "type": "boolean",
+        "description": "是否每次只打开一个同级树节点展开",
+        "defaultValue": "false",
+        "tip": ""
+      },
+      {
+        "displayName": "indent",
+        "type": "number",
+        "description": "相邻级节点间的水平缩进，单位为px",
+        "defaultValue": "18",
+        "tip": ""
+      },
+      {
+        "displayName": "lazy",
+        "type": "boolean",
+        "description": "是否懒加载子节点",
+        "defaultValue": "false",
+        "tip": ""
+      },
+      {
+        "displayName": "icon",
+        "type": "string | Component | Function",
+        "description": "子节点图标",
+        "defaultValue": "",
+        "tip": "() => string | Component"
+      },
+      {
+        "displayName": "expandIcon",
+        "type": "string | Component | Function",
+        "description": "父节点展开图标",
+        "defaultValue": "",
+        "tip": "() => string | Component"
+      },
+      {
+        "displayName": "collapseIcon",
+        "type": "string | Component | Function",
+        "description": "父节点收起图标",
+        "defaultValue": "",
+        "tip": "() => string | Component"
+      },
+      {
+        "displayName": "load",
+        "type": "Function",
+        "description": "加载子树数据的方法，仅当 lazy 属性为true 时生效",
+        "defaultValue": "",
+        "tip": "(node, resolve, reject) => void"
+      }
+    ]
+  },
   "events": [
     {
       "displayName": "refresh",

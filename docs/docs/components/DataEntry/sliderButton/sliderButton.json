@@ -3,16 +3,30 @@
   "props": [
     {
       "displayName": "items",
-      "type": "SliderButtonPaneProps[]",
+      "type": "array",
       "description": "需要展示的数据项",
-      "defaultValue": 0,
-      "tip": "[label: string, name: string]"
+      "defaultValue": "",
+      "tip": "Array<{label: string, name: string}>"
     },
     {
       "displayName": "active",
       "type": "string | number",
       "description": "当前激活的按钮",
-      "defaultValue": 0
+      "defaultValue": ""
+    },
+    {
+      "displayName": "default-active",
+      "type": "string | number",
+      "description": "当前激活的按钮",
+      "defaultValue": "",
+      "version": "1.1.22"
+    },
+    {
+      "displayName": "active",
+      "type": "string | number",
+      "description": "当前激活的按钮",
+      "defaultValue": "",
+      "deprecated": true
     }
   ],
   "events": [

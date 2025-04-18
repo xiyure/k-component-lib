@@ -1,8 +1,11 @@
 <template>
-  <k-slider-button :items="value" active="btn1"></k-slider-button>
+  <k-slider-button :items="value" v-model="active"></k-slider-button>
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue';
+
+const active = ref('btn1');
 
 const value = [
   {

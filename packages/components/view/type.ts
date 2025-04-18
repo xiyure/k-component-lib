@@ -10,6 +10,7 @@ export interface ViewProps {
   showCustomControl?: boolean
   useTree?: boolean
   treeConfig?: TreeViewConfig
+  // @deprecated use treeConfig.showArrow instead
   showArrow?: boolean
   showCount?: boolean
   props?: ViewAttributes

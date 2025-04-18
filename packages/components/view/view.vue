@@ -131,7 +131,7 @@ import { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type';
 import { Sortable, SortableInstance } from '../../utils/event/sortable';
 import { getElement } from '../../utils';
 import KViewItem from './view_item.vue';
-import { useLocale } from '../../hooks';
+import { useLocale, useDeprecated } from '../../hooks';
 import { ViewProps, ViewData } from './type';
 import { KTree } from '../tree';
 
@@ -159,6 +159,14 @@ const props = withDefaults(defineProps<ViewProps>(), {
   showCount: true,
   simple: false
 });
+
+useDeprecated({
+  scope: 'k-view',
+  from: 'show-arrow',
+  replacement: 'treeConfig.showArrow',
+  version: '2.0.0'
+}, computed(() => !!props.showArrow));
+
 const emits = defineEmits([
   'update:modelValue',
   'refresh',
