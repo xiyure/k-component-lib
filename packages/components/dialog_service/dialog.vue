@@ -236,6 +236,7 @@ function showDialog ({
         }
       }
       if (slots.footer) {
+        slotParams.formAttrs = fAttrs;
         return slots.footer(slotParams)
       }
       const hasLeft = typeof slots.footerLeft === 'function'

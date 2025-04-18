@@ -39,7 +39,7 @@ export interface DialogServiceOptions extends DialogOptions {
   confirmButtonText?: string
   cancelButtonText?: string
   confirm?: (close: () => void, payload: any) => void | Promise<void>
-  cancel?: (dialogAttrs:DialogOptions, formAttrs: FormOptions, formItems: FormItemOptions[]) => Promise<void> | void
+  cancel?: (dialogAttrs:DialogOptions, formAttrs: FormOptions | undefined, formItems: FormItemOptions[] | undefined) => Promise<void> | void
 }
 
 export type CommonOption = {
