@@ -45,12 +45,10 @@ export interface TreeViewProps {
 }
 
 export interface TreeViewConfig {
-  nodeKey?: string | number
   emptyText?: string
   expandOnClickNode?: boolean
   checkOnClickNode?: boolean
   defaultExpandedKeys?: (string | number)[]
-  currentNodeKey?: string | number
   accordion?: boolean
   indent?: number
   lazy?: boolean
