@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'k-tree-table flex flex-col h-full',
+      'k-tree-table flex h-full flex-col',
       props.class,
       { 'tree-table-use-ant-style': useAntStyle, 'has-space-between': hasSpace }
     ]"
@@ -268,7 +268,11 @@
         </template>
       </k-table>
       <!-- 批量操作 -->
-      <div v-if="(batchOperateConfig || showBatchOperation) && batchOpConfig.total > 0" v-ksw_drag class="batch-operate">
+      <div
+        v-if="(batchOperateConfig || showBatchOperation) && batchOpConfig.total > 0"
+        v-ksw_drag
+        class="batch-operate"
+      >
         <k-operate v-bind="batchOpConfig" @close="closeBatchOperation" />
       </div>
     </div>
@@ -303,7 +307,14 @@
 import { ref, computed, watch, nextTick, provide, onBeforeMount } from 'vue';
 import VXETable from 'vxe-table';
 import { cloneDeep } from 'lodash-es';
-import { IconSearch, IconRefresh, IconFilter, IconFilterFill, IconSizeControls, IconSetting } from 'ksw-vue-icon';
+import {
+  IconSearch,
+  IconRefresh,
+  IconFilter,
+  IconFilterFill,
+  IconSizeControls,
+  IconSetting
+} from 'ksw-vue-icon';
 import KColumnGroup from './column_group';
 import { KInput } from '../input';
 import { KButton } from '../button';
@@ -350,19 +361,25 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
   hasSpace: false
 });
 
-useDeprecated({
-  scope: 'k-tree-table',
-  from: 'isRemoteQuery',
-  replacement: 'searchConfig.isRemoteQuery',
-  version: '2.0.0'
-}, computed(() => !!props.isRemoteQuery));
+useDeprecated(
+  {
+    scope: 'k-tree-table',
+    from: 'isRemoteQuery',
+    replacement: 'searchConfig.isRemoteQuery',
+    version: '2.0.0'
+  },
+  computed(() => !!props.isRemoteQuery)
+);
 
-useDeprecated({
-  scope: 'k-tree-table',
-  from: 'isServerPaging',
-  replacement: 'paginationConfig.isRemotePaging',
-  version: '2.0.0'
-}, computed(() => !!props.isServerPaging));
+useDeprecated(
+  {
+    scope: 'k-tree-table',
+    from: 'isServerPaging',
+    replacement: 'paginationConfig.isRemotePaging',
+    version: '2.0.0'
+  },
+  computed(() => !!props.isServerPaging)
+);
 
 const { t } = useLocale();
 
@@ -465,7 +482,17 @@ const {
   changeCurrentPage,
   handleTreeData,
   handleRemoteData
-} = useData(tableInstance, props, emits, flatColumns, xeTableData, currentData, query, filterConditionInfo, setData);
+} = useData(
+  tableInstance,
+  props,
+  emits,
+  flatColumns,
+  xeTableData,
+  currentData,
+  query,
+  filterConditionInfo,
+  setData
+);
 
 // config
 const { widgets, treeConfig, sortConfig, rowConfig, editConfig, scrollY, columnConfig, seqConfig } =
@@ -591,14 +618,14 @@ function hideColumn(column: Column) {
   }
   columnItem.visible = false;
   selectData.value = flatColumns.value
-  .filter((col: Column) => col.visible !== false)
-  .map((item: Column) => {
-    if (item.title && item.field) {
-      return item.field;
-    }
-    return null;
-  })
-  .filter((item) => item !== null);
+    .filter((col: Column) => col.visible !== false)
+    .map((item: Column) => {
+      if (item.title && item.field) {
+        return item.field;
+      }
+      return null;
+    })
+    .filter((item) => item !== null);
   emits('hide-column', column);
 }
 
@@ -731,7 +758,8 @@ function setData(data: RowData[]) {
 async function refreshTableData() {
   const isRemoteSearch = props.searchConfig?.isRemoteQuery || props.isRemoteQuery;
   const isRemoteFilter = props.advancedFilterConfig?.remote === true;
-  const isServerPaging = isPaging.value && (props.isServerPaging || props.paginationConfig?.isRemotePaging);
+  const isServerPaging =
+    isPaging.value && (props.isServerPaging || props.paginationConfig?.isRemotePaging);
   if (isServerPaging || isRemoteSearch || isRemoteFilter) {
     handleRemoteData();
   }

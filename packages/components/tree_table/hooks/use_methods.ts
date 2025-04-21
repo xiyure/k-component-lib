@@ -153,7 +153,7 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     if (!Array.isArray(rows)) {
       rest = [rows];
     }
-    const removeMap = new Map(rest.map((row: RowData) => [row[keyField.value], row]));
+    const removeMap = new Map(rest.filter((row: unknown) => isObject(row)).map((row: RowData) => [row[keyField.value], row]));
     const removeData = [];
     const { parentField } = getTreeConfigField();
     for (let i = 0; i < xeTableData.value.length; i++) {
@@ -162,7 +162,8 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
         const tempSet = new Set();
         tempSet.add(key);
         let delIndex = i + 1;
-        while (tempSet.has(xeTableData.value[delIndex][parentField])) {
+        const len = xeTableData.value.length;
+        while (len > delIndex && tempSet.has(xeTableData.value[delIndex]?.[parentField])) {
           tempSet.add(xeTableData.value[delIndex][keyField.value]);
           delIndex++;
         }
