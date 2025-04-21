@@ -114,28 +114,28 @@
       "type": "boolean",
       "description": "标签是否可重复选择",
       "defaultValue": "true",
-      "tip": "'"
+      "tip": ""
     },
     {
       "displayName": "max-height",
       "type": "string",
       "description": "最大高度",
       "defaultValue": "",
-      "tip": "'"
+      "tip": ""
     },
     {
       "displayName": "max",
       "type": "number",
       "description": "可输入的最大值，仅在content-type为limit时有效",
       "defaultValue": "",
-      "tip": "'"
+      "tip": ""
     },
     {
       "displayName": "min",
       "type": "number",
       "description": "可输入的最小值，仅在content-type为limit时有效",
       "defaultValue": "",
-      "tip": "'"
+      "tip": ""
     },
     {
       "displayName": "tag-closable",
@@ -151,6 +151,14 @@
       "description": "下拉列表搜索配置",
       "defaultValue": "",
       "tip": "SearchConfig",
+      "version": "1.1.20"
+    },
+    {
+      "displayName": "teleported",
+      "type": "boolean",
+      "description": "是否将列表弹出层放置于body下",
+      "defaultValue": "true",
+      "tip": "",
       "version": "1.1.20"
     }
   ],

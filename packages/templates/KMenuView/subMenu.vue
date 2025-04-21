@@ -45,16 +45,16 @@
 <script lang="ts" setup>
 import { computed, inject, Ref } from 'vue';
 import { ElSubMenu, ElIcon, ElMenuItem, MenuItemRegistered } from 'element-plus';
-import { menuViewOption, subMenuViewProps } from './type';
+import { MenuViewOption, SubMenuViewProps } from './type';
 
 defineOptions({
   name: 'SubMenu'
 });
-const props = defineProps<subMenuViewProps>();
+const props = defineProps<SubMenuViewProps>();
 const emits = defineEmits(['click']);
 
 const activeSet = inject<Ref<Set<string | number>>>('__activeSet__', computed(() => new Set()));
-const subMenuAttrs = computed(() => (obj: menuViewOption) => {
+const subMenuAttrs = computed(() => (obj: MenuViewOption) => {
   const { children, ...rest } = obj;
   return rest;
 });

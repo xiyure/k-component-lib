@@ -1,16 +1,32 @@
 <template>
-  <k-operate :data="data" :total="1"></k-operate>
+  <k-operate :data="data" :total="100"></k-operate>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { KMessage } from '@ksware/ksw-ux';
 
-const data = ref([
+const data = [
   {
-    label: '编辑',
-    handler: (item: any) => {
-      console.log(item);
+    label: '添加',
+    handler: () => {
+     run('添加');
     }
-  }
-]);
+  },
+  {
+    label: '删除',
+    handler: () => {
+     run('删除');
+    }
+  },
+  {
+    label: '更新',
+    handler: () => {
+     run('更新');
+    }
+  },
+];
+
+function run(name: string) {
+  KMessage.success(`成功执行操作：${name}`);
+}
 </script>

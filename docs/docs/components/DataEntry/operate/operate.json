@@ -48,6 +48,21 @@
         "type": "boolean",
         "description": "按钮是否禁用",
         "defaultValue": ""
+      },
+      {
+        "displayName": "showTotal",
+        "type": "boolean",
+        "description": "是否显示操作数据总数",
+        "defaultValue": "true",
+        "version": "1.1.22"
+      },
+      {
+        "displayName": "checkMethod",
+        "type": "Function",
+        "description": "自定义获取批量操作数据的方法，执行批量操作时会调用该方法获取批量操作数据，获取的数据会作为handler的参数传入",
+        "defaultValue": "",
+        "tip": "(data: OperateData[]) => any[]",
+        "version": "1.1.22"
       }
     ]
   },

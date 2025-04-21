@@ -268,8 +268,8 @@
         </template>
       </k-table>
       <!-- 批量操作 -->
-      <div v-if="showBatchOperation && checkedDataSize > 0" v-ksw_drag class="batch-operate">
-        <k-operate :total="checkedDataSize" :data="batchOperations" @close="closeBatchOperation" />
+      <div v-if="(batchOperateConfig || showBatchOperation) && batchOpConfig.total > 0" v-ksw_drag class="batch-operate">
+        <k-operate v-bind="batchOpConfig" @close="closeBatchOperation" />
       </div>
     </div>
     <div v-if="isPaging" ref="RefTablePagination" class="pagination-box">
@@ -473,8 +473,8 @@ const { widgets, treeConfig, sortConfig, rowConfig, editConfig, scrollY, columnC
 
 // checkbox
 const {
-  checkedDataSize,
   checkboxConfig,
+  batchOpConfig,
   closeBatchOperation,
   checkBoxChange,
   checkboxAllChange,
@@ -610,7 +610,7 @@ async function refreshAdvancedFilter(
 ) {
   filterConditionInfo.value = conditionInfo;
   const { remote } = props.advancedFilterConfig ?? {};
-  if (remote) {
+  if (remote === true) {
     await handleRemoteData();
     newFilterData.value = xeTableData.value;
     return;
@@ -666,7 +666,7 @@ async function advancedFilter(data?: RowData[] | undefined) {
   }
   await nextTick();
   const advancedFilterObj = tableFilterRef.value?.[0]?.filter?.(data);
-  const { conditionInfo, tableData } = advancedFilterObj ?? {};
+  const { conditionInfo, data: tableData } = advancedFilterObj ?? {};
   await refreshAdvancedFilter(conditionInfo, tableData, false);
   return { conditionInfo, tableData };
 }
@@ -679,7 +679,7 @@ async function clearAdvancedFilter() {
   await nextTick();
   resetCheckboxStatus();
   const advancedFilterObj = tableFilterRef.value?.[0]?.clearFilter?.();
-  const { conditionInfo, tableData } = advancedFilterObj ?? {};
+  const { conditionInfo, data: tableData } = advancedFilterObj ?? {};
   await refreshAdvancedFilter(conditionInfo, tableData, false);
   return { conditionInfo, tableData };
 }
@@ -713,6 +713,9 @@ function rowDragEnd(data: any) {
 function getVisibleData() {
   return showTableData.value;
 }
+function getFullData() {
+  return xeTableData.value;
+}
 function loadData(data: RowData[]) {
   if (!Array.isArray(data)) {
     return;
@@ -727,7 +730,7 @@ function setData(data: RowData[]) {
 
 async function refreshTableData() {
   const isRemoteSearch = props.searchConfig?.isRemoteQuery || props.isRemoteQuery;
-  const isRemoteFilter = props.advancedFilterConfig?.remote ?? false;
+  const isRemoteFilter = props.advancedFilterConfig?.remote === true;
   const isServerPaging = isPaging.value && (props.isServerPaging || props.paginationConfig?.isRemotePaging);
   if (isServerPaging || isRemoteSearch || isRemoteFilter) {
     handleRemoteData();
@@ -757,6 +760,7 @@ const customMethods = {
   clearAdvancedFilter,
   getAdvancedCondition,
   getVisibleData,
+  getFullData,
   loadData,
   clearSearch,
   refreshTableData,

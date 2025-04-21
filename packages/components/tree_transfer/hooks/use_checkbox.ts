@@ -222,7 +222,8 @@ export function useCheckbox(
   }
 
   function isCheckedRow(row: Row) {
-    return checkedLeafData.value.has(row[config.value.rowKey])
+    const key = typeof row === 'object' ? row[config.value.rowKey] : row;
+    return checkedLeafData.value.has(key);
   }
 
   return {

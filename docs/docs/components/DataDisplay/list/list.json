@@ -1,0 +1,87 @@
+{
+  "name": "List",
+  "props": [
+    {
+      "displayName": "v-model:loading / loading",
+      "type": "boolean",
+      "description": "是否显示加载中状态",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "v-model:error / error",
+      "type": "boolean",
+      "description": "是否显示错误状态",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "finished",
+      "type": "boolean",
+      "description": "是否显示已完成状态",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "offset",
+      "type": "number",
+      "description": "列表的偏移量，当滚动条离列表底部的距离小于 offset 时会触发 load 事件",
+      "defaultValue": "0"
+    },
+    {
+      "displayName": "loadingText",
+      "type": "string",
+      "description": "加载中状态的文字提示",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "errorText",
+      "type": "string",
+      "description": "错误状态的文字提示",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "finishedText",
+      "type": "string",
+      "description": "已完成状态的文字提示",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "disabled",
+      "type": "boolean",
+      "description": "是否禁用列表， disabled 时不会触发 load 事件",
+      "defaultValue": "false"
+    },
+    {
+      "displayName": "scroller",
+      "type": "Element",
+      "description": "滚动区域的元素，默认为列表的最近的overflow: auto/scroll的祖先元素或者当前窗口滚动区域",
+      "defaultValue": ""
+    },
+    {
+      "displayName": "immediate",
+      "type": "boolean",
+      "description": "首次加载时是否判断滚动条是否触发 load 事件",
+      "defaultValue": "false"
+    }
+  ],
+  "events": [
+    {
+      "displayName": "load",
+      "type": "Function",
+      "description": "滚动条触底时触发的回调函数",
+      "tip": "() => void"
+    }
+  ],
+  "slots": [
+    {
+      "displayName": "default",
+      "description": "列表的内容"
+    }
+  ],
+  "methods": [
+    {
+      "displayName": "check",
+      "description": "检查列表滚动条是否触底，如果触底，则触发 load 事件",
+      "type": "Function",
+      "tip": "() => void"
+    }
+  ]
+}

@@ -10,6 +10,7 @@ export interface ViewProps {
   showCustomControl?: boolean
   useTree?: boolean
   treeConfig?: TreeViewConfig
+  // @deprecated use treeConfig.showArrow instead
   showArrow?: boolean
   showCount?: boolean
   props?: ViewAttributes
@@ -44,12 +45,10 @@ export interface TreeViewProps {
 }
 
 export interface TreeViewConfig {
-  nodeKey?: string | number
   emptyText?: string
   expandOnClickNode?: boolean
   checkOnClickNode?: boolean
   defaultExpandedKeys?: (string | number)[]
-  currentNodeKey?: string | number
   accordion?: boolean
   indent?: number
   lazy?: boolean

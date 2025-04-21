@@ -90,12 +90,12 @@
 import { ref, onMounted } from 'vue';
 import { KTabs, KTabPane, KButton } from '../../components';
 import { IconArrowTop, IconTips } from 'ksw-vue-icon';
-import { GFPageDetailProps } from './type';
+import { GFPageDetailsProps } from './type';
 
 defineOptions({
   name: 'GFPageDetails'
 });
-const props = withDefaults(defineProps<GFPageDetailProps>(), {
+const props = withDefaults(defineProps<GFPageDetailsProps>(), {
   icon: '',
   title: '标题',
   description: '',

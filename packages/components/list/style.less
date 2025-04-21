@@ -1,0 +1,26 @@
+@import '../../style/variable.css';
+@import '../../style/general.less';
+
+.k-list {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+
+  .k-list-default-loading, .k-list-default-finished, .k-list-default-error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    color: #969799;
+    background-color: var(--k-gray-100);
+  }
+  .k-list-finished {
+    width: 100%;
+  }
+  .k-list-error {
+    width: 100%;
+  }
+  .k-list-loading {
+    width: 100%;
+  }
+}

@@ -120,5 +120,10 @@ export default {
   dialog: {
     confirm: '确认',
     cancel: '取消'
+  },
+  list: {
+    loadingText: '加载中...',
+    finishedText: '没有更多数据了',
+    errorText: '数据加载失败，请点击重试',
   }
 }

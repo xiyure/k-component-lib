@@ -20,8 +20,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, nextTick, onMounted, inject, onBeforeUnmount } from 'vue';
+import { ref, computed, watch, nextTick, onMounted, inject, onBeforeUnmount } from 'vue';
 import { debounce } from 'lodash';
+import { useDeprecated } from '../../hooks';
 import { SliderButtonProps, SliderButtonPaneProps } from './type';
 import { genRandomStr } from '../../utils';
 
@@ -29,21 +30,27 @@ defineOptions({
   name: 'KSliderButton'
 });
 
+const elementObserver = inject<any>('__elementObserver');
 const props = withDefaults(defineProps<SliderButtonProps>(), {});
 
-const emits = defineEmits(['change']);
+useDeprecated({
+  scope: 'k-slider-button',
+  from: 'active',
+  replacement: 'default-active',
+  version: '2.0.0'
+}, computed(() => !!props.active));
 
-const active = ref(props.active ?? props.items[0].name);
+const emits = defineEmits(['update:modelValue', 'change']);
+
+const active = ref((props.defaultActive || props.active) ?? props.items[0].name);
 const sliderButton = ref();
 
 const key = `_${genRandomStr(8)}`;
+const element = ref();
 
 const debouncedGetActiveItemPosition = debounce(() => {
   getActiveItemPosition();
 }, 10);
-
-const element = ref();
-const elementObserver = inject<any>('__elementObserver');
 
 onMounted(() => {
   element.value = sliderButton?.value?.querySelector('.k-slider-button-pane.is-active');
@@ -51,7 +58,15 @@ onMounted(() => {
   elementObserver.observe(element.value, debouncedGetActiveItemPosition);
 });
 
-function getActiveItemPosition() {
+watch(() => props.modelValue, (value) => {
+  if (value) {
+    active.value = value;
+    getActiveItemPosition();
+  }
+}, { immediate: true });
+
+async function getActiveItemPosition() {
+  await nextTick();
   const activeElement: HTMLElement | null = sliderButton?.value?.querySelector(
     '.k-slider-button-pane.is-active'
   );
@@ -63,13 +78,12 @@ function getActiveItemPosition() {
   sliderButton?.value?.style.setProperty('--item-width', `${width}px`);
 }
 
-function handleClick(item: SliderButtonPaneProps) {
+async function handleClick(item: SliderButtonPaneProps) {
   if (active.value !== item.name) {
     active.value = item.name;
-    nextTick(() => {
-      getActiveItemPosition();
-      emits('change', item.name);
-    });
+    await getActiveItemPosition();
+    emits('update:modelValue', item.name);
+    emits('change', item.name);
   }
 }
 

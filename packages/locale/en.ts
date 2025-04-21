@@ -120,5 +120,10 @@ export default {
   dialog: {
     confirm: 'confirm',
     cancel: 'cancel'
+  },
+  list: {
+    loadingText: 'Loading...',
+    finishedText: 'Without more data',
+    errorText: 'Loading failed, please try again later',
   }
 }

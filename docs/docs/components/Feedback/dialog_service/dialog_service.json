@@ -1,0 +1,169 @@
+{
+  "name": "DialogService",
+  "props": [
+    {
+      "displayName": "id",
+      "type": "string",
+      "description": "弹窗唯一标识",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "attrs",
+      "type": "object",
+      "description": "弹窗参数，支持KDialog组件的所有props参数",
+      "defaultValue": "",
+      "tip": "DialogOptions"
+    },
+    {
+      "displayName": "slots",
+      "type": "object",
+      "description": "弹窗插槽，可使用header、default、footer、footerLeft等自定义渲染函数设置弹窗内容，设置default后将无法使用内置表单",
+      "defaultValue": "",
+      "tip": "DialogSlots"
+    },
+    {
+      "displayName": "formAttrs",
+      "type": "object",
+      "description": "使用内置表单时生效，设置表单参数，支持KForm组件的所有props参数",
+      "defaultValue": "",
+      "tip": "FormOptions"
+    },
+    {
+      "displayName": "formItems",
+      "type": "array",
+      "description": "设置表单项，支持KFormItem组件的所有props参数，设置后可使用内置表单",
+      "defaultValue": "",
+      "tip": "Array<FormItemOptions>"
+    },
+    {
+      "displayName": "penetratePointer",
+      "type": "boolean",
+      "description": "模态框是否支持事件穿透",
+      "defaultValue": "false",
+      "tip": ""
+    },
+    {
+      "displayName": "showDefaultFooter",
+      "type": "boolean",
+      "description": "是否显示弹窗默认底部内容",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "showCancelButton",
+      "type": "boolean",
+      "description": "是否显示取消按钮",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "showConfirmButton",
+      "type": "boolean",
+      "description": "是否显示确认按钮",
+      "defaultValue": "true",
+      "tip": ""
+    },
+    {
+      "displayName": "confirmButtonText",
+      "type": "string",
+      "description": "确认按钮文字",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "cancelButtonText",
+      "type": "string",
+      "description": "取消按钮文字",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "confirm",
+      "type": "Function",
+      "description": "点击确认按钮时触发的回调函数",
+      "defaultValue": "",
+      "tip": "(close: () => void, payload?: any) => void | Promise<void>"
+    },
+    {
+      "displayName": "cancel",
+      "type": "Function",
+      "description": "点击取消按钮时触发的回调函数",
+      "defaultValue": "",
+      "tip": "(dialogAttrs:DialogOptions, formAttrs: FormOptions | undefined, formItems: FormItemOptions[] | undefined) => Promise<void> | void"
+    }
+  ],
+  "subProps": {
+    "FormItemOptions": [
+      {
+        "displayName": "type",
+        "type": "enum",
+        "description": "表单项类型，支持select、input、checkbox、checkboxGroup类型",
+        "defaultValue": "",
+        "tip": "'select' | 'input' | 'checkbox' | 'checkboxGroup'"
+      },
+      {
+        "displayName": "attrs",
+        "type": "any",
+        "description": "内置表单项的select、input、checkbox等控件属性",
+        "defaultValue": ""
+      },
+      {
+        "displayName": "value",
+        "type": "any",
+        "description": "表单项值",
+        "defaultValue": ""
+      },
+      {
+        "displayName": "render",
+        "type": "Function",
+        "description": "自定义渲染函数",
+        "defaultValue": "",
+        "tip": "(formItem: FormItemOptions, formData: any, form: FormOptions) => RenderType"
+      },
+      {
+        "displayName": "noFormItemWrap",
+        "type": "boolean",
+        "description": "表单项是否不包裹在FormItem组件中",
+        "defaultValue": "false"
+      },
+      {
+        "displayName": "options",
+        "type": "object",
+        "description": "选项列表，当type为select、checkboxGroup时生效",
+        "defaultValue": "",
+        "tip": "{ label: string; value: any; disabled?: boolean }[]"
+      }
+    ],
+    "DialogSlots": [
+      {
+        "displayName": "header",
+        "type": "Function",
+        "description": "自定义弹窗头部内容",
+        "defaultValue": "",
+        "tip": "params: DialogServiceSlotsParams) => SlotsType"
+      },
+      {
+        "displayName": "default",
+        "type": "Function",
+        "description": "自定义弹窗内容",
+        "defaultValue": "",
+        "tip": "params: DialogServiceSlotsParams) => SlotsType"
+      },
+      {
+        "displayName": "footer",
+        "type": "Function",
+        "description": "自定义弹窗底部内容",
+        "defaultValue": "",
+        "tip": "(params: DialogServiceSlotsParams) => SlotsType"
+      },
+      {
+        "displayName": "footerLeft",
+        "type": "Function",
+        "description": "自定义弹窗底部左侧内容",
+        "defaultValue": "",
+        "tip": "(params: DialogServiceSlotsParams) => SlotsType"
+      }
+    ]
+  }
+}

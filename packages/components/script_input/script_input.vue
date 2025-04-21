@@ -920,9 +920,6 @@ function setCurrentMode(mode: 'password' | 'string' | 'expression') {
 }
 
 function getCurrentMode() {
-  if (_showPassword.value) {
-    return 'password';
-  }
   return isStringMode() ? 'string' : 'expression';
 }
 

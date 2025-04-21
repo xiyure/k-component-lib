@@ -42,6 +42,7 @@ export interface TreeTableProps {
   showHeaderTools?: boolean;
   batchOperations?: OperateData[];
   showBatchOperation?: boolean;
+  batchOperateConfig?: BatchOperateConfig;
   showColumnMenu?: boolean;
   showDragColumn?: boolean;
   cellClickToggleHighlight?: boolean;
@@ -157,6 +158,13 @@ export interface SearchConfig {
   ignoreCase?: boolean;
   searchColumns?: string[];
   supportPinYin?: string[] | boolean;
+}
+
+export interface BatchOperateConfig {
+  data?: OperateData[]
+  showTotal?: boolean
+  total?: number
+  checkMethod?: (...args: any[]) => any[]
 }
 
 export interface RowData {

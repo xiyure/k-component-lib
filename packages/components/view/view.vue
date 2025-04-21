@@ -1,12 +1,22 @@
 <template>
-  <div ref="KViewRef" class="k-view text-base" :style="{ height: typeof height === 'number'? `${height}px` : height }">
+  <div
+    ref="KViewRef"
+    class="k-view text-base"
+    :style="{ height: typeof height === 'number' ? `${height}px` : height }"
+  >
     <div
-      class="k-view-nav h-full border-gray-200 relative flex-shrink-0"
-      :class="{ 'is-collapse': viewCollapse, 'is-simple': simple, 'border-r': !simple, 'p-2': !simple, 'pr-2': simple  }"
+      class="k-view-nav relative h-full flex-shrink-0 border-gray-200"
+      :class="{
+        'is-collapse': viewCollapse,
+        'is-simple': simple,
+        'border-r': !simple,
+        'p-2': !simple,
+        'pr-2': simple
+      }"
     >
       <div
         v-if="!simple"
-        class="showViewBtn flex justify-center items-center rounded-full"
+        class="showViewBtn flex items-center justify-center rounded-full"
         @click="handleViewVisible"
       >
         <IconArrowRight :class="{ 'is-collapse': !viewCollapse }" />
@@ -44,15 +54,13 @@
                 :props="{
                   label: config.label,
                   disabled: config.disabled,
-                  children: config.children,
+                  children: config.children
                 }"
-                :default-expanded-keys="defaultExpandedKeys"
                 :current-node-key="currentNodeKey"
                 :data="data"
-                :show-arrow="showArrow"
                 :draggable="draggable"
                 highlight-current
-                v-bind="treeConfig"
+                v-bind="viewTreeConfig"
                 @current-change="handleChange"
                 @node-expand="handleNodeExpand"
                 @node-collapse="handleNodeCollapse"
@@ -92,15 +100,13 @@
                 :props="{
                   label: config.label,
                   disabled: config.disabled,
-                  children: config.children,
+                  children: config.children
                 }"
-                :default-expanded-keys="defaultExpandedKeys"
                 :current-node-key="currentNodeKey"
                 :data="data"
                 :draggable="draggable"
                 highlight-current
-                :show-arrow="showArrow"
-                v-bind="treeConfig"
+                v-bind="viewTreeConfig"
                 @current-change="handleChange"
                 @node-expand="handleNodeExpand"
                 @node-collapse="handleNodeCollapse"
@@ -131,7 +137,7 @@ import { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type';
 import { Sortable, SortableInstance } from '../../utils/event/sortable';
 import { getElement } from '../../utils';
 import KViewItem from './view_item.vue';
-import { useLocale } from '../../hooks';
+import { useLocale, useDeprecated } from '../../hooks';
 import { ViewProps, ViewData } from './type';
 import { KTree } from '../tree';
 
@@ -154,11 +160,21 @@ const props = withDefaults(defineProps<ViewProps>(), {
   collapse: false,
   showCustomControl: false,
   useTree: false,
-  treeConfig: () => ({}),
   showArrow: false,
   showCount: true,
   simple: false
 });
+
+useDeprecated(
+  {
+    scope: 'k-view',
+    from: 'show-arrow',
+    replacement: 'treeConfig.showArrow',
+    version: '2.0.0'
+  },
+  computed(() => !!props.showArrow)
+);
+
 const emits = defineEmits([
   'update:modelValue',
   'refresh',
@@ -172,15 +188,46 @@ const emits = defineEmits([
 const active = ref<string | number>('');
 const KViewRef = ref<HTMLDivElement>();
 
+let hasInit = false;
+
 const config = computed(() => Object.assign(DEFAULT_PROPS, props.props ?? {}));
 const specialData = computed(() => props.data?.filter((item) => !item[config.value.custom]) ?? []);
 const customData = computed(() => props.data?.filter((item) => Boolean(item[config.value.custom])));
+const viewTreeConfig = computed(() => {
+  const {
+    emptyText,
+    expandOnClickNode,
+    checkOnClickNode,
+    defaultExpandedKeys: _defaultExpandedKeys,
+    accordion,
+    indent,
+    lazy,
+    load,
+    icon,
+    expandIcon,
+    collapseIcon,
+    showArrow
+  } = props.treeConfig ?? {};
+  return {
+    emptyText,
+    expandOnClickNode,
+    checkOnClickNode,
+    defaultExpandedKeys: [...defaultExpandedKeys.value, ...(_defaultExpandedKeys ?? [])],
+    accordion,
+    indent,
+    lazy,
+    load,
+    icon,
+    expandIcon,
+    collapseIcon,
+    showArrow: showArrow ?? props.showArrow
+  };
+});
 
 const defaultExpandedKeys = ref<(string | number)[]>([]);
 const currentNodeKey = ref<string | number>('');
 
 onMounted(() => {
-  initData();
   initSortable();
 });
 onBeforeUnmount(() => {
@@ -188,21 +235,28 @@ onBeforeUnmount(() => {
   sortableInstances.custom?.destroy();
 });
 
-watch(() => props.modelValue, () => {
-  if (typeof props.modelValue !== 'string' && typeof props.modelValue !== 'number') {
-    return;
-  }
-  active.value = props.modelValue;
-}, { immediate: true })
+watch(
+  () => props.modelValue,
+  () => {
+    update();
+  },
+  { immediate: true }
+);
 
-function initData() {
-  if (props.modelValue) {
-    return;
+function update() {
+  let activeValue;
+  if (typeof props.modelValue !== 'string' && typeof props.modelValue !== 'number') {
+    activeValue = props.defaultActive ?? props.data?.[0]?.[config.value.value] ?? '';
+  } else {
+    // defaultActive: 基于设计逻辑，该参数只在初始化执行一次
+    if (!hasInit) {
+      activeValue = props.modelValue;
+    }
   }
-  const activeValue = props.defaultActive ?? props.data?.[0]?.[config.value.value] ?? '';;
   active.value = activeValue;
   defaultExpandedKeys.value = [activeValue ?? ''];
   currentNodeKey.value = activeValue ?? '';
+  hasInit = true;
 }
 function handleFresh() {
   emits('refresh');
@@ -234,7 +288,7 @@ function isLeafNode(node: TreeNodeData) {
 type SortableInstances = {
   common: SortableInstance | null;
   custom: SortableInstance | null;
-}
+};
 const sortableInstances: SortableInstances = {
   common: null,
   custom: null

@@ -3,6 +3,8 @@ export interface OperateProps {
   max?: number
   total?: number
   hideOnClick?: boolean
+  checkMethod?: (option: OperateData) => any[]
+  showTotal?: boolean
 }
 
 export interface OperateData {

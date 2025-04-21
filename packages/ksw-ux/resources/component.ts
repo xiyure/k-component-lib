@@ -45,6 +45,7 @@ import { KScriptInput } from '../../components/script_input';
 import { KIconPopover } from '../../components/icon_popover';
 import { KGlobalProvider } from '../../components/global_provider';
 import { KSplit } from '../../components/split';
+import { KList } from '../../components/list';
 
 export default [
   KButton,
@@ -104,5 +105,6 @@ export default [
   KSliderButton,
   KScriptInput,
   KIconPopover,
-  KGlobalProvider
+  KGlobalProvider,
+  KList
 ] as (Plugin & { name: string })[];

@@ -228,16 +228,24 @@ export function resetTreeData(
 // 转换数据为Map结构，构建表格数据节点之间的关系
 export function convertToMap(tableData: any[], rowField: string, parentField: string) {
   const dataMap = new Map<string | number, { node: any; children: any[] }>();
+  if (!parentField) {
+    return dataMap;
+  }
   for (const node of tableData) {
     if (!dataMap.has(node[rowField])) {
       dataMap.set(node[rowField], { node, children: [] });
+    } else {
+      dataMap.get(node[rowField])!.node = node;
     }
-    if (!parentField) {
+    // 排除一级节点
+    if (!node[parentField]) {
       continue;
     }
     const parentNode = dataMap.get(node[parentField]);
     if (parentNode) {
       parentNode.children.push(node);
+    } else {
+      dataMap.set(node[parentField], { node: null, children: [node] });
     }
   }
   return dataMap;

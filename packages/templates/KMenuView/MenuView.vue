@@ -62,7 +62,7 @@ import { ref, watch, computed, provide } from 'vue';
 import { IconLeftMenuDisplay } from 'ksw-vue-icon';
 import { ElMenu, MenuItemRegistered } from 'element-plus';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue';
-import { menuViewProps, menuViewOption } from './type';
+import { MenuViewProps, MenuViewOption } from './type';
 import SubMenu from './subMenu.vue';
 import { transformTreeData } from '../../utils';
 
@@ -70,7 +70,7 @@ defineOptions({
   name: 'KMenuView'
 });
 
-const props = withDefaults(defineProps<menuViewProps>(), {
+const props = withDefaults(defineProps<MenuViewProps>(), {
   options: () => [],
   showCollapse: true,
   collapse: undefined
@@ -79,7 +79,7 @@ const emits = defineEmits(['click', 'select']);
 
 const isCollapse = ref(false);
 const activeSet = ref(new Set<string>([]));
-const flattenOptions: menuViewOption[] = [];
+const flattenOptions: MenuViewOption[] = [];
 
 const useCollapse = computed(() => {
   if (props.collapse !== undefined) {
@@ -112,7 +112,7 @@ const expand = () => {
   }
   isCollapse.value = false;
 };
-const toggleCollapse = () => {
+const toggleExpand = () => {
   if (props.collapse !== undefined) {
     return;
   }
@@ -141,7 +141,7 @@ function updateActiveSet(activeIndex: string | undefined) {
 updateActiveSet(props.defaultActive);
 provide('__activeSet__', activeSet);
 
-defineExpose({ collapse, expand, toggleCollapse });
+defineExpose({ collapse, expand, toggleExpand });
 </script>
 
 <style lang="less">

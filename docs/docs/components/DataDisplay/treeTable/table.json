@@ -334,6 +334,22 @@
       "description": "是否显示表格尺寸控制器",
       "defaultValue": "false",
       "tip": ""
+    },
+    {
+      "displayName": "request-method",
+      "type": "Function",
+      "description": "自定义远程请求方法，开启远程分页、搜索、筛选任意一项时，该方法将生效",
+      "defaultValue": "false",
+      "tip": "(params: TableRemoteMethod) => Promise<TableMethodReturn>",
+      "version": "1.1.20"
+    },
+    {
+      "displayName": "batch-operate-config",
+      "type": "object",
+      "description": "批量操作配置",
+      "defaultValue": "",
+      "tip": "BatchOperateConfig",
+      "version": "1.1.22"
     }
   ],
   "subProps": {
