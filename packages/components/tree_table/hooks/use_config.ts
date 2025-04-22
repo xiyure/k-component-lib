@@ -1,4 +1,5 @@
 import { computed, Ref } from 'vue';
+import { cloneDeep } from 'lodash-es';
 import {
   DEFAULT_WIDGETS,
   DEFAULT_ROW_CONFIG,
@@ -87,22 +88,22 @@ export function useConfig(props: TreeTableProps, options: Options) {
   // 合并用户与表格默认配置
   const treeConfig = computed(() => {
     if (props.useTree) {
-      return Object.assign(DEFAULT_TREE_CONFIG, props.treeConfig || {});
+      return Object.assign(cloneDeep(DEFAULT_TREE_CONFIG), props.treeConfig || {});
     }
     return undefined;
   });
-  const sortConfig = computed(() => Object.assign(DEFAULT_SORT_CONFIG, props.sortConfig || {}));
-  const rowConfig = computed(() => Object.assign(DEFAULT_ROW_CONFIG, props.rowConfig));
-  const editConfig = computed(() => Object.assign(DEFAULT_EDIT_CONFIG, props.editConfig || {}));
+  const sortConfig = computed(() => Object.assign(cloneDeep(DEFAULT_SORT_CONFIG), props.sortConfig || {}));
+  const rowConfig = computed(() => Object.assign(cloneDeep(DEFAULT_ROW_CONFIG), props.rowConfig));
+  const editConfig = computed(() => Object.assign(cloneDeep(DEFAULT_EDIT_CONFIG), props.editConfig || {}));
   const scrollY = computed(() => {
-    const scrollYConfig = Object.assign(DEFAULT_SCROLL_Y, props.scrollY || {});
+    const scrollYConfig = Object.assign(cloneDeep(DEFAULT_SCROLL_Y), props.scrollY || {});
     if (props.adaptive) {
       scrollYConfig.enabled = false;
     }
     return scrollYConfig;
   });
-  const columnConfig = computed(() => Object.assign(DEFAULT_COLUMN_CONFIG, props.columnConfig || {}));
-  const seqConfig = computed(() => Object.assign(defaultSeqConfig, props.seqConfig || {}));
+  const columnConfig = computed(() => Object.assign(cloneDeep(DEFAULT_COLUMN_CONFIG), props.columnConfig || {}));
+  const seqConfig = computed(() => Object.assign(cloneDeep(defaultSeqConfig), props.seqConfig || {}));
 
   return {
     widgets,

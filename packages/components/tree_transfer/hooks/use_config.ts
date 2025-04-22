@@ -1,4 +1,5 @@
 import { computed } from 'vue';
+import { cloneDeep } from 'lodash-es';
 import {
   DEFAULT_TREE_CONFIG,
   DEFAULT_SCROLL_Y,
@@ -10,13 +11,13 @@ export function useConfig(props: TreeTransferProps) {
   // 合并用户与表格默认配置
   const treeConfig = computed(() => {
     if (props.useTree) {
-      const newTreeConfig = Object.assign(DEFAULT_TREE_CONFIG, props.treeConfig || {});
+      const newTreeConfig = Object.assign(cloneDeep(DEFAULT_TREE_CONFIG), props.treeConfig || {});
       newTreeConfig.indent = 0;
       return newTreeConfig;
     }
     return undefined;
   });
-  const scrollY = computed(() => Object.assign(DEFAULT_SCROLL_Y, props.scrollY || {}));
+  const scrollY = computed(() => Object.assign(cloneDeep(DEFAULT_SCROLL_Y), props.scrollY || {}));
 
   return {
     treeConfig,
