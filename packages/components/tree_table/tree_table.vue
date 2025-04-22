@@ -7,6 +7,7 @@
     ]"
     :style="{ height: adaptive ? 'fit-content' : height, ...style }"
   >
+    <!-- head -->
     <div v-if="simple && showSearchInput" class="k-tree-table__header-pure">
       <k-input
         v-model="searchStr"
@@ -205,6 +206,11 @@
         </template>
       </div>
     </div>
+    <!-- head-extra -->
+    <div v-if="$slots['header-extra']" class="k-tree-table__header-extra">
+      <slot name="header-extra"></slot>
+    </div>
+    <!-- table -->
     <div ref="RefTableBox" class="table-box flex-1 overflow-hidden">
       <k-table
         ref="xTree"
@@ -276,6 +282,7 @@
         <k-operate v-bind="batchOpConfig" @close="closeBatchOperation" />
       </div>
     </div>
+    <!-- pagination -->
     <div v-if="isPaging" ref="RefTablePagination" class="pagination-box">
       <k-pagination
         v-bind="paginationConfig"

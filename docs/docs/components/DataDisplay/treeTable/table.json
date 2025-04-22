@@ -744,6 +744,11 @@
       "displayName": "column-drag-icon",
       "description": "自定义列拖拽图标",
       "version": "1.0.12"
+    },
+    {
+      "displayName": "header-extra",
+      "description": "自定义表头额外内容，在表头下方显示",
+      "version": "1.0.23"
     }
   ],
   "methods": [
