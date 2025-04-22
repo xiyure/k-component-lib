@@ -37,7 +37,7 @@
     "vitepress-sidebar": "^1.26.0"
   },
   "dependencies": {
-    "@ksware/ksw-ux": "^1.1.22-beta3",
+    "@ksware/ksw-ux": "^1.1.23-beta2",
     "@vitejs/plugin-vue-jsx": "^4.0.1",
     "ksw-vue-icon": "^2.5.0",
     "meilisearch-docsearch": "^0.7.0",
