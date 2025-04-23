@@ -56,7 +56,7 @@
                   disabled: config.disabled,
                   children: config.children
                 }"
-                :current-node-key="currentNodeKey"
+                :current-node-key="active"
                 :data="data"
                 :draggable="draggable"
                 highlight-current
@@ -102,7 +102,7 @@
                   disabled: config.disabled,
                   children: config.children
                 }"
-                :current-node-key="currentNodeKey"
+                :current-node-key="active"
                 :data="data"
                 :draggable="draggable"
                 highlight-current
@@ -188,8 +188,6 @@ const emits = defineEmits([
 const active = ref<string | number>('');
 const KViewRef = ref<HTMLDivElement>();
 
-let hasInit = false;
-
 const config = computed(() => Object.assign(DEFAULT_PROPS, props.props ?? {}));
 const specialData = computed(() => props.data?.filter((item) => !item[config.value.custom]) ?? []);
 const customData = computed(() => props.data?.filter((item) => Boolean(item[config.value.custom])));
@@ -212,7 +210,7 @@ const viewTreeConfig = computed(() => {
     emptyText,
     expandOnClickNode,
     checkOnClickNode,
-    defaultExpandedKeys: [...defaultExpandedKeys.value, ...(_defaultExpandedKeys ?? [])],
+    defaultExpandedKeys: [active.value ?? '', ...(_defaultExpandedKeys ?? [])],
     accordion,
     indent,
     lazy,
@@ -224,11 +222,11 @@ const viewTreeConfig = computed(() => {
   };
 });
 
-const defaultExpandedKeys = ref<(string | number)[]>([]);
-const currentNodeKey = ref<string | number>('');
-
 onMounted(() => {
   initSortable();
+  if (!props.modelValue) {
+    active.value = props.defaultActive ?? props.data?.[0]?.[config.value.value] ?? '';
+  }
 });
 onBeforeUnmount(() => {
   sortableInstances.common?.destroy();
@@ -237,27 +235,15 @@ onBeforeUnmount(() => {
 
 watch(
   () => props.modelValue,
-  () => {
-    update();
+  (newVal) => {
+    if ((typeof newVal !== 'string' && typeof newVal !== 'number') || newVal === active.value) {
+      return;
+    }
+    active.value = newVal;
   },
   { immediate: true }
 );
-
-function update() {
-  let activeValue;
-  if (typeof props.modelValue !== 'string' && typeof props.modelValue !== 'number') {
-    activeValue = props.defaultActive ?? props.data?.[0]?.[config.value.value] ?? '';
-  } else {
-    // defaultActive: 基于设计逻辑，该参数只在初始化执行一次
-    if (!hasInit) {
-      activeValue = props.modelValue;
-    }
-  }
-  active.value = activeValue;
-  defaultExpandedKeys.value = [activeValue ?? ''];
-  currentNodeKey.value = activeValue ?? '';
-  hasInit = true;
-}
+ 
 function handleFresh() {
   emits('refresh');
 }
