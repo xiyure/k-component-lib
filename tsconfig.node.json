@@ -5,7 +5,8 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
     "strict": true
   },
-  "include": ["vite.config.ts", "plugins"]
+  "include": ["vite.config.ts", "internal"]
 }

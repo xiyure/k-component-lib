@@ -1,4 +1,3 @@
-import { fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
 import _path from 'path';
 import vue from '@vitejs/plugin-vue';
@@ -6,29 +5,32 @@ import vueJsx from '@vitejs/plugin-vue-jsx';
 import dts from 'vite-plugin-dts';
 import autoprefixer from 'autoprefixer';
 import tailwindcss from 'tailwindcss';
-import copyFiles from './plugins/copy_files';
+import { copyFiles } from './internal/plugins';
+import { rollupOptions } from './internal/rollup';
 
 // https://vitejs.dev/config/
-const name = 'kingsware-ui';
+const name = 'dist';
+
 export default defineConfig({
   plugins: [
     vue(),
     vueJsx(),
     dts({
+      entryRoot: _path.resolve(__dirname, 'packages'),
       tsconfigPath: 'tsconfig.json',
-      include: ['packages'],
+      include: [
+        'packages/**/type.ts',
+        'packages/components/message',
+        'packages/components/message_box',
+        'packages/constant',
+        'packages/utils',
+        'packages/locale',
+        'packages/native',
+        'packages/ksw-ux'
+      ],
+      outDir: [`${name}/es`, `${name}/lib`]
     }),
-    copyFiles([
-      {
-        from: resolvePath('packages/static/tailwind'),
-        to: resolvePath(`${name}/tailwind`),
-        isDir: true,
-      },
-      {
-        from: resolvePath('typings/global.d.ts'),
-        to: resolvePath(`${name}/global.d.ts`)
-      }
-    ]),
+    copyFiles()
   ],
   esbuild: {
     pure: ['console.log', 'alert', 'debugger'],
@@ -40,29 +42,9 @@ export default defineConfig({
     outDir: name,
     lib: {
       entry: 'packages/index.ts',
-      name,
       fileName: 'index',
     },
-    rollupOptions: {
-      external: [
-        'vue',
-        'element-plus',
-        'vxe-table',
-        'vxe-pc-ui',
-        'vue-i18n',
-        'sortablejs',
-      ],
-      output: {
-        globals: {
-          vue: 'Vue',
-          'element-plus': 'ElementPlus',
-          'vxe-table': 'VxeTable',
-          'vxe-pc-ui': 'VxeUI',
-          'vue-i18n': 'VueI18n',
-          sortablejs: 'Sortable',
-        },
-      },
-    },
+    rollupOptions
   },
   resolve: {
     // 配置路径别名
@@ -82,8 +64,3 @@ export default defineConfig({
     port: 12580,
   },
 });
-
-
-function resolvePath(path: string) {
-  return _path.resolve(__dirname, path);
-}
