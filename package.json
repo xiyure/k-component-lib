@@ -1,7 +1,7 @@
 {
-  "name": "ksw-ux",
+  "name": "@ksware/ksw-ux",
   "private": false,
-  "version": "1.1.26",
+  "version": "1.1.23-beta5",
   "description": "一个基于ElementPlus与VxeTable的UI组件库，满足项目多场景开发的常用组件需求",
   "main": "lib/index.js",
   "module": "es/index.mjs",
