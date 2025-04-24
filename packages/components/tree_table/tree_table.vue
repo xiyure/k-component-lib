@@ -762,12 +762,16 @@ function setData(data: RowData[]) {
   xeTableData.value = setTableData(data);
 }
 
-async function refreshTableData() {
+async function refreshTableData(isClearStatus = false) {
   const isRemoteSearch = props.searchConfig?.isRemoteQuery || props.isRemoteQuery;
   const isRemoteFilter = props.advancedFilterConfig?.remote === true;
   const isServerPaging =
     isPaging.value && (props.isServerPaging || props.paginationConfig?.isRemotePaging);
   if (isServerPaging || isRemoteSearch || isRemoteFilter) {
+    if (isClearStatus) {
+      clearCheckedData();
+      resetCheckboxStatus();
+    }
     handleRemoteData();
   }
 }
