@@ -9,7 +9,7 @@ export interface FilterProps {
   filterKey?: string;
   defaultCondition?: ConditionInfo;
   remote?: boolean | string[];
-  formatter?: string;
+  dateFormat?: string;
   ignoreCase?: boolean;
   maxNumber?: number;
 }
@@ -58,6 +58,8 @@ export interface FilterOptions {
     label: string;
     value: string | number | boolean;
   }[];
+  format?: string
+  valueFormat?: string
   group?: FilterOptions[];
   [key: string]: any;
 }

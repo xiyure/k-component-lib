@@ -22,7 +22,6 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
 
   const keyField = computed(() => props.rowConfig?.keyField ?? 'id');
 
-  const { parentField } = getTreeConfigField();
   const insertTreeData = (data: RowData[], position: Row | -1 | null = null, isNext = false) => {
     if (isObject(position)) {
       const targetIndex = xeTableData.value.findIndex((item: RowData) => item[keyField.value] === position[keyField.value]);
@@ -31,6 +30,7 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
       return;
     }
     // 插入的数据可能存在父子关系,为了避免特殊场景下数据结构的构建错误，这里需要处理传入数据的节点关系
+    const { parentField } = getTreeConfigField();
     const newRowsMap = handleInsertData(data, parentField);
     for (const { node, children } of newRowsMap.values()) {
       const parentIndex = xeTableData.value.findIndex((item: RowData) => item[keyField.value] === node[parentField]);
@@ -49,6 +49,7 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
       }
     }
   }
+
   // 在第一行插入行数据
   const insert = (records: RowData | RowData[]) => new Promise((resolve) => {
     const newRows = Array.isArray(records) ? records : [records];
@@ -62,6 +63,7 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     addTempData(newRows, tempInsertData);
     resolve(records);
   });
+
   const insertRecords = (records: RowData | RowData[], row: Row | number, isNext = false) => new Promise((resolve) => {
     const newRows = Array.isArray(records) ? records : [records];
     if (!props.useTree) {
@@ -116,10 +118,13 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     addTempData(newRows, tempInsertData);
     resolve(records);
   });
+
   // 在指定位置插入数据
   const insertAt = (records: RowData | RowData[], row: Row | number) => insertRecords(records, row);
+
   // 在指定行后插入数据
   const insertNextAt = (records: RowData | RowData[], row: Row | number) => insertRecords(records, row, true);
+
   // 删除临时添加的数据
   const removeInsertRow = () => new Promise((resolve) => {
     getTreeExpandRecords();
@@ -138,10 +143,13 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     restoreTreeExpandRecords();
     resolve({ rows, row: rows });
   });
+
   // 获取临时添加的数据
   const getInsertRecords = () => Array.from(tempInsertData.values());
+
   // 判断是否是临时添加的数据
   const isInsertByRow = (row: RowData) => tempInsertData.has(row[keyField.value]);
+
   // 删除指定行数据
   const remove = (rows: RowData | RowData[]) => new Promise((resolve) => {
     if (rows === undefined) {
@@ -176,8 +184,10 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     addTempData(removeData as RowData[], tempRemoveData);
     resolve({ rows, row: rows });
   });
+
   // 获取临时删除的数据
   const getRemoveRecords = () => Array.from(tempRemoveData.values());
+
   // 获取数据集
   const getRecordset = () => ({
     insertRecords: Array.from(tempInsertData.values()),
@@ -185,6 +195,8 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     updateRecords: Array.from(tempSetData.values()),
     pendingRecords: []
   });
+
+  // 设置指定行数据
   const setRow = (rows: Row | Row[], record: RowData) => new Promise((resolve) => {
     if (!rows || !record) {
       resolve(rows);
@@ -199,6 +211,7 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     });
     resolve(rows);
   });
+
   // 排序
   const sortChange = (fieldRules: any) => {
     getTreeExpandRecords();
@@ -210,6 +223,7 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     multiFieldSort(xeTableData.value, fieldRules);
     restoreTreeExpandRecords();
   };
+
   // 构建传入树形结构数据的节点关系
   function handleInsertData(data: RowData[], pid: string | number) {
     const insertMap = new Map<string | number, { node: RowData, children: RowData[] }>(data.map((item: RowData) => [item[keyField.value], { node: item, children: [] }]));
@@ -221,11 +235,15 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     }
     return insertMap;
   }
+  
+  // 添加临时数据
   function addTempData(rows: RowData[], dataMap: RowDataMap) {
     rows.forEach((item: RowData) => {
       dataMap.set(item[keyField.value], item);
     });
   }
+  
+  // 获取树形数据展开行
   function getTreeExpandRecords() {
     const tableInstance = $table.value;
     if (!tableInstance || !props.useTree) {
@@ -234,6 +252,8 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     expandRows.length = 0;
     expandRows.push(...(tableInstance.getTreeExpandRecords() ?? []));
   }
+
+  // 还原树形数据展开行
   async function restoreTreeExpandRecords() {
     const tableInstance = $table.value;
     if (!tableInstance || !props.useTree) {
@@ -244,6 +264,7 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
       expandRows.length = 0;
     });
   }
+
   // 为确保高级筛选和搜索功能正常,拖拽排序后需要更新数据顺序
   function dragSort() {
     if (props.useTree && props.treeConfig?.lazy) {
@@ -261,6 +282,7 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
       restoreTreeExpandRecords();
     });
   }
+
   /* TODO: vxe-table的setTreeExpand方法存在问题，这里暂时重写该方法
     issue:https://github.com/x-extends/vxe-table/issues/2650
   */
@@ -293,6 +315,7 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
       }, timeout);
     });
   }
+
   // 数据更新时应清除所有缓存数据
   function setTableData(data: RowData[] | undefined) {
     tempInsertData.clear();
@@ -303,6 +326,7 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     store.data = [...xeTableData.value];
     return xeTableData.value;
   }
+
   function getRowById(id: string | number) {
     const row = $table.value?.getRowById(id);
     if (row) {
@@ -318,6 +342,7 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     const tempRow = tempRecords.find((item: Row) => item[keyField.value] === id);
     return tempRow ?? null;
   }
+
   function getTreeConfigField() {
     const rowField = props.treeConfig?.rowField ?? 'id';
     const parentField = props.treeConfig?.parentField ?? 'pid';

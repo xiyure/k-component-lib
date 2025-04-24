@@ -106,14 +106,16 @@
                 />
               </k-select>
               <k-date-picker
-                v-model="item.value"
+                v-model="(item.value as DatePickerModelValue)"
                 :type="item.dateType"
                 :teleported="false"
                 :size="formatSize.ownSize"
+                :format="instance(item.key).format ?? instance(item.key).valueFormat"
+                :value-format="instance(item.key).valueFormat ?? dateFormat"
                 clearable
                 :disabled="disabledDatePicker(item)"
                 @change="
-                  (val: Date | Date[]) => {
+                  (val: DatePickerModelValue) => {
                     dateChange(val, item);
                   }
                 "
@@ -121,7 +123,7 @@
             </div>
             <k-select
               v-else-if="instance(item.key)?.options?.length && !item.isMultiple"
-              v-model="item.value"
+              v-model="item.value!"
               :size="formatSize.ownSize"
               :teleported="false"
               :disabled="disabledInput(item)"
@@ -154,7 +156,7 @@
             </k-select>
             <k-input
               v-else
-              v-model="item.value"
+              v-model="(item.value as string)"
               :size="formatSize.ownSize"
               :disabled="disabledInput(item)"
               clearable
@@ -194,15 +196,18 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
+import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash-es';
 import { FilterProps, FilterData, FilterOptions } from './type';
 import { dateTypeOptions, logicOptions } from '../../constant/filter_data';
-import { treeDataToArray, isValid, formatter } from '../../utils';
+import { treeDataToArray, isValid } from '../../utils';
 import { useSize, useLocale } from '../../hooks';
 
 defineOptions({
   name: 'KFilter'
 });
+
+type DatePickerModelValue = string | number | Date | [string, string] | [Date, Date];
 
 const props = withDefaults(defineProps<FilterProps>(), {
   border: true,
@@ -533,16 +538,12 @@ function changeDateRange(item: FilterData) {
       break;
   }
   const targetRanges = ['current-week', 'last-week', 'current-month', 'last-month'];
+  const format = instance.value(item.key)?.valueFormat ?? props.dateFormat;
   if (item.dateType === 'datetime' && targetRanges.includes(item.dateRange as string)) {
-    item.value = dateValue[0];
-    item.showValue = formatter(dateValue[0], props.formatter);
+    item.showValue = item.value = formatDate(dateValue, format);
   } else {
-    item.value = dateValue;
-    if (Array.isArray(dateValue)) {
-      item.showValue = formatter(dateValue, props.formatter).join(' - ');
-    } else {
-      item.showValue = formatter(dateValue, props.formatter);
-    }
+    item.value = formatDate(dateValue, format);
+    item.showValue = Array.isArray(item.value) ? item.value.join(' - ') : item.value;
   }
 }
 // 日期推导
@@ -604,9 +605,18 @@ function updateValue(
     dataItem.showValue = dataItem.multipleValue ?? [];
   }
 }
-function dateChange(val: Date | Date[], item: FilterData) {
-  const formatterData = formatter(val, props.formatter);
-  item.showValue = Array.isArray(formatterData) ? formatterData.join(' - ') : formatterData;
+function dateChange(val: DatePickerModelValue, item: FilterData) {
+  item.showValue = Array.isArray(val) ? val.join(' - ') : val;
+}
+
+function formatDate(date: DatePickerModelValue, format: string | undefined) {
+  if (!format) {
+    return date;
+  }
+  if (Array.isArray(date)) {
+    return date.map((dateItem) => dayjs(dateItem).format(format));
+  }
+  return dayjs(date).format(format);
 }
 function handleShow() {
   emits('show');

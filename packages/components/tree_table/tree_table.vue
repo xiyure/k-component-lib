@@ -85,7 +85,7 @@
               filter-key="field"
               :remote="advancedFilterConfig?.remote ?? false"
               :ignore-case="advancedFilterConfig?.ignoreCase"
-              :formatter="advancedFilterConfig?.dateFormat ?? 'YYYY-MM-DD HH:mm:ss'"
+              :date-format="advancedFilterConfig?.dateFormat ?? 'YYYY-MM-DD HH:mm:ss'"
               :default-condition="advancedFilterConfig?.defaultCondition ?? filterConditionInfo"
               @confirm="refreshAdvancedFilter"
               @clear="
