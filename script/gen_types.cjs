@@ -37,6 +37,7 @@ Promise.all([
   copyTypes('templates')],
   copyTypes(null, null, () => 'components/message'),
   copyTypes(null, null, () => 'components/message_box'),
+  copyTypes(null, null, () => 'components/dialog_service'),
   copyTypes(null, null, () => 'utils/typescript/util_types'),
   copyTypes(null, null, () => 'native'),
   copyTypes(null, null, () => 'constant')

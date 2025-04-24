@@ -22,6 +22,7 @@ export default defineConfig({
         'packages/**/type.ts',
         'packages/components/message',
         'packages/components/message_box',
+        'packages/components/dialog_service',
         'packages/constant',
         'packages/utils',
         'packages/locale',

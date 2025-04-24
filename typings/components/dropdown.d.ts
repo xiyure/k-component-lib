@@ -1,6 +1,6 @@
 
 import { Ref, SetupContext, RenderFunction } from 'vue';
-import type { ExtractPropTypes } from 'vue';
+import type { ExtractPublicPropTypes } from 'vue';
 import type {
   dropdownProps as elDropdownProps,
   dropdownItemProps as elDropdownItemProps,
@@ -27,7 +27,7 @@ export interface KDropdownPrivateRef {
 
 export interface KDropdownPrivateComputed {}
 
-export type KDropdownProps = Merge<DropdownProps, ExtractPropTypes<typeof elDropdownProps>>;
+export type KDropdownProps = Merge<DropdownProps, ExtractPublicPropTypes<typeof elDropdownProps>>;
 export type KDropdownEmits = {
   click: (event: MouseEvent) => void
   command: (command: string) => void
@@ -63,7 +63,7 @@ export interface KDropdownItemPrivateRef {
 
 export interface KDropdownItemPrivateComputed {}
 
-export type KDropdownItemProps = ExtractPropTypes<typeof elDropdownItemProps>;
+export type KDropdownItemProps = ExtractPublicPropTypes<typeof elDropdownItemProps>;
 export type KDropdownItemEmits = {};
 
 export interface KDropdownItemSlots {
