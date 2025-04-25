@@ -24,7 +24,7 @@
     "noFallthroughCasesInSwitch": true,
 
     "ignoreDeprecations": "5.0",
-    "types": ["node", "vite/client", "vue/jsx", "./typings/env.d.ts"],
+    "types": ["node", "vite/client", "vue/jsx"],
     "baseUrl": ".",
     "paths": {
       "@ksw-ux/*": ["./packages/*"],

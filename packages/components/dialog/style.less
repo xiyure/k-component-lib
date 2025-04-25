@@ -1,1 +1,80 @@
 @import '../../style/global.less';
+
+.k-dialog-resizable {
+  resize: both;
+  overflow: auto;
+
+  .el-dialog__header.show-close {
+    padding-right: 8rem;
+  }
+}
+
+.useResizable-ctrl {
+  position: absolute;
+  top: 0.125rem;
+  right: 3rem;
+}
+.recover-icon {
+  position: relative;
+  border-right: 1px solid var(--k-gray-400);
+  border-bottom: 1px solid var(--k-gray-400);
+  // border-radius: 2px;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: -0.5px;
+    width: 80%;
+    height: 1px;
+    transform: rotate(45deg);
+    background: var(--k-gray-400);
+    border-radius: 2px;
+    z-index: 1;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 50%;
+    border-top: 1px solid var(--k-gray-400);
+    border-left: 1px solid var(--k-gray-400);
+    // border-radius: 2px;
+    z-index: 2;
+  }
+}
+.close-icon {
+  position: relative;
+  &::after,
+  &::before {
+    content: '';
+    position: absolute;
+    background: var(--k-gray-400);
+    border-radius: 2px;
+    height: 2px;
+    width: 200%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(45deg) scale(0.5);
+  }
+  &::after {
+    transform: translate(-50%, -50%) rotate(45deg) scale(0.5);
+  }
+  &::before {
+    transform: translate(-50%, -50%) rotate(-45deg) scale(0.5);
+  }
+  &:hover {
+    &::after,
+    &::before {
+      background: var(--k-theme-primary);
+    }
+  }
+}
+
+.k-dialog-minimization {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
+}
