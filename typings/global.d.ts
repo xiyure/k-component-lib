@@ -1,5 +1,30 @@
-import { App } from 'vue';
+import { App, Component, vShow } from 'vue';
 
+declare global {
+  const process: {
+    env: {
+      NODE_ENV: string
+    }
+  }
+
+  namespace JSX {
+    interface IntrinsicAttributes {
+      class?: unknown
+      style?: unknown
+    }
+  }
+}
+
+declare module '@vue/runtime-core' {
+
+  export interface GlobalComponents {
+    Component: (props: { is: Component | string }) => void
+  }
+
+  export interface ComponentCustomProperties {
+    vShow: typeof vShow
+  }
+}
 declare module 'vue' {
   // GlobalComponents for Volar
   export interface GlobalComponents {
