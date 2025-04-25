@@ -91,6 +91,8 @@ export interface Column {
   showColumnMenu?: boolean;
   group?: (Column & VxeColgroupProps)[];
   dataType?: string;
+  format?: string
+  valueFormat?: string
   render?: (...arg: any) => VNode;
   renderEdit?: (data: any) => VNode;
   [key: string]: any;

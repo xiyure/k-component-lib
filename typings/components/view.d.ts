@@ -26,7 +26,7 @@ export interface KViewPrivateComputed {}
 export type KViewProps = ViewProps;
 export type KViewEmits = {
   refresh: () => void,
-  change: (changeInfo: { activeValue: string | number, data: ViewData, node?: TreeNodeData }) => void,
+  change: (changeInfo: { value: string | number, data: ViewData, node?: TreeNodeData }) => void,
   remove: (removeInfo: { value: string | number, data: ViewData }) => void,
   drag: (dragData:{ targetNode: any, lastOverNode: any, position: 'after' | 'before' | 'inner' }) => void,
   visible: (isVisible: boolean) => void,

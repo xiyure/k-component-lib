@@ -28,7 +28,7 @@ export type KPageTableViewEmits = {
 
 export interface KPageTableViewSlots {
   default: () => ComponentSlotType
-  'aside-tool-bar': () => ComponentSlotType
+  'aside-toolbar': () => ComponentSlotType
   aside: () => ComponentSlotType
   'aside-foot': () => ComponentSlotType
   toolbar: () => ComponentSlotType

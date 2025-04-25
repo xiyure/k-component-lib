@@ -73,7 +73,7 @@ export interface KTreeTableMethods extends VxeTableMethods {
   getVisibleData: () => RowData[]
   loadData: (data?: RowData[]) => Promise<void>
   clearSearch: () => void
-  refreshTableData: () => Promise<void>
+  refreshTableData: (isClearStatus?: boolean) => Promise<void>
   disposeRowTooltip: () => void
   getCheckboxRecords: (isFull?: boolean, onlyVisible?: boolean) => RowData[]
   getHeaderControllerData: () => TableHeaderControl[]
