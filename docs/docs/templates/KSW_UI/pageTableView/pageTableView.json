@@ -72,6 +72,11 @@
     {
       "displayName": "toolbar",
       "description": "右侧内容工具栏"
+    },
+    {
+      "displayName": "page-title",
+      "description": "右侧内容页面标题",
+      "version": "1.1.23"
     }
   ],
   "methods": []

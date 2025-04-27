@@ -7,6 +7,7 @@
     :draggable="useResizable || draggable"
     :style="useResizable ? { minWidth: minWidth + 'px', minHeight: minHeight + 'px' } : {}"
     @update:model-value="updateValue"
+    @opened="handleOpened"
   >
     <template #header>
       <div
@@ -55,16 +56,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, useAttrs, watch } from 'vue';
-import { ElDialog, ElCard } from 'element-plus';
+import { ref, useAttrs, watch, ComponentInstance } from 'vue';
+import { ElDialog, ElCard, DialogInstance } from 'element-plus';
 import { DialogProps } from './type';
-import { getExposeProxy } from '../../utils';
+import { getElement, getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KDialog'
 });
 
-const kDialogRef = ref();
+const kDialogRef = ref<DialogInstance>();
 
 const instance: any = {};
 
@@ -74,8 +75,11 @@ const props = withDefaults(defineProps<DialogProps>(), {
   minWidth: 300,
   minHeight: 150,
   useResizable: false,
-  draggable: false
+  draggable: false,
+  autoFocusFirst: false
 });
+
+const emits = defineEmits(['update:modelValue', 'opened']);
 
 const isFull = ref(props.fullscreen);
 
@@ -122,105 +126,56 @@ const maximization = () => {
   isFull.value = !isFull.value;
 };
 
-const emits = defineEmits(['update:modelValue']);
-
 const handleMinimization = () => {
   if (!isMinimization.value) {
-    emits('update:modelValue', false);
+    updateValue(false);
   }
   isMinimization.value = !isMinimization.value;
 };
 
 const handleRecover = () => {
   isMinimization.value = false;
-  emits('update:modelValue', true);
+  updateValue(true);
 };
 const updateValue = (newValue: boolean) => {
   emits('update:modelValue', newValue);
 };
+
+function handleOpened() {
+  if (props.autoFocusTo || props.autoFocusFirst) {
+    focusElement();
+  }
+  emits('opened');
+}
+
+function focusElement() {
+  let focusEl: HTMLElement | null | undefined = null;
+  if (typeof props.autoFocusTo === 'string') {
+    focusEl = getElement<HTMLElement>(props.autoFocusTo);
+  } else {
+    const elRef = props.autoFocusTo as ComponentInstance<any>;
+    focusEl = elRef?.$el ?? elRef;
+  }
+  if (focusEl && isFocusNode(focusEl)) {
+    focusEl.focus?.();
+    return;
+  } 
+  focusEl = focusEl ? getElement<HTMLElement>('input, textarea', focusEl) : null;
+  if (!focusEl && props.autoFocusFirst) {
+    const el = kDialogRef.value?.dialogContentRef?.$el as HTMLElement;
+    focusEl = getElement<HTMLElement>('.el-dialog__body input, .el-dialog__body textarea', el) as HTMLElement;
+  }
+
+  typeof focusEl?.focus === 'function' && focusEl.focus();
+}
+
+function isFocusNode(node: Element) {
+  return node.tagName.toUpperCase() === 'INPUT' || node.tagName.toUpperCase() === 'TEXTAREA';
+}
 
 defineExpose(getExposeProxy(instance, kDialogRef));
 </script>
 
 <style lang="less">
 @import './style.less';
-
-.k-dialog-resizable {
-  resize: both;
-  overflow: auto;
-
-  .el-dialog__header.show-close {
-    padding-right: 8rem;
-  }
-}
-
-.useResizable-ctrl {
-  position: absolute;
-  top: 0.125rem;
-  right: 3rem;
-}
-.recover-icon {
-  position: relative;
-  border-right: 1px solid var(--k-gray-400);
-  border-bottom: 1px solid var(--k-gray-400);
-  // border-radius: 2px;
-  &::before {
-    content: '';
-    position: absolute;
-    top: 3px;
-    left: -0.5px;
-    width: 80%;
-    height: 1px;
-    transform: rotate(45deg);
-    background: var(--k-gray-400);
-    border-radius: 2px;
-    z-index: 1;
-  }
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50%;
-    height: 50%;
-    border-top: 1px solid var(--k-gray-400);
-    border-left: 1px solid var(--k-gray-400);
-    // border-radius: 2px;
-    z-index: 2;
-  }
-}
-.close-icon {
-  position: relative;
-  &::after,
-  &::before {
-    content: '';
-    position: absolute;
-    background: var(--k-gray-400);
-    border-radius: 2px;
-    height: 2px;
-    width: 200%;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%) rotate(45deg) scale(0.5);
-  }
-  &::after {
-    transform: translate(-50%, -50%) rotate(45deg) scale(0.5);
-  }
-  &::before {
-    transform: translate(-50%, -50%) rotate(-45deg) scale(0.5);
-  }
-  &:hover {
-    &::after,
-    &::before {
-      background: var(--k-theme-primary);
-    }
-  }
-}
-
-.k-dialog-minimization {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 999;
-}
 </style>

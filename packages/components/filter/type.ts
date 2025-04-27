@@ -9,9 +9,10 @@ export interface FilterProps {
   filterKey?: string;
   defaultCondition?: ConditionInfo;
   remote?: boolean | string[];
-  formatter?: string;
+  dateFormat?: string;
   ignoreCase?: boolean;
   maxNumber?: number;
+  simpleDateDisplay?: boolean;
 }
 
 export type FilterValue = string | number | Date | null | Array<string | number | Date>;
@@ -58,6 +59,8 @@ export interface FilterOptions {
     label: string;
     value: string | number | boolean;
   }[];
+  format?: string
+  valueFormat?: string
   group?: FilterOptions[];
   [key: string]: any;
 }
@@ -84,6 +87,6 @@ export interface Condition {
 }
 
 export interface ConditionInfo {
-  conditionList?: Condition[];
+  conditionList?: (Condition & { config?: any })[];
   filterRule?: number;
 }

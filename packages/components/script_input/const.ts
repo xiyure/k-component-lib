@@ -9,7 +9,7 @@ export const checkInputMessage = {
 export const typeRules = new Map([
   [
     'string',
-    { reg: /^(?!\d)(?![_\d]+$)[\u4e00-\u9fa5\{\}\(\)\-\[\]A-Za-z0-9_]+$/, message: checkInputMessage.string },
+    { reg: /^(?!\d)(?![_\d]+$)[\u4e00-\u9fa5\{\}\(\)\[\]A-Za-z0-9_]+$/, message: checkInputMessage.string },
   ],
   ['number', { reg: /^-?\d+(\.\d+)?$/, message: checkInputMessage.number }],
   ['boolean', { reg: /^(true|false)$/, message: checkInputMessage.boolean }],

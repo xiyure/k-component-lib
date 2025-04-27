@@ -1,10 +1,3 @@
-<!--
-* @description  参数1
-* @fileName  PageTableView
-* @author userName
-* @date 2024-09-14 20:56:24
-* @version V3.0.0
-!-->
 <template>
   <div id="KPageTableView" class="KPageTableView w-full h-full bg-white rounded flex text-gray-700">
     <!-- left -->
@@ -19,7 +12,7 @@
       <template #head>
         <slot name="aside-toolbar"></slot>
       </template>
-      <div>
+      <div v-if="$slots.aside" class="k-page-view-aside-content">
         <slot name="aside"></slot>
       </div>
       <template #foot>
@@ -38,7 +31,9 @@
           <div v-if="pageIcon" class="KPageHead-icon w-6 h-6 mr-1">
             <component :is="icon" size="24" />
           </div>
-          <p class="KPageHead-title">{{ pageTitle }}</p>
+          <p class="KPageHead-title">
+            <slot name="page-title">{{ pageTitle }}</slot>
+          </p>
           <div v-if="pageIcon" class="KPageHead-info pl-1">
             <KTooltip v-if="pageInfo" :content="pageInfo" @hide="() => (tips = false)">
               <IconTips v-show="tips" color="#4193f2" size="16"></IconTips>

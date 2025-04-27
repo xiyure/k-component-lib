@@ -744,6 +744,16 @@
       "displayName": "column-drag-icon",
       "description": "自定义列拖拽图标",
       "version": "1.0.12"
+    },
+    {
+      "displayName": "header-extra",
+      "description": "自定义表头额外内容，在表头下方显示",
+      "version": "1.0.23"
+    },
+    {
+      "displayName": "[column.field]-field",
+      "description": "与插槽 [column.field] 作用一致，自定义该列单元格内容，当field与插槽名冲突时，可使用该插槽，优先级高于插槽 [column.field]",
+      "version": "1.0.23"
     }
   ],
   "methods": [

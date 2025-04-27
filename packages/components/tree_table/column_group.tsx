@@ -52,13 +52,15 @@ export default defineComponent({
       </KColumnGroup>
     }
     function getTableColumn(slots: SlotsType, col: Column) {
-      const childrenSlots = getChildrenSlots(slots, col.field);
-      if (!col.render && (slots[col.field ?? ''] || col.showIcon) && !col.type) {
+      const field = col.field ?? '';
+      const childrenSlots = getChildrenSlots(slots, field);
+      if (!col.render && (slots[`${field}-field`] || slots[field] || col.showIcon) && !col.type) {
         childrenSlots['default'] =  (data: any) =>{
-          const field = col.field ?? '';
           const { row } = data;
           if (slots[field]) {
             return slots[field]?.(data);
+          } else if (slots[`${field}-field`]) {
+            return slots[`${field}-field`]?.(data);
           } else if (col.showIcon) {
             const fieldLabelSlot: SlotsType = {};
             const fieldLabelSlotName = `${field}-label`;

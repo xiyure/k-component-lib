@@ -13,6 +13,8 @@
     "isolatedModules": true,
     "noEmit": false,
     "jsx": "preserve",
+    "jsxFactory": "h",
+    "jsxFragmentFactory": "Fragment",
     "jsxImportSource": "vue",
 
     /* Linting */
@@ -22,7 +24,7 @@
     "noFallthroughCasesInSwitch": true,
 
     "ignoreDeprecations": "5.0",
-    "types": ["node"],
+    "types": ["node", "vite/client", "vue/jsx"],
     "baseUrl": ".",
     "paths": {
       "@ksw-ux/*": ["./packages/*"],
@@ -31,7 +33,7 @@
     },
     "declaration": true
   },
-  "include": ["packages", "typings", "src/**/*"],
+  "include": ["packages", "typings", "example/view"],
   "exclude": ["node_modules", "**/*.md"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -89,7 +89,7 @@ export function useData(
       props.treeConfig?.parentField ?? 'pid'
     );
     const { strict, ignoreCase = false, searchColumns } = props.searchConfig ?? {};
-    const searchKey = searchKeyword.value.trim().replace(/\\/g, '\\\\');
+    const searchKey = searchKeyword.value.trim();
     if (!searchKey) {
       return filterData;
     }
@@ -290,7 +290,7 @@ export function useData(
       currentPage,
       pageSize,
       pageSizes,
-      searchKeyword: searchKeyword.value.trim().replace(/\\/g, '\\\\'),
+      searchKeyword: searchKeyword.value.trim(),
       conditionInfo: filterConditionInfo.value ?? {},
       currentData: currentData.value,
     };

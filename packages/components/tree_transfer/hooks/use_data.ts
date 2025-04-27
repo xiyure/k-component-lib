@@ -62,7 +62,7 @@ export function useData(
       pid
     );
     const { strict, searchMethod, ignoreCase = false, searchColumns } = config.value.searchConfig ?? {};
-    const searchKey = searchKeyWord.value.trim().replace(/\\/g, '\\\\');
+    const searchKey = searchKeyWord.value.trim();
     if (config.value.searchConfig?.isRemoteQuery) {
       emits('remote-query', searchKey);
       return filterData;
