@@ -12,6 +12,7 @@ export interface FilterProps {
   dateFormat?: string;
   ignoreCase?: boolean;
   maxNumber?: number;
+  simpleDateDisplay?: boolean;
 }
 
 export type FilterValue = string | number | Date | null | Array<string | number | Date>;
@@ -86,6 +87,6 @@ export interface Condition {
 }
 
 export interface ConditionInfo {
-  conditionList?: Condition[];
+  conditionList?: (Condition & { config?: any })[];
   filterRule?: number;
 }

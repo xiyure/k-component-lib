@@ -53,6 +53,7 @@
           class="k-filter__item"
         >
           <div class="k-filter__condition">
+            <!-- title -->
             <k-cascader
               v-model="item.title"
               :teleported="false"
@@ -67,8 +68,10 @@
               @change="changeCondition(index, item, options!)"
             ></k-cascader>
           </div>
+          <!-- logic -->
           <div class="k-filter__logic">
             <k-select
+              v-if="!(instance(item.key)?.dataType === 'date' && simpleDateDisplay)"
               v-model="item.logic"
               :size="formatSize.ownSize"
               :teleported="false"
@@ -84,9 +87,11 @@
               />
             </k-select>
           </div>
+          <!-- value -->
           <div class="k-filter__value" :title="item.value?.toString()">
             <div v-if="instance(item.key)?.dataType === 'date'" class="k-filter__date-box">
               <k-select
+                v-if="!simpleDateDisplay"
                 v-model="item.dateRange"
                 :size="formatSize.ownSize"
                 :teleported="false"
@@ -215,6 +220,7 @@ const props = withDefaults(defineProps<FilterProps>(), {
   childrenField: 'children',
   ignoreCase: false,
   showPopper: true,
+  simpleDateDisplay: true,
   data: () => []
 });
 
@@ -360,6 +366,8 @@ function query() {
   const { conditionInfo, data } = filter();
   emits('confirm', conditionInfo, data ?? []);
 }
+
+// filter
 function filter(data?: any[]) {
   const sourceData = Array.isArray(data) ? data : props.data;
   const conditionInfo = getConditionInfo();
@@ -416,7 +424,8 @@ function getConditionInfo() {
     key: item.key,
     showValue: item.showValue,
     value: item.value,
-    handler: item.handler
+    handler: item.handler,
+    config: props.options?.find((col) => col[props.filterKey] === item.key) ?? []
   }));
   return {
     conditionList,
@@ -454,12 +463,16 @@ function changeCondition(index: number, item: FilterData, options: FilterOptions
   }
   targetItem.key = columnItem?.[props.filterKey];
   targetItem.logic = 'equal';
+  // props.simpleDateDisplay 为true时，只允许输入日期范围
+  if (props.simpleDateDisplay) {
+    targetItem.dateType = 'datetimerange'
+  }
   const logicOptionItem = logicOptions.find(
     (item) => item.type === (columnItem?.dataType || 'string')
   );
   if (logicOptionItem) {
     const logicItem = logicOptionItem.logicList.find((item) => item.logic === 'equal');
-    targetItem.handler = logicItem?.handler ?? null;
+    targetItem.handler = (logicItem?.handler as any) ?? null;
   }
   targetItem.value = '';
   targetItem.showValue = '';
@@ -483,7 +496,7 @@ function changeLogic(dataItem: FilterData) {
     dataItem.showValue = '';
   }
   const logicItem = logicOptionItem.logicList.find((item) => item.logic === dataItem.logic);
-  dataItem.handler = logicItem?.handler ?? null;
+  dataItem.handler = (logicItem?.handler as any) ?? null;
   if (type === 'date') {
     changeDateLogic(dataItem);
   }
