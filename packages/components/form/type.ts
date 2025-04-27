@@ -1,3 +1,4 @@
+import { ComponentInstance } from "vue";
 import { CompSize } from "../../utils";
 
 export interface FormProps {
@@ -6,6 +7,8 @@ export interface FormProps {
   showLabel?: boolean;
   hideRequiredAsterisk?: boolean
   requireAsteriskPosition?: 'left' | 'right'
+  autoFocusFirst?: boolean
+  autoFocusTo?: string | HTMLElement | Element | ComponentInstance<any>
 }
 
 export interface FormItemProps {

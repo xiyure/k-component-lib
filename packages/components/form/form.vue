@@ -13,10 +13,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, provide, computed } from 'vue';
+import { ref, provide, computed, onMounted, ComponentInstance } from 'vue';
 import { ElForm, FormItemInstance } from 'element-plus';
 import { FormProps } from './type';
-import { getExposeProxy } from '../../utils';
+import { getElement, isInputElement, getExposeProxy } from '../../utils';
 import { SIZE_KEY, useSize } from '../../hooks';
 import { FORM_PARAMS_KEY } from './const';
 
@@ -27,12 +27,40 @@ defineOptions({
 const props = withDefaults(defineProps<FormProps>(), {
   showLabel: true,
   hideRequiredAsterisk: false,
-  requireAsteriskPosition: 'left'
+  requireAsteriskPosition: 'left',
+  autoFocusFirst: false
+});
+
+onMounted(() => {
+  setTimeout(() => {
+    if (props.autoFocusFirst || props.autoFocusTo) {
+      focusElement();
+    }
+  });
 });
 
 const formatSize = useSize<FormProps>(props);
 
 const KFormRef = ref<FormItemInstance>();
+
+function focusElement() {
+  let focusEl: HTMLElement | null | undefined = null;
+  if (typeof props.autoFocusTo === 'string') {
+    focusEl = getElement<HTMLElement>(props.autoFocusTo);
+  } else {
+    const elRef = props.autoFocusTo as ComponentInstance<any>;
+    focusEl = elRef?.$el ?? elRef;
+  }
+  if (focusEl && isInputElement(focusEl)) {
+    focusEl.focus?.();
+    return;
+  }
+  focusEl = focusEl ? getElement<HTMLElement>('input, textarea', focusEl) : null;
+  if (!focusEl && KFormRef.value?.$el && props.autoFocusFirst) {
+    focusEl = getElement<HTMLElement>('input, textarea', KFormRef.value.$el) as HTMLElement;
+  }
+  typeof focusEl?.focus === 'function' && focusEl.focus();
+}
 
 const instance: any = {};
 defineExpose(getExposeProxy(instance, KFormRef));

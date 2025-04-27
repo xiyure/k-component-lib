@@ -119,3 +119,8 @@ export function isElementInContainerView(elRect: DOMRect | undefined, containerR
   }
   return elRect.top >= containerRect.top && elRect.bottom <= containerRect.bottom;
 }
+
+// is input element or textarea element
+export function isInputElement(el: Element | HTMLElement): el is HTMLInputElement | HTMLTextAreaElement {
+  return el.tagName.toUpperCase() === 'INPUT' || el.tagName.toUpperCase() === 'TEXTAREA';
+}

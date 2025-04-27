@@ -59,7 +59,7 @@
 import { ref, useAttrs, watch, ComponentInstance } from 'vue';
 import { ElDialog, ElCard, DialogInstance } from 'element-plus';
 import { DialogProps } from './type';
-import { getElement, getExposeProxy } from '../../utils';
+import { getElement, isInputElement, getExposeProxy } from '../../utils';
 
 defineOptions({
   name: 'KDialog'
@@ -156,7 +156,7 @@ function focusElement() {
     const elRef = props.autoFocusTo as ComponentInstance<any>;
     focusEl = elRef?.$el ?? elRef;
   }
-  if (focusEl && isFocusNode(focusEl)) {
+  if (focusEl && isInputElement(focusEl)) {
     focusEl.focus?.();
     return;
   } 
@@ -167,10 +167,6 @@ function focusElement() {
   }
 
   typeof focusEl?.focus === 'function' && focusEl.focus();
-}
-
-function isFocusNode(node: Element) {
-  return node.tagName.toUpperCase() === 'INPUT' || node.tagName.toUpperCase() === 'TEXTAREA';
 }
 
 defineExpose(getExposeProxy(instance, kDialogRef));
