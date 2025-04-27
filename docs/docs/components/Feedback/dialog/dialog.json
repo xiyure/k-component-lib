@@ -168,6 +168,22 @@
       "description": "是否使用可调整大小的功能",
       "defaultValue": "false",
       "tip": ""
+    },
+    {
+      "displayName": "auto-focus-first",
+      "type": "boolean",
+      "description": "是否自动聚焦第一个 input 类的元素",
+      "defaultValue": "false",
+      "tip": "",
+      "version": "1.0.23"
+    },
+    {
+      "displayName": "auto-focus-to",
+      "type": "string | Element | Ref<ComponentInstance>",
+      "description": "是否使用可调整大小的功能",
+      "defaultValue": "",
+      "tip": "",
+      "version": "1.0.23"
     }
   ],
   "events": [
