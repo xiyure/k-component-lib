@@ -33,7 +33,7 @@
     },
     "declaration": true
   },
-  "include": ["packages", "typings", "src/**/*"],
+  "include": ["packages", "typings", "example/view"],
   "exclude": ["node_modules", "**/*.md"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
