@@ -76,7 +76,7 @@
       "description": "是否只能输入数字，正负号、小数点、科学计数法等都不允许输入",
       "defaultValue": "false",
       "tip": "",
-      "version": "1.0.23"
+      "version": "1.1.23"
     }
   ],
   "events": [

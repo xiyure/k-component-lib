@@ -175,7 +175,7 @@
       "description": "是否自动聚焦第一个 input 或 textarea 元素",
       "defaultValue": "false",
       "tip": "",
-      "version": "1.0.23"
+      "version": "1.1.23"
     },
     {
       "displayName": "auto-focus-to",
@@ -183,7 +183,7 @@
       "description": "弹窗打开后自动聚焦的目标input元素，支持元素选择器、ref等参数，如果传入的元素不为input或textarea，则聚焦到其后代的第一个input元素",
       "defaultValue": "",
       "tip": "",
-      "version": "1.0.23"
+      "version": "1.1.23"
     }
   ],
   "events": [
