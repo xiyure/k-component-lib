@@ -65,13 +65,16 @@
                 children: props.childrenField
               }"
               clearable
-              @change="changeCondition(index, item, options!)"
+              @change="changeCondition(index)"
             ></k-cascader>
           </div>
           <!-- logic -->
           <div class="k-filter__logic">
             <k-select
-              v-if="!(instance(item.key)?.dataType === 'date' && simpleDateDisplay)"
+              v-if="
+                !(instance(item.key)?.dataType === 'date' && simpleDateDisplay) &&
+                !instance(item.key)?.multiple
+              "
               v-model="item.logic"
               :size="formatSize.ownSize"
               :teleported="false"
@@ -89,6 +92,7 @@
           </div>
           <!-- value -->
           <div class="k-filter__value" :title="item.value?.toString()">
+            <!-- date -->
             <div v-if="instance(item.key)?.dataType === 'date'" class="k-filter__date-box">
               <k-select
                 v-if="!simpleDateDisplay"
@@ -126,12 +130,27 @@
                 "
               />
             </div>
+            <!-- tree-select -->
+            <k-tree-select
+              v-else-if="instance(item.key)?.multiple === 'tree-select'"
+              v-model="item.value"
+              node-key="value"
+              :indent="10"
+              :data="instance(item.key)?.options ?? []"
+              show-checkbox
+              multiple
+              :teleported="false"
+            ></k-tree-select>
+            <!-- select -->
             <k-select
-              v-else-if="instance(item.key)?.options?.length && !item.isMultiple"
-              v-model="item.value!"
+              v-else-if="instance(item.key)?.options?.length"
+              v-model="item.value"
               :size="formatSize.ownSize"
               :teleported="false"
               :disabled="disabledInput(item)"
+              :multiple="
+                instance(item.key)?.multiple === true || instance(item.key)?.multiple === 'select'
+              "
               clearable
               @change="updateValue(item, 'select', instance(item.key).options)"
             >
@@ -142,23 +161,7 @@
                 :value="optionItem.value"
               />
             </k-select>
-            <k-select
-              v-else-if="instance(item.key)?.options?.length && item.isMultiple"
-              v-model="item.multipleValue"
-              :size="formatSize.ownSize"
-              :teleported="false"
-              :disabled="disabledInput(item)"
-              clearable
-              multiple
-              @change="updateValue(item, 'multiple', instance(item.key).options)"
-            >
-              <k-option
-                v-for="optionItem in instance(item.key)?.options"
-                :key="optionItem.label"
-                :label="optionItem.label"
-                :value="optionItem.value"
-              />
-            </k-select>
+            <!-- input -->
             <k-input
               v-else
               v-model="(item.value as string)"
@@ -191,7 +194,9 @@
               <k-option :label="t?.('filter.anyOne')" :value="0"></k-option>
               <k-option :label="t?.('filter.all')" :value="1"></k-option>
             </k-select>
-            <k-button :size="formatSize.ownSize" main @click="query">{{ t?.('filter.query') }}</k-button>
+            <k-button :size="formatSize.ownSize" main @click="query">
+              {{ t?.('filter.query') }}
+            </k-button>
           </div>
         </div>
       </div>
@@ -203,7 +208,14 @@
 import { ref, computed, watch } from 'vue';
 import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash-es';
-import { FilterProps, FilterData, FilterOptions } from './type';
+import { IconFilter, IconFilterFill, IconClearDate, IconAdd, IconClose } from 'ksw-vue-icon';
+import { KInput } from '../input';
+import { KTreeSelect } from '../tree_select';
+import { KSelect, KOption } from '../select';
+import { KCascader } from '../cascader';
+import { KButton } from '../button';
+import { KDatePicker } from '../date_picker';
+import { FilterProps, FilterData, FilterOptions, Condition } from './type';
 import { dateTypeOptions, logicOptions } from '../../constant/filter_data';
 import { treeDataToArray, isValid } from '../../utils';
 import { useSize, useLocale } from '../../hooks';
@@ -285,7 +297,9 @@ const disabledDatePicker = computed(
 );
 const disableChangeMode = computed(() => {
   const fields = filterData.value.map((item) => item.key);
-  return Array.isArray(props.remote) && props.remote.some((field: string) => fields.includes(field));
+  return (
+    Array.isArray(props.remote) && props.remote.some((field: string) => fields.includes(field))
+  );
 });
 
 watch(
@@ -339,9 +353,7 @@ function addCondition() {
     key: '',
     handler: null,
     dateRange: 'date',
-    dateType: 'datetime',
-    isMultiple: false,
-    multipleValue: []
+    dateType: 'datetime'
   };
   filterData.value.push(addItem);
 }
@@ -372,61 +384,47 @@ function filter(data?: any[]) {
   const sourceData = Array.isArray(data) ? data : props.data;
   const conditionInfo = getConditionInfo();
   if (props.remote === true || conditionInfo.conditionList.length === 0) {
-    return {
-      conditionInfo,
-      data: sourceData
-    };
+    return { conditionInfo, data: sourceData };
   }
-  const remoteFieldMap = getRemoteFieldMap();
   const newData = sourceData?.filter((dataItem: any) => {
     if (filterRule.value === 0) {
-      return conditionInfo.conditionList.some((item) => {
-        if (remoteFieldMap.has(item.key)) {
-          return true;
-        }
-        const targetColumn = flatColumns.value?.find((col) => col[props.filterKey] === item.key);
-        if (!targetColumn || !targetColumn[props.filterKey]) {
-          return false;
-        }
-        return item.handler?.(
-          dataItem[targetColumn[props.filterKey]],
-          item.value,
-          props.ignoreCase
-        );
-      });
+      return conditionInfo.conditionList.some((item) => getHandlerResult(item, dataItem));
     }
-    return conditionInfo.conditionList.every((item) => {
-      if (remoteFieldMap.has(item.key)) {
-        return true;
-      }
-      const targetColumn = flatColumns.value?.find((col) => col[props.filterKey] === item.key);
-      if (!targetColumn || !targetColumn[props.filterKey]) {
-        return false;
-      }
-      return item.handler?.(dataItem[targetColumn[props.filterKey]], item.value, props.ignoreCase);
-    });
+    return conditionInfo.conditionList.every((item) => getHandlerResult(item, dataItem));
   });
-  return {
-    conditionInfo,
-    data: newData ?? []
-  };
+  return { conditionInfo, data: newData ?? [] };
+}
+function getHandlerResult(condition: Condition, dataItem: any) {
+  const remoteFieldMap = getRemoteFieldMap();
+  if (remoteFieldMap.has(condition.key)) {
+    return true;
+  }
+  const targetColumn = flatColumns.value?.find((col) => col[props.filterKey] === condition.key);
+  if (!targetColumn || !targetColumn[props.filterKey]) {
+    return false;
+  }
+  const dataValue = dataItem[targetColumn[props.filterKey]];
+  if (!Array.isArray(condition.value)) {
+    return condition.handler?.(dataValue, condition.value, props.ignoreCase);
+  }
+  return condition.value.some((v) => condition.handler?.(dataValue, v, props.ignoreCase));
 }
 function getConditionInfo() {
   const disabledLogicTypes = ['empty', 'nonEmpty'];
   const conditionList = filterData.value
-  .filter(
-    (item) =>
-      item.key && item.logic && (isValid(item.value) || disabledLogicTypes.includes(item.logic))
-  )
-  .map((item) => ({
-    title: item.title.join(' - '),
-    logic: item.logic,
-    key: item.key,
-    showValue: item.showValue,
-    value: item.value,
-    handler: item.handler,
-    config: props.options?.find((col) => col[props.filterKey] === item.key) ?? []
-  }));
+    .filter(
+      (item) =>
+        item.key && item.logic && (isValid(item.value) || disabledLogicTypes.includes(item.logic))
+    )
+    .map((item) => ({
+      title: item.title.join(' - '),
+      logic: item.logic,
+      key: item.key,
+      showValue: item.showValue,
+      value: item.value,
+      handler: item.handler,
+      config: props.options?.find((col) => col[props.filterKey] === item.key) ?? []
+    }));
   return {
     conditionList,
     filterRule: filterRule.value
@@ -438,15 +436,11 @@ function getRemoteFieldMap() {
   }
   return new Map(props.remote.map((item: string, index: number) => [item, index]));
 }
-function changeCondition(index: number, item: FilterData, options: FilterOptions[]) {
-  if (item && options && options.length > 0) {
-    options.forEach((option) => {
-      if (item.title && item.title.includes(option.title) && option.multiple) {
-        item.isMultiple = true;
-      }
-    });
-  }
+function changeCondition(index: number) {
   const targetItem = filterData.value[index];
+  if (instance.value(targetItem.key)?.multiple) {
+    targetItem.value = [];
+  }
   const titles = targetItem.title ?? [];
   if (titles.length === 0) {
     targetItem.key = null;
@@ -465,7 +459,7 @@ function changeCondition(index: number, item: FilterData, options: FilterOptions
   targetItem.logic = 'equal';
   // props.simpleDateDisplay 为true时，只允许输入日期范围
   if (props.simpleDateDisplay) {
-    targetItem.dateType = 'datetimerange'
+    targetItem.dateType = 'datetimerange';
   }
   const logicOptionItem = logicOptions.find(
     (item) => item.type === (columnItem?.dataType || 'string')
@@ -609,13 +603,13 @@ function updateValue(
   uiType: string,
   options?: { label: string; value: any }[]
 ) {
-  if (uiType === 'input') {
+  if (Array.isArray(dataItem.value)) {
+    dataItem.showValue = dataItem.value.join(',');
+  } else if (uiType === 'input') {
     dataItem.showValue = dataItem.value;
   } else if (uiType === 'select') {
     const targetOption = options?.find((item) => item.value === dataItem.value);
     dataItem.showValue = targetOption?.label ?? '';
-  } else if (uiType === 'multiple') {
-    dataItem.showValue = dataItem.multipleValue ?? [];
   }
 }
 function dateChange(val: DatePickerModelValue, item: FilterData) {

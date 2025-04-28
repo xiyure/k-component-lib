@@ -10,4 +10,5 @@ export interface TreeSelectProps {
   debounce?: number
   className?: string | ((nodeItem: any) => string)
   nodeStyle?: CSSProperties | ((nodeItem: any) => CSSProperties)
+  useFolderIcon?: boolean
 }

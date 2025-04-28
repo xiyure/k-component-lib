@@ -114,7 +114,7 @@ export const logicOptions = [
         logic: 'notEqual',
         handler(a: string, b: string, ignoreCase: boolean) {
           if (ignoreCase) {
-            return String(a).toLowerCase() === String(b).toLowerCase();
+            return String(a).toLowerCase() !== String(b).toLowerCase();
           }
           return String(a) !== String(b);
         }
@@ -123,7 +123,7 @@ export const logicOptions = [
         logic: 'contain',
         handler(a: string, b: string, ignoreCase: boolean) {
           if (ignoreCase) {
-            return String(a).toLowerCase() === String(b).toLowerCase();
+            return String(a).toLowerCase().includes(String(b).toLowerCase());
           }
           return String(a).includes(String(b));
         }

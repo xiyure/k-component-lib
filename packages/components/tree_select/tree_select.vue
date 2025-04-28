@@ -54,9 +54,8 @@ defineOptions({
 });
 
 const props = withDefaults(defineProps<TreeSelectProps>(), {
-  expandIcon: 'IconFolderOpen',
-  collapseIcon: 'IconFlowNested',
-  debounce: 500
+  debounce: 500,
+  useFolderIcon: false
 });
 
 const formatSize = useSize<TreeSelectProps>(props);
@@ -72,16 +71,17 @@ const randomName = genRandomStr(8);
 const inheritSlot = useInheritSlot(['empty', 'default']);
 const nodeIcon = computed(() => (nodeItem: TreeNodeData) => {
   const { node, data } = nodeItem;
+  const useFolderIcon = props.useFolderIcon;
   if (data.icon) {
     return data.icon;
   }
   if (node.isLeaf) {
-    return props.icon ?? 'IconFlowNested';
+    return props.icon ?? useFolderIcon ? 'IconFlowNested' : null;
+  } else if (node.expanded) {
+    return props.expandIcon ?? useFolderIcon ? 'IconFolderOpen' : null;
+  } else {
+    return props.collapseIcon ?? useFolderIcon ? 'IconFlowNested': null;
   }
-  if (node.expanded) {
-    return props.expandIcon ?? 'IconFolderOpen';
-  }
-  return props.collapseIcon ?? 'IconFlowNested';
 });
 
 const handleInput = (event: Event) => {

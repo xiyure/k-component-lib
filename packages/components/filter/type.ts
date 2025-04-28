@@ -53,7 +53,7 @@ export type FilterData = {
 export interface FilterOptions {
   title: string;
   value?: string | number | boolean;
-  multiple?: boolean;
+  multiple?: boolean | 'select' | 'tree-select';
   dataType?: 'string' | 'number' | 'date';
   options?: {
     label: string;
