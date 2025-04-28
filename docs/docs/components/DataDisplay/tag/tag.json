@@ -65,11 +65,26 @@
       "tip": ""
     },
     {
-      "displayName": "border",
+      "displayName": "show-overflow",
       "type": "boolean",
-      "description": "是否添加边框描边",
+      "description": "文字溢出时是否显示省略号",
       "defaultValue": "false",
       "tip": ""
+    },
+    {
+      "displayName": "text-color",
+      "type": "string",
+      "description": "标签文字颜色",
+      "defaultValue": "",
+      "tip": ""
+    },
+    {
+      "displayName": "effect",
+      "type": "enum",
+      "description": "",
+      "defaultValue": "'dark'",
+      "tip": "'dark' | 'light' | 'plain'",
+      "version": "1.2.0"
     }
   ],
   "events": [],
