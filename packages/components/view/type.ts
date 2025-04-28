@@ -31,7 +31,7 @@ export interface ViewData {
 }
 export interface ViewItemProps {
   label: string
-  value: string
+  value: string | number
   count: number | string
   custom: boolean
   disabled: boolean

@@ -130,7 +130,6 @@
 
 <script setup lang="ts">
 import { ref, watch, computed, provide, onMounted, onBeforeUnmount } from 'vue';
-
 import { ElScrollbar } from 'element-plus';
 import { IconRefresh, IconArrowRight } from 'ksw-vue-icon';
 import { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type';
@@ -224,7 +223,7 @@ const viewTreeConfig = computed(() => {
 
 onMounted(() => {
   initSortable();
-  if (!props.modelValue) {
+  if (props.modelValue === undefined) {
     active.value = props.defaultActive ?? props.data?.[0]?.[config.value.value] ?? '';
   }
 });
