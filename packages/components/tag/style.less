@@ -77,7 +77,7 @@
       --border-color: var(--k-theme-info);
     }
 
-    &.is-border {
+    &.is-light {
       --bgc: var(--k-theme-primary-50);
       --color: var(--k-theme-primary-400);
       --border-color: var(--color);
@@ -111,6 +111,39 @@
       }
       &.k-tag__info {
         --bgc: var(--k-theme-info-50);
+        --color: var(--k-theme-info);
+      }
+    }
+
+    &.is-plain {
+      --bgc: #FFF;
+      --color: var(--k-theme-primary-400);
+      --border-color: var(--color);
+      --closable-color: var(--color);
+
+      background: var(--bgc);
+      color: var(--color);
+      border: 1px solid var(--border-color);
+
+      .el-icon.el-tag__close {
+        svg {
+          color: var(--closable-color);
+        }
+      }
+
+      &.k-tag__primary {
+        --color: var(--k-theme-primary);
+      }
+      &.k-tag__success {
+        --color: var(--k-theme-success);
+      }
+      &.k-tag__warning {
+        --color: var(--k-theme-warning);
+      }
+      &.k-tag__danger {
+        --color: var(--k-theme-danger);
+      }
+      &.k-tag__info {
         --color: var(--k-theme-info);
       }
     }
@@ -166,8 +199,12 @@
     &.is-custom {
       --bgc: var(--tag__block__bg-color--normal);
       --color: #fff;
-      &.is-border {
+      &.is-light {
         --bgc: var(--tag__border__bg-color--normal);
+        --color: var(--tag__border__border-color--normal);
+      }
+      &.is-plain {
+        --bgc: #FFF;
         --color: var(--tag__border__border-color--normal);
       }
       &.is-point {

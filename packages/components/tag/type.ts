@@ -7,6 +7,8 @@ export interface TagProps {
   point?: boolean;
   text?: string;
   textColor?: string;
+  // @deprecated use effect: 'light instead
   border?: boolean;
   showOverflow?: boolean;
+  effect?: 'dark' | 'light' | 'plain';
 }

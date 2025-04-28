@@ -7,12 +7,13 @@
       ref="KTagRef"
       :class="[
         {
-          'is-border': border,
+          'is-light': border,
           'is-point': point,
           [`k-tag__${type}`]: type,
           'is-custom': color,
           'pr-0': isOverflow,
         },
+        [`is-${effect}`]
       ]"
       v-bind="$attrs"
       :size="formatSize.elSize"
@@ -34,11 +35,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick } from 'vue';
+import { ref, watch, nextTick, computed } from 'vue';
 import { ElTag } from 'element-plus';
 import { TagProps } from './type';
 import { getExposeProxy, GetColorLevelNew } from '../../utils';
-import { useSize } from '../../hooks';
+import { useSize, useDeprecated } from '../../hooks';
 import { colors } from './const';
 
 defineOptions({
@@ -50,7 +51,15 @@ const props = withDefaults(defineProps<TagProps>(), {
   type: undefined,
   text: undefined,
   showOverflow: false,
+  effect: 'dark'
 });
+
+useDeprecated({
+  scope: 'k-tag',
+  from: 'border',
+  replacement: 'effect: "light"',
+  version: '2.0.0',
+}, computed(() => !!props.border))
 
 const formatSize = useSize<TagProps>(props);
 
