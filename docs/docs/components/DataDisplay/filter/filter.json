@@ -3,15 +3,15 @@
   "props": [
     {
       "displayName": "options",
-      "type": "filterOptions[]",
+      "type": "array",
       "description": "筛选配置项，包含字段、标题、数据类型、等信息，目前支持的类型有：string、number、date，默认为string",
       "defaultValue": "",
-      "tip": ""
+      "tip": "FilterOption[]"
     },
     {
       "displayName": "data",
       "type": "any[]",
-      "description": "待筛选数据",
+      "description": "待筛选数据，支持传入一个数组数据，筛选时会对该数组进行筛选，通过confirm事件返回筛选后的数据",
       "defaultValue": "",
       "tip": ""
     },
@@ -43,7 +43,7 @@
     {
       "displayName": "remote",
       "type": "boolean | string[]",
-      "description": "指定远程筛选字段，为true时默认远程筛选所有字段，也可以指定字段数组",
+      "description": "指定远程筛选字段，设置data属性后生效，为true时默认远程筛选所有字段，也可以指定字段数组",
       "defaultValue": "false"
     },
     {
@@ -55,26 +55,17 @@
       "displayName": "ignore-case",
       "type": "boolean",
       "description": "是否忽略大小写",
-      "defaultValue": "false",
-      "version": "0.0.80"
+      "defaultValue": "false"
     },
     {
-      "displayName": "default-Condition",
+      "displayName": "default-condition",
       "type": "boolean",
       "description": "是否忽略大小写",
-      "defaultValue": "false",
-      "version": "0.0.80"
-    },
-    {
-      "displayName": "search-method",
-      "description": "自定义高级筛选搜索方法",
-      "type": "Function",
-      "tip": "({ conditionList: Condition[], filterRule: 0 | 1 }) => data: RowData[]",
-      "version": "1.1.20"
+      "defaultValue": "false"
     },
     {
       "displayName": "simple-date-display",
-      "description": "是否开启精简模式，日期选择时仅支持选择日期范围",
+      "description": "是否开启精简模式，日期选择时仅支持选择日期范围，如需要精确时间，请将该参数设置为 false",
       "type": "boolean",
       "tip": "",
       "defaultValue": "true",

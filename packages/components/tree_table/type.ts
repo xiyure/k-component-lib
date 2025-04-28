@@ -106,9 +106,11 @@ type FilterColumn = {
   title: string;
   field: string;
   dataType?: string;
+  multiple?: boolean | 'select' | 'tree-select';
   options: {
     label: string;
     value: FilterValue;
+    children?: FilterColumn[];
   }[];
 };
 export type TablePaginationConfig = Merge<

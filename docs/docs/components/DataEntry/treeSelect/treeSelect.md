@@ -50,6 +50,12 @@ title: TreeSelect 树形选择
 
 <demo path="./customTreeSelect" />
 
+## 内置Icon
+
+基于许多场景需要使用文件夹的展开、收起以及叶子节点图标，因此提供了内置文件夹图标，通过use-folder-icon属性可以开启，优先级低于props提供的icon、expandIcon、collapseIcon属性。
+
+<demo path="./folder_icon.vue" />
+
 ## 自定义Icon
 
 自定义树节点的Icon。

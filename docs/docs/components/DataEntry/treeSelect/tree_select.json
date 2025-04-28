@@ -12,14 +12,14 @@
       "displayName": "expand-icon",
       "type": "string | Component",
       "description": "节点展开图标，优先级高于icon",
-      "defaultValue": "'IconFolderOpen'",
+      "defaultValue": "",
       "tip": ""
     },
     {
       "displayName": "collapse-icon",
       "type": "string | Component",
       "description": "节点收起图标，优先级高于icon",
-      "defaultValue": "'IconFlowNested'",
+      "defaultValue": "",
       "tip": ""
     },
     {
@@ -45,10 +45,18 @@
     },
     {
       "displayName": "cacheData",
-      "type": "object",
+      "type": "array",
       "description": "懒加载节点的缓存数据，结构与数据相同，用于获取未加载数据的标签",
       "defaultValue": "",
-      "tip": "[]"
+      "tip": "any[]"
+    },
+    {
+      "displayName": "use-folder-icon",
+      "type": "boolean",
+      "description": "是否使用默认文件夹图标，开启后会根据当前节点的展开/收起状态显示相应的文件夹图标，优先级低于props.icon、props.expandIcon以及props.collapseIcon",
+      "defaultValue": "false",
+      "tip": "",
+      "version": "1.2.0"
     }
   ],
   "events": [],

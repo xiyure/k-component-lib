@@ -215,7 +215,7 @@ import { KSelect, KOption } from '../select';
 import { KCascader } from '../cascader';
 import { KButton } from '../button';
 import { KDatePicker } from '../date_picker';
-import { FilterProps, FilterData, FilterOptions, Condition } from './type';
+import { FilterProps, FilterData, FilterOption, Condition } from './type';
 import { dateTypeOptions, logicOptions } from '../../constant/filter_data';
 import { treeDataToArray, isValid } from '../../utils';
 import { useSize, useLocale } from '../../hooks';
@@ -248,7 +248,7 @@ const flatColumns = computed(() => treeDataToArray(cloneDeep(props.options), 'gr
 const instance = computed(
   () =>
     function (value: string | null) {
-      const matchInstance: FilterOptions = flatColumns.value?.find(
+      const matchInstance: FilterOption = flatColumns.value?.find(
         (item) => item[props.filterKey] === value
       );
       return matchInstance;
@@ -449,8 +449,8 @@ function changeCondition(index: number) {
     targetItem.showValue = '';
     return;
   }
-  let columns: FilterOptions[] = props.options ?? [];
-  let columnItem: FilterOptions | undefined;
+  let columns: FilterOption[] = props.options ?? [];
+  let columnItem: FilterOption | undefined;
   for (const title of titles) {
     columnItem = columns?.find((item) => item.title === title);
     columns = columnItem?.group ?? [];

@@ -2,7 +2,7 @@ import { CompSize } from '../../utils';
 
 export interface FilterProps {
   data?: any[];
-  options?: FilterOptions[];
+  options?: FilterOption[];
   border?: boolean;
   size?: CompSize;
   childrenField?: string;
@@ -50,7 +50,7 @@ export type FilterData = {
   multipleValue?: string[];
 };
 
-export interface FilterOptions {
+export interface FilterOption {
   title: string;
   value?: string | number | boolean;
   multiple?: boolean | 'select' | 'tree-select';
@@ -61,7 +61,7 @@ export interface FilterOptions {
   }[];
   format?: string
   valueFormat?: string
-  group?: FilterOptions[];
+  group?: FilterOption[];
   [key: string]: any;
 }
 
