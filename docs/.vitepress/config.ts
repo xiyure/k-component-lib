@@ -80,10 +80,9 @@ const vitePressOptions = {
     logo: { src: '/klogo.svg', width: 24, height: 24 },
 
     meilisearch: {
-      host: "https://meilisearch.donxj.com",
-      apiKey:
-        "646f90bf02522026b531be2d4d491ba1e2721802f43b72ae72f0a2e5eeca711a",
-      indexUid: "ksw-design",
+      host: 'https://meilisearch.donxj.com',
+      apiKey: '646f90bf02522026b531be2d4d491ba1e2721802f43b72ae72f0a2e5eeca711a',
+      indexUid: 'ksw-design'
     },
 
     // search: {
@@ -113,9 +112,9 @@ const vitePressOptions = {
         {
           find: /^.*\/VPNavBarSearch\.vue$/,
           replacement: fileURLToPath(
-            new URL("./components/MeiliSearchBox/MeiliSearchBox.vue", import.meta.url)
-          ),
-        },
+            new URL('./components/MeiliSearchBox/MeiliSearchBox.vue', import.meta.url)
+          )
+        }
       ]
     },
     esbuild: {

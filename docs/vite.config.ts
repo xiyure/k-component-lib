@@ -66,10 +66,10 @@ export default defineConfig({
     }
   },
   optimizeDeps: {
-    include: ['gsap','**/*/DrawSVGPlugin.min.js'],
+    include: ['gsap', '**/*/DrawSVGPlugin.min.js'],
     exclude: ['@nolebase/vitepress-plugin-enhanced-readabilities/client']
   },
   ssr: {
-    noExternal: ['gsap', 'gsap/ScrollTrigger', '@ksware/ksw-ux', '@nolebase/*']
+    noExternal: ['gsap', 'gsap/ScrollTrigger', '@ksware/ksw-ux', 'ksw-vue-icon', '@nolebase/*']
   }
 });
