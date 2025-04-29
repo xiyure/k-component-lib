@@ -1,63 +1,66 @@
 <template>
   <el-dialog
-    ref="kDialogRef"
+    ref="$dialog"
     v-bind="$attrs"
-    :class="['k-dialog', { 'k-dialog-resizable': useResizable && !isFull }]"
+    v-model="visible"
+    :class="[
+      'k-dialog',
+      { 'k-dialog-resizable': resizable && !isFull },
+      { 'k-dialog__is-show-handler': resizable && showResizeHandles }
+    ]"
     :fullscreen="isFull"
-    :draggable="useResizable || draggable"
-    :style="useResizable ? { minWidth: minWidth + 'px', minHeight: minHeight + 'px' } : {}"
-    @update:model-value="updateValue"
+    :draggable="resizable || draggable"
+    :style="resizable ? { minWidth: minWidth + 'px', minHeight: minHeight + 'px' } : {}"
     @opened="handleOpened"
   >
     <template #header>
-      <div
-        class="w-full overflow-hidden text-ellipsis text-nowrap"
-        v-ksw_tooltip="{ content: title }"
-      >
-        <slot name="header">{{ title }}</slot>
-      </div>
-      <div v-if="useResizable" class="useResizable-ctrl flex">
-        <div
-          class="w-8 h-10 flex justify-center items-center cursor-pointer"
-          v-ksw_tooltip="'最小化'"
-          @click="handleMinimization"
-        >
-          <div class="w-3 h-0.5 bg-gray-400 scale-y-50"></div>
+      <div v-if="resizable && showResizeHandles" class="k-dialog__resizable-header">
+        <div class=" k-dialog__title">
+          <slot name="header">{{ title }}</slot>
         </div>
-        <div
-          class="ml-2 w-8 h-10 flex justify-center items-center cursor-pointer"
-          v-ksw_tooltip="{ content: '最大化' }"
-          @click="maximization"
-        >
-          <div class="w-3 h-3 border border-gray-400 rounded-sm"></div>
+        <div class="k-dialog__resizable-handler">
+          <!-- Minimization -->
+          <IconWindowMin class="mr-3" @click="minimize" />
+          <!-- Maximization -->
+          <component :is="isFull ? IconWindowReduce : IconWindowMax" @click="maximize" />
+          <!-- Close -->
+          <IconClose class="ml-3" @click="() => (visible = false)" />
         </div>
       </div>
+      <slot v-else name="header">{{ title }}</slot>
     </template>
-    <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+    <template v-for="(_, name) in inheritSlots($slots)" :key="name" #[name]="data">
       <slot :name="name" v-bind="data"></slot>
     </template>
   </el-dialog>
 
-  <el-card v-if="isMinimization && useResizable" shadow="always" class="k-dialog-minimization">
-    <div class="flex justify-between items-center">
-      <div class="max-w-32 overflow-hidden text-ellipsis" v-ksw_tooltip="{ content: title }">
+  <!-- Minimize card -->
+  <el-card v-if="isMinimization && resizable" shadow="always" class="k-dialog-minimization">
+    <div class="k-dialog-minimization__content">
+      <div class="k-dialog__card-title">
         <slot name="header">{{ title }}</slot>
       </div>
-      <div
-        class="ml-2 w-8 h-4 flex justify-center items-center cursor-pointer"
-        v-ksw_tooltip="{ content: '还原' }"
-        @click="handleRecover"
-      >
-        <div class="recover-icon w-2.5 h-2.5"></div>
-      </div>
-      <div class="close-icon w-3 h-3" @click="isMinimization = false"></div>
+      <IconWindowMaximize
+        :size="18"
+        class="k-dialog__card-icon k-dialog__card-restore-icon"
+        @click="() => (visible = true)"
+      />
+      <IconClose class="k-dialog__card-icon" @click="() => (isMinimization = false)"></IconClose>
     </div>
   </el-card>
 </template>
 
 <script setup lang="ts">
-import { ref, useAttrs, watch, ComponentInstance } from 'vue';
+import { ref, watch, computed, ComponentInstance } from 'vue';
 import { ElDialog, ElCard, DialogInstance } from 'element-plus';
+import {
+  IconClose,
+  IconWindowMaximize,
+  IconWindowReduce,
+  IconWindowMax,
+  IconWindowMin
+} from 'ksw-vue-icon';
+import { useInheritSlot, useDeprecated } from '../../hooks';
 import { DialogProps } from './type';
 import { getElement, isInputElement, getExposeProxy } from '../../utils';
 
@@ -65,23 +68,44 @@ defineOptions({
   name: 'KDialog'
 });
 
-const kDialogRef = ref<DialogInstance>();
-
-const instance: any = {};
+const $dialog = ref<DialogInstance>();
 
 const props = withDefaults(defineProps<DialogProps>(), {
+  modelValue: false,
   title: '',
   fullscreen: false,
   minWidth: 300,
   minHeight: 150,
   useResizable: false,
+  resizable: false,
   draggable: false,
-  autoFocusFirst: false
+  autoFocusFirst: false,
+  showResizeHandles: true
 });
 
-const emits = defineEmits(['update:modelValue', 'opened']);
+useDeprecated(
+  {
+    scope: 'k-dialog',
+    from: 'useResizable',
+    replacement: 'resizable',
+    version: '2.0.0'
+  },
+  computed(() => !!props.useResizable)
+);
 
+const emits = defineEmits(['opened']);
+const inheritSlots = useInheritSlot(['header']);
+
+const visible = defineModel<boolean>();
+
+// cache dialog's width and height when it's maximized
+const scaleCache = { w: 0, h: 0 };
 const isFull = ref(props.fullscreen);
+const isMinimization = ref(false);
+
+const resizable = computed(() => {
+  return props.resizable || props.useResizable;
+});
 
 watch(
   () => props.fullscreen,
@@ -90,11 +114,8 @@ watch(
   }
 );
 
-const isMinimization = ref(false);
-const attrs = useAttrs();
-
 watch(
-  () => attrs.modelValue,
+  () => props.modelValue,
   (val) => {
     if (val) {
       isMinimization.value = false;
@@ -102,44 +123,29 @@ watch(
   }
 );
 
-const currentWidth = ref(0);
-const currentHeight = ref(0);
-const maximization = () => {
-  const dialog = document.querySelector('.k-dialog') as HTMLElement;
+function maximize() {
+  const dialog = $dialog.value?.dialogContentRef?.$el;
+  if (!dialog) {
+    return;
+  }
   if (!isFull.value) {
-    const { width, height } = dialog!.getBoundingClientRect();
-    currentWidth.value = width;
-    currentHeight.value = height;
-    dialog!.style.width = 'auto';
-    dialog!.style.height = '100%';
-  } else if (
-    isFull.value &&
-    currentWidth.value &&
-    currentHeight.value &&
-    currentWidth.value > 0 &&
-    currentHeight.value > 0
-  ) {
-    dialog!.style.width = `${currentWidth.value}px`;
-    dialog!.style.height = `${currentHeight.value}px`;
+    const { width, height } = dialog.getBoundingClientRect();
+    scaleCache.w = width;
+    scaleCache.h = height;
+    dialog.style.width = 'auto';
+    dialog.style.height = '100%';
+  } else {
+    dialog.style.width = `${scaleCache.w}px`;
+    dialog.style.height = `${scaleCache.h}px`;
   }
   isMinimization.value = false;
   isFull.value = !isFull.value;
-};
+}
 
-const handleMinimization = () => {
-  if (!isMinimization.value) {
-    updateValue(false);
-  }
-  isMinimization.value = !isMinimization.value;
-};
-
-const handleRecover = () => {
-  isMinimization.value = false;
-  updateValue(true);
-};
-const updateValue = (newValue: boolean) => {
-  emits('update:modelValue', newValue);
-};
+function minimize() {
+  isMinimization.value = true;
+  visible.value = false;
+}
 
 function handleOpened() {
   if (props.autoFocusTo || props.autoFocusFirst) {
@@ -159,17 +165,22 @@ function focusElement() {
   if (focusEl && isInputElement(focusEl)) {
     focusEl.focus?.();
     return;
-  } 
+  }
   focusEl = focusEl ? getElement<HTMLElement>('input, textarea', focusEl) : null;
   if (!focusEl && props.autoFocusFirst) {
-    const el = kDialogRef.value?.dialogContentRef?.$el as HTMLElement;
-    focusEl = getElement<HTMLElement>('.el-dialog__body input, .el-dialog__body textarea', el) as HTMLElement;
+    const el = $dialog.value?.dialogContentRef?.$el as HTMLElement;
+    focusEl = getElement<HTMLElement>(
+      '.el-dialog__body input, .el-dialog__body textarea',
+      el
+    ) as HTMLElement;
   }
 
   typeof focusEl?.focus === 'function' && focusEl.focus();
 }
 
-defineExpose(getExposeProxy(instance, kDialogRef));
+const instance: any = {};
+
+defineExpose(getExposeProxy(instance, $dialog));
 </script>
 
 <style lang="less">

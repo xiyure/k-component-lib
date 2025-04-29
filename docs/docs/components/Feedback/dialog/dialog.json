@@ -163,13 +163,6 @@
       "tip": ""
     },
     {
-      "displayName": "use-resizable",
-      "type": "boolean",
-      "description": "是否使用可调整大小的功能",
-      "defaultValue": "false",
-      "tip": ""
-    },
-    {
       "displayName": "auto-focus-first",
       "type": "boolean",
       "description": "是否自动聚焦第一个 input 或 textarea 元素",
@@ -184,6 +177,22 @@
       "defaultValue": "",
       "tip": "",
       "version": "1.1.23"
+    },
+    {
+      "displayName": "resize",
+      "type": "boolean",
+      "description": "是否可以调整大小",
+      "defaultValue": "",
+      "tip": "",
+      "version": "1.2.0"
+    },
+    {
+      "displayName": "show-resize-handles",
+      "type": "boolean",
+      "description": "是否显示默认调整大小句柄",
+      "defaultValue": "true",
+      "tip": "",
+      "version": "1.2.0"
     }
   ],
   "events": [

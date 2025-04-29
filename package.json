@@ -23,7 +23,7 @@
   },
   "peerDependencies": {
     "element-plus": "^2.9.0",
-    "ksw-vue-icon": "latest",
+    "ksw-vue-icon": "^3.0.13",
     "lodash-es": "^4.17.21",
     "sortablejs": "^1.15.2",
     "vue": "^3.4.21",

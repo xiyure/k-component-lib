@@ -3,78 +3,77 @@
 .k-dialog-resizable {
   resize: both;
   overflow: auto;
+}
 
+
+.k-dialog__is-show-handler {
   .el-dialog__header.show-close {
-    padding-right: 8rem;
-  }
-}
-
-.useResizable-ctrl {
-  position: absolute;
-  top: 0.125rem;
-  right: 3rem;
-}
-.recover-icon {
-  position: relative;
-  border-right: 1px solid var(--k-gray-400);
-  border-bottom: 1px solid var(--k-gray-400);
-  // border-radius: 2px;
-  &::before {
-    content: '';
-    position: absolute;
-    top: 3px;
-    left: -0.5px;
-    width: 80%;
-    height: 1px;
-    transform: rotate(45deg);
-    background: var(--k-gray-400);
-    border-radius: 2px;
-    z-index: 1;
-  }
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50%;
-    height: 50%;
-    border-top: 1px solid var(--k-gray-400);
-    border-left: 1px solid var(--k-gray-400);
-    // border-radius: 2px;
-    z-index: 2;
-  }
-}
-.close-icon {
-  position: relative;
-  &::after,
-  &::before {
-    content: '';
-    position: absolute;
-    background: var(--k-gray-400);
-    border-radius: 2px;
-    height: 2px;
-    width: 200%;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%) rotate(45deg) scale(0.5);
-  }
-  &::after {
-    transform: translate(-50%, -50%) rotate(45deg) scale(0.5);
-  }
-  &::before {
-    transform: translate(-50%, -50%) rotate(-45deg) scale(0.5);
-  }
-  &:hover {
-    &::after,
-    &::before {
-      background: var(--k-theme-primary);
+    padding-right: 0;
+    .el-dialog__headerbtn {
+      display: none;
     }
   }
 }
 
+.k-dialog__resizable-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 4rem;
+  width: 100%;
+
+  .k-dialog__title {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  
+  .k-dialog__resizable-handler {
+    display: flex;
+    padding-left: 1rem;
+    cursor: default;
+  
+    svg {
+      color: #909399;
+      cursor: pointer;
+  
+      &:hover {
+        color: var(--k-theme-primary);
+      }
+    }
+  }
+}
+
+// card
 .k-dialog-minimization {
   position: fixed;
   bottom: 20px;
   right: 20px;
   z-index: 999;
+  .el-card__body {
+    padding: 10px 20px;
+  }
+
+  .k-dialog-minimization__content {
+    display: flex;
+    align-items: center;
+
+    .k-dialog__card-title {
+      max-width: 8rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .k-dialog__card-restore-icon {
+      margin: 0 8px 0 10px;
+    }
+    .k-dialog__card-icon {
+      cursor: pointer;
+      color: #909399;
+    
+      &:hover {
+        color: var(--k-theme-primary);
+      }
+    }
+  }
 }

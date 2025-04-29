@@ -3,7 +3,6 @@ import type { ContextConfig } from '../utils/typescript';
 import { mergeCssVar, setStyleTheme } from '../utils';
 import 'element-plus/dist/index.css';
 import 'vxe-table/lib/style.css';
-import 'ksw-vue-icon/styles/icon.css';
 import '../style/tailwind.css';
 import 'overlayscrollbars/styles/overlayscrollbars.css';
 import '../style/theme/index.css';
