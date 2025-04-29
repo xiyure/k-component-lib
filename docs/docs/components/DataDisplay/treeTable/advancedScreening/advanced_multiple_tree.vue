@@ -5,21 +5,27 @@
       :column="column"
       :show-page="false"
       :advanced-filter-config="{
-        exclude: ['date'],
         filterColumns: [
           {
-            title: 'Sex',
-            field: 'sex',
+            title: 'Role',
+            field: 'role',
             dataType: 'string',
+            multiple: 'tree-select',
             options: [
               {
-                label: '男',
-                value: 'Man',
+                label: 'Group1',
+                value: 'group1',
+                children: [
+                { label: 'PM', value: 'PM' },
+                ]
               },
               {
-                label: '女',
-                value: 'Women',
-              },
+                label: 'Group2',
+                value: 'group2',
+                children: [
+                { label: 'Designer', value: 'Designer' },
+                ]
+              }
             ],
           },
         ],
@@ -71,13 +77,12 @@ const column = ref([
     title: 'Role',
     field: 'role',
     dataType: 'string',
-    align: 'center'
   },
   {
     title: 'Sex',
     field: 'sex',
     dataType: 'string',
-    formatter: ({ cellValue }) => (cellValue === 'Man' ? '男' : '女'),
+    formatter: ({ cellValue }) => (cellValue === 'Man' ? '男' : '女')
   },
   {
     title: 'Age',

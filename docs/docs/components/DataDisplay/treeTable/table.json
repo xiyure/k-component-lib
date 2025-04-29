@@ -493,7 +493,7 @@
         "displayName": "filterColumns",
         "description": "自定义列筛选条件",
         "type": "object",
-        "tip": "{title: string, field: string, dataTypes: string, options: { label: string, value: any }[]}[]"
+        "tip": "FilterColumn[]"
       },
       {
         "displayName": "ignoreCase",
