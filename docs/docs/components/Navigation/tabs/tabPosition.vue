@@ -7,17 +7,18 @@
   </k-radio-group>
 
   <k-tabs :tab-position="tabPosition" style="height: 200px" class="demo-tabs">
-    <k-tab-pane value="User">User</k-tab-pane>
-    <k-tab-pane value="Config">Config</k-tab-pane>
-    <k-tab-pane value="Role">Role</k-tab-pane>
-    <k-tab-pane value="Task">Task</k-tab-pane>
+    <k-tab-pane label="User">User</k-tab-pane>
+    <k-tab-pane label="Config">Config</k-tab-pane>
+    <k-tab-pane label="Role">Role</k-tab-pane>
+    <k-tab-pane label="Task">Task</k-tab-pane>
   </k-tabs>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
+import { KTabsProps } from '@ksware/ksw-ux';
 
-const tabPosition = ref('left');
+const tabPosition = ref<KTabsProps['tabPosition']>('left');
 </script>
 
 <style>

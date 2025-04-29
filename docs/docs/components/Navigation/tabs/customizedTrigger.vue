@@ -1,6 +1,6 @@
 <template>
   <div style="margin-bottom: 20px">
-    <k-button size="small" main @click="addTab">
+    <k-button size="sm" main @click="addTab">
       添加标签
     </k-button>
   </div>
@@ -24,6 +24,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
+import { TabPaneName } from '@ksware/ksw-ux';
 
 let tabIndex = 2;
 const editableTabsValue = ref('2');
@@ -49,7 +50,7 @@ const addTab = () => {
   });
   editableTabsValue.value = newTabName;
 };
-const removeTab = (targetName: string) => {
+const removeTab = (targetName: TabPaneName) => {
   const tabs = editableTabs.value;
   let activeName = editableTabsValue.value;
   if (activeName === targetName) {

@@ -1,6 +1,6 @@
 export interface TabsProps {
   modelValue?: string | number;
-  tabPosition?: 'top' | 'right' | 'bottom' | 'left';
+  tabPosition?: TabPosition;
   maxWidth?: string;
   addable?: boolean;
   editable?: boolean;
@@ -17,3 +17,5 @@ export interface TabData {
   label?: string | (() => string);
   disabled?: boolean;
 }
+
+export type TabPosition = 'top' | 'right' | 'bottom' | 'left'
