@@ -1,6 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 
+const [env] = process.argv.slice(2);
+const exportRoot = env === 'dev'? 'packages' : 'es';
+
 const projectRoot = path.join(process.cwd(), 'packages');
 const typeSrc = path.join(projectRoot, 'typings/types');
 
@@ -15,14 +18,14 @@ const copyTypes = async (src, filename = 'type', getDir = null) => {
   return new Promise((resolve, reject) => {
     try {
       if (typeof getDir === 'function') {
-        content += `export * from '../es/${getDir(filename)}';\n`;
+        content += `export * from '../${exportRoot}/${getDir(filename)}';\n`;
         resolve();
       }
       const scanDir = path.join(projectRoot, src);
       const dirs = fs.readdirSync(scanDir);
       dirs.forEach((file) => {
         if (!excludeDirs.includes(file)) {
-          content += `export * from '../es/${src}/${file}/${filename}';\n`;
+          content += `export * from '../${exportRoot}/${src}/${file}/${filename}';\n`;
         }
       });
       resolve();
@@ -43,7 +46,8 @@ Promise.all([
   copyTypes(null, null, () => 'constant')
 )
   .then(() => {
-    const distType = path.join(process.cwd(), 'dist/types/base.d.ts');
+    const subPath = env === 'dev'? 'typings' : 'dist/types';
+    const distType = path.join(process.cwd(), subPath, 'base.d.ts');
     fs.writeFileSync(distType, content);
     console.log('generate type file success');
   })
