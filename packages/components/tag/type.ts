@@ -1,7 +1,7 @@
 import { CompSize } from "../../utils";
 
 export interface TagProps {
-  type?: 'primary' | 'success' | 'warning' | 'danger' | 'info' | string;
+  type?: TagType
   color?: string;
   size?: CompSize;
   point?: boolean;
@@ -10,5 +10,9 @@ export interface TagProps {
   // @deprecated use effect: 'light instead
   border?: boolean;
   showOverflow?: boolean;
-  effect?: 'dark' | 'light' | 'plain';
+  effect?: TagEffect;
 }
+
+export type TagType = 'primary' | 'success' | 'warning' | 'danger' | 'info'
+
+export type TagEffect = 'dark' | 'light' | 'plain'

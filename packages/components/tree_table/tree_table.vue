@@ -428,9 +428,9 @@ const tableFilterRef = ref(); // 高级筛选后的数据
 
 // 当前需要展示的数据（区分当前数据是基于高级筛选还是原始数据）
 const currentData = computed(() => {
-  const isUseFilter = filterConditionInfo.value?.conditionList?.length;
+  const isUseFilter = Boolean(filterConditionInfo.value?.conditionList?.length);
   const isRemoteFilter = props.advancedFilterConfig?.remote === true;
-  return isUseFilter && isRemoteFilter ? newFilterData.value : xeTableData.value;
+  return isUseFilter && !isRemoteFilter ? newFilterData.value : xeTableData.value;
 });
 
 // 表格实例

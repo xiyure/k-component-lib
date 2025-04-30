@@ -2,8 +2,11 @@ export interface TimelineProps {
   showLine?: boolean
 }
 export interface TimelineItemProps {
-  placement?: 'top' | 'bottom' | 'right'
-  type?: 'primary' | 'success' | 'error' | 'wait'
+  placement?: TimelinePlacement
+  type?: TimelineType
   color?: string
   hollow?: boolean
 }
+
+export type TimelinePlacement = 'top' | 'bottom' | 'right'
+export type TimelineType = 'primary' |'success' | 'error' | 'wait'

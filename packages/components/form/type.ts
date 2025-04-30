@@ -6,7 +6,7 @@ export interface FormProps {
   showColon?: boolean;
   showLabel?: boolean;
   hideRequiredAsterisk?: boolean
-  requireAsteriskPosition?: 'left' | 'right'
+  requireAsteriskPosition?: RequireAsteriskPosition
   autoFocusFirst?: boolean
   autoFocusTo?: string | HTMLElement | Element | ComponentInstance<any>
 }
@@ -17,3 +17,5 @@ export interface FormItemProps {
   showLabel?: boolean;
   showColon?: boolean;
 }
+
+export type RequireAsteriskPosition = 'left' | 'right'

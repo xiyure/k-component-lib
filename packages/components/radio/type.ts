@@ -22,7 +22,7 @@ export interface RadioGroupProps {
   /**
    * 排列方向
    */
-  direction?: 'row' | 'column';
+  direction?: RadioDirection
   /**
    * button 样式的 radio
    */
@@ -31,3 +31,5 @@ export interface RadioGroupProps {
   column?: boolean;
   row?: boolean;
 }
+
+export type RadioDirection = 'row' | 'column';

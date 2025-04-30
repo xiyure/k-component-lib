@@ -1,10 +1,11 @@
 import { Component, CSSProperties } from 'vue';
+import { Direction } from '../../utils'
 
 export interface SplitProps {
   modelValue?: number | string
   defaultSize?: number | string
   component?: string
-  direction?: 'horizontal' | 'vertical'
+  direction?: Direction
   min?: number | string | undefined
   max?: number | string | undefined
   disabled?: boolean

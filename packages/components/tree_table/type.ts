@@ -2,7 +2,7 @@ import { Component, VNode, CSSProperties } from 'vue';
 import { VxeTablePropTypes, VxeColgroupProps, VxeColumnPropTypes } from 'vxe-table';
 import { PaginationProps as ElPaginationProps } from 'element-plus';
 import { OperateData } from '../operate/type';
-import { Condition, FilterValue, ConditionInfo } from '../filter/type';
+import { Condition, FilterValue, ConditionInfo, FilterMultipleUiType } from '../filter/type';
 import { Merge, CompSize } from '../../utils/typescript';
 
 export type Row = VxeTablePropTypes.Row;
@@ -106,7 +106,7 @@ type FilterColumn = {
   title: string;
   field: string;
   dataType?: string;
-  multiple?: boolean | 'select' | 'tree-select';
+  multiple?: boolean | FilterMultipleUiType;
   options: {
     label: string;
     value: FilterValue;

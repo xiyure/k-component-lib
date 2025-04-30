@@ -1,4 +1,5 @@
 import { VxeColumnProps, VxeColumnPropTypes, VxeTableDefines } from 'vxe-table';
+import { ExpandTrigger } from '../../utils';
 
 export interface KTableProps {
   showColumnMenu?: boolean
@@ -16,7 +17,7 @@ export interface TableColumnProps {
 export interface FilterPopperProps {
   filters?: VxeColumnPropTypes.FilterItem[]
   column?: VxeColumnProps
-  trigger?: 'click' | 'hover'
+  trigger?: ExpandTrigger
   visible?: boolean
   text?: {
     resetButtonText?: string

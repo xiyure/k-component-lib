@@ -1,7 +1,7 @@
 import { isRef, Slots } from 'vue';
 import { isObject } from 'lodash-es';
 import { STYLE_MODULES } from '../constant';
-import { StyleModules } from './typescript/util_types';
+import { StyleModule } from './typescript/util_types';
 
 type RGB = [number, number, number];
 
@@ -399,7 +399,7 @@ export function mergeCssVar(cssVariables: Record<string, string> | undefined) {
   }
 }
 
-export function setStyleTheme(theme: StyleModules = 'AOM') {
+export function setStyleTheme(theme: StyleModule = 'AOM') {
   let projectName = 'AOM';
   if (typeof theme === 'string' && STYLE_MODULES.includes(theme)) {
     projectName = theme;

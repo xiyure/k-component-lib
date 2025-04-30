@@ -1,4 +1,5 @@
 import { JSX } from 'vue/jsx-runtime';
+import { Direction } from '../../utils';
 
 export interface PageDetailsProps {
   pageIcon?: string,
@@ -6,7 +7,7 @@ export interface PageDetailsProps {
   pageDescription?: string,
   abstract?: PageAbstract[],
   showLine?: boolean,
-  direction?: 'horizontal' |'vertical' | undefined,
+  direction?: Direction
   useflex?: boolean,
 }
 

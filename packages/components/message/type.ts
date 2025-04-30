@@ -1,8 +1,9 @@
 import { Component, VNode } from 'vue';
+import { messageType } from 'element-plus';
 
 export interface MessageProps {
   message?: VNode | string | (() => string)
-  type?: 'success' | 'info' | 'warning' | 'error'
+  type?: MessageType
   plain?: boolean
   icon?: string | Component
   dangerouslyUseHTMLString?: boolean
@@ -18,7 +19,7 @@ export interface MessageProps {
 }
 
 export type MessageOption = MessageProps | string;
-export type Message = 'success' | 'warning' | 'info' | 'error';
+export type MessageType = messageType
 export interface MessageService<T, V> {
   (options:T): V,
   success: (options:T) => V,

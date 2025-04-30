@@ -1,4 +1,4 @@
-import { UploadFile } from 'element-plus';
+import { UploadFile, } from 'element-plus';
 import { Component } from 'vue';
 
 export interface UploadProps {
@@ -6,9 +6,11 @@ export interface UploadProps {
   drag?: boolean
   autoUpload?: boolean
   disabled?: boolean
-  listType?: 'text' | 'picture' | 'picture-card'
+  listType?: UploadListType
   removeIcon?: Component | string
   successIcon?: Component | string
   failIcon?: Component | string
   onPreview?: (file: UploadFile) => void
 }
+
+export type UploadListType = 'text' | 'picture' | 'picture-card'

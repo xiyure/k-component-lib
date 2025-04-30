@@ -1,8 +1,8 @@
-import { CompSize } from "../../utils";
+import { DateType, CompSize } from "../../utils";
 
 export interface DatePickerProps {
   size?: CompSize,
   shortcuts?: any[],
   showDefaultShortcuts?: boolean
-  type?: 'year' | 'month' | 'date' | 'datetime' | 'week' | 'datetimerange' | 'daterange'
+  type?: DateType
 }

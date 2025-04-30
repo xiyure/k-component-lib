@@ -1,6 +1,6 @@
 import { ElMessage, MessageParams, MessageHandler } from 'element-plus';
 import { IconWarning } from 'ksw-vue-icon';
-import { MessageService, MessageOption, Message } from './type';
+import { MessageService, MessageOption, MessageType } from './type';
 import './style.less';
 
 const KMessage:MessageService<MessageOption, MessageHandler> = ((options:MessageOption) => {
@@ -18,8 +18,8 @@ const KMessage:MessageService<MessageOption, MessageHandler> = ((options:Message
 }) as MessageService<MessageOption, MessageHandler>;
 
 ['success', 'error', 'info', 'warning'].forEach((type) => {
-  const messageType = type as Message;
-  KMessage[type as Message] = (options:MessageOption) => {
+  const messageType = type as MessageType;
+  KMessage[type as MessageType] = (options:MessageOption) => {
     if (typeof options === 'string') {
       options = {
         message: options,

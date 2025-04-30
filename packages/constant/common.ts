@@ -1,3 +1,10 @@
 export const STYLE_MODULES = ['AOM', 'GFAOM', 'KingAutometa'] as const;
 export const COMP_SIZES = ['base', 'sm', 'lg', ''] as const;
 export const LANGS = ['en', 'zh'] as const;
+export const BUTTON_TYPES = ['primary', 'success', 'info', 'warning', 'danger', ''] as const;
+export const POPPER_TRIGGER = ['hover', 'click', 'contextMenu'] as const;
+export const PLACEMENTS = ['top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end'] as const;
+export const EXPAND_TRIGGER = ['hover', 'click'] as const;
+export const DATE_TYPES = ['year', 'month', 'date', 'datetime', 'week', 'datetimerange', 'daterange'] as const;
+export const FORM_ITEM_TYPES = ['select', 'input', 'checkbox', 'checkboxGroup'] as const;
+export const  DIRECTION = ['horizontal', 'vertical'] as const;

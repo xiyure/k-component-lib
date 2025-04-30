@@ -1,8 +1,8 @@
-import { StyleModules, CompSize, CssVariables } from '../../utils/typescript';
+import { StyleModule, Lang, CompSize, CssVariables } from '../../utils/typescript';
 
 export interface GlobalProviderProps {
-  locale?: 'zh' | 'en'
-  styleModule?: StyleModules
+  locale?: Lang
+  styleModule?: StyleModule
   size?: CompSize
   cssVariables: CssVariables
 }

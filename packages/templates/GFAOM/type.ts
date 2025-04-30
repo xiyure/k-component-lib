@@ -1,7 +1,8 @@
-import { Component } from 'vue';
-import { TabPaneProps, TabsProps } from 'element-plus';
-
-interface TabsConfig extends TabsProps {
+import { ExtractPublicPropTypes, Component } from 'vue';
+import { TabPaneProps as ElTabPaneProps, TabsProps as ElTabsProps } from 'element-plus';
+import { TabsProps, TabPaneProps } from '../../components';
+import { Merge, Direction } from '../../utils';
+interface TabsConfig extends Merge<TabsProps, ExtractPublicPropTypes<ElTabsProps>>  {
   defaultActive?: string | number;
 }
 export interface GFPageDetailsProps {
@@ -11,7 +12,7 @@ export interface GFPageDetailsProps {
   columns?: number;
   abstract?: any[];
   tabsConfig?: TabsConfig;
-  tabs?: TabPaneProps[];
-  direction?: 'horizontal' | 'vertical';
+  tabs?: Merge<TabPaneProps,ExtractPublicPropTypes<ElTabPaneProps>>[];
+  direction?: Direction;
   useItemCollapse?: boolean;
 }

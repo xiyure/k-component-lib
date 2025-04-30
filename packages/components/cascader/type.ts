@@ -1,11 +1,11 @@
-import { CompSize } from "../../utils";
+import { ExpandTrigger, CompSize } from "../../utils";
 
 export interface CascaderProps {
   size?: CompSize
 }
 
 export interface CascaderConfig {
-  expandTrigger?: 'click' | 'hover'
+  expandTrigger?: ExpandTrigger
   multiple?: boolean
   emitPath?: boolean
   value?: string

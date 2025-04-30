@@ -1,4 +1,4 @@
-import { CompSize } from '../../utils';
+import { DateType, CompSize } from '../../utils';
 
 export interface FilterProps {
   data?: any[];
@@ -18,32 +18,12 @@ export interface FilterProps {
 export type FilterValue = string | number | Date | null | Array<string | number | Date>;
 export type FilterData = {
   title: string[];
-  logic:
-    | 'equal'
-    | 'notEqual'
-    | 'gt'
-    | 'lt'
-    | 'gte'
-    | 'lte'
-    | 'empty'
-    | 'nonEmpty'
-    | 'contains'
-    | 'before'
-    | 'after'
-    | '';
+  logic: FilterLogic;
   value: FilterValue;
   showValue: FilterValue;
   key: string | null;
   dateRange?: string;
-  dateType?:
-    | 'year'
-    | 'month'
-    | 'week'
-    | 'date'
-    | 'datetime'
-    | 'datetimerange'
-    | 'daterange'
-    | undefined;
+  dateType?: DateType;
   handler: ((a: FilterValue, b?: FilterValue, ignoreCase?: boolean) => boolean) | null;
   _allowSelectLogic?: boolean;
   isMultiple?: boolean;
@@ -53,8 +33,8 @@ export type FilterData = {
 export interface FilterOption {
   title: string;
   value?: string | number | boolean;
-  multiple?: boolean | 'select' | 'tree-select';
-  dataType?: 'string' | 'number' | 'date';
+  multiple?: boolean | FilterMultipleUiType;
+  dataType?: FilterDataType;
   options?: {
     label: string;
     value: string | number | boolean;
@@ -67,19 +47,7 @@ export interface FilterOption {
 
 export interface Condition {
   title: string;
-  logic:
-    | 'equal'
-    | 'notEqual'
-    | 'gt'
-    | 'lt'
-    | 'gte'
-    | 'lte'
-    | 'empty'
-    | 'nonEmpty'
-    | 'contains'
-    | 'before'
-    | 'after'
-    | ''
+  logic: FilterLogic;
   value: FilterValue;
   showValue: FilterValue;
   key: string | null;
@@ -90,3 +58,7 @@ export interface ConditionInfo {
   conditionList?: (Condition & { config?: any })[];
   filterRule?: number;
 }
+
+export type FilterLogic = 'equal' | 'notEqual' | 'gt' | 'lt' | 'gte' | 'lte' | 'empty' | 'nonEmpty' | 'contains' | 'before' | 'after' | '';
+export type FilterDataType = 'string' | 'number' | 'date';
+export type FilterMultipleUiType = 'select' | 'tree-select';

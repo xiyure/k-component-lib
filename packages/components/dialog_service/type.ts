@@ -2,12 +2,12 @@ import { Ref } from 'vue';
 import { DialogProps as ElDialogProps , FormProps as ElFormProps, FormItemProps as ElFormItemProps } from 'element-plus';
 import { DialogProps } from '../dialog';
 import { FormProps, FormItemProps } from '../form'
-import { SlotsType, Writable } from '../../utils';
+import { FormItemType, SlotsType, Writable } from '../../utils';
 
 export interface DialogOptions extends Omit<Partial<Writable<ElDialogProps>>, 'modelValue'>, DialogProps {}
 export interface FormOptions extends Omit<Partial<Writable<ElFormProps>>, 'size'>, FormProps {}
 export interface FormItemOptions extends Omit<Partial<Writable<ElFormItemProps>>, 'size'>, FormItemProps {
-  type?: 'select' | 'input' | 'checkbox' | 'checkboxGroup'
+  type?: FormItemType
   attrs?: any
   render?: (formItem: FormItemOptions, formData: any, form: FormOptions) => RenderType
   value?: any

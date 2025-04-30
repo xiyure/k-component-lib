@@ -1,10 +1,10 @@
-import { CompSize } from "../../utils";
+import { ButtonType, CompSize } from "../../utils";
 
 export interface ButtonProps {
   /**
    *   继承 el-button 的颜色, 可以配合 main, secondary, text 使用
    */
-  type?: 'primary' | 'success' | 'info' | 'warning' | 'danger' | '';
+  type?: ButtonType
   /**
    * 主要按钮, main, secondary, text, icon 不能同时使用
    */

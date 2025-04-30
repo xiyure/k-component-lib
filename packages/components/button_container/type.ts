@@ -1,10 +1,10 @@
 import { Component } from 'vue';
-import { CompSize } from '../../utils';
+import { PopperTrigger, Placement, CompSize } from '../../utils';
 
 export interface ButtonContainerProps {
-  trigger?: 'hover' | 'click' | 'contextMenu'
+  trigger?: PopperTrigger
   maxHeight?: string | number
-  placement?: 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end'
+  placement?: Placement
   hideOnClick?: boolean
   showTimeout?: number
   hideTimeout?: number

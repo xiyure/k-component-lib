@@ -30,7 +30,7 @@ export interface ScriptInputProps {
   /**
    *   校验输入字符串是否合规, number判断是否为数字, 包含浮点; boolean判断是否为true/false;
    */
-  contentType?: 'number' | 'boolean' | 'string' | '' | 'limit';
+  contentType?: ScriptInputContentType;
   /**
    *   值是否可重复, 默认值为true; 改为false, 则值不可重复
    */
@@ -48,6 +48,7 @@ export type ScriptOptions = {
 };
 
 export type ScriptInputMode = 'expression' | 'string';
+export type ScriptInputContentType = 'number' | 'boolean' | 'string' | '' | 'limit';
 
 export type ChangeEventParams = {
   result: string,

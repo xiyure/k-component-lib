@@ -5,7 +5,7 @@ export interface FilterFormItem {
   label?: string;
   prop: string;
   value: any;
-  type: 'input' | 'select' | 'date' | 'checkbox' | 'radio' | 'cascader' | 'tree-select';
+  type: FilterFormItemTypes;
   attrs?: any;
   render?: (item: any) => VNode | Component;
   options?: any[];
@@ -21,3 +21,5 @@ export interface FilterFormProps {
   visible?: boolean;
   showColon?: boolean;
 }
+
+export type FilterFormItemTypes = 'input' | 'select' | 'date' | 'checkbox' | 'radio' | 'cascader' | 'tree-select';

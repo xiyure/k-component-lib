@@ -1,5 +1,7 @@
 export interface ResultProps {
-  status?: '' | 'success' | 'warning' | 'info' | 'error' | '403' | '404' | '500';
+  status?: ResultStatus;
   title?: string;
   content?: string;
 }
+
+export type ResultStatus = '' |'success' | 'warning' | 'info' | 'error' | '403' | '404' | '500';
