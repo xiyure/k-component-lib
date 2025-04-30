@@ -1,5 +1,5 @@
 import { VxeColumnProps, VxeColumnPropTypes, VxeTableDefines } from 'vxe-table';
-import { ExpandTrigger } from '../../utils';
+import { ExpandTrigger } from 'element-plus';
 
 export interface KTableProps {
   showColumnMenu?: boolean

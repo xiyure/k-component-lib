@@ -1,7 +1,7 @@
 import { ExtractPublicPropTypes, Component } from 'vue';
-import { TabPaneProps as ElTabPaneProps, TabsProps as ElTabsProps } from 'element-plus';
+import { TabPaneProps as ElTabPaneProps, TabsProps as ElTabsProps, LayoutDirection } from 'element-plus';
 import { TabsProps, TabPaneProps } from '../../components';
-import { Merge, Direction } from '../../utils';
+import { Merge } from '../../utils';
 interface TabsConfig extends Merge<TabsProps, ExtractPublicPropTypes<ElTabsProps>>  {
   defaultActive?: string | number;
 }
@@ -13,6 +13,6 @@ export interface GFPageDetailsProps {
   abstract?: any[];
   tabsConfig?: TabsConfig;
   tabs?: Merge<TabPaneProps,ExtractPublicPropTypes<ElTabPaneProps>>[];
-  direction?: Direction;
+  direction?: LayoutDirection;
   useItemCollapse?: boolean;
 }

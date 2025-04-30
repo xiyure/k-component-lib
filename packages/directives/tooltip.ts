@@ -1,23 +1,12 @@
 import { createApp, DirectiveBinding, Directive, App } from 'vue';
+import { TooltipTriggerType, Placement } from 'element-plus';
 import { isObject } from 'lodash-es';
 import { KTooltip } from '../components/tooltip';
 
-type BindingValue =
+export type BindingValue =
   | {
-      trigger?: 'hover' | 'click';
-      placement?:
-        | 'top'
-        | 'top-start'
-        | 'top-end'
-        | 'bottom'
-        | 'bottom-start'
-        | 'bottom-end'
-        | 'left'
-        | 'left-start'
-        | 'left-end'
-        | 'right'
-        | 'right-start'
-        | 'right-end';
+      trigger?: TooltipTriggerType;
+      placement?: Placement;
       content?: string;
       showAfter?: number;
       hideAfter?: number;

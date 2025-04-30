@@ -1,11 +1,11 @@
 import { Component, CSSProperties } from 'vue';
-import { Direction } from '../../utils'
+import { LayoutDirection } from 'element-plus'
 
 export interface SplitProps {
   modelValue?: number | string
   defaultSize?: number | string
   component?: string
-  direction?: Direction
+  direction?: LayoutDirection
   min?: number | string | undefined
   max?: number | string | undefined
   disabled?: boolean

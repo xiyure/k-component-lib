@@ -1,8 +1,9 @@
 import { Component } from 'vue';
-import { PopperTrigger, Placement, CompSize } from '../../utils';
+import { DropdownTrigger } from '../dropdown/type'
+import { Placement, CompSize } from '../../utils';
 
 export interface ButtonContainerProps {
-  trigger?: PopperTrigger
+  trigger?: DropdownTrigger
   maxHeight?: string | number
   placement?: Placement
   hideOnClick?: boolean

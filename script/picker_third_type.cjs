@@ -19,7 +19,8 @@ const elTypesConfig = {
     'element-plus/es/components/tree/src/tree.type',
     'element-plus/es/directives',
     'element-plus/es/hooks'
-  ]
+  ],
+  excludesFile: ['table', 'table-column', 'table-v2']
 };
 
 // vxe-table
@@ -31,14 +32,17 @@ const vxeTypesConfig = {
   otherTypes: []
 };
 
-const getTsFiles = (src) => {
+// 不需要导出的类型
+const excludes = ['Props', 'Emits', 'Instance'];
+
+const getTsFiles = (src, excludeFile = []) => {
   if (!src) return [];
   try {
     const components = fs.readdirSync(src);
     const tsFiles = components
       .map((componentName) => {
         const componentPath = path.join(src, componentName, 'src');
-        if (!fs.existsSync(componentPath)) return;
+        if (!fs.existsSync(componentPath) || excludeFile.includes(componentName)) return;
         return fs
           .readdirSync(componentPath)
           .filter((file) => file.endsWith('.d.ts') && !file.endsWith('.vue.d.ts'))
@@ -82,7 +86,6 @@ function extractTypesFromTsFile(filePath, targetSet) {
 }
 
 function filterValidTypes(typeSet) {
-  const excludes = ['Props', 'Emits', 'Instance'];
   return Array.from(typeSet).filter((type) => {
     return excludes.every((exclude) => !type.includes(exclude));
   });
@@ -96,8 +99,8 @@ function generateTypesFile(config) {
 
 const run = (config) => {
   return new Promise((resolve) => {
-    const { input, set } = config;
-    const tsFiles = getTsFiles(input);
+    const { input, set, excludesFile } = config;
+    const tsFiles = getTsFiles(input, excludesFile);
     if (tsFiles) {
       pickerThirdTypes(tsFiles, set);
     }

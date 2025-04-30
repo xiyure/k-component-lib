@@ -15,16 +15,16 @@ export interface FilterProps {
   simpleDateDisplay?: boolean;
 }
 
-export type FilterValue = string | number | Date | null | Array<string | number | Date>;
+export type AdvancedFilterValue = string | number | Date | null | Array<string | number | Date>;
 export type FilterData = {
   title: string[];
   logic: FilterLogic;
-  value: FilterValue;
-  showValue: FilterValue;
+  value: AdvancedFilterValue;
+  showValue: AdvancedFilterValue;
   key: string | null;
   dateRange?: string;
   dateType?: DateType;
-  handler: ((a: FilterValue, b?: FilterValue, ignoreCase?: boolean) => boolean) | null;
+  handler: ((a: AdvancedFilterValue, b?: AdvancedFilterValue, ignoreCase?: boolean) => boolean) | null;
   _allowSelectLogic?: boolean;
   isMultiple?: boolean;
   multipleValue?: string[];
@@ -48,10 +48,10 @@ export interface FilterOption {
 export interface Condition {
   title: string;
   logic: FilterLogic;
-  value: FilterValue;
-  showValue: FilterValue;
+  value: AdvancedFilterValue;
+  showValue: AdvancedFilterValue;
   key: string | null;
-  handler: ((a: FilterValue, b?: FilterValue, ignoreCase?: boolean) => boolean) | null;
+  handler: ((a: AdvancedFilterValue, b?: AdvancedFilterValue, ignoreCase?: boolean) => boolean) | null;
 }
 
 export interface ConditionInfo {

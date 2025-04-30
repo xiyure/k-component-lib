@@ -1,9 +1,9 @@
 import { VNode, Component } from 'vue';
-import { Direction } from '../../utils';
+import { LayoutDirection } from 'element-plus';
 
 export interface DetailsProps {
   abstract?: DetailsItemProps[];
-  direction?: Direction;
+  direction?: LayoutDirection;
   showLine?: boolean;
   useflex?: boolean;
 }
@@ -14,6 +14,6 @@ export interface DetailsItemProps {
   render?: () => VNode | Component;
   showLine?: boolean;
   column?: number;
-  direction?: Direction;
+  direction?: LayoutDirection;
   useflex?: boolean;
 }

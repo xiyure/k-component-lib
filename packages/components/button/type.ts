@@ -1,4 +1,5 @@
-import { ButtonType, CompSize } from "../../utils";
+import { ButtonType } from "element-plus";
+import { CompSize } from "../../utils";
 
 export interface ButtonProps {
   /**
