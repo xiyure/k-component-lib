@@ -5,7 +5,7 @@ import { getValidTreeData, resetTreeData } from '../../../utils';
 import type { ConditionInfo, Condition } from '../../filter';
 import { TreeTableProps, RowData, Column } from '../type';
 
-export function useAdvancedFilter($filter: Ref<any>, props: TreeTableProps, columns: Ref<Column[]>) {
+export function useAdvancedFilter($header: Ref<any>, props: TreeTableProps, columns: Ref<Column[]>) {
   const { t } = useLocale();
 
   const newFilterData = ref<RowData[]>([]);
@@ -59,7 +59,7 @@ export function useAdvancedFilter($filter: Ref<any>, props: TreeTableProps, colu
     }
   }
   function getAdvancedCondition() {
-    return $filter.value?.[0]?.getConditionInfo();
+    return $header.value?.filterRef?.[0]?.getConditionInfo();
   }
 
 

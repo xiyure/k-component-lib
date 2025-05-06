@@ -8,208 +8,40 @@
     :style="{ height: adaptive ? 'fit-content' : height, ...style }"
   >
     <!-- head -->
-    <div v-if="simple && showSearchInput" class="k-tree-table__header-pure">
-      <k-input
-        v-model="searchStr"
-        :suffix-icon="IconSearch"
-        :placeholder="t?.('table.searchTable')"
-        clearable
-        @change="filter"
-      />
-    </div>
-    <div
-      v-else-if="showHeaderTools && !simple"
-      ref="RefTableHeader"
-      class="k-tree-table__header"
-      :style="{
-        justifyContent: showDescription ? 'space-between' : 'flex-end'
+    <table-header
+      ref="headerRef"
+      :simple
+      :show-search-input
+      :show-description
+      :show-header-tools
+      :widgets="widgets"
+      :data-length
+      :show-total="!useTree"
+      :filter-config
+      :transfer-config
+      @input-change="filter"
+      @filter-confirm="refreshAdvancedFilter"
+      @filter-clear="resetAdvancedFilter"
+      @filter-show="advancedFilterShow"
+      @filter-hide="advancedFilterHide"
+      @transfer-change="updateColVisible"
+      @transfer-show="transferShow"
+      @transfer-hide="() => {
+        transferHide();
+        transferChange();
+      }"
+      @size-change="(size) => {
+        _size = size || undefined;
+      }"
+      @transfer-drag="sortTableHeader"
+      @refresh=" () => {
+        emits('refresh');
       }"
     >
-      <div v-if="showDescription" class="k-table-info">
-        <slot name="description" :total="dataLength" :condition-info="filterConditionInfo">
-          <span v-if="!useTree">
-            {{ t?.('table.total') }}
-            {{ dataLength }}
-            {{ t?.('table.data') }}
-          </span>
-          <span :title="headerText" class="condition-info">
-            {{ headerText }}
-          </span>
-          <span
-            v-if="filterConditionInfo?.conditionList?.length && tableFilterRef?.[0]?.clearFilter"
-            class="filter-reset"
-            @click="
-              () => {
-                clearAdvancedFilter();
-                emits('advanced-filter-clear');
-              }
-            "
-          >
-            · {{ t?.('table.reset') }}
-          </span>
-        </slot>
-      </div>
-      <div class="k-table-func">
-        <template v-for="widget in widgets" :key="widget.id">
-          <template v-if="widget.slot && $slots[widget.slot]">
-            <slot :name="widget.slot"></slot>
-          </template>
-          <template v-else-if="widget.id === 'search'">
-            <k-input
-              v-model="searchStr"
-              :suffix-icon="IconSearch"
-              :placeholder="t?.('table.searchTable')"
-              clearable
-              @change="filter"
-            />
-          </template>
-          <template v-else-if="widget.id === 'refresh'">
-            <k-button
-              v-ksw_tooltip="t?.('table.refresh')"
-              @click="
-                () => {
-                  emits('refresh');
-                }
-              "
-            >
-              <IconRefresh />
-            </k-button>
-          </template>
-          <template v-else-if="widget.id === 'filter'">
-            <!-- 高级筛选 -->
-            <k-filter
-              ref="tableFilterRef"
-              :data="xeTableData"
-              :options="filterColumns"
-              children-field="group"
-              filter-key="field"
-              :remote="advancedFilterConfig?.remote ?? false"
-              :ignore-case="advancedFilterConfig?.ignoreCase"
-              :date-format="advancedFilterConfig?.dateFormat ?? 'YYYY-MM-DD HH:mm:ss'"
-              :default-condition="advancedFilterConfig?.defaultCondition ?? filterConditionInfo"
-              @confirm="refreshAdvancedFilter"
-              @clear="
-                () => {
-                  clearAdvancedFilter();
-                  emits('advanced-filter-clear');
-                }
-              "
-              @show="advancedFilterShow"
-              @hide="advancedFilterHide"
-            >
-              <template #reference="{ hasConfigCondition }">
-                <div v-ksw_tooltip="t?.('table.advancedFilter_c')">
-                  <component
-                    :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
-                    v-if="widget.widget"
-                  />
-                  <slot
-                    v-else
-                    :name="compatibleSlots($slots, ['filter-trigger', 'filterTrigger'])"
-                    :is-filter="hasConfigCondition"
-                  >
-                    <k-button>
-                      <IconFilter v-if="!hasConfigCondition" />
-                      <IconFilterFill v-else color="#2882FF" />
-                    </k-button>
-                  </slot>
-                </div>
-              </template>
-            </k-filter>
-          </template>
-          <template v-else-if="widget.id === 'sizeControl'">
-            <!-- 表格尺寸控制 -->
-            <k-dropdown
-              trigger="click"
-              @command="
-                (command) => {
-                  _size = command || undefined;
-                }
-              "
-            >
-              <template #title>
-                <div v-ksw_tooltip="t?.('table.sizeControlTrigger')" class="text-sm">
-                  <component
-                    :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
-                    v-if="widget.widget"
-                  />
-                  <slot
-                    v-else
-                    :name="compatibleSlots($slots, ['size-control-trigger', 'sizeControlTrigger'])"
-                  >
-                    <k-button><IconSizeControls /></k-button>
-                  </slot>
-                </div>
-              </template>
-              <k-dropdown-item
-                v-for="item in SIZE_OPTIONS"
-                :key="item.value"
-                :style="{
-                  color: _size === (item.value || undefined) ? '#2882FF' : ''
-                }"
-                :command="item.value"
-              >
-                {{ item.label }}
-              </k-dropdown-item>
-            </k-dropdown>
-          </template>
-          <template v-else-if="widget.id === 'transfer'">
-            <!-- 穿梭框 -->
-            <k-popover
-              trigger="click"
-              width="auto"
-              :teleported="false"
-              @show="transferShow"
-              @hide="
-                () => {
-                  transferHide();
-                  transferChange();
-                }
-              "
-            >
-              <template #reference>
-                <div v-ksw_tooltip="t?.('table.columnHeaderController')" class="text-sm">
-                  <component
-                    :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
-                    v-if="widget.widget"
-                  />
-                  <slot
-                    v-else
-                    :name="compatibleSlots($slots, ['transfer-trigger', 'transferTrigger'])"
-                  >
-                    <k-button><IconSetting /></k-button>
-                  </slot>
-                </div>
-              </template>
-              <k-transfer
-                ref="tableTransferRef"
-                v-model="selectData"
-                :data="originData"
-                :default-keys="defaultHeader"
-                :format="{
-                  noChecked: ' ',
-                  hasChecked: ' '
-                }"
-                :titles="[t?.('table.unselected'), t?.('table.selected')]"
-                :drag="true"
-                @change="updateColVisible"
-                @reset="updateColVisible"
-                @drag="sortTableHeader"
-              ></k-transfer>
-            </k-popover>
-          </template>
-          <template v-else-if="widget.widget">
-            <component
-              :is="typeof widget.widget === 'function' ? widget.widget() : widget.widget"
-            />
-          </template>
-        </template>
-      </div>
-    </div>
-    <!-- head-extra -->
-    <div v-if="$slots['header-extra']" class="k-tree-table__header-extra">
-      <slot name="header-extra"></slot>
-    </div>
+      <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+        <slot :name="name" v-bind="data"></slot>
+      </template>
+    </table-header>
     <!-- table -->
     <div ref="RefTableBox" class="table-box flex-1 overflow-hidden">
       <k-table
@@ -314,23 +146,11 @@
 import { ref, computed, watch, nextTick, provide, onBeforeMount } from 'vue';
 import VXETable from 'vxe-table';
 import { cloneDeep } from 'lodash-es';
-import {
-  IconSearch,
-  IconRefresh,
-  IconFilter,
-  IconFilterFill,
-  IconSizeControls,
-  IconSetting
-} from 'ksw-vue-icon';
 import KColumnGroup from './column_group';
-import { KInput } from '../input';
-import { KButton } from '../button';
-import { KTransfer } from '../transfer';
-import { KPopover } from '../popover';
 import { KOperate } from '../operate';
 import { KTable } from '../table';
 import { KPagination } from '../pagination';
-import { KFilter } from '../filter';
+import TableHeader from './header.vue';
 import type { ConditionInfo } from '../filter';
 import {
   useMethods,
@@ -341,9 +161,9 @@ import {
   useAdvancedFilter
 } from './hooks';
 import { SIZE_KEY, useLocale, useDeprecated } from '../../hooks';
-import { genRandomStr, sortFunc, compatibleSlots, getExposeProxy } from '../../utils';
-import { SIZE_OPTIONS } from './const';
+import { genRandomStr, sortFunc, getExposeProxy } from '../../utils';
 import type { TreeTableProps, Column, RowData, Row } from './type';
+import { TABLE_SIZE_KEY } from './const';
 
 defineOptions({
   name: 'KTreeTable'
@@ -414,7 +234,7 @@ const emits = defineEmits([
 
 const xTree = ref();
 const _size = ref(props.size);
-const tableTransferRef = ref();
+const headerRef = ref();
 // 列配置
 const columns = ref<Column[]>([]);
 // 表格数据
@@ -422,9 +242,6 @@ const xeTableData = ref<RowData[]>([]);
 // 搜索框关键词
 const query = ref('');
 const searchStr = ref('');
-
-// 高级筛选
-const tableFilterRef = ref(); // 高级筛选后的数据
 
 // 当前需要展示的数据（区分当前数据是基于高级筛选还是原始数据）
 const currentData = computed(() => {
@@ -451,6 +268,28 @@ const __showTransfer = computed(() => {
   return false;
 });
 
+// 表头筛选相关
+const filterConfig = computed(() => {
+  const { remote, ignoreCase, dateFormat, defaultCondition } = props.advancedFilterConfig ?? {};
+  return {
+  conditionInfo: filterConditionInfo.value,
+  data: xeTableData.value,
+  columns: filterColumns.value,
+  text: headerText.value,
+  remote,
+  ignoreCase,
+  dateFormat,
+  defaultCondition
+}
+});
+
+// 表头控制器相关
+const transferConfig = computed(() => ({
+  selectData: selectData.value,
+  originData: originData.value,
+  defaultHeader: defaultHeader.value
+}));
+
 // methods
 const { setTableData, sortChange, dragSort, _methods } = useMethods(props, tableInstance);
 
@@ -467,7 +306,7 @@ const {
   sortTableHeader,
   updateColVisible,
   _transferMethods
-} = useHeaderControl(tableInstance, tableTransferRef, props, columns, handleCustomRender);
+} = useHeaderControl(tableInstance, headerRef, props, columns, handleCustomRender);
 
 // advanced filter
 const {
@@ -478,7 +317,7 @@ const {
   advancedFilterShow,
   advancedFilterHide,
   getAdvancedCondition
-} = useAdvancedFilter(tableFilterRef, props, columns);
+} = useAdvancedFilter(headerRef, props, columns);
 
 // table data
 const {
@@ -672,6 +511,11 @@ async function refreshAdvancedFilter(
   }
 }
 
+function resetAdvancedFilter() {
+  clearAdvancedFilter();
+  emits('advanced-filter-clear')
+}
+
 // 行高亮
 let isHighlight = false;
 let preRowKey: string | number | null = null;
@@ -697,11 +541,12 @@ function cellClick({ row, rowid }: { row: Row; rowid: string | number }) {
 
 // 刷新高级筛选的表格数据
 async function advancedFilter(data?: RowData[] | undefined) {
-  if (!tableFilterRef.value) {
+  const $filter = getFilterInstance();
+  if (!$filter) {
     return;
   }
   await nextTick();
-  const advancedFilterObj = tableFilterRef.value?.[0]?.filter?.(data);
+  const advancedFilterObj = $filter?.filter?.(data);
   const { conditionInfo, data: tableData } = advancedFilterObj ?? {};
   await refreshAdvancedFilter(conditionInfo, tableData, false);
   return { conditionInfo, tableData };
@@ -709,15 +554,20 @@ async function advancedFilter(data?: RowData[] | undefined) {
 
 // 清空高级筛选状态
 async function clearAdvancedFilter() {
-  if (!tableFilterRef.value) {
+  const $filter = getFilterInstance();
+  if (!$filter) {
     return;
   }
   await nextTick();
   resetCheckboxStatus();
-  const advancedFilterObj = tableFilterRef.value?.[0]?.clearFilter?.();
+  const advancedFilterObj = $filter?.clearFilter?.();
   const { conditionInfo, data: tableData } = advancedFilterObj ?? {};
   await refreshAdvancedFilter(conditionInfo, tableData, false);
   return { conditionInfo, tableData };
+}
+
+function getFilterInstance() {
+  return headerRef.value?.filterRef?.[0];
 }
 
 // 搜索框搜索
@@ -788,7 +638,7 @@ provide(
     return 'base';
   })
 );
-
+provide(TABLE_SIZE_KEY, _size);
 provide(
   '__hasSpace__',
   computed(() => props.hasSpace)

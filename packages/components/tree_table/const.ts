@@ -57,3 +57,5 @@ export const SIZE_OPTIONS = [
   { label: '小号', value: 'small' },
   { label: '紧凑', value: 'mini' }
 ];
+
+export const TABLE_SIZE_KEY = Symbol('tableSize');

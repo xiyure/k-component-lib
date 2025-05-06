@@ -6,7 +6,7 @@ import { TreeTableProps, Column, TableHeaderControl } from '../type';
 
 export function useHeaderControl(
   $table: Ref<VxeTableInstance>,
-  $transfer: Ref<any>,
+  $header: Ref<any>,
   props: TreeTableProps,
   columns: Ref<Column[]>,
   handleCustomRender: () => void,
@@ -120,7 +120,7 @@ export function useHeaderControl(
       widthMap.set(col.field, String(width));
     }
     const selectSet = new Set(selectData.value);
-    const transferInstance = $transfer.value?.[0];
+    const transferInstance = $header.value?.transferRef?.[0];
     const _originData = transferInstance
       ? transferInstance.getTransferData().sourceData
       : originData.value;
@@ -173,7 +173,6 @@ export function useHeaderControl(
 
   // 更新列可见状态
   function updateColVisible(ids: string[]) {
-    console.log(ids);
     flatColumns.value.forEach((col: Column) => {
       if (ids.includes(col.field as string)) {
         col.visible = true;
