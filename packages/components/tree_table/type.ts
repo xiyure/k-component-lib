@@ -1,6 +1,6 @@
 import { Component, VNode, CSSProperties } from 'vue';
 import { VxeTablePropTypes, VxeColgroupProps, VxeColumnPropTypes } from 'vxe-table';
-import { PaginationProps as ElPaginationProps } from 'element-plus';
+import { PaginationProps as ElPaginationProps, CardProps } from 'element-plus';
 import { OperateData } from '../operate/type';
 import { Condition, AdvancedFilterValue, ConditionInfo, FilterMultipleUiType } from '../filter/type';
 import { Merge, CompSize } from '../../utils/typescript';
@@ -72,7 +72,9 @@ export interface TreeTableProps {
   round?: boolean;
   adaptive?: boolean;
   hasSpace?: boolean;
-  requestMethod?: (params: TableRemoteMethod) => Promise<TableMethodReturn>;
+  requestMethod?: (params: TableRemoteMethod) => Promise<TableMethodReturn>
+  cardOptions?: CardOptions
+  defaultMode?: TableMode
 }
 
 export interface Column {
@@ -196,3 +198,7 @@ export type TableMethodReturn = {
   data: RowData[]
   total?: number
 }
+
+export type TableMode = 'list' | 'card'
+
+export type CardOptions = CardProps

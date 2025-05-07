@@ -10,6 +10,7 @@
     <!-- head -->
     <table-header
       ref="headerRef"
+      v-model:current-mode="currentMode"
       :simple
       :show-search-input
       :show-description
@@ -37,13 +38,14 @@
       @refresh=" () => {
         emits('refresh');
       }"
+      @switch-change="restoreTable"
     >
       <template v-for="(_, name) in $slots" :key="name" #[name]="data">
         <slot :name="name" v-bind="data"></slot>
       </template>
     </table-header>
     <!-- table -->
-    <div ref="RefTableBox" class="table-box flex-1 overflow-hidden">
+    <div v-if="isListMode" ref="RefTableBox" class="table-box flex-1 overflow-hidden">
       <k-table
         ref="xTree"
         :border="useAntStyle ? 'inner' : border"
@@ -114,6 +116,16 @@
         <k-operate v-bind="batchOpConfig" @close="closeBatchOperation" />
       </div>
     </div>
+    <table-card
+      v-else
+      :data="showTableData"
+      :key-field="rowConfig.keyField"
+      :card-attrs="cardOptions"
+    >
+      <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+        <slot :name="name" v-bind="data"></slot>
+      </template>
+    </table-card>
     <!-- pagination -->
     <div v-if="isPaging" ref="RefTablePagination" class="pagination-box">
       <k-pagination
@@ -150,7 +162,8 @@ import KColumnGroup from './column_group';
 import { KOperate } from '../operate';
 import { KTable } from '../table';
 import { KPagination } from '../pagination';
-import TableHeader from './header.vue';
+import TableHeader from './table_header.vue';
+import TableCard from './table_card.vue';
 import type { ConditionInfo } from '../filter';
 import {
   useMethods,
@@ -162,7 +175,7 @@ import {
 } from './hooks';
 import { SIZE_KEY, useLocale, useDeprecated } from '../../hooks';
 import { genRandomStr, sortFunc, getExposeProxy } from '../../utils';
-import type { TreeTableProps, Column, RowData, Row } from './type';
+import type { TreeTableProps, Column, RowData, Row, TableMode } from './type';
 import { TABLE_SIZE_KEY } from './const';
 
 defineOptions({
@@ -185,7 +198,8 @@ const props = withDefaults(defineProps<TreeTableProps>(), {
   showColumnMenu: false,
   cellClickToggleHighlight: true,
   round: false,
-  hasSpace: false
+  hasSpace: false,
+  defaultMode: 'list'
 });
 
 useDeprecated(
@@ -234,6 +248,7 @@ const emits = defineEmits([
 
 const xTree = ref();
 const _size = ref(props.size);
+const currentMode = ref<TableMode>(props.defaultMode === 'card' ? 'card' : 'list');
 const headerRef = ref();
 // 列配置
 const columns = ref<Column[]>([]);
@@ -252,8 +267,7 @@ const currentData = computed(() => {
 
 // 表格实例
 const tableInstance = computed(() => {
-  const tableInstance = xTree.value?.tableInstance;
-  return tableInstance;
+  return xTree.value?.tableInstance ?? null;
 });
 
 // size
@@ -289,6 +303,8 @@ const transferConfig = computed(() => ({
   originData: originData.value,
   defaultHeader: defaultHeader.value
 }));
+
+const isListMode = computed(() => currentMode.value === 'list');
 
 // methods
 const { setTableData, sortChange, dragSort, _methods } = useMethods(props, tableInstance);
@@ -393,7 +409,7 @@ let isFilterStatus = false;
 watch(
   () => showTableData.value?.length,
   () => {
-    if (!props.useTree) {
+    if (!props.useTree || !isListMode.value) {
       return;
     }
     nextTick(() => {
@@ -593,6 +609,14 @@ function onSortChange(data: any) {
 function rowDragEnd(data: any) {
   dragSort();
   emits('row-dragend', data);
+}
+
+// 预留：card -> list 时可能会需要恢复表格切换card前的一些状态
+async function restoreTable(mode: TableMode) {
+  await nextTick();
+  if (mode === 'list') {
+    resetCheckboxStatus();
+  }
 }
 
 // export

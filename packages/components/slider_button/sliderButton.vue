@@ -54,8 +54,10 @@ const debouncedGetActiveItemPosition = debounce(() => {
 
 onMounted(() => {
   element.value = sliderButton?.value?.querySelector('.k-slider-button-pane.is-active');
-  element.value.setAttribute('data-observer-key', key);
-  elementObserver.observe(element.value, debouncedGetActiveItemPosition);
+  if (element.value) {
+    element.value.setAttribute('data-observer-key', key);
+    elementObserver.observe(element.value, debouncedGetActiveItemPosition);
+  }
 });
 
 watch(() => props.modelValue, (value) => {

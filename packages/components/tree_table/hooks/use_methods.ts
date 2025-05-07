@@ -287,7 +287,10 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
     issue:https://github.com/x-extends/vxe-table/issues/2650
   */
   async function setTreeExpand(rows: Row | Row[], checked: boolean, timeout: number = 100) {
-    return new Promise(async (resolve) => {
+    return new Promise(async (resolve, reject) => {
+      if (!$table.value) {
+        reject('table instance is not exist');
+      }
       const records = Array.isArray(rows) ? rows : [rows];
       const isLazy = props.treeConfig?.lazy ?? false;
       if (!isLazy) {
@@ -328,6 +331,10 @@ export function useMethods(props: TreeTableProps, $table: Ref<VxeTableInstance>)
   }
 
   function getRowById(id: string | number) {
+    if (!$table.value) {
+      console.error('table instance is not exist');
+      return null;
+    }
     const row = $table.value?.getRowById(id);
     if (row) {
       return row;

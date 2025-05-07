@@ -106,7 +106,7 @@ export function useData(
           .filter((field: string | null) => field !== null);
     let tableData = filterData.filter((dataItem: any) =>
       fieldList.some((field: string) => {
-        const cellLabel = $table.value.getCellLabel(dataItem, field) ?? dataItem[field];
+        const cellLabel = $table.value?.getCellLabel?.(dataItem, field) ?? dataItem[field];
         if (strict === true) {
           return cellLabel.toString() === searchKey;
         }

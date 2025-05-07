@@ -111,7 +111,20 @@
             </template>
           </k-filter>
         </template>
-        <template v-else-if="widget.id === 'sizeControl'">
+        <template v-else-if="widget.id === 'card-switch'">
+          <!-- 列表/卡片切换 -->
+          <k-slider-button
+            class="k-tree-table__slider-button"
+            :default-active="currentMode"
+            :style="sliderBtnStyle"
+            :items="sliderBtnItems"
+            @change="(mode) => {
+              emits('update:current-mode', mode)
+              emits('switch-change', mode);
+            }"
+          />
+        </template>
+        <template v-else-if="widget.id === 'size-control' && currentMode === 'list'">
           <!-- 表格尺寸控制 -->
           <k-dropdown
             trigger="click"
@@ -147,7 +160,7 @@
             </k-dropdown-item>
           </k-dropdown>
         </template>
-        <template v-else-if="widget.id === 'transfer'">
+        <template v-else-if="widget.id === 'transfer' && currentMode === 'list'">
           <!-- 穿梭框 -->
           <k-popover
             trigger="click"
@@ -212,7 +225,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, PropType, VNode } from 'vue';
+import { ref, computed, inject, PropType, VNode } from 'vue';
 import {
   IconSearch,
   IconRefresh,
@@ -221,10 +234,11 @@ import {
   IconSizeControls,
   IconSetting
 } from 'ksw-vue-icon';
-import { KButton, KDropdown, KDropdownItem, KInput, KPopover, KTransfer } from '..';
+import { KButton, KDropdown, KDropdownItem, KInput, KPopover, KTransfer, KSliderButton } from '..';
 import { useLocale } from '../../hooks';
 import { compatibleSlots } from '../../utils';
 import { SIZE_OPTIONS, TABLE_SIZE_KEY } from './const';
+import { TableMode } from './type';
 import { ConditionInfo } from '../filter/type';
 
 defineOptions({
@@ -240,9 +254,10 @@ type transferData = {
   label: string
   key: string
 }
-const tableSize = inject(TABLE_SIZE_KEY, undefined);
+const tableSize = inject(TABLE_SIZE_KEY, computed(() => undefined));
 const { t } = useLocale();
 const props = defineProps({
+  currentMode: String as PropType<TableMode>,
   simple: Boolean,
   showHeaderTools: Boolean,
   showSearchInput: Boolean,
@@ -255,6 +270,7 @@ const props = defineProps({
 });
 
 const emits = defineEmits([
+  'update:current-mode',
   'input-change',
   'filter-confirm',
   'filter-clear',
@@ -265,12 +281,29 @@ const emits = defineEmits([
   'transfer-change',
   'transfer-drag',
   'size-change',
-  'refresh'
+  'refresh',
+  'switch-change'
 ]);
+
+const sliderBtnItems = [
+  { label: '卡片', name: 'card' },
+  { label: '列表', name: 'list' }
+];
+
+const sliderBtnBaseStyle = {
+  width: '80px',
+}
 
 const filterRef = ref();
 const transferRef = ref();
 const searchStr = ref('');
+
+const sliderBtnStyle = computed(() => {
+  if (tableSize.value === 'small' || tableSize.value ==='mini') {
+    return { ...sliderBtnBaseStyle, height: '1.5rem', fontSize: '12px' }
+  }
+  return { ...sliderBtnBaseStyle, height: '2rem', fontSize: '14px' }
+});
 
 function inputChange(value: string) {
   emits('input-change', value);

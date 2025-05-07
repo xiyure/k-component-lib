@@ -62,7 +62,11 @@ export function useCheckbox(
   }
   // 设置复选框选中行
   const setCheckboxRow = (rows: Row | RowData | (Row | RowData)[], checked: boolean) =>
-    new Promise((resolve) => {
+    new Promise((resolve, reject) => {
+      if (!$table.value) {
+        console.error('table instance not exists');
+        reject(null)
+      }
       const newRows = Array.isArray(rows) ? rows : [rows];
       const res: (Row | RowData)[] = [];
       for (const row of newRows) {
@@ -78,7 +82,11 @@ export function useCheckbox(
     });
   // 设置所有复选框选中行
   const setAllCheckboxRow = (checked: boolean) =>
-    new Promise((resolve) => {
+    new Promise((resolve, reject) => {
+      if (!$table.value) {
+        console.error('table instance not exists');
+        reject(null)
+      }
       const res: (Row | RowData)[] = [];
       if (checked) {
         for (const row of fullTableData.value) {
@@ -131,6 +139,9 @@ export function useCheckbox(
     }
   };
   async function resetCheckboxStatus() {
+    if (!$table.value) {
+      return;
+    }
     await $table.value?.clearCheckboxRow();
     await $table.value?.clearCheckboxReserve();
     if (checkedLeafData.size === 0) {
@@ -147,7 +158,11 @@ export function useCheckbox(
   }
   // 清除复选框选中行
   const clearCheckboxRow = () =>
-    new Promise((resolve) => {
+    new Promise((resolve, reject) => {
+      if (!$table.value) {
+        console.error('table instance not exists');
+        reject(null);
+      }
       if (props.showPage && !props.useTree) {
         handleCheckboxData(tableData.value, false);
       } else {
@@ -158,6 +173,10 @@ export function useCheckbox(
     });
   // 清除复选框缓存状态
   const clearCheckboxReserve = async () => {
+    if (!$table.value) {
+      console.error('table instance not exists');
+      return Promise.reject(null);
+    }
     await $table.value?.clearCheckboxReserve();
     new Promise((resolve) => {
       if (props.showPage && !props.useTree) {
@@ -182,15 +201,18 @@ export function useCheckbox(
   function closeBatchOperation() {
     clearCheckboxRow();
     clearCheckedData();
-    $table.value.clearCheckboxReserve();
+    $table.value?.clearCheckboxReserve?.();
   }
   // 判断是否禁用复选框
   function isCheckboxDisabled(row: Row | RowData) {
+    if (!$table.value) {
+      return false;
+    }
     const { visibleMethod, checkMethod } = checkboxConfig.value;
-    if (typeof visibleMethod === 'function' && !visibleMethod({ row })) {
+    if (typeof visibleMethod === 'function' && !visibleMethod({ $table: $table.value, row })) {
       return true;
     }
-    if (typeof checkMethod === 'function' && !checkMethod({ row })) {
+    if (typeof checkMethod === 'function' && !checkMethod({ $table: $table.value, row })) {
       return true;
     }
     return false;
@@ -202,6 +224,10 @@ export function useCheckbox(
   }
 
   function getCheckboxRecords(isFullData = false, onlyVisible = false): Row[] | RowData[] {
+    if (!$table.value) {
+      console.error('table instance not exists');
+      return [];
+    }
     if (!isFullData) {
       return $table.value?.getCheckboxRecords(!onlyVisible);
     }

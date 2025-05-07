@@ -13,8 +13,9 @@ export const DEFAULT_WIDGETS = new Map([
   ['search', 'search'],
   ['refresh', 'refresh'],
   ['filter', 'filter'],
-  ['sizeControl', 'sizeControl'],
-  ['transfer', 'transfer']
+  ['size-control', 'size-control'],
+  ['transfer', 'transfer'],
+  ['card-switch', 'card-switch']
 ]);
 
 // 默认行配置

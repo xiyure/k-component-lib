@@ -262,7 +262,7 @@ export function getExposeProxy(instance: any, source: any) {
     },
     has(_target, key) {
       const sourceInstance = isRef(source) ? source.value : source;
-      return Reflect.has(instance, key) || Reflect.has(sourceInstance, key);
+      return Reflect.has(instance, key) || Reflect.has(sourceInstance ?? {}, key);
     }
   });
   return proxy;
