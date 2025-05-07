@@ -45,6 +45,9 @@ export interface KTreeTableSlots extends VxeTableSlots {
   'size-control-trigger': () => ComponentSlotType
   'transfer-trigger': () => ComponentSlotType
   'header-extra': () => ComponentSlotType
+  'card-content': (_: { row: RowData }) => ComponentSlotType
+  'card-header': (_: { row: RowData }) => ComponentSlotType
+  'card-footer': (_: { row: RowData }) => ComponentSlotType
   [key: string]: (...args: any) => ComponentSlotType
 
   /**
