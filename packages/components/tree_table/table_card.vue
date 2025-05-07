@@ -1,21 +1,23 @@
 <template>
   <div class="k-tree-table__card">
-    <k-card
-      class="k-tree-table__card-item"
-      v-for="item in data"
-      :key="item[keyField]"
-      v-bind="cardAttrs"
-    >
-      <template v-if="$slots['card-content']" #default>
-        <slot name="card-content" :row="item"></slot>
-      </template>
-      <template v-if="$slots['card-header']" #header>
-        <slot name="card-header" :row="item"></slot>
-      </template>
-      <template v-if="$slots['card-footer']" #footer>
-        <slot name="card-footer" :row="item"></slot>
-      </template>
-    </k-card>
+    <div class="k-tree-table__card-wrapper">
+      <k-card
+        class="k-tree-table__card-item"
+        v-for="item in data"
+        :key="item[keyField]"
+        v-bind="cardAttrs"
+      >
+        <template v-if="$slots['card-content']" #default>
+          <slot name="card-content" :row="item"></slot>
+        </template>
+        <template v-if="$slots['card-header']" #header>
+          <slot name="card-header" :row="item"></slot>
+        </template>
+        <template v-if="$slots['card-footer']" #footer>
+          <slot name="card-footer" :row="item"></slot>
+        </template>
+      </k-card>
+    </div>
   </div>
 </template>
 
@@ -26,11 +28,11 @@ import { CardOptions } from './type';
 
 defineOptions({
   name: 'TableCard'
-})
+});
 
 const props = defineProps({
   data: {
-    type: Array as PropType <any[]>,
+    type: Array as PropType<any[]>,
     default: () => []
   },
   keyField: {
@@ -38,7 +40,7 @@ const props = defineProps({
     default: 'id'
   },
   cardAttrs: {
-    type: Object as PropType<CardOptions>,
+    type: Object as PropType<CardOptions>
   }
-})
+});
 </script>

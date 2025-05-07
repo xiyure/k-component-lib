@@ -141,13 +141,18 @@
   }
   
   .k-tree-table__card {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 8px 0;
-  
-    .k-tree-table__card-item {
-      min-width: 100px;
+    flex: 1;
+    overflow: auto;
+    .k-tree-table__card-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 8px 0;
+    
+      .k-tree-table__card-item {
+        min-width: 100px;
+        height: fit-content;
+      }
     }
   }
 

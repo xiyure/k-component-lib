@@ -1,5 +1,6 @@
 <template>
   <div class="flex gap-2">
+    <span>Dark</span>
     <k-tag
       v-for="item in items"
       :key="item.label"
@@ -11,6 +12,7 @@
     </k-tag>
   </div>
   <div class="flex gap-2 mt-4">
+    <span>Light</span>
     <k-tag
       v-for="item in items"
       :key="item.label"
@@ -22,6 +24,7 @@
     </k-tag>
   </div>
   <div class="flex gap-2 mt-4">
+    <span>Plain</span>
     <k-tag
       v-for="item in items"
       :key="item.label"
