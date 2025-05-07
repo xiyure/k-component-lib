@@ -130,7 +130,7 @@
     {
       "displayName": "widgets",
       "type": "Array",
-      "description": "自定义表头组件，设置该参数时，show-search-input、show-filter、show-refresh、show-transfer参数将失效,该参数数组提供了search、filter、refresh、transfer、sizeControl字段用于控制以上五个参数的显示与顺序，此外还可以自定义组件，参数的id字段用于标识组件，widget字段用于渲染组件，当widget字段为null时，会自动渲染名为id的插槽",
+      "description": "自定义表头组件，设置该参数时，show-search-input、show-filter、show-refresh、show-transfer参数将失效,该参数数组提供了search、filter、refresh、transfer、size-control、card-switch (v1.2.1) 字段用于搜索框、高级筛选、刷新、列头控制器、表格大小控制器以及卡片切换等内置组件的显示与顺序，此外还可以自定义组件，参数的id字段用于标识组件，widget字段用于渲染组件，当widget字段为null时，会自动渲染名为id的插槽",
       "defaultValue": "",
       "tip": "(string | {id: string, widget: Component | () => VNode})[]"
     },
@@ -350,6 +350,22 @@
       "defaultValue": "",
       "tip": "BatchOperateConfig",
       "version": "1.1.22"
+    },
+    {
+      "displayName": "card-options",
+      "type": "object",
+      "description": "表格使用卡片展示风格时生效，配置卡片的属性，可参考KCard组件",
+      "defaultValue": "",
+      "tip": "KCardProps",
+      "version": "1.2.1"
+    },
+    {
+      "displayName": "default-mode",
+      "type": "object",
+      "description": "表格使用卡片展示风格时生效，配置默认展示模式",
+      "defaultValue": "'list'",
+      "tip": "'list' | 'card'",
+      "version": "1.2.1"
     }
   ],
   "subProps": {

@@ -81,7 +81,7 @@
     {
       "displayName": "effect",
       "type": "enum",
-      "description": "",
+      "description": "标签主题",
       "defaultValue": "'dark'",
       "tip": "'dark' | 'light' | 'plain'",
       "version": "1.2.0"

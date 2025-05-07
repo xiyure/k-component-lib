@@ -38,7 +38,7 @@ title: Tag 标签
 
 `Tag` 可以向按钮组件一样变为完全圆形。
 
-<demo path="./prototypeTag.vue" />
+<demo path="./round_tag.vue" />
 
 ## 可选中的标签
 
@@ -53,6 +53,12 @@ title: Tag 标签
 `color` 可以自定义标签的颜色，可以是十六进制颜色值，也可以是 CSS 颜色名。
 
 <demo path="./colorTag.vue" />
+
+## 标签主题
+
+`effect` 属性可以设置标签的主题，目前提供了 `light` 、 `dark` 和 `plain` 三种主题，默认为 `dark`，支持与 `color` 属性一起使用。
+
+<demo path="./effect_tag.vue" />
 
 ## 点型标签
 
