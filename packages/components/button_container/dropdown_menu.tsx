@@ -1,11 +1,12 @@
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import { KDropdown, KDropdownItem } from '../dropdown';
+import { ButtonContainerTab } from './type';
 
 export default defineComponent({
   name: 'TabLabel',
   props: {
     tabs: {
-      type: Array,
+      type: Array as PropType<ButtonContainerTab[]>,
       default: () => ([])
     },
   },
@@ -17,12 +18,12 @@ export default defineComponent({
           {...attrs}
           disabled={props.tabs.length === 0}
           v-slots={slots}
-          onCommand={(command: number) => {
+          onCommand={(command) => {
             emit('command', command)
           }}
         >
         {
-          props.tabs.map((tab: any, index: number) => (
+          props.tabs.map((tab) => (
             <KDropdownItem
               key={tab.index}
               disabled={tab.disabled}

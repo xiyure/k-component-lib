@@ -3,8 +3,8 @@ import { NOOP } from '@vue/shared';
 import type{ SFCWithInstall, SFCInstallWithContext } from '../utils';
 
 export const withInstall = <T, E extends Record<string, any>>(
-  main: T,
-  extra?: E
+  main: any,
+  extra?: any
 ) => {
   (main as SFCWithInstall<T>).install = (app: App): void => {
     for (const comp of [main, ...Object.values(extra ?? {})]) {
@@ -14,7 +14,7 @@ export const withInstall = <T, E extends Record<string, any>>(
 
   if (extra) {
     for (const [key, comp] of Object.entries(extra)) {
-      (main as any)[key] = comp;
+      main[key] = comp;
     }
   }
   return main as SFCWithInstall<T> & E;
@@ -29,7 +29,7 @@ export const withInstallFunction = <T>(fn: T, name: string) => {
   return fn as SFCInstallWithContext<T>;
 };
 
-export const withNoopInstall = <T>(component: T) => {
+export const withNoopInstall = <T>(component: any) => {
   (component as SFCWithInstall<T>).install = NOOP;
 
   return component as SFCWithInstall<T>;

@@ -14,3 +14,9 @@ export interface ButtonContainerProps {
   triggerIcon?: string | Component
   size?: CompSize
 }
+
+export type ButtonContainerTab = {
+  label: string | (() => string)
+  disabled: boolean,
+  index: number
+}

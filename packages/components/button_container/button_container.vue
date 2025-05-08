@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, watch, inject, computed, provide } from 'vue';
-import { ButtonContainerProps } from './type';
+import { ButtonContainerProps, ButtonContainerTab } from './type';
 import Dropdown from './dropdown_menu';
 import { flattenChildren, isValidElement, camelize, genRandomStr, getElementAll, isElementInContainerView } from '../../utils';
 import { SIZE_KEY, useSize } from '../../hooks';
@@ -59,7 +59,7 @@ const props = withDefaults(defineProps<ButtonContainerProps>(), {
 const slots = defineSlots();
 const container = ref();
 const box = ref();
-const hideTabs = ref<{ label: string; disabled: boolean, index: number }[]>([]);
+const hideTabs = ref<ButtonContainerTab[]>([]);
 const key = `_${genRandomStr(8)}`;
 
 // 可视区域发生变化时，下拉列表也同步更新
@@ -107,7 +107,7 @@ function parseBtnList(children: any[]): { label: string; disabled: boolean }[] {
 }
 
 function resize() {
-  const res: { label: string; disabled: boolean, index: number }[] = [];
+  const res: ButtonContainerTab[] = [];
   if (!buttons.value.length) {
     return [];
   }

@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import { KDropdown, KDropdownItem } from '../dropdown';
 import { flattenChildren, isValidElement, camelize } from '../../utils';
 import { TabData } from './type';
@@ -7,7 +7,7 @@ export default defineComponent({
   name: 'TabLabel',
   props: {
     tabIndexList: {
-      type: Array,
+      type: Array as PropType<number[]>,
       default: () => ([])
     },
     tabSlots: {
@@ -46,7 +46,7 @@ export default defineComponent({
         </>
       )
     }
-    function jumpToTab(command: TabData) {
+    function jumpToTab(command: unknown) {
       emit('command', command)
     }
     // 解析tab-pane
