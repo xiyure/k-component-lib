@@ -86,6 +86,7 @@ watch(
     }
     const typeKeys = Object.keys(DEFAULT_STATUS_COLOR);
     let color: string = '';
+    let fontColor: string| undefined;
     if (newValue === index) {
       const processStatus = getProcessStatus(stepsProps.processStatus);
       color = typeKeys.includes(processStatus) ?
@@ -98,11 +99,13 @@ watch(
         DEFAULT_STATUS_COLOR.success;
     } else {
       color = DEFAULT_STATUS_COLOR.wait;
+      fontColor = 'var(--k-theme-text--normal)';
     }
+    fontColor = props.textColor || fontColor;
     if (!color) {
       return;
     }
-    setStepColor(color);
+    setStepColor(color, fontColor);
   },
   { immediate: true }
 );
@@ -113,6 +116,7 @@ watch(
       return;
     }
     let newColor: string;
+    let fontColor: string| undefined;
     if (props.status && [props.status]) {
       newColor = DEFAULT_STATUS_COLOR[props.status];
     } else if (props.color) {
@@ -120,16 +124,25 @@ watch(
     } else {
       newColor = DEFAULT_STATUS_COLOR.primary;
     }
-    setStepColor(newColor);
+    // 处理文字颜色
+    if (props.status === 'wait' && !props.textColor) {
+      fontColor = 'var(--k-theme-text--normal)';
+    } else if (props.textColor) {
+      fontColor = props.textColor;
+    } else {
+      fontColor = '#fff';
+    }
+    setStepColor(newColor, fontColor);
   },
   { immediate: true, deep: true }
 );
 
-function setStepColor(color: string) {
+function setStepColor(bgColor: string, color: string = '#fff') {
   if (typeof window !== 'undefined') {
     nextTick(() => {
       const element = document.getElementById(id);
-      element?.style?.setProperty('--default-bgColor', color);
+      element?.style?.setProperty('--default-bg-color', bgColor);
+      element?.style?.setProperty('--default-color', color);
     });
   }
 }

@@ -3,7 +3,8 @@
 
 :root {
   --height: 30px;
-  --default-bgColor: #eae8eb;
+  --default-bg-color: #eae8eb;
+  --default-color: #FFF;
 }
 .k-steps {
   width: 100%;
@@ -23,8 +24,8 @@
   margin-right: 2px;
   padding: 0px 10px 0 20px;
   line-height: var(--height);
-  color: #fff;
-  background-color: var(--default-bgColor);
+  color: var(--default-color);
+  background-color: var(--default-bg-color);
   text-align: center;
   &::after {
     content: '';
@@ -34,7 +35,7 @@
     top: 0;
     width: 1rem;
     height: var(--height);
-    background-color: var(--default-bgColor);
+    background-color: var(--default-bg-color);
     clip-path: polygon(5% 0, 5% 100%, 100% 50%);
     z-index: 10;
   }

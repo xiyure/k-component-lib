@@ -14,6 +14,7 @@ export interface StepProps {
   icon?: string | Component;
   status?: StepStatus;
   color?: string;
+  textColor?: string;
 }
 
 export type StepStatus = '' | 'wait' | 'process' | 'finish' | 'error' |'success';
