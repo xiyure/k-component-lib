@@ -1,5 +1,5 @@
 <template>
-  <div id="KPageTableView" class="KPageTableView w-full h-full bg-white rounded flex text-gray-700">
+  <div id="KPageTableView" class="KPageTableView flex h-full w-full rounded bg-white text-gray-700">
     <!-- left -->
     <!-- no-refresh -->
     <KPageViewBus
@@ -12,7 +12,7 @@
       <template #head>
         <slot name="aside-toolbar"></slot>
       </template>
-      <div v-if="$slots.aside" class="k-page-view-aside-content">
+      <div v-if="$slots.aside" class="k-page-view-aside-content flex h-full flex-col">
         <slot name="aside"></slot>
       </div>
       <template #foot>
@@ -23,12 +23,12 @@
     <!-- right -->
     <div
       id="KPageContent"
-      class="KPageContent h-full flex-1 flex flex-col pl-6 pr-3 py-3"
+      class="KPageContent flex h-full flex-1 flex-col py-3 pl-6 pr-3"
       style="min-width: 0; min-height: 0"
     >
       <div id="KPageHead" class="KPageHead flex justify-between pb-1">
         <div class="KPageHead-title-container flex items-center" @mouseenter="() => (tips = true)">
-          <div v-if="pageIcon" class="KPageHead-icon w-6 h-6 mr-1">
+          <div v-if="pageIcon" class="KPageHead-icon mr-1 h-6 w-6">
             <component :is="icon" size="24" />
           </div>
           <p class="KPageHead-title">
