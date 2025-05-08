@@ -18,7 +18,6 @@
 import { ref, reactive, nextTick } from 'vue';
 import { KDialog } from '../dialog';
 import { KForm, KFormItem } from '../form';
-import { KMessage } from '../message';
 import { KCheckboxGroup, KCheckbox } from '../checkbox';
 import { KInput } from '../input';
 import { KButton } from '../button';
@@ -222,7 +221,7 @@ function showDialog ({
           }
         } catch (err: any) {
           // 兼容下确定时 调用接口抛出的错误
-          KMessage.error(err.error ? err.error.toString() : err.toString())
+          console.error(err.error ? err.error.toString() : err.toString())
         }
       }
       slotParams.cancel = async () => {
@@ -232,7 +231,7 @@ function showDialog ({
           }
           dialogAttrs.modelValue = false
         } catch (err: any) {
-          KMessage.error(err.toString())
+          console.error(err.toString())
         }
       }
       if (slots.footer) {
