@@ -1,8 +1,8 @@
 import Split from './split.vue';
-import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall } from '../../utils/install';
+import { KSplit as _KSplit } from '../../../typings/all';
 
-export const KSplit: SFCWithInstall<typeof Split> = withInstall(Split);
+export const KSplit = withInstall<typeof _KSplit>(Split);
 export default KSplit;
 
 export * from './type';

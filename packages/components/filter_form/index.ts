@@ -1,8 +1,8 @@
 import FilterForm from './filter_form.vue';
-import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall } from '../../utils/install';
+import { KFilterForm as _KFilterForm } from '../../../typings/all';
 
-export const KFilterForm: SFCWithInstall<typeof FilterForm> = withInstall(FilterForm);
+export const KFilterForm = withInstall<typeof _KFilterForm>(FilterForm);
 export default KFilterForm;
 
 export * from './type';

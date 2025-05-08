@@ -1,8 +1,8 @@
 import PageViewBus from './PageViewBus.vue';
-import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall } from '../../utils/install';
+import { KPageViewBus as _KPageViewBus } from '../../../typings/all';
 
-export const KPageViewBus: SFCWithInstall<typeof PageViewBus> = withInstall(PageViewBus);
+export const KPageViewBus = withInstall<typeof _KPageViewBus>(PageViewBus);
 export default KPageViewBus;
 
 export * from './type';

@@ -1,8 +1,8 @@
 import Upload from './upload.vue';
-import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall } from '../../utils/install';
+import { KUpload as _KUpload } from '../../../typings/all';
 
-export const KUpload: SFCWithInstall<typeof Upload> = withInstall(Upload);
+export const KUpload = withInstall<typeof _KUpload>(Upload);
 export default KUpload;
 
 export * from './type';

@@ -1,8 +1,8 @@
 import View from './view.vue';
-import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall } from '../../utils/install';
+import { KView as _KView } from '../../../typings/all';
 
-export const KView: SFCWithInstall<typeof View> = withInstall(View);
+export const KView = withInstall<typeof _KView>(View);
 export default KView;
 
 export * from './type';

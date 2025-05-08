@@ -1,7 +1,7 @@
 import Drawer from './drawer.vue';
-import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall } from '../../utils/install';
+import { KDrawer as _KDrawer } from '../../../typings/all';
 
-export const KDrawer: SFCWithInstall<typeof Drawer> = withInstall(Drawer);
+export const KDrawer = withInstall<typeof _KDrawer>(Drawer);
 export * from './type';
 export default KDrawer;

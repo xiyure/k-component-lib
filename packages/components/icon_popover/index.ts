@@ -1,8 +1,8 @@
 import IconPopover from './icon_popover.vue';
-import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall } from '../../utils/install';
+import { KIconPopover as _KIconPopover } from '../../../typings/all';
 
-export const KIconPopover: SFCWithInstall<typeof IconPopover> = withInstall(IconPopover);
+export const KIconPopover = withInstall<typeof _KIconPopover>(IconPopover);
 export default KIconPopover;
 
 export * from './type';

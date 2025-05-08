@@ -1,14 +1,11 @@
 import Checkbox from './checkbox.vue';
 import CheckboxGroup from './checkbox_group.vue';
-import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall, withNoopInstall } from '../../utils/install';
+import { KCheckboxGroup as _KCheckboxGroup, KCheckbox as _KCheckbox } from '../../../typings/all';
 
-export const KCheckbox: SFCWithInstall<typeof Checkbox> &
-{
-  CheckboxGroup: typeof CheckboxGroup
-} = withInstall(Checkbox, { CheckboxGroup });
+export const KCheckbox = withInstall<typeof _KCheckbox, { CheckboxGroup: typeof _KCheckboxGroup }>(Checkbox, { CheckboxGroup });
 export default KCheckbox;
 
-export const KCheckboxGroup: SFCWithInstall<typeof CheckboxGroup> = withNoopInstall(CheckboxGroup);
+export const KCheckboxGroup = withNoopInstall<typeof _KCheckboxGroup>(CheckboxGroup);
 
 export * from './type';

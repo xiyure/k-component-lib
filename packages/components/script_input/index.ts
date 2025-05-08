@@ -1,8 +1,8 @@
 import ScriptInput from './script_input.vue';
-import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall } from '../../utils/install';
+import { KScriptInput as _KScriptInput } from '../../../typings/all';
 
-export const KScriptInput: SFCWithInstall<typeof ScriptInput> = withInstall(ScriptInput);
+export const KScriptInput = withInstall<typeof _KScriptInput>(ScriptInput);
 export default KScriptInput;
 
 export * from './type';

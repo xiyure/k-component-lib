@@ -1,8 +1,8 @@
 import Input from './input.vue';
-import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall } from '../../utils/install';
+import { KInput as _KInput } from '../../../typings/all';
 
-export const KInput: SFCWithInstall<typeof Input> = withInstall(Input);
+export const KInput = withInstall<typeof _KInput>(Input);
 export default KInput;
 
 export * from './type';

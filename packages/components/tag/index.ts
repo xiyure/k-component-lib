@@ -1,8 +1,8 @@
 import Tag from './tag.vue';
-import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall } from '../../utils/install';
+import { KTag as _KTag } from '../../../typings/all';
 
-export const KTag: SFCWithInstall<typeof Tag> = withInstall(Tag);
+export const KTag = withInstall<typeof _KTag>(Tag);
 export default KTag;
 
 export * from './type';

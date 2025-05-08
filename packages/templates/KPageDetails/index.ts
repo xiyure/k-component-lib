@@ -1,8 +1,8 @@
 import PageDetails from './PageDetails.vue';
-import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall } from '../../utils/install';
+import { KPageDetails as _KPageDetails } from '../../../typings/all';
 
-export const KPageDetails: SFCWithInstall<typeof PageDetails> = withInstall(PageDetails);
+export const KPageDetails = withInstall<typeof _KPageDetails>(PageDetails);
 export default KPageDetails;
 
 export * from './type';

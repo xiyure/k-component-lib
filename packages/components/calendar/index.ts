@@ -1,8 +1,8 @@
 import Calendar from './calendar.vue';
-import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall } from '../../utils/install';
+import { KCalendar as _KCalendar } from '../../../typings/all';
 
-export const KCalendar: SFCWithInstall<typeof Calendar> = withInstall(Calendar);
+export const KCalendar = withInstall<typeof _KCalendar>(Calendar);
 export default KCalendar;
 
 export * from './type';

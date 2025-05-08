@@ -1,8 +1,8 @@
 import Popover from './popover.vue';
-import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall } from '../../utils/install';
+import { KPopover as _KPopover } from '../../../typings/all';
 
-export const KPopover: SFCWithInstall<typeof Popover> = withInstall(Popover);
+export const KPopover = withInstall<typeof _KPopover>(Popover);
 export default KPopover;
 
 export * from './type';

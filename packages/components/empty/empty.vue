@@ -17,7 +17,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { ElEmpty } from 'element-plus';
-// @ts-expect-error 引入本地静态图片资源
 import empty from '../../assets/svg/empty.svg';
 import { getExposeProxy } from '../../utils';
 

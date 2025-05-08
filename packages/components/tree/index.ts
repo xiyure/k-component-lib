@@ -1,8 +1,8 @@
 import Tree from './tree.vue';
-import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall } from '../../utils/install';
+import { KTree as _KTree } from '../../../typings/all';
 
-export const KTree: SFCWithInstall<typeof Tree> = withInstall(Tree);
+export const KTree = withInstall<typeof _KTree>(Tree);
 export default KTree;
 
 export * from './type';

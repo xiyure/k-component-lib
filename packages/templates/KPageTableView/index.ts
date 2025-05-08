@@ -1,8 +1,8 @@
 import PageTableView from './PageTableView.vue';
-import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall } from '../../utils/install';
+import { KPageTableView as _KPageTableView } from '../../../typings/all';
 
-export const KPageTableView: SFCWithInstall<typeof PageTableView> = withInstall(PageTableView);
+export const KPageTableView = withInstall<typeof _KPageTableView>(PageTableView);
 export default KPageTableView;
 
 export * from './type';

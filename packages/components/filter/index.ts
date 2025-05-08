@@ -1,8 +1,8 @@
 import Filter from './filter.vue';
-import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall } from '../../utils/install';
+import { KFilter as _KFilter } from '../../../typings/all';
 
-export const KFilter: SFCWithInstall<typeof Filter> = withInstall(Filter);
+export const KFilter = withInstall<typeof _KFilter>(Filter);
 export default KFilter;
 
 export * from './type';

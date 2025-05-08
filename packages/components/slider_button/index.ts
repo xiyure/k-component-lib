@@ -1,8 +1,8 @@
 import SliderButton from './sliderButton.vue';
-import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall } from '../../utils/install';
+import { KSliderButton as _KSliderButton } from '../../../typings/all';
 
-export const KSliderButton: SFCWithInstall<typeof SliderButton> = withInstall(SliderButton);
+export const KSliderButton = withInstall<typeof _KSliderButton>(SliderButton);
 
 export default KSliderButton;
 

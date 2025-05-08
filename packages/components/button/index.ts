@@ -1,8 +1,8 @@
 import Button from './button.vue';
-import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall } from '../../utils/install';
+import { KButton as _KButton } from '../../../typings/all';
 
-export const KButton: SFCWithInstall<typeof Button> = withInstall(Button);
+export const KButton = withInstall<typeof _KButton>(Button);
 export default KButton;
 
 export * from './type';

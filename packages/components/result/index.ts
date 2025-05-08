@@ -1,8 +1,8 @@
 import Result from './result.vue';
-import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall } from '../../utils/install';
+import { KResult as _KResult } from '../../../typings/all';
 
-export const KResult: SFCWithInstall<typeof Result> = withInstall(Result);
+export const KResult = withInstall<typeof _KResult>(Result);
 export default KResult;
 
 export * from './type';

@@ -2,7 +2,7 @@ import type { App } from 'vue';
 import { NOOP } from '@vue/shared';
 import type{ SFCWithInstall, SFCInstallWithContext } from '../utils';
 
-export const withInstall = <T, E extends Record<string, any>>(
+export const withInstall = <T, E extends Record<string, any> = Record<string, any>>(
   main: any,
   extra?: any
 ) => {

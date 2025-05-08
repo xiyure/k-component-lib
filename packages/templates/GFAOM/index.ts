@@ -1,8 +1,8 @@
 import _GFPageDetails from './GFPageDetails.vue';
-import type { SFCWithInstall } from '../../utils/typescript/install';
 import { withInstall } from '../../utils/install';
+import { GFPageDetails as __GFPageDetails } from '../../../typings/all';
 
-export const GFPageDetails: SFCWithInstall<typeof _GFPageDetails> = withInstall(_GFPageDetails);
+export const GFPageDetails = withInstall<typeof __GFPageDetails>(_GFPageDetails);
 export default GFPageDetails;
 
 export * from './type';
