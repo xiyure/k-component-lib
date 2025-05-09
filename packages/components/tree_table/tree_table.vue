@@ -103,7 +103,7 @@
             </template>
           </KColumnGroup>
         </template>
-        <template v-for="(_, name) in $slots" :key="name" #[name]="data">
+        <template v-for="(_, name) in vxeInheritSlots($slots)" :key="name" #[name]="data">
           <slot :name="name" v-bind="data"></slot>
         </template>
       </k-table>
@@ -173,7 +173,7 @@ import {
   useHeaderControl,
   useAdvancedFilter
 } from './hooks';
-import { SIZE_KEY, useLocale, useDeprecated } from '../../hooks';
+import { SIZE_KEY, useLocale, useDeprecated, useInheritSlot } from '../../hooks';
 import { genRandomStr, sortFunc, getExposeProxy } from '../../utils';
 import type { TreeTableProps, Column, RowData, Row, TableMode } from './type';
 import { TABLE_SIZE_KEY } from './const';
@@ -223,6 +223,7 @@ useDeprecated(
 );
 
 const { t } = useLocale();
+const vxeInheritSlots = useInheritSlot(['default']);
 
 const emits = defineEmits([
   'remote-query',
