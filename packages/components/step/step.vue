@@ -77,16 +77,14 @@ watch(
     if (
       !isNumber(newValue) ||
       index === -1 ||
-      newValue < 0 ||
-      newValue > steps.length ||
       props.status ||
       props.color
     ) {
       return;
     }
+    newValue = Math.max(Math.min(newValue, steps.length), -1);
     const typeKeys = Object.keys(DEFAULT_STATUS_COLOR);
     let color: string = '';
-    let fontColor: string| undefined;
     if (newValue === index) {
       const processStatus = getProcessStatus(stepsProps.processStatus);
       color = typeKeys.includes(processStatus) ?
@@ -99,12 +97,11 @@ watch(
         DEFAULT_STATUS_COLOR.success;
     } else {
       color = DEFAULT_STATUS_COLOR.wait;
-      fontColor = 'var(--k-theme-text--normal)';
     }
-    fontColor = props.textColor || fontColor;
     if (!color) {
       return;
     }
+    const fontColor = props.textColor || (newValue < index ? 'var(--k-theme-text--normal)' : '#fff');
     setStepColor(color, fontColor);
   },
   { immediate: true }
@@ -116,8 +113,7 @@ watch(
       return;
     }
     let newColor: string;
-    let fontColor: string| undefined;
-    if (props.status && [props.status]) {
+    if (DEFAULT_STATUS_COLOR[props.status]) {
       newColor = DEFAULT_STATUS_COLOR[props.status];
     } else if (props.color) {
       newColor = props.color;
@@ -125,24 +121,19 @@ watch(
       newColor = DEFAULT_STATUS_COLOR.primary;
     }
     // 处理文字颜色
-    if (props.status === 'wait' && !props.textColor) {
-      fontColor = 'var(--k-theme-text--normal)';
-    } else if (props.textColor) {
-      fontColor = props.textColor;
-    } else {
-      fontColor = '#fff';
-    }
+    const fontColor = props.textColor || (props.status === 'wait' ? 'var(--k-theme-text--normal)' : '#fff');
     setStepColor(newColor, fontColor);
   },
-  { immediate: true, deep: true }
+  { immediate: true }
 );
+watch(() => props.textColor, (newValue) => { setStepColor(undefined, newValue); })
 
-function setStepColor(bgColor: string, color: string = '#fff') {
+function setStepColor(bgColor: string | undefined, color: string | undefined) {
   if (typeof window !== 'undefined') {
     nextTick(() => {
       const element = document.getElementById(id);
-      element?.style?.setProperty('--default-bg-color', bgColor);
-      element?.style?.setProperty('--default-color', color);
+      bgColor && element?.style?.setProperty('--default-bg-color', bgColor);
+      color && element?.style?.setProperty('--default-color', color);
     });
   }
 }
