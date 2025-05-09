@@ -18,6 +18,7 @@
       :widgets="widgets"
       :data-length
       :show-total="!useTree"
+      :search-config
       :filter-config
       :transfer-config
       @input-change="filter"
@@ -283,6 +284,10 @@ const __showTransfer = computed(() => {
   return false;
 });
 
+const searchConfig = computed(() => {
+  const { placeholder = t?.('table.searchTable') } = props.searchConfig ?? {};
+  return { placeholder };
+})
 // 表头筛选相关
 const filterConfig = computed(() => {
   const { remote, ignoreCase, dateFormat, defaultCondition } = props.advancedFilterConfig ?? {};

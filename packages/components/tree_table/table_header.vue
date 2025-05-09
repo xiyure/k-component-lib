@@ -3,7 +3,7 @@
     <k-input
       v-model="searchStr"
       :suffix-icon="IconSearch"
-      :placeholder="t?.('table.searchTable')"
+      :placeholder="searchConfig.placeholder"
       clearable
       @change="inputChange"
     />
@@ -47,7 +47,7 @@
           <k-input
             v-model="searchStr"
             :suffix-icon="IconSearch"
-            :placeholder="t?.('table.searchTable')"
+            :placeholder="searchConfig.placeholder"
             clearable
             @change="inputChange"
           />
@@ -200,10 +200,10 @@
               }"
               :titles="[t?.('table.unselected'), t?.('table.selected')]"
               :drag="true"
-              @change="(data: string[]) => {
-                emits('transfer-change', data);
+              @change="(...args: any[]) => {
+                emits('transfer-change', ...args);
               }"
-              @reset="(data: string[]) => {
+              @reset="(data: (string | number)[]) => {
                 emits('transfer-change', data);
               }"
               @drag="(data: transferData[]) => {
@@ -238,7 +238,7 @@ import { KButton, KDropdown, KDropdownItem, KInput, KPopover, KTransfer, KSlider
 import { useLocale } from '../../hooks';
 import { compatibleSlots } from '../../utils';
 import { SIZE_OPTIONS, TABLE_SIZE_KEY } from './const';
-import { TableMode } from './type';
+import { TableMode, AdvancedFilterConfig, SearchConfig } from './type';
 import { ConditionInfo } from '../filter/type';
 
 defineOptions({
@@ -265,6 +265,7 @@ const props = defineProps({
   showTotal: Boolean,
   dataLength: Number,
   widgets: Array as PropType<Widget[]>,
+  searchConfig: Object as any,
   filterConfig: Object as any,
   transferConfig: Object as any
 });

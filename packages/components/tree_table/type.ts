@@ -164,6 +164,7 @@ export interface SearchConfig {
   ignoreCase?: boolean;
   searchColumns?: string[];
   supportPinYin?: string[] | boolean;
+  placeholder?: string;
 }
 
 export interface BatchOperateConfig {
@@ -175,7 +176,7 @@ export interface BatchOperateConfig {
 
 export interface RowData {
   icon?: string;
-  __folder__?: boolean;
+  __folder?: boolean;
   iconStyle?: CSSProperties & { empty?: boolean; size?: number };
   [key: string]: any;
 }
